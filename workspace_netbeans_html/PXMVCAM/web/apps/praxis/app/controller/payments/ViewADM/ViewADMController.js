@@ -205,6 +205,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
         //me.bean.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
         //me.bean.IN_SPAYMENT = Ext.getCmp(prototype.id + '-cmbSPAYMENT').getValue();
         me.bean.IN_TKT = Ext.getCmp(prototype.id + '-txtTKT').getValue();
+        me.bean.IN_ADMNUM = Ext.getCmp(prototype.id + '-txtADMNUM').getValue();
 //        me.bean.IN_SAGENT = Ext.getCmp(prototype.id + '-txtSAGENT').getValue();
 //        me.bean.IN_SAUTHOC = Ext.getCmp(prototype.id + '-txtSAUTHOC').getValue();
 //        me.bean.IN_SPNR = Ext.getCmp(prototype.id + '-txtSPNR').getValue().trim();
@@ -223,7 +224,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
 
     btnSearch_click: function (obj, e) {  
         this.setFormatParameter();  //obtengo los Parametros
-        if( Ext.getCmp(prototype.id + '-txtTKT').getValue() != ''){
+        if( Ext.getCmp(prototype.id + '-txtTKT').getValue() != '' || Ext.getCmp(prototype.id + '-txtADMNUM').getValue() != ''){
             this.setGridDataDetail()
         }else{
             this.setGridData(); 
@@ -785,6 +786,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
         beanTicket.SCARDNCOR = rowData.data.SCARDNCOR
         beanTicket.SAUTHOC = rowData.data.SAUTHOC
         beanTicket.STVAL = rowData.data.STVAL
+        beanTicket.ADMNUM = rowData.data.ADMNUM
         console.log(beanTicket, 'beanTicket')
         this.winDataEntry('U', beanTicket);
     },
@@ -929,6 +931,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
         Ext.getCmp(prototype.id + '-cmbDateToDay').setValue('');
 //        Ext.getCmp(prototype.id + '-txtSAGENT').setValue('');
         Ext.getCmp(prototype.id + '-txtTKT').setValue('');
+        Ext.getCmp(prototype.id + '-txtADMNUM').setValue('');
 //        Ext.getCmp(prototype.id + '-txtCard1').setValue('');
 //        Ext.getCmp(prototype.id + '-txtCard2').setValue('');
 //        Ext.getCmp(prototype.id + '-txtSAUTHOC').setValue('');

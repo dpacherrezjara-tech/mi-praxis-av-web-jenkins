@@ -954,7 +954,7 @@ public class ViewADMDAO {
         return lstData;
     }
         
-    public List<A2290Filter> loadPX644SQPMPF100ADM_BEANTKT(A2290Filter filter) throws SQLException, Exception {
+    public List<A2290Filter> loadPX644SQPMPF100ADM_BEANTKT_V1(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstData = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
@@ -974,7 +974,7 @@ public class ViewADMDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF100ADM_BEANTKT(?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF100ADM_BEANTKT_V1(?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -989,7 +989,8 @@ public class ViewADMDAO {
             cstmt.setString(6, filter.SCARDNCOR.trim());
             cstmt.setString(7, filter.SAUTHOC.trim());
             cstmt.setString(8, filter.STVAL.trim());
- 
+            cstmt.setString(9, filter.ADMNUM.trim());
+            
 
 
             cstmt.execute();
@@ -1000,7 +1001,7 @@ public class ViewADMDAO {
 
                 beanTkt = new A2290Filter();
 
-                beanTkt.CCIA = rst.getString("CCIA").trim();
+                beanTkt.CCIA = rst.getString("CCIA").trim();    
                 beanTkt.FORMA = rst.getString("FORMA").trim();
                 beanTkt.SERIE = rst.getString("SERIE").trim();
                 beanTkt.A1531TKT = beanTkt.CCIA + beanTkt.FORMA + beanTkt.SERIE;
@@ -1009,8 +1010,17 @@ public class ViewADMDAO {
                 beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
                 beanTkt.SDATE = rst.getString("SDATE").trim();
                 beanTkt.SPNR = rst.getString("SPNR").trim();
+                beanTkt.ADMNUM = rst.getString("ADMNUM").trim();
 
-                beanTkt.FDESGLOSE = "2";
+//                beanTkt.FDESGLOSE = "2";
+//                descTDOCvalue = rst.getString("TDOC").trim();
+//                switch (descTDOCvalue) {
+//                    case "R": beanTkt.descTDOC = "Refund"; break;
+//                    case "A": beanTkt.descTDOC = "Adjust."; break;
+//                    default: beanTkt.descTDOC = "Sales"; break;
+//                }
+                
+                
                 if (rst.getString("TDOC").trim().equals("R")) {
                     beanTkt.descTDOC = "Refund";
                 } else if (rst.getString("TDOC").trim().equals("A")) {
@@ -1034,7 +1044,10 @@ public class ViewADMDAO {
                 beanTkt.STVAL = rst.getString("STVAL").trim();
                 beanTkt.CFUENTE = rst.getString("CFUENTE").trim();
                 beanTkt.ERROR = rst.getString("ERROR").trim();
-
+                beanTkt.DATEC = rst.getString("DATEC").trim(); 
+                beanTkt.TRANC = rst.getString("TRANC").trim(); 
+                beanTkt.DESCCREJEC = rst.getString("DESCCREJEC").trim(); 
+                
                 lstData.add(beanTkt);
             }
             rst.close();
@@ -1185,7 +1198,7 @@ public class ViewADMDAO {
         return strMsj;
     }
     
-    public String loadPX644SQPMPF100CLEAN_TKT(A2290Filter filter, UserView user) throws SQLException, Exception {
+    public String loadPX644SQPMPF100CLEAN_TKT(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
 
         //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
         String strMsj = "SUCCESSFUL. Information Updated.", strCardn = "";
@@ -1196,35 +1209,55 @@ public class ViewADMDAO {
         Connection cnx2 = null;
         Connection cnx3 = null;
         String responseSQL = "";
+        boolean errorSearchClean = false;
+        int cont = 0;
         
         try {
+            
+//            A2290Filter filter = filters.get(0);
 //            A2290Filter filter = filter;
-            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100CLEAN_TKT(?,?,?,?,?,?,?,?,?,?,?)}";
+            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100CLEAN_TKT_V1(?,?,?,?,?,?,?,?,?,?,?)}";
             cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt2 = cnx2.prepareCall(SQLCLL02);
-
-            cstmt2.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            cstmt2.setString(2, filter.CCIA.trim());
-            cstmt2.setString(3, filter.FORMA.trim());
-            cstmt2.setString(4, filter.SERIE.trim());
-            cstmt2.setString(5, filter.SCARDNCOR.trim());
-            cstmt2.setString(6, filter.SAUTHOC.trim());
-            cstmt2.setString(7, filter.TDOC.trim());
-
-            cstmt2.setString(8, user.getUserInfo().USR);
-            cstmt2.setString(9, Functions.getFechaActual());
-            cstmt2.setString(10, Functions.getHoraActual());
-            cstmt2.registerOutParameter(11, Types.VARCHAR);
-
-            cstmt2.execute();
-
-            responseSQL = cstmt2.getString(11);
-
-            cstmt2.close(); // Cerrar el CallableStatement después de cada ejecución
             
-            if(responseSQL.contains("NOT")){
-                return responseSQL;
+            for (int i = 0; i < filters.size(); i++)
+            
+            {
+                A2290Filter filter = filters.get(i);
+                cstmt2.setString(1, session.getUserView().getCustomerInfo().CCUST);
+                cstmt2.setString(2, filter.CCIA.trim());
+                cstmt2.setString(3, filter.FORMA.trim());
+                cstmt2.setString(4, filter.SERIE.trim());
+                cstmt2.setString(5, filter.SCARDNCOR.trim());
+                cstmt2.setString(6, filter.SAUTHOC.trim());
+                cstmt2.setString(7, filter.TDOC.trim());
+
+                cstmt2.setString(8, user.getUserInfo().USR);
+                cstmt2.setString(9, Functions.getFechaActual());
+                cstmt2.setString(10, Functions.getHoraActual());
+                cstmt2.registerOutParameter(11, Types.VARCHAR);
+
+                cstmt2.execute();
+
+                responseSQL = cstmt2.getString(11);
+                if(responseSQL.contains("NOT")){
+                    errorSearchClean = true;
+                    cont++;           
+                }
+            
+                
+                
             }
+            cstmt2.close(); // Cerrar el CallableStatement después de cada ejecución
+
+            
+            
+            if(cont > 0){
+                String messageSelect;
+                messageSelect = "They are " + cont + " " + responseSQL; 
+                return messageSelect;
+            }
+            
             
 
         } catch (Exception e) {
@@ -1246,7 +1279,7 @@ public class ViewADMDAO {
         return strMsj;
     }
     
-    public String loadPX644SQPMPF100GENERATE_SECOND_ADM(A2290Filter filter, UserView user) throws SQLException, Exception {
+    public String loadPX644SQPMPF100GENERATE_SECOND_ADM_V1(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
 
         //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
         String strMsj = "SUCCESSFUL. Information Updated.", strCardn = "";
@@ -1257,35 +1290,45 @@ public class ViewADMDAO {
         Connection cnx2 = null;
         Connection cnx3 = null;
         String responseSQL = "";
+        boolean errorSearchClean = false;
+        int cont = 0;
         
         try {
 //            A2290Filter filter = filter;
-            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100GENERATE_SECOND_ADM(?,?,?,?,?,?,?,?,?,?,?,?)}";
+//            A2290Filter filter = filters.get(0);    
+            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100GENERATE_SECOND_ADM_V1(?,?,?,?,?,?,?,?,?,?,?,?)}";
             cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt2 = cnx2.prepareCall(SQLCLL02);
+            
+            for (int i = 0; i < filters.size(); i++){
+                A2290Filter filter = filters.get(i); 
+                cstmt2.setString(1, session.getUserView().getCustomerInfo().CCUST);
+                cstmt2.setString(2, filter.CCIA.trim());
+                cstmt2.setString(3, filter.FORMA.trim());
+                cstmt2.setString(4, filter.SERIE.trim());
+                cstmt2.setString(5, filter.SCARDNCOR.trim());
+                cstmt2.setString(6, filter.SAUTHOC.trim());
+                cstmt2.setString(7, filter.TDOC.trim());
 
-            cstmt2.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            cstmt2.setString(2, filter.CCIA.trim());
-            cstmt2.setString(3, filter.FORMA.trim());
-            cstmt2.setString(4, filter.SERIE.trim());
-            cstmt2.setString(5, filter.SCARDNCOR.trim());
-            cstmt2.setString(6, filter.SAUTHOC.trim());
-            cstmt2.setString(7, filter.TDOC.trim());
+                cstmt2.setString(8, user.getUserInfo().USR);
+                cstmt2.setString(9, Functions.getFechaActual());
+                cstmt2.setString(10, Functions.getHoraActual());
+                cstmt2.setString(11, filter.CREJEC.trim());
+                cstmt2.registerOutParameter(12, Types.VARCHAR);
 
-            cstmt2.setString(8, user.getUserInfo().USR);
-            cstmt2.setString(9, Functions.getFechaActual());
-            cstmt2.setString(10, Functions.getHoraActual());
-            cstmt2.setString(11, filter.CREJEC.trim());
-            cstmt2.registerOutParameter(12, Types.VARCHAR);
+                cstmt2.execute();
 
-            cstmt2.execute();
+                responseSQL = cstmt2.getString(12);
 
-            responseSQL = cstmt2.getString(12);
+                
+            }
 
             cstmt2.close(); // Cerrar el CallableStatement después de cada ejecución
             
-            if(responseSQL.contains("NOT")){
-                return responseSQL;
+            if(cont>= 1){
+                String messageSelect;
+                messageSelect = "They are " + cont + " " + responseSQL; 
+                return messageSelect;
             }
             
 
@@ -1322,33 +1365,36 @@ public class ViewADMDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF100ADM_DETAIL(?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF100ADM_DETAIL_V1(?,?,?,?,?,?,?,?,?)}";
         
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(5, Types.INTEGER);
             cstmt.registerOutParameter(6, Types.INTEGER);
             cstmt.registerOutParameter(7, Types.INTEGER);
             cstmt.registerOutParameter(8, Types.INTEGER);
+            cstmt.registerOutParameter(9, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_DATE_FROM.trim());
             cstmt.setString(3, filter.IN_DATE_TO.trim());
             cstmt.setString(4, filter.IN_TKT.trim());
+            cstmt.setString(5, filter.IN_ADMNUM.trim());
+
             
-            cstmt.setInt(5, filter.page.PAGNUM);
-            cstmt.setInt(6, filter.page.PAGROW);
-            cstmt.setInt(7, filter.page.TOTPAG);
-            cstmt.setInt(8, filter.page.TOTROW);
+            
+            cstmt.setInt(6, filter.page.PAGNUM);
+            cstmt.setInt(7, filter.page.PAGROW);
+            cstmt.setInt(8, filter.page.TOTPAG);
+            cstmt.setInt(9, filter.page.TOTROW);
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(5);
-            filter.page.PAGROW = cstmt.getInt(6);
-            filter.page.TOTPAG = cstmt.getInt(7);
-            filter.page.TOTROW = cstmt.getInt(8);
+            filter.page.PAGNUM = cstmt.getInt(6);
+            filter.page.PAGROW = cstmt.getInt(7);
+            filter.page.TOTPAG = cstmt.getInt(8);
+            filter.page.TOTROW = cstmt.getInt(9);
 
             rst = cstmt.getResultSet();
 

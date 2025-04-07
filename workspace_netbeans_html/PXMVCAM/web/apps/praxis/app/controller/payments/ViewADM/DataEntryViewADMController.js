@@ -1,3 +1,5 @@
+
+
 Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.DataEntryViewADMController',
@@ -20,8 +22,10 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
     // </editor-fold>
     init: function (view) {
         meDe = this;
+        console.log("PROBANDOOOO");
         this.p = this.view.params;
         this.actionCode = this.p.action;
+        console.log(this.p.rec);
         this.bean = this.p.rec;
         this.paramsRefresh = this.p.paramsRefresh;
         meC = this.p.instancia;
@@ -31,7 +35,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
 //        this.lstBank = this.p.lstBank;
 //        this.lstCountry = this.p.lstCountry;
         console.log(this.bean, 'this.bean');
-        
+
         this.lstAdjustment = [];
     },
     afterRender: function () {
@@ -280,7 +284,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
         }
     },
     obtainData: function () {
-        
+
         Ext.Ajax.request({
             url: prototype.urlMaster + '/obtainDataAdjs',
             method: 'POST',
@@ -306,32 +310,32 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
             }
         });
 
-        Ext.Ajax.request({
-            url: prototype.url + '/obtainMessages',
-            method: 'POST',
-            timeout: 60000000,
-            params: {},
-            success: function (response, opts) {
-                var res = Ext.JSON.decode(response.responseText);
-                console.log(res);
-                if (res.success) {
-                    meDe.bean_detail = res.result;
-                    //llenar grilla gridDataInfoScan
-                    var storeData = Ext.create('Ext.data.Store', {
-                        data: res.data,
-                        autoLoad: true
-                    });
-                    Ext.getCmp(prototype.id + '-cmbCOMENT').bindStore(storeData);
-                    Ext.getCmp(prototype.id + '-cmbCOMENT').setValue('');
-                } else {
-                    global.Msg({msg: res.Mensaje});
-                }
-            },
-            failure: function (response, opts) {
-                console.log('server-side failure with status code ' + response.status);
-                Ext.getCmp(prototype.id + '-dataEntry').unmask();
-            }
-        });
+//        Ext.Ajax.request({
+//            url: prototype.url + '/obtainMessages',
+//            method: 'POST',
+//            timeout: 60000000,
+//            params: {},
+//            success: function (response, opts) {
+//                var res = Ext.JSON.decode(response.responseText);
+//                console.log(res);
+//                if (res.success) {
+//                    meDe.bean_detail = res.result;
+//                    //llenar grilla gridDataInfoScan
+//                    var storeData = Ext.create('Ext.data.Store', {
+//                        data: res.data,
+//                        autoLoad: true
+//                    });
+//                    Ext.getCmp(prototype.id + '-cmbCOMENT').bindStore(storeData);
+//                    Ext.getCmp(prototype.id + '-cmbCOMENT').setValue('');
+//                } else {
+//                    global.Msg({msg: res.Mensaje});
+//                }
+//            },
+//            failure: function (response, opts) {
+//                console.log('server-side failure with status code ' + response.status);
+//                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+//            }
+//        });
 
     },
     onSearchCompleteDetail: function () {
@@ -375,6 +379,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
 
         var paramDetail = {};
         paramDetail.beanString = JSON.stringify(this.bean);
+        console.log(paramDetail,"Esto estoy enviando");
 
         console.log(paramDetail);
         Ext.Ajax.request({
@@ -398,9 +403,10 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
 //                    meDe.calcularSumAmount();
 //                    meDe.calcularMontos();
                     console.log(res.data, 'res.data')
+                    console.log("Que hay aqui")
                     meDe.validateExistDispute(res.data);
-                    
-                    
+
+
                 } else {
                     global.Msg({msg: res.Mensaje});
                 }
@@ -411,22 +417,22 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
             }
         });
     },
-    validateExistDispute: function ( lst ) {
-        console.log(lst,'lst')
+    validateExistDispute: function (lst) {
+        console.log(lst, 'lst')
         let validBooleanD = false
         let validBooleanP = false
-        for(let value of lst){
-            if(value.TDOC === 'D'){
+        for (let value of lst) {
+            if (value.TDOC === 'D') {
                 validBooleanD = true;
             }
-            if(value.TDOC === 'S' && value.STVAL === '2' ){
+            if (value.TDOC === 'S' && value.STVAL === '2') {
                 validBooleanP = true;
             }
         }
 
-        if(validBooleanD || validBooleanP){
+        if (validBooleanD || validBooleanP) {
             Ext.getCmp(prototype.id + '-PanelComments').hide()
-        }else{
+        } else {
             Ext.getCmp(prototype.id + '-PanelComments').show()
         }
     },
@@ -708,8 +714,8 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
 //        }
 
     },
-    onPartialDisputeClick: function (btn){
-        
+    onPartialDisputeClick: function (btn) {
+
         Ext.Msg.show({
             title: '.:Confirmation:.',
             msg: 'Are you sure you want to generate ADM?',
@@ -721,6 +727,24 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
             fn: function (btn) {
                 if (btn === 'yes') {
                     this.generateADM();
+                }
+            }
+        });
+    },
+    onGenerateADMClick: function (btn) {
+        Ext.Msg.show({
+            title: '.:Confirmation:.',
+            msg: 'Are you sure you want to generate ADM?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
+            //            animateTarget: btn,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'yes') {
+                    let datosJson = this.procesarRegistrosSelect();
+                    console.log(datosJson);
+                    this.generateADM(datosJson);
                 }
             }
         });
@@ -767,32 +791,35 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
         }
         return decide;
     },
-    generateADM: function () {
-        let miGrilla = Ext.getCmp(prototype.id + '-gridDataAdjustment');
-        if(miGrilla.getStore().data.items.length === 0 ){
-            global.Msg({msg: 'Need to generate adj.'});
-            return false;
-        }
-        if( Ext.getCmp(prototype.id + '-cmbADJTYPE').getValue() === '' ){
-            global.Msg({msg: 'Complete the type adjustment.'})
-            return false;
-        }
-        let storeGrilla = miGrilla.getStore().data.items[0].data
-        let beanADM = {}
-        beanADM.SCARDNCOR = storeGrilla.SCARDNCOR
-        beanADM.SAUTHOC = storeGrilla.SAUTHOC
-        beanADM.TDOC = storeGrilla.TDOC
-        beanADM.CCIA = storeGrilla.CCIA
-        beanADM.FORMA = storeGrilla.FORMA
-        beanADM.SERIE = storeGrilla.SERIE
-        beanADM.CREJEC = Ext.getCmp(prototype.id + '-cmbADJTYPE').getValue()
-        console.log(beanADM, 'beanADM')
-        
+    generateADM: function (datos) {
+//        let miGrilla = Ext.getCmp(prototype.id + '-gridDataAdjustment');
+//        let SelectADM = this.procesarRegistrosSelect();
+//        console.log(SelectADM,"Esto se esta enviando en mi ADM");
+//        
+//        if (miGrilla.getStore().data.items.length === 0) {
+//            global.Msg({msg: 'Need to generate adj.'});
+//            return false;
+//        }
+//        if (Ext.getCmp(prototype.id + '-cmbADJTYPE').getValue() === '') {
+//            global.Msg({msg: 'Complete the type adjustment.'})
+//            return false;
+//        }
+//        let storeGrilla = miGrilla.getStore().data.items[0].data
+//        let beanADM = {}
+//        beanADM.SCARDNCOR = storeGrilla.SCARDNCOR
+//        beanADM.SAUTHOC = storeGrilla.SAUTHOC
+//        beanADM.TDOC = storeGrilla.TDOC
+//        beanADM.CCIA = storeGrilla.CCIA
+//        beanADM.FORMA = storeGrilla.FORMA
+//        beanADM.SERIE = storeGrilla.SERIE
+//        beanADM.CREJEC = Ext.getCmp(prototype.id + '-cmbADJTYPE').getValue()
+//        console.log(beanADM, 'beanADM')
+
         Ext.Ajax.request({
             url: prototype.url + '/generateSecondADM',
             method: 'POST',
             timeout: 60000000,
-            params: {beanString: JSON.stringify(beanADM)},
+            params: {beanString: datos},
             beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
             success: function (response, opts) {
                 Ext.getCmp(prototype.id + '-dataEntry').unmask();
@@ -818,13 +845,14 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
             }
         });
 
-        
 
 
-    },
+
+    },  
     executeOption: function (beanTemp, option) {
 
         let miGrilla = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        
 
         let datos = {};
         if (miGrilla) {
@@ -832,8 +860,6 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
             console.error('Entró al procesar Registros');
 
             datos = this.procesarRegistros(miGrilla);
-
-            console.log(datos);
 //            datos = this.procesarRegistros(miGrilla);
             if (Array.isArray(datos) && datos.length === 0) {
                 // Nadine
@@ -848,6 +874,8 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
                         Ext.getCmp(prototype.id + '-dataEntry').unmask();
                         var res = Ext.JSON.decode(response.responseText);
                         console.log(res);
+                        console.log(miGrilla,"Esta es mi grilla");
+                        
                         if (res.success) {
 
                             global.Msg({
@@ -933,6 +961,50 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
         }
     },
     //</editor-fold>
+    getGridRecords: function (gridId) {
+        var grid = Ext.getCmp(gridId);
+        if (!grid) {
+            console.error('Grid not found with ID:', gridId);
+            return [];
+        }
+
+        var store = grid.getStore();
+        if (!store) {
+            console.error('The grid has no associated store.');
+            return [];
+        }
+
+        return store.getRange()
+                .map(record => record.getData())
+                .filter(data => data.checkActive === true);
+
+
+    },
+
+    procesarRegistrosSelect: function () {
+        let listaDeDatosSelect = this.getGridRecords(prototype.id + '-gridDataInfoScan');
+//        grilla.getStore().each(function (record) {
+//            let registro = {
+//                SCARDNCOR: record.get('SCARDNCOR'), // Reemplaza 'id' con el campo correcto de tu modelo
+//                SAUTHOC: record.get('SAUTHOC'), // Reemplaza 'nombre' con el campo correcto de tu modelo
+//                TDOC: record.get('TDOC'), // Reemplaza 'nombre' con el campo correcto de tu modelo
+//                CCIA: record.get('CCIA'), // Reemplaza 'id' con el campo correcto de tu modelo
+//                FORMA: record.get('FORMA'), // Reemplaza 'nombre' con el campo correcto de tu modelo
+//                SERIE: record.get('SERIE'), // Reemplaza 'nombre' con el campo correcto de tu modelo
+//                        // Agrega más campos según sea necesario
+//            };
+//            listaDeDatosSelect.push(registro);
+//
+//        });
+        if (listaDeDatosSelect.length == 0) {
+            global.Msg({msg: 'No records to update'});
+            return false
+        }
+         let datosEnJSON = Ext.JSON.encode(listaDeDatosSelect);
+        return datosEnJSON;
+
+        return listaDeDatosSelect;
+    },
 
     procesarRegistros: function (grilla, miGrillaAdj) {
         // Crear una lista para almacenar los datos
@@ -947,7 +1019,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
                 TDOC: record.get('TDOC'), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 TICKET: record.get('A1531TKT'), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 CERROR: Ext.getCmp(prototype.id + '-cmbCOMENT').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo // Reemplaza 'nombre' con el campo correcto de tu modelo
-
+                Select: record.get('checkActive')
                 // Agrega más campos según sea necesario
             };
 
@@ -959,7 +1031,6 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
         }
         // Convertir la lista a JSON
         let datosEnJSON = Ext.JSON.encode(listaDeDatos);
-
         return datosEnJSON;
 
     },
@@ -1185,20 +1256,20 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
 
     onChangeDispute: function () {
         let disputeValue = Ext.getCmp(prototype.id + '-cmbDispute').getValue()
-        if(disputeValue === 'T'){
+        if (disputeValue === 'T') {
             Ext.getCmp(prototype.id + '-gridColumnClean').show();
             Ext.getCmp(prototype.id + '-gridColumnAdj').hide();
             Ext.getCmp(prototype.id + '-btn-partialDispute').hide();
-        }else{
-            
+        } else {
+
             Ext.getCmp(prototype.id + '-btn-partialDispute').show();
             Ext.getCmp(prototype.id + '-gridColumnAdj').show();
             Ext.getCmp(prototype.id + '-gridColumnClean').hide();
         }
-        
+
     },
     onCleanTkt: function (column, e, row, column, x, rowData) {
-        if ( ['A','D','R'].includes(x.record.data.TDOC) ) { 
+        if (['A', 'D', 'R'].includes(x.record.data.TDOC)) {
             return false;
         }
         if (x.record.data.STVAL === '2') {
@@ -1212,34 +1283,54 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
         beanCleanTkt.SERIE = x.record.data.SERIE
         beanCleanTkt.SCARDNCOR = x.record.data.SCARDNCOR
         beanCleanTkt.SAUTHOC = x.record.data.SAUTHOC
-        
+
         Ext.Msg.show({
             title: '.:PRAXIS:.',
-            msg: 'Are you sure to release ?',
+            msg: 'Are you sure to clean ?',
             buttons: Ext.MessageBox.YESNO,
             scope: this,
             icon: Ext.MessageBox.QUESTION,
             modal: true,
             fn: function (btn) {
                 if (btn === 'yes') {
-                    this.liberarTKT(beanCleanTkt)
-                } 
-            }            
+                    this.liberarTKT(beanCleanTkt);
+                }
+            }
         });
-        
-  
+
+
     },
-    liberarTKT: function ( datos ){
+    onCleanTicketClick: function (btn) {
+            Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Are you sure to clean ?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'yes') {
+                    let datosJson = this.procesarRegistrosSelect();
+                    this.liberarTKT(datosJson);
+                    console.log(JSON.stringify(datosJson),"Asi envio");
+                }
+            }
+        });
+        },
+    
+    
+    
+    liberarTKT: function (datos) {
         Ext.Ajax.request({
             url: prototype.url + '/cleanTktOption',
             method: 'POST',
             timeout: 60000000,
-            params: {beanString: JSON.stringify(datos)},
+            params: {beanString: datos},
             beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
             success: function (response, opts) {
                 Ext.getCmp(prototype.id + '-dataEntry').unmask();
                 var res = Ext.JSON.decode(response.responseText);
-                console.log(res);
+                console.log(res,"Asi");
                 if (res.success) {
 
                     global.Msg({
@@ -1269,14 +1360,14 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
         this.calcularMontos();
     },
     onAdjust: function (grid, rowIndex, colIndex) {
-        
+
         var data = grid.getStore().getAt(rowIndex).data;
-        if ( ['A','D','R'].includes(data.TDOC) ) { 
+        if (['A', 'D', 'R'].includes(data.TDOC)) {
             return false;
         }
-        
-        
-                //this.lstAdjustment = [];
+
+
+        //this.lstAdjustment = [];
         Ext.getCmp(prototype.id + '-gridDataAdjustment').show();
         Ext.getCmp(prototype.id + '-panelADJ').show();
         var rec = Object.create(grid.getStore().getAt(rowIndex).data);
@@ -1291,7 +1382,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
         Ext.getCmp(prototype.id + '-gridDataAdjustment').bindStore(
                 Ext.create('Ext.data.Store', {data: this.lstAdjustment, autoLoad: true})
                 );
-            
+
 
 
     },
@@ -1369,4 +1460,5 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
 //            meDe.addCreditCard_keyDownHandler();
         }
     }
-});     
+});
+

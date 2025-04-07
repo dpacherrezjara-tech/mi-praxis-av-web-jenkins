@@ -57,8 +57,8 @@ public class ViewADMLogic {
         return ViewADMDAO.loadPX644SQPMPF100ADM_MSSG(filter);
     }
     
-    public List<A2290Filter> loadPX644SQPMPF100ADM_BEANTKT(A2290Filter filter) throws SQLException, Exception {
-        return ViewADMDAO.loadPX644SQPMPF100ADM_BEANTKT(filter);
+    public List<A2290Filter> loadPX644SQPMPF100ADM_BEANTKT_V1(A2290Filter filter) throws SQLException, Exception {
+        return ViewADMDAO.loadPX644SQPMPF100ADM_BEANTKT_V1(filter);
     }
     
     public String loadPX644SQPMPF100ADM_EXECUTION(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
@@ -69,12 +69,12 @@ public class ViewADMLogic {
         return ViewADMDAO.loadPX644SQPMPF100ADM_REVERSE(filters, user);
     }
     
-    public String loadPX644SQPMPF100CLEAN_TKT(A2290Filter filter, UserView user) throws SQLException, Exception {
-        return ViewADMDAO.loadPX644SQPMPF100CLEAN_TKT(filter, user);
+    public String loadPX644SQPMPF100CLEAN_TKT(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
+        return ViewADMDAO.loadPX644SQPMPF100CLEAN_TKT(filters, user);
     }
     
-    public String loadPX644SQPMPF100GENERATE_SECOND_ADM(A2290Filter filter, UserView user) throws SQLException, Exception {
-        return ViewADMDAO.loadPX644SQPMPF100GENERATE_SECOND_ADM(filter, user);
+    public String loadPX644SQPMPF100GENERATE_SECOND_ADM_V1(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
+        return ViewADMDAO.loadPX644SQPMPF100GENERATE_SECOND_ADM_V1(filters, user);
     }
     
     public List<A2295Filter> loadPX644SQPMPF100ADM_DET(A2295Filter filter) throws SQLException, Exception {

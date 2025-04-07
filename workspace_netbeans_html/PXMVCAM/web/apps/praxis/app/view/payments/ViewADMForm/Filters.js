@@ -199,6 +199,26 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Filters', {
                                 keypress: 'eventKey'
                             }
                         },
+                        {xtype: 'tbspacer', width: 30},
+                        {
+                            xtype: 'textfield',
+                            labelStyle: 'font-weight: bold;',
+                            fieldLabel: 'Adm:',
+                            hidden: false,
+                            id: prototype.id+'-txtADMNUM',     
+                            fieldStyle: 'text-align:center',
+                            enforceMaxLength: true,     
+                            maskRe: /[0-9]/,      
+//                            maxLength: 13,
+                            maxLength: 14,
+                            labelWidth: 40,
+                            width: 185,
+                            enableKeyEvents: true,                          
+                            listeners:{
+                                change: 'onValidarChange',
+                                keypress: 'eventKey'
+                            }
+                        },
 //                        {xtype: 'tbspacer', width: 30},
 //                        {
 //                            xtype:'combo',
