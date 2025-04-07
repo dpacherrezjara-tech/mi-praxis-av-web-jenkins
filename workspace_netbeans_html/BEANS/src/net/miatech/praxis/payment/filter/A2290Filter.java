@@ -25,8 +25,15 @@ public class A2290Filter extends A2290 {
     public String origSAUTHOC = "";
     public String origSEQNUM = "";
     public String origSCURRENCY = "";
+    public double IMPORTECeba = 0;
     public double origSVFOP = 0;
     public double VFOP = 0;
+    public String IMPORTE = "";
+    public String IN_CODPRO = "";
+    public String IN_DATEFROM = "";
+    public String IN_DATETO = "";
+    public String IN_MERCHANT = "";
+    public String IN_LIQUIDATION = "";
     //===============================
     public String IN_FECHA_FROM = "";
     public String IN_ADATE = "";
@@ -642,7 +649,6 @@ public class A2290Filter extends A2290 {
     public String MONEDALIQ = "";
     public String MONEDAPAGO = "";
     public String CODIGO = "";
-    public String IMPORTE = "";
     public String PAISLIQ = "";
     public String PMERCHID = "";
     public String PCURRENCY = "";
