@@ -579,7 +579,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                             border: false,
                             height: 'auto',
                             hidden:true,
-                            width: 1372,
+                            width: 1467,
                             margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -590,7 +590,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDet',
                                     bodyStyle: 'background: transparent;',
-                                    width: 1372,
+                                    width: 1467,
                                     titleAlign: 'center',
                                     columnLines: true,
                                     enableColumnMove: false,
@@ -610,6 +610,20 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                                                 text: 'Status', dataIndex: 'strDescStatus', width: 135,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
+                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                    metaData.style = "text-align:center;color:" + color + ";";
+                                                    metaData.tdAttr = 'data-qtip="' + data.strFlagStat + '"';
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Doc.<br>Type', dataIndex: 'TDOC', width: 95,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    if (record.data.TDOC === 'A'){
+                                                        value = "Adjustment. ";
+                                                    }else {
+                                                        value = "Dispute";
+                                                    }
                                                     var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
                                                     metaData.style = "text-align:center;color:" + color + ";";
                                                     metaData.tdAttr = 'data-qtip="' + data.strFlagStat + '"';
@@ -805,7 +819,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'Error',
+                                                text: 'Erro',
                                                 defaults: {
                                                     menuDisabled: true,
                                                     sortable: false,

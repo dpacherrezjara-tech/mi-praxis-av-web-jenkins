@@ -53,6 +53,7 @@ public class A2295Filter  extends A2295{
     public String IN_STATT = "";
     public String IN_SCOUNTRY = "";
     public String IN_CARDTYPE = "";
+    public String IN_ADMNUM = "";
     public String strTicket = "";
     public String strFormatDate = "";
     public String strDescripcion = "";
