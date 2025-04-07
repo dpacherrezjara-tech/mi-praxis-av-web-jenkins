@@ -568,6 +568,11 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                     height: 400,
                                     margin: '10px 5px 0 0',
                                     columnLines: true,
+                                    features: [{
+                                            dock: 'bottom',
+                                            ftype: 'summary'
+                                        }
+                                    ],  
                                     columns: {
                                         items: [
                                             {
@@ -655,6 +660,11 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                                                     metaData.style = "text-align:right;";
                                                                     value = Ext.util.Format.number(value, '0,000.00');
                                                                     return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
+                                                                    metaData.style = 'text-align:right';
+                                                                    return '<b>' + Ext.util.Format.number(data.TOTAL_NETO, '0,000') + '<b>';
                                                                 }
                                                             }
                                                         ]

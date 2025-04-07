@@ -674,35 +674,62 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         });
     },
     getSettlements: function (params, callback) {
-        Ext.Ajax.request({
-            url: prototype.url + '/getPendingSettlements',
-            method: 'POST',
-            timeout: 60000000,
-            params: params,
-            beforerequest:  Ext.getCmp(prototype.id + '-gridData').mask('Loading...'),
-            success: function(response, options) {
-                Ext.getCmp(prototype.id + '-gridData').unmask('Loading...');
-                let res = Ext.JSON.decode(response.responseText);
-
-                if (!res.success) {
-                    global.Msg({msg: res.sesion});
-                } else {
-                    
-                    if (!res.data.length) {
+        
+        
+        
+        var storeGridDatas = Ext.create('Ext.Praxis.store.flown.PassengerConciliation.GridData', {
+            proxy: {
+                url: prototype.url + '/getPendingSettlements'
+            }, listeners: {
+                beforeload: function(obj) {
+                    obj.proxy.extraParams = params;
+                },
+                load: function(obj) {
+                    console.log(obj.data);
+                    if (obj.data.length === 0) {
                         global.Msg({
                             msg: 'Data not found.'
                         });
+                    } else {
+                        var bean = obj.data.items[0].data;
+//                        me.setTotalRowGridData(bean);
                     }
-                    
-                    callback(res); // Retorna los datos mediante callback
                 }
-            },
-            failure: function(response, options) {
-                Ext.getCmp(prototype.id + '-gridData').unmask('Loading...');
-                console.error("Error en la petición AJAX");
-                global.Msg({msg: "Error al obtener datos"});
             }
         });
+        global.clear();
+//        Ext.getCmp(prototype.id + '-gridData').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-gridData').setStore(storeGridDatas);
+        
+//        Ext.Ajax.request({
+//            url: prototype.url + '/getPendingSettlements',
+//            method: 'POST',
+//            timeout: 60000000,
+//            params: params,
+//            beforerequest:  Ext.getCmp(prototype.id + '-gridData').mask('Loading...'),
+//            success: function(response, options) {
+//                Ext.getCmp(prototype.id + '-gridData').unmask('Loading...');
+//                let res = Ext.JSON.decode(response.responseText);
+//
+//                if (!res.success) {
+//                    global.Msg({msg: res.sesion});
+//                } else {
+//                    
+//                    if (!res.data.length) {
+//                        global.Msg({
+//                            msg: 'Data not found.'
+//                        });
+//                    }
+//                    
+//                    callback(res); // Retorna los datos mediante callback
+//                }
+//            },
+//            failure: function(response, options) {
+//                Ext.getCmp(prototype.id + '-gridData').unmask('Loading...');
+//                console.error("Error en la petición AJAX");
+//                global.Msg({msg: "Error al obtener datos"});
+//            }
+//        });
     },
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Llenar Grilla Cabecera">
