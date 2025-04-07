@@ -117,6 +117,7 @@ public class MPF101 {
 //    public String  PRDA  ="";  
     public String  FLIQUI  ="";  
     public String  NLIQUI  ="";  
+    public String  LIQUIDACIO  ="";  
     public String  MERCHAND  ="";  
     public String  TIPOL  ="";  
 

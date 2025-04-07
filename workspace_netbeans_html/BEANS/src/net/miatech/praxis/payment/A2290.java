@@ -120,6 +120,14 @@ public class A2290 {
     public double AIVA = 0;
     public double ATAX = 0;
     public double TOTAL = 0;
+    
+    public double TOTAL_LIQ = 0;
+    public double TOTAL_COMISION = 0;
+    public double TOTAL_COMISTOTA = 0;
+    public double TOTAL_NETO = 0;
+    public double TOTAL_IMPORTEPAG = 0;
+    public double TOTAL_IMPORTE = 0;
+    
     public String SCURRENCY = "";
     public String SCURRENCYL = "";
     public String SCURRENCYADJ = "";
@@ -238,6 +246,7 @@ public class A2290 {
     public double SUBTOTAL = 0;
     public String CURRADM = "";
     public String SOCIETY = "";
+    public String CODEBANK_EC = "";
     public String SOCIETYL = "";
     public String INTCOMP = "";
     public String AMOUNT = "";
@@ -274,5 +283,7 @@ public class A2290 {
     
     public String DCONTA4545 = "";
     public String USERA4545 = "";
+    
+    public Boolean checkActive = true;
     
 }
