@@ -3847,8 +3847,8 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                     hidden: false,
                                     columnLines: true,
                                     features: [{
-                                        ftype: 'summary'
-                                    }],
+                                            ftype: 'summary'
+                                        }],
                                     columns: {
                                         defaults: {
                                             menuDisabled: true,
@@ -4274,6 +4274,15 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         }
+                                                    },
+                                                    {
+                                                        text: 'Rule  <br> Conciliation', dataIndex: 'FREGLA', width: 70, align: 'center',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:center;";
+                                                            var data = record.data;
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return value;
+                                                        }
                                                     }
                                                 ]
                                             },
@@ -4313,7 +4322,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Acc. Number', dataIndex: 'ACCNUMBER', width: 90, align: 'center', menuDisabled: true,
+                                                        text: 'Account', dataIndex: 'ACCNUMBER', width: 120, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;";
                                                             var data = record.data;
@@ -4333,40 +4342,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                     }
                                                 ]
                                             },
-                                            {
-                                                text: 'Poliza',
-                                                columns: [
-                                                    {
-                                                        text: 'ID', dataIndex: 'BANDOC', width: 90, align: 'center', menuDisabled: true,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            var data = record.data;
-                                                            metaData.tdAttr = 'data-qtip="' + data.strDescMerchn + '"';
-                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {
-                                                        text: 'Flag ', dataIndex: 'STCON', width: 90, align: 'center', menuDisabled: true,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            var data = record.data;
-                                                            metaData.tdAttr = 'data-qtip="' + data.strDescMerchn + '"';
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {
-                                                        text: 'Date', dataIndex: 'FCONT', width: 80, align: 'center', menuDisabled: true,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            var data = record.data;
-                                                            metaData.tdAttr = 'data-qtip="' + data.strDescMerchn + '"';
-                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                            return value;
-                                                        }
-                                                    }
-                                                ]
-                                            },
+
                                             {
                                                 text: 'Qty',
                                                 columns: [
@@ -4431,6 +4407,81 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
 
                                                     return value;
                                                 }
+                                            },
+
+                                            {
+                                                text: 'BANDOC', dataIndex: 'BANDOC', width: 100, align: 'center',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center; background-color: #d5e8f4;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'REFER', dataIndex: 'REFER', width: 120, align: 'center',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center; background-color: #d5e8f4;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Interface', dataIndex: 'HEADEA4545', width: 190, align: 'center',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center; background-color: #d5e8f4;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Day Send <br> Interface', dataIndex: 'DCONTA4545', width: 100, align: 'center',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center; background-color: #d5e8f4;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Poliza',
+                                                columns: [
+//                                                    {
+//                                                        text: 'ID', dataIndex: 'BANDOC', width: 90, align: 'center', menuDisabled: true,
+//                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+//                                                            metaData.style = "text-align:center;";
+//                                                            var data = record.data;
+//                                                            metaData.tdAttr = 'data-qtip="' + data.strDescMerchn + '"';
+//                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+//                                                            return value;
+//                                                        }
+//                                                    },
+//                                                    {
+//                                                        text: 'Flag ', dataIndex: 'STCON', width: 90, align: 'center', menuDisabled: true,
+//                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+//                                                            metaData.style = "text-align:center;";
+//                                                            var data = record.data;
+//                                                            metaData.tdAttr = 'data-qtip="' + data.strDescMerchn + '"';
+//                                                            return value;
+//                                                        }
+//                                                    },
+                                                    {
+                                                        text: 'Date', dataIndex: 'A4545DOCD', width: 80, align: 'center', menuDisabled: true,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:center;";
+                                                            var data = record.data;
+                                                            metaData.tdAttr = 'data-qtip="' + data.strDescMerchn + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return value;
+                                                        }
+                                                    }
+                                                ]
                                             },
                                             {
                                                 sortable: false,
@@ -4536,7 +4587,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         text: 'Author.',
                                                         columns: [
                                                             {
-                                                                text: 'Code', dataIndex: 'SAUTHOC', width: 70, align: 'center', menuDisabled: true,
+                                                                    text: 'Code', dataIndex: 'SAUTHOC', width: 70, align: 'center', menuDisabled: true,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:center;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -4992,7 +5043,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
 
                                                     },
                                                     {
-                                                        text: 'Sales<br>Date', dataIndex: 'SDATE', width: 80, align: 'center', 
+                                                        text: 'Sales<br>Date', dataIndex: 'SDATE', width: 80, align: 'center',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -5015,7 +5066,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Acc. Number', dataIndex: 'ACCNUMBER', width: 90, align: 'center', menuDisabled: true,
+                                                        text: 'Account', dataIndex: 'ACCNUMBER', width: 90, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
                                                             var data = record.data;
@@ -5058,7 +5109,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Date', dataIndex: 'FCONT', width: 80, align: 'center', menuDisabled: true,
+                                                        text: 'Date', dataIndex: 'A4545DOCD', width: 80, align: 'center', menuDisabled: true,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
                                                             var data = record.data;
