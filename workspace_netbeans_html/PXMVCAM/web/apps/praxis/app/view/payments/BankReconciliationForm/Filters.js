@@ -873,6 +873,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             name: 'validationOption',
                             inputValue: '1',
                             uncheckedValue: '0',
+                            hidden: true,
                             listeners: {
                                 change: 'btnSearch_click' // Mismo listener para manejar el cambio
                             }
@@ -880,12 +881,11 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                         {xtype: 'tbspacer', width: 10},
                         {
                             fieldLabel: 'Avianca <br> Group',
-                            hidden: false,
+                            hidden: true,
                             labelStyle: 'text-align: left;',
                             fieldStyle: 'text-align: left;',
                             width: 160,
                             labelWidth: 50,
-                            hidden: true,
                             xtype: 'combo',
                             id: prototype.id + '-typeClient',
                             queryMode: 'local',
