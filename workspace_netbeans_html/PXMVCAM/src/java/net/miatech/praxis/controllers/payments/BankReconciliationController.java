@@ -397,7 +397,7 @@ public class BankReconciliationController extends BaseController {
     }
 
     public List<A2290Filter> getListDetalle(HttpServletRequest request, Boolean bExcel) {
-        
+
         List<A2290Filter> lst = new ArrayList<>(0);
         A2290Filter filter = new A2290Filter();
         Gson gson = new Gson();
@@ -2461,101 +2461,77 @@ public class BankReconciliationController extends BaseController {
                 Iterator iter = listaData.iterator();
                 // ====== CREANDO TITULOS ======================================
 
-                // ======  Nivel 1 ==========
+                // ====== Nivel 1: Encabezados principales ======
                 Row row1 = sheet.createRow(vj);
-                Cell CH1_0 = row1.createCell(0);
-                Cell CH1_1 = row1.createCell(1);
-                Cell CH1_2 = row1.createCell(2);
-                Cell CH1_3 = row1.createCell(3);
-                Cell CH1_4 = row1.createCell(4);
-                Cell CH1_5 = row1.createCell(5);
-                Cell CH1_6 = row1.createCell(6);
-                Cell CH1_7 = row1.createCell(7);
-                Cell CH1_8 = row1.createCell(8);
-                Cell CH1_9 = row1.createCell(9);
-                Cell CH1_10 = row1.createCell(10);
-                Cell CH1_11 = row1.createCell(11);
-                Cell CH1_12 = row1.createCell(12);
-                Cell CH1_13 = row1.createCell(13);
-                Cell CH1_14 = row1.createCell(14);
-                Cell CH1_15 = row1.createCell(15);
-                Cell CH1_16 = row1.createCell(16);
-                Cell CH1_17 = row1.createCell(17);
-                Cell CH1_18 = row1.createCell(18);
-                Cell CH1_19 = row1.createCell(19);
-                Cell CH1_20 = row1.createCell(20);
-                Cell CH1_21 = row1.createCell(21);
+                Row row2 = sheet.createRow(vj + 1);
 
-                CH1_0.setCellValue("STATUS");
-                CH1_1.setCellValue("PROCESS");
-                CH1_2.setCellValue("TDOC");
-                CH1_3.setCellValue("SAGENT");
-                CH1_4.setCellValue("NEGOC");
-                CH1_5.setCellValue("SDATE");
-                CH1_6.setCellValue("SCARCOD");
-                CH1_7.setCellValue("SCARDN");
-                CH1_8.setCellValue("SAUTHOC");
-                CH1_9.setCellValue("CODEBANK");
-                CH1_10.setCellValue("SMERCH");
-                CH1_11.setCellValue("SCURRENCY");
-                CH1_12.setCellValue("SVFOP");
-                CH1_13.setCellValue("PAYDATE");
-                CH1_14.setCellValue("ACCNUMBER");
-                CH1_15.setCellValue("TERMI");
-                CH1_16.setCellValue("BANDOC");
-                CH1_17.setCellValue("STCON");
-                CH1_18.setCellValue("FCONT");
-                CH1_19.setCellValue("QTYDOC");
-                CH1_20.setCellValue("QTYTKT");
-                CH1_21.setCellValue("PEND_DAYS");
+// Estilo aplicado en ambos niveles
+                int col = 0;
 
-                CH1_0.setCellStyle(headerStyle);
-                CH1_1.setCellStyle(headerStyle);
-                CH1_2.setCellStyle(headerStyle);
-                CH1_3.setCellStyle(headerStyle);
-                CH1_4.setCellStyle(headerStyle);
-                CH1_5.setCellStyle(headerStyle);
-                CH1_6.setCellStyle(headerStyle);
-                CH1_7.setCellStyle(headerStyle);
-                CH1_8.setCellStyle(headerStyle);
-                CH1_9.setCellStyle(headerStyle);
-                CH1_10.setCellStyle(headerStyle);
-                CH1_11.setCellStyle(headerStyle);
-                CH1_12.setCellStyle(headerStyle);
-                CH1_13.setCellStyle(headerStyle);
-                CH1_14.setCellStyle(headerStyle);
-                CH1_15.setCellStyle(headerStyle);
-                CH1_16.setCellStyle(headerStyle);
-                CH1_17.setCellStyle(headerStyle);
-                CH1_18.setCellStyle(headerStyle);
-                CH1_19.setCellStyle(headerStyle);
-                CH1_20.setCellStyle(headerStyle);
-                CH1_21.setCellStyle(headerStyle);
+// Encabezados simples (una sola celda)
+                String[] headers1 = {
+                    "STATUS", "PROCESS", "DOC. TYPE", "AGENT", "BUSINESS", "SALES DATE", "CODE",
+                    "Credit Card", "", "Merchant", "", "RULE CONCILIATION", "CURR", "AMOUNT",
+                    "Bank Information", "", "", "Qty", "", "PEN DAY", "BANDOC", "REFER",
+                    "INTERFACE", "DAY SEND INTERFACE", "PEND_DAYS"
+                };
 
-                //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, 1));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 2));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 3, 3));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, 4));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 5, 5));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 6, 6));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 7, 7));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 8, 8));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 9, 9));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 10, 10));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 11, 11));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 12, 12));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 13, 13));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 14, 14));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 15, 15));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 16, 16));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 17, 17));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 18, 18));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 19, 19));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 20, 20));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 21, 21));
-                ++vj;
+                String[] headers2 = {
+                    "", "", "", "", "", "", "",
+                    "Number", "Author. Code",
+                    "Number", "Bank",
+                    "", "", "",
+                    "Pay. Date", "Account", "Termi",
+                    "Settl.", "Tkts", "", "", "", "", "", ""
+                };
+
+                int[] mergeInfo = {
+                    0, 1, 2, 3, 4, 5, 6, // Individual columns
+                    7, 8, // "Credit Card" span
+                    9, 10, // "Merchant" span
+                    11, 12, 13, // RULE CONC - AMOUNT (no merge)
+                    14, 15, 16, // "Bank Info"
+                    17, 18, // "Qty"
+                    19, 20, 21, 22, 23, 24 // Resto sin merge
+                };
+
+// Crear celdas para el primer y segundo nivel
+                for (int i = 0; i < headers1.length; i++) {
+                    Cell cell1 = row1.createCell(i);
+                    cell1.setCellStyle(headerStyle);
+                    cell1.setCellValue(headers1[i]);
+
+                    Cell cell2 = row2.createCell(i);
+                    cell2.setCellStyle(headerStyle);
+                    cell2.setCellValue(headers2[i]);
+                }
+
+// Realizar los merges necesarios para encabezados con subniveles
+                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 0, 0)); // STATUS
+                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 1, 1)); // PROCESS
+                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 2, 2)); // DOC TYPE
+                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 3, 3)); // AGENT
+                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 4, 4)); // BUSINESS
+                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 5, 5)); // SALES DATE
+                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 6, 6)); // CODE
+
+                sheet.addMergedRegion(new CellRangeAddress(vj, vj, 7, 8)); // CREDIT CARD
+                sheet.addMergedRegion(new CellRangeAddress(vj, vj, 9, 10)); // MERCHANT
+                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 11, 11)); // RULE CONCILIATION
+                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 12, 12)); // CURR
+                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 13, 13)); // AMOUNT
+
+                sheet.addMergedRegion(new CellRangeAddress(vj, vj, 14, 16)); // BANK INFORMATION
+                sheet.addMergedRegion(new CellRangeAddress(vj, vj, 17, 18)); // QTY
+
+                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 19, 19)); // PEN DAY
+                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 20, 20)); // BANDOC
+                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 21, 21)); // REFER
+                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 22, 22)); // INTERFACE
+                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 23, 23)); // DAY SEND INTERFACE
+                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 24, 24)); // PEND_DAYS
+
+                vj += 2; // Aumentamos dos filas para los encabezados
                 //============================================
                 while (iter.hasNext()) {
                     row1 = sheet.createRow(vj);
@@ -2581,6 +2557,9 @@ public class BankReconciliationController extends BaseController {
                     Cell rcell19 = row1.createCell(19);
                     Cell rcell20 = row1.createCell(20);
                     Cell rcell21 = row1.createCell(21);
+                    Cell rcell22 = row1.createCell(22);
+                    Cell rcell23 = row1.createCell(23);
+                    Cell rcell24 = row1.createCell(24);
 
                     rcell0.setCellValue(listaData.get(vi).strDescStatus);
                     rcell1.setCellValue(listaData.get(vi).COREP);
@@ -2593,17 +2572,20 @@ public class BankReconciliationController extends BaseController {
                     rcell8.setCellValue(listaData.get(vi).SAUTHOC);
                     rcell9.setCellValue(listaData.get(vi).CODEBANK);
                     rcell10.setCellValue(listaData.get(vi).MERCHN);
-                    rcell11.setCellValue(listaData.get(vi).SCURRENCY);
-                    rcell12.setCellValue(listaData.get(vi).SVFOP);
-                    rcell13.setCellValue(listaData.get(vi).PAYDATE);
-                    rcell14.setCellValue(listaData.get(vi).ACCNUMBER);
-                    rcell15.setCellValue(listaData.get(vi).TERMI);
-                    rcell16.setCellValue(listaData.get(vi).BANDOC);
-                    rcell17.setCellValue(listaData.get(vi).STCON);
-                    rcell18.setCellValue(listaData.get(vi).FCONT);
-                    rcell19.setCellValue(listaData.get(vi).lngQTYDOC);
-                    rcell20.setCellValue(listaData.get(vi).lngQTYTKT);
-                    rcell21 .setCellValue(listaData.get(vi).PENDINGDAYS);
+                    rcell11.setCellValue(listaData.get(vi).FREGLA);
+                    rcell12.setCellValue(listaData.get(vi).SCURRENCY);
+                    rcell13.setCellValue(listaData.get(vi).SVFOP);
+                    rcell14.setCellValue(listaData.get(vi).PAYDATE);
+                    rcell15.setCellValue(listaData.get(vi).ACCNUMBER);
+                    rcell16.setCellValue(listaData.get(vi).TERMI);
+                    rcell17.setCellValue(listaData.get(vi).lngQTYDOC);
+                    rcell18.setCellValue(listaData.get(vi).lngQTYTKT);
+                    rcell19.setCellValue(listaData.get(vi).PENDINGDAYS);
+                    rcell20.setCellValue(listaData.get(vi).BANDOC);
+                    rcell21.setCellValue(listaData.get(vi).REFER);
+                    rcell22.setCellValue(listaData.get(vi).HEADEA4545);
+                    rcell23.setCellValue(listaData.get(vi).DCONTA4545);
+                    rcell24.setCellValue(listaData.get(vi).A4545DOCD);
 
                     rcell0.setCellStyle(bodyStyle);
                     rcell1.setCellStyle(bodyStyle);
@@ -2627,6 +2609,9 @@ public class BankReconciliationController extends BaseController {
                     rcell19.setCellStyle(bodyStyle);
                     rcell20.setCellStyle(bodyStyle);
                     rcell21.setCellStyle(bodyStyle);
+                    rcell22.setCellStyle(bodyStyle);
+                    rcell23.setCellStyle(bodyStyle);
+                    rcell24.setCellStyle(bodyStyle);
 
                     iter.next();
                     ++vi;
@@ -2655,6 +2640,9 @@ public class BankReconciliationController extends BaseController {
                 sheet.autoSizeColumn(19, true);
                 sheet.autoSizeColumn(20, true);
                 sheet.autoSizeColumn(21, true);
+                sheet.autoSizeColumn(22, true);
+                sheet.autoSizeColumn(23, true);
+                sheet.autoSizeColumn(24, true);
 
                 //============================================
                 response.setContentType("application/vnd.openxml");
@@ -2705,7 +2693,7 @@ public class BankReconciliationController extends BaseController {
                     cadena += "" + listaData.get(vi).FCONT + "|";
                     cadena += "" + listaData.get(vi).lngQTYDOC + "|";
                     cadena += "" + listaData.get(vi).lngQTYTKT + "|";
-                    cadena += "" + listaData.get(vi).PENDINGDAYS ;
+                    cadena += "" + listaData.get(vi).PENDINGDAYS;
                     cadena = cadena.replaceAll("null", "");
                     writer.println("" + cadena);
                 }
@@ -4430,7 +4418,6 @@ public class BankReconciliationController extends BaseController {
 //    }
 //
 //    public List<A2290Filter> getListTeleworking(HttpServletRequest request, Boolean bExcel) {
-    
     @RequestMapping(value = "/loadExcelFile", method = RequestMethod.POST)
     public @ResponseBody
     String loadExcelFile(ModelMap map, @RequestParam("excelfile") MultipartFile excelfile, HttpServletRequest request) throws IOException {
@@ -4439,16 +4426,15 @@ public class BankReconciliationController extends BaseController {
         Integer cont = 0;
         A2290Filter objResult = new A2290Filter();
         A2290Filter filter = new A2290Filter();
-        
 
         try {
             Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
             String filename = excelfile.getOriginalFilename();
             String beanString = request.getParameter("beanString");
-            
+
             filter = gson.fromJson(beanString, A2290Filter.class);
             byte[] dataFile = excelfile.getBytes();
-            objResult = getExcelFile(dataFile, filter );
+            objResult = getExcelFile(dataFile, filter);
 
             map.put("success", true);
             map.put("objResult", objResult);
@@ -4481,7 +4467,7 @@ public class BankReconciliationController extends BaseController {
         double montoTotal = 0;
         int i = 0;
         int qty = 0;
-  
+
         try {
             String strSesion = UUID.randomUUID().toString();
             String strNomExcel = "SalesDocumentLoad.xlsx";
@@ -4509,23 +4495,23 @@ public class BankReconciliationController extends BaseController {
                     Row row = rowIterator.next();
                     if (row.getRowNum() > 0) {
                         A2290Filter obj = new A2290Filter();
-                        
+
                         obj.TKT = formatter.formatCellValue(row.getCell(2)) == null ? "" : formatter.formatCellValue(row.getCell(2)).trim();
                         obj.SCARDN = formatter.formatCellValue(row.getCell(6)) == null ? "" : formatter.formatCellValue(row.getCell(6)).trim();
                         obj.SAUTHOC = formatter.formatCellValue(row.getCell(7)) == null ? "" : formatter.formatCellValue(row.getCell(7)).trim();
-                        
-                        if( obj.TKT.equals("") && obj.SCARDN.equals("") && obj.SAUTHOC.equals("") ){       
+
+                        if (obj.TKT.equals("") && obj.SCARDN.equals("") && obj.SAUTHOC.equals("")) {
                             break;
                         }
-                        if( obj.TKT.contains("IF") || obj.TKT.contains("(") || obj.TKT.contains("(") ){
+                        if (obj.TKT.contains("IF") || obj.TKT.contains("(") || obj.TKT.contains("(")) {
                             respt.MESSAGE = "The file contains formula";
                             return respt;
                         }
-                        if( obj.SCARDN.contains("IF") || obj.SCARDN.contains("(") || obj.SCARDN.contains("(") ){
+                        if (obj.SCARDN.contains("IF") || obj.SCARDN.contains("(") || obj.SCARDN.contains("(")) {
                             respt.MESSAGE = "The file contains formula";
                             return respt;
                         }
-                        if( obj.SAUTHOC.contains("IF") || obj.SAUTHOC.contains("(") || obj.SAUTHOC.contains("(") ){
+                        if (obj.SAUTHOC.contains("IF") || obj.SAUTHOC.contains("(") || obj.SAUTHOC.contains("(")) {
                             respt.MESSAGE = "The file contains formula";
                             return respt;
                         }
@@ -4545,10 +4531,10 @@ public class BankReconciliationController extends BaseController {
 
             UserView user = this.serverSession.getServerSession().getUserView();
             logic.setSession(this.serverSession.getServerSession());
-                
+
             respt = logic.massiveReverseADM(lstData, user);
 //            respt.MESSAGE = mensaje;
-            
+
             //Eliminar temporal           
             archivo.delete();
 
@@ -4559,7 +4545,7 @@ public class BankReconciliationController extends BaseController {
         return respt;
 
     }
-    
+
     @RequestMapping(value = "/searchTeleworking")
     public @ResponseBody
     String searchTeleworking(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
@@ -4799,7 +4785,7 @@ public class BankReconciliationController extends BaseController {
 
         return new Gson().toJson(m);
     }
-    
+
     @RequestMapping(value = "searchDetalle2")
     public @ResponseBody
     String searchDetalle2(ModelMap map, HttpServletRequest request) {
@@ -4813,7 +4799,7 @@ public class BankReconciliationController extends BaseController {
         map.put("data", lst);
         return new Gson().toJson(map);
     }
-    
+
     public List<A2290Filter> getListDetalle2(HttpServletRequest request, Boolean bExcel) {
 
         List<A2290Filter> lst = new ArrayList<>(0);
@@ -4849,7 +4835,7 @@ public class BankReconciliationController extends BaseController {
         }
         return lst;
     }
-    
+
     @RequestMapping(value = "getXLSXDetalle2")
     public @ResponseBody
     void getXLSXDetalle2(HttpServletRequest request, HttpServletResponse response) {
@@ -5063,8 +5049,8 @@ public class BankReconciliationController extends BaseController {
                     rcell18.setCellValue(listaData.get(vi).FREGLA);
                     rcell19.setCellValue(listaData.get(vi).BANDOC);
                     rcell20.setCellValue(listaData.get(vi).REFER);
-                    rcell21 .setCellValue(listaData.get(vi).USERA4545);
-                    rcell22 .setCellValue(listaData.get(vi).DCONTA4545);
+                    rcell21.setCellValue(listaData.get(vi).USERA4545);
+                    rcell22.setCellValue(listaData.get(vi).DCONTA4545);
 
                     rcell0.setCellStyle(bodyStyle);
                     rcell1.setCellStyle(bodyStyle);
@@ -5169,13 +5155,12 @@ public class BankReconciliationController extends BaseController {
                     cadena += "" + listaData.get(vi).BANDOC + "|";
                     cadena += "" + listaData.get(vi).REFER + "|";
                     cadena += "" + listaData.get(vi).USERA4545 + "|";
-                    
-                    
-                    cadena += "" + listaData.get(vi).DCONTA4545 ;
+
+                    cadena += "" + listaData.get(vi).DCONTA4545;
                     cadena = cadena.replaceAll("null", "");
                     writer.println("" + cadena);
                 }
-                
+
                 writer.flush();
                 writer.close();
 
@@ -5191,5 +5176,4 @@ public class BankReconciliationController extends BaseController {
         }
     }
 
-    
 }

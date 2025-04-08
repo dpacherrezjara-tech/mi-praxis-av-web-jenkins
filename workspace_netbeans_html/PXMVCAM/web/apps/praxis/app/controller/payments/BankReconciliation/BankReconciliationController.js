@@ -665,7 +665,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         Ext.getCmp(prototype.id + '-gridDetByPNR').bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-paggin11').bindStore(storeGridDatas);
     },
-    btnSearch_click: function (obj, e) {
+    btnSearch_click: function (obj, e) {     
         console.log('btnSearch_click');
         
         if (Ext.getCmp(prototype.id + '-chkValidationInterface').getValue()) {
@@ -681,6 +681,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             });
             Ext.getCmp(prototype.id + '-typeClient').hide();
         }
+       
         
         
         this.beanDetDay = {};
@@ -863,7 +864,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 this.beanDebits.IN_SAGENT = win.getValue('txtAGENCY').trim();
 //                this.beanDebits.IN_SPNR = win.getValue('txtPNR').trim();
                 this.searchDebits(this.beanDebits)
-
+                
             } else {
                 console.log('4')
                 this.setFormatParameter();
