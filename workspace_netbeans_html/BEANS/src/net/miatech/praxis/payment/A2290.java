@@ -215,6 +215,7 @@ public class A2290 {
     public String CERRORADJ = "";
     public String descCERRORADJ = "";
     public String descCERRORADJA = "";
+    public String A4545DOCD = "";
     
     //TEF
     public String TDATE = "";
@@ -283,6 +284,8 @@ public class A2290 {
     
     public String DCONTA4545 = "";
     public String USERA4545 = "";
+    public String HEADEA4545 = "";
+    
     
     public Boolean checkActive = true;
     
