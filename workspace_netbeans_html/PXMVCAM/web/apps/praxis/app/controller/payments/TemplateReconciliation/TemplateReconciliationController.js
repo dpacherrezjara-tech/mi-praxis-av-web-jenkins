@@ -322,62 +322,100 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             Ext.getCmp(prototype.id + '-boxPagDetail').setWidth(width);
         }
     },
-    updateTotalsOnCheck: function (column, rowIndex, checked, record) {
+    updateTotalsOnCheck: function(column, rowIndex, checked, record) {
         let recordSettlements = me.getGridRecords(prototype.id + '-gridData');
         let totalSettlements = 0;
         let totalComision = 0;
         let totalComistota = 0;
         let totalNeto = 0;
-        
+
+        // Calcular totales
         for (let row of recordSettlements) {
-            totalSettlements += row.TOTAL;
-            totalComision += row.COMISION;
-            totalComistota += row.COMISTOTA;
-            totalNeto += row.NETO;
+            totalSettlements += row.TOTAL || 0;
+            totalComision += row.COMISION || 0;
+            totalComistota += row.COMISTOTA || 0;
+            totalNeto += row.NETO || 0;
         }
-        
+
         var grid = Ext.getCmp(prototype.id + '-gridData');
         var store = grid.getStore();
+        var tam = store.getCount();
 
+        // Actualizar el último registro con los totales
+        if (tam > 0) {
+            var lastRecord = store.getAt(tam - 1);
+            lastRecord.set('TOTAL_LIQ', totalSettlements);
+            lastRecord.set('TOTAL_COMISION', totalComision);
+            lastRecord.set('TOTAL_COMISTOTA', totalComistota);
+            lastRecord.set('TOTAL_NETO', totalNeto);
+        }
+
+        // Actualizar selecciones
         store.suspendEvents();
-        store.each(function (record) {
-            record.set('select', true);
+        store.each(function(record) {
+            record.set('select', record.get('checkActive') === true); // Asumo que debería ser como en tu función original
             record.commit();
         });
         store.resumeEvents();
-        
-        var tam = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items.length;
-        var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[tam-1].data;
-        
-        data.TOTAL_LIQ = totalSettlements;
-        data.TOTAL_COMISION = totalComision;
-        data.TOTAL_COMISTOTA = totalComistota;
-        data.TOTAL_NETO = totalNeto;
+
         grid.getView().refresh();
+        
+        me.updateGridTotal()
     },
     updateGridBandoc: function (column, rowIndex, checked, record) {
         var grid = Ext.getCmp(prototype.id + '-gridData21');
         var store = grid.getStore();
 
-        store.suspendEvents();
-        store.each(function (record) {
-            record.set('select', true);
-            record.commit();
-        });
-        store.resumeEvents();
         grid.getView().refresh();
-    },
-    updateGridDiscount: function (column, rowIndex, checked, record) {
-        var grid = Ext.getCmp(prototype.id + '-gridDataDescuentos');
-        var store = grid.getStore();
 
         store.suspendEvents();
         store.each(function (record) {
-            record.set('select', true);
+            record.set('select', record.get('checkActive') === true);
             record.commit();
         });
         store.resumeEvents();
+        
+        me.updateGridTotal();
+    },
+    updateGridDiscount: function (column, rowIndex, checked, record) {
+        console.log(record.data.blockChange,'record')
+        
+        if (record.data.blockChange) {
+            // Restaurar el valor anterior
+            record.set('checkActive', true);
+            // Salir de la función sin hacer nada más
+            return;
+        }
+
+        let recordDiscount = me.getGridRecords(prototype.id + '-gridDataDescuentos');
+        let totalImport = 0;
+        let totalImportPag = 0;
+        
+        for (let row of recordDiscount) {
+            totalImport += row.IMPORTECeba || 0;
+            totalImportPag += row.IMPORTEPAG || 0;
+        }
+        
+        var grid = Ext.getCmp(prototype.id + '-gridDataDescuentos');
+        var store = grid.getStore();
+        var tam = store.getCount();
+        
+        if (tam > 0) {
+            var lastRecord = store.getAt(0);
+            lastRecord.set('TOTAL_IMPORTE', totalImport);
+            lastRecord.set('TOTAL_IMPORTEPAG', totalImportPag);
+        }
+
         grid.getView().refresh();
+
+        store.suspendEvents();
+        store.each(function (record) {
+            record.set('select', record.get('checkActive') === true);
+            record.commit();
+        });
+        store.resumeEvents();
+        
+        me.updateGridTotal();
     },
     updateGridHead: function (column, rowIndex, checked, record) {
         var grid = Ext.getCmp(prototype.id + '-gridDataCabecera');
@@ -421,6 +459,20 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         let recordHead = me.getGridRecords(prototype.id + '-gridDataCabecera');
         let getProcess = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
         let getCustomer = Ext.getCmp(prototype.id + '-typeClient').getValue();
+        
+        if (!recordBandoc.length) {
+            global.Msg({
+                msg: 'No ha seleccionado un bandoc.'
+            });
+            return
+        }
+        
+        if (!recordSettlements.length) {
+            global.Msg({
+                msg: 'No ha seleccionado liquidaciones.'
+            });
+            return
+        }
 
         me.beanConciliation.IN_CCUST = getCustomer;
         me.beanConciliation.IN_CODPRO = getProcess;
@@ -571,6 +623,15 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Llenar Grilla Descuentos">
     searchDiscounts: function () {
+        let recordSettlements = me.getGridRecords(prototype.id + '-gridData');
+        
+        if (!recordSettlements.length) {
+            global.Msg({
+                msg: 'Seleccione las liquidaciones primero.'
+            });
+            return;
+        }
+        
         this.fetchDiscounts();
     },
     fetchDiscounts: function () {
@@ -583,58 +644,97 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         let getDateTo = Ext.Date.format(Ext.getCmp(prototype.id + '-txtToDisc').getValue(), 'Ymd');
         let getMerchant = Ext.getCmp(prototype.id + '-txtMerchant').getValue();
         let getLiquidation = Ext.getCmp(prototype.id + '-txtLiquidation').getValue();
+        let recordSettlements = me.getGridRecords(prototype.id + '-gridData');
+        let merchands = [];
+        let liquidaciones = [];
+        
+        for (let sett of recordSettlements) {
+            let merch = (sett.MERCHAND || '').toString().trim();
+            let liq = (sett.LIQUIDACIO || '').toString().trim();
 
+            if (!merchands.includes(merch)) {
+                merchands.push(merch);
+            }
+
+            if (!liquidaciones.includes(liq)) {
+                liquidaciones.push(liq);
+            }
+        }
+        
+        
         me.beanDiscounts.IN_CCUST = getCustomer;
         me.beanDiscounts.IN_CODPRO = getProcess;
         me.beanDiscounts.IN_DATEFROM = getDateFrom;
         me.beanDiscounts.IN_DATETO = getDateTo;
-        me.beanSettlements.IN_MERCHANT = getMerchant;
-        me.beanSettlements.IN_LIQUIDATION = getLiquidation;
+        me.beanDiscounts.IN_MERCHANT = getMerchant;
+        me.beanDiscounts.IN_LIQUIDATION = getLiquidation;
 
         let searchParamsDiscounts = {
-            beanString: JSON.stringify(me.beanDiscounts)
+            beanString: JSON.stringify(me.beanDiscounts),
+            beanMerchand: JSON.stringify(merchands),
+            beanLiquidation: JSON.stringify(liquidaciones)
         };
 
         console.log(searchParamsDiscounts, 'searchParamsDiscounts');
 
-        me.getDiscounts(searchParamsDiscounts, function(responseData) {
-            let store = Ext.create('Ext.data.Store', {
-                data: responseData.data
-            });
-
-            Ext.getCmp(prototype.id + '-gridDataDescuentos').bindStore(store);
-        });
+        me.getDiscounts(searchParamsDiscounts);
     },
-    getDiscounts: function (params, callback) {
-        Ext.Ajax.request({
-            url: prototype.url + '/getPendingDiscounts',
-            method: 'POST',
-            timeout: 60000000,
-            params: params,
-            beforerequest:  Ext.getCmp(prototype.id + '-gridDataDescuentos').mask('Loading...'),
-            success: function(response, options) {
-                Ext.getCmp(prototype.id + '-gridDataDescuentos').unmask('Loading...');
-                let res = Ext.JSON.decode(response.responseText);
-
-                if (!res.success) {
-                    global.Msg({msg: res.sesion});
-                } else {
-                    
-                    if (!res.data.length) {
+    getDiscounts: function (params) {
+        
+        var storeGridDiscounts = Ext.create('Ext.Praxis.store.flown.PassengerConciliation.GridData', {
+            proxy: {
+                url: prototype.url + '/getPendingDiscounts'
+            }, listeners: {
+                beforeload: function(obj) {
+                    obj.proxy.extraParams = params;
+                },
+                load: function(obj) {
+                    console.log(obj.data);
+                    if (obj.data.length === 0) {
                         global.Msg({
                             msg: 'Data not found.'
                         });
+                    } else {
+                        var bean = obj.data.items[0].data;
+//                        me.setTotalRowGridData(bean);
                     }
-                    
-                    callback(res); // Retorna los datos mediante callback
                 }
-            },
-            failure: function(response, options) {
-                Ext.getCmp(prototype.id + '-gridDataDescuentos').unmask('Loading...');
-                console.error("Error en la petición AJAX");
-                global.Msg({msg: "Error al obtener datos"});
             }
         });
+        
+//        var storeGridDiscounts = Ext.create('Ext.data.Store', {
+//            proxy: {
+//                type: 'ajax',
+//                url: prototype.url + '/getPendingDiscounts',
+//                reader: {
+//                    type: 'json',
+//                    rootProperty: 'data'
+//                },
+//                extraParams: params
+//            },
+//            listeners: {
+//                beforeload: function(store, operation) {
+//                    Ext.getCmp(prototype.id + '-gridDataDescuentos').mask('Loading...');
+//                },
+//                load: function(store, records, successful) {
+//                    Ext.getCmp(prototype.id + '-gridDataDescuentos').unmask();
+//                    if (records.length === 0) {
+//                        global.Msg({
+//                            msg: 'Data not found.'
+//                        });
+//                    }
+//                    // Aquí puedes agregar lógica para los totales si es necesario
+//                },
+//                exception: function(proxy, response, operation) {
+//                    Ext.getCmp(prototype.id + '-gridDataDescuentos').unmask();
+//                    console.error("Error en la petición AJAX");
+//                    global.Msg({msg: "Error al obtener datos"});
+//                }
+//            }
+//        });
+
+        Ext.getCmp(prototype.id + '-gridDataDescuentos').setStore(storeGridDiscounts);
+        storeGridDiscounts.load();
     },
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Llenar Grilla Liquidaciones">
@@ -698,38 +798,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             }
         });
         global.clear();
-//        Ext.getCmp(prototype.id + '-gridData').bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-gridData').setStore(storeGridDatas);
-        
-//        Ext.Ajax.request({
-//            url: prototype.url + '/getPendingSettlements',
-//            method: 'POST',
-//            timeout: 60000000,
-//            params: params,
-//            beforerequest:  Ext.getCmp(prototype.id + '-gridData').mask('Loading...'),
-//            success: function(response, options) {
-//                Ext.getCmp(prototype.id + '-gridData').unmask('Loading...');
-//                let res = Ext.JSON.decode(response.responseText);
-//
-//                if (!res.success) {
-//                    global.Msg({msg: res.sesion});
-//                } else {
-//                    
-//                    if (!res.data.length) {
-//                        global.Msg({
-//                            msg: 'Data not found.'
-//                        });
-//                    }
-//                    
-//                    callback(res); // Retorna los datos mediante callback
-//                }
-//            },
-//            failure: function(response, options) {
-//                Ext.getCmp(prototype.id + '-gridData').unmask('Loading...');
-//                console.error("Error en la petición AJAX");
-//                global.Msg({msg: "Error al obtener datos"});
-//            }
-//        });
     },
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Llenar Grilla Cabecera">
@@ -943,4 +1012,76 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         });
     },
     // </editor-fold>
+    updateGridTotal: function () {
+    let recordDiscounts = me.getGridRecords(prototype.id + '-gridDataDescuentos');
+    let recordBandoc = me.getGridRecords(prototype.id + '-gridData21');
+    let recordSettlements = me.getGridRecords(prototype.id + '-gridData');
+
+    let totalDescGrid = 0;
+    let totalSettGrid = 0;
+    let totalBandocGrid = 0;
+
+    if (recordDiscounts.length) {
+        for (let desc of recordDiscounts) {
+            totalDescGrid += desc.IMPORTECeba;
+        }
+    }
+
+    if (recordBandoc.length) {
+        for (let bandoc of recordBandoc) {
+            totalBandocGrid += bandoc.NETO;
+        }
+    }
+
+    if (recordSettlements.length) {
+        for (let sett of recordSettlements) {
+            totalSettGrid += sett.NETO;
+        }
+    }
+
+    // Formateo de números
+    let formattedDesc = Ext.util.Format.number(totalDescGrid, '0,000.00');
+    let formattedBandoc = Ext.util.Format.number(totalBandocGrid, '0,000.00');
+    let formattedSett = Ext.util.Format.number(totalSettGrid, '0,000.00');
+
+    let totalDiffGrid = totalSettGrid - totalDescGrid;
+    let formattedDiff = Ext.util.Format.number(totalDiffGrid, '0,000.00');
+
+    // Referencias a los componentes
+    let cmpDesc = Ext.getCmp(prototype.id + '-txtTotalDescGrid');
+    let cmpBandoc = Ext.getCmp(prototype.id + '-txtTotalBandocGrid');
+    let cmpSett = Ext.getCmp(prototype.id + '-txtTotalSettGrid');
+    let cmpDiff = Ext.getCmp(prototype.id + '-txtTotalDiffGrid');
+
+    // Asignar valores
+    cmpDesc.setValue(formattedDesc);
+    cmpBandoc.setValue(formattedBandoc);
+    cmpSett.setValue(formattedSett);
+    cmpDiff.setValue(formattedDiff);
+
+    // Comparar
+    let esIgual = totalDiffGrid === totalBandocGrid;
+
+    // Colores vivos
+    let colorFondo = esIgual ? '#4CAF50' : '#F44336'; // verde o rojo brillante
+    let colorTexto = 'white';
+
+    // Aplicar estilos con defer para asegurar renderizado
+    Ext.defer(function () {
+        [cmpBandoc, cmpDiff].forEach(cmp => {
+            let el = cmp.getEl();
+            if (el) {
+                el.setStyle({
+                    'background-color': colorFondo,
+                    'color': colorTexto,
+                    'font-weight': 'bold',
+                    'border-radius': '0px' // por si quieres dejarlo sin esquinas redondeadas
+                });
+            }
+        });
+    }, 10); // pequeño delay
+}
+
+
+
 });

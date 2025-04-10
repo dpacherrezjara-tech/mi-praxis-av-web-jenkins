@@ -639,6 +639,8 @@ public class A2290Filter extends A2290 {
 
     public Pagination page = new Pagination();
     public String PRDA = "";
+    public String merchandIn = "";
+    public String liquidationIn = "";
     public String TRAN = "";
     public String TDOCORG = "";
     public String CODPRO = "";
@@ -938,7 +940,6 @@ public class A2290Filter extends A2290 {
     public String SAUTHOC_100 = "";
     public String SPNR_100 = "";
     public String SAUTHOC_101 = "";
-    public Boolean checkActive = false;
 
     public String getVariable() {
         return BANDOC;
