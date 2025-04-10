@@ -12,6 +12,12 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
         timeout: 20000
     }),
     init: function (view) {
+        //window.location.reload();
+        prototype.id = 'AccountingMasterProcessForm';
+        prototype.url = CONTEXTPATH + '/AccountingReport';
+        prototype.width = 1900;
+        prototype.height = 630;
+        fechaActual = new Date(),mesActual = fechaActual.getMonth(),anioActual = fechaActual.getFullYear();
     },
     afterRender: async function () {
         await this.loadFilters();

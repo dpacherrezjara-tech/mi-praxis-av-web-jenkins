@@ -8,6 +8,11 @@ Ext.define('Ext.Praxis.controller.payments.RejectedCodesCatalog.RejectedCodesCat
         timeout: 0
     }),
     init: function (view) {
+        prototype.id = 'RejectedCodesForm';
+        prototype.url = CONTEXTPATH + '/RejectedCodesCatalog';
+        prototype.width = 1900;
+        prototype.height = 630;
+        fechaActual = new Date(), mesActual = fechaActual.getMonth(), anioActual = fechaActual.getFullYear();
     },
     afterRender: async function () {
         this.loadMain();
