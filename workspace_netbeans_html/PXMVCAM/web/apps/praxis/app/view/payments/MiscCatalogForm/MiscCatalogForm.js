@@ -11,7 +11,7 @@ Ext.define('Ext.Praxis.view.payments.MiscCatalogForm.MiscCatalogForm', {
         'Ext.Praxis.controller.payments.MiscCatalog.MiscCatalogController',
         'Ext.Praxis.view.payments.MiscCatalogForm.Options',
         'Ext.Praxis.view.payments.MiscCatalogForm.Filters',
-        'Ext.Praxis.view.payments.MiscCatalogForm.Grids.MainGrid'
+        'Ext.Praxis.view.payments.MiscCatalogForm.Grids.MiscCatalogGrid'
     ],
     controller: 'MiscCatalogController',
     layout: {

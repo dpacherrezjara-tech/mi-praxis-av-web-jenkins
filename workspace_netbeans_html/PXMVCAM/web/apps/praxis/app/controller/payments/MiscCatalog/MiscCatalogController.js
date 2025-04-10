@@ -20,7 +20,7 @@ Ext.define('Ext.Praxis.controller.payments.MiscCatalog.MiscCatalogController', {
         const me = this;
         const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
         mainPanel.removeAll();
-        const grid = Ext.create('Ext.Praxis.view.payments.MiscCatalogForm.Grids.MainGrid',{
+        const grid = Ext.create('Ext.Praxis.view.payments.MiscCatalogForm.Grids.MiscCatalogGrid',{
             id: prototype.id + '-MainGrid-1',
             searchParams:me.formatParams()
         });
