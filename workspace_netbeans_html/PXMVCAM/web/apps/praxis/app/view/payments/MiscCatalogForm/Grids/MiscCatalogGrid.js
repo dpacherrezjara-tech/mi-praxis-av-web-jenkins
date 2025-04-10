@@ -1,10 +1,10 @@
-Ext.define('Ext.Praxis.view.payments.MiscCatalogForm.Grids.MainGrid', {
+Ext.define('Ext.Praxis.view.payments.MiscCatalogForm.Grids.MiscCatalogGrid', {
     extend: 'Ext.grid.Panel',
-    alias: 'widget.' + prototype.id + '-MainGrid',
+    alias: 'widget.' + prototype.id + '-MiscCatalogGrid',
     requires: [
-        'Ext.Praxis.controller.payments.MiscCatalog.MainGridController'
+        'Ext.Praxis.controller.payments.MiscCatalog.MiscCatalogGridController'
     ],
-    controller: 'MainGridController',
+    controller: 'MiscCatalogGridController',
     maxHeight: prototype.height,
     minHeight: 200,
     height: 'auto',

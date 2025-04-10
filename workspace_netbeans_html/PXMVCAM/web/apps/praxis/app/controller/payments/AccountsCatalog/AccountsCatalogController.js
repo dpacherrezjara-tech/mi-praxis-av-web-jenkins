@@ -2,6 +2,10 @@ Ext.define('Ext.Praxis.controller.payments.AccountsCatalog.AccountsCatalogContro
     extend: 'Ext.app.ViewController',
     alias: 'controller.AccountsCatalogController',
     init: function (view) {
+        prototype.id = 'AccountsCatalogForm';
+        prototype.width = 1900;
+        prototype.height = 630;
+        fechaActual = new Date(), mesActual = fechaActual.getMonth(), anioActual = fechaActual.getFullYear();
     },
     afterRender: async function () {
         this.loadGrid();
@@ -10,8 +14,8 @@ Ext.define('Ext.Praxis.controller.payments.AccountsCatalog.AccountsCatalogContro
         const me = this;
         const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
         mainPanel.removeAll();
-        const grid = Ext.create('Ext.Praxis.view.payments.AccountsCatalogForm.Grids.MainGrid',{
-            id: prototype.id + '-MainGrid-1',
+        const grid = Ext.create('Ext.Praxis.view.payments.AccountsCatalogForm.Grids.AccountsCatalogGrid',{
+            id: prototype.id + '-AccountsCatalogGrid-1',
             searchParams:me.formatParams()
         });
         mainPanel.add(grid);
