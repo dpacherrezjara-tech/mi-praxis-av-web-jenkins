@@ -41,6 +41,7 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.json.JSONArray;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -399,6 +400,10 @@ public class TemplateReconciliationController extends BaseController {
         A2290Filter filter = new A2290Filter();
         Gson gson = new Gson();
         String beanString = "";
+        String beanMerchand = "";
+        String beanLiquidation = "";
+        String merchandIn = "";
+        String liquidationIn = "";
 
         try {
             logic = new TemplateReconciliationLogic();
@@ -406,6 +411,34 @@ public class TemplateReconciliationController extends BaseController {
 
             beanString = request.getParameter("beanString");
             filter = gson.fromJson(beanString, A2290Filter.class);
+            beanMerchand = request.getParameter("beanMerchand");
+            beanLiquidation = request.getParameter("beanLiquidation");
+            
+            JSONArray merchandArray = new JSONArray(beanMerchand);
+            JSONArray liquidationArray = new JSONArray(beanLiquidation);
+            
+            for (int i = 0; i < merchandArray.length(); i++) {
+                String merchand = merchandArray.getString(i);
+                merchandIn += merchand + "|";
+                System.out.println("Merchand: " + merchand);
+            }
+            
+            if (merchandIn.length() > 0) {
+                merchandIn = merchandIn.substring(0, merchandIn.length() - 1);
+            }
+            
+            for (int i = 0; i < liquidationArray.length(); i++) {
+                String liquidation = liquidationArray.getString(i);
+                liquidationIn += liquidation + "|";
+                System.out.println("liquidation: " + liquidation);
+            }
+            
+            if (liquidationIn.length() > 0) {
+                liquidationIn = liquidationIn.substring(0, liquidationIn.length() - 1);
+            }
+            
+            filter.merchandIn = merchandIn;
+            filter.liquidationIn = liquidationIn;
             filter.page.TOTROW = -1;
             filter.page.START = 0;
             filter.page.LIMIT = 0;
