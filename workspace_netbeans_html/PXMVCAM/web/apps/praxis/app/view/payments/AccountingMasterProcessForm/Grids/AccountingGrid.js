@@ -36,6 +36,12 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.Accountin
             {text: 'Value<br>Date', dataIndex: 'A4545DOCD', width: 100},
             {text: 'Reference', dataIndex: 'A4545REFD', width: 160},
             {text: 'Record<br>Type', dataIndex: 'A4545HREGI', width: 80},
+            {text: 'Record<br>Description', dataIndex: 'A4545FREGI', width: 100,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                    metaData.style = "background-color:#bbe3ac;color:#65242e;font-weight:bold;";
+                    return value;
+                }
+            },
             {text: 'SEQ', dataIndex: 'A4545SEQ', width: 60},
             {text: 'Item', dataIndex: 'A4545ITEM', width: 60},
             {text: 'Profit', dataIndex: 'A4545PROFI', width: 120},
