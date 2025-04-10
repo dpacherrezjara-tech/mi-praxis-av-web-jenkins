@@ -105,7 +105,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                         xtype: 'checkcolumn', // Columna de checkbox
                                                                         text: 'Select', // Título de la columna
                                                                         width: 60, // Ancho de la columna
-                                                                        dataIndex: 'check', // Campo en el store que almacena el estado del checkbox
+                                                                        dataIndex: 'checkActive', // Campo en el store que almacena el estado del checkbox
                                                                         align: 'center',
                                                                         style: 'padding: 6px; background: #B8A189 ;border-color:white',
                                                                         menuDisabled: true,
@@ -188,7 +188,101 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                     },
                                                                 ]
                                                             }
-                                                        }
+                                                        },,
+                                                        {xtype: 'tbspacer', width: 30, height:20},
+                                                        {
+    xtype: 'panel',
+    layout: 'vbox',
+    id: 'panelResumenTotales',
+    width: 258,
+    style: 'background: #ffffff; border: 1px solid #d1d1d1;',
+    items: [
+        // Panel para el Total de Liquidaciones
+        {
+            xtype: 'panel',
+            layout: 'hbox',
+            border: false,
+            style: 'border-bottom: 1px solid #d1d1d1;',
+            items: [
+                {
+                    xtype: 'displayfield',
+                    value: 'Total Liquidaciones',
+                    style: 'font-size:14px; font-weight: bold; color:#333; width: 150px; border-right: 1px solid #d1d1d1; padding: 4px 10px;'
+                },
+                {
+                    xtype: 'displayfield',
+                    id: prototype.id + '-txtTotalSettGrid',
+                    value: Ext.util.Format.number(0, '0,000.00'),
+                    style: 'font-size:14px; color:#4CAF50; font-weight: bold; width: 106px; text-align: right; padding: 4px 10px;'
+                }
+            ]
+        },
+        // Panel para el Total de Descuentos
+        {
+            xtype: 'panel',
+            layout: 'hbox',
+            border: false,
+            style: 'border-bottom: 1px solid #d1d1d1;',
+            items: [
+                {
+                    xtype: 'displayfield',
+                    value: 'Total Descuentos',
+                    style: 'font-size:14px; font-weight: bold; color:#333; width: 150px; border-right: 1px solid #d1d1d1; padding: 4px 10px;'
+                },
+                {
+                    xtype: 'displayfield',
+                    id: prototype.id + '-txtTotalDescGrid',
+                    value: Ext.util.Format.number(0, '0,000.00'),
+                    style: 'font-size:14px; color:#FF5722; font-weight: bold; width: 106px; text-align: right; padding: 4px 10px;'
+                }
+            ]
+        },
+        // Panel para la Diferencia
+        {
+    xtype: 'panel',
+    itemId: prototype.id + '-panelDiff',
+    layout: 'hbox',
+    border: false,
+    style: 'border-bottom: 1px solid #d1d1d1;',
+    items: [
+        {
+            xtype: 'displayfield',
+            value: 'Diferencia',
+            style: 'font-size:14px; font-weight: bold; color:#333; width: 150px; border-right: 1px solid #d1d1d1; padding: 4px 10px;'
+        },
+        {
+            xtype: 'displayfield',
+            id: prototype.id + '-txtTotalDiffGrid',
+            value: Ext.util.Format.number(0, '0,000.00'),
+            style: 'font-size:14px; font-weight: bold; width: 106px; text-align: right; padding: 4px 10px;'
+        }
+    ]
+}
+,
+        // Panel para el Total Depósito
+        {
+            xtype: 'panel',
+            itemId: prototype.id + '-panelBandoc',
+            layout: 'hbox',
+            border: false,
+            style: 'border-bottom: 1px solid #d1d1d1;',
+            items: [
+                {
+                    xtype: 'displayfield',
+                    value: 'Total Depósito',
+                    style: 'font-size:14px; font-weight: bold; color:#333; width: 150px; border-right: 1px solid #d1d1d1; padding: 4px 10px;'
+                },
+                {
+                    xtype: 'displayfield',
+                    id: prototype.id + '-txtTotalBandocGrid',
+                    value: Ext.util.Format.number(0, '0,000.00'),
+                    style: 'font-size:14px; color:white; font-weight: bold; width: 106px; text-align: right; padding: 4px 10px;'
+                }
+            ]
+        }
+    ]
+}
+
                                                     ]
                                                 },
                                                 {xtype: 'tbspacer', width: 30, height:20},

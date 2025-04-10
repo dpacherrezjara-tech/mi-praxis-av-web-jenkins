@@ -286,7 +286,7 @@ public class A2290 {
     public String USERA4545 = "";
     public String HEADEA4545 = "";
     
-    
     public Boolean checkActive = true;
+    public Boolean blockChange = false;
     
 }

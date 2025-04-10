@@ -13,7 +13,9 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import net.miatech.beans.AccountingInterfacesResult;
 import net.miatech.beans.SQP04091Filter;
 import net.miatech.beans.spring.implement.IServerSession;
@@ -374,7 +376,7 @@ public class TemplateReconciliationDAO {
         double TOTAL_NETO = 0;
         double TOTAL_IMPORTEPAG = 0;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.LISTAR_LIQUIDACIONES_PENDIENTES(?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS113(?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -418,6 +420,7 @@ public class TemplateReconciliationDAO {
                 rst2 = cstmt.getResultSet();
                 while (rst2.next()) {
                     record = new A2290Filter();
+                    record.RN = rst2.getLong("RN");
                     record.SDATE = rst2.getString("SDATE");
                     record.SCOUNTRY = rst2.getString("SCOUNTRY");
                     record.TDOC = rst2.getString("TDOC");
@@ -438,6 +441,7 @@ public class TemplateReconciliationDAO {
                     
                     record.LIQUIDACIO = rst2.getString("LIQUIDACIO");
                     record.SCURRENCY = rst2.getString("SCURRENCY");
+                    record.IMPORTEPAG = rst2.getDouble("IMPORTEPAG");
                     
                     record.COMISION = rst2.getDouble("COMISION");
                     record.COMISTOTA = rst2.getDouble("COMISTOTA");
@@ -487,28 +491,30 @@ public class TemplateReconciliationDAO {
 
     public List<A2290Filter> searchPendingDiscounts(A2290Filter filter) throws SQLException, Exception {
 
-        List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
+        List<A2290Filter> lstTkts = new ArrayList<>();
+        List<A2290Filter> thirdList = new ArrayList<>();
+        List<A2290Filter> combinedList = new ArrayList<>();
 
         CallableStatement cstmt = null;
         ResultSet rst = null;
         ResultSet rst2 = null;
+        ResultSet rst3 = null;
         A2290Filter record = null;
-        List<A2290Filter> lista = new ArrayList<A2290Filter>();
 
         double TOTAL_IMPORTE = 0;
         double TOTAL_IMPORTEPAG = 0;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.LISTAR_DESCUENTOS_TEMPLATE(?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS112(?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(7, Types.INTEGER);
-            cstmt.registerOutParameter(8, Types.INTEGER);
             cstmt.registerOutParameter(9, Types.INTEGER);
             cstmt.registerOutParameter(10, Types.INTEGER);
+            cstmt.registerOutParameter(11, Types.INTEGER);
+            cstmt.registerOutParameter(12, Types.INTEGER);
 
             cstmt.setString(1, filter.IN_CCUST);
             cstmt.setString(2, filter.IN_DATEFROM);
@@ -516,29 +522,32 @@ public class TemplateReconciliationDAO {
             cstmt.setString(4, filter.IN_CODPRO);
             cstmt.setString(5, filter.IN_MERCHANT);
             cstmt.setString(6, filter.IN_LIQUIDATION);
+            cstmt.setString(7, filter.merchandIn);
+            cstmt.setString(8, filter.liquidationIn);
 
-            cstmt.setInt(7, filter.page.PAGNUM);
-            cstmt.setInt(8, filter.page.PAGROW);
-            cstmt.setInt(9, filter.page.TOTPAG);
-            cstmt.setInt(10, filter.page.TOTROW);
+            cstmt.setInt(9, filter.page.PAGNUM);
+            cstmt.setInt(10, filter.page.PAGROW);
+            cstmt.setInt(11, filter.page.TOTPAG);
+            cstmt.setInt(12, filter.page.TOTROW);
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(7);
-            filter.page.PAGROW = cstmt.getInt(8);
-            filter.page.TOTPAG = cstmt.getInt(9);
-            filter.page.TOTROW = cstmt.getInt(10);
+            filter.page.PAGNUM = cstmt.getInt(9);
+            filter.page.PAGROW = cstmt.getInt(10);
+            filter.page.TOTPAG = cstmt.getInt(11);
+            filter.page.TOTROW = cstmt.getInt(12);
 
             rst = cstmt.getResultSet();
-
             if (rst.next()) {
                 TOTAL_IMPORTE = rst.getDouble("SUM_IMPORTE");
                 TOTAL_IMPORTEPAG = rst.getDouble("SUM_IMPORTEPAG");
             }
 
+            // Segunda lista
             if (cstmt.getMoreResults()) {
                 rst2 = cstmt.getResultSet();
                 while (rst2.next()) {
                     record = new A2290Filter();
+                    record.RN = rst2.getLong("RN");
                     record.CODPRO = rst2.getString("CODPRO");
                     record.FLIQUIDACI = rst2.getString("FLIQUIDACI");
                     record.MONEDA = rst2.getString("MONEDA");
@@ -550,44 +559,101 @@ public class TemplateReconciliationDAO {
                     record.LIQUIDACIO = rst2.getString("LIQUIDACIO");
                     record.IMPORTECeba = rst2.getDouble("IMPORTE");
                     record.IMPORTEPAG = rst2.getDouble("IMPORTEPAG");
+                    record.checkActive = false;
 
                     record.page.PAGNUM = filter.page.PAGNUM;
                     record.page.PAGROW = filter.page.PAGROW;
                     record.page.TOTPAG = filter.page.TOTPAG;
                     record.page.TOTROW = filter.page.TOTROW;
 
-                    // Asignar los totales al objeto actual
                     record.TOTAL_IMPORTE = TOTAL_IMPORTE;
                     record.TOTAL_IMPORTEPAG = TOTAL_IMPORTEPAG;
 
-                    // Agregar el objeto a la lista
                     lstTkts.add(record);
                 }
             }
 
-        } catch (Exception e) {
-            e.getMessage();
-            e.printStackTrace();
-        } finally {
-            if (rst != null) {
-                try {
-                    rst.close();
-                } catch (SQLException e) {
-                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+            // Tercera lista
+            if (cstmt.getMoreResults()) {
+                rst3 = cstmt.getResultSet();
+                while (rst3.next()) {
+                    A2290Filter thirdRecord = new A2290Filter();
+                    thirdRecord.RN = rst3.getLong("RN");
+                    thirdRecord.CODPRO = rst3.getString("CODPRO");
+                    thirdRecord.FLIQUIDACI = rst3.getString("FLIQUIDACI");
+                    thirdRecord.MONEDA = rst3.getString("MONEDA");
+                    thirdRecord.CCUSTPRO = rst3.getString("CCUSTPRO");
+                    thirdRecord.PRDA = rst3.getString("PRDA");
+                    thirdRecord.ADATE = rst3.getString("ADATE");
+                    thirdRecord.MERCHAND = rst3.getString("MERCHAND");
+                    thirdRecord.MONEDAPAGO = rst3.getString("MONEDAPAGO");
+                    thirdRecord.LIQUIDACIO = rst3.getString("LIQUIDACIO");
+                    thirdRecord.IMPORTECeba = rst3.getDouble("IMPORTE");
+                    thirdRecord.IMPORTEPAG = rst3.getDouble("IMPORTEPAG");
+                    thirdRecord.checkActive = false;
+
+                    thirdRecord.TOTAL_IMPORTE = TOTAL_IMPORTE;
+                    thirdRecord.TOTAL_IMPORTEPAG = TOTAL_IMPORTEPAG;
+                    thirdList.add(thirdRecord);
                 }
             }
-            if (cstmt != null) {
-                try {
-                    cstmt.close();
-                } catch (SQLException e) {
-                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+
+            // Crear claves únicas del tercer resultset
+            Set<String> thirdKeySet = new HashSet<>();
+            for (A2290Filter f : thirdList) {
+                String key = f.CODPRO.trim() + "|" + f.MERCHAND.trim() + "|" + f.LIQUIDACIO.trim();
+                thirdKeySet.add(key);
+            }
+
+            // Crear lista combinada sin asignar RN aún
+            for (A2290Filter item : lstTkts) {
+                String key = item.CODPRO.trim() + "|" + item.MERCHAND.trim() + "|" + item.LIQUIDACIO.trim();
+                boolean existsInThird = thirdKeySet.contains(key);
+                item.checkActive = existsInThird;
+                item.blockChange = existsInThird;
+                combinedList.add(item);
+            }
+
+            // Ordenar: primero los checkActive = true
+            combinedList.sort((a, b) -> Boolean.compare(!a.checkActive, !b.checkActive));
+
+            // Reasignar RN y calcular totales solo para los activos
+            TOTAL_IMPORTE = 0;
+            TOTAL_IMPORTEPAG = 0;
+            int countRn = 1;
+            for (A2290Filter item : combinedList) {
+                item.RN = countRn++;
+                if (item.checkActive) {
+                    TOTAL_IMPORTE += item.IMPORTECeba;
+                    TOTAL_IMPORTEPAG += item.IMPORTEPAG;
                 }
+            }
+
+            if (!combinedList.isEmpty()) {
+                combinedList.get(0).TOTAL_IMPORTE = TOTAL_IMPORTE;
+                combinedList.get(0).TOTAL_IMPORTEPAG = TOTAL_IMPORTEPAG;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) try { rst.close(); } catch (SQLException e) {
+                logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+            }
+            if (rst2 != null) try { rst2.close(); } catch (SQLException e) {
+                logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+            }
+            if (rst3 != null) try { rst3.close(); } catch (SQLException e) {
+                logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+            }
+            if (cstmt != null) try { cstmt.close(); } catch (SQLException e) {
+                logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
             }
             session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
             pasarGarbageCollector();
         }
 
-        return lstTkts;
+        return combinedList;
     }
 
     public List<A2290Filter> searchPendingDeposits(A2290Filter filter) throws SQLException, Exception {
@@ -599,7 +665,7 @@ public class TemplateReconciliationDAO {
         A2290Filter record = null;
         List<A2290Filter> lista = new ArrayList<A2290Filter>();
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.LISTAR_DEPOSITOS_TEMPLATE(?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS111(?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -689,7 +755,7 @@ public class TemplateReconciliationDAO {
         double TOTAL_NETO = 0;
         double TOTAL_IMPORTEPAG = 0;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.LISTAR_CABECERAS_PENDIENTES(?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS110(?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
