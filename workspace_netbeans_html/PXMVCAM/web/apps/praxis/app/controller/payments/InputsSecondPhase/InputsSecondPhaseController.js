@@ -4,6 +4,11 @@ Ext.define('Ext.Praxis.controller.payments.InputsSecondPhase.InputsSecondPhaseCo
     url: CONTEXTPATH + '/InputsPhase2',
     procesadores: [],
     init: function (view) {
+        prototype.id = 'InputsSecondPhaseForm';
+        prototype.url = CONTEXTPATH + '/InputsPhase2';
+        prototype.width = 1850;
+        prototype.height = 630;
+        fechaActual = new Date(),mesActual = fechaActual.getMonth(),anioActual = fechaActual.getFullYear();
     },
     afterRender: async function () {
         this.loadFilters();

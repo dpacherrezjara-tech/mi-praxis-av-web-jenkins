@@ -1,6 +1,6 @@
-Ext.define('Ext.Praxis.controller.payments.MiscCatalog.MainGridController', {
+Ext.define('Ext.Praxis.controller.payments.MiscCatalog.MiscCatalogGridController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.MainGridController',
+    alias: 'controller.MiscCatalogGridController',
     url: CONTEXTPATH + '/MiscellaneousCatalog',
     request: axios.create({
         baseURL: CONTEXTPATH + '/MiscellaneousCatalog',
