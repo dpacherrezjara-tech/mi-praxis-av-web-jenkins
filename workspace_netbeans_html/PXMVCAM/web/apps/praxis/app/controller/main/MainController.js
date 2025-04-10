@@ -572,8 +572,7 @@ Ext.define('Ext.Praxis.controller.main.MainController', {
                                     if (view === '') {
                                         alert('Under Construction');
                                         return;
-                                    }
-                                    ;
+                                    };
 
                                     var codeProg = nprog.substring(0, 2) + nprog.substring(7, 10);
                                     $('#menuProgram').html(codeProg);

@@ -1,6 +1,6 @@
-Ext.define('Ext.Praxis.controller.payments.AccountsCatalog.MainGridController', {
+Ext.define('Ext.Praxis.controller.payments.AccountsCatalog.AccountsCatalogGridController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.MainGridController',
+    alias: 'controller.AccountsCatalogGridController',
     store: [],
     init: function (view) {
     },

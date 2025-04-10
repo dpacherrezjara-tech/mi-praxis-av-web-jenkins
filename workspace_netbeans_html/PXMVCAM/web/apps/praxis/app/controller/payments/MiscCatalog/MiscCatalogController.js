@@ -7,6 +7,11 @@ Ext.define('Ext.Praxis.controller.payments.MiscCatalog.MiscCatalogController', {
         timeout: 0
     }),
     init: function (view) {
+        prototype.id = 'MiscCatalogForm';
+        prototype.url = CONTEXTPATH + '/MiscellaneousCatalog';
+        prototype.width = 1900;
+        prototype.height = 630;
+        fechaActual = new Date(), mesActual = fechaActual.getMonth(), anioActual = fechaActual.getFullYear();
     },
     afterRender: async function () {
         this.loadGrid();

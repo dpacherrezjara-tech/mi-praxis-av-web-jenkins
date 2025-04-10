@@ -5,6 +5,11 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessLoggerController
     urlMisc : CONTEXTPATH + '/MiscellaneousCatalog',
     procesadores: [],
     init: function (view) {
+        prototype.id = 'ProcessLoggerForm';
+        prototype.url = CONTEXTPATH + '/ProcessLog';
+        prototype.width = 1850;
+        prototype.height = 630;
+        fechaActual = new Date(),mesActual = fechaActual.getMonth(),anioActual = fechaActual.getFullYear();
     },
     afterRender: async function () {
         this.loadFilters();

@@ -10,7 +10,7 @@ Ext.define('Ext.Praxis.view.payments.AccountsCatalogForm.AccountsCatalogForm', {
         'Ext.Praxis.controller.payments.AccountsCatalog.AccountsCatalogController',
         'Ext.Praxis.view.payments.AccountsCatalogForm.Options',
         'Ext.Praxis.view.payments.AccountsCatalogForm.Filters',
-        'Ext.Praxis.view.payments.AccountsCatalogForm.Grids.MainGrid'
+        'Ext.Praxis.view.payments.AccountsCatalogForm.Grids.AccountsCatalogGrid'
     ],
     controller: 'AccountsCatalogController',
     layout: {
