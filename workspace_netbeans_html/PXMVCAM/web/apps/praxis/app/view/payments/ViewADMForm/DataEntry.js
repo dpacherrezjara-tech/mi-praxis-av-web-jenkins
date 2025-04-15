@@ -945,7 +945,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.DataEntry', {
                                                                                 xtype: 'checkcolumn', // Columna de checkbox
                                                                                 text: 'Select', // Título de la columna
                                                                                 width: 92, // Ancho de la columna
-                                                                                dataIndex: 'checkActive', // Campo en el store que almacena el estado del checkbox
+                                                                                dataIndex: 'checkActiveViewADM', // Campo en el store que almacena el estado del checkbox
                                                                                 align: 'center',
                                                                                 style: 'padding: 6px; background: #7F98A8;border-color:white',
                                                                                 menuDisabled: true,
