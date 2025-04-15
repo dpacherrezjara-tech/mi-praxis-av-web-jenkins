@@ -287,6 +287,7 @@ public class A2290 {
     public String HEADEA4545 = "";
     
     public Boolean checkActive = true;
+    public Boolean checkActiveViewADM = false;
     public Boolean blockChange = false;
     
 }
