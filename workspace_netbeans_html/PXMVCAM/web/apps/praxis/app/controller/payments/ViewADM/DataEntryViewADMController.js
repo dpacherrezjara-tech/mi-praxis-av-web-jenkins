@@ -976,7 +976,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
 
         return store.getRange()
                 .map(record => record.getData())
-                .filter(data => data.checkActive === true);
+                .filter(data => data.checkActiveViewADM === true);
 
 
     },
@@ -1019,7 +1019,7 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.DataEntryViewADMController', 
                 TDOC: record.get('TDOC'), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 TICKET: record.get('A1531TKT'), // Reemplaza 'nombre' con el campo correcto de tu modelo
                 CERROR: Ext.getCmp(prototype.id + '-cmbCOMENT').getValue(), // Reemplaza 'nombre' con el campo correcto de tu modelo // Reemplaza 'nombre' con el campo correcto de tu modelo
-                Select: record.get('checkActive')
+                Select: record.get('checkActiveViewADM')
                 // Agrega más campos según sea necesario
             };
 
