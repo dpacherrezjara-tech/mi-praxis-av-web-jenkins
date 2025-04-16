@@ -17,7 +17,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
         prototype.url = CONTEXTPATH + '/AccountingReport';
         prototype.width = 1900;
         prototype.height = 630;
-        fechaActual = new Date(),mesActual = fechaActual.getMonth(),anioActual = fechaActual.getFullYear();
+        fechaActual = new Date(), mesActual = fechaActual.getMonth(), anioActual = fechaActual.getFullYear();
     },
     afterRender: async function () {
         await this.loadFilters();
@@ -51,7 +51,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
         const tipocon = Ext.getCmp(prototype.id + '-cmbTIPOCON');
         const cmbProc = Ext.getCmp(prototype.id + '-cmbCODPRO');
         let data = me.procesadores.filter(x =>
-                x.A4451CCUST === cmbCccust.value && x.A4451CORRL === tipocon.value);
+            x.A4451CCUST === cmbCccust.value && x.A4451CORRL === tipocon.value);
         global.setComboStore(cmbProc, data, 'A4451KEY2', 'A4451DESC1', '');
     },
     loadGrid: async function () {
@@ -78,7 +78,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
         });
         dataEntry.show();
     },
-    onSapClick:function(){
+    onSapClick: function () {
         const me = this;
         const dataEntry = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.SapLoadDataEntry', {
             id: prototype.id + '-SapLoadDataEntry-1',
@@ -106,6 +106,102 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
         if (e.getKey() === e.ENTER) {
             this.onClickSearchBtn();
         }
+    },
+    onClickLoadProvision: async function () {
+        const me = this;
+        const winProvis = Ext.create('Ext.window.Window', {
+            title: 'Provision - Form',
+            width: 400,
+            layout: 'fit',
+            modal: true,
+            items: [{
+                    xtype: 'form',
+                    bodyPadding: 10,
+                    defaults: {
+                        anchor: '100%',
+                        labelWidth: 100
+                    },
+                    items: [{
+                            xtype: 'filefield',
+                            name: 'file',
+                            labelWidth: 50,
+                            fieldLabel: 'File',
+                            buttonText: 'Select File...',
+                            allowBlank: false
+                        }]
+                }],
+            buttons: [{
+                    text: 'Process Provision',
+                    iconCls: 'prx-icon-reload',
+                    handler: function (btn) {
+                        var form = btn.up('window').down('form').getForm();
+                        if (form.isValid()) {
+                            Ext.Msg.show(
+                                    {
+                                        title: '.:PRAXIS:.',
+                                        msg: 'Are you sure to process Provision?',
+                                        buttons: Ext.MessageBox.YESNO,
+                                        scope: this,
+                                        icon: Ext.MessageBox.QUESTION,
+                                        modal: true,
+                                        fn: function (btn) {
+                                            if (btn === 'yes') {
+                                                form.submit({
+                                                    url: CONTEXTPATH + '/AccountingReport/processProvision', // <-- cambiá esto
+                                                    waitMsg: 'Loading File...',
+                                                    success: function (fp, o) {
+                                                        new AWN().success('File Uploaded Successfully');
+                                                        me.downloadResultProvis(o.result);
+                                                    },
+                                                    failure: function (fp, o) {
+                                                        new AWN().alert('Error on load File');
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
+
+                        }
+                    }
+                }]
+        });
+        winProvis.show();
+    },
+    downloadResultProvis: function(result){
+        const me = this;
+        Ext.Msg.show(
+        {
+            title: '.:PRAXIS:.',
+            msg: 'Download Result?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'yes') {
+                    console.log(result);
+                    let data = JSON.parse(result.data);
+                    me.createExcelProvis(data);
+                }
+            }
+        });
+    },
+    createExcelProvis : async function (data){
+        
+        let excelData = data.map(x=>{
+            let layout = {
+                'Bank Doc.':x.bandoc,
+                'Value Date':x.valdate,
+                'Reference':x.refer,
+                'Status Prov': x.stprov === 'Y'? 'YES':'NO',
+                'Account Prov.': x.accprov,
+                'Date Prov.': x.fecprov,
+                'Corrl AV': x.corrlav
+            };
+            return layout;
+        });
+        global.writeExcelFromJson(excelData,'Provision Success');
+        
     },
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Utilitarios">
