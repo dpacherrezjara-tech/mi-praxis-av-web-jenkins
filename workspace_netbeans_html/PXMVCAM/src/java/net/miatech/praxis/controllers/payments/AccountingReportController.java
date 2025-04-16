@@ -42,6 +42,7 @@ import net.miatech.utils.Functions;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -375,6 +376,25 @@ public class AccountingReportController{
         System.out.println("***** AccountingMaster - evaluateBandoc *****");
         EVALBANDOCFilter res = logic.loadEVALBANDOCFilter(params);
         return ResponseUtils.ok(res);
+    }
+    
+    @RequestMapping(value = "processProvision",method = RequestMethod.POST)
+    public ResponseEntity<?> processProvision(@RequestParam MultipartFile file){
+        System.out.println("***** AccountingMaster - processProvision *****");
+        Gson gson = new Gson();
+        try {
+            Map<String, Object> map = new HashMap();
+            map.put("USERNAME", cs.getServerSession().getUserView().getCustomerInfo().USR.trim());
+            String body = gson.toJson(map);
+            String res = ws.postFileAsync(file, body, "Accounting/loadProvision");
+            Map formRes = new HashMap();
+            formRes.put("success", true);
+            formRes.put("data", res);
+            return new ResponseEntity(formRes,HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
     }
 
     //</editor-fold>
