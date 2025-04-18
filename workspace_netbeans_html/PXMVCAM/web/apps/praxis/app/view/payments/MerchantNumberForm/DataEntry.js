@@ -470,7 +470,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         xtype: 'tabpanel',
                                         id: prototype.id + '-tabMain',
                                         deferredRender: true,
-                                        width: 1129,
+                                        width: 1200,
                                         border: false,
     //                                            height: 182, //820
     //                                            anchor: '100%',
@@ -484,7 +484,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                                 id: prototype.id + '-panelMerchant',
                                                 layout: 'vbox',
                                                 border: false,
-                                                width: 1129,
+                                                width: 1200,
                         //                                                            height: 180,
                                                 hidden: false,
                                                 autoScroll: true,
@@ -492,7 +492,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                                     {
                                                         xtype: 'grid',
                                                         id: prototype.id + '-gridDataInfoMerchant',
-                                                        width: 1129,
+                                                        width: 1200,
                                                         height: 350,
                                                         columnLines: true,
  
@@ -613,6 +613,21 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                                                     id: prototype.id + '-gridMERCHView',
                                                                     width: 40,
                                                                     text: 'View',
+                                                                    align: 'center',
+                                                                    items: [
+                                                                        {
+                                                                            iconCls: 'prx-icon-edit',
+                                                                            tooltip: 'Edit',
+                                                                            handler: 'onViewMerchClick'
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                {
+                                                                    sortable: false,
+                                                                    xtype: 'actioncolumn',
+                                                                    id: prototype.id + '-gridUpdateVigente',
+                                                                    width: 60,
+                                                                    text: 'Historic',
                                                                     align: 'center',
                                                                     items: [
                                                                         {

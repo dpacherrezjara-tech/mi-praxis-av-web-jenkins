@@ -1,6 +1,6 @@
-Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumberDetailController', {
+Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumberDetailMirrorController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.DataEntryMerchantNumberDetailController',
+    alias: 'controller.DataEntryMerchantNumberDetailMirrorController',
     // <editor-fold defaultstate="collapsed" desc="Variables Globales">
     meDE: '',
     actionCode: '',
@@ -25,73 +25,9 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         
         console.log(this.bean, 'THIS.BEAN')
         console.log(this.colIndex, 'THIS.COLINDEX')
-//        this.lstCountry = this.p.lstCountry;
-//        console.log(this.p);
-//        this.obtainData();
-        //this.dataStatic();
         
     },
-//    dataStatic: function () {
-//        let miStoreIATA = Ext.create('Ext.data.Store', {
-//            fields: ['DSAP', 'ATA', 'CANAL', 'PROCESS', 'COUNTRY', 'descCOUNTRY', 'SOCVENTA', 'MONVENTA', 'PROCENTER'],
-//            data: [
-//                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
-//                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
-//                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
-//                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
-//                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
-//                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
-//                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
-//                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
-//                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
-//                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
-//                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
-//                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
-//                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
-//                { DSAP: 'I10990722', ATA: '10990722', CANAL: 'ATO-CTO', PROCESS: 'Punto Propio Presencial', COUNTRY: '', descCOUNTRY: 'UNITED STATES', SOCVENTA: 'AV01', MONVENTA: 'USD', PROCENTER: '1AVMIA17' },
-//            ]
-//        })
-//        let gridIata = Ext.getCmp(prototype.id + '-gridDataInfoIATAS');
-//        gridIata.bindStore(miStoreIATA)
-//        
-//        let miStoreBank = Ext.create('Ext.data.Store', {
-//            fields: ['BANKCODE', 'BANKNAME', 'BANKCOMP', 'DEPCURR', 'ACCNUMBER', 'AUXACCACCO', 'AUXACCACCO'],
-//            data: [
-//                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
-//                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
-//                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
-//                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
-//                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
-//                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
-//                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
-//                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
-//                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
-//                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
-//                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
-//                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
-//                { BANKCODE: '0270', BANKNAME: 'JPMorgan Chase Bank,', BANKCOMP: 'A500', DEPCURR: 'USD', ACCNUMBER: '581936155', AUXACCACCO: '101463', AUXACCACCO: '1A5US099' },
-//                
-//            ]
-//        }) 
-//        let gridBank = Ext.getCmp(prototype.id + '-gridDataInfoBANCOS');
-//        gridBank.bindStore(miStoreBank)
-//        
-//        this.setValue('de-txtMERCHN', '96455739')
-//        this.setValue('de-txtSCOUNTRY', '92690113')
-//        this.setValue('de-txtSCARCOD', '96455739')
-//        this.setValue('de-txtCTABANK', '96455739')
-//        this.setValue('de-txtAFBRANCH', '96455739')
-//        this.setValue('de-txtACQPROC', 'CREDOMATIC PANAMA')
-//        this.setValue('de-txtAPCODE', 'CM')
-//        this.setValue('de-txtDOWNREPORT', 'Plataforma Web - GAW / Correo Electronico - Orquestador')
-//        this.setValue('de-txtFRANCH1', 'VI')
-//        this.setValue('de-txtFRANCH2', 'CA')
-//        this.setValue('de-txtFRANCH3', 'DS')
-//        this.setValue('de-txtFRANCH4', 'DS')
-//        
-//    },
     afterRender: function () {
-//        console.log('afterRender');
         switch (this.actionCode) {
             case 'I':
                 
@@ -131,34 +67,34 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                 
 //                this.DeshabilitarCampoClave();
 //                Ext.getCmp(prototype.id + '-panelTabMain').hide();
-                Ext.getCmp(prototype.id + '-de-txtAFBRANCH_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-de-txtDOWNREPORT_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-de-txtAPCODE_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-de-txtACQPROC_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-de-txtFRANCH1_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-de-txtFRANCH2_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-de-txtFRANCH3_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-de-txtFRANCH4_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-CODEBANK_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-BANKNAM_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-BANKCM_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-BANKCUR_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-ACCNUMB_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-ACCNUMA_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-ACCNUMOLD_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-DDISCON_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-IDFISCAL_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-BENCEN_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-DEUSAP_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-SAGENT_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-CANAL_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-PROCES_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-SCOUNTRY_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-SOCIETY_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-SCURRENCY_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-SBENCEN_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-COSTCEN_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-IDFBENEF_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-de-txtAFBRANCH_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-de-txtDOWNREPORT_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-de-txtAPCODE_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-de-txtACQPROC_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-de-txtFRANCH1_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-de-txtFRANCH2_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-de-txtFRANCH3_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-de-txtFRANCH4_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-CODEBANK_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-BANKNAM_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-BANKCM_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-BANKCUR_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-ACCNUMB_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-ACCNUMA_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-ACCNUMOLD_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-DDISCON_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-IDFISCAL_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-BENCEN_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-DEUSAP_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-SAGENT_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-CANAL_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-PROCES_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-SCOUNTRY_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-SOCIETY_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-SCURRENCY_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-SBENCEN_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-COSTCEN_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-IDFBENEF_D').setEditable(false);
 //                Ext.getCmp(prototype.id + '-bankSection').hide();
 //                Ext.getCmp(prototype.id + '-iataSection').hide();
 //                Ext.getCmp(prototype.id + '-bSection_1').hide();
@@ -168,15 +104,11 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
 //                Ext.getCmp(prototype.id + '-iSection_2').hide();
 //                Ext.getCmp(prototype.id + '-iSection_3').hide();
                 Ext.getCmp(prototype.id + '-btn-save_D').hide();
-                Ext.getCmp(prototype.id + '-btn-update_D').show();
+                Ext.getCmp(prototype.id + '-btn-update_D').hide();
                 
-                if (this.colIndex === 8) {
-                    Ext.getCmp(prototype.id + '-btn-delete_D').show();
-                    Ext.getCmp(prototype.id + '-de-txtMERCHN_D').setEditable(false);
-                } else {
-                    Ext.getCmp(prototype.id + '-btn-delete_D').hide();
-                    Ext.getCmp(prototype.id + '-de-txtMERCHN_D').setEditable(true);
-                }
+                
+                Ext.getCmp(prototype.id + '-btn-delete_D').hide();
+                Ext.getCmp(prototype.id + '-de-txtMERCHN_D').setEditable(false);
                 
                 Ext.getCmp(prototype.id + '-btn-cancel_D').show();
                 break;

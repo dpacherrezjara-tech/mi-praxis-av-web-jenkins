@@ -130,6 +130,9 @@ public String SCURRENCY = "";
 public String SBENCEN = "";
 public String COSTCEN = "";
 public String IDFBENEF = "";
+public String DEFFEC = "";
+public String DFINAL = "";
+public String SEQ = "";
 
 
 public List<A4202> lstDetalle = new ArrayList<A4202>(0);
