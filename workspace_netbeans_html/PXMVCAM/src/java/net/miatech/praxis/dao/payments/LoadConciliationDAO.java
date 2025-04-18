@@ -5698,6 +5698,18 @@ public class LoadConciliationDAO {
         double lngTotMONTO = 0;
         double lngTotRATE = 0;
 
+        
+        HashMap<String, String> hmDescReglas = new HashMap<String, String>();
+        hmDescReglas.put("", "");
+        hmDescReglas.put("1", "By Credit Card");
+        hmDescReglas.put("2", "By Authoc");
+        hmDescReglas.put("3", "By PNR");
+        hmDescReglas.put("4", "By Terminal Zeros");
+        hmDescReglas.put("*", "Intercompany");
+        hmDescReglas.put("S", "By Spreadsheet");
+        hmDescReglas.put("V", "By IATA/SDATE");
+        hmDescReglas.put("T", "By WEB-OPER");
+        
         String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".MPS097(?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
@@ -5748,6 +5760,15 @@ public class LoadConciliationDAO {
                     beanTkt.MONTO = rst.getDouble("AMOUNT");
                     beanTkt.USCURR = rst.getString("USCURR").trim();
                     beanTkt.MONTOUSD = rst.getDouble("RATE");
+                    
+                    beanTkt.DATEC = rst.getString("DATEC").trim();
+                    beanTkt.TRANC = rst.getString("TRANC").trim();
+                    
+                    if (hmDescReglas.containsKey(rst.getString("FREGLA").trim())) {
+                        beanTkt.FREGLA = hmDescReglas.get(rst.getString("FREGLA").trim()).toString();
+                    } else {
+                        beanTkt.FREGLA = rst.getString("FREGLA").trim();
+                    }
                     
                     beanTkt.lngTotMONTO = lngTotMONTO;
                     beanTkt.lngTotRATE = lngTotRATE;
