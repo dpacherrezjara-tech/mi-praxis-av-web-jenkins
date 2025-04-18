@@ -10,6 +10,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.MerchantNumberControll
     fecha: new Date(),
     childs: '5',
     bean: '',
+    beanHistoric: '',
     paginActual: '',
     drillDown: [],
     lstCountry: [],
@@ -18,6 +19,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.MerchantNumberControll
     fileName: '',
     me: '',
     searchParams: {},
+    searchParamsHistoric: {},
     paramsDetail: {},
     dataObtain: {},
     init: function (view) {
@@ -219,6 +221,73 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.MerchantNumberControll
 
         }
     },
+    btnSearch_clickHistoric: function (obj, e) {
+        
+        console.log(Ext.getCmp(prototype.id + '-chkViewHistoric').getValue(),'OPCION DEL CHECK')
+        if (Ext.getCmp(prototype.id + '-chkViewHistoric').getValue()) {
+            this.setFormatParameterHistoric();
+            this.setGridDataHistoric();
+        } else {
+            this.setFormatParameter();
+            this.setGridData();
+        }
+    },
+    setFormatParameterHistoric: function () {
+
+        me.beanHistoric = {};
+        me.beanHistoric.IN_CMERCHAN = Ext.getCmp(prototype.id + '-txtCMERCHAN').getValue();
+        me.beanHistoric.IN_BMERCHAN = Ext.getCmp(prototype.id + '-txtBMERCHAN').getValue();
+        me.beanHistoric.IN_SCARCOD = Ext.getCmp(prototype.id + '-cmbCardType').getValue();
+        me.beanHistoric.IN_CTABANK = Ext.getCmp(prototype.id + '-txtCTABANK').getValue();
+        me.beanHistoric.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
+        me.beanHistoric.IN_COREP = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
+        
+        var beanStringHistoric = JSON.stringify(me.beanHistoric);
+        searchParamsHistoric = {
+            bean: me.beanHistoric,
+            beanString: beanStringHistoric
+        };
+        console.log(searchParamsHistoric, 'searchParams')
+        console.log(beanStringHistoric, 'beanString')
+    },
+    setGridDataHistoric: function () {
+        console.log(prototype.url, 'prototype.url')
+        win.lblUser_toolTip("Estructura: MPF169");
+        me.panelActual = '-panelGridDataHistoric';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        me.setWidthPie();
+        var msj = this.validateFields();
+        if (msj !== '') {
+            global.Msg({msg: msj
+            });
+        } else {
+            var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchHistoric'
+                }, listeners: {
+                    beforeload: function (obj) {
+                        obj.proxy.extraParams = searchParamsHistoric;
+                    },
+                    load: function (obj) {
+                        var pag = Ext.getCmp(prototype.id + '-paggin');
+                        var pagData = pag.getPageData();
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        }
+                    }
+                }
+            });
+            global.clear();
+            Ext.getCmp(prototype.id + '-gridDataHistoric').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
+
+        }
+    },
     onLoadClick: function () {
         var msjPregunta = 'Sure to load file?';
 
@@ -352,6 +421,23 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.MerchantNumberControll
 
         Ext.create('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
             id: prototype.id + '-dataEntry',
+            params: {
+                action: action,
+                rec: rec,
+                lstCountry: me.lstCountry
+            }
+        }).show();
+    },
+    onViewMirror: function (grid, rowIndex, colIndex) {
+        var rec = grid.getStore().getAt(rowIndex);
+        this.winDataEntryMirror('U', rec);
+    },
+    winDataEntryMirror: function (action, rec) {
+        action = action === null || action === undefined ? 'U' : action;
+        rec = rec === null || rec === undefined ? {} : rec;
+
+        Ext.create('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetailMirror', {
+            id: prototype.id + '-dataEntryMirror',
             params: {
                 action: action,
                 rec: rec,
