@@ -458,8 +458,10 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         });
     },
     onViewMerchClick: function (grid, rowIndex, colIndex, item, e, record) {
+        console.log(colIndex, 'COLINDEX')
         var rec = grid.getStore().getAt(rowIndex);
-        console.log('llega al view')
+        rec.colIndex = colIndex;
+        console.log(rec, 'INFO REC')
         this.winDataEntry('U', rec);
     },
     winDataEntry: function (action, rec) {

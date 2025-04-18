@@ -3,35 +3,26 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Filters', {
     alias: 'widget.' + prototype.id + '-filters',
     border: true,
     bodyStyle: 'background-color: #E3EAF9;',
-    padding: '2px 0px 1px 0px',
     layout: 'column',
     items: [
         {
             xtype: 'form',
             border: false,
             bodyStyle: 'background: transparent',
-            padding: '2px 5px 1px 5px',
+            margin: '8px 0 5px 15px',
             layout: 'column',
             defaults: {
-                labelStyle: 'font-weight:bold;',
                 fieldStyle: 'text-align: center;',
-                padding: '5px 1px 5px 1px',
                 anchor: '100%',
                 hiddenLabel: false,
-                labelAlign: 'right',
-                xtype: 'textfield',
-//                hidden: true,
-                selectOnFocus: true,
-                enableKeyEvents: true,
-                enforceMaxLength: true
+                labelAlign: 'right'
             },
             items: [
                 {
                     xtype: 'label',
-                    strong: true,
-                    html: '<strong>Merchant:</strong>',
-                    padding: '7 0 0 10',
-                    width: 87,
+                    text: 'Merchant:',
+                    width: 60,
+                    margin: '1.5 0 0 0'
                 },
                 {
                     xtype: 'textfield',
@@ -40,18 +31,18 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Filters', {
                     enforceMaxLength: true,
                     maskRe: /[0-9a-zA-Z]/,
                     maxLength: 16,
-                    width: 130,
+                    width: 110,
                     enableKeyEvents: true,
+                    margin: '0 10 0 0',
                     listeners: {
                         keypress: 'buscarFilter'
                     }
                 },
                 {
                     xtype: 'label',
-                    strong: true,
-                    html: '<strong>Branch Merchant:</strong>',
-                    padding: '7 0 0 10',
-                    width: 130,
+                    text: 'Branch Merchant:',
+                    width: 100,
+                    margin: '1.5 0 0 0'
                 },
                 {
                     xtype: 'textfield',
@@ -60,56 +51,40 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Filters', {
                     enforceMaxLength: true,
                     maskRe: /[0-9a-zA-Z]/,
                     maxLength: 16,
-                    width: 130,
+                    width: 120,
                     enableKeyEvents: true,
+                    margin: '0 10 0 0',
                     listeners: {
                         keypress: 'buscarFilter'
                     }
                 },
                 {
                     xtype: 'label',
-                    html: '<strong>Cta Bank:</strong>',
-                    padding: '7 0 0 10',
-                    width: 87,
-                    hidden: true,
-                },
-                {
-                    xtype: 'textfield',
-                    id: prototype.id + '-txtCTABANK',
-                    fieldStyle: 'text-align:center',
-                    enforceMaxLength: true,
-                    maskRe: /[0-9a-zA-Z]/,
-                    maxLength: 15,
-                    hidden: true,
+                    text: 'Credit Card Code:',
                     width: 100,
-                    enableKeyEvents: true,
-                    listeners: {
-                        keypress: 'buscarFilter'
-                    }
+                    margin: '1.5 0 0 0'
                 },
                 {
                     xtype: 'combo',
-                    fieldLabel: '<strong style="color:red;font-size:13px;"></strong>  Credit Card Code',
                     id: prototype.id + '-cmbCardType',
                     disabled: false,
-                    width: 300,
-                    labelWidth: 120,
+                    width: 150,
                     queryMode: 'local',
                     triggerAction: 'all',
                     valueField: 'CODE',
                     displayField: 'NAME',
                     hidden: false,
                     hiddenLabel: false,
+                    margin: '0 10 0 0',
                     listeners: {
                         keypress: 'buscarFilter'
                     }
                 },
                 {
                     xtype: 'label',
-                    html: '<strong>Country:</strong>',
-                    strong: true,
-                    padding: '7 0 0 10',
-                    width: 70
+                    text: 'Country:',
+                    width: 50,
+                    margin: '1.5 0 0 0'
                 },
                 {
                     xtype: 'combo',
@@ -121,41 +96,38 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Filters', {
                     caseSensitive: false,
                     autoSelect: true,
                     editable: true,
-                    width: 210,
+                    width: 150,
                     typeAhead: true,
                     valueField: 'A006PAIS',
                     displayField: 'A006NOMBRE',
                     listConfig: {maxHeight: 111},
                     enableKeyEvents: true,
                     triggerAction: 'all',
+                    margin: '0 10 0 0'
                 },
                 {
                     xtype: 'label',
-                    html: '<strong>Processor:</strong>',
-                    strong: true,
-                    padding: '7 0 0 10',
-                    width: 80,
+                    text: 'Processor:',
+                    width: 60,
+                    margin: '1.5 0 0 0'
                 },
                 {
                     xtype: 'combo',
                     id: prototype.id + '-cmbCOREP',
                     width: 130,
                     emptyText: 'All',
-//                    value: [],
                     displayField: 'NAME',
                     valueField: 'VALUE',
                     queryMode: 'local',
-//                    filterPickList: true,
                     editable: true,
-//                    multiSelect: true,
                     forceSelection: true,
+                    margin: '0 10 0 0'
                 },
                 {
                     xtype: 'form',
                     border: false,
                     id: prototype.id + '-cargaMerchant',
                     bodyStyle: 'background: transparent',
-                    margin: '0 0 0 20',
                     layout: 'column',
                     defaults: {
                         fieldStyle: 'text-align: center;',
@@ -167,7 +139,6 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Filters', {
                         selectOnFocus: true
                     },
                     items: [
-
                         {
                             xtype: 'form',
                             id: prototype.id + '-formMerchant',
@@ -207,9 +178,41 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Filters', {
                             listeners: {
                                 click: 'onLoadClick'
                             }
-                        }
+                        },
                     ]
-                }
+                },
+                {
+                    xtype: 'checkboxfield',
+                    id: prototype.id + '-chkViewHistoric',
+                    boxLabel: 'View Historic',
+                    name: 'validationOption',
+                    inputValue: '1',
+                    uncheckedValue: '0',
+                    listeners: {
+                        change: 'btnSearch_clickHistoric' 
+                    }
+                },
+                {
+                    xtype: 'label',
+                    html: '<strong>Cta Bank:</strong>',
+                    padding: '7 0 0 10',
+                    width: 87,
+                    hidden: true,
+                },
+                {
+                    xtype: 'textfield',
+                    id: prototype.id + '-txtCTABANK',
+                    fieldStyle: 'text-align:center',
+                    enforceMaxLength: true,
+                    maskRe: /[0-9a-zA-Z]/,
+                    maxLength: 15,
+                    hidden: true,
+                    width: 100,
+                    enableKeyEvents: true,
+                    listeners: {
+                        keypress: 'buscarFilter'
+                    }
+                },
             ]
         }
     ]

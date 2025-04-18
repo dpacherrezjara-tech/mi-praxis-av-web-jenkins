@@ -748,5 +748,93 @@ public class MerchantNumberController extends BaseController {
         }
         return message;
     }
+    
+    @RequestMapping(value = "MaintenanceMirror")
+    public @ResponseBody
+    String MaintenanceMirror(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- MerchantNumber : MaintenanceMirror-------------");
+
+        String option;
+        String beanString;
+        String oldBeanString;
+        Gson gson = new Gson();
+
+        A2354Filter filterNew = new A2354Filter();
+        A2354Filter filterOld = new A2354Filter();
+        String msj = " ";
+
+        try {
+
+            option = request.getParameter("option");
+            beanString = request.getParameter("beanString");
+            oldBeanString = request.getParameter("oldBeanString");
+            filterNew = gson.fromJson(beanString, A2354Filter.class);
+            filterOld = gson.fromJson(oldBeanString, A2354Filter.class);
+
+            logic = new MerchantNumberLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            msj = logic.load_MPS114(filterNew, filterOld, option);
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+    
+    @RequestMapping(value = "searchHistoric")
+    public @ResponseBody
+    String searchHistoric(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- MerchantNumber : Search-------------");
+        map.put("success", true);
+        List<A2354Filter> lst = this.getListHistoric(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<A2354Filter> getListHistoric(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2354Filter> lst = new ArrayList<>(0);
+        A2354Filter filter = new A2354Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new MerchantNumberLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2354Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.load_MPS115(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+
 
 }

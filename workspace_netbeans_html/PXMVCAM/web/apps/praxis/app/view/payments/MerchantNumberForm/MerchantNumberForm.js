@@ -1,4 +1,3 @@
-
 prototype.id = 'MerchantNumberForm';
 prototype.url = CONTEXTPATH + '/MerchantNumber';
 
@@ -12,10 +11,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.MerchantNumberForm', {
         'Ext.Praxis.controller.payments.MerchantNumber.MerchantNumberController'
     ],
     controller: 'MerchantNumberController',
-    layout: {
-        type: 'fit'
-    },
-    padding: '0 0 0 0',
+    layout: {type: 'fit'},
     border: false,
     defaults: {
         border: false
@@ -32,17 +28,16 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.MerchantNumberForm', {
                     border: false,
                     bodyCls: 'colorFondo',
                     layout: 'fit',
-//                    defaults: {
-//                        border: false,
-//                        autoScroll: true
-//                    },
+                    defaults: {
+                        border: false,
+                        autoScroll: true
+                    },
                     items: [
                         {
                             xtype: 'panel',
                             region: 'center',
-                            width: 980,
+                            width: 1000,
                             layout: 'border',
-                            
                             items: [
                                 {
                                     region: 'center',
@@ -54,37 +49,32 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.MerchantNumberForm', {
                                     border: true,
                                     autoScroll: true,
                                     defaults: {
-                                        width: 1705,
+                                        width: 1800,
                                         align: 'center'
                                     },
                                     items: [
                                         {
                                             xtype: prototype.id + '-options'
                                         }
-                                        ,
-                                        {
+                                        ,{
                                             xtype: prototype.id + '-filters',
                                             id: prototype.id + '-contentFilter',
                                             hidden: false
-                                        }
-                                        ,
+                                        },
                                         {
                                             xtype: 'panel',
-                                            height: 600,
-                                            width: 1705,
+                                            height: 580,
                                             layout: 'fit',
                                             items: [
                                                 {
                                                     xtype: 'panel',
                                                     id: prototype.id + '-centerC-panel01',
-                                                    width: 1705,
                                                     layout: 'border',
                                                     align: 'center',
-                                                    border: true,
+                                                    border: false,
                                                     defaults: {
                                                         border: false
                                                     },
-                                                    bodyStyle: 'background-color: white;',
                                                     items: [
                                                         {
                                                             region: 'center',
@@ -94,8 +84,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.MerchantNumberForm', {
                                                     ]
                                                 }
                                             ]
-                                        },
-                                        
+                                        }
                                    ]
                                 }
                             ]
