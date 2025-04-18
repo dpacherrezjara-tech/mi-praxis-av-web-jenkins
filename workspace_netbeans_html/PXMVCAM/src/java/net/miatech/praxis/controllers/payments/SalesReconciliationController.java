@@ -2894,6 +2894,8 @@ public class SalesReconciliationController extends BaseController {
         System.out.println("Report : getReport");
         A2290Filter filter = new A2290Filter();
         String fileNameDownload = String.format("Report Sales By Ticket - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
+        
+        
         try {
             Workbook workbook;
             File file = File.createTempFile(fileNameDownload, ".xlsx");
@@ -2973,6 +2975,9 @@ public class SalesReconciliationController extends BaseController {
                 Cell CH1_14 = row1.createCell(14);
                 Cell CH1_15 = row1.createCell(15);
                 Cell CH1_16 = row1.createCell(16);
+                Cell CH1_17 = row1.createCell(17);
+                Cell CH1_18 = row1.createCell(18);
+                Cell CH1_19 = row1.createCell(19);
 
 //            PLACA,TKT,FUENTE,AGENT,COUNTRY,DATE,CONSOL,PNR,CARDN,AUTHOC,CARCOD,STATE,INVOICE,CURRENCY,AMOUNT
                 CH1_0.setCellValue("Placa");
@@ -2992,6 +2997,9 @@ public class SalesReconciliationController extends BaseController {
                 CH1_14.setCellValue("Amount Local");
                 CH1_15.setCellValue("Currency USD");
                 CH1_16.setCellValue("Amount USD");
+                CH1_17.setCellValue("Date Conciliation");
+                CH1_18.setCellValue("Transaction Conciliation");
+                CH1_19.setCellValue("Rule");
 
                 CH1_0.setCellStyle(headerStyle);
                 CH1_1.setCellStyle(headerStyle);
@@ -3010,6 +3018,9 @@ public class SalesReconciliationController extends BaseController {
                 CH1_14.setCellStyle(headerStyle);
                 CH1_15.setCellStyle(headerStyle);
                 CH1_16.setCellStyle(headerStyle);
+                CH1_17.setCellStyle(headerStyle);
+                CH1_18.setCellStyle(headerStyle);
+                CH1_19.setCellStyle(headerStyle);
 
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, 1));
@@ -3028,6 +3039,9 @@ public class SalesReconciliationController extends BaseController {
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 14, 14));
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 15, 15));
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 16, 16));
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, 17, 17));
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, 18, 18));
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, 19, 19));
                 ++vj;
                 //============================================
 
@@ -3050,6 +3064,9 @@ public class SalesReconciliationController extends BaseController {
                     Cell rcell14 = row1.createCell(14);
                     Cell rcell15 = row1.createCell(15);
                     Cell rcell16 = row1.createCell(16);
+                    Cell rcell17 = row1.createCell(17);
+                    Cell rcell18 = row1.createCell(18);
+                    Cell rcell19 = row1.createCell(19);
 
                     rcell0.setCellValue(listaData.get(vi).PLACA);
                     rcell1.setCellValue(listaData.get(vi).TKT);
@@ -3068,6 +3085,10 @@ public class SalesReconciliationController extends BaseController {
                     rcell14.setCellValue(listaData.get(vi).MONTO);
                     rcell15.setCellValue(listaData.get(vi).USCURR);
                     rcell16.setCellValue(listaData.get(vi).MONTOUSD);
+                    
+                    rcell17.setCellValue(listaData.get(vi).DATEC);
+                    rcell18.setCellValue(listaData.get(vi).TRANC);
+                    rcell19.setCellValue(listaData.get(vi).FREGLA);
                     iter.next();
                     ++vi;
                     ++vj;
@@ -3132,6 +3153,9 @@ public class SalesReconciliationController extends BaseController {
                 sheet.autoSizeColumn(14, true);
                 sheet.autoSizeColumn(15, true);
                 sheet.autoSizeColumn(16, true);
+                sheet.autoSizeColumn(17, true);
+                sheet.autoSizeColumn(18, true);
+                sheet.autoSizeColumn(19, true);
 
                 //============================================
                 response.setContentType("application/vnd.openxml");
