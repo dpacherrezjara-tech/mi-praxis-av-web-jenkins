@@ -35,6 +35,9 @@ public class PanelLogic {
     public PX076S01INF053Filter setPX076S01INF053(PX076S01INF053Filter filter ) throws SQLException , Exception{ 
         return panelDAO.setPX076S01INF053(filter);
     }
+    public PX076S01INF053Filter setSQP05412(PX076S01INF053Filter filter ) throws SQLException , Exception{ 
+        return panelDAO.setSQP05412(filter);
+    }
     
     public PX075S02INF001Filter setPX075S02INF001(PX075S02INF001Filter filter ) throws SQLException , Exception{ 
         return panelDAO.setPX075S02INF001(filter);
