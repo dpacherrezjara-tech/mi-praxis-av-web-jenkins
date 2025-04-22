@@ -211,6 +211,10 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         this.setValue('COSTCEN_D', this.bean.data.COSTCEN)
         this.setValue('IDFBENEF_D', this.bean.data.IDFBENEF)
         
+        this.setValue('de-DEFFEC', this.bean.data.DEFFEC)
+        this.setValue('de-DFINAL', this.bean.data.DFINAL)
+        this.setValue('de-SEQ', this.bean.data.SEQ)
+        
 
         this.setValue('txtUSCR_D', this.bean.data.USCR);
         this.setValue('txtFECR_D', this.bean.data.FECR);
