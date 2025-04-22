@@ -1160,6 +1160,8 @@ public class MerchantNumberDAO {
                 objRtn.EQUIVA7 = rs01.getString("EQUIVA7").trim();
                 objRtn.EQUIVA8 = rs01.getString("EQUIVA8").trim();
                 objRtn.EQUIVA9 = rs01.getString("EQUIVA9").trim();
+                
+                objRtn.DEFFEC = rs01.getString("DEFFEC").trim();
 
                 objRtn.USCR = rs01.getString("USCR");
                 objRtn.FECR = rs01.getString("FECR");

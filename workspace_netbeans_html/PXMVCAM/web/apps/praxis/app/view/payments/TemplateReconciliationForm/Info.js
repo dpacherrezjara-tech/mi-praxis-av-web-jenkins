@@ -47,7 +47,10 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                             filterPickList: true,
                             editable: true,
                             forceSelection: true,
-                            margin: '0 10px 0 0' // Espacio entre los combos
+                            margin: '0 10px 0 0' ,// Espacio entre los combos
+                            listeners: {
+                                change: 'changeProcessor'
+                            }
                         },
                         {
                             xtype: 'combo',
@@ -97,6 +100,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                             maxLength: 50,
                             width: 180,
                             labelWidth: 85,
+                            disabled: true,
                             enableKeyEvents: true,
                             listeners: {
                                 keypress: 'searchAllGrid'
@@ -500,11 +504,12 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                },
                                 {
                                     xtype: 'textfield',
-                                    fieldLabel: "Merchant:",
+                                    fieldLabel: "Merchand:",
                                     labelStyle: 'text-align: left; font-size: 12px;',
                                     fieldStyle: 'text-align: center; font-size: 12px;',
                                     id: prototype.id + '-txtMerchant',
                                     enforceMaxLength: true,
+                                    disabled: true,
                                     maxLength: 15,
                                     width: 180,
                                     labelWidth: 57,

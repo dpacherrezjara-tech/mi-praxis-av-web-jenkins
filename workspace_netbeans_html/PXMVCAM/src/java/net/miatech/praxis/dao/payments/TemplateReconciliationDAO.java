@@ -601,13 +601,15 @@ public class TemplateReconciliationDAO {
             // Crear claves únicas del tercer resultset
             Set<String> thirdKeySet = new HashSet<>();
             for (A2290Filter f : thirdList) {
-                String key = f.CODPRO.trim() + "|" + f.MERCHAND.trim() + "|" + f.LIQUIDACIO.trim();
+                String key = f.CODPRO.trim() + "|" + f.MERCHAND.trim() + "|" + f.LIQUIDACIO.trim() + "|" + f.CCUST.trim() + f.PRDA.trim()
+                        + f.CCUSTPRO.trim() + f.FLIQUIDACI.trim() + f.MONEDA.trim();
                 thirdKeySet.add(key);
             }
 
             // Crear lista combinada sin asignar RN aún
             for (A2290Filter item : lstTkts) {
-                String key = item.CODPRO.trim() + "|" + item.MERCHAND.trim() + "|" + item.LIQUIDACIO.trim();
+                String key = item.CODPRO.trim() + "|" + item.MERCHAND.trim() + "|" + item.LIQUIDACIO.trim() + "|" + item.CCUST.trim() + item.PRDA.trim()
+                        + item.CCUSTPRO.trim() + item.FLIQUIDACI.trim() + item.MONEDA.trim();
                 boolean existsInThird = thirdKeySet.contains(key);
                 item.checkActive = existsInThird;
                 item.blockChange = existsInThird;
