@@ -627,11 +627,11 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                                                     xtype: 'actioncolumn',
                                                                     id: prototype.id + '-gridUpdateVigente',
                                                                     width: 60,
-                                                                    text: 'Historic',
+                                                                    text: 'Update',
                                                                     align: 'center',
                                                                     items: [
                                                                         {
-                                                                            iconCls: 'prx-icon-edit',
+                                                                            icon: 'resources/img/botones/add.png', // Ruta a tu imagen
                                                                             tooltip: 'Edit',
                                                                             handler: 'onViewMerchClick'
                                                                         }

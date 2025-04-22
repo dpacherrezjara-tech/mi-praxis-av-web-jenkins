@@ -181,6 +181,8 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                 Ext.getCmp(prototype.id + '-btn-cancel_D').show();
                 break;
         }
+        Ext.getCmp(prototype.id + '-de-txtDEFFEC').setEditable(false);
+        
     },
     mostrarData: function () {
 //        console.log(meDE.beanResult);
@@ -278,6 +280,8 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         this.setValue('SBENCEN_D', this.bean.data.SBENCEN)
         this.setValue('COSTCEN_D', this.bean.data.COSTCEN)
         this.setValue('IDFBENEF_D', this.bean.data.IDFBENEF)
+        
+        this.setValue('de-txtDEFFEC', this.bean.data.DEFFEC)
         
 
         this.setValue('txtUSCR_D', this.bean.data.USCR);
