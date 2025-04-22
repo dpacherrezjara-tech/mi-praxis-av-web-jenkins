@@ -446,7 +446,7 @@ public class TemplateReconciliationController extends BaseController {
             int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
             int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
 
-            if (!bExcel) {
+            if (false) {
                 filter.page.PAGROW = 20;
                 start = (start != 0 ? start : 0);
                 filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
@@ -710,7 +710,15 @@ public class TemplateReconciliationController extends BaseController {
             m.put("result", message);
         }
         
-        return new Gson().toJson(m);
+        if (message != null && message.contains("Operation Successful")) {
+            m.put("success", true);
+            m.put("result", "Operation Successful");
+        } else {
+            m.put("success", false);
+            m.put("result", message);
+        }
+
+        return gson.toJson(m);
         
     }
     

@@ -185,7 +185,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetailMirror', 
                                                     bodyStyle: 'background:#f0f0f0;', // Fondo de los sub-paneles
                                                     style: 'border-radius: 5px;', // Bordes redondeados de los sub-paneles
                                                     margin: '8 2 0 10',
-                                                    width: 1080,
+                                                    width: 1150,
                                                     defaults: {
                                                         anchor: '100%',
                                                         width: 400
@@ -214,7 +214,69 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetailMirror', 
                                                             maskRe: /[a-zA-Z0-9]/,
                                                             readOnly: false,
                                                             width: 155,
+                                                            margin: '0 10 0 0'
                                                         },
+                                                        {
+                                                            xtype: 'label',
+                                                            text: 'Date Init',
+                                                            style: 'font-weight:bold;color:#0B333C;',
+                                                            width: 110,
+                                                            margin: '3 0 0 0'
+                                                        },
+                                                        {
+                                                            xtype: 'textfield',
+                                                            id: prototype.id + '-de-DEFFEC',
+                                                            fieldStyle: 'text-align:center; border-color: red;',
+                                                            enforceMaxLength: true,
+                                                            editable: false,
+                                                            enabled: false,
+                                                            maxLength: 16,
+                                                            maskRe: /[a-zA-Z0-9]/,
+                                                            readOnly: false,
+                                                            width: 130,
+                                                            margin: '0 18 0 0'
+                                                        },
+                                                        {
+                                                            xtype: 'label',
+                                                            text: 'Date End',
+                                                            style: 'font-weight:bold;color:#0B333C;',
+                                                            width: 140,
+                                                            margin: '3 0 0 0'
+                                                        },
+                                                        {
+                                                            xtype: 'textfield',
+                                                            id: prototype.id + '-de-DFINAL',
+                                                            fieldStyle: 'text-align:center; border-color: red;',
+                                                            enforceMaxLength: true,
+                                                            editable: false,
+                                                            enabled: false,
+                                                            maxLength: 16,
+                                                            maskRe: /[a-zA-Z0-9]/,
+                                                            readOnly: false,
+                                                            width: 130,
+                                                            margin: '0 10 0 0'
+                                                        },
+                                                        {
+                                                            xtype: 'label',
+                                                            text: 'Secuence',
+                                                            style: 'font-weight:bold;color:#0B333C;',
+                                                            width: 135,
+                                                            margin: '3 0 0 0'
+                                                        },
+                                                        {
+                                                            xtype: 'textfield',
+                                                            id: prototype.id + '-de-SEQ',
+                                                            fieldStyle: 'text-align:center; border-color: red;',
+                                                            enforceMaxLength: true,
+                                                            editable: false,
+                                                            enabled: false,
+                                                            maxLength: 16,
+                                                            maskRe: /[a-zA-Z0-9]/,
+                                                            readOnly: false,
+                                                            width: 130,
+                                                            margin: '0 10 0 0'
+                                                        },
+                                                        { xtype: 'tbspacer', width: 10 },
                                                     ]
                                                 }
                                             ]

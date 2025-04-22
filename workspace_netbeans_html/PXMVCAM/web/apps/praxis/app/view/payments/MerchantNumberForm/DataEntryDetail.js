@@ -190,6 +190,26 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetail', {
                                     },
                                     {xtype: 'tbspacer', width: 120},
                                     
+                                    {
+                                        xtype: 'label',
+                                        text: 'Effective Date',
+                                        style: 'font-weight:bold;',
+                                        width: 115
+                                    },
+                                    {xtype: 'tbspacer', width: 5},
+                                    {
+                                        xtype: 'textfield',
+                                        id: prototype.id + '-de-txtDEFFEC',
+                                        fieldStyle: 'text-align:left',
+                                        enforceMaxLength: true,
+                                        editable: false,
+                                        enabled: false,
+                                        maxLength: 30,
+//                                        maxLength: 15,
+                                        maskRe: /[a-zA-Z0-9]/,
+                                        readOnly: true,
+                                        width: 130
+                                    },
                                 ]
                             },
                             { xtype: 'tbspacer', width: 20, height: 20 }, // Espaciador
