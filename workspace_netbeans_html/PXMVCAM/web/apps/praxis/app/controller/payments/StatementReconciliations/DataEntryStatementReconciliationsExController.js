@@ -139,7 +139,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETOC, '0,000.00'));
 
             this.setValue('de-txtCOREP', this.beanResult.COREP);
-            if (!this.beanResult.COREP.includes("WP") && !this.beanResult.COREP.includes("IP") && !this.beanResult.COREP.includes("PB") && !this.beanResult.COREP.includes("BG") &&
+            if (!this.beanResult.COREP.includes("LK") && !this.beanResult.COREP.includes("WP") && !this.beanResult.COREP.includes("IP") && !this.beanResult.COREP.includes("PB") && !this.beanResult.COREP.includes("BG") &&
                     !this.beanResult.COREP.includes("SD") && !(this.beanResult.COREP.includes("FD") &&
                     this.beanResult.SCOUNTRY.includes("UY"))  && !this.beanResult.COREP.includes("NB") &&
                     !this.beanResult.COREP.includes("ET") && !this.beanResult.COREP.includes("WQ") && 
@@ -190,7 +190,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETOL, '0,000.00'));
             this.setValue('de-txtCOREP', this.beanResult.COREP);
 
-            if (!this.beanResult.COREP.includes("WP") && !this.beanResult.COREP.includes("IP") && !this.beanResult.COREP.includes("PB") && !this.beanResult.COREP.includes("BG") &&
+            if (!this.beanResult.COREP.includes("LK") && !this.beanResult.COREP.includes("WP") && !this.beanResult.COREP.includes("IP") && !this.beanResult.COREP.includes("PB") && !this.beanResult.COREP.includes("BG") &&
                     !this.beanResult.COREP.includes("SD") && !(this.beanResult.COREP.includes("FD") && !this.beanResult.COREP.includes("BG") &&
                     this.beanResult.SCOUNTRY.includes("UY"))  && !this.beanResult.COREP.includes("NB") &&
                     !this.beanResult.COREP.includes("ET") && !this.beanResult.COREP.includes("WQ") && 
