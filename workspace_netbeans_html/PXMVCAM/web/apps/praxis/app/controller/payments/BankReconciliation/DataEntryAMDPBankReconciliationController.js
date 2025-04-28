@@ -661,6 +661,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.sumAmount = 0;
         this.lstSendManual = [];
         var store_gridInfoScan = Ext.getCmp(prototype.id + '-gridDataInfoScan').getStore();
+        var qtyTkt = store_gridInfoScan.getCount();
+        
         for (var i = 0; i < store_gridInfoScan.data.length; i++) {
             var dataRow1 = store_gridInfoScan.data.items[i];
             this.lstSendManual.push(dataRow1.data);
@@ -671,6 +673,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         for (var i = 0; i < this.lstAdjustment.length; i++) {
             this.sumAmount = this.sumAmount + parseFloat(this.lstAdjustment[i].A1531VFOP);
         }
+        Ext.getCmp(prototype.id + '-de-QtyTkt').setValue(qtyTkt); 
         this.setValue('de-txtSumAmount', Ext.util.Format.number(this.sumAmount, '0,000.00'));
         Ext.getCmp(prototype.id + '-gridDataInfoScan').getView().refresh();
     },
