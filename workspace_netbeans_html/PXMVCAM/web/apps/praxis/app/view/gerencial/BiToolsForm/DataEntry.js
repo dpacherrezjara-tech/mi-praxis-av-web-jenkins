@@ -2200,6 +2200,22 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.DataEntry', {
                                                     readOnly: true,
                                                     width: 90,
                                                 },
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Qty Tkt:',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    width: 50
+                                                },
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-QtyTkt',
+                                                    fieldStyle: 'text-align:right',
+                                                    enforceMaxLength: true,
+                                                    readOnly: true,
+                                                    width: 90,
+                                                },
                                             ]
                                         },
                                     ]
