@@ -9,6 +9,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
     lstCountry: [],
     searchParams: {},
     lstA1852: {},
+    lstMerchants: {},
     dataObtain: {},
 //    beanTemp:  {},
     // </editor-fold>
@@ -37,7 +38,6 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                     params: {beanString: JSON.stringify(this.dataObtain)},
                     success: function (response, options) {
                         var res = Ext.JSON.decode(response.responseText);
-                        console.log(res, 'res')
                         if (res.success) {
 
                             me.lstCountry = res.lstCountry;
@@ -144,7 +144,6 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                     params: {beanString: JSON.stringify(this.dataObtain)},
                     success: function (response, options) {
                         var res = Ext.JSON.decode(response.responseText);
-                        console.log(res, 'res')
                         if (res.success) {
 
                             me.lstCountry = res.lstCountry;
@@ -221,7 +220,6 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
             params: {beanString: JSON.stringify(this.dataObtain)},
             success: function (response, options) {
                 var res = Ext.JSON.decode(response.responseText);
-                console.log(res, 'res')
                 if (res.success) {
 
                     me.lstCountry = res.lstCountry;
@@ -240,7 +238,6 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                     global.Msg({msg: res.sesion});
             }
         });
-        console.log('dadsadasdadasdadad', meDE.beanResult)
         this.setValue('de-txtMERCHN', meDE.beanResult.CMERCHAN)
 
         this.setValue('de-txtAFBRANCH', meDE.beanResult.SUCMERCH)
@@ -363,6 +360,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         console.log('después del llamado')
 
         var paramDetailMerchants = {};
+        meDE.lstMerchants = {};
         paramDetailMerchants.beanString = JSON.stringify(meDE.bean.data);
         console.log('meDE.bean.data', meDE.bean.data)
         Ext.Ajax.request({
@@ -374,15 +372,16 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
             success: function (response, opts) {
                 Ext.getCmp(prototype.id + '-dataEntry').unmask();
                 var resMerchant = Ext.JSON.decode(response.responseText);
-                console.log(resMerchant, 'res');
                 if (resMerchant.success) {
-                    console.log(resMerchant.data, 'res.data')
+                    
                     //llenar grilla gridDataInfoScan
                     var storeDataMerchant = Ext.create('Ext.data.Store', {
                         data: resMerchant.data,
                         autoLoad: true
                     });
                     Ext.getCmp(prototype.id + '-gridDataInfoMerchant').bindStore(storeDataMerchant);
+                    meDE.lstMerchants = resMerchant.data
+                    console.log(meDE.lstMerchants, 'LISTA DE MERCHANTS DEVUELTA')
                 } else {
                     global.Msg({msg: resMerchant.Mensaje});
                 }
@@ -458,7 +457,6 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         });
     },
     onViewMerchClick: function (grid, rowIndex, colIndex, item, e, record) {
-        console.log(colIndex, 'COLINDEX')
         var rec = grid.getStore().getAt(rowIndex);
         rec.colIndex = colIndex;
         console.log(rec, 'INFO REC')

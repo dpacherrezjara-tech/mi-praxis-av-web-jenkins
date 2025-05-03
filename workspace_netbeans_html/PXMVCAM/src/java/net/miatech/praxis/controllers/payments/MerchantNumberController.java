@@ -836,5 +836,41 @@ public class MerchantNumberController extends BaseController {
         return lst;
     }
 
+    @RequestMapping(value = "MaintenanceHistoric")
+    public @ResponseBody
+    String MaintenanceHistoric(ModelMap map, HttpServletRequest request) {
 
+        System.out.println("-------------- MerchantNumber : MaintenanceHistoric-------------");
+
+        String option;
+        String beanString;
+        String merchant;
+        Gson gson = new Gson();
+
+        A2354Filter filterNew = new A2354Filter();
+        A2354Filter filterOld = new A2354Filter();
+        String msj = " ";
+
+        try {
+
+            option = request.getParameter("option");
+            beanString = request.getParameter("beanString");
+            merchant = request.getParameter("merchant");
+            filterNew = gson.fromJson(beanString, A2354Filter.class);
+
+            logic = new MerchantNumberLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            msj = logic.load_MPS116(filterNew, merchant, option);
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
 }
