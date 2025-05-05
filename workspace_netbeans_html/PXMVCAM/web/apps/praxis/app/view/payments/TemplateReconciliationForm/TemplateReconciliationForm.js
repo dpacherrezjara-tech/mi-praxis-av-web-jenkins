@@ -71,6 +71,27 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                     border: false,
                                                     items: [
                                                         {
+                                                            xtype: 'combo',
+                                                            id: prototype.id + '-cmbCOREP',
+                                                            fieldLabel: 'Processor',
+                                                            labelStyle: 'text-align: left; font-size: 12px;',
+                                                            fieldStyle: 'text-align: left; font-size: 12px;',
+                                                            width: 225,
+                                                            labelWidth: 60,
+                                                            emptyText: 'All',
+                                                            value: [],
+                                                            displayField: 'NAME',
+                                                            valueField: 'VALUE',
+                                                            queryMode: 'local',
+                                                            filterPickList: true,
+                                                            editable: true,
+                                                            forceSelection: true,
+                                                            margin: '0 10 0 0', // Margen a la derecha para separar de la grilla
+                                                            listeners: {
+                                                                change: 'changeProcessor'
+                                                            }
+                                                        },
+                                                        {
                                                             xtype: 'textfield',
                                                             fieldLabel: "Bandoc <span style='color:#B8A189 ; font-size: 16px; font-weight: bold;'>(*)</span>",
                                                             labelStyle: 'text-align: left; font-size: 12px;',
@@ -94,6 +115,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                             width: 663,
                                                             hidden: false,
                                                             columnLines: true,
+                                                            margin: '0 10 0 0', // Margen a la derecha para separar de la grilla
                                                             columns: {
                                                                 defaults: {
                                                                     menuDisabled: true,
@@ -188,101 +210,140 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                     },
                                                                 ]
                                                             }
-                                                        },,
-                                                        {xtype: 'tbspacer', width: 30, height:20},
+                                                        },
                                                         {
-    xtype: 'panel',
-    layout: 'vbox',
-    id: 'panelResumenTotales',
-    width: 258,
-    style: 'background: #ffffff; border: 1px solid #d1d1d1;',
-    items: [
-        // Panel para el Total de Liquidaciones
-        {
-            xtype: 'panel',
-            layout: 'hbox',
-            border: false,
-            style: 'border-bottom: 1px solid #d1d1d1;',
-            items: [
-                {
-                    xtype: 'displayfield',
-                    value: 'Total Liquidaciones',
-                    style: 'font-size:14px; font-weight: bold; color:#333; width: 150px; border-right: 1px solid #d1d1d1; padding: 4px 10px;'
-                },
-                {
-                    xtype: 'displayfield',
-                    id: prototype.id + '-txtTotalSettGrid',
-                    value: Ext.util.Format.number(0, '0,000.00'),
-                    style: 'font-size:14px; color:#4CAF50; font-weight: bold; width: 106px; text-align: right; padding: 4px 10px;'
-                }
-            ]
-        },
-        // Panel para el Total de Descuentos
-        {
-            xtype: 'panel',
-            layout: 'hbox',
-            border: false,
-            style: 'border-bottom: 1px solid #d1d1d1;',
-            items: [
-                {
-                    xtype: 'displayfield',
-                    value: 'Total Descuentos',
-                    style: 'font-size:14px; font-weight: bold; color:#333; width: 150px; border-right: 1px solid #d1d1d1; padding: 4px 10px;'
-                },
-                {
-                    xtype: 'displayfield',
-                    id: prototype.id + '-txtTotalDescGrid',
-                    value: Ext.util.Format.number(0, '0,000.00'),
-                    style: 'font-size:14px; color:#FF5722; font-weight: bold; width: 106px; text-align: right; padding: 4px 10px;'
-                }
-            ]
-        },
-        // Panel para la Diferencia
-        {
-    xtype: 'panel',
-    itemId: prototype.id + '-panelDiff',
-    layout: 'hbox',
-    border: false,
-    style: 'border-bottom: 1px solid #d1d1d1;',
-    items: [
-        {
-            xtype: 'displayfield',
-            value: 'Diferencia',
-            style: 'font-size:14px; font-weight: bold; color:#333; width: 150px; border-right: 1px solid #d1d1d1; padding: 4px 10px;'
-        },
-        {
-            xtype: 'displayfield',
-            id: prototype.id + '-txtTotalDiffGrid',
-            value: Ext.util.Format.number(0, '0,000.00'),
-            style: 'font-size:14px; font-weight: bold; width: 106px; text-align: right; padding: 4px 10px;'
-        }
-    ]
-}
-,
-        // Panel para el Total Depósito
-        {
-            xtype: 'panel',
-            itemId: prototype.id + '-panelBandoc',
-            layout: 'hbox',
-            border: false,
-            style: 'border-bottom: 1px solid #d1d1d1;',
-            items: [
-                {
-                    xtype: 'displayfield',
-                    value: 'Total Depósito',
-                    style: 'font-size:14px; font-weight: bold; color:#333; width: 150px; border-right: 1px solid #d1d1d1; padding: 4px 10px;'
-                },
-                {
-                    xtype: 'displayfield',
-                    id: prototype.id + '-txtTotalBandocGrid',
-                    value: Ext.util.Format.number(0, '0,000.00'),
-                    style: 'font-size:14px; color:white; font-weight: bold; width: 106px; text-align: right; padding: 4px 10px;'
-                }
-            ]
-        }
-    ]
-}
-
+                                                            xtype: 'panel',
+                                                            layout: 'vbox',
+                                                            id: 'panelResumenTotales',
+                                                            width: 258,
+                                                            style: 'background: #ffffff; border: 1px solid #d1d1d1;',
+                                                            margin: '0 10 0 0', // Margen a la derecha para separar de la grilla
+                                                            items: [
+                                                                // Panel para el Total de Liquidaciones
+                                                                {
+                                                                    xtype: 'panel',
+                                                                    layout: 'hbox',
+                                                                    border: false,
+                                                                    style: 'border-bottom: 1px solid #d1d1d1;',
+                                                                    items: [
+                                                                        {
+                                                                            xtype: 'displayfield',
+                                                                            value: 'Total',
+                                                                            style: 'font-size:14px; font-weight: bold; color:#333; width: 150px; border-right: 1px solid #d1d1d1; padding: 4px 10px;'
+                                                                        },
+                                                                        {
+                                                                            xtype: 'displayfield',
+                                                                            id: prototype.id + '-txtTotalSettGrid',
+                                                                            value: Ext.util.Format.number(0, '0,000.00'),
+                                                                            style: 'font-size:14px; color:#4CAF50; font-weight: bold; width: 106px; text-align: right; padding: 4px 10px;'
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                // Panel para la comision de Liquidaciones
+                                                                {
+                                                                    xtype: 'panel',
+                                                                    layout: 'hbox',
+                                                                    border: false,
+                                                                    style: 'border-bottom: 1px solid #d1d1d1;',
+                                                                    items: [
+                                                                        {
+                                                                            xtype: 'displayfield',
+                                                                            value: 'Comision',
+                                                                            style: 'font-size:14px; font-weight: bold; color:#333; width: 150px; border-right: 1px solid #d1d1d1; padding: 4px 10px;'
+                                                                        },
+                                                                        {
+                                                                            xtype: 'displayfield',
+                                                                            id: prototype.id + '-txtComisionSettGrid',
+                                                                            value: Ext.util.Format.number(0, '0,000.00'),
+                                                                            style: 'font-size:14px; color:#4CAF50; font-weight: bold; width: 106px; text-align: right; padding: 4px 10px;'
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                // Panel para el Total de Descuentos
+                                                                {
+                                                                    xtype: 'panel',
+                                                                    layout: 'hbox',
+                                                                    border: false,
+                                                                    style: 'border-bottom: 6px solid #d1d1d1;',
+                                                                    items: [
+                                                                        {
+                                                                            xtype: 'displayfield',
+                                                                            value: 'Descuentos',
+                                                                            style: 'font-size:14px; font-weight: bold; color:#333; width: 150px; border-right: 1px solid #d1d1d1; padding: 4px 10px;'
+                                                                        },
+                                                                        {
+                                                                            xtype: 'displayfield',
+                                                                            id: prototype.id + '-txtTotalDescGrid',
+                                                                            value: Ext.util.Format.number(0, '0,000.00'),
+                                                                            style: 'font-size:14px; color:#FF5722; font-weight: bold; width: 106px; text-align: right; padding: 4px 10px;'
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                // Panel para la Diferencia
+                                                                {
+                                                                    xtype: 'panel',
+                                                                    itemId: prototype.id + '-panelDiff',
+                                                                    layout: 'hbox',
+                                                                    border: false,
+                                                                    style: 'border-bottom: 1px solid #d1d1d1;',
+                                                                    items: [
+                                                                        {
+                                                                            xtype: 'displayfield',
+                                                                            value: 'Calculo',
+                                                                            style: 'font-size:14px; font-weight: bold; color:#333; width: 150px; border-right: 1px solid #d1d1d1; padding: 4px 10px;'
+                                                                        },
+                                                                        {
+                                                                            xtype: 'displayfield',
+                                                                            id: prototype.id + '-txtTotalDiffGrid',
+                                                                            value: Ext.util.Format.number(0, '0,000.00'),
+                                                                            style: 'font-size:14px; font-weight: bold; width: 106px; text-align: right; padding: 4px 10px;'
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            xtype: 'panel',
+                                                            layout: 'vbox',
+                                                            id: 'panelResumenBandocMenosCalculo',
+                                                            width: 258,
+                                                            style: 'background: #ffffff; border: 1px solid #d1d1d1;',
+                                                            margin: '0 10 0 0', // Margen a la derecha para separar de la grilla
+                                                            items: [
+                                                                // Panel para la diferencia entre el deposito y el calculo
+                                                                {
+                                                                    xtype: 'panel',
+                                                                    itemId: prototype.id + '-panelBandoc',
+                                                                    layout: 'hbox',
+                                                                    border: false,
+                                                                    style: 'border-bottom: 1px solid #d1d1d1;',
+                                                                    items: [
+                                                                        {
+                                                                            xtype: 'displayfield',
+                                                                            value: 'Diferencia',
+                                                                            style: 'font-size:14px; font-weight: bold; color:#333; width: 150px; border-right: 1px solid #d1d1d1; padding: 4px 10px;'
+                                                                        },
+                                                                        {
+                                                                            xtype: 'displayfield',
+                                                                            id: prototype.id + '-txtTotalDiff',
+                                                                            value: Ext.util.Format.number(0, '0,000.00'),
+                                                                            style: 'font-size:14px; color:white; font-weight: bold; width: 106px; text-align: right; padding: 4px 10px;'
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            xtype: 'button',
+                                                            id: prototype.id + '-btnExecute',
+                                                            width: 90,
+                                                            html: '<span style="color:white;font-size:12px;color:white;font-weight:bold">Execute</span>',
+                                                            style: 'background:#3F5675;margin-top:1px',
+                                                            border: false,
+                                                            listeners: {
+                                                                click: 'verifyConciliation'
+                                                            }
+                                                        }
                                                     ]
                                                 },
                                                 {xtype: 'tbspacer', width: 30, height:20},
@@ -704,7 +765,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                         },
                                         {
                                             xtype: 'panel',
-                                            height: 700,
+                                            height: 550,
                                             layout: 'fit',
                                             items: [
                                                 {
