@@ -470,7 +470,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         xtype: 'tabpanel',
                                         id: prototype.id + '-tabMain',
                                         deferredRender: true,
-                                        width: 1200,
+                                        width: 1260,
                                         border: false,
     //                                            height: 182, //820
     //                                            anchor: '100%',
@@ -484,7 +484,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                                 id: prototype.id + '-panelMerchant',
                                                 layout: 'vbox',
                                                 border: false,
-                                                width: 1200,
+                                                width: 1260,
                         //                                                            height: 180,
                                                 hidden: false,
                                                 autoScroll: true,
@@ -492,7 +492,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                                     {
                                                         xtype: 'grid',
                                                         id: prototype.id + '-gridDataInfoMerchant',
-                                                        width: 1200,
+                                                        width: 1260,
                                                         height: 350,
                                                         columnLines: true,
  
@@ -623,17 +623,40 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                                                     ]
                                                                 },
                                                                 {
-                                                                    sortable: false,
                                                                     xtype: 'actioncolumn',
-                                                                    id: prototype.id + '-gridUpdateVigente',
                                                                     width: 60,
                                                                     text: 'Update',
                                                                     align: 'center',
+                                                                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                        var data = record.data;
+                                                                        metaData.style = "background-color: #F0F0F0 !important;";
+                                                                        return  value;
+                                                                    },
+                                                                    items: [{
+                                                                        icon: 'resources/img/botones/icon-for-update-28-removebg-preview.png',
+                                                                        tooltip: 'Edit',
+                                                                        handler: 'onViewMerchClick'
+                                                                    }]
+                                                                },
+                                                                {
+                                                                    sortable: false,
+                                                                    xtype: 'actioncolumn',
+                                                                    id: prototype.id + '-gridCreateVigente',
+                                                                    width: 60,
+                                                                    text: 'Create',
+                                                                    align: 'center',
+                                                                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                        var data = record.data;
+                                                                        metaData.style = "background-color: #003366 !important;";
+
+                                                                        return  value;
+                                                                    },
                                                                     items: [
                                                                         {
                                                                             icon: 'resources/img/botones/add.png', // Ruta a tu imagen
                                                                             tooltip: 'Edit',
-                                                                            handler: 'onViewMerchClick'
+                                                                            handler: 'onViewMerchClick',
+                                                                            style: 'background-color: #fff3cd;',
                                                                         }
                                                                     ]
                                                                 }

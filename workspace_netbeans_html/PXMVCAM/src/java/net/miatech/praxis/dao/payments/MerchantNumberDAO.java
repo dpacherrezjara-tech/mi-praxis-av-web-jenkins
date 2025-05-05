@@ -1609,4 +1609,91 @@ public class MerchantNumberDAO {
 
         return lstData;
     }
+    
+    public String load_MPS116(A2354Filter filterNew, String merchant, String option) throws SQLException, Exception {
+
+        //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA MPF109.
+        String strMsj = "Operation was successful.";
+        CallableStatement cstmt = null;
+        PreparedStatement pstmt = null;
+        String responseMPS = "";
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS116("
+        + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}"; // 45 signos de pregunta
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+            
+            cstmt.registerOutParameter(41, Types.VARCHAR);
+            
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST.trim());
+            cstmt.setString(2, merchant);
+            cstmt.setString(3, filterNew.IN_CMERCHAN.trim());
+            cstmt.setString(4, filterNew.IN_SUCMERCH.trim());
+            cstmt.setString(5, filterNew.IN_CODEBANK.trim());
+            cstmt.setString(6, filterNew.IN_ACCNUMB.trim());
+            cstmt.setString(7, filterNew.IN_SAGENT.trim());
+            cstmt.setString(8, filterNew.IN_CODE.trim());
+            cstmt.setString(9, filterNew.IN_CORE.trim());
+            cstmt.setString(10, filterNew.IN_DREPORT.trim());
+            cstmt.setString(11, filterNew.IN_FRANC1.trim());
+            cstmt.setString(12, filterNew.IN_FRANC2.trim());
+            cstmt.setString(13, filterNew.IN_FRANC3.trim());
+            cstmt.setString(14, filterNew.IN_FRANC4.trim());
+            cstmt.setString(15, filterNew.IN_EQUIVA1.trim());
+            cstmt.setString(16, filterNew.IN_EQUIVA2.trim());
+            cstmt.setString(17, filterNew.IN_EQUIVA3.trim());
+            cstmt.setString(18, filterNew.IN_EQUIVA4.trim());
+            cstmt.setString(19, filterNew.IN_EQUIVA5.trim());
+            cstmt.setString(20, filterNew.IN_EQUIVA6.trim());
+            cstmt.setString(21, filterNew.IN_EQUIVA7.trim());
+            cstmt.setString(22, filterNew.IN_EQUIVA8.trim());
+            cstmt.setString(23, filterNew.IN_EQUIVA9.trim());
+            cstmt.setString(24, filterNew.IN_BANKNAM.trim());
+            cstmt.setString(25, filterNew.IN_BANKCM.trim());
+            cstmt.setString(26, filterNew.IN_BANKCUR.trim());
+            cstmt.setString(27, filterNew.IN_ACCNUMOLD.trim());
+            cstmt.setString(28, filterNew.IN_DDISCON.trim());
+            cstmt.setString(29, filterNew.IN_ACCNUMA.trim());
+            cstmt.setString(30, filterNew.IN_IDFISCAL.trim());
+            cstmt.setString(31, filterNew.IN_IDFBENEF.trim());
+            cstmt.setString(32, filterNew.IN_BENCEN.trim());
+            cstmt.setString(33, filterNew.IN_DEUSAP.trim());
+            cstmt.setString(34, filterNew.IN_CANAL.trim());
+            cstmt.setString(35, filterNew.IN_PROCES.trim());
+            cstmt.setString(36, filterNew.IN_SCOUNTRY.trim());
+            cstmt.setString(37, filterNew.IN_SOCIETY.trim());
+            cstmt.setString(38, filterNew.IN_SCURRENCY.trim());
+            cstmt.setString(39, filterNew.IN_SBENCEN.trim());
+            cstmt.setString(40, filterNew.IN_COSTCEN.trim());
+            
+            cstmt.execute();
+            
+            responseMPS = cstmt.getString(41);
+            
+            cstmt.close();
+            
+        } catch (Exception e) {
+            // e.printStackTrace();
+            strMsj = e.getMessage();
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+        if (strMsj.toLowerCase().contains("duplicada")) {
+            strMsj = "Error: Duplicated record.";
+        }
+
+        return strMsj;
+    }
+    
 }
