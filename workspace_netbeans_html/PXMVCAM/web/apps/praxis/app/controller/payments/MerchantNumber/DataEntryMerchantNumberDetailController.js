@@ -4,6 +4,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
     // <editor-fold defaultstate="collapsed" desc="Variables Globales">
     meDE: '',
     actionCode: '',
+    merchantSelected: '',
     colIndex: '',
     bean: {},
     beanResult: {},
@@ -22,7 +23,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         this.actionCode = this.p.action;
         this.bean = this.p.rec;
         this.colIndex = this.p.rec.colIndex;
-        
+        this.merchantSelected = this.bean.data.CMERCHAN
         console.log(this.bean, 'THIS.BEAN')
         console.log(this.colIndex, 'THIS.COLINDEX')
 //        this.lstCountry = this.p.lstCountry;
@@ -660,6 +661,31 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                     }
                 }
             });
+        } else if (this.colIndex === 10) {
+            Ext.Msg.show({
+                title: '.:PRAXIS:.',
+                msg: 'Are you sure to update ?',
+                buttons: Ext.MessageBox.YESNO,
+                //scope: this,
+                //animateTarget: btn,
+                icon: Ext.MessageBox.QUESTION,
+                modal: true,
+                fn: function (btn) {
+                    if (btn === 'yes') {
+
+                        var beanTemp = {};
+                        var msjResult = meDE.validacionInsertHistorico(beanTemp);
+                        if (msjResult === '') {
+                            meDE.llenarData(beanTemp);
+
+                            beanTemp.option = 'U';
+                            meDE.MaintenanceHistoric(beanTemp);
+                        } else {
+                            global.Msg({msg: msjResult});
+                        }
+                    }
+                }
+            });
         } else {
             Ext.Msg.show({
                 title: '.:PRAXIS:.',
@@ -768,11 +794,40 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
     },
     validacionUpdate: function (beanTemp) {
         var msjResult = '';
-        if (this.getValue("de-txtMERCHN").trim() === '') {
-            msjResult = "The field Merchant Payment cannot be left empty";
+        if (this.getValue("de-txtMERCHN_D").trim() === '') {
+            msjResult = "The field Merchant Nbr. cannot be left empty";
         }
-        if (this.getValue("de-txtAFBRANCH").trim() === '') {
-            msjResult = "The field Merchant Payment cannot be left empty";
+        if (this.getValue("de-txtAFBRANCH_D").trim() === '') {
+            msjResult = "The field Branch Affiliate cannot be left empty";
+        }
+        if (this.getValue("CODEBANK_D").trim() === '') {
+            msjResult = "The field Bank Code cannot be left empty";
+        }
+        if (this.getValue("ACCNUMB_D").trim() === '') {
+            msjResult = "The field Acc. Number cannot be left empty";
+        }
+        if (this.getValue("SAGENT_D").trim() === '') {
+            msjResult = "The field IATA cannot be left empty";
+        }
+        return msjResult;
+        
+    },
+    validacionInsertHistorico: function (beanTemp) {
+        var msjResult = '';
+        if (this.getValue("de-txtMERCHN_D").trim() === '') {
+            msjResult = "The field Merchant Nbr. cannot be left empty";
+        }
+        if (this.getValue("de-txtAFBRANCH_D").trim() === '') {
+            msjResult = "The field Branch Affiliate cannot be left empty";
+        }
+        if (this.getValue("CODEBANK_D").trim() === '') {
+            msjResult = "The field Bank Code cannot be left empty";
+        }
+        if (this.getValue("ACCNUMB_D").trim() === '') {
+            msjResult = "The field Acc. Number cannot be left empty";
+        }
+        if (this.getValue("SAGENT_D").trim() === '') {
+            msjResult = "The field IATA cannot be left empty";
         }
         return msjResult;
     },
@@ -964,6 +1019,30 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
             method: 'POST',
             timeout: 60000000,
             params: {beanString: beanString, option: beanTemp.option, oldBeanString: oldBeanString},
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntryDetail').mask('Loading...'),
+            success: function (response, opts) {
+                Ext.getCmp(prototype.id + '-dataEntryDetail').unmask('Loading...');
+                var res = Ext.JSON.decode(response.responseText);
+                console.log(res);
+                if (res.success) {
+                    global.Msg({msg: res.Mensaje});
+                    Ext.getCmp(prototype.id + '-dataEntryDetail').unmask();
+                    Ext.getCmp(prototype.id + '-dataEntryDetail').close();
+                    Ext.getCmp(prototype.id + '-dataEntry').close();
+                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+                } else
+                    global.Msg({msg: ''});
+            }
+        });
+    },
+    MaintenanceHistoric: function (beanTemp) {
+        var beanString = JSON.stringify(beanTemp);
+        console.log(beanString,beanTemp.option, meDE.merchantSelected)
+        Ext.Ajax.request({
+            url: prototype.url + '/MaintenanceHistoric',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: beanString, option: beanTemp.option, merchant: meDE.merchantSelected},
             beforerequest: Ext.getCmp(prototype.id + '-dataEntryDetail').mask('Loading...'),
             success: function (response, opts) {
                 Ext.getCmp(prototype.id + '-dataEntryDetail').unmask('Loading...');

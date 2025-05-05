@@ -97,4 +97,8 @@ public class MerchantNumberLogic {
     public List<A2354Filter> load_MPS115(A2354Filter filter) throws SQLException, Exception {
         return MerchantNumberDAO.load_MPS115(filter);
     }
+    
+    public String load_MPS116(A2354Filter filterNew,String merchant, String option) throws SQLException, Exception {
+        return MerchantNumberDAO.load_MPS116(filterNew, merchant, option);
+    }
 }
