@@ -548,6 +548,7 @@ public class TemplateReconciliationDAO {
                 while (rst2.next()) {
                     record = new A2290Filter();
                     record.RN = rst2.getLong("RN");
+                    record.CCUST = rst2.getString("CCUST");
                     record.CODPRO = rst2.getString("CODPRO");
                     record.FLIQUIDACI = rst2.getString("FLIQUIDACI");
                     record.MONEDA = rst2.getString("MONEDA");
@@ -579,6 +580,7 @@ public class TemplateReconciliationDAO {
                 while (rst3.next()) {
                     A2290Filter thirdRecord = new A2290Filter();
                     thirdRecord.RN = rst3.getLong("RN");
+                    thirdRecord.CCUST = rst3.getString("CCUST");
                     thirdRecord.CODPRO = rst3.getString("CODPRO");
                     thirdRecord.FLIQUIDACI = rst3.getString("FLIQUIDACI");
                     thirdRecord.MONEDA = rst3.getString("MONEDA");

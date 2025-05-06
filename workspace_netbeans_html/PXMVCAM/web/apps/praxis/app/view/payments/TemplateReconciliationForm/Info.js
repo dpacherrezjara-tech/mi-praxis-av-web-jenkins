@@ -24,6 +24,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
             items: [
                 {
                     xtype: 'container',
+                    hidden: true,
                     style: 'background: rgb(227, 234, 249); border: 1px solid #D6E4FF; padding: 10px 0;',
                     width: '100%',
                     layout: {
@@ -31,27 +32,6 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                         pack: 'center'
                     },
                     items: [
-                        {
-                            xtype: 'combo',
-                            id: prototype.id + '-cmbCOREP',
-                            fieldLabel: 'Processor',
-                            labelStyle: 'text-align: left; font-size: 12px;',
-                            fieldStyle: 'text-align: left; font-size: 12px;',
-                            width: 225,
-                            labelWidth: 60,
-                            emptyText: 'All',
-                            value: [],
-                            displayField: 'NAME',
-                            valueField: 'VALUE',
-                            queryMode: 'local',
-                            filterPickList: true,
-                            editable: true,
-                            forceSelection: true,
-                            margin: '0 10px 0 0' ,// Espacio entre los combos
-                            listeners: {
-                                change: 'changeProcessor'
-                            }
-                        },
                         {
                             xtype: 'combo',
                             fieldLabel: 'Avianca Group',
@@ -107,22 +87,12 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                             },
                             margin: '0 10 0 0' // Margen a la derecha para separar de la grilla
                         },
-                        {
-                            xtype: 'button',
-                            id: prototype.id + '-btnExecute',
-                            width: 90,
-                            html: '<span style="color:white;font-size:12px;color:white;font-weight:bold">Execute</span>',
-                            style: 'background:#3F5675;margin-top:1px',
-                            border: false,
-                            listeners: {
-                                click: 'verifyConciliation'
-                            }
-                        }
                     ]
                 },
                 {
                     xtype: 'container',
                     style: 'padding: 12px 0;',
+                    hidden: true,
                     layout: {
                         type: 'hbox',
                         pack: 'center'
@@ -572,7 +542,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                         {
                             xtype: 'grid',
                             id: prototype.id + '-gridData',
-                            width: 925,
+                            width: 935,
                             height: 400,
                             margin: '10px 5px 0 0',
                             columnLines: true,
@@ -785,8 +755,8 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'Date',
-                                                width: 70,
+                                                text: 'Liquidation <br> Date',
+                                                width: 80,
                                                 dataIndex: 'ADATE',
                                                 menuDisabled: true,
                                                 align: 'center',
@@ -861,7 +831,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                         {
                             xtype: 'grid',
                             id: prototype.id + '-gridDataDescuentos',
-                            width: 615,
+                            width: 628,
                             height: 400,
                             margin: '10px 0 0 5px',
                             columnLines: true,
@@ -1013,8 +983,8 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                                 ]
                                             },
                                             {
-                                                text: 'Date',
-                                                width: 70,
+                                                text: 'Liquidation <br> Date',
+                                                width: 80,
                                                 dataIndex: 'FLIQUIDACI',
                                                 menuDisabled: true,
                                                 align: 'center',

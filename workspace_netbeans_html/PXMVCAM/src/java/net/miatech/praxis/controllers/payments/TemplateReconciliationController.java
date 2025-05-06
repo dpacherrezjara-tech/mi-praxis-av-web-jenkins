@@ -661,10 +661,10 @@ public class TemplateReconciliationController extends BaseController {
 
             for (A2290Filter discount : discountsList) {
                 
-                regs = regs + "|" + "" + ";" + "" + ";" + "" + ";" + "" + ";"
+                regs = regs + "|" + "134" + ";" + "" + ";" + "" + ";" + "" + ";"
                 + "" + ";" + "" + ";" + ""
                 + ";" + "" + ";" + "" + ";" + obj.SVFOP + ";" + discount.IMPORTECeba + ";" + discount.IMPORTEPAG + ";" + discount.CODPRO.trim()
-                + ";" + discount.CCUSTPRO.trim() + ";" + discount.PRDA.trim() + ";" + discount.ADATE.trim() + ";" + discount.LIQUIDACIO.trim() + ";" + discount.MERCHAND.trim() + ";" + "D";
+                + ";" + discount.CCUSTPRO.trim() + ";" + discount.PRDA.trim() + ";" + discount.FLIQUIDACI.trim() + ";" + discount.LIQUIDACIO.trim() + ";" + discount.MERCHAND.trim() + ";" + "D";
                 
             }
             
@@ -710,7 +710,7 @@ public class TemplateReconciliationController extends BaseController {
             m.put("result", message);
         }
         
-        if (message != null && message.contains("Operation Successful")) {
+        if (message != null && message.contains("Operation Succefull")) {
             m.put("success", true);
             m.put("result", "Operation Successful");
         } else {
