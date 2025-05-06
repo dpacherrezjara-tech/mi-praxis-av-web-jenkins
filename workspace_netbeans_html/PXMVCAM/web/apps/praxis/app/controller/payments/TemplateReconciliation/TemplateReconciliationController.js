@@ -453,7 +453,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         let me = this;
         me.beanConciliation = {};
         
-        let recordDiscounts = me.getGridRecords(prototype.id + '-gridDataDescuentos');
+        let recordDiscounts = me.getGridRecordsDiscount(prototype.id + '-gridDataDescuentos');
         let recordBandoc = me.getGridRecords(prototype.id + '-gridData21');
         let recordSettlements = me.getGridRecords(prototype.id + '-gridData');
         let recordHead = me.getGridRecords(prototype.id + '-gridDataCabecera');
@@ -492,6 +492,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                 FLIQUIDACI: item.FLIQUIDACI,
                 MONEDA: item.MONEDA,
                 CCUSTPRO: item.CCUSTPRO,
+                CCUST: item.CCUST,
                 PRDA: item.PRDA,
                 ADATE: item.ADATE,
                 MERCHAND: item.MERCHAND,
@@ -564,7 +565,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                 let res = Ext.JSON.decode(response.responseText);
                 console.log(res,'res')
 
-                if (!res.success) {
+                if (res.success) {
                     global.Msg({msg: res.result});
                     
                     Ext.getCmp(prototype.id + '-gridDataDescuentos').getStore().removeAll();
@@ -572,7 +573,6 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                     
                     Ext.getCmp(prototype.id + '-gridData21').getStore().removeAll();
                     Ext.getCmp(prototype.id + '-gridData21').getView().refresh();
-                    
                     
                     me.searchSettlements();
                     me.updateGridTotal();
@@ -607,6 +607,23 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         return store.getRange()
             .map(record => record.getData())
             .filter(data => data.checkActive === true);
+    },
+    getGridRecordsDiscount: function(gridId) {
+        var grid = Ext.getCmp(gridId);
+        if (!grid) {
+            console.error('Grid not found with ID:', gridId);
+            return [];
+        }
+
+        var store = grid.getStore();
+        if (!store) {
+            console.error('The grid has no associated store.');
+            return [];
+        }
+
+        return store.getRange()
+            .map(record => record.getData())
+            .filter(data => data.checkActive === true && data.blockChange === false);
     },
     getGridRecordsSettlements: function(gridId) {
         var grid = Ext.getCmp(gridId);
@@ -1093,6 +1110,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
 
         let totalDescGrid = 0;
         let totalSettGrid = 0;
+        let comisionSettGrid = 0;
         let totalBandocGrid = 0;
 
         if (recordDiscounts.length) {
@@ -1109,7 +1127,8 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
 
         if (recordSettlements.length) {
             for (let sett of recordSettlements) {
-                totalSettGrid += Number(sett.NETO) || 0;
+                totalSettGrid += Number(sett.TOTAL) || 0;
+                comisionSettGrid += Number(sett.COMISION) || 0;
             }
         }
 
@@ -1117,24 +1136,32 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         let formattedDesc = Ext.util.Format.number(totalDescGrid, '0,000.00');
         let formattedBandoc = Ext.util.Format.number(totalBandocGrid, '0,000.00');
         let formattedSett = Ext.util.Format.number(totalSettGrid, '0,000.00');
+        let formattedComision = Ext.util.Format.number(comisionSettGrid, '0,000.00');
 
-        let totalDiffGrid = totalSettGrid - Math.abs(totalDescGrid);
-        let formattedDiff = Ext.util.Format.number(totalDiffGrid, '0,000.00');
+        let calculo = totalSettGrid - Math.abs(comisionSettGrid) - Math.abs(totalDescGrid);
+        let formattedDiff = Ext.util.Format.number(calculo, '0,000.00');
+        
+        let diferencia_bandoc_calculo = totalBandocGrid - calculo;
+        let formattedDiffB = Ext.util.Format.number(diferencia_bandoc_calculo, '0,000.00');
 
         // Referencias a los componentes
         let cmpDesc = Ext.getCmp(prototype.id + '-txtTotalDescGrid');
-        let cmpBandoc = Ext.getCmp(prototype.id + '-txtTotalBandocGrid');
+//        let cmpBandoc = Ext.getCmp(prototype.id + '-txtTotalBandocGrid');
         let cmpSett = Ext.getCmp(prototype.id + '-txtTotalSettGrid');
+        let cmpComision = Ext.getCmp(prototype.id + '-txtComisionSettGrid');
         let cmpDiff = Ext.getCmp(prototype.id + '-txtTotalDiffGrid');
+        let cmpDiffB = Ext.getCmp(prototype.id + '-txtTotalDiff');
 
         // Asignar valores
         cmpDesc.setValue(formattedDesc);
-        cmpBandoc.setValue(formattedBandoc);
+//        cmpBandoc.setValue(formattedBandoc);
         cmpSett.setValue(formattedSett);
         cmpDiff.setValue(formattedDiff);
+        cmpDiffB.setValue(formattedDiffB);
+        cmpComision.setValue(formattedComision);
 
         // Comparar
-        let esIgual = totalDiffGrid === totalBandocGrid;
+        let esIgual = diferencia_bandoc_calculo === 0;
 
         // Colores vivos
         let colorFondo = esIgual ? '#4CAF50' : '#F44336'; // verde o rojo brillante
@@ -1142,7 +1169,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
 
         // Aplicar estilos con defer para asegurar renderizado
         Ext.defer(function () {
-            [cmpBandoc, cmpDiff].forEach(cmp => {
+            [cmpDiffB].forEach(cmp => {
                 let el = cmp.getEl();
                 if (el) {
                     el.setStyle({
