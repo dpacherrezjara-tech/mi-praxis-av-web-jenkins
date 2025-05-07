@@ -618,10 +618,15 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
 
         if (this.beanResult.STVAL === '1') {
             this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETOC, '0,000.00'));
-            this.setValue('de-txtDIFF', Ext.util.Format.number(this.beanResult.NETO - this.beanResult.NETOC, '0,000.00'));
+            console.log("entro");  
+            console.log(Math.abs(this.beanResult.NETO),"1");
+            console.log(Math.abs(this.beanResult.NETOC),"1");
+            this.setValue('de-txtDIFF', Ext.util.Format.number(Math.abs(this.beanResult.NETO) - Math.abs(this.beanResult.NETOC), '0,000.00'));
+            console.log(Ext.util.Format.number(Math.abs(this.beanResult.NETO) - Math.abs(this.beanResult.NETOC)), 'hallar monto');
         } else {
             this.setValue('de-txtNETOL', Ext.util.Format.number(this.sumAmount_Net, '0,000.00'));
-            this.setValue('de-txtDIFF', Ext.util.Format.number(this.beanResult.NETO - this.sumAmount_Net, '0,000.00'));
+            
+            this.setValue('de-txtDIFF', Ext.util.Format.number(Math.abs(this.beanResult.NETO) - Math.abs(this.sumAmount_Net), '0,000.00'));            
             console.log(Ext.util.Format.number(this.beanResult.NETO - this.sumAmount_Net, '0,000.00'), 'hallar monto');
         }
         this.setValue('de-txtSumAmount_Tot', Ext.util.Format.number(this.sumAmount_Tot, '0,000.00'));
