@@ -11,7 +11,7 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Filters', {
             id: prototype.id + '-contFilter',
             margin: '0 7',
             border: false,
-            width: 1700,
+            width: 1800,
             bodyStyle: 'background: transparent',
             layout: 'vbox',
             defaults: {
@@ -352,7 +352,7 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Filters', {
 //                            maxLength: 13,
                             maxLength: 8,
                             labelWidth: 100,
-                            width: 230,
+                            width: 160,
                             enableKeyEvents: true,
                             listeners: {
                                 change: 'onValidarChange',
@@ -372,7 +372,7 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Filters', {
 //                            maxLength: 13,
                             maxLength: 4,
                             labelWidth: 80,
-                            width: 225,
+                            width: 160,
                             enableKeyEvents: true,
                             listeners: {
                                 change: 'onValidarChange',
@@ -445,6 +445,31 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Filters', {
                             listeners: {
                                 change: 'onValidarChange',
                                 keypress: 'eventKey'
+                            }
+                        },
+//                        {xtype: 'tbspacer', width: 10},
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbSTVALU',
+                            queryMode: 'local',
+                            allowBlank: false,
+                            fieldLabel: 'Sheet:',
+                            labelAlign: 'right',
+                            forceSelection: true,
+                            selectOnFocus: true,
+                            caseSensitive: false,
+                            autoSelect: true,
+                            editable: true,
+                            width: 135,
+                            
+                            labelWidth: 60,
+                            typeAhead: true,
+                            valueField: 'code',
+                            displayField: 'name',
+                            enableKeyEvents: true,
+                            triggerAction: 'all',
+                            labelStyle: 'font-weight: bold;',
+                            listeners: {
                             }
                         },
                     ]
