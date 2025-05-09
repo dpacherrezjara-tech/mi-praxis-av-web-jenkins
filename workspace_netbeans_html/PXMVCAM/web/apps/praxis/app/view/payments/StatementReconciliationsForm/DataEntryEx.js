@@ -1770,7 +1770,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                                             return value;
                                                                         }
                                                                     },
-                                                                    {text: 'Total', dataIndex: 'TOTAL', width: 100,
+                                                                    {text: 'Total', dataIndex: 'TOTAL', width: 80,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:right;";
                                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -1778,7 +1778,16 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                                             return Ext.util.Format.number(value, '0,000.00');
                                                                         }
                                                                     },
-                                                                    {text: 'Comission', dataIndex: 'COMISION', width: 100,
+                                                                    {text: 'Comission', dataIndex: 'COMISION', width: 75,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;";
+                                                                            var data = record.data;
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            metaData.unselectableAttr = "unselectable='off'";
+                                                                            return Ext.util.Format.number(data.COMISION, '0,000.00');
+                                                                        }
+                                                                    },
+                                                                    {text: 'ComisTotal', dataIndex: 'COMISTOTAL', width: 75,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:right;";
                                                                             var data = record.data;
@@ -1790,7 +1799,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                                     {
                                                                         text: 'Neto',
                                                                         dataIndex: 'NETO',
-                                                                        width: 100,
+                                                                        width: 80,
                                                                         xtype: 'gridcolumn',
                                                                         cls: 'detalle-neto', // Agrega una clase personalizada a las celdas de detalle NETO
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {

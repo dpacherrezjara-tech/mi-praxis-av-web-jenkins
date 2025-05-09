@@ -1284,7 +1284,7 @@ public class ManualConciliationDAO {
 
             while (rst.next()) {
 
-                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100_F2_V1(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100_F2_V2(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
                 Connection cnx2 = null;
                 try {
@@ -1324,6 +1324,7 @@ public class ManualConciliationDAO {
                         beanTkt.SCARDN_100 = rst2.getString("SCARDN_100");
                         beanTkt.SAUTHOC_100 = rst2.getString("SAUTHOC_100");
                         beanTkt.SPNR_100 = rst2.getString("SPNR_100");
+                        beanTkt.CFUENTE_100 = rst2.getString("CFUENTE_100");
 
                         beanTkt.UNIKEY = rst.getString("UNIKEY");
                         beanTkt.PAYDATE = rst.getString("PAYDATE");
@@ -1424,7 +1425,7 @@ public class ManualConciliationDAO {
 
             while (rst.next()) {
 
-                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100_F2_V1(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100_F2_V2(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
                 Connection cnx2 = null;
                 try {
@@ -1464,6 +1465,7 @@ public class ManualConciliationDAO {
                         beanTkt.SCARDN_100 = rst2.getString("SCARDN_100");
                         beanTkt.SAUTHOC_100 = rst2.getString("SAUTHOC_100");
                         beanTkt.SPNR_100 = rst2.getString("SPNR_100");
+                        beanTkt.CFUENTE_100 = rst2.getString("CFUENTE_100");
 
                         beanTkt.UNIKEY = rst.getString("UNIKEY");
                         beanTkt.PAYDATE = rst.getString("PAYDATE");

@@ -49,6 +49,7 @@ public class A2295Filter  extends A2295{
     public String IN_TICKET = "";
     public String IN_MERCHN = "";
     public String IN_SAUTHOC = "";
+    public String IN_STVALU = "";
     public String IN_DATE = "";
     public String IN_STATT = "";
     public String IN_SCOUNTRY = "";

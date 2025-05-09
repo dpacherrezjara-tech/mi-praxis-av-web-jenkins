@@ -1324,7 +1324,15 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'Ticket', dataIndex: 'TKT', width: 130, align: 'center', menuDisabled: true,
+                                                text: 'Ticket', dataIndex: 'TKT', width: 110, align: 'center', menuDisabled: true,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'SRC', dataIndex: 'CFUENTE', width: 60, align: 'center', menuDisabled: true,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -1346,7 +1354,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'Amount', dataIndex: 'SVFOP', width: 100, align: 'center',
+                                                text: 'Amount', dataIndex: 'SVFOP', width: 90, align: 'center',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;background-color:#d5f4d5;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -1414,7 +1422,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'Auth. Code', dataIndex: 'SAUTHOC', width: 90, align: 'center', menuDisabled: true,
+                                                text: 'Auth. Code', dataIndex: 'SAUTHOC', width: 80, align: 'center', menuDisabled: true,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;background-color:#cbdbf5";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -1467,14 +1475,14 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'Account<br>Number', dataIndex: 'ACCNUMBER', width: 130, align: 'center', menuDisabled: true,
+                                                text: 'Account<br>Number', dataIndex: 'ACCNUMBER', width: 120, align: 'center', menuDisabled: true,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
                                                     return value;
                                                 }
                                             },
                                             {
-                                                text: 'Terminal', dataIndex: 'TERMI', width: 90, align: 'center', menuDisabled: true,
+                                                text: 'Terminal', dataIndex: 'TERMI', width: 80, align: 'center', menuDisabled: true,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
                                                     return value;
@@ -1497,7 +1505,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Info', {
                                             {
                                                 sortable: false,
                                                 xtype: 'actioncolumn',
-                                                width: 40,
+                                                width: 50,
                                                 text: 'View',
                                                 align: 'center',
                                                 items: [
