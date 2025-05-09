@@ -727,6 +727,7 @@ public class LoadSalesConciliationDAO {
                         cstmt.execute();
                         cantReg++;
                     } catch (Exception e) {
+                        e.printStackTrace();
                         loadedCount++;
                         System.out.println("errorSQL");
                         System.out.println(e);

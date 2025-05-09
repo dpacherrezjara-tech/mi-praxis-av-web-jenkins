@@ -597,26 +597,28 @@ public class ManualConciliationController extends BaseController {
             Cell CH1_16 = row1.createCell(16);
             Cell CH1_17 = row1.createCell(17);
             Cell CH1_18 = row1.createCell(18);
+            Cell CH1_19 = row1.createCell(19);
 
             CH1_0.setCellValue("Key Concil");
             CH1_1.setCellValue("Ticket");
-            CH1_2.setCellValue("Qty Tkt");
-            CH1_3.setCellValue("Amount");
-            CH1_4.setCellValue("Amount Tkt");
-            CH1_5.setCellValue("Curr.");
-            CH1_6.setCellValue("Doc. Type");
-            CH1_7.setCellValue("Sales Date");
-            CH1_8.setCellValue("Credit Card");
-            CH1_9.setCellValue("Auth. Code");
-            CH1_10.setCellValue("Agent");
-            CH1_11.setCellValue("PNR");
-            CH1_12.setCellValue("Code");
-            CH1_13.setCellValue("Bank");
-            CH1_14.setCellValue("Pay.Date");
-            CH1_15.setCellValue("Merchand");
-            CH1_16.setCellValue("Acc. Number");
-            CH1_17.setCellValue("Terminal");
-            CH1_18.setCellValue("Secuence");
+            CH1_2.setCellValue("SRC");
+            CH1_3.setCellValue("Qty Tkt");
+            CH1_4.setCellValue("Amount");
+            CH1_5.setCellValue("Amount Tkt");
+            CH1_6.setCellValue("Curr.");
+            CH1_7.setCellValue("Doc. Type");
+            CH1_8.setCellValue("Sales Date");
+            CH1_9.setCellValue("Credit Card");
+            CH1_10.setCellValue("Auth. Code");
+            CH1_11.setCellValue("Agent");
+            CH1_12.setCellValue("PNR");
+            CH1_13.setCellValue("Code");
+            CH1_14.setCellValue("Bank");
+            CH1_15.setCellValue("Pay.Date");
+            CH1_16.setCellValue("Merchand");
+            CH1_17.setCellValue("Acc. Number");
+            CH1_18.setCellValue("Terminal");
+            CH1_19.setCellValue("Secuence");
 
             CH1_0.setCellStyle(headerStyle);
             CH1_1.setCellStyle(headerStyle);
@@ -637,6 +639,7 @@ public class ManualConciliationController extends BaseController {
             CH1_16.setCellStyle(headerStyle);
             CH1_17.setCellStyle(headerStyle);
             CH1_18.setCellStyle(headerStyle);
+            CH1_19.setCellStyle(headerStyle);
 
             ++vj;
             //============================================ 
@@ -678,24 +681,25 @@ public class ManualConciliationController extends BaseController {
 
                     createStyledCell(headerRow, 0, data.SCARDN_101, currentBoldStyle, workbook);
                     createStyledCell(headerRow, 1, "", currentBoldStyle, workbook);
-                    createStyledCell(headerRow, 2, String.valueOf(data.QTY_101), currentBoldStyle, workbook);
-                    createStyledCell(headerRow, 3, String.valueOf(data.SVFOP_101), currentBoldStyle, workbook);
-                    createStyledCell(headerRow, 4, "", currentBoldStyle, workbook);
-                    createStyledCell(headerRow, 5, data.SCURRENCY_101, currentBoldStyle, workbook);
-                    createStyledCell(headerRow, 6, data.TDOC_101, currentBoldStyle, workbook);
-                    createStyledCell(headerRow, 7, data.SDATE_101, currentBoldStyle, workbook);
-                    createStyledCell(headerRow, 8, data.SCARDN_101, currentBoldStyle, workbook);
-                    createStyledCell(headerRow, 9, data.SAUTHOC_101, currentBoldStyle, workbook);
-                    createStyledCell(headerRow, 10, data.SAGENT_101, currentBoldStyle, workbook);
-                    createStyledCell(headerRow, 11, "", currentBoldStyle, workbook);
-                    createStyledCell(headerRow, 12, data.SCARCOD_101, currentBoldStyle, workbook);
-                    createStyledCell(headerRow, 13, data.CODEBANK, currentBoldStyle, workbook);
-                    createStyledCell(headerRow, 14, data.PAYDATE + "", currentBoldStyle, workbook);
-                    createStyledCell(headerRow, 15, data.MERCHNC + "", currentBoldStyle, workbook);
-                    createStyledCellString(headerRow, 16, data.ACCNUMBER + "", currentBoldStyle, workbook);
-                    createStyledCell(headerRow, 17, data.TERMI, currentBoldStyle, workbook);
-                    createStyledCell(headerRow, 18, "", currentBoldStyle, workbook);
-
+                    createStyledCell(headerRow, 2, "", currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 3, String.valueOf(data.QTY_101), currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 4, String.valueOf(data.SVFOP_101), currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 5, "", currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 6, data.SCURRENCY_101, currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 7, data.TDOC_101, currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 8, data.SDATE_101, currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 9, data.SCARDN_101, currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 10, data.SAUTHOC_101, currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 11, data.SAGENT_101, currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 12, "", currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 13, data.SCARCOD_101, currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 14, data.CODEBANK, currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 15, data.PAYDATE + "", currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 16, data.MERCHNC + "", currentBoldStyle, workbook);
+                    createStyledCellString(headerRow, 17, data.ACCNUMBER + "", currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 18, data.TERMI, currentBoldStyle, workbook);
+                    createStyledCell(headerRow, 19, "", currentBoldStyle, workbook);
+           
                     lastKey = data.UNIKEY;
                 }
 
@@ -704,23 +708,24 @@ public class ManualConciliationController extends BaseController {
 
                 createStyledCell(detailRow, 0, "", currentStyle, workbook);
                 createStyledCellString(detailRow, 1, data.TKT + " ", currentStyle, workbook);
-                createStyledCell(detailRow, 2, "1", currentStyle, workbook);
-                createStyledCell(detailRow, 3, "", currentStyle, workbook);
-                createStyledCell(detailRow, 4, String.valueOf(data.SVFOP_100), currentStyle, workbook);
-                createStyledCell(detailRow, 5, data.SCURRENCY_100, currentStyle, workbook);
-                createStyledCell(detailRow, 6, data.TDOC_100, currentStyle, workbook);
-                createStyledCell(detailRow, 7, data.SDATE_100, currentStyle, workbook);
-                createStyledCell(detailRow, 8, data.SCARDN_100, currentStyle, workbook);
-                createStyledCell(detailRow, 9, data.SAUTHOC_100, currentStyle, workbook);
-                createStyledCell(detailRow, 10, data.SAGENT_100, currentStyle, workbook);
-                createStyledCell(detailRow, 11, data.SPNR_100, currentStyle, workbook);
-                createStyledCell(detailRow, 12, data.SCARCOD_100, currentStyle, workbook);
-                createStyledCell(detailRow, 13, "", currentStyle, workbook);
+                createStyledCellString(detailRow, 2, data.CFUENTE_100 + " ", currentStyle, workbook);
+                createStyledCell(detailRow, 3, "1", currentStyle, workbook);
+                createStyledCell(detailRow, 4, "", currentStyle, workbook);
+                createStyledCell(detailRow, 5, String.valueOf(data.SVFOP_100), currentStyle, workbook);
+                createStyledCell(detailRow, 6, data.SCURRENCY_100, currentStyle, workbook);
+                createStyledCell(detailRow, 7, data.TDOC_100, currentStyle, workbook);
+                createStyledCell(detailRow, 8, data.SDATE_100, currentStyle, workbook);
+                createStyledCell(detailRow, 9, data.SCARDN_100, currentStyle, workbook);
+                createStyledCell(detailRow, 10, data.SAUTHOC_100, currentStyle, workbook);
+                createStyledCell(detailRow, 11, data.SAGENT_100, currentStyle, workbook);
+                createStyledCell(detailRow, 12, data.SPNR_100, currentStyle, workbook);
+                createStyledCell(detailRow, 13, data.SCARCOD_100, currentStyle, workbook);
                 createStyledCell(detailRow, 14, "", currentStyle, workbook);
                 createStyledCell(detailRow, 15, "", currentStyle, workbook);
                 createStyledCell(detailRow, 16, "", currentStyle, workbook);
                 createStyledCell(detailRow, 17, "", currentStyle, workbook);
                 createStyledCell(detailRow, 18, "", currentStyle, workbook);
+                createStyledCell(detailRow, 19, "", currentStyle, workbook);
             }
 
             sheet.autoSizeColumn(0, true);
@@ -742,6 +747,7 @@ public class ManualConciliationController extends BaseController {
             sheet.autoSizeColumn(16, true);
             sheet.autoSizeColumn(17, true);
             sheet.autoSizeColumn(18, true);
+            sheet.autoSizeColumn(19, true);
    
             //============================================
             response.setContentType("application/vnd.openxml");

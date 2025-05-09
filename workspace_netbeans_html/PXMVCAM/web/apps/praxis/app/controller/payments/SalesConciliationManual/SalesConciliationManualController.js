@@ -168,6 +168,18 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
             ]
         }));
         cmbSTVAL.setValue("");
+        
+        var cmbSTVALU = Ext.getCmp(prototype.id + '-cmbSTVALU');
+        cmbSTVALU.bindStore(Ext.create('Ext.data.ArrayStore', {
+            autoLoad: false,
+            fields: ['code', 'name'],
+            data: [
+                ["", "All"],
+                ["2", "E a C"],
+                ["3", "C a E"]
+            ]
+        }));
+        cmbSTVALU.setValue("");
 
         Ext.Ajax.request({
             url: prototype.urlMaster + '/obtainData',
@@ -214,6 +226,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesConciliationManual.SalesConcilia
         me.bean.IN_TKT = Ext.getCmp(prototype.id + '-txtTKT').getValue();
         me.bean.IN_FCONCEP = Ext.getCmp(prototype.id + '-cmbFCONCEP').getValue();
         me.bean.IN_STVAL = Ext.getCmp(prototype.id + '-cmbSTVAL').getValue();
+        me.bean.IN_STVALU = Ext.getCmp(prototype.id + '-cmbSTVALU').getValue();
         me.bean.IN_TRANL = Ext.getCmp(prototype.id + '-txtTRANL').getValue();
         me.bean.IN_SEQ = Ext.getCmp(prototype.id + '-txtSEQ').getValue();
         me.bean.IN_SAUTHOC = Ext.getCmp(prototype.id + '-txtSAUTHOC').getValue();
