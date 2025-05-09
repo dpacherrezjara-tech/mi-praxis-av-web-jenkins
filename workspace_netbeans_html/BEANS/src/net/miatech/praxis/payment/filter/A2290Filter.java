@@ -924,6 +924,7 @@ public class A2290Filter extends A2290 {
     public String ST_PGMUP = "";
      
     public String SCURRENCY_100 = "";
+    public String CFUENTE_100 = "";
     public String SCURRENCY_101 = "";
     public String TDOC_100 = "";
     public String SCOUNTRY_100 = "";
