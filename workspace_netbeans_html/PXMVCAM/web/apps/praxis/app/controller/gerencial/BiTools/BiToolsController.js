@@ -707,6 +707,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
                                     expanded: false, children: []
                                 });
                                 let b = [];
+                                console.log(lstData,"Esto trae");
                                 Ext.Object.each(lstData, function (index, value01) {
                                     if (value.UNIKEY === value01.UNIKEY) {
                                         
@@ -725,6 +726,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
                                             SCARDN: value01.SCARDN_100,
                                             SAUTHOC: value01.SAUTHOC_100,
                                             SPNR: value01.SPNR_100,
+                                            CFUENTE: value01.CFUENTE_100,
                                             leaf: true
                                         });
                                     }
