@@ -2373,8 +2373,9 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 
                             Ext.getCmp(prototype.id + '-displayPolarST2').bindStore(storeData1er);
                             Ext.getCmp(prototype.id + '-lblTittleSalesTotal2C').setText('Totals and Match')
-
-
+                            console.log(storeDataBard,'storeDataBard')
+                            Ext.getCmp(prototype.id + '-graficosAñosC').bindStore(storeDataBard);
+                            Ext.getCmp(prototype.id + '-graficosAñosAmount').bindStore(storeDataBard);
                             
                            
                             /**/                          
@@ -2596,69 +2597,75 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 //                                Ext.getCmp(prototype.id + '-lblTittleGrid2').setText(obj.data.items[0].data.strFormatDate + ' | ' + obj.data.items[0].data.SAGENT + ' | ' + obj.data.items[0].data.CANAL)
 //                            }else {
 //                            }
-                            Ext.getCmp(prototype.id + '-graficosAños').bindStore(storeDataBard);
-                            Ext.getCmp(prototype.id + '-graficosAñosAmount').bindStore(storeDataBard);
+                            
                             
                             // LLENANDO GRAFICO
                             
+                            // Variables para ventas
                             let totalVentas = totSVFOPUSDS;
                             let ventasConciliadas = totSVFOPUSDC;
                             let ventasNoConciliadas = totalVentas - ventasConciliadas;
 
+                            // Variables para liquidaciones
                             let totalLiquidaciones = totSVFOPUSDLT;
-                            let liquidacionesConciliadas = totSVFOPUSDP;
+                            let liquidacionesConciliadas = totSVFOPUSDL;
                             let liquidacionesNoConciliadas = totalLiquidaciones - liquidacionesConciliadas;
-                            let pieData = [];
-                            
-                            let totalGlobal = totalVentas + totalLiquidaciones;
 
-                            
+                            // Pie data para Ventas
+                            let pieDataVentas = [
+                                {
+                                    label: 'Sale Pending',
+                                    value: ventasNoConciliadas,
+                                    texto: 'Sale Pending:\n' + Ext.util.Format.number(ventasNoConciliadas, '0,000') + '\n' +
+                                           Ext.util.Format.number(ventasNoConciliadas / totalVentas, '0.00%')
+                                },
+                                {
+                                    label: 'Sale Match',
+                                    value: ventasConciliadas,
+                                    texto: 'Sale Match:\n' + Ext.util.Format.number(ventasConciliadas, '0,000') + '\n' +
+                                           Ext.util.Format.number(ventasConciliadas / totalVentas, '0.00%')
+                                }
+                            ];
 
-                            // Para calcular el porcentaje dentro del grupo de ventas o liquidaciones:
-                            let totalVentasYLiquidaciones = ventasConciliadas + ventasNoConciliadas + liquidacionesConciliadas + liquidacionesNoConciliadas;
+                            // Pie data para Liquidaciones
+                            let pieDataLiquidaciones = [
+                                {
+                                    label: 'Sett. Pending',
+                                    value: liquidacionesNoConciliadas,
+                                    texto: 'Sett. Pending:\n' + Ext.util.Format.number(liquidacionesNoConciliadas, '0,000') + '\n' +
+                                           Ext.util.Format.number(liquidacionesNoConciliadas / totalLiquidaciones, '0.00%')
+                                },
+                                {
+                                    label: 'Sett. Match',
+                                    value: liquidacionesConciliadas,
+                                    texto: 'Sett. Match:\n' + Ext.util.Format.number(liquidacionesConciliadas, '0,000') + '\n' +
+                                           Ext.util.Format.number(liquidacionesConciliadas / totalLiquidaciones, '0.00%')
+                                }
+                            ];
 
-                             // Ventas no conciliadas
-                            pieData.push({
-                                label: 'Sale Pending',
-                                value: ventasNoConciliadas,
-                                texto: 'Sale Pending:\n' + Ext.util.Format.number(ventasNoConciliadas, '0,000') + '\n' + Ext.util.Format.number(ventasNoConciliadas / totalVentasYLiquidaciones, '0.00%')
-                            });
-
-                            // Ventas conciliadas
-                            pieData.push({
-                                label: 'Sale Match',
-                                value: ventasConciliadas,
-                                texto: 'Sale Match:\n' + Ext.util.Format.number(ventasConciliadas, '0,000') + '\n' + Ext.util.Format.number(ventasConciliadas / totalVentasYLiquidaciones, '0.00%')
-                            });
-
-
-                            // Liquidaciones conciliadas
-                            pieData.push({
-                                label: 'Sett. Pending',
-                                value: liquidacionesConciliadas,
-                                texto: 'Sett. Pending:\n' + Ext.util.Format.number(liquidacionesConciliadas, '0,000') + '\n' + Ext.util.Format.number(liquidacionesConciliadas / totalVentasYLiquidaciones, '0.00%')
-                            });
-
-                            // Liquidaciones no conciliadas
-                            pieData.push({
-                                label: 'Sett. Match',
-                                value: liquidacionesNoConciliadas,
-                                texto: 'Sett. Match:\n' + Ext.util.Format.number(liquidacionesNoConciliadas, '0,000') + '\n' + Ext.util.Format.number(liquidacionesNoConciliadas / totalVentasYLiquidaciones, '0.00%')
-                            });
-
-                            
-                           
-
-                            // Crea el store
-                            let storePie4Partes = Ext.create('Ext.data.Store', {
+                            // Store para gráfico de ventas
+                            let storePieVentas = Ext.create('Ext.data.Store', {
                                 fields: ['label', 'value', 'texto'],
-                                data: pieData,
+                                data: pieDataVentas,
                                 autoLoad: true
                             });
 
-                            // Asignar a tu polar chart
-                            Ext.getCmp(prototype.id + '-displayPieGlobalMatch').bindStore(storePie4Partes);
-                            Ext.getCmp(prototype.id + '-lblTittleGlobalMatch').setText('Global Reconciliation: Sales and Settlements');
+                            // Store para gráfico de liquidaciones
+                            let storePieLiquidaciones = Ext.create('Ext.data.Store', {
+                                fields: ['label', 'value', 'texto'],
+                                data: pieDataLiquidaciones,
+                                autoLoad: true
+                            });
+
+                            // Asignar los stores a los respectivos charts
+                            Ext.getCmp(prototype.id + '-displayPieGlobalMatch').bindStore(storePieVentas);
+                            Ext.getCmp(prototype.id + '-displayPieSettlement').bindStore(storePieLiquidaciones);
+
+                            
+                            
+                            
+                            Ext.getCmp(prototype.id + '-lblTitleSettlement').setText('Total Settlement: '+ Ext.util.Format.number(totalLiquidaciones, '0,000'));
+                            Ext.getCmp(prototype.id + '-lblTittleGlobalMatch').setText('Total Sale: ' + Ext.util.Format.number(totalVentas, '0,000'));
 
                             
                             
