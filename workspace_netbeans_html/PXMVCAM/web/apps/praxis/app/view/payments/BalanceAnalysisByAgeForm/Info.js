@@ -6097,11 +6097,15 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
                             hidden: true,
-                            width: 1800,
-                            margin: '20 0 0 0 ',
+//                            width: 1800,
+//                            margin: '20 0 0 0 ',
+//                            layout: {
+//                                type: 'vbox',
+//                                align: 'center'
+//                            },
                             layout: {
-                                type: 'vbox',
-                                align: 'center'
+                                type: 'hbox',
+                                align: 'stretch'
                             },
                             items: [
                                 {
@@ -6429,7 +6433,129 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                 }
                                             ]
                                         },
-                                        
+                                        // <editor-fold defaultstate="collapsed" desc="Pie Totales">
+                                        {
+                                            xtype: 'panel',
+                                            layout: {
+                                                type: 'vbox',
+                                                pack: 'center'
+                                            },
+                                            border: false,
+                                            hidden:false,
+                                            margin: '40 0 0 25',
+                                            bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
+                                            items: [
+                                                {
+                                                    xtype: 'label',
+                                                    id: prototype.id + '-lblTittleGlobalMatch',
+                                                    labelAlign: 'center',
+                                                    border: true,
+                                                    hidden: false,
+                                                    align: 'center',
+                                                    margin: '5 0 20 100',
+                                                    style: {
+                                                        fontSize: '15px',
+                                                        fontWeight: 'bold',
+                                                        color: '#231223',
+                                                        fontFamily: '"Open Sans", sans-serif',
+                                                        textAlign: 'center',
+                                                        border: '2px solid #000000', // Borde del marco
+                                                        padding: '10px', // Espacio interno
+                                                        borderRadius: '5px' // Esquinas redondeadas para un marco más suave (opcional)
+                                                    }
+                                                },
+                                                {
+                                                    xtype: 'polar',
+                                                    id: prototype.id + '-displayPieGlobalMatch',
+                                                    width: 470,
+                                                    height: 280,
+                                                    innerPadding: 60,
+                                                    background: '#F4F6F6',
+                                                    animation: {
+                                                        duration: 200
+                                                    },
+                                                    interactions: ['rotate', 'itemhighlight'],
+                                                    series: [{
+                                                        type: 'pie3d',
+                                                        angleField: 'value',
+                                                        label: {
+                                                            field: 'texto',
+                                                            distance: 40,
+                                                            avoidOverlap: true,
+                                                            calloutLine: true,
+                                                            renderer: function (value, b, callout) {
+                                                                callout.calloutWidth = 1;
+                                                                return value;
+                                                            }
+                                                        },
+                                                        highlight: true,
+                                                        tooltip: {
+                                                            trackMouse: true,
+                                                            height: 28,
+                                                            renderer: function (toolTip, record, ctx) {
+                                                                toolTip.setHtml(record.get('label') + ' : <b>' + Ext.util.Format.number(record.get(ctx.field), '0,000.00') + '</b>');
+                                                            }
+                                                        },
+                                                        colors: ['#F44336', '#58E02E'] // Verde, Naranja, Azul, Rojo
+                                                    }]
+                                                },
+                                                {
+                                                    xtype: 'label',
+                                                    id: prototype.id + '-lblTitleSettlement',
+                                                    labelAlign: 'center',
+                                                    border: true,
+                                                    hidden: false,
+                                                    align: 'center',
+                                                    margin: '15 0 20 100',
+                                                    style: {
+                                                        fontSize: '15px',
+                                                        fontWeight: 'bold',
+                                                        color: '#231223',
+                                                        fontFamily: '"Open Sans", sans-serif',
+                                                        textAlign: 'center',
+                                                        border: '2px solid #000000', // Borde del marco
+                                                        padding: '10px', // Espacio interno
+                                                        borderRadius: '5px' // Esquinas redondeadas para un marco más suave (opcional)
+                                                    }
+                                                },
+                                                {
+                                                    xtype: 'polar',
+                                                    id: prototype.id + '-displayPieSettlement',
+                                                    width: 470,
+                                                    height: 280,
+                                                    innerPadding: 60,
+                                                    background: '#F4F6F6',
+                                                    animation: {
+                                                        duration: 200
+                                                    },
+                                                    interactions: ['rotate', 'itemhighlight'],
+                                                    series: [{
+                                                        type: 'pie3d',
+                                                        angleField: 'value',
+                                                        label: {
+                                                            field: 'texto',
+                                                            distance: 40,
+                                                            avoidOverlap: true,
+                                                            calloutLine: true,
+                                                            renderer: function (value, b, callout) {
+                                                                callout.calloutWidth = 1;
+                                                                return value;
+                                                            }
+                                                        },
+                                                        highlight: true,
+                                                        tooltip: {
+                                                            trackMouse: true,
+                                                            height: 28,
+                                                            renderer: function (toolTip, record, ctx) {
+                                                                toolTip.setHtml(record.get('label') + ' : <b>' + Ext.util.Format.number(record.get(ctx.field), '0,000.00') + '</b>');
+                                                            }
+                                                        },
+                                                        colors: ['#F44336', '#58E02E'] // Verde, Naranja, Azul, Rojo
+                                                    }]
+                                                },
+                                            ]
+                                        }
+                                        // </editor-fold>
                                     ]
                                 },
                                 {
@@ -6438,206 +6564,9 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                     border: false,
                                     layout: {
                                         type: 'hbox',
-                                        align: 'center'
+                                        align: 'left'
                                     },
                                     items: [
-                                        {
-                                            xtype: 'panel',
-                                            layout: {
-                                                type: 'vbox',
-                                                pack: 'center'
-                                            },
-                                            border: false,
-                                            hidden: true,
-                                            bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
-                                            items: [
-                                                {
-                                                    xtype: 'treepanel',
-                                                    id: prototype.id + '-gridDataConciliation',
-                                                    width: 1300,
-                                                    reserveScrollbar: true,
-                                                    useArrows: true,
-                                                    rootVisible: false,
-                                                    multiSelect: true,
-                                                    columnLines: true,
-                                                    rowLines: true,
-                                                    features: [{
-                                                        ftype: 'summary'
-                                                    }],
-                                                    columns: {
-                                                        defaults: {
-                                                            menuDisabled: true,
-                                                            sortable: false,
-                                                            align: 'center'
-                                                        },
-                                                        items: [
-                                                            {
-                                                                text: 'Month', dataIndex: 'strFormatDate', width: 110, xtype: 'treecolumn',
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    console.log(record.data, 'sales dateeeee')
-                                                                    let valor = '';
-
-                                                                    if (record.data.children && record.data.children[0].FCHILD === '1') {
-                                                                        valor = value;
-                                                                    } else if (record.data.children && record.data.children[0].FCHILD === '0') {
-                                                                        valor = value;
-                                                                    } else {
-                                                                        valor = ' ';
-                                                                    }
-                                                                    return valor;
-                                                                },
-                                                                defaults: {
-                                                                    menuDisabled: true,
-                                                                    sortable: false,
-                                                                    align: 'center'
-                                                                },
-                                                            },
-                                                            {
-                                                                text: 'Av Group', dataIndex: 'CCUST', width: 80,
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:center;background-color:#c9daf5;";
-                                                                    let strCCUST = {
-                                                                        134: 'AVIANCA',
-                                                                        133: 'LACSA',
-                                                                        202: 'TACA',
-                                                                        547: 'AEROGAL',
-
-                                                                    }
-                                                                    let styleHref = '<u><a href="#payments-balance-analysis-by-age-form" style="color:#008FE3;text-decoration:underline;">';
-                                                                    let styleHref2 = '</a></u>';
-
-                                                                    if (Ext.getCmp(prototype.id + '-cmbAviancaGroup').getValue() !== '') {
-                                                                        return styleHref + strCCUST[record.data.children[0].CCUST] + styleHref2;
-                                                                    } else {
-                                                                        return  strCCUST[value] ? styleHref + strCCUST[value] + styleHref2 : 'AV GROUP';
-                                                                    }
-                                                                },
-                                                                listeners: {
-                                                                    click: 'onGridCountryTotal'
-                                                                }
-                                                            },
-                                                            {
-                                                                text: 'Total Sales', dataIndex: 'QSVFOPUSDS', width: 115,
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:right;background-color:#d5f4d5;";
-                                                                    value = Ext.util.Format.number(value, '0,000');
-                                                                    return  value;
-                                                                },
-                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                    metaData.style = "text-align:right;";
-                                                                    var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
-                                                                    return Ext.util.Format.number(data.totQSALES, '0,000');
-                                                                }
-                                                            },
-                                                            {
-                                                                text: 'Sale Match', dataIndex: 'QSVFOPUSDC', width: 115,
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:right;background-color:#d5f4d5;";
-                                                                    value = Ext.util.Format.number(value, '0,000');
-                                                                    return  value;
-                                                                },
-                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                    metaData.style = "text-align:right;";
-                                                                    var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
-                                                                    return Ext.util.Format.number(data.totSVFOPUSDS, '0,000');
-                                                                }
-                                                            },
-                                                            {
-                                                                text: '% Match', dataIndex: 'QRATECON', width: 90,
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:right;background-color:#7ccc7c;";
-                                                                    let data = record.data;
-                                                                    console.log(data.QRATECON, 'RATECON!!')
-                                                                    let perc1 = data.QRATECON === 0 ? 0 : data.QRATECON;
-                                                                    return Ext.util.Format.number(perc1, '0.00%');
-                                                                }
-                                                            },
-                                                            {
-                                                                text: 'Settlement',
-//                                                id: prototype.id + '-adgSalDate',
-                                                                defaults: {
-                                                                    menuDisabled: true,
-                                                                    sortable: false,
-                                                                    align: 'center'
-                                                                },
-                                                                columns: [
-                                                                    
-                                                                    {
-                                                                        text: '% Match', dataIndex: 'QRATECONL', width: 90,
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:right;background-color:#7ccc7c;";
-                                                                            let data = record.data;
-                                                                            console.log(data.QRATECON, 'RATECON!!')
-                                                                            let perc1 = data.QRATECON === 0 ? 0 : data.QRATECON;
-                                                                            return Ext.util.Format.number(perc1, '0.00%');
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'Match', dataIndex: 'QSVFOPUSDL', width: 100,
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:right;background-color:#6aaee8;";
-                                                                            value = Ext.util.Format.number(value, '0,000');
-                                                                            return  value;
-                                                                        },
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            metaData.style = "text-align:right;";
-                                                                            var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
-                                                                            return Ext.util.Format.number(data.totSVFOPUSDC, '0,000');
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'Total Settlement', dataIndex: 'QSVFOPUSDSLT', width: 115,
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:right;background-color:#d5f4d5;";
-                                                                            value = Ext.util.Format.number(value, '0,000');
-                                                                            return  value;
-                                                                        },
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            metaData.style = "text-align:right;";
-                                                                            var data = Ext.getCmp(prototype.id + '-gridData').getStore().getData().items[0].data;
-                                                                            return Ext.util.Format.number(data.totQSALES, '0,000');
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'W/O Sales', dataIndex: 'QSVFOPUSDP', width: 100,
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:right;background-color:#6aaee8;";
-                                                                            value = Ext.util.Format.number(value, '0,000');
-                                                                            return  value;
-                                                                        },
-                                                                    },
-                                                                ]
-                                                            },
-                                                            {
-                                                                text: 'Comision <br> TC', dataIndex: 'QCOMISION', width: 100,
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:right;background-color:#ffe07c;";
-                                                                    value = Ext.util.Format.number(value, '0,000');
-                                                                    return  value;
-                                                                },
-                                                            },
-                                                            {
-                                                                text: 'Taxes / <br> Expenses', dataIndex: 'QRTEIVA', width: 100,
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:right;background-color:#ffe07c;";
-                                                                    value = Ext.util.Format.number(value, '0,000');
-                                                                    return  value;
-                                                                },
-                                                            },
-                                                            {
-                                                                text: 'Net', dataIndex: 'QNETO', width: 110,
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:right;background-color:#81d4fa;";
-                                                                    value = Ext.util.Format.number(value, '0,000');
-                                                                    return  value;
-                                                                },
-                                                            },
-                                                        ]
-                                                    }
-                                                },
-                                                
-                                            ]
-                                        },
                                         {
                                             xtype: 'panel',
                                             layout: {
@@ -6865,60 +6794,6 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                     }
                                                                 }]
                                                         },
-                                                        {
-                                                            xtype: 'label',
-                                                            id: prototype.id + '-lblTittleGlobalMatch',
-                                                            labelAlign: 'center',
-                                                            border: true,
-                                                            hidden: false,
-                                                            align: 'center',
-                                                            margin: '5 0 5 100',
-                                                            style: {
-                                                                fontSize: '15px',
-                                                                fontWeight: 'bold',
-                                                                color: '#231223',
-                                                                fontFamily: '"Open Sans", sans-serif',
-                                                                textAlign: 'center',
-                                                                border: '2px solid #000000', // Borde del marco
-                                                                padding: '10px', // Espacio interno
-                                                                borderRadius: '5px' // Esquinas redondeadas para un marco más suave (opcional)
-                                                            }
-                                                        },
-                                                       {
-                                                            xtype: 'polar',
-                                                            id: prototype.id + '-displayPieGlobalMatch',
-                                                            width: 780,
-                                                            height: 350,
-                                                            innerPadding: 35,
-                                                            background: '#F4F6F6',
-                                                            animation: {
-                                                                duration: 200
-                                                            },
-                                                            interactions: ['rotate', 'itemhighlight'],
-                                                            series: [{
-                                                                type: 'pie3d',
-                                                                angleField: 'value',
-                                                                label: {
-                                                                    field: 'texto',
-                                                                    distance: 40,
-                                                                    avoidOverlap: true,
-                                                                    calloutLine: true,
-                                                                    renderer: function (value, b, callout) {
-                                                                        callout.calloutWidth = 1;
-                                                                        return value;
-                                                                    }
-                                                                },
-                                                                highlight: true,
-                                                                tooltip: {
-                                                                    trackMouse: true,
-                                                                    height: 28,
-                                                                    renderer: function (toolTip, record, ctx) {
-                                                                        toolTip.setHtml(record.get('label') + ' : <b>' + Ext.util.Format.number(record.get(ctx.field), '0,000.00') + '</b>');
-                                                                    }
-                                                                },
-                                                                colors: ['#6C87A8', '#6C87A8', '#2196F3', '#F44336'] // Verde, Naranja, Azul, Rojo
-                                                            }]
-                                                        },
                                                     ]
                                                 },
                                             ]
@@ -6984,7 +6859,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     background: '#E0F8F7',
                                                     captions: {
                                                         title: {
-                                                            text: 'Totals Tickets by Sales Date ',
+                                                            text: 'Totals Sales And Settlement Match',
                                                             alignTo: 'chart'
                                                         }
                                                     },
@@ -6999,20 +6874,13 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     axes: [{
                                                             type: 'numeric3d',
                                                             position: 'left',
-                                                            fields: ['QSALES', 'QMATCH', 'QPEND'],
+                                                            fields: ['QSVFOPUSDS', 'QSVFOPUSDC', 'SVFOPUSDLT','QSVFOPUSDL'],
                                                             grid: true,
                                                             title: '',
                                                             //title: 'Millions of USD',
                                                             renderer: function (obj, value) {
-                                                                if (value > 1) {
-                                                                    if ((value / 1000).toString().length > 3) {
-                                                                        return  ' ' + Ext.util.Format.number((value / 1000000), '0.0') + 'M';
-                                                                    } else {
-                                                                        return  ' ' + Ext.util.Format.number((value / 1000), '0') + 'K';
-                                                                    }
-                                                                } else {
-                                                                    return '';
-                                                                }
+                                                                console.log(obj, value, 'RENDERER TABLE')
+                                                                return Ext.util.Format.number(value, '0.0')
                                                             }
                                                         }, {
                                                             type: 'category3d',
@@ -7027,11 +6895,11 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     series: [{
                                                             type: 'bar3d',
                                                             stacked: false,
-                                                            title: ['Sales', 'Paid', 'Pending'],
+                                                            title: ['Total Sales', 'Match Sales', 'Total Sett.','Match Sett.'],
                                                             xField: 'strFormatDate',
-                                                            yField: ['QSALES', 'QMATCH', 'QPEND'],
+                                                            yField: ['QSVFOPUSDS', 'QSVFOPUSDC', 'SVFOPUSDLT','QSVFOPUSDL'],
 
-                                                            colors: ['#0066ff', '#5dd92d', '#ea0000'],
+                                                            colors: ['#0066ff', '#5dd92d', '#ea0000','#ea0000'],
                                                             highlight: true,
                                                             style: {
                                                                 inGroupGapWidth: -7,
@@ -7043,12 +6911,14 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                 height: 28,
                                                                 renderer: function (toolTip, record, ctx) {
                                                                     var label = '';
-                                                                    if (ctx.field === 'QSALES') {
-                                                                        label = 'Sales';
-                                                                    } else if (ctx.field === 'QMATCH') {
-                                                                        label = 'Conciliation';
-                                                                    } else if (ctx.field === 'QPEND') {
-                                                                        label = 'Pending';
+                                                                    if (ctx.field === 'QSVFOPUSDS') {
+                                                                        label = 'Total Sales';
+                                                                    } else if (ctx.field === 'QSVFOPUSDC') {
+                                                                        label = 'Match Sales';
+                                                                    } else if (ctx.field === 'SVFOPUSDLT') {
+                                                                        label = 'Total Sett.';
+                                                                    } else if (ctx.field === 'QSVFOPUSDL') {
+                                                                        label = 'Match Sett.';
                                                                     }
                                                                     toolTip.setHtml(label + ' : ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
                                                                 }
