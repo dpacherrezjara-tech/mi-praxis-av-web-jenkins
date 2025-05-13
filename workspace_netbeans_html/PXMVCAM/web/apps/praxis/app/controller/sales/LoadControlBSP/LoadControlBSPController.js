@@ -11,7 +11,7 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlBSP.LoadControlBSPController'
     beanHOT: {},
     lstHOT: {},
     // </editor-fold>
-    init: function(view) {
+    init: function (view) {
         me = this;
         // <editor-fold defaultstate="collapsed" desc="prototype">
         prototype.id = 'LoadControlBSPForm';
@@ -23,10 +23,10 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlBSP.LoadControlBSPController'
         this.setValue('cbxFiltro', '1');
         this.focus('txtA1698BANK');
     },
-    afterRender: function() {
+    afterRender: function () {
         this.btnSearch_click('BWR');
     },
-    cmbFiltro_clickHandler: function() {
+    cmbFiltro_clickHandler: function () {
         var tipo_fil = this.getValue("cbxFiltro");
         switch (tipo_fil) {
             case '1':
@@ -55,7 +55,7 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlBSP.LoadControlBSPController'
                 break;
         }
     },
-    tab_clickHandler: function() {
+    tab_clickHandler: function () {
         var tabPanel = Ext.getCmp(prototype.id + '-tnvMain');
         var activeTab = tabPanel.getActiveTab();
         var activeTabIndex = tabPanel.items.indexOf(activeTab);
@@ -89,14 +89,14 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlBSP.LoadControlBSPController'
                 break;
         }
     },
-    btnSearchIDFile_clickHandler: function() {
+    btnSearchIDFile_clickHandler: function () {
         this.btnSearch_click('ERR_FORMAT');
     },
-    gridControlLoadRep_itemClickHandler: function(obj, record, index, eOpts) {
+    gridControlLoadRep_itemClickHandler: function (obj, record, index, eOpts) {
         this.IdFile = record.get('A1698IDFIL');
     },
     // <editor-fold defaultstate="collapsed" desc="Options">
-    btnSearch_click: function(obj, e, a) {
+    btnSearch_click: function (obj, e, a) {
 
         if (obj.id !== 'undefined') {
             switch (obj.id) {
@@ -110,7 +110,7 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlBSP.LoadControlBSPController'
         }
         var tipo_fil = this.getValue("cbxFiltro");
         if (obj === 'BWR') {
-            this.bean.IN_A1698CCUST = '139';
+            this.bean.IN_A1698CCUST = '134';
             this.bean.IN_A1698PAIS = '';
             this.bean.IN_A1698BANK = '';
             this.bean.IN_A1698FPRDA = '';
@@ -152,12 +152,10 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlBSP.LoadControlBSPController'
                     this.search(this.bean, e);
                 }
             }
-        }
-        else if (obj === 'LOAD') {
+        } else if (obj === 'LOAD') {
             this.loadHOT(this.beanHOT);
-        }
-        else if (obj === 'ERR') {
-            this.beanError.IN_A1697CCUST = '139';
+        } else if (obj === 'ERR') {
+            this.beanError.IN_A1697CCUST = '134';
             this.beanError.IN_A1697PAIS = '';
             this.beanError.IN_A1697BANK = '';
             this.beanError.IN_A1697FPRDA = '';
@@ -200,21 +198,20 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlBSP.LoadControlBSPController'
                     this.loadError(this.beanError, e);
                 }
             }
-        }
-        else if (obj === 'ERR_FORMAT') {
+        } else if (obj === 'ERR_FORMAT') {
             this.beanErrorFormat.IN_IDFIL = ('000000000' + this.getValue("txtIDFile"));
             this.beanErrorFormat.IN_IDFIL = this.beanErrorFormat.IN_IDFIL.substr(this.beanErrorFormat.IN_IDFIL.length - 9);
             this.searchIdFile(this.beanErrorFormat, e);
         }
     },
-    btnFilter_click: function() {
+    btnFilter_click: function () {
         var option = Ext.getCmp(prototype.id + '-contentFilter');
         if (option.isVisible())
             option.hide();
         else
             option.show();
     },
-    btnClear_click: function(obj, e) {
+    btnClear_click: function (obj, e) {
         this.txtClear_imput();
         this.lstHOT = {};
 
@@ -239,12 +236,12 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlBSP.LoadControlBSPController'
         }
 
     },
-    btnBack_click: function() {
+    btnBack_click: function () {
         global.showMenu();
     },
     // </editor-fold>
 
-    txtClear_imput: function() {
+    txtClear_imput: function () {
         this.setValue('txtA1698FCARG', new Date());
         this.setValue('txtA1698FPRDA', new Date());
         this.setValue('txtA1698BANK', '');
@@ -252,7 +249,7 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlBSP.LoadControlBSPController'
         this.setValue('txtA1698PAIS', '');
     },
     //<editor-fold defaultstate="collapsed" desc="search">
-    search: function(bean, opt) {
+    search: function (bean, opt) {
 
         if (opt === 'XLS') {
             this.exportExcel('/getXLSX?beanString=' + encodeURI(JSON.stringify(bean)));
@@ -264,10 +261,10 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlBSP.LoadControlBSPController'
                 url: prototype.url + '/search'
             },
             listeners: {
-                beforeload: function(obj) {
+                beforeload: function (obj) {
                     obj.proxy.extraParams = bean;
                 },
-                load: function(obj, obj2, success, obj4, obj5) {
+                load: function (obj, obj2, success, obj4, obj5) {
                     // <editor-fold defaultstate="collapsed" desc="paggin3">
                     var pag = Ext.getCmp(prototype.id + '-paggin3');
                     var pagData = pag.getPageData();
@@ -292,7 +289,7 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlBSP.LoadControlBSPController'
         Ext.getCmp(prototype.id + '-gridControlLoadRep').bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-paggin3').bindStore(storeGridDatas);
     },
-    exportExcel: function(_path) {
+    exportExcel: function (_path) {
         Ext.Msg.show({
             title: '.:PRAXIS:.',
             msg: 'Download Excel ?',
@@ -300,7 +297,7 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlBSP.LoadControlBSPController'
             scope: this,
             icon: Ext.MessageBox.QUESTION,
             modal: true,
-            fn: function(btn) {
+            fn: function (btn) {
                 if (btn === 'ok') {
                     global.getFile(prototype.url + _path);
                 }
@@ -310,16 +307,16 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlBSP.LoadControlBSPController'
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="loadHOT">
-    loadHOT: function(beanHOT) {
+    loadHOT: function (beanHOT) {
         var storeGridDatas = Ext.create('Ext.Praxis.store.sales.GridData', {
             proxy: {
                 url: prototype.url + '/loadHOT'
             }, listeners: {
-                beforeload: function(obj) {
+                beforeload: function (obj) {
                     obj.proxy.extraParams = beanHOT;
                     Ext.getCmp(prototype.id + '-LoadControl1').mask('Loading...', '');
                 },
-                load: function(obj) {
+                load: function (obj) {
                     win.lblUser_toolTip("Estructura: A1348");
                     // <editor-fold defaultstate="collapsed" desc="paggin4">
                     var pag = Ext.getCmp(prototype.id + '-paggin4');
@@ -357,7 +354,7 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlBSP.LoadControlBSPController'
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="loadError">
-    loadError: function(beanError, opt) {
+    loadError: function (beanError, opt) {
         if (opt === 'XLS') {
             this.exportExcel('/getXLSX_err?beanString=' + encodeURI(JSON.stringify(beanError)));
             return;
@@ -367,10 +364,10 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlBSP.LoadControlBSPController'
                 url: prototype.url + '/loadError'
             },
             listeners: {
-                beforeload: function(obj) {
+                beforeload: function (obj) {
                     obj.proxy.extraParams = beanError;
                 },
-                load: function(obj, obj2, success, obj4, obj5) {
+                load: function (obj, obj2, success, obj4, obj5) {
                     // <editor-fold defaultstate="collapsed" desc="paggin5">
                     var pag = Ext.getCmp(prototype.id + '-paggin5');
                     var pagData = pag.getPageData();
@@ -398,7 +395,7 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlBSP.LoadControlBSPController'
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="searchIdFile">
-    searchIdFile: function(beanErrorFormat, opt) {
+    searchIdFile: function (beanErrorFormat, opt) {
         if (opt === 'XLS') {
             this.exportExcel('/getXLSX_err_format?beanString=' + encodeURI(JSON.stringify(beanErrorFormat)));
             return;
@@ -408,10 +405,10 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlBSP.LoadControlBSPController'
                 url: prototype.url + '/searchIdFile'
             },
             listeners: {
-                beforeload: function(obj) {
+                beforeload: function (obj) {
                     obj.proxy.extraParams = beanErrorFormat;
                 },
-                load: function(obj, obj2, success, obj4, obj5) {
+                load: function (obj, obj2, success, obj4, obj5) {
                     // <editor-fold defaultstate="collapsed" desc="paggin2">
                     var pag = Ext.getCmp(prototype.id + '-paggin2');
                     var pagData = pag.getPageData();
@@ -438,13 +435,13 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlBSP.LoadControlBSPController'
     },
     //</editor-fold>
 
-    getIndexTabSelected: function() {
+    getIndexTabSelected: function () {
         var tabPanel = Ext.getCmp(prototype.id + '-tnvMain');
         var activeTab = tabPanel.getActiveTab();
         var activeTabIndex = tabPanel.items.indexOf(activeTab);
         return activeTabIndex;
     },
-    txtFilterValue_keyDownHandler: function(obj, e, eOpts) {
+    txtFilterValue_keyDownHandler: function (obj, e, eOpts) {
         if (e.getKey() === e.ENTER) {
             var selectedIndex = this.getIndexTabSelected();
             switch (selectedIndex) {
@@ -461,7 +458,7 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlBSP.LoadControlBSPController'
         }
     },
     // <editor-fold defaultstate="collapsed" desc="Funciones para la paginación">
-    pagFirst: function(obj, e) {
+    pagFirst: function (obj, e) {
         if (this.getIndexTabSelected() === 0) {
             Ext.getCmp(prototype.id + '-paggin3').moveFirst();
         } else if (this.getIndexTabSelected() === 2) {
@@ -470,7 +467,7 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlBSP.LoadControlBSPController'
             Ext.getCmp(prototype.id + '-paggin2').moveFirst();
         }
     },
-    pagPrevious: function(obj, e) {
+    pagPrevious: function (obj, e) {
         if (this.getIndexTabSelected() === 0) {
             Ext.getCmp(prototype.id + '-paggin3').movePrevious();
         } else if (this.getIndexTabSelected() === 2) {
@@ -479,7 +476,7 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlBSP.LoadControlBSPController'
             Ext.getCmp(prototype.id + '-paggin2').movePrevious();
         }
     },
-    pagNext: function(obj, e) {
+    pagNext: function (obj, e) {
         if (this.getIndexTabSelected() === 0) {
             Ext.getCmp(prototype.id + '-paggin3').moveNext();
         } else if (this.getIndexTabSelected() === 1) {
@@ -490,7 +487,7 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlBSP.LoadControlBSPController'
             Ext.getCmp(prototype.id + '-paggin2').moveNext();
         }
     },
-    pagLast: function(obj, e) {
+    pagLast: function (obj, e) {
         if (this.getIndexTabSelected() === 0) {
             Ext.getCmp(prototype.id + '-paggin3').moveLast();
         } else if (this.getIndexTabSelected() === 2) {
@@ -502,24 +499,24 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlBSP.LoadControlBSPController'
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Utilitarios">
-    getValue: function(id) {
+    getValue: function (id) {
         return Ext.getCmp(prototype.id + '-' + id).getValue();
     },
-    focus: function(id) {
+    focus: function (id) {
         Ext.getCmp(prototype.id + '-' + id).focus();
     },
-    setValue: function(id, txt) {
+    setValue: function (id, txt) {
         return Ext.getCmp(prototype.id + '-' + id).setValue(txt);
     },
-    onUpperValue: function(field, newValue, oldValue) {
+    onUpperValue: function (field, newValue, oldValue) {
         field.setValue(newValue.toUpperCase());
     },
-    onTextKeypress: function(obj, e, eOpts) {
+    onTextKeypress: function (obj, e, eOpts) {
         if (e.getKey() === e.ENTER) {
             this.btnSearch_click();
         }
     },
-    onTextKeypress_btnSearchIDFile_clickHandler: function(obj, e, eOpts)
+    onTextKeypress_btnSearchIDFile_clickHandler: function (obj, e, eOpts)
     {
         if (e.getKey() === e.ENTER) {
             this.btnSearchIDFile_clickHandler();
@@ -527,7 +524,7 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlBSP.LoadControlBSPController'
     },
     // </editor-fold>
 
-    btnExcel_click: function() {
+    btnExcel_click: function () {
         var selectedIndex = this.getIndexTabSelected();
         switch (selectedIndex) {
             case 0:
@@ -541,7 +538,7 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlBSP.LoadControlBSPController'
                 break;
         }
     },
-    btnLoadHOT_clickHandler: function() {
+    btnLoadHOT_clickHandler: function () {
         Ext.Msg.show({
             title: '.:PRAXIS:.',
             msg: 'Process load HOT?',
@@ -549,17 +546,17 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlBSP.LoadControlBSPController'
             scope: this,
             icon: Ext.MessageBox.QUESTION,
             modal: true,
-            fn: function(btn) {
+            fn: function (btn) {
                 if (btn === 'yes') {
                     this.LOAD_HOT();
                 }
             }
         });
     },
-    LOAD_HOT: function() {
+    LOAD_HOT: function () {
 
         var beanHOT_load = {
-            VP_CCUST: '139',
+            VP_CCUST: '134',
             VP_SQLCODE: '',
             VP_MESSAGE: ''
         };
@@ -569,7 +566,7 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlBSP.LoadControlBSPController'
             timeout: 60000000,
             params: beanHOT_load,
             beforerequest: Ext.getCmp(prototype.id + '-LoadControl1').mask('Loading...', ''),
-            success: function(response, options)
+            success: function (response, options)
             {
                 var res = Ext.JSON.decode(response.responseText);
                 var filter = res.filter;
@@ -577,32 +574,32 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlBSP.LoadControlBSPController'
                 global.Msg({
                     msg: filter.dbException.MESSAGE,
                     icon: 1,
-                    fn: function() {
+                    fn: function () {
                         //Ext.getCmp(prototype.id + '-dataEntry').close();
                         //Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
                     }
                 });
             },
-            failure: function(response, opts) {
+            failure: function (response, opts) {
                 //console.log('server-side failure with status code ' + response.status);
                 alert(response.status);
             }
         });
     },
-    btnFormatMasterFile_clickHandler: function(grid, rowIndex, colIndex)
+    btnFormatMasterFile_clickHandler: function (grid, rowIndex, colIndex)
     {
         var rec = {}; //grid.getStore().getAt(rowIndex);
         var all = {}; //grid.getStore();
         this.winDataEntry('U', rec, all, rowIndex);
     },
-    winDataEntry: function(action, rec, all, rowIndex)
+    winDataEntry: function (action, rec, all, rowIndex)
     {
-        
+
         action = action === null || action === undefined ? 'U' : action;
         rec = rec === null || rec === undefined ? {} : rec;
         all = all === null || all === undefined ? {} : all;
         rowIndex = rowIndex === null || rowIndex === undefined ? {} : rowIndex;
-        
+
         Ext.create('Ext.Praxis.view.sales.LoadControlBSPForm.FormatMasterFileForm', {
             id: prototype.id + '-FormatMasterFileForm',
             params: {
@@ -612,5 +609,76 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlBSP.LoadControlBSPController'
                 rowIndex: rowIndex
             }
         }).show();
+    },
+
+    btnVerifyErrors_clickHandler: function () {
+
+        let filter = this.getValue("cbxFiltro");
+        let A1698FPRDA = Ext.util.Format.date(this.getValue("txtA1698FPRDA"), 'Ymd');
+        if (filter !== '2') {
+            global.Msg({
+                msg: 'Seleccionar filtro fecha PRDA'
+            });
+            return;
+        }
+        if (A1698FPRDA === '') {
+            global.Msg({
+                msg: 'Ingresar la fecha PRDA'
+            });
+            return;
+        }
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Process verify errors?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'yes') {
+                    this.VERIFY_ERRORS();
+                }
+            }
+        });
+    },
+    VERIFY_ERRORS: function () {
+        //let filter = this.getValue("cbxFiltro");
+        let A1698FPRDA = Ext.util.Format.date(this.getValue("txtA1698FPRDA"), 'Ymd');
+        let me = this;
+        let beanfilter = {
+            VP_PRDA: A1698FPRDA,
+            VP_FUENT: 'BSP'
+        };
+
+        Ext.Ajax.request({
+            url: prototype.url + '/processVerifyErrors',
+            method: 'POST',
+            timeout: 60000000,
+            params: beanfilter,
+            beforerequest: Ext.getCmp(prototype.id + '-boxErrorsFormat').mask('Loading...', ''),
+            success: function (response, options) {
+                var res = Ext.JSON.decode(response.responseText);
+                Ext.getCmp(prototype.id + '-boxErrorsFormat').unmask('Loading...', '');
+                console.log(res);
+                if (res.success) {
+                    var objRtn = res.filter;
+                    global.Msg({
+                        msg: objRtn.dbException.MESSAGE,
+                        icon: 1,
+                        fn: function () {
+                            //exito
+                            me.btnSearchIDFile_clickHandler();                      
+                        }
+                    });
+                }else{
+                    global.Msg({
+                        msg: res.sesion,
+                        icon: 2,
+                        fn: function () {                   
+                        }
+                    });
+                }
+            }
+        });
     }
 });

@@ -19,6 +19,7 @@ import net.miatech.beans.PX037S07PRO9876Filter;
 import net.miatech.beans.PX037S08A1724Filter;
 import net.miatech.beans.PX074S01PPRO9824Filter;
 import net.miatech.beans.PX074S02PRO9878Filter;
+import net.miatech.beans.SPPRO10042Filter;
 import net.miatech.beans.SQP03605Filter;
 import net.miatech.beans.SQP03606Filter;
 import net.miatech.utils.Functions;
@@ -54,7 +55,8 @@ public class LoadControlDAO {
             cstmt01.registerOutParameter(11, Types.INTEGER);
             cstmt01.registerOutParameter(12, Types.INTEGER);
             
-            cstmt01.setString(1, filter.IN_A1698CCUST);
+            //cstmt01.setString(1, filter.IN_A1698CCUST);
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.IN_A1698SOURC);
             cstmt01.setString(3, filter.IN_A1698PAIS);
             cstmt01.setString(4, filter.IN_A1698BANK);
@@ -258,7 +260,8 @@ public class LoadControlDAO {
             cstmt01.registerOutParameter(11, Types.INTEGER);
             cstmt01.registerOutParameter(12, Types.INTEGER);
             
-            cstmt01.setString(1, filter.IN_A1697CCUST);
+            // cstmt01.setString(1, filter.IN_A1697CCUST);
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.IN_A1697SOURC);
             cstmt01.setString(3, filter.IN_A1697PAIS);
             cstmt01.setString(4, filter.IN_A1697BANK);
@@ -414,7 +417,8 @@ public class LoadControlDAO {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();  cstmt01 = cnx.prepareCall(SQLCLL01);
             cstmt01.registerOutParameter(2, Types.INTEGER);
             cstmt01.registerOutParameter(3, Types.CHAR);            
-            cstmt01.setString(1, filter.VP_CCUST);
+            //cstmt01.setString(1, filter.VP_CCUST);
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.execute();
             filter.dbException.SQLCODE = cstmt01.getString(2);
             filter.dbException.MESSAGE = cstmt01.getString(3);
@@ -436,7 +440,8 @@ public class LoadControlDAO {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();  cstmt01 = cnx.prepareCall(SQLCLL01);
             cstmt01.registerOutParameter(3, Types.INTEGER);
             cstmt01.registerOutParameter(4, Types.CHAR);            
-            cstmt01.setString(1, filter.VP_CCUST);
+            //cstmt01.setString(1, filter.VP_CCUST);
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.VP_NROID);
             cstmt01.execute();
             filter.dbException.SQLCODE = cstmt01.getString(3);
@@ -490,6 +495,32 @@ public class LoadControlDAO {
             cstmt01.execute();
 
             filter.OU_STATUS = cstmt01.getString(4);
+        } finally {
+            if (rs01 != null) try { rs01.close(); } catch(SQLException e) { logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage() ,e); }
+            if (cstmt01 != null) try { cstmt01.close(); } catch(SQLException e) { logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage() ,e); }            
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+        return filter;
+    }
+    
+    public SPPRO10042Filter setSPPRO10042(SPPRO10042Filter filter) throws SQLException, Exception {
+        CallableStatement cstmt01 = null;
+        ResultSet rs01 = null;
+        String SQLCLL01 = "{CALL SPPRO10042(?,?,?,?,?)}";
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();  
+            cstmt01 = cnx.prepareCall(SQLCLL01);
+            cstmt01.registerOutParameter(4, Types.INTEGER);
+            cstmt01.registerOutParameter(5, Types.CHAR);
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt01.setString(2, filter.VP_PRDA);
+            cstmt01.setString(3, filter.VP_FUENT);
+            cstmt01.execute();
+            filter.dbException.SQLCODE = String.valueOf(cstmt01.getInt(4));
+            filter.dbException.MESSAGE = cstmt01.getString(5);
+            
         } finally {
             if (rs01 != null) try { rs01.close(); } catch(SQLException e) { logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage() ,e); }
             if (cstmt01 != null) try { cstmt01.close(); } catch(SQLException e) { logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage() ,e); }            
