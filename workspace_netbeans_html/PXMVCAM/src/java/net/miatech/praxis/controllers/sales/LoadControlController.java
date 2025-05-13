@@ -19,6 +19,7 @@ import net.miatech.beans.PX037S07PRO9876Filter;
 import net.miatech.beans.PX037S08A1724Filter;
 import net.miatech.beans.PX074S01PPRO9824Filter;
 import net.miatech.beans.PX074S02PRO9878Filter;
+import net.miatech.beans.SPPRO10042Filter;
 import net.miatech.beans.SQP03605Filter;
 import net.miatech.beans.SQP03606Filter;
 import net.miatech.beans.spring.implement.IServerSession;
@@ -40,10 +41,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 // </editor-fold>
-
 /**
  *
  * @author gsanchez
@@ -59,7 +60,7 @@ public class LoadControlController extends BaseController {
     private PX019S01A1536Filter filter3;
     private PX019S01A1697Filter filter4;
     private PX019S01A1348Filter filter5;
-    
+
     @RequestMapping(value = "/search")
     public @ResponseBody
     String search(ModelMap map, HttpServletRequest request) {
@@ -77,17 +78,17 @@ public class LoadControlController extends BaseController {
             filter.IN_A1698FFILE = request.getParameter("IN_A1698FFILE").trim();
             filter.IN_A1698HFILE = request.getParameter("IN_A1698HFILE").trim().toUpperCase();
             filter.IN_A1698FREGI = request.getParameter("IN_A1698FREGI").trim();
-            
+
             int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit"));
             int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
             filter.page.PAGROW = 20;
             start = (start != 0 ? start : 0);
             filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
-            
+
             logic = new LoadControlLogic();
             logic.setSession((IServerSession) serverSession.getServerSession());
             listaData = logic.loadPX019S01A1698(filter);
-            
+
             map.put("success", true);
             map.put("total", listaData.size() > 0 ? listaData.get(0).page.TOTROW : 0);
             map.put("data", listaData);
@@ -100,7 +101,7 @@ public class LoadControlController extends BaseController {
         }
         return new Gson().toJson(map);
     }
-    
+
     // Exportar EXCEL
     @RequestMapping(value = "/getXLSX")
     public @ResponseBody
@@ -110,13 +111,13 @@ public class LoadControlController extends BaseController {
             Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
             filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
 //            String fileName = request.getParameter("fileName");
-            String fileName = "PX073_"+Functions.getFechaActual()+"_BSP_Load_Control"+".xlsx";
-            
+            String fileName = "PX073_" + Functions.getFechaActual() + "_BSP_Load_Control" + ".xlsx";
+
             logic = new LoadControlLogic();
             logic.setSession((IServerSession) serverSession.getServerSession());
 //            List listaData = logic.loadPX019S01A1698(filter);
             List<PX019S01A1698Filter> listaData = logic.loadPX019S01A1698(filter);
-            
+
             // <editor-fold defaultstate="collapsed" desc="Estilo del Excel">
             Workbook workbook = new XSSFWorkbook();
             Sheet sheet = workbook.createSheet(fileName);
@@ -141,7 +142,7 @@ public class LoadControlController extends BaseController {
             headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
             headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
             headerStyle.setFont(headerFont);
-            
+
             bodyStyle.setBorderRight(CellStyle.BORDER_THIN);
             bodyStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
             bodyStyle.setBorderBottom(CellStyle.BORDER_THIN);
@@ -151,15 +152,15 @@ public class LoadControlController extends BaseController {
             bodyStyle.setBorderTop(CellStyle.BORDER_THIN);
             bodyStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
             // </editor-fold>
-            
+
             Integer vi = 0;
             Integer vj = 0;
             Iterator iter = listaData.iterator();
-            
+
             Row row;
             Cell cell50, cell51, cell52, cell53, cell54, cell55, cell56;
             Cell cell57, cell58, cell59, cell60, cell61;
-            
+
             // <editor-fold defaultstate="collapsed" desc="row">
             row = sheet.createRow(vj);
 
@@ -175,7 +176,7 @@ public class LoadControlController extends BaseController {
             cell59 = row.createCell(9);
             cell60 = row.createCell(10);
             cell61 = row.createCell(11);
-            
+
             cell50.setCellValue("Country");
             cell51.setCellValue("City");
             cell52.setCellValue("Processing Date");
@@ -188,7 +189,7 @@ public class LoadControlController extends BaseController {
             cell59.setCellValue("Prorate File");
             cell60.setCellValue("ID File");
             cell61.setCellValue("System Date");
-                        
+
 //            sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
 //            sheet.addMergedRegion(new CellRangeAddress(0, 1, 1, 1));
 //            sheet.addMergedRegion(new CellRangeAddress(0, 1, 2, 2));
@@ -201,7 +202,6 @@ public class LoadControlController extends BaseController {
 //            sheet.addMergedRegion(new CellRangeAddress(0, 0, 9, 9));
 //            sheet.addMergedRegion(new CellRangeAddress(0, 1, 10, 10));
 //            sheet.addMergedRegion(new CellRangeAddress(0, 1, 11, 11));
-
             cell50.setCellStyle(headerStyle);
             cell51.setCellStyle(headerStyle);
             cell52.setCellStyle(headerStyle);
@@ -214,7 +214,7 @@ public class LoadControlController extends BaseController {
             cell59.setCellStyle(headerStyle);
             cell60.setCellStyle(headerStyle);
             cell61.setCellStyle(headerStyle);
-            
+
 //            ++vj;
             // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc="row2">
@@ -248,11 +248,9 @@ public class LoadControlController extends BaseController {
 //            cell58.setCellStyle(headerStyle);
 //            cell59.setCellStyle(headerStyle);
 //            cell60.setCellStyle(headerStyle);
-            
-
             ++vj;
             // </editor-fold>
-            
+
             while (iter.hasNext()) {
                 row = sheet.createRow(vj);
                 // <editor-fold defaultstate="collapsed" desc="data">
@@ -267,8 +265,8 @@ public class LoadControlController extends BaseController {
                 cell58 = row.createCell(8);
                 cell59 = row.createCell(9);
                 cell60 = row.createCell(10);
-                cell61 = row.createCell(11);                
-                cell50.setCellValue(listaData.get(vi).A1698PAIS ); 
+                cell61 = row.createCell(11);
+                cell50.setCellValue(listaData.get(vi).A1698PAIS);
                 cell51.setCellValue(listaData.get(vi).A1698BANK);
                 cell52.setCellValue(listaData.get(vi).A1698FPRDA_00);
                 cell53.setCellValue(listaData.get(vi).A1698FFILE_00);
@@ -280,7 +278,7 @@ public class LoadControlController extends BaseController {
                 cell59.setCellValue(listaData.get(vi).A1698STPRO_00);
                 cell60.setCellValue(listaData.get(vi).A1698IDFIL);
                 cell61.setCellValue(listaData.get(vi).A1698FREGI);
-                
+
 //                HashMap hm = (HashMap) listaData.get(vi);                               
 //                cell50.setCellValue((String)hm.get("A1698PAIS"));
 //                cell51.setCellValue((String)hm.get("A1698BANK"));
@@ -294,7 +292,6 @@ public class LoadControlController extends BaseController {
 //                cell59.setCellValue((String)hm.get("A1698STPRO_00"));
 //                cell60.setCellValue((String)hm.get("A1698IDFIL"));
 //                cell61.setCellValue((String)hm.get("A1698FREGI"));
-                
                 cell50.setCellStyle(bodyStyle);
                 cell51.setCellStyle(bodyStyle);
                 cell52.setCellStyle(bodyStyle);
@@ -307,7 +304,7 @@ public class LoadControlController extends BaseController {
                 cell59.setCellStyle(bodyStyle);
                 cell60.setCellStyle(bodyStyle);
                 cell61.setCellStyle(bodyStyle);
-                
+
                 // </editor-fold>
                 iter.next();
                 ++vi;
@@ -325,11 +322,11 @@ public class LoadControlController extends BaseController {
             sheet.autoSizeColumn(9, true);
             sheet.autoSizeColumn(10, true);
             sheet.autoSizeColumn(11, true);
-            
-            String fileNameDownload = String.format(fileName, UUID.randomUUID().toString().toLowerCase());            
+
+            String fileNameDownload = String.format(fileName, UUID.randomUUID().toString().toLowerCase());
             response.setContentType("application/vnd.openxml");
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");            
-            File file = File.createTempFile(fileNameDownload, ".xlsx");            
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+            File file = File.createTempFile(fileNameDownload, ".xlsx");
             FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
             workbook.write(response.getOutputStream());
             fos.close();
@@ -337,8 +334,8 @@ public class LoadControlController extends BaseController {
             e.printStackTrace();
             throw new SpringException(e);
         }
-    }   
-    
+    }
+
     @RequestMapping(value = "/searchIdFile")
     public @ResponseBody
     String searchIdFile(ModelMap map, HttpServletRequest request) {
@@ -349,17 +346,17 @@ public class LoadControlController extends BaseController {
         try {
             filter2.IN_IDFIL = request.getParameter("IN_IDFIL").trim();
             filter2.IN_FUENT = request.getParameter("IN_FUENT").trim();
-            
+
             int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit"));
             int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
             filter2.page.PAGROW = 20;
             start = (start != 0 ? start : 0);
             filter2.page.PAGNUM = (start / filter2.page.PAGROW) + 1;
-            
+
             logic = new LoadControlLogic();
             logic.setSession((IServerSession) serverSession.getServerSession());
             List<PX037S08A1724Filter> listaData = logic.loadPX037S08A1724(filter2);
-            
+
             map.put("success", true);
             map.put("total", listaData.size() > 0 ? listaData.get(0).page.TOTROW : 0);
             map.put("data", listaData);
@@ -372,22 +369,22 @@ public class LoadControlController extends BaseController {
         }
         return new Gson().toJson(map);
     }
-    
+
     // Exportar EXCEL err FORMAT
     @RequestMapping(value = "/getXLSX_err_format")
     public @ResponseBody
     void getXLSX_err_format(HttpServletRequest request, HttpServletResponse response) {
         PX037S08A1724Filter filter = new PX037S08A1724Filter();
         try {
-            
+
             Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
             filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
-            String fileName = "PX073_"+Functions.getFechaActual()+"_BSP_Load_Control_Error_Format"+".xlsx";
-            
+            String fileName = "PX073_" + Functions.getFechaActual() + "_BSP_Load_Control_Error_Format" + ".xlsx";
+
             logic = new LoadControlLogic();
             logic.setSession((IServerSession) serverSession.getServerSession());
             List<PX037S08A1724Filter> listaData = logic.loadPX037S08A1724(filter);
-            
+
             // <editor-fold defaultstate="collapsed" desc="Estilo del Excel">
             Workbook workbook = new XSSFWorkbook();
             Sheet sheet = workbook.createSheet(fileName);
@@ -412,7 +409,7 @@ public class LoadControlController extends BaseController {
             headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
             headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
             headerStyle.setFont(headerFont);
-            
+
             bodyStyle.setBorderRight(CellStyle.BORDER_THIN);
             bodyStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
             bodyStyle.setBorderBottom(CellStyle.BORDER_THIN);
@@ -422,14 +419,14 @@ public class LoadControlController extends BaseController {
             bodyStyle.setBorderTop(CellStyle.BORDER_THIN);
             bodyStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
             // </editor-fold>
-            
+
             Integer vi = 0;
             Integer vj = 0;
             Iterator iter = listaData.iterator();
-            
+
             Row row;
             Cell cell50, cell51, cell52, cell53, cell54, cell55, cell56, cell57, cell58;
-            
+
             // <editor-fold defaultstate="collapsed" desc="row">
             row = sheet.createRow(vj);
 
@@ -442,12 +439,12 @@ public class LoadControlController extends BaseController {
             cell56 = row.createCell(6);
             cell57 = row.createCell(7);
             cell58 = row.createCell(8);
-                        
+
             cell50.setCellValue("ID File");
             cell51.setCellValue("Group");
             cell52.setCellValue("Transaction");
             cell53.setCellValue("Cia");
-            cell54.setCellValue("Forma");            
+            cell54.setCellValue("Forma");
             cell55.setCellValue("Serie");
             cell56.setCellValue("Code");
             cell57.setCellValue("Description");
@@ -462,7 +459,7 @@ public class LoadControlController extends BaseController {
             cell56.setCellStyle(headerStyle);
             cell57.setCellStyle(headerStyle);
             cell58.setCellStyle(headerStyle);
-            
+
             ++vj;
             while (iter.hasNext()) {
                 row = sheet.createRow(vj);
@@ -476,8 +473,8 @@ public class LoadControlController extends BaseController {
                 cell56 = row.createCell(6);
                 cell57 = row.createCell(7);
                 cell58 = row.createCell(8);
-                              
-                cell50.setCellValue(listaData.get(vi).A1724IDFIL ); 
+
+                cell50.setCellValue(listaData.get(vi).A1724IDFIL);
                 cell51.setCellValue(listaData.get(vi).A1724GRUPO);
                 cell52.setCellValue(listaData.get(vi).A1724TRANS);
                 cell53.setCellValue(listaData.get(vi).A1724CIA);
@@ -486,7 +483,7 @@ public class LoadControlController extends BaseController {
                 cell56.setCellValue(listaData.get(vi).A1724CODER);
                 cell57.setCellValue(listaData.get(vi).A1272DES);
                 cell58.setCellValue(listaData.get(vi).A1724DATA);
-                
+
                 cell50.setCellStyle(bodyStyle);
                 cell51.setCellStyle(bodyStyle);
                 cell52.setCellStyle(bodyStyle);
@@ -496,7 +493,7 @@ public class LoadControlController extends BaseController {
                 cell56.setCellStyle(bodyStyle);
                 cell57.setCellStyle(bodyStyle);
                 cell58.setCellStyle(bodyStyle);
-                
+
                 // </editor-fold>
                 iter.next();
                 ++vi;
@@ -514,21 +511,21 @@ public class LoadControlController extends BaseController {
             sheet.autoSizeColumn(9, true);
             sheet.autoSizeColumn(10, true);
             sheet.autoSizeColumn(11, true);
-            
-            String fileNameDownload = String.format(fileName, UUID.randomUUID().toString().toLowerCase());            
+
+            String fileNameDownload = String.format(fileName, UUID.randomUUID().toString().toLowerCase());
             response.setContentType("application/vnd.openxml");
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");            
-            File file = File.createTempFile(fileNameDownload, ".xlsx");            
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+            File file = File.createTempFile(fileNameDownload, ".xlsx");
             FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
             workbook.write(response.getOutputStream());
             fos.close();
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             throw new SpringException(e);
         }
     }
-    
+
     @RequestMapping(value = "/loadASR")
     public @ResponseBody
     String loadASR(ModelMap map, HttpServletRequest request) {
@@ -540,15 +537,15 @@ public class LoadControlController extends BaseController {
         try {
             int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit"));
             int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
-            start = 2*start - start/2;
+            start = 2 * start - start / 2;
             filter3.page.PAGROW = 30;
             start = (start != 0 ? start : 0);
             filter3.page.PAGNUM = (start / filter3.page.PAGROW) + 1;
-            
+
             logic = new LoadControlLogic();
             logic.setSession((IServerSession) serverSession.getServerSession());
             listaData = logic.loadPX019S01A1536(filter3);
-            
+
             map.put("success", true);
             map.put("total", listaData.size() > 0 ? listaData.get(0).page.TOTROW : 0);
             map.put("data", listaData);
@@ -561,7 +558,7 @@ public class LoadControlController extends BaseController {
         }
         return new Gson().toJson(map);
     }
-    
+
     @RequestMapping(value = "/loadError")
     public @ResponseBody
     String loadError(ModelMap map, HttpServletRequest request) {
@@ -579,17 +576,17 @@ public class LoadControlController extends BaseController {
             filter4.IN_A1697FFILE = request.getParameter("IN_A1697FFILE").trim();
             filter4.IN_A1697HFILE = request.getParameter("IN_A1697HFILE").trim();
             filter4.IN_A1697FREGI = request.getParameter("IN_A1697FREGI").trim().toUpperCase();
-            
+
             int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit"));
             int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
             filter4.page.PAGROW = 20;
             start = (start != 0 ? start : 0);
             filter4.page.PAGNUM = (start / filter4.page.PAGROW) + 1;
-            
+
             logic = new LoadControlLogic();
             logic.setSession((IServerSession) serverSession.getServerSession());
             listaData = logic.loadPX019S01A1697(filter4);
-            
+
             map.put("success", true);
             map.put("total", listaData.size() > 0 ? listaData.get(0).page.TOTROW : 0);
             map.put("data", listaData);
@@ -602,22 +599,22 @@ public class LoadControlController extends BaseController {
         }
         return new Gson().toJson(map);
     }
-    
+
     // Exportar EXCEL err
     @RequestMapping(value = "/getXLSX_err")
     public @ResponseBody
     void getXLSX_err(HttpServletRequest request, HttpServletResponse response) {
         PX019S01A1697Filter filter = new PX019S01A1697Filter();
         try {
-            
+
             Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
             filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
-            String fileName = "PX073_"+Functions.getFechaActual()+"_BSP_Load_Control_Error"+".xlsx";
-            
+            String fileName = "PX073_" + Functions.getFechaActual() + "_BSP_Load_Control_Error" + ".xlsx";
+
             logic = new LoadControlLogic();
             logic.setSession((IServerSession) serverSession.getServerSession());
             List<PX019S01A1697Filter> listaData = logic.loadPX019S01A1697(filter);
-            
+
             // <editor-fold defaultstate="collapsed" desc="Estilo del Excel">
             Workbook workbook = new XSSFWorkbook();
             Sheet sheet = workbook.createSheet(fileName);
@@ -642,7 +639,7 @@ public class LoadControlController extends BaseController {
             headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
             headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
             headerStyle.setFont(headerFont);
-            
+
             bodyStyle.setBorderRight(CellStyle.BORDER_THIN);
             bodyStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
             bodyStyle.setBorderBottom(CellStyle.BORDER_THIN);
@@ -652,14 +649,14 @@ public class LoadControlController extends BaseController {
             bodyStyle.setBorderTop(CellStyle.BORDER_THIN);
             bodyStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
             // </editor-fold>
-            
+
             Integer vi = 0;
             Integer vj = 0;
             Iterator iter = listaData.iterator();
-            
+
             Row row;
             Cell cell50, cell51, cell52, cell53, cell54, cell55, cell56, cell57;
-            
+
             // <editor-fold defaultstate="collapsed" desc="row">
             row = sheet.createRow(vj);
 
@@ -671,12 +668,12 @@ public class LoadControlController extends BaseController {
             cell55 = row.createCell(5);
             cell56 = row.createCell(6);
             cell57 = row.createCell(7);
-                        
+
             cell50.setCellValue("Country");
             cell51.setCellValue("City");
             cell52.setCellValue("Processing Date");
             cell53.setCellValue("Ending Date");
-            cell54.setCellValue("Hour");            
+            cell54.setCellValue("Hour");
             cell55.setCellValue("ID File");
             cell56.setCellValue("Error");
             cell57.setCellValue("System Date");
@@ -689,7 +686,7 @@ public class LoadControlController extends BaseController {
             cell55.setCellStyle(headerStyle);
             cell56.setCellStyle(headerStyle);
             cell57.setCellStyle(headerStyle);
-            
+
             ++vj;
             while (iter.hasNext()) {
                 row = sheet.createRow(vj);
@@ -702,8 +699,8 @@ public class LoadControlController extends BaseController {
                 cell55 = row.createCell(5);
                 cell56 = row.createCell(6);
                 cell57 = row.createCell(7);
-                              
-                cell50.setCellValue(listaData.get(vi).A1697PAIS ); 
+
+                cell50.setCellValue(listaData.get(vi).A1697PAIS);
                 cell51.setCellValue(listaData.get(vi).A1697BANK);
                 cell52.setCellValue(listaData.get(vi).A1697FPRDA);
                 cell53.setCellValue(listaData.get(vi).A1697FFILE);
@@ -711,7 +708,7 @@ public class LoadControlController extends BaseController {
                 cell55.setCellValue(listaData.get(vi).A1697IDFIL);
                 cell56.setCellValue(listaData.get(vi).A1697CDERR);
                 cell57.setCellValue(listaData.get(vi).A1697FREGI);
-                
+
                 cell50.setCellStyle(bodyStyle);
                 cell51.setCellStyle(bodyStyle);
                 cell52.setCellStyle(bodyStyle);
@@ -720,7 +717,7 @@ public class LoadControlController extends BaseController {
                 cell55.setCellStyle(bodyStyle);
                 cell56.setCellStyle(bodyStyle);
                 cell57.setCellStyle(bodyStyle);
-                
+
                 // </editor-fold>
                 iter.next();
                 ++vi;
@@ -738,22 +735,21 @@ public class LoadControlController extends BaseController {
             sheet.autoSizeColumn(9, true);
             sheet.autoSizeColumn(10, true);
             sheet.autoSizeColumn(11, true);
-            
-            String fileNameDownload = String.format(fileName, UUID.randomUUID().toString().toLowerCase());            
+
+            String fileNameDownload = String.format(fileName, UUID.randomUUID().toString().toLowerCase());
             response.setContentType("application/vnd.openxml");
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");            
-            File file = File.createTempFile(fileNameDownload, ".xlsx");            
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+            File file = File.createTempFile(fileNameDownload, ".xlsx");
             FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
             workbook.write(response.getOutputStream());
             fos.close();
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             throw new SpringException(e);
         }
     }
-    
-    
+
     @RequestMapping(value = "/loadHOT")
     public @ResponseBody
     String loadHOT(ModelMap map, HttpServletRequest request) {
@@ -765,15 +761,15 @@ public class LoadControlController extends BaseController {
         try {
             int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit"));
             int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
-            start = 2*start - start/2;
+            start = 2 * start - start / 2;
             filter5.page.PAGROW = 30;
             start = (start != 0 ? start : 0);
             filter5.page.PAGNUM = (start / filter5.page.PAGROW) + 1;
-            
+
             logic = new LoadControlLogic();
             logic.setSession((IServerSession) serverSession.getServerSession());
             listaData = logic.loadPX019S01A1348(filter5);
-            
+
             map.put("success", true);
             map.put("total", listaData.size() > 0 ? listaData.get(0).page.TOTROW : 0);
             map.put("data", listaData);
@@ -786,7 +782,7 @@ public class LoadControlController extends BaseController {
         }
         return new Gson().toJson(map);
     }
-    
+
     @RequestMapping(value = "/processFormatASRHOT")
     public @ResponseBody
     String processFormatASRHOT(ModelMap map, HttpServletRequest request) {
@@ -794,11 +790,11 @@ public class LoadControlController extends BaseController {
         try {
             Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
             filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
-            
+
             LoadControlLogic logic = new LoadControlLogic();
             logic.setSession((IServerSession) serverSession.getServerSession());
             filter = logic.loadPX074S02PRO9878(filter);
-            
+
             map.put("success", true);
             map.put("filter", filter);
         } catch (NumberFormatException | SQLException ex) {
@@ -810,7 +806,7 @@ public class LoadControlController extends BaseController {
         }
         return new Gson().toJson(map);
     }
-    
+
     @RequestMapping(value = "/processLoadASRHOT")
     public @ResponseBody
     String processLoadASRHOT(ModelMap map, HttpServletRequest request) {
@@ -818,11 +814,11 @@ public class LoadControlController extends BaseController {
         try {
             Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
             filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
-            
+
             LoadControlLogic logic = new LoadControlLogic();
             logic.setSession((IServerSession) serverSession.getServerSession());
             filter = logic.loadPX074S01PPRO9824(filter);
-            
+
             map.put("success", true);
             map.put("filter", filter);
         } catch (NumberFormatException | SQLException ex) {
@@ -834,7 +830,7 @@ public class LoadControlController extends BaseController {
         }
         return new Gson().toJson(map);
     }
-    
+
     @RequestMapping(value = "/processLoadBSPHOT")
     public @ResponseBody
     String processLoadBSPHOT(ModelMap map, HttpServletRequest request) {
@@ -843,12 +839,12 @@ public class LoadControlController extends BaseController {
             Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
             //filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());            
             LoadControlLogic logic = new LoadControlLogic();
-            logic.setSession((IServerSession) serverSession.getServerSession());            
+            logic.setSession((IServerSession) serverSession.getServerSession());
             filter.VP_CCUST = request.getParameter("VP_CCUST");
             filter.dbException.SQLCODE = request.getParameter("VP_SQLCODE");
-            filter.dbException.MESSAGE = request.getParameter("VP_MESSAGE");            
-            filter = logic.loadSQP03605Filter(filter);            
-            map.put("success", true);            
+            filter.dbException.MESSAGE = request.getParameter("VP_MESSAGE");
+            filter = logic.loadSQP03605Filter(filter);
+            map.put("success", true);
             map.put("filter", filter);
         } catch (NumberFormatException | SQLException ex) {
             map.put("success", false);
@@ -857,9 +853,9 @@ public class LoadControlController extends BaseController {
             map.put("success", false);
             map.put("sesion", ex.getMessage());
         }
-        return new Gson().toJson(map);        
+        return new Gson().toJson(map);
     }
-    
+
     @RequestMapping(value = "/processFormatBSPHOT")
     public @ResponseBody
     String processFormatBSPHOT(ModelMap map, HttpServletRequest request) {
@@ -868,13 +864,13 @@ public class LoadControlController extends BaseController {
             Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
             //filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());            
             LoadControlLogic logic = new LoadControlLogic();
-            logic.setSession((IServerSession) serverSession.getServerSession());            
+            logic.setSession((IServerSession) serverSession.getServerSession());
             filter.VP_CCUST = request.getParameter("VP_CCUST");
             filter.VP_NROID = request.getParameter("VP_NROID");
             filter.dbException.SQLCODE = request.getParameter("VP_SQLCODE");
-            filter.dbException.MESSAGE = request.getParameter("VP_MESSAGE");            
-            filter = logic.loadSQP03606Filter(filter);            
-            map.put("success", true);            
+            filter.dbException.MESSAGE = request.getParameter("VP_MESSAGE");
+            filter = logic.loadSQP03606Filter(filter);
+            map.put("success", true);
             map.put("filter", filter);
         } catch (NumberFormatException | SQLException ex) {
             map.put("success", false);
@@ -883,9 +879,9 @@ public class LoadControlController extends BaseController {
             map.put("success", false);
             map.put("sesion", ex.getMessage());
         }
-        return new Gson().toJson(map);        
+        return new Gson().toJson(map);
     }
-    
+
     @RequestMapping(value = "/processFormatARCHOT")
     public @ResponseBody
     String processFormatARCHOT(ModelMap map, HttpServletRequest request) {
@@ -893,11 +889,35 @@ public class LoadControlController extends BaseController {
         try {
             Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
             filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
-            
+
             LoadControlLogic logic = new LoadControlLogic();
             logic.setSession((IServerSession) serverSession.getServerSession());
             filter = logic.loadPX037S07PRO9876(filter);
-            
+
+            map.put("success", true);
+            map.put("filter", filter);
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("sesion", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("sesion", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+
+    @RequestMapping(value = "/processLoadARCHOT")
+    public @ResponseBody
+    String processLoadARCHOT(ModelMap map, HttpServletRequest request) {
+        PX037S06PRO9822Filter filter = new PX037S06PRO9822Filter();
+        try {
+            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+            filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
+
+            LoadControlLogic logic = new LoadControlLogic();
+            logic.setSession((IServerSession) serverSession.getServerSession());
+            filter = logic.loadPX037S06PRO9822(filter);
+
             map.put("success", true);
             map.put("filter", filter);
         } catch (NumberFormatException | SQLException ex) {
@@ -910,18 +930,24 @@ public class LoadControlController extends BaseController {
         return new Gson().toJson(map);
     }
     
-    @RequestMapping(value = "/processLoadARCHOT")
+    @RequestMapping(value = "/processVerifyErrors")
     public @ResponseBody
-    String processLoadARCHOT(ModelMap map, HttpServletRequest request) {
-        PX037S06PRO9822Filter filter = new PX037S06PRO9822Filter();
+    String processVerifyErrors(ModelMap map, HttpServletRequest request) {
+        SPPRO10042Filter filter = new SPPRO10042Filter();
+        
         try {
+            
             Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
-            filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
+            // filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
+            filter.VP_PRDA = request.getParameter("VP_PRDA");
+            filter.VP_FUENT = request.getParameter("VP_FUENT");
+            //filter.dbException.SQLCODE = request.getParameter("VP_SQLCODE");
+            //filter.dbException.MESSAGE = request.getParameter("VP_MESSAGE");
             
             LoadControlLogic logic = new LoadControlLogic();
             logic.setSession((IServerSession) serverSession.getServerSession());
-            filter = logic.loadPX037S06PRO9822(filter);
-            
+            filter = logic.setSPPRO10042(filter);
+
             map.put("success", true);
             map.put("filter", filter);
         } catch (NumberFormatException | SQLException ex) {

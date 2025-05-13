@@ -2,8 +2,8 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlARC.LoadControlARCController'
     extend: 'Ext.app.ViewController',
     alias: 'controller.LoadControlARCController',
     // <editor-fold defaultstate="collapsed" desc="Variables Globales">
-    ControlFormatARC: Ext.create('Ext.Praxis.view.program.CtrlControlFormatARCForm', { id: 'CtrlControlFormatARCForm' }),
-    ControlLoadARC: Ext.create('Ext.Praxis.view.program.CtrlControlLoadARCForm', { id: 'CtrlControlLoadARCForm' }),
+    ControlFormatARC: Ext.create('Ext.Praxis.view.program.CtrlControlFormatARCForm', {id: 'CtrlControlFormatARCForm'}),
+    ControlLoadARC: Ext.create('Ext.Praxis.view.program.CtrlControlLoadARCForm', {id: 'CtrlControlLoadARCForm'}),
     searchParams: {},
     me: '',
     IdFile: '',
@@ -15,11 +15,11 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlARC.LoadControlARCController'
     gloFilterFormatARCHOT: {},
     gloFilterARCHOT: {},
     // </editor-fold>
-    init: function(view) {
+    init: function (view) {
         me = this;
         // <editor-fold defaultstate="collapsed" desc="prototype">
         prototype.id = 'LoadControlARCForm';
-        prototype.url = CONTEXTPATH+'/LoadControl';
+        prototype.url = CONTEXTPATH + '/LoadControl';
         prototype.widthContenedor = 1300;
         prototype.widthGrid = 1200;
         // </editor-fold>
@@ -33,7 +33,7 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlARC.LoadControlARCController'
     btnFormatMasterFile_clickHandler: function () {
         this.gloFilterFormatARCHOT = {};
         this.gloFilterFormatARCHOT.IN_PROGRAM = nprog;
-        
+
         var controller = this.ControlFormatARC.getController();
         controller.bean = this.gloFilterFormatARCHOT;
         controller.startDisplay();
@@ -42,13 +42,13 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlARC.LoadControlARCController'
     btnLoadHOT_clickHandler: function () {
         this.gloFilterARCHOT = {};
         this.gloFilterARCHOT.IN_PROGRAM = nprog;
-        
+
         var controller = this.ControlLoadARC.getController();
         controller.bean = this.gloFilterARCHOT;
         this.ControlLoadARC.show();
         controller.startDisplay();
     },
-    cmbFiltro_clickHandler: function() {
+    cmbFiltro_clickHandler: function () {
         var tipo_fil = this.getValue("cbxFiltro");
         switch (tipo_fil) {
             case '1':
@@ -77,8 +77,8 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlARC.LoadControlARCController'
                 break;
         }
     },
-    tab_clickHandler: function() {
-        var tabPanel = Ext.getCmp(prototype.id+'-tnvMain');
+    tab_clickHandler: function () {
+        var tabPanel = Ext.getCmp(prototype.id + '-tnvMain');
         var activeTab = tabPanel.getActiveTab();
         var activeTabIndex = tabPanel.items.indexOf(activeTab);
         switch (activeTabIndex) {
@@ -103,173 +103,180 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlARC.LoadControlARCController'
                 break;
             case 3:
                 this.setValue('txtIDFile', this.IdFile);
-                this.beanErrorFormat.IN_IDFIL = '000000000' + this.getValue("txtIDFile");;
+                this.beanErrorFormat.IN_IDFIL = '000000000' + this.getValue("txtIDFile");
+                ;
                 this.beanErrorFormat.IN_IDFIL = this.beanErrorFormat.IN_IDFIL.substr(this.beanErrorFormat.IN_IDFIL.length - 9);
                 this.beanErrorFormat.IN_FUENT = 'ARC';
                 this.searchIdFile(this.beanErrorFormat);
                 break;
         }
     },
-    btnSearchIDFile_clickHandler: function() {
+    btnSearchIDFile_clickHandler: function () {
         this.btnSearch_click('ERR_FORMAT');
     },
-    gridControlLoadRep_itemClickHandler: function(obj, record, index, eOpts) {
+    gridControlLoadRep_itemClickHandler: function (obj, record, index, eOpts) {
         this.IdFile = record.get('A1698IDFIL');
     },
-    
+
     // <editor-fold defaultstate="collapsed" desc="Options">
-    btnSearch_click: function(obj, e, a) {
+    btnSearch_click: function (obj, e, a) {
         if (obj.id !== 'undefined') {
             switch (obj.id) {
-                case prototype.id + '-btnSearch': obj = 'BWR'; break;
-                case prototype.id + '-btnSearch2': obj = 'ERR'; break;
+                case prototype.id + '-btnSearch':
+                    obj = 'BWR';
+                    break;
+                case prototype.id + '-btnSearch2':
+                    obj = 'ERR';
+                    break;
             }
         }
         var tipo_fil = this.getValue("cbxFiltro");
-        if(obj === 'BWR'){
-            this.bean.IN_A1698CCUST = '139';
+        if (obj === 'BWR') {
+            this.bean.IN_A1698CCUST = '134';
             this.bean.IN_A1698PAIS = '';
-            this.bean.IN_A1698BANK  = '';
+            this.bean.IN_A1698BANK = '';
             this.bean.IN_A1698FPRDA = '';
             this.bean.IN_A1698FFILE = '';
             this.bean.IN_A1698HFILE = '';
             this.bean.IN_A1698FREGI = '';
             this.bean.IN_A1698SOURC = 'ARC';
-            if ( tipo_fil === '2' ) {
+            if (tipo_fil === '2') {
                 this.bean.IN_A1698PAIS = this.getValue("txtA1698PAIS");
-                this.bean.IN_A1698BANK  = this.getValue("txtA1698BANK");
+                this.bean.IN_A1698BANK = this.getValue("txtA1698BANK");
                 this.bean.IN_A1698FPRDA = Ext.util.Format.date(this.getValue("txtA1698FPRDA"), 'Ymd');
                 this.bean.IN_A1698HFILE = this.getValue("txtA1698HFILE");
-                if (this.getValue("txtA1698FPRDA") === ''){
-                    global.Msg({ msg: 'Required Field, Processing Date' });
+                if (this.getValue("txtA1698FPRDA") === '') {
+                    global.Msg({msg: 'Required Field, Processing Date'});
                     this.focus('txtA1698FPRDA');
                     return;
-                }else if(this.bean.IN_A1698HFILE.length !== 4 && this.getValue("txtA1698HFILE") !== ''){
-                    global.Msg({ msg: 'Please, enter a valid hour' });
+                } else if (this.bean.IN_A1698HFILE.length !== 4 && this.getValue("txtA1698HFILE") !== '') {
+                    global.Msg({msg: 'Please, enter a valid hour'});
                     this.focus('txtA1698HFILE');
                     return;
-                }else if(this.bean.IN_A1698PAIS.length !== 2 && this.getValue("txtA1698PAIS") !== ''){
-                    global.Msg({ msg: 'Please, enter a valid country' });
+                } else if (this.bean.IN_A1698PAIS.length !== 2 && this.getValue("txtA1698PAIS") !== '') {
+                    global.Msg({msg: 'Please, enter a valid country'});
                     this.focus('txtA1698PAIS');
                     return;
-                }else if(this.bean.IN_A1698BANK.length !== 3 && this.getValue("txtA1698BANK") != ''){
-                    global.Msg({ msg: 'Please, enter a valid bank' });
+                } else if (this.bean.IN_A1698BANK.length !== 3 && this.getValue("txtA1698BANK") != '') {
+                    global.Msg({msg: 'Please, enter a valid bank'});
                     this.focus('txtA1698BANK');
                     return;
-                }else{
-                    this.search(this.bean,e);
+                } else {
+                    this.search(this.bean, e);
                 }
-            }else if ( tipo_fil === '1' ){
+            } else if (tipo_fil === '1') {
                 this.bean.IN_A1698FREGI = Ext.util.Format.date(this.getValue("txtA1698FCARG"), 'Ymd');
-                if (this.bean.IN_A1698FREGI == ''){
-                    global.Msg({ msg: 'Required Field, Processing Date' });
+                if (this.bean.IN_A1698FREGI === '') {
+                    global.Msg({msg: 'Required Field, Processing Date'});
                     this.focus('txtA1698FPRDA');
                     return;
-                }else{
-                    this.search(this.bean,e);
+                } else {
+                    this.search(this.bean, e);
                 }
             }
-        } else if(obj==='LOAD'){
+        } else if (obj === 'LOAD') {
             this.loadHOT(this.beanHOT);
-        } else if(obj==='ERR'){
-            this.beanError.IN_A1697CCUST = '139';
+        } else if (obj === 'ERR') {
+            this.beanError.IN_A1697CCUST = '134';
             this.beanError.IN_A1697PAIS = '';
-            this.beanError.IN_A1697BANK  = '';
+            this.beanError.IN_A1697BANK = '';
             this.beanError.IN_A1697FPRDA = '';
             this.beanError.IN_A1697FFILE = '';
             this.beanError.IN_A1697HFILE = '';
             this.beanError.IN_A1697FREGI = '';
             this.beanError.IN_A1697SOURC = 'ARC';
-            if ( tipo_fil === '2' ) {
+            if (tipo_fil === '2') {
                 this.beanError.IN_A1697PAIS = this.getValue("txtA1698PAIS");
-                this.beanError.IN_A1697BANK  = this.getValue("txtA1698BANK");
+                this.beanError.IN_A1697BANK = this.getValue("txtA1698BANK");
                 this.beanError.IN_A1697FPRDA = this.getValue("txtA1698FPRDA");
                 this.beanError.IN_A1697HFILE = this.getValue("txtA1698HFILE");
-                if (this.getValue("txtA1698FPRDA") === ''){
-                    global.Msg({ msg: 'Required Field, Processing Date' });
+                if (this.getValue("txtA1698FPRDA") === '') {
+                    global.Msg({msg: 'Required Field, Processing Date'});
                     this.focus('txtA1698FPRDA');
                     return;
-                }else if(this.beanError.IN_A1697HFILE.length !== 4 && this.getValue("txtA1698HFILE") !== ''){
-                    global.Msg({ msg: 'Please, enter a valid hour' });
+                } else if (this.beanError.IN_A1697HFILE.length !== 4 && this.getValue("txtA1698HFILE") !== '') {
+                    global.Msg({msg: 'Please, enter a valid hour'});
                     this.focus('txtA1698HFILE');
                     return;
-                }else if(this.beanError.IN_A1697PAIS.length !== 2 && this.getValue("txtA1698PAIS") !== ''){
-                    global.Msg({ msg: 'Please, enter a valid country' });
+                } else if (this.beanError.IN_A1697PAIS.length !== 2 && this.getValue("txtA1698PAIS") !== '') {
+                    global.Msg({msg: 'Please, enter a valid country'});
                     this.focus('txtA1698PAIS');
                     return;
-                }else if(this.beanError.IN_A1697BANK.length !== 3 && this.getValue("txtA1698BANK") !== ''){
-                    global.Msg({ msg: 'Please, enter a valid bank' });
+                } else if (this.beanError.IN_A1697BANK.length !== 3 && this.getValue("txtA1698BANK") !== '') {
+                    global.Msg({msg: 'Please, enter a valid bank'});
                     this.focus('txtA1698BANK');
                     return;
-                }else{
-                    this.loadError(this.beanError,e);
+                } else {
+                    this.loadError(this.beanError, e);
                 }
-            }else if ( tipo_fil === '1' ){
+            } else if (tipo_fil === '1') {
                 this.beanError.IN_A1697FREGI = Ext.util.Format.date(this.getValue("txtA1698FCARG"), 'Ymd');
-                if (this.beanError.IN_A1697FREGI === ''){
-                    global.Msg({ msg: 'Required Field, System Date' });
+                if (this.beanError.IN_A1697FREGI === '') {
+                    global.Msg({msg: 'Required Field, System Date'});
                     this.focus('txtA1698FCARG');
                     return;
-                }else{
-                    this.loadError(this.beanError,e);
+                } else {
+                    this.loadError(this.beanError, e);
                 }
             }
-        }else if(obj=='ERR_FORMAT'){
+        } else if (obj == 'ERR_FORMAT') {
             this.beanErrorFormat.IN_IDFIL = ('000000000' + this.getValue("txtIDFile"));
             this.beanErrorFormat.IN_IDFIL = this.beanErrorFormat.IN_IDFIL.substr(this.beanErrorFormat.IN_IDFIL.length - 9);
-            this.searchIdFile(this.beanErrorFormat,e);
-	}
+            this.searchIdFile(this.beanErrorFormat, e);
+        }
     },
-    btnFilter_click: function() {
-        var option = Ext.getCmp(prototype.id+'-contentFilter');
-        if (option.isVisible()) option.hide();
-        else option.show();
+    btnFilter_click: function () {
+        var option = Ext.getCmp(prototype.id + '-contentFilter');
+        if (option.isVisible())
+            option.hide();
+        else
+            option.show();
     },
-    btnClear_click: function(obj, e) {
+    btnClear_click: function (obj, e) {
         this.txtClear_imput();
         this.focus('txtA1698BANK');
-        Ext.getCmp(prototype.id+'-gridControlLoadRep').getStore().removeAll();
+        Ext.getCmp(prototype.id + '-gridControlLoadRep').getStore().removeAll();
         this.lstHOT = {};
     },
-    btnBack_click: function() {
+    btnBack_click: function () {
         global.showMenu();
     },
     // </editor-fold>
-    
-    txtClear_imput: function() {
+
+    txtClear_imput: function () {
         this.setValue('txtA1698FCARG', new Date());
         this.setValue('txtA1698FPRDA', new Date());
         this.setValue('txtA1698BANK', '');
         this.setValue('txtA1698HFILE', '');
         this.setValue('txtA1698PAIS', '');
     },
-    
+
     //<editor-fold defaultstate="collapsed" desc="search">
-    search: function(bean, opt) {
+    search: function (bean, opt) {
         if (opt === 'XLS') {
             this.exportExcel('/getXLSX?beanString=' + encodeURI(JSON.stringify(bean)));
             return;
         }
         var storeGridDatas = Ext.create('Ext.Praxis.store.sales.GridData', {
             proxy: {
-                url: prototype.url+'/search'
+                url: prototype.url + '/search'
             },
             listeners: {
-                beforeload: function(obj) {
+                beforeload: function (obj) {
                     obj.proxy.extraParams = bean;
                 },
-                load: function(obj, obj2, success, obj4, obj5) {
+                load: function (obj, obj2, success, obj4, obj5) {
                     // <editor-fold defaultstate="collapsed" desc="paggin3">
-                    var pag = Ext.getCmp(prototype.id+'-paggin3');
+                    var pag = Ext.getCmp(prototype.id + '-paggin3');
                     var pagData = pag.getPageData();
 
                     var currentPage = Ext.util.Format.number(pagData.currentPage, '0,000');
                     var pageCount = Ext.util.Format.number(pagData.pageCount, '0,000');
                     var total = Ext.util.Format.number(pagData.total, '0,000');
 
-                    Ext.getCmp(prototype.id+'-lbl-currentPage3').setText(currentPage);
-                    Ext.getCmp(prototype.id+'-lbl-pageCount3').setText(pageCount);
-                    Ext.getCmp(prototype.id+'-lbl-total3').setText(total);
+                    Ext.getCmp(prototype.id + '-lbl-currentPage3').setText(currentPage);
+                    Ext.getCmp(prototype.id + '-lbl-pageCount3').setText(pageCount);
+                    Ext.getCmp(prototype.id + '-lbl-total3').setText(total);
                     // </editor-fold>
                     if (obj.data.length === 0) {
                         global.Msg({
@@ -280,10 +287,10 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlARC.LoadControlARCController'
                 }
             }
         });
-        Ext.getCmp(prototype.id+'-gridControlLoadRep').bindStore(storeGridDatas);
-        Ext.getCmp(prototype.id+'-paggin3').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-gridControlLoadRep').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin3').bindStore(storeGridDatas);
     },
-    exportExcel: function(_path) {
+    exportExcel: function (_path) {
         Ext.Msg.show({
             title: '.:PRAXIS:.',
             msg: 'Download Excel ?',
@@ -291,7 +298,7 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlARC.LoadControlARCController'
             scope: this,
             icon: Ext.MessageBox.QUESTION,
             modal: true,
-            fn: function(btn) {
+            fn: function (btn) {
                 if (btn === 'ok') {
                     global.getFile(prototype.url + _path);
                 }
@@ -299,30 +306,30 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlARC.LoadControlARCController'
         });
     },
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="loadHOT">
-    loadHOT: function(beanHOT) {
+    loadHOT: function (beanHOT) {
         var storeGridDatas = Ext.create('Ext.Praxis.store.sales.GridData', {
             proxy: {
                 url: prototype.url + '/loadHOT'
             }, listeners: {
-                beforeload: function(obj) {
+                beforeload: function (obj) {
                     obj.proxy.extraParams = beanHOT;
                     Ext.getCmp(prototype.id + '-LoadControl1').mask('Loading...', '');
                 },
-                load: function(obj) {
+                load: function (obj) {
                     win.lblUser_toolTip("Estructura: A1348");
                     // <editor-fold defaultstate="collapsed" desc="paggin4">
-                    var pag = Ext.getCmp(prototype.id+'-paggin4');
+                    var pag = Ext.getCmp(prototype.id + '-paggin4');
                     var pagData = pag.getPageData();
 
                     var currentPage = Ext.util.Format.number(pagData.currentPage, '0,000');
                     var pageCount = Ext.util.Format.number(pagData.pageCount, '0,000');
                     var total = Ext.util.Format.number(pagData.total, '0,000');
 
-                    Ext.getCmp(prototype.id+'-lbl-currentPage4').setText(currentPage);
-                    Ext.getCmp(prototype.id+'-lbl-pageCount4').setText(pageCount);
-                    Ext.getCmp(prototype.id+'-lbl-total4').setText(total);
+                    Ext.getCmp(prototype.id + '-lbl-currentPage4').setText(currentPage);
+                    Ext.getCmp(prototype.id + '-lbl-pageCount4').setText(pageCount);
+                    Ext.getCmp(prototype.id + '-lbl-total4').setText(total);
                     // </editor-fold>
                     var strTexto = '';
                     if (obj.data.length > 0) {
@@ -343,36 +350,36 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlARC.LoadControlARCController'
                 }
             }
         });
-        Ext.getCmp(prototype.id+'-paggin4').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin4').bindStore(storeGridDatas);
     },
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="loadError">
-    loadError: function(beanError, opt) {
+    loadError: function (beanError, opt) {
         if (opt === 'XLS') {
             this.exportExcel('/getXLSX_err?beanString=' + encodeURI(JSON.stringify(beanError)));
             return;
         }
         var storeGridDatas = Ext.create('Ext.Praxis.store.sales.LoadControlARC.GridDataError', {
             proxy: {
-                url: prototype.url+'/loadError'
+                url: prototype.url + '/loadError'
             },
             listeners: {
-                beforeload: function(obj) {
+                beforeload: function (obj) {
                     obj.proxy.extraParams = beanError;
                 },
-                load: function(obj, obj2, success, obj4, obj5) {
+                load: function (obj, obj2, success, obj4, obj5) {
                     // <editor-fold defaultstate="collapsed" desc="paggin5">
-                    var pag = Ext.getCmp(prototype.id+'-paggin5');
+                    var pag = Ext.getCmp(prototype.id + '-paggin5');
                     var pagData = pag.getPageData();
 
                     var currentPage = Ext.util.Format.number(pagData.currentPage, '0,000');
                     var pageCount = Ext.util.Format.number(pagData.pageCount, '0,000');
                     var total = Ext.util.Format.number(pagData.total, '0,000');
 
-                    Ext.getCmp(prototype.id+'-lbl-currentPage5').setText(currentPage);
-                    Ext.getCmp(prototype.id+'-lbl-pageCount5').setText(pageCount);
-                    Ext.getCmp(prototype.id+'-lbl-total5').setText(total);
+                    Ext.getCmp(prototype.id + '-lbl-currentPage5').setText(currentPage);
+                    Ext.getCmp(prototype.id + '-lbl-pageCount5').setText(pageCount);
+                    Ext.getCmp(prototype.id + '-lbl-total5').setText(total);
                     // </editor-fold>
                     if (obj.data.length === 0) {
                         global.Msg({
@@ -383,37 +390,37 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlARC.LoadControlARCController'
                 }
             }
         });
-        Ext.getCmp(prototype.id+'-gridControlLoadError').bindStore(storeGridDatas);
-        Ext.getCmp(prototype.id+'-paggin5').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-gridControlLoadError').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin5').bindStore(storeGridDatas);
     },
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="searchIdFile">
-    searchIdFile: function(beanErrorFormat, opt) {
+    searchIdFile: function (beanErrorFormat, opt) {
         if (opt === 'XLS') {
             this.exportExcel('/getXLSX_err_format?beanString=' + encodeURI(JSON.stringify(beanErrorFormat)));
             return;
         }
         var storeGridDatas = Ext.create('Ext.Praxis.store.sales.GridData', {
             proxy: {
-                url: prototype.url+'/searchIdFile'
+                url: prototype.url + '/searchIdFile'
             },
             listeners: {
-                beforeload: function(obj) {
+                beforeload: function (obj) {
                     obj.proxy.extraParams = beanErrorFormat;
                 },
-                load: function(obj, obj2, success, obj4, obj5) {
+                load: function (obj, obj2, success, obj4, obj5) {
                     // <editor-fold defaultstate="collapsed" desc="paggin2">
-                    var pag = Ext.getCmp(prototype.id+'-paggin2');
+                    var pag = Ext.getCmp(prototype.id + '-paggin2');
                     var pagData = pag.getPageData();
 
                     var currentPage = Ext.util.Format.number(pagData.currentPage, '0,000');
                     var pageCount = Ext.util.Format.number(pagData.pageCount, '0,000');
                     var total = Ext.util.Format.number(pagData.total, '0,000');
 
-                    Ext.getCmp(prototype.id+'-lbl-currentPage2').setText(currentPage);
-                    Ext.getCmp(prototype.id+'-lbl-pageCount2').setText(pageCount);
-                    Ext.getCmp(prototype.id+'-lbl-total2').setText(total);
+                    Ext.getCmp(prototype.id + '-lbl-currentPage2').setText(currentPage);
+                    Ext.getCmp(prototype.id + '-lbl-pageCount2').setText(pageCount);
+                    Ext.getCmp(prototype.id + '-lbl-total2').setText(total);
                     // </editor-fold>
                     if (obj.data.length === 0) {
                         global.Msg({
@@ -424,16 +431,16 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlARC.LoadControlARCController'
                 }
             }
         });
-        Ext.getCmp(prototype.id+'-gridErrorsFormat').bindStore(storeGridDatas);
-        Ext.getCmp(prototype.id+'-paggin2').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-gridErrorsFormat').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin2').bindStore(storeGridDatas);
     },
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="processFormatARCHOT">
     processFormatARCHOT: function (bean) {
         var me1 = this;
         Ext.Ajax.request({
-            url: prototype.url+'/processFormatARCHOT',
+            url: prototype.url + '/processFormatARCHOT',
             method: 'POST',
             timeout: 60000000,
             params: {beanString: JSON.stringify(bean)},
@@ -445,19 +452,20 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlARC.LoadControlARCController'
                     me1.gloFilterFormatARCHOT = res.filter;
                     var controller = me1.ControlFormatARC.getController();
                     controller.bean = me1.gloFilterFormatARCHOT;
-                    if(me1.gloFilterFormatARCHOT.OU_STATUS === '0'){
+                    if (me1.gloFilterFormatARCHOT.OU_STATUS === '0') {
                         controller.displayMesagge(controller.PROCESS_OK);
-                    }else if(me1.gloFilterFormatARCHOT.OU_STATUS === '1'){
+                    } else if (me1.gloFilterFormatARCHOT.OU_STATUS === '1') {
                         controller.displayMesagge(controller.PROCESS_ERROR);
-                    }else if(me1.gloFilterFormatARCHOT.OU_STATUS === '2'){
+                    } else if (me1.gloFilterFormatARCHOT.OU_STATUS === '2') {
                         controller.displayMesagge(controller.PROCESS_DUPLICADO);
                     }
-                } else global.Msg({msg: res.sesion});
+                } else
+                    global.Msg({msg: res.sesion});
                 global.clear();
             },
             failure: function (response, opts) {
                 Ext.getCmp('CtrlControlFormatARCForm').unmask();
-                console.log('server-side failure with status code '+response.status);
+                console.log('server-side failure with status code ' + response.status);
             }
         });
     },
@@ -466,7 +474,7 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlARC.LoadControlARCController'
     processLoadARCHOT: function (bean) {
         var me1 = this;
         Ext.Ajax.request({
-            url: prototype.url+'/processLoadARCHOT',
+            url: prototype.url + '/processLoadARCHOT',
             method: 'POST',
             timeout: 60000000,
             params: {beanString: JSON.stringify(bean)},
@@ -478,30 +486,31 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlARC.LoadControlARCController'
                     me1.gloFilterARCHOT = res.filter;
                     var controller = me1.ControlLoadARC.getController();
                     controller.bean = me1.gloFilterARCHOT;
-                    if(me1.gloFilterARCHOT.OU_STATUS === '0'){
+                    if (me1.gloFilterARCHOT.OU_STATUS === '0') {
                         controller.displayMesagge(controller.PROCESS_OK);
-                    }else {
+                    } else {
                         controller.displayMesagge(controller.PROCESS_ERROR);
                     }
-                } else global.Msg({msg: res.sesion});
+                } else
+                    global.Msg({msg: res.sesion});
                 global.clear();
             },
             failure: function (response, opts) {
                 Ext.getCmp('CtrlControlLoadARCForm').unmask();
-                console.log('server-side failure with status code '+response.status);
+                console.log('server-side failure with status code ' + response.status);
             }
         });
     },
     //</editor-fold>
-    
-    getIndexTabSelected: function() {
-        var tabPanel = Ext.getCmp(prototype.id+'-tnvMain');
+
+    getIndexTabSelected: function () {
+        var tabPanel = Ext.getCmp(prototype.id + '-tnvMain');
         var activeTab = tabPanel.getActiveTab();
         var activeTabIndex = tabPanel.items.indexOf(activeTab);
         return activeTabIndex;
     },
-    txtFilterValue_keyDownHandler: function( obj , e , eOpts){
-        if ( e.getKey() === e.ENTER ){
+    txtFilterValue_keyDownHandler: function (obj, e, eOpts) {
+        if (e.getKey() === e.ENTER) {
             var selectedIndex = this.getIndexTabSelected();
             switch (selectedIndex) {
                 case 0:
@@ -518,67 +527,67 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlARC.LoadControlARCController'
     },
 
     // <editor-fold defaultstate="collapsed" desc="Funciones para la paginación">
-    pagFirst: function(obj, e) {
+    pagFirst: function (obj, e) {
         if (this.getIndexTabSelected() === 0) {
-            Ext.getCmp(prototype.id+'-paggin3').moveFirst();
+            Ext.getCmp(prototype.id + '-paggin3').moveFirst();
         } else if (this.getIndexTabSelected() === 2) {
-            Ext.getCmp(prototype.id+'-paggin5').moveFirst();
+            Ext.getCmp(prototype.id + '-paggin5').moveFirst();
         } else if (this.getIndexTabSelected() === 3) {
-            Ext.getCmp(prototype.id+'-paggin2').moveFirst();
+            Ext.getCmp(prototype.id + '-paggin2').moveFirst();
         }
     },
-    pagPrevious: function(obj, e) {
+    pagPrevious: function (obj, e) {
         if (this.getIndexTabSelected() === 0) {
-            Ext.getCmp(prototype.id+'-paggin3').movePrevious();
+            Ext.getCmp(prototype.id + '-paggin3').movePrevious();
         } else if (this.getIndexTabSelected() === 2) {
-            Ext.getCmp(prototype.id+'-paggin5').movePrevious();
+            Ext.getCmp(prototype.id + '-paggin5').movePrevious();
         } else if (this.getIndexTabSelected() === 3) {
-            Ext.getCmp(prototype.id+'-paggin2').movePrevious();
+            Ext.getCmp(prototype.id + '-paggin2').movePrevious();
         }
     },
-    pagNext: function(obj, e) {
+    pagNext: function (obj, e) {
         if (this.getIndexTabSelected() === 0) {
-            Ext.getCmp(prototype.id+'-paggin3').moveNext();
+            Ext.getCmp(prototype.id + '-paggin3').moveNext();
         } else if (this.getIndexTabSelected() === 1) {
-            Ext.getCmp(prototype.id+'-paggin4').moveNext();
+            Ext.getCmp(prototype.id + '-paggin4').moveNext();
         } else if (this.getIndexTabSelected() === 2) {
-            Ext.getCmp(prototype.id+'-paggin5').moveNext();
+            Ext.getCmp(prototype.id + '-paggin5').moveNext();
         } else if (this.getIndexTabSelected() === 3) {
-            Ext.getCmp(prototype.id+'-paggin2').moveNext();
+            Ext.getCmp(prototype.id + '-paggin2').moveNext();
         }
     },
-    pagLast: function(obj, e) {
+    pagLast: function (obj, e) {
         if (this.getIndexTabSelected() === 0) {
-            Ext.getCmp(prototype.id+'-paggin3').moveLast();
+            Ext.getCmp(prototype.id + '-paggin3').moveLast();
         } else if (this.getIndexTabSelected() === 2) {
-            Ext.getCmp(prototype.id+'-paggin5').moveLast();
+            Ext.getCmp(prototype.id + '-paggin5').moveLast();
         } else if (this.getIndexTabSelected() === 3) {
-            Ext.getCmp(prototype.id+'-paggin2').moveLast();
+            Ext.getCmp(prototype.id + '-paggin2').moveLast();
         }
     },
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="Utilitarios">
-    getValue: function(id) {
-        return Ext.getCmp(prototype.id+'-'+id).getValue();
+    getValue: function (id) {
+        return Ext.getCmp(prototype.id + '-' + id).getValue();
     },
-    focus: function(id) {
-        Ext.getCmp(prototype.id+'-'+id).focus();
+    focus: function (id) {
+        Ext.getCmp(prototype.id + '-' + id).focus();
     },
-    setValue: function(id, txt) {
-        return Ext.getCmp(prototype.id+'-'+id).setValue(txt);
+    setValue: function (id, txt) {
+        return Ext.getCmp(prototype.id + '-' + id).setValue(txt);
     },
-    onUpperValue: function(field, newValue, oldValue){
+    onUpperValue: function (field, newValue, oldValue) {
         field.setValue(newValue.toUpperCase());
     },
-    onTextKeypress: function( obj , e , eOpts){
-        if ( e.getKey() === e.ENTER ){
+    onTextKeypress: function (obj, e, eOpts) {
+        if (e.getKey() === e.ENTER) {
             this.btnSearch_click();
         }
     },
     // </editor-fold>
-    
-    btnExcel_click: function() {
+
+    btnExcel_click: function () {
         var selectedIndex = this.getIndexTabSelected();
         switch (selectedIndex) {
             case 0:
@@ -591,5 +600,75 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlARC.LoadControlARCController'
                 this.btnSearch_click('ERR_FORMAT', 'XLS');
                 break;
         }
+    },
+    btnVerifyErrors_clickHandler: function () {
+
+        let filter = this.getValue("cbxFiltro");
+        let A1698FPRDA = Ext.util.Format.date(this.getValue("txtA1698FPRDA"), 'Ymd');
+        if (filter !== '2') {
+            global.Msg({
+                msg: 'Seleccionar filtro fecha PRDA'
+            });
+            return;
+        }
+        if (A1698FPRDA === '') {
+            global.Msg({
+                msg: 'Ingresar la fecha PRDA'
+            });
+            return;
+        }
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Process verify errors?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'yes') {
+                    this.VERIFY_ERRORS();
+                }
+            }
+        });
+    },
+    VERIFY_ERRORS: function () {
+        //let filter = this.getValue("cbxFiltro");
+        let A1698FPRDA = Ext.util.Format.date(this.getValue("txtA1698FPRDA"), 'Ymd');
+        let me = this;
+        let beanfilter = {
+            VP_PRDA: A1698FPRDA,
+            VP_FUENT: 'ARC'
+        };
+
+        Ext.Ajax.request({
+            url: prototype.url + '/processVerifyErrors',
+            method: 'POST',
+            timeout: 60000000,
+            params: beanfilter,
+            beforerequest: Ext.getCmp(prototype.id + '-boxErrorsFormat').mask('Loading...', ''),
+            success: function (response, options) {
+                var res = Ext.JSON.decode(response.responseText);
+                Ext.getCmp(prototype.id + '-boxErrorsFormat').unmask('Loading...', '');
+                console.log(res);
+                if (res.success) {
+                    var objRtn = res.filter;
+                    global.Msg({
+                        msg: objRtn.dbException.MESSAGE,
+                        icon: 1,
+                        fn: function () {
+                            //exito
+                            me.btnSearchIDFile_clickHandler();
+                        }
+                    });
+                } else {
+                    global.Msg({
+                        msg: res.sesion,
+                        icon: 2,
+                        fn: function () {
+                        }
+                    });
+                }
+            }
+        });
     }
 });
