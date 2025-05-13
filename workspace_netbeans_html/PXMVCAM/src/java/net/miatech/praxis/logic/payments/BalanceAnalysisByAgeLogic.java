@@ -117,4 +117,12 @@ public class BalanceAnalysisByAgeLogic {
     public List<A2331Filter> loadPX419SQP02080(A2331Filter filter) throws SQLException, Exception {
         return balanceAnalysisByAge.loadPX419SQP02080(filter);
     }
+    
+    public List<A2356Filter> getListTotalConciliation(A2356Filter filter) throws SQLException, Exception {
+        return balanceAnalysisByAge.getListTotalConciliation(filter);
+    }
+
+    public List<A2356Filter> getListTotalConciliation_Bard(A2356Filter filter) throws SQLException, Exception {
+        return balanceAnalysisByAge.getListTotalConciliation_Bard(filter);
+    }
 }
