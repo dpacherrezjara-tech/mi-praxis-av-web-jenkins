@@ -1132,7 +1132,6 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             }
         }
 
-        // Formateo de números
         let formattedDesc = Ext.util.Format.number(totalDescGrid, '0,000.00');
         let formattedBandoc = Ext.util.Format.number(totalBandocGrid, '0,000.00');
         let formattedSett = Ext.util.Format.number(totalSettGrid, '0,000.00');
@@ -1144,7 +1143,6 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         let diferencia_bandoc_calculo = totalBandocGrid - calculo;
         let formattedDiffB = Ext.util.Format.number(diferencia_bandoc_calculo, '0,000.00');
 
-        // Referencias a los componentes
         let cmpDesc = Ext.getCmp(prototype.id + '-txtTotalDescGrid');
 //        let cmpBandoc = Ext.getCmp(prototype.id + '-txtTotalBandocGrid');
         let cmpSett = Ext.getCmp(prototype.id + '-txtTotalSettGrid');
@@ -1152,7 +1150,6 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         let cmpDiff = Ext.getCmp(prototype.id + '-txtTotalDiffGrid');
         let cmpDiffB = Ext.getCmp(prototype.id + '-txtTotalDiff');
 
-        // Asignar valores
         cmpDesc.setValue(formattedDesc);
 //        cmpBandoc.setValue(formattedBandoc);
         cmpSett.setValue(formattedSett);
@@ -1160,14 +1157,11 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         cmpDiffB.setValue(formattedDiffB);
         cmpComision.setValue(formattedComision);
 
-        // Comparar
         let esIgual = diferencia_bandoc_calculo === 0;
 
-        // Colores vivos
-        let colorFondo = esIgual ? '#4CAF50' : '#F44336'; // verde o rojo brillante
+        let colorFondo = esIgual ? '#4CAF50' : '#F44336';
         let colorTexto = 'white';
 
-        // Aplicar estilos con defer para asegurar renderizado
         Ext.defer(function () {
             [cmpDiffB].forEach(cmp => {
                 let el = cmp.getEl();
@@ -1176,11 +1170,11 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                         'background-color': colorFondo,
                         'color': colorTexto,
                         'font-weight': 'bold',
-                        'border-radius': '0px' // por si quieres dejarlo sin esquinas redondeadas
+                        'border-radius': '0px'
                     });
                 }
             });
-        }, 10); // pequeño delay
+        }, 10);
     },
     changeProcessor: function () {
         Ext.getCmp(prototype.id + '-gridDataDescuentos').getStore().removeAll();
