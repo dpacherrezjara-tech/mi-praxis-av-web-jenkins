@@ -6455,81 +6455,88 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                             },
                                             items: [
                                                 {
-                                                    xtype: 'cartesian',
-                                                    // title: '<div style="text-align:center;color:#6E6E73;font-size:14px">Passenger by Market</div>',
-                                                    id: prototype.id + '-graficosAñosC',
-                                                    width: 1300,
-                                                    border: false,
-                                                    height: 400,
-                                                    background: '#E0F8F7',
-                                                    captions: {
-                                                        title: {
-                                                            text: 'Totals Sales And Settlement Match',
-                                                            alignTo: 'chart'
-                                                        }
-                                                    },
-                                                    animation: {
-                                                        duration: 200
-                                                    },
-                                                    interactions: ['itemhighlight'],
-                                                    legend: {
-                                                        docked: 'bottom',
-                                                        background: '#E3EAEF'
-                                                    },
-                                                    axes: [{
-                                                            type: 'numeric3d',
-                                                            position: 'left',
-                                                            fields: ['QSVFOPUSDS', 'QSVFOPUSDC', 'SVFOPUSDLT','QSVFOPUSDL'],
-                                                            grid: true,
-                                                            title: '',
-                                                            //title: 'Millions of USD',
-                                                            renderer: function (obj, value) {
-                                                                console.log(obj, value, 'RENDERER TABLE')
-                                                                return Ext.util.Format.number(value, '0.0')
-                                                            }
-                                                        }, {
-                                                            type: 'category3d',
-                                                            position: 'bottom',
-                                                            //                                                            fields: 'strFormatDate',
-                                                            grid: true,
-                                                            title: {
-                                                                text: 'Sales Date',
-                                                                translationX: -30
-                                                            }
-                                                        }],
-                                                    series: [{
-                                                            type: 'bar3d',
-                                                            stacked: false,
-                                                            title: ['Total Sales', 'Match Sales', 'Total Sett.','Match Sett.'],
-                                                            xField: 'strFormatDate',
-                                                            yField: ['QSVFOPUSDS', 'QSVFOPUSDC', 'SVFOPUSDLT','QSVFOPUSDL'],
-
-                                                            colors: ['#7AA9FF','#2979FF','#33FF99','#00E676'],
-                                                            highlight: true,
-                                                            style: {
-                                                                inGroupGapWidth: -7,
-                                                                minGapWidth: 2,
-                                                                maxBarWidth: 1000
-                                                            },
-                                                            tooltip: {
-                                                                trackMouse: true,
-                                                                height: 28,
-                                                                renderer: function (toolTip, record, ctx) {
-                                                                    var label = '';
-                                                                    if (ctx.field === 'QSVFOPUSDS') {
-                                                                        label = 'Total Sales';
-                                                                    } else if (ctx.field === 'QSVFOPUSDC') {
-                                                                        label = 'Match Sales';
-                                                                    } else if (ctx.field === 'SVFOPUSDLT') {
-                                                                        label = 'Total Sett.';
-                                                                    } else if (ctx.field === 'QSVFOPUSDL') {
-                                                                        label = 'Match Sett.';
-                                                                    }
-                                                                    toolTip.setHtml(label + ' : ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
-                                                                }
-                                                            }
-                                                        }]
-                                                },
+    xtype: 'cartesian',
+    id: prototype.id + '-graficosAñosC',
+    width: 1300,
+    border: false,
+    height: 400,
+    background: '#E0F8F7',
+    captions: {
+        title: {
+            text: 'Totals Sales And Settlement Match',
+            alignTo: 'chart'
+        }
+    },
+    animation: {
+        duration: 200
+    },
+    interactions: ['itemhighlight'],
+    legend: {
+        docked: 'bottom',
+        background: '#E3EAEF'
+    },
+    axes: [{
+        type: 'numeric3d',
+        position: 'left',
+        fields: ['QSVFOPUSDS', 'QSVFOPUSDC', 'SVFOPUSDLT', 'QSVFOPUSDL'],
+        grid: true,
+        title: '',
+        renderer: function (obj, value) {
+            return Ext.util.Format.number(value, '0.0');
+        }
+    }, {
+        type: 'category3d',
+        position: 'bottom',
+        title: {
+            text: 'Sales Date',
+            translationX: -30
+        }
+    }],
+    series: [{
+        type: 'bar3d',
+        stacked: false,
+        title: ['Total Sales', 'Match Sales', 'Total Sett.', 'Match Sett.'],
+        xField: 'strFormatDate',
+        yField: ['QSVFOPUSDS', 'QSVFOPUSDC', 'SVFOPUSDLT', 'QSVFOPUSDL'],
+        highlight: true,
+        style: {
+            inGroupGapWidth: -7,
+            minGapWidth: 2,
+            maxBarWidth: 1000
+        },
+        subStyle: {
+            fill: [
+                '#6C87A8',  // Total Sales - azul medio
+                '#C3D8EE',  // Match Sales - azul claro
+                '#7D9F7D',  // Total Sett. - verde medio
+                '#A1F0C0'   // Match Sett. - verde claro
+            ]
+        },
+        tooltip: {
+            trackMouse: true,
+            height: 28,
+            renderer: function (toolTip, record, ctx) {
+                var label = '';
+                switch (ctx.field) {
+                    case 'QSVFOPUSDS':
+                        label = 'Total Sales';
+                        break;
+                    case 'QSVFOPUSDC':
+                        label = 'Match Sales';
+                        break;
+                    case 'SVFOPUSDLT':
+                        label = 'Total Sett.';
+                        break;
+                    case 'QSVFOPUSDL':
+                        label = 'Match Sett.';
+                        break;
+                }
+                toolTip.setHtml(label + ' : ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+            }
+        }
+    }]
+}
+,
                                                 {
                                                     xtype: 'cartesian',
                                                     // title: '<div style="text-align:center;color:#6E6E73;font-size:14px">Passenger by Market</div>',
