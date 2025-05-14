@@ -1896,7 +1896,11 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Filters', {
                                                     {value: '0', description: '0 days'},
                                                     {value: '1', description: '1 day'},
                                                     {value: '2', description: '2 days'},
-                                                    {value: '3', description: '3 days'}
+                                                    {value: '3', description: '3 days'},
+                                                    {value: '4', description: '4 days'},
+                                                    {value: '5', description: '5 days'},
+                                                    {value: '6', description: '6 days'},
+                                                    {value: '7', description: '7 days'}
                                                 ]
                                             },
                                             listeners: {

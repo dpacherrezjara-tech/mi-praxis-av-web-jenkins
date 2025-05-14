@@ -649,7 +649,7 @@ Ext.define('Ext.Praxis.view.payments.SalesConciliationManualForm.Info', {
                                                     metaData.style = "text-align:center;background-color:#d5f4d5;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     metaData.unselectableAttr = "unselectable='off'";
-                                                    return value;
+                                                    return record.data.FCONCEP === 'A' ? value : '';
                                                 }
                                             },
                                             {text: 'Conci.<br>Date', dataIndex: 'DATEC', width: 80,
