@@ -6105,7 +6105,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
 //                            },
                             layout: {
                                 type: 'hbox',
-                                align: 'stretch'
+                                align: 'center'
                             },
                             items: [
                                 {
@@ -6114,7 +6114,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                     border: false,
                                     layout: {
                                         type: 'hbox',
-                                        align: 'center'
+                                        align: 'left'
                                     },
                                     items: [
                                         {
@@ -6129,7 +6129,8 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                 {
                                                     xtype: 'treepanel',
                                                     id: prototype.id + '-gridDataConciZ',
-                                                    width: 1245,
+                                                    width: 1235,
+                                                    style: 'margin-top:40px',
                                                     reserveScrollbar: true,
                                                     useArrows: true,
                                                     rootVisible: false,
@@ -6208,14 +6209,14 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                     
                                                                             {
                                                                                 text: 'Total',
-                                                                                width: 110,
+                                                                                width: 120,
                                                                                 dataIndex: 'QSVFOPUSDS',
                                                                                 align: 'center',
                                                                                 style: ' background: #6C87A8;',
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                                    metaData.style = "text-align:right;";
+                                                                                    metaData.style = "text-align:right;font-size:14px";
                                                                                     value = Ext.util.Format.number(value, '0,000');
-                                                                                    return '<b>' + value + '</b>';
+                                                                                    return '<b style="font-size:14px;">' + value + '</b>';
                                                                                 },
                                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                                     var data = Ext.getCmp(prototype.id + '-gridDataConciZ').getStore().getData().items[0].data;
@@ -6225,14 +6226,14 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                             },
                                                                             {
                                                                                 text: 'Match',
-                                                                                width: 110,
+                                                                                width: 120,
                                                                                 dataIndex: 'QSVFOPUSDC',
                                                                                 align: 'center',
                                                                                 style: ' background: #6C87A8;',
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:right;";
                                                                                     value = Ext.util.Format.number(value, '0,000');
-                                                                                    return '<b>' + value + '</b>';
+                                                                                   return '<b style="font-size:14px;">' + value + '</b>';
                                                                                 },
                                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                                     var data = Ext.getCmp(prototype.id + '-gridDataConciZ').getStore().getData().items[0].data;
@@ -6242,7 +6243,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                             },
                                                                             {
                                                                                 text: '% Match',
-                                                                                width: 90,
+                                                                                width: 65,
                                                                                 dataIndex: 'QRATECON',
                                                                                 align: 'center',
                                                                                 style: ' background: #6C87A8;',
@@ -6251,7 +6252,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                                     let data = record.data;
                                                                                     console.log(data.QRATECON, 'RATECON!!')
                                                                                     let perc1 = data.QRATECON === 0 ? 0 : data.QRATECON;
-                                                                                    return '<b>' + Ext.util.Format.number(perc1, '0.00%') + '<b>';
+                                                                                    return '<b style="font-size:14px;">' + Ext.util.Format.number(perc1, '0.00%') + '</b>';
                                                                                 },
                                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                                     var data = Ext.getCmp(prototype.id + '-gridDataConciZ').getStore().getData().items[0].data;
@@ -6268,7 +6269,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                 columns: [
                                                                     {
                                                                         text: '% Match',
-                                                                        width: 90,
+                                                                        width: 65,
                                                                         dataIndex: 'QRATECONL',
                                                                         align: 'center',
                                                                         style: ' background: #7D9F7D;',
@@ -6277,7 +6278,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                             let data = record.data;
                                                                             console.log(data.QRATECONL, 'RATECON!!')
                                                                             let perc2 = data.QRATECONL === 0 ? 0 : data.QRATECONL;
-                                                                            return '<b>' + Ext.util.Format.number(perc2, '0.00%') + '<b>';
+                                                                            return '<b style="font-size:14px;">' + Ext.util.Format.number(perc2, '0.00%') + '</b>';
                                                                         },
                                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                             var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
@@ -6287,14 +6288,14 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                     },
                                                                     {
                                                                         text: 'Total',
-                                                                        width: 110,
+                                                                        width: 120,
                                                                         dataIndex: 'QSVFOPUSDLT',
                                                                         align: 'center',
                                                                         style: ' background: #7D9F7D;',
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:right;";
                                                                             value = Ext.util.Format.number(value, '0,000');
-                                                                            return '<b>' + value + '</b>';
+                                                                            return '<b style="font-size:14px;">' + value + '</b>';
                                                                         },
                                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                             var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
@@ -6304,14 +6305,14 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                     },
                                                                     {
                                                                         text: 'Match',
-                                                                        width: 110,
+                                                                        width: 120,
                                                                         dataIndex: 'QSVFOPUSDL',
                                                                         align: 'center',
                                                                         style: ' background: #7D9F7D;',
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:right;";
                                                                             value = Ext.util.Format.number(value, '0,000');
-                                                                            return '<b>' + value + '</b>';
+                                                                            return '<b style="font-size:14px;">' + value + '</b>';
                                                                         },
                                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                             var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
@@ -6321,14 +6322,14 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                     },
                                                                     {
                                                                         text: 'W/O Sales',
-                                                                        width: 110,
+                                                                        width: 90,
                                                                         dataIndex: 'QSVFOPUSDP',
                                                                         align: 'center',
                                                                         style: ' background: #7D9F7D;',
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:right;";
                                                                             value = Ext.util.Format.number(value, '0,000');
-                                                                            return '<b>' + value + '</b>';
+                                                                            return '<b style="font-size:14px;">' + value + '</b>';
                                                                         },
                                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                             var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
@@ -6352,7 +6353,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:right;";
                                                                             value = Ext.util.Format.number(value, '0,000');
-                                                                            return '<b>' + value + '</b>';
+                                                                            return '<b style="font-size:14px;">' + value + '</b>';
                                                                         },
                                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                             var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
@@ -6369,7 +6370,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:right;";
                                                                             value = Ext.util.Format.number(value, '0,000');
-                                                                            return '<b>' + value + '</b>';
+                                                                            return '<b style="font-size:14px;">' + value + '</b>';
                                                                         },
                                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                             var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
@@ -6381,14 +6382,14 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                             },
                                                             {
                                                                 text: 'Net',
-                                                                width: 100,
+                                                                width: 120,
                                                                 dataIndex: 'QNETO',
                                                                 align: 'center',
                                                                 style: ' background: #8A99A6;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     value = Ext.util.Format.number(value, '0,000');
-                                                                    return '<b>' + value + '</b>';
+                                                                    return '<b style="font-size:14px;">' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataProvisions').getStore().getData().items[0].data;
@@ -6415,147 +6416,149 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                         html: '' + '&nbsp',
                                                         height: 25,
                                                         padding: '5 5 5 0',
-                                                        style: 'background:#7F98A8;color:white;text-align:right;font-weight:bold;border: 0.3px #4A6371 solid;font-size:11px'
+                                                        style: 'background:#7F98A8;color:white;text-align:right;font-weight:bold;border: 0.3px #4A6371 solid;font-size:13px'
                                                     },
                                                     items: [
-                                                        {width: 310, id: prototype.id + '-totQSALES_CON'},
-                                                        {width: 110, id: prototype.id + '-totSVFOPUSDS_CON'},
-                                                        {width: 90, id: prototype.id + '-perc2_CON'},
-                                                        {width: 90, id: prototype.id + '-perc3_CON'},
-                                                        {width: 110, id: prototype.id + '-totSVFOPUSDC_CONT'},
+                                                        {width: 200, id: prototype.id + '-totQSALES_CONZ', value:'Totals'},
+                                                        {width: 120, id: prototype.id + '-totQSALES_CON'},
+                                                        {width: 120, id: prototype.id + '-totSVFOPUSDS_CON'},
+                                                        {width: 65, id: prototype.id + '-perc2_CON'},
+                                                        {width: 65, id: prototype.id + '-perc3_CON'},
+                                                        {width: 120, id: prototype.id + '-totSVFOPUSDC_CONT'},
                                                         
-                                                        {width: 110, id: prototype.id + '-totSVFOPUSDC_CON'},
-                                                        {width: 110, id: prototype.id + '-totSVFOPUSDL_CON'},
+                                                        {width: 120, id: prototype.id + '-totSVFOPUSDC_CON'},
+                                                        {width: 90, id: prototype.id + '-totSVFOPUSDL_CON'},
                                                         {width: 100, id: prototype.id + '-totCOMISION_CON'},
                                                         {width: 100, id: prototype.id + '-totTAXES_CON'},
-                                                        {width: 100, id: prototype.id + '-totNet_CON'}
+                                                        {width: 120, id: prototype.id + '-totNet_CON'}
                                                     ]
                                                 }
                                             ]
                                         },
                                         // <editor-fold defaultstate="collapsed" desc="Pie Totales">
-                                        {
-                                            xtype: 'panel',
-                                            layout: {
-                                                type: 'vbox',
-                                                pack: 'center'
-                                            },
-                                            border: false,
-                                            hidden:false,
-                                            margin: '40 0 0 25',
-                                            bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
-                                            items: [
-                                                {
-                                                    xtype: 'label',
-                                                    id: prototype.id + '-lblTittleGlobalMatch',
-                                                    labelAlign: 'center',
-                                                    border: true,
-                                                    hidden: false,
-                                                    align: 'center',
-                                                    margin: '5 0 20 100',
-                                                    style: {
-                                                        fontSize: '15px',
-                                                        fontWeight: 'bold',
-                                                        color: '#231223',
-                                                        fontFamily: '"Open Sans", sans-serif',
-                                                        textAlign: 'center',
-                                                        border: '2px solid #000000', // Borde del marco
-                                                        padding: '10px', // Espacio interno
-                                                        borderRadius: '5px' // Esquinas redondeadas para un marco más suave (opcional)
-                                                    }
-                                                },
-                                                {
-                                                    xtype: 'polar',
-                                                    id: prototype.id + '-displayPieGlobalMatch',
-                                                    width: 470,
-                                                    height: 280,
-                                                    innerPadding: 60,
-                                                    background: '#F4F6F6',
-                                                    animation: {
-                                                        duration: 200
-                                                    },
-                                                    interactions: ['rotate', 'itemhighlight'],
-                                                    series: [{
-                                                        type: 'pie3d',
-                                                        angleField: 'value',
-                                                        label: {
-                                                            field: 'texto',
-                                                            distance: 40,
-                                                            avoidOverlap: true,
-                                                            calloutLine: true,
-                                                            renderer: function (value, b, callout) {
-                                                                callout.calloutWidth = 1;
-                                                                return value;
-                                                            }
-                                                        },
-                                                        highlight: true,
-                                                        tooltip: {
-                                                            trackMouse: true,
-                                                            height: 28,
-                                                            renderer: function (toolTip, record, ctx) {
-                                                                toolTip.setHtml(record.get('label') + ' : <b>' + Ext.util.Format.number(record.get(ctx.field), '0,000.00') + '</b>');
-                                                            }
-                                                        },
-                                                        colors: ['#F44336', '#58E02E'] // Verde, Naranja, Azul, Rojo
-                                                    }]
-                                                },
-                                                {
-                                                    xtype: 'label',
-                                                    id: prototype.id + '-lblTitleSettlement',
-                                                    labelAlign: 'center',
-                                                    border: true,
-                                                    hidden: false,
-                                                    align: 'center',
-                                                    margin: '15 0 20 100',
-                                                    style: {
-                                                        fontSize: '15px',
-                                                        fontWeight: 'bold',
-                                                        color: '#231223',
-                                                        fontFamily: '"Open Sans", sans-serif',
-                                                        textAlign: 'center',
-                                                        border: '2px solid #000000', // Borde del marco
-                                                        padding: '10px', // Espacio interno
-                                                        borderRadius: '5px' // Esquinas redondeadas para un marco más suave (opcional)
-                                                    }
-                                                },
-                                                {
-                                                    xtype: 'polar',
-                                                    id: prototype.id + '-displayPieSettlement',
-                                                    width: 470,
-                                                    height: 280,
-                                                    innerPadding: 60,
-                                                    background: '#F4F6F6',
-                                                    animation: {
-                                                        duration: 200
-                                                    },
-                                                    interactions: ['rotate', 'itemhighlight'],
-                                                    series: [{
-                                                        type: 'pie3d',
-                                                        angleField: 'value',
-                                                        label: {
-                                                            field: 'texto',
-                                                            distance: 40,
-                                                            avoidOverlap: true,
-                                                            calloutLine: true,
-                                                            renderer: function (value, b, callout) {
-                                                                callout.calloutWidth = 1;
-                                                                return value;
-                                                            }
-                                                        },
-                                                        highlight: true,
-                                                        tooltip: {
-                                                            trackMouse: true,
-                                                            height: 28,
-                                                            renderer: function (toolTip, record, ctx) {
-                                                                toolTip.setHtml(record.get('label') + ' : <b>' + Ext.util.Format.number(record.get(ctx.field), '0,000.00') + '</b>');
-                                                            }
-                                                        },
-                                                        colors: ['#F44336', '#58E02E'] // Verde, Naranja, Azul, Rojo
-                                                    }]
-                                                },
-                                            ]
-                                        }
-                                        // </editor-fold>
+{
+    xtype: 'panel',
+    layout: {
+        type: 'vbox',
+        pack: 'center'
+    },
+    border: false,
+    hidden: false,
+    margin: '10 0 0 60',
+    bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
+    items: [
+        {
+            xtype: 'label',
+            id: prototype.id + '-lblTittleGlobalMatch',
+            labelAlign: 'center',
+            border: true,
+            hidden: false,
+            align: 'center',
+            margin: '5 0 20 100',
+            style: {
+                fontSize: '15px',
+                fontWeight: 'bold',
+                color: '#231223',
+                fontFamily: '"Open Sans", sans-serif',
+                textAlign: 'center',
+                border: '2px solid #000000',
+                padding: '10px',
+                borderRadius: '5px'
+            }
+        },
+        {
+            xtype: 'polar',
+            id: prototype.id + '-displayPieGlobalMatch',
+            width: 400, // antes 450
+            height: 200, // antes 260
+            innerPadding: 20, // antes 40
+            background: '#F4F6F6',
+            animation: {
+                duration: 200
+            },
+            interactions: ['rotate', 'itemhighlight'],
+            series: [{
+                type: 'pie3d',
+                angleField: 'value',
+                label: {
+                    field: 'texto',
+                    distance: 20, // antes 40
+                    avoidOverlap: true,
+                    calloutLine: true,
+                    renderer: function (value, b, callout) {
+                        callout.calloutWidth = 1;
+                        return value;
+                    }
+                },
+                highlight: true,
+                tooltip: {
+                    trackMouse: true,
+                    height: 28,
+                    renderer: function (toolTip, record, ctx) {
+                        toolTip.setHtml(record.get('label') + ' : <b>' + Ext.util.Format.number(record.get(ctx.field), '0,000.00') + '</b>');
+                    }
+                },
+                colors: ['#F44336', '#58E02E']
+            }]
+        },
+        {
+            xtype: 'label',
+            id: prototype.id + '-lblTitleSettlement',
+            labelAlign: 'center',
+            border: true,
+            hidden: false,
+            align: 'center',
+            margin: '15 0 20 100',
+            style: {
+                fontSize: '15px',
+                fontWeight: 'bold',
+                color: '#231223',
+                fontFamily: '"Open Sans", sans-serif',
+                textAlign: 'center',
+                border: '2px solid #000000',
+                padding: '10px',
+                borderRadius: '5px'
+            }
+        },
+        {
+            xtype: 'polar',
+            id: prototype.id + '-displayPieSettlement',
+            width: 400, // antes 450
+            height: 200, // antes 260
+            innerPadding: 20, // antes 40
+            background: '#F4F6F6',
+            animation: {
+                duration: 200
+            },
+            interactions: ['rotate', 'itemhighlight'],
+            series: [{
+                type: 'pie3d',
+                angleField: 'value',
+                label: {
+                    field: 'texto',
+                    distance: 20, // antes 40
+                    avoidOverlap: true,
+                    calloutLine: true,
+                    renderer: function (value, b, callout) {
+                        callout.calloutWidth = 1;
+                        return value;
+                    }
+                },
+                highlight: true,
+                tooltip: {
+                    trackMouse: true,
+                    height: 28,
+                    renderer: function (toolTip, record, ctx) {
+                        toolTip.setHtml(record.get('label') + ' : <b>' + Ext.util.Format.number(record.get(ctx.field), '0,000.00') + '</b>');
+                    }
+                },
+                colors: ['#F44336', '#58E02E']
+            }]
+        }
+    ]
+}
+// </editor-fold>
+
                                     ]
                                 },
                                 {
@@ -6609,7 +6612,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                         {
                                                             xtype: 'polar',
                                                             id: prototype.id + '-displayPolarSTC',
-                                                            width: 450,
+                                                            width: 400,
                                                             border: true,
                                                             hidden: true,
                                                             margin: '0 0 0 5',
@@ -6678,10 +6681,10 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                         {
                                                             xtype: 'polar',
                                                             id: prototype.id + '-displayPolarST_TC',
-                                                            width: 450,
+                                                            width: 400,
                                                             border: true,
-                                                            margin: '0 0 0 5',
                                                             hidden: true,
+                                                            margin: '0 0 0 5',
                                                             innerPadding: 10,
                                                             height: 200,
                                                             background: '#E0F8F7',
