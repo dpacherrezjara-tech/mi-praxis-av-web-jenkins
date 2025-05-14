@@ -333,6 +333,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         let panelGroupDataCLA = Ext.getCmp(prototype.id + '-boxGroupDataCLA')
         let panelDataProvisions = Ext.getCmp(prototype.id + '-boxDataProvisions')
         let panelGridData = Ext.getCmp(prototype.id + '-panelGridData')
+        let panelGridConciliation = Ext.getCmp(prototype.id + '-panelGridConciliation')
         if (panelReportDay.isVisible()) {
             me.typeBean = 'S' //Search
             this.setFormatParameter2();
@@ -364,6 +365,9 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         } else if (panelDataProvisions.isVisible()) {
             this.setFormatParameter4();
             this.searchProvisions();
+        } else if (panelGridConciliation.isVisible()) {
+            this.setFormatParameter2();
+            this.setGridDataConciliation();
         }
     },
     onChkboxPending: function (checkbox, newValue, oldValue) {
@@ -896,6 +900,13 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             Ext.getCmp(prototype.id + '-pie').setVisible(false);
             this.setFormatParameter4();
             this.searchProvisions();
+            Ext.getCmp(prototype.id + '-contentFilter2').hide();
+            Ext.getCmp(prototype.id + '-contentFilter3').hide();
+            
+        } else if (newValue === 'X') {
+            Ext.getCmp(prototype.id + '-pie').setVisible(false);
+//            this.setFormatParameter4();
+            this.setGridDataConciliation();
             Ext.getCmp(prototype.id + '-contentFilter2').hide();
             Ext.getCmp(prototype.id + '-contentFilter3').hide();
             
@@ -2005,7 +2016,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         console.log('cambio')
     },
     rgChangeReport: function (field, newValue, oldValue) {
-        console.log(newValue, 'newValue')
+        console.log(newValue, 'newValueAAAAA')
         if (newValue.opcion == '1') {
             this.setFormatParameter2();
             this.setGridSumaryMonth();
@@ -2222,6 +2233,458 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
     getDoubleColor3: function (value, metaData, record, rowIndex, colIndex, store, view) {
         metaData.style = 'text-align:right;background:#FCF5F2';
         return Ext.util.Format.number(value, '0,000.00');
-    }
+    },
+    setGridDataConciliation: function () {
+        win.lblUser_toolTip("Estructura: MPF115");
+        me.panelActual = '-panelGridConciliation';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        var msj = this.validateFields();
+        if (msj !== '') {
+            global.Msg({msg: msj
+            });
+        } else {
+            var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchTotalConciliation'
+                }, listeners: {
+                    beforeload: function (obj) {
+                        Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
+                        obj.proxy.extraParams = searchParams;
+                    },
+                    load: function (obj, obj2, success, response, obj5) {
+
+                        Ext.getCmp(prototype.id + '-contentInfo').unmask();
+                        var pag = Ext.getCmp(prototype.id + '-paggin7');
+                        var pagData = pag.getPageData();
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        var res = Ext.JSON.decode(response._response.responseText);
+                        console.log(res, 'searchTotalConciliation')
+
+
+                        if (obj.data.length === 0) {
+                            Ext.getCmp(prototype.id + '-graficosAñosC').bindStore('Ext.data.Store', {data: [], autoLoad: true});
+                            Ext.getCmp(prototype.id + '-graficosAñosAmountC').bindStore('Ext.data.Store', {data: [], autoLoad: true});
+                            Ext.getCmp(prototype.id + '-displayPolarSTC').bindStore(Ext.create('Ext.data.Store', {data: [], autoLoad: true}));
+                            Ext.getCmp(prototype.id + '-displayPolarST_TC').bindStore('Ext.data.Store', {data: [], autoLoad: true});
+                            Ext.getCmp(prototype.id + '-displayPolarST2C').bindStore('Ext.data.Store', {data: [], autoLoad: true});
+                            Ext.getCmp(prototype.id + '-displayPolarST2_TC').bindStore('Ext.data.Store', {data: [], autoLoad: true});
+                            Ext.getCmp(prototype.id + '-gridDataConciliation').setStore(Ext.create('Ext.data.TreeStore', {root: {}}));
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        } else {
+                            
+                            let storeDataBard = Ext.create('Ext.data.Store', {
+                                data: res.data2,
+                                autoLoad: true
+                            });
+                            //VENTA
+
+                            let item = {};
+                            let item2 = {};
+                            let totals = [];
+                            let charts = [];
+                            let pendingPerc = (obj.data.items[0].data.totAPEND / obj.data.items[0].data.totASALES) * 100;
+                            let paidPerc = (obj.data.items[0].data.totAMATCH / obj.data.items[0].data.totASALES) * 100;
+                            if (obj.data.items.length > 0) {
+                                item2.Perc2 = obj.data.items[0].data.totAPEND;
+                                var pending = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totAPEND, '0,000') + "\n" + Ext.util.Format.number(pendingPerc, '0.00%');
+                                item2.VENDOR = pending;
+                                totals.push(item2);
+
+                                item.Perc2 = obj.data.items[0].data.totAMATCH;
+                                var Paid = "Payed:\n" + Ext.util.Format.number(obj.data.items[0].data.totAMATCH, '0,000') + "\n" + Ext.util.Format.number(paidPerc, '0.00%');
+                                item.VENDOR = Paid;
+                                totals.push(item);
+                            } else {
+                                totals.push({})
+                            }
+
+
+                            var storeData1er = Ext.create('Ext.data.Store', {
+                                data: totals,
+                                autoLoad: true
+                            });
+                            Ext.getCmp(prototype.id + '-displayPolarST').bindStore(storeData1er);
+                            Ext.getCmp(prototype.id + '-lblTittleSalesTotalC').setText('Totals and Match')
+
+
+                            let item_T = {};
+                            let item2_T = {};
+                            let totals_T = [];
+                            let charts_T = [];
+                            
+                            console.log(obj.data.items,'OBJETO DATA ITEMS')
+                            
+                            pendingPerc = (obj.data.items[0].data.totQPEND / obj.data.items[0].data.totQSALES) * 100;
+                            paidPerc = (obj.data.items[0].data.totQMATCH / obj.data.items[0].data.totQSALES) * 100;
+                            if (obj.data.items.length > 0) {
+                                item2_T.Perc2 = obj.data.items[0].data.totQSALES;
+                                var pending = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totQSALES, '0,000') + "\n" + Ext.util.Format.number(pendingPerc, '0.00%');
+                                item2_T.VENDOR = pending;
+                                totals_T.push(item2_T);
+
+                                item_T.Perc2 = obj.data.items[0].data.totQSALESC;
+                                var Paid = "Payed:\n" + Ext.util.Format.number(obj.data.items[0].data.totQSALESC, '0,000') + "\n" + Ext.util.Format.number(paidPerc, '0.00%');
+                                item_T.VENDOR = Paid;
+                                totals_T.push(item_T);
+                            } else {
+                                totals_T.push({})
+                            }
+
+                            console.log(totals_T,'TOTALS_t')
+                            var storeData1er = Ext.create('Ext.data.Store', {
+                                data: totals_T,
+                                autoLoad: true
+                            });
+                            Ext.getCmp(prototype.id + '-displayPolarST_TC').bindStore(storeData1er);
+                            Ext.getCmp(prototype.id + '-lblTittleSalesTotal_TC').setText('Totals Sales Ticket: ' + Ext.util.Format.number(obj.data.items[0].data.totQSALES, '0,000'))
+
+                            //// CONTABILIDAD
+
+                            let item3 = {};
+                            let item4 = {};
+                            let totals2 = [];
+                            let charts2 = [];
+                            let totalContab = obj.data.items[0].data.totAPOLIC + obj.data.items[0].data.totAPOLIPE
+                            paidPerc = (obj.data.items[0].data.totAPOLIC / totalContab) * 100;
+                            pendingPerc = (obj.data.items[0].data.totAPOLIPE / totalContab) * 100;
+                            if (obj.data.items.length > 0) {
+                                item4.Perc2 = obj.data.items[0].data.totAPOLIC;
+                                var pending = "Processed:\n" + Ext.util.Format.number(obj.data.items[0].data.totAPOLIC, '0,000') + "\n" + Ext.util.Format.number(paidPerc, '0.00%');
+                                item4.VENDOR = pending;
+                                totals2.push(item4);
+
+                                item3.Perc2 = obj.data.items[0].data.totAPOLIPE;
+                                var Paid = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totAPOLIPE, '0,000') + "\n" + Ext.util.Format.number(pendingPerc, '0.00%');
+                                item3.VENDOR = Paid;
+                                totals2.push(item3);
+                            } else {
+                                totals2.push({})
+                            }
+
+
+                            var storeData1er = Ext.create('Ext.data.Store', {
+                                data: totals2,
+                                autoLoad: true
+                            });
+
+                            Ext.getCmp(prototype.id + '-displayPolarST2').bindStore(storeData1er);
+                            Ext.getCmp(prototype.id + '-lblTittleSalesTotal2C').setText('Totals and Match')
+                            console.log(storeDataBard,'storeDataBard')
+                            Ext.getCmp(prototype.id + '-graficosAñosC').bindStore(storeDataBard);
+                            Ext.getCmp(prototype.id + '-graficosAñosAmount').bindStore(storeDataBard);
+                            
+                           
+                            /**/                          
+                            
+                            // AQUI LLENAMOS LA GRILLA Y LOS TOTALES
+                            
+                            let lstData2 = res.data2
+                            let totAMATCH = lstData2[0].totAMATCH
+                            let totAPEND = lstData2[0].totAPEND
+                            let totAPOLIC = lstData2[0].totAPOLIC
+                            let totAPOLIPE = lstData2[0].totAPOLIPE
+                            let totASALES = lstData2[0].totASALES
+
+                            let totQMATCH = lstData2[0].totQMATCH
+                            let totQPEND = lstData2[0].totQPEND
+                            let totQPOLIC = lstData2[0].totQPOLIC
+                            let totQPOLIPE = lstData2[0].totQPOLIPE
+                            
+                            let totQSALES = lstData2[0].totQSALES
+                            
+                            
+                            let totSVFOPUSDS = lstData2[0].totSVFOPUSDS
+                            let totSVFOPUSDC = lstData2[0].totSVFOPUSDC
+                            let totSVFOPUSDL = lstData2[0].totSVFOPUSDL
+                            let totSVFOPUSDP = lstData2[0].totSVFOPUSDP
+                            let totSVFOPUSDLT = lstData2[0].totSVFOPUSDLT
+                            let totRATECON = lstData2[0].totRATECON
+                            let totCOMISION = lstData2[0].totCOMISION
+                            let totRTEIVA = lstData2[0].totRTEIVA
+                            let totNETO = lstData2[0].totNETO
+
+
+                            console.log(totASALES, 'totASALES')
+                            let a = [];
+                            
+                           
+                            let lstData = []
+                            for (let value of obj.data.items) {
+                                lstData.push(value.data)
+                            }
+                            console.log(lstData, 'lstData')
+                            
+                            
+                            let dataRoot = {text: '.', expanded: false, children: []};
+
+                            Ext.Object.each(lstData, function (index, value) {
+                                if (a.indexOf(value.strFormatDate) < 0) {
+                                    let x = [];
+
+                                    let V_QSALES = 0;
+                                    let V_QSALESC = 0;
+                                    
+                                    let V_QSVFOPUSDS = 0;
+                                    let V_QSVFOPUSDC = 0;
+                                    
+                                    let V_SVFOPUSDL = 0;
+                                    let V_SVFOPUSDP = 0;
+                                    let V_SVFOPUSDLT = 0;
+                                    let V_RATECON = 0;
+                                    let V_RATECONL = 0;
+                                    let V_COMISION = 0;
+                                    let V_RTEIVA = 0;
+                                    let V_NETO = 0;
+                                    
+                                    
+                                    
+                                    let V_ASALES = 0;
+                                    let V_QMATCH = 0;
+                                    let V_AMATCH = 0;
+                                    let V_QPEND = 0;
+                                    let V_APEND = 0;
+                                    let V_APOLIC = 0;
+                                    let V_QPOLIC = 0;
+                                    let V_APOLIPE = 0;
+                                    let V_QPOLIPE = 0;
+
+
+                                    Ext.Object.each(lstData, function (index, valuex) {
+                                        if (value.strFormatDate === valuex.strFormatDate) {
+                                            V_QSALES += valuex.QSALES;
+                                            V_QSALESC += valuex.QSALESC;
+                                            
+                                            V_QSVFOPUSDS += valuex.QSVFOPUSDS;
+                                            V_QSVFOPUSDC += valuex.QSVFOPUSDC;
+                                            
+                                            V_SVFOPUSDL += valuex.QSVFOPUSDL;
+                                            V_SVFOPUSDP += valuex.QSVFOPUSDP;
+                                            V_SVFOPUSDLT += valuex.SVFOPUSDLT;
+                                            V_RATECON += valuex.RATECON;
+                                            V_RATECONL += valuex.RATECONL;
+                                            V_COMISION += valuex.COMISION;
+                                            V_RTEIVA += valuex.RTEIVA;
+                                            V_NETO += valuex.NETO;
+                                            
+                                            V_ASALES += valuex.ASALES;
+                                            V_QMATCH += valuex.QMATCH;
+                                            V_AMATCH += valuex.AMATCH;
+                                            V_QPEND += valuex.QPEND;
+                                            V_APEND += valuex.APEND;
+                                            V_APOLIC += valuex.APOLIC;
+                                            V_QPOLIC += valuex.QPOLIC;
+                                            V_APOLIPE += valuex.APOLIPE;
+                                            V_QPOLIPE += valuex.QPOLIPE;
+                                        }
+                                    });
+
+
+                                    a.push(value.strFormatDate);
+                                    
+                                    let porcentajeVentas = (V_QSVFOPUSDS === 0)
+                                        ? 0
+                                        : Math.round((V_QSVFOPUSDC / V_QSVFOPUSDS) * 100 * 100) / 100;
+                                    
+                                    let porcentajeLiquidaciones = (V_SVFOPUSDLT === 0)
+                                        ? 0
+                                        : Math.round((V_SVFOPUSDL / V_SVFOPUSDLT) * 100 * 100) / 100;
+                                    
+                                    dataRoot.children.push({
+                                        strFormatDate: value.strFormatDate,
+                                        
+                                        QSALES: V_QSALES,
+                                        QSALESC: V_QSALESC,
+                                        
+                                        QSVFOPUSDS: V_QSVFOPUSDS,
+                                        QSVFOPUSDC: V_QSVFOPUSDC,
+                                        
+                                        QSVFOPUSDL: V_SVFOPUSDL,
+                                        QSVFOPUSDP: V_SVFOPUSDP,
+                                        QSVFOPUSDLT: V_SVFOPUSDLT,
+                                        QRATECON: porcentajeVentas,
+                                        QRATECONL: porcentajeLiquidaciones,
+                                        QCOMISION: V_COMISION,
+                                        QRTEIVA: V_RTEIVA,
+                                        QNETO: V_NETO,
+                                        
+                                        ASALES: V_ASALES,
+                                        perc1: totASALES === 0 ? 0 : (V_ASALES / totASALES) * 100,
+                                        QMATCH: V_QMATCH,
+                                        AMATCH: V_AMATCH,
+                                        QPEND: V_QPEND,
+                                        APEND: V_APEND,
+                                        APOLIC: V_APOLIC,
+                                        QPOLIC: V_QPOLIC,
+                                        APOLIPE: V_APOLIPE,
+                                        QPOLIPE: V_QPOLIPE,
+
+                                        expanded: false, children: []
+                                    });
+                                    let b = [];
+                                    Ext.Object.each(lstData, function (index, value01) {
+                                        if (value.strFormatDate === value01.strFormatDate) {
+                                            dataRoot.children[a.indexOf(value.strFormatDate)].children.push({
+                                                strFormatDate: value01.strFormatDate,
+                                                CCUST: value01.CCUST,
+                                                FCHILD: value01.FCHILD,
+                                                
+                                                QSALES: value01.QSALES,
+                                                QSALESC: value01.QSALESC,
+                                                
+                                                QSVFOPUSDS: value01.QSVFOPUSDS,
+                                                QSVFOPUSDC: value01.QSVFOPUSDC,
+                                                QSVFOPUSDL: value01.QSVFOPUSDL,
+                                                QSVFOPUSDP: value01.QSVFOPUSDP,
+                                                QSVFOPUSDLT: value01.SVFOPUSDLT,
+                                                QRATECON: value01.RATECON,
+                                                QRATECONL: value01.RATECONL,
+                                                QCOMISION: value01.COMISION,
+                                                QRTEIVA: value01.RTEIVA,
+                                                QNETO: value01.NETO,
+                                                
+                                                ASALES: value01.ASALES,
+                                                perc1: totASALES === 0 ? 0 : (value01.ASALES / totASALES) * 100,
+                                                QMATCH: value01.QMATCH,
+                                                AMATCH: value01.AMATCH,
+                                                QPEND: value01.QPEND,
+                                                APEND: value01.APEND,
+                                                APOLIC: value01.APOLIC,
+                                                QPOLIC: value01.QPOLIC,
+                                                APOLIPE: value01.APOLIPE,
+                                                QPOLIPE: value01.QPOLIPE,
+                                                leaf: true
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+
+                            Ext.getCmp(prototype.id + '-totQSALES_CON').setText(Ext.util.Format.number(totSVFOPUSDS, '0,000'));
+                            Ext.getCmp(prototype.id + '-totSVFOPUSDS_CON').setText(Ext.util.Format.number(totSVFOPUSDC, '0,000'));
+                            Ext.getCmp(prototype.id + '-totSVFOPUSDC_CON').setText(Ext.util.Format.number(totSVFOPUSDL, '0,000'));
+//                            Ext.getCmp(prototype.id + '-perc2_CON').setText(Ext.util.Format.number(0, '0,000'));
+                            
+                            Ext.getCmp(prototype.id + '-totSVFOPUSDC_CONT').setText(Ext.util.Format.number(totSVFOPUSDLT, '0,000'));
+                            Ext.getCmp(prototype.id + '-totSVFOPUSDC_CON').setText(Ext.util.Format.number(totSVFOPUSDL, '0,000'));
+                            Ext.getCmp(prototype.id + '-totSVFOPUSDL_CON').setText(Ext.util.Format.number(totSVFOPUSDP, '0,000'));
+                            Ext.getCmp(prototype.id + '-totCOMISION_CON').setText(Ext.util.Format.number(totCOMISION, '0,000'));
+                            Ext.getCmp(prototype.id + '-totTAXES_CON').setText(Ext.util.Format.number(totRTEIVA, '0,000'));
+                            Ext.getCmp(prototype.id + '-totNet_CON').setText(Ext.util.Format.number(totNETO, '0,000'));
+                            
+                            
+                            Ext.getCmp(prototype.id + '-totQPEND').setText(Ext.util.Format.number(totQPEND, '0,000'));
+                            Ext.getCmp(prototype.id + '-totAPEND').setText(Ext.util.Format.number(totAPEND, '0,000'));
+                            Ext.getCmp(prototype.id + '-totQPOLIC').setText(Ext.util.Format.number(totQPOLIC, '0,000'));
+                            Ext.getCmp(prototype.id + '-totAPOLIC').setText(Ext.util.Format.number(totAPOLIC, '0,000'));
+                            Ext.getCmp(prototype.id + '-totQPOLIPE').setText(Ext.util.Format.number(totQPOLIPE, '0,000'));
+                            Ext.getCmp(prototype.id + '-totAPOLIPE').setText(Ext.util.Format.number(totAPOLIPE, '0,000'));
+
+
+
+                            var storeTree = Ext.create('Ext.data.TreeStore', {
+                                root: dataRoot
+                            });
+
+//                            Ext.getCmp(prototype.id + '-gridDataConciliation').setStore(storeTree);
+                            Ext.getCmp(prototype.id + '-gridDataConciZ').setStore(storeTree);
+
+//                            if(me.typeBean == 'D'){
+//                                console.log('drilldown')
+//                                Ext.getCmp(prototype.id + '-lblTittleGrid2').setText(obj.data.items[0].data.strFormatDate + ' | ' + obj.data.items[0].data.SAGENT + ' | ' + obj.data.items[0].data.CANAL)
+//                            }else {
+//                            }
+                            
+                            
+                            // LLENANDO GRAFICO
+                            
+                            // Variables para ventas
+                            let totalVentas = totSVFOPUSDS;
+                            let ventasConciliadas = totSVFOPUSDC;
+                            let ventasNoConciliadas = totalVentas - ventasConciliadas;
+
+                            // Variables para liquidaciones
+                            let totalLiquidaciones = totSVFOPUSDLT;
+                            let liquidacionesConciliadas = totSVFOPUSDL;
+                            let liquidacionesNoConciliadas = totalLiquidaciones - liquidacionesConciliadas;
+
+                            // Pie data para Ventas
+                            let pieDataVentas = [
+                                {
+                                    label: 'Sale Pending',
+                                    value: ventasNoConciliadas,
+                                    texto: 'Sale Pending:\n' + Ext.util.Format.number(ventasNoConciliadas, '0,000') + '\n' +
+                                           Ext.util.Format.number(ventasNoConciliadas / totalVentas, '0.00%')
+                                },
+                                {
+                                    label: 'Sale Match',
+                                    value: ventasConciliadas,
+                                    texto: 'Sale Match:\n' + Ext.util.Format.number(ventasConciliadas, '0,000') + '\n' +
+                                           Ext.util.Format.number(ventasConciliadas / totalVentas, '0.00%')
+                                }
+                            ];
+
+                            // Pie data para Liquidaciones
+                            let pieDataLiquidaciones = [
+                                {
+                                    label: 'Sett. Pending',
+                                    value: liquidacionesNoConciliadas,
+                                    texto: 'Sett. Pending:\n' + Ext.util.Format.number(liquidacionesNoConciliadas, '0,000') + '\n' +
+                                           Ext.util.Format.number(liquidacionesNoConciliadas / totalLiquidaciones, '0.00%')
+                                },
+                                {
+                                    label: 'Sett. Match',
+                                    value: liquidacionesConciliadas,
+                                    texto: 'Sett. Match:\n' + Ext.util.Format.number(liquidacionesConciliadas, '0,000') + '\n' +
+                                           Ext.util.Format.number(liquidacionesConciliadas / totalLiquidaciones, '0.00%')
+                                }
+                            ];
+
+                            // Store para gráfico de ventas
+                            let storePieVentas = Ext.create('Ext.data.Store', {
+                                fields: ['label', 'value', 'texto'],
+                                data: pieDataVentas,
+                                autoLoad: true
+                            });
+
+                            // Store para gráfico de liquidaciones
+                            let storePieLiquidaciones = Ext.create('Ext.data.Store', {
+                                fields: ['label', 'value', 'texto'],
+                                data: pieDataLiquidaciones,
+                                autoLoad: true
+                            });
+
+                            // Asignar los stores a los respectivos charts
+                            Ext.getCmp(prototype.id + '-displayPieGlobalMatch').bindStore(storePieVentas);
+                            Ext.getCmp(prototype.id + '-displayPieSettlement').bindStore(storePieLiquidaciones);
+
+                            
+                            
+                            
+                            Ext.getCmp(prototype.id + '-lblTitleSettlement').setText('Total Settlement: '+ Ext.util.Format.number(totalLiquidaciones, '0,000'));
+                            Ext.getCmp(prototype.id + '-lblTittleGlobalMatch').setText('Total Sale: ' + Ext.util.Format.number(totalVentas, '0,000'));
+
+                            
+                            
+                        }
+//                        me.setWidthPie();
+                        
+                        
+                        
+                    }
+                }
+            });
+            global.clear();
+            Ext.getCmp(prototype.id + '-lblTittleSalesTotal2_T').hide()
+
+//            Ext.getCmp(prototype.id + '-gridData').bindStore(storeGridDatas);
+//            Ext.getCmp(prototype.id + '-paggin7').bindStore(storeGridDatas);
+
+//            Ext.getCmp(prototype.id + '-displayPolar2').bindStore(storeGridDatas);
+        }
+    },
 }
 );
