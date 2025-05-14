@@ -2406,6 +2406,14 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                             let totCOMISION = lstData2[0].totCOMISION
                             let totRTEIVA = lstData2[0].totRTEIVA
                             let totNETO = lstData2[0].totNETO
+                            
+                            let porcentajeVentasTotal = (totSVFOPUSDS === 0)
+                                ? 0
+                                : Math.round((totSVFOPUSDC / totSVFOPUSDS) * 100 * 100) / 100;
+
+                            let porcentajeLiquidacionesTotal = (totSVFOPUSDLT === 0)
+                                ? 0
+                                : Math.round((totSVFOPUSDL / totSVFOPUSDLT) * 100 * 100) / 100;
 
 
                             console.log(totASALES, 'totASALES')
@@ -2563,10 +2571,12 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                 }
                             });
 
+                            Ext.getCmp(prototype.id + '-totQSALES_CONZ').setText('Totals');
                             Ext.getCmp(prototype.id + '-totQSALES_CON').setText(Ext.util.Format.number(totSVFOPUSDS, '0,000'));
                             Ext.getCmp(prototype.id + '-totSVFOPUSDS_CON').setText(Ext.util.Format.number(totSVFOPUSDC, '0,000'));
                             Ext.getCmp(prototype.id + '-totSVFOPUSDC_CON').setText(Ext.util.Format.number(totSVFOPUSDL, '0,000'));
-//                            Ext.getCmp(prototype.id + '-perc2_CON').setText(Ext.util.Format.number(0, '0,000'));
+                            Ext.getCmp(prototype.id + '-perc2_CON').setText(Ext.util.Format.number(porcentajeVentasTotal, '0.00%'));
+                            Ext.getCmp(prototype.id + '-perc3_CON').setText(Ext.util.Format.number(porcentajeLiquidacionesTotal, '0.00%'));
                             
                             Ext.getCmp(prototype.id + '-totSVFOPUSDC_CONT').setText(Ext.util.Format.number(totSVFOPUSDLT, '0,000'));
                             Ext.getCmp(prototype.id + '-totSVFOPUSDC_CON').setText(Ext.util.Format.number(totSVFOPUSDL, '0,000'));
