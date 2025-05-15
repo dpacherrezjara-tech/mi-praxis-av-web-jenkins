@@ -93,6 +93,9 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
         //win.lblUser_toolTip("Estructura: CAF020");
         // this.btnSearch_click();
         this.validateProgram('PX00000282');
+        $('#BiToolsForm-btnToggleSwitch').change(function () {
+            me.procesador();
+        });
 
         new Ext.util.KeyMap({
             target: Ext.getBody(),
@@ -107,7 +110,24 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
             }
         });
     },
-
+    procesador: function () {
+        let cmbCorep = Ext.getCmp(prototype.id + '-cmbCOREP');
+        let cmbCountry = Ext.getCmp(prototype.id + '-cmbCountry');
+        if (!cmbCorep.isVisible()) {
+            Ext.getCmp(prototype.id + '-cmbCOREP').show();
+            Ext.getCmp(prototype.id + '-cmbCountry').hide();
+        } else {
+            Ext.getCmp(prototype.id + '-cmbCountry').show();
+            Ext.getCmp(prototype.id + '-cmbCOREP').hide();
+        }
+        
+//        if (!cmbCountry.isVisible()) {
+//            Ext.getCmp(prototype.id + '-cmbCountry').show();
+//            Ext.getCmp(prototype.id + '-cmbCountry').show();
+//        } else {
+//            Ext.getCmp(prototype.id + '-cmbCountry').hide();
+//        }
+    },
     showGridActual: function () {
         this.hideAllGrid();
 //        Ext.getCmp(prototype.id + this.gridActual).show();
@@ -479,6 +499,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
             cmbConector.setValue('AND');
         }
         this.paramsObtainData.COUNTRY = 2;
+        this.paramsObtainData.COREP = 2;
 
         Ext.Ajax.request({
             url: prototype.urlMaster + '/obtainData',
@@ -495,9 +516,15 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
                     data: res.lstCountry,
                     autoLoad: true
                 });
+                var storeDataProcessor = Ext.create('Ext.data.Store', {
+                    data: res.lstProcessor,
+                    autoLoad: true
+                });
 
                 Ext.getCmp(prototype.id + '-cmbCountry').bindStore(storeData3);
+                Ext.getCmp(prototype.id + '-cmbCOREP').bindStore(storeDataProcessor);
                 Ext.getCmp(prototype.id + '-cmbCountry').setValue('CO');
+                Ext.getCmp(prototype.id + '-cmbCOREP').setValue('CO');
                 global.clear();
             }
         });
@@ -611,7 +638,16 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
             me.beanDetailTW.IN_FECHA = Ext.getCmp(prototype.id + '-cmbDateYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateMonth').getValue()
 //            me.beanDetailTW.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateMonth').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromDay').getValue();
 //            me.beanDetailTW.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateMonth').getValue() + Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
-            me.beanDetailTW.SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue()
+            if( Ext.getCmp(prototype.id + '-cmbCountry').isVisible() ) {
+                me.beanDetailTW.SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
+            }else{
+                me.beanDetailTW.SCOUNTRY = "";
+            }
+            if( Ext.getCmp(prototype.id + '-cmbCOREP').isVisible() ) {
+                me.beanDetailTW.COREP = Ext.getCmp(prototype.id + '-cmbCOREP').getValue()
+            }else{
+                me.beanDetailTW.COREP = "";
+            }
             me.beanDetailTW.DIFFDAYS = parseInt(Ext.getCmp(prototype.id + '-cmbDiffDays').getValue(), 10)
             me.beanDetailTW.RQUERY = rquery;
             me.beanDetailTW.TQUERY = tquery;
@@ -704,6 +740,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
                                     SCARDN: value.SCARDN_101,
                                     SAUTHOC: value.SAUTHOC_101,
                                     SEQNUM: value.SEQNUM,
+                                    COREP: value.COREP,
                                     expanded: false, children: []
                                 });
                                 let b = [];
@@ -719,7 +756,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
                                             SVFOP_100: value01.SVFOP_100,
                                             SCURRENCY: value01.SCURRENCY_100,
                                             TDOC: value01.TDOC_100,
-                                            SCOUNTRY: value.SCOUNTRY_100,
+                                            SCOUNTRY: value01.SCOUNTRY_100,
                                             SDATE: value01.SDATE_100,
                                             SAGENT: value01.SAGENT_100,
                                             SCARCOD: value01.SCARCOD_100,
@@ -933,7 +970,17 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
 
         me.beanDetailTW.IN_FECHA = Ext.getCmp(prototype.id + '-cmbDateYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateMonth').getValue();
         me.beanDetailTW.strFecFiltro = Ext.getCmp(prototype.id + '-cmbTipoFecha').getValue().split(".")[1];
-        me.beanDetailTW.SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue()
+        if( Ext.getCmp(prototype.id + '-cmbCountry').isVisible() ){
+            me.beanDetailTW.SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue()
+        }else{
+            me.beanDetailTW.SCOUNTRY = "";
+        }
+        if( Ext.getCmp(prototype.id + '-cmbCOREP').isVisible() ) {
+            me.beanDetailTW.COREP = Ext.getCmp(prototype.id + '-cmbCOREP').getValue()
+        }else{
+            me.beanDetailTW.COREP = "";
+        }
+        
         me.beanDetailTW.DIFFDAYS = parseInt(Ext.getCmp(prototype.id + '-cmbDiffDays').getValue(), 10)
         me.beanDetailTW.strSQL = this.armandoQuery();
         me.beanDetailTW.CODRULE = codrule;
@@ -2081,7 +2128,16 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
 
             bean.strFecFiltro = Ext.getCmp(prototype.id + '-cmbTipoFecha').getValue().split(".")[1];
             bean.IN_FECHA = Ext.getCmp(prototype.id + '-cmbDateYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateMonth').getValue();
-            bean.SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
+            if( Ext.getCmp(prototype.id + '-cmbCountry').isVisible() ) {
+                bean.SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
+            }else{
+                bean.SCOUNTRY = "";
+            }
+            if( Ext.getCmp(prototype.id + '-cmbCOREP').isVisible() ) {
+                bean.COREP = Ext.getCmp(prototype.id + '-cmbCOREP').getValue()
+            }else{
+                bean.COREP = "";
+            }
             bean.DIFFDAYS = parseInt(Ext.getCmp(prototype.id + '-cmbDiffDays').getValue(), 10)
             bean.RQUERY = rquery;
             bean.TQUERY = tquery;

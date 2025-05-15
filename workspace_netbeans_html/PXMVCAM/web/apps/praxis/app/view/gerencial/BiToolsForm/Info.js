@@ -1332,7 +1332,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'SRC', dataIndex: 'CFUENTE', width: 60, align: 'center', menuDisabled: true,
+                                                text: 'Src', dataIndex: 'CFUENTE', width: 50, align: 'center', menuDisabled: true,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -1398,6 +1398,14 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Info', {
                                                 }
                                             },
                                             {
+                                                text: 'Proc.', dataIndex: 'COREP', width: 50, align: 'center', menuDisabled: true,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;background-color:#cbdbf5";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                }
+                                            },
+                                            {
                                                 text: 'Country', dataIndex: 'SCOUNTRY', width: 60, align: 'center', menuDisabled: true,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;background-color:#cbdbf5";
@@ -1414,7 +1422,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'Credit Card', dataIndex: 'SCARDN', width: 150, align: 'center', menuDisabled: true,
+                                                text: 'Credit Card', dataIndex: 'SCARDN', width: 140, align: 'center', menuDisabled: true,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;background-color:#cbdbf5";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -1422,7 +1430,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'Auth. Code', dataIndex: 'SAUTHOC', width: 80, align: 'center', menuDisabled: true,
+                                                text: 'Auth<br>Code', dataIndex: 'SAUTHOC', width: 60, align: 'center', menuDisabled: true,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;background-color:#cbdbf5";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -1461,7 +1469,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'Abono<br>Date', dataIndex: 'PAYDATE', width: 90, align: 'center', menuDisabled: true,
+                                                text: 'Abono<br>Date', dataIndex: 'PAYDATE', width: 80, align: 'center', menuDisabled: true,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
                                                     return value;

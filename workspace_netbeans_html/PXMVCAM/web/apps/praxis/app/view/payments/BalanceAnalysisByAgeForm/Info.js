@@ -6432,132 +6432,321 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                         {width: 100, id: prototype.id + '-totTAXES_CON'},
                                                         {width: 120, id: prototype.id + '-totNet_CON'}
                                                     ]
+                                                },
+                                                //PANEL DE GRAFICOS
+                                {
+                                    xtype: 'panel',
+                                    hidden: false,
+                                    margin: '15 0 5 0',
+                                    border: false,
+                                    layout: {
+                                        type: 'vbox',
+                                        aling: 'center'
+                                    },
+                                    bodyStyle: 'background-color: transparent;',
+                                    items: [
+                                        {
+                                            xtype: 'panel',
+                                            bodyStyle: 'background-color: #E3EAEF;',
+                                            padding: '5 0 0 5',
+                                            border: true,
+                                            layout: {
+                                                type: 'vbox'
+                                            },
+                                            items: [
+                                                {
+    xtype: 'cartesian',
+    id: prototype.id + '-graficosAñosC',
+    width: 1300,
+    border: false,
+    height: 400,
+    background: '#E0F8F7',
+    captions: {
+        title: {
+            text: 'Totals Sales And Settlement Match',
+            alignTo: 'chart'
+        }
+    },
+    animation: {
+        duration: 200
+    },
+    interactions: ['itemhighlight'],
+    legend: {
+        docked: 'bottom',
+        background: '#E3EAEF'
+    },
+    axes: [{
+        type: 'numeric3d',
+        position: 'left',
+        fields: ['QSVFOPUSDS', 'QSVFOPUSDC', 'SVFOPUSDLT', 'QSVFOPUSDL'],
+        grid: true,
+        title: '',
+        renderer: function (obj, value) {
+            return Ext.util.Format.number(value, '0.0');
+        }
+    }, {
+        type: 'category3d',
+        position: 'bottom',
+        title: {
+            text: 'Sales Date',
+            translationX: -30
+        }
+    }],
+    series: [{
+        type: 'bar3d',
+        stacked: false,
+        title: ['Total Sales', 'Match Sales', 'Total Sett.', 'Match Sett.'],
+        xField: 'strFormatDate',
+        yField: ['QSVFOPUSDS', 'QSVFOPUSDC', 'SVFOPUSDLT', 'QSVFOPUSDL'],
+        highlight: true,
+        style: {
+            inGroupGapWidth: -7,
+            minGapWidth: 2,
+            maxBarWidth: 1000
+        },
+        subStyle: {
+            fill: [
+                '#6C87A8',  // Total Sales - azul medio
+                '#C3D8EE',  // Match Sales - azul claro
+                '#7D9F7D',  // Total Sett. - verde medio
+                '#A1F0C0'   // Match Sett. - verde claro
+            ]
+        },
+        tooltip: {
+            trackMouse: true,
+            height: 28,
+            renderer: function (toolTip, record, ctx) {
+                var label = '';
+                switch (ctx.field) {
+                    case 'QSVFOPUSDS':
+                        label = 'Total Sales';
+                        break;
+                    case 'QSVFOPUSDC':
+                        label = 'Match Sales';
+                        break;
+                    case 'SVFOPUSDLT':
+                        label = 'Total Sett.';
+                        break;
+                    case 'QSVFOPUSDL':
+                        label = 'Match Sett.';
+                        break;
+                }
+                toolTip.setHtml(label + ' : ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+            }
+        }
+    }]
+}
+,
+                                                {
+                                                    xtype: 'cartesian',
+                                                    // title: '<div style="text-align:center;color:#6E6E73;font-size:14px">Passenger by Market</div>',
+                                                    id: prototype.id + '-graficosAñosAmountC',
+                                                    width: 1500,
+                                                    hidden: true,
+                                                    border: false,
+                                                    height: 400,
+                                                    background: '#E0F8F7',
+                                                    captions: {
+                                                        title: {
+                                                            text: 'Totals Amount by Sales Date \n\ USD',
+                                                            alignTo: 'chart'
+                                                        }
+                                                    },
+                                                    animation: {
+                                                        duration: 200
+                                                    },
+                                                    interactions: ['itemhighlight'],
+                                                    legend: {
+                                                        docked: 'bottom',
+                                                        background: '#E3EAEF'
+                                                    },
+                                                    axes: [{
+                                                            type: 'numeric3d',
+                                                            position: 'left',
+                                                            fields: ['ASALES', 'AMATCH', 'APEND'],
+                                                            grid: true,
+                                                            title: '',
+                                                            //title: 'Millions of USD',
+                                                            renderer: function (obj, value) {
+                                                                if (value > 1) {
+                                                                    if ((value / 1000).toString().length > 3) {
+                                                                        return  ' $' + Ext.util.Format.number((value / 1000000), '0') + 'M';
+                                                                    } else {
+                                                                        return  ' $' + Ext.util.Format.number((value / 1000), '0') + 'K';
+                                                                    }
+                                                                } else {
+                                                                    return '';
+                                                                }
+                                                            }
+                                                        }, {
+                                                            type: 'category3d',
+                                                            position: 'bottom',
+                                                            //                                                            fields: 'strFormatDate',
+                                                            grid: true,
+                                                            title: {
+                                                                text: 'Sales Date',
+                                                                translationX: -30
+                                                            }
+                                                        }],
+                                                    series: [{
+                                                            type: 'bar3d',
+                                                            stacked: false,
+                                                            title: ['Sales', 'Conciliation', 'Pending'],
+                                                            xField: 'strFormatDate',
+                                                            yField: ['ASALES', 'AMATCH', 'APEND'],
+                                                            colors: ['#0066ff', '#5dd92d', '#ea0000'],
+                                                            highlight: true,
+                                                            style: {
+                                                                inGroupGapWidth: -7,
+                                                                minGapWidth: 2,
+                                                                maxBarWidth: 1000
+                                                            },
+                                                            tooltip: {
+                                                                trackMouse: true,
+                                                                height: 28,
+                                                                renderer: function (toolTip, record, ctx) {
+                                                                    var label = '';
+                                                                    if (ctx.field === 'ASALES') {
+                                                                        label = 'Sales';
+                                                                    } else if (ctx.field === 'AMATCH') {
+                                                                        label = 'Conciliation';
+                                                                    } else if (ctx.field === 'APEND') {
+                                                                        label = 'Pending';
+                                                                    }
+                                                                    toolTip.setHtml(label + ' : ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+                                                                }
+                                                            }
+                                                        }]
                                                 }
+                                            ]
+                                        }
+                                    ]
+                                }
                                             ]
                                         },
                                         // <editor-fold defaultstate="collapsed" desc="Pie Totales">
-{
-    xtype: 'panel',
-    layout: {
-        type: 'vbox',
-        pack: 'center'
-    },
-    border: false,
-    hidden: false,
-    margin: '10 0 0 60',
-    bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
-    items: [
-        {
-            xtype: 'label',
-            id: prototype.id + '-lblTittleGlobalMatch',
-            labelAlign: 'center',
-            border: true,
-            hidden: false,
-            align: 'center',
-            margin: '5 0 20 100',
-            style: {
-                fontSize: '15px',
-                fontWeight: 'bold',
-                color: '#231223',
-                fontFamily: '"Open Sans", sans-serif',
-                textAlign: 'center',
-                border: '2px solid #000000',
-                padding: '10px',
-                borderRadius: '5px'
-            }
-        },
-        {
-            xtype: 'polar',
-            id: prototype.id + '-displayPieGlobalMatch',
-            width: 400, // antes 450
-            height: 200, // antes 260
-            innerPadding: 20, // antes 40
-            background: '#F4F6F6',
-            animation: {
-                duration: 200
-            },
-            interactions: ['rotate', 'itemhighlight'],
-            series: [{
-                type: 'pie3d',
-                angleField: 'value',
-                label: {
-                    field: 'texto',
-                    distance: 20, // antes 40
-                    avoidOverlap: true,
-                    calloutLine: true,
-                    renderer: function (value, b, callout) {
-                        callout.calloutWidth = 1;
-                        return value;
-                    }
-                },
-                highlight: true,
-                tooltip: {
-                    trackMouse: true,
-                    height: 28,
-                    renderer: function (toolTip, record, ctx) {
-                        toolTip.setHtml(record.get('label') + ' : <b>' + Ext.util.Format.number(record.get(ctx.field), '0,000.00') + '</b>');
-                    }
-                },
-                colors: ['#F44336', '#58E02E']
-            }]
-        },
-        {
-            xtype: 'label',
-            id: prototype.id + '-lblTitleSettlement',
-            labelAlign: 'center',
-            border: true,
-            hidden: false,
-            align: 'center',
-            margin: '15 0 20 100',
-            style: {
-                fontSize: '15px',
-                fontWeight: 'bold',
-                color: '#231223',
-                fontFamily: '"Open Sans", sans-serif',
-                textAlign: 'center',
-                border: '2px solid #000000',
-                padding: '10px',
-                borderRadius: '5px'
-            }
-        },
-        {
-            xtype: 'polar',
-            id: prototype.id + '-displayPieSettlement',
-            width: 400, // antes 450
-            height: 200, // antes 260
-            innerPadding: 20, // antes 40
-            background: '#F4F6F6',
-            animation: {
-                duration: 200
-            },
-            interactions: ['rotate', 'itemhighlight'],
-            series: [{
-                type: 'pie3d',
-                angleField: 'value',
-                label: {
-                    field: 'texto',
-                    distance: 20, // antes 40
-                    avoidOverlap: true,
-                    calloutLine: true,
-                    renderer: function (value, b, callout) {
-                        callout.calloutWidth = 1;
-                        return value;
-                    }
-                },
-                highlight: true,
-                tooltip: {
-                    trackMouse: true,
-                    height: 28,
-                    renderer: function (toolTip, record, ctx) {
-                        toolTip.setHtml(record.get('label') + ' : <b>' + Ext.util.Format.number(record.get(ctx.field), '0,000.00') + '</b>');
-                    }
-                },
-                colors: ['#F44336', '#58E02E']
-            }]
-        }
-    ]
-}
-// </editor-fold>
+                                        {
+                                            xtype: 'panel',
+                                            layout: {
+                                                type: 'vbox',
+                                                pack: 'center'
+                                            },
+                                            border: false,
+                                            hidden: false,
+                                            margin: '10 0 0 60',
+                                            bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
+                                            items: [
+                                                {
+                                                    xtype: 'label',
+                                                    id: prototype.id + '-lblTittleGlobalMatch',
+                                                    labelAlign: 'center',
+                                                    border: true,
+                                                    hidden: false,
+                                                    align: 'center',
+                                                    margin: '5 0 20 100',
+                                                    style: {
+                                                        fontSize: '15px',
+                                                        fontWeight: 'bold',
+                                                        color: '#231223',
+                                                        fontFamily: '"Open Sans", sans-serif',
+                                                        textAlign: 'center',
+                                                        border: '2px solid #000000',
+                                                        padding: '10px',
+                                                        borderRadius: '5px'
+                                                    }
+                                                },
+                                                {
+                                                    xtype: 'polar',
+                                                    id: prototype.id + '-displayPieGlobalMatch',
+                                                    width: 400, // antes 450
+                                                    height: 200, // antes 260
+                                                    innerPadding: 20, // antes 40
+                                                    background: '#F4F6F6',
+                                                    animation: {
+                                                        duration: 200
+                                                    },
+                                                    interactions: ['rotate', 'itemhighlight'],
+                                                    series: [{
+                                                        type: 'pie3d',
+                                                        angleField: 'value',
+                                                        label: {
+                                                            field: 'texto',
+                                                            distance: 20, // antes 40
+                                                            avoidOverlap: true,
+                                                            calloutLine: true,
+                                                            renderer: function (value, b, callout) {
+                                                                callout.calloutWidth = 1;
+                                                                return value;
+                                                            }
+                                                        },
+                                                        highlight: true,
+                                                        tooltip: {
+                                                            trackMouse: true,
+                                                            height: 28,
+                                                            renderer: function (toolTip, record, ctx) {
+                                                                toolTip.setHtml(record.get('label') + ' : <b>' + Ext.util.Format.number(record.get(ctx.field), '0,000.00') + '</b>');
+                                                            }
+                                                        },
+                                                        colors: ['#F44336', '#58E02E']
+                                                    }]
+                                                },
+                                                {
+                                                    xtype: 'label',
+                                                    id: prototype.id + '-lblTitleSettlement',
+                                                    labelAlign: 'center',
+                                                    border: true,
+                                                    hidden: false,
+                                                    align: 'center',
+                                                    margin: '15 0 20 100',
+                                                    style: {
+                                                        fontSize: '15px',
+                                                        fontWeight: 'bold',
+                                                        color: '#231223',
+                                                        fontFamily: '"Open Sans", sans-serif',
+                                                        textAlign: 'center',
+                                                        border: '2px solid #000000',
+                                                        padding: '10px',
+                                                        borderRadius: '5px'
+                                                    }
+                                                },
+                                                {
+                                                    xtype: 'polar',
+                                                    id: prototype.id + '-displayPieSettlement',
+                                                    width: 400, // antes 450
+                                                    height: 200, // antes 260
+                                                    innerPadding: 20, // antes 40
+                                                    background: '#F4F6F6',
+                                                    animation: {
+                                                        duration: 200
+                                                    },
+                                                    interactions: ['rotate', 'itemhighlight'],
+                                                    series: [{
+                                                        type: 'pie3d',
+                                                        angleField: 'value',
+                                                        label: {
+                                                            field: 'texto',
+                                                            distance: 20, // antes 40
+                                                            avoidOverlap: true,
+                                                            calloutLine: true,
+                                                            renderer: function (value, b, callout) {
+                                                                callout.calloutWidth = 1;
+                                                                return value;
+                                                            }
+                                                        },
+                                                        highlight: true,
+                                                        tooltip: {
+                                                            trackMouse: true,
+                                                            height: 28,
+                                                            renderer: function (toolTip, record, ctx) {
+                                                                toolTip.setHtml(record.get('label') + ' : <b>' + Ext.util.Format.number(record.get(ctx.field), '0,000.00') + '</b>');
+                                                            }
+                                                        },
+                                                        colors: ['#F44336', '#58E02E']
+                                                    }]
+                                                }
+                                            ]
+                                        }
+                                        // </editor-fold>
 
                                     ]
                                 },
@@ -6831,188 +7020,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                         }
                                     ]
                                 },
-                                //PANEL DE GRAFICOS
-                                {
-                                    xtype: 'panel',
-                                    hidden: true,
-                                    margin: '5 0 5 0',
-                                    border: false,
-                                    layout: {
-                                        type: 'vbox',
-                                        aling: 'center'
-                                    },
-                                    bodyStyle: 'background-color: transparent;',
-                                    items: [
-                                        {
-                                            xtype: 'panel',
-                                            bodyStyle: 'background-color: #E3EAEF;',
-                                            padding: '5 0 0 5',
-                                            border: true,
-                                            layout: {
-                                                type: 'vbox'
-                                            },
-                                            items: [
-                                                {
-                                                    xtype: 'cartesian',
-                                                    // title: '<div style="text-align:center;color:#6E6E73;font-size:14px">Passenger by Market</div>',
-                                                    id: prototype.id + '-graficosAñosC',
-                                                    width: 1500,
-                                                    border: false,
-                                                    height: 400,
-                                                    background: '#E0F8F7',
-                                                    captions: {
-                                                        title: {
-                                                            text: 'Totals Sales And Settlement Match',
-                                                            alignTo: 'chart'
-                                                        }
-                                                    },
-                                                    animation: {
-                                                        duration: 200
-                                                    },
-                                                    interactions: ['itemhighlight'],
-                                                    legend: {
-                                                        docked: 'bottom',
-                                                        background: '#E3EAEF'
-                                                    },
-                                                    axes: [{
-                                                            type: 'numeric3d',
-                                                            position: 'left',
-                                                            fields: ['QSVFOPUSDS', 'QSVFOPUSDC', 'SVFOPUSDLT','QSVFOPUSDL'],
-                                                            grid: true,
-                                                            title: '',
-                                                            //title: 'Millions of USD',
-                                                            renderer: function (obj, value) {
-                                                                console.log(obj, value, 'RENDERER TABLE')
-                                                                return Ext.util.Format.number(value, '0.0')
-                                                            }
-                                                        }, {
-                                                            type: 'category3d',
-                                                            position: 'bottom',
-                                                            //                                                            fields: 'strFormatDate',
-                                                            grid: true,
-                                                            title: {
-                                                                text: 'Sales Date',
-                                                                translationX: -30
-                                                            }
-                                                        }],
-                                                    series: [{
-                                                            type: 'bar3d',
-                                                            stacked: false,
-                                                            title: ['Total Sales', 'Match Sales', 'Total Sett.','Match Sett.'],
-                                                            xField: 'strFormatDate',
-                                                            yField: ['QSVFOPUSDS', 'QSVFOPUSDC', 'SVFOPUSDLT','QSVFOPUSDL'],
-
-                                                            colors: ['#0066ff', '#5dd92d', '#ea0000','#ea0000'],
-                                                            highlight: true,
-                                                            style: {
-                                                                inGroupGapWidth: -7,
-                                                                minGapWidth: 2,
-                                                                maxBarWidth: 1000
-                                                            },
-                                                            tooltip: {
-                                                                trackMouse: true,
-                                                                height: 28,
-                                                                renderer: function (toolTip, record, ctx) {
-                                                                    var label = '';
-                                                                    if (ctx.field === 'QSVFOPUSDS') {
-                                                                        label = 'Total Sales';
-                                                                    } else if (ctx.field === 'QSVFOPUSDC') {
-                                                                        label = 'Match Sales';
-                                                                    } else if (ctx.field === 'SVFOPUSDLT') {
-                                                                        label = 'Total Sett.';
-                                                                    } else if (ctx.field === 'QSVFOPUSDL') {
-                                                                        label = 'Match Sett.';
-                                                                    }
-                                                                    toolTip.setHtml(label + ' : ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
-                                                                }
-                                                            }
-                                                        }]
-                                                },
-                                                {
-                                                    xtype: 'cartesian',
-                                                    // title: '<div style="text-align:center;color:#6E6E73;font-size:14px">Passenger by Market</div>',
-                                                    id: prototype.id + '-graficosAñosAmountC',
-                                                    width: 1500,
-                                                    hidden: true,
-                                                    border: false,
-                                                    height: 400,
-                                                    background: '#E0F8F7',
-                                                    captions: {
-                                                        title: {
-                                                            text: 'Totals Amount by Sales Date \n\ USD',
-                                                            alignTo: 'chart'
-                                                        }
-                                                    },
-                                                    animation: {
-                                                        duration: 200
-                                                    },
-                                                    interactions: ['itemhighlight'],
-                                                    legend: {
-                                                        docked: 'bottom',
-                                                        background: '#E3EAEF'
-                                                    },
-                                                    axes: [{
-                                                            type: 'numeric3d',
-                                                            position: 'left',
-                                                            fields: ['ASALES', 'AMATCH', 'APEND'],
-                                                            grid: true,
-                                                            title: '',
-                                                            //title: 'Millions of USD',
-                                                            renderer: function (obj, value) {
-                                                                if (value > 1) {
-                                                                    if ((value / 1000).toString().length > 3) {
-                                                                        return  ' $' + Ext.util.Format.number((value / 1000000), '0') + 'M';
-                                                                    } else {
-                                                                        return  ' $' + Ext.util.Format.number((value / 1000), '0') + 'K';
-                                                                    }
-                                                                } else {
-                                                                    return '';
-                                                                }
-                                                            }
-                                                        }, {
-                                                            type: 'category3d',
-                                                            position: 'bottom',
-                                                            //                                                            fields: 'strFormatDate',
-                                                            grid: true,
-                                                            title: {
-                                                                text: 'Sales Date',
-                                                                translationX: -30
-                                                            }
-                                                        }],
-                                                    series: [{
-                                                            type: 'bar3d',
-                                                            stacked: false,
-                                                            title: ['Sales', 'Conciliation', 'Pending'],
-                                                            xField: 'strFormatDate',
-                                                            yField: ['ASALES', 'AMATCH', 'APEND'],
-                                                            colors: ['#0066ff', '#5dd92d', '#ea0000'],
-                                                            highlight: true,
-                                                            style: {
-                                                                inGroupGapWidth: -7,
-                                                                minGapWidth: 2,
-                                                                maxBarWidth: 1000
-                                                            },
-                                                            tooltip: {
-                                                                trackMouse: true,
-                                                                height: 28,
-                                                                renderer: function (toolTip, record, ctx) {
-                                                                    var label = '';
-                                                                    if (ctx.field === 'ASALES') {
-                                                                        label = 'Sales';
-                                                                    } else if (ctx.field === 'AMATCH') {
-                                                                        label = 'Conciliation';
-                                                                    } else if (ctx.field === 'APEND') {
-                                                                        label = 'Pending';
-                                                                    }
-                                                                    toolTip.setHtml(label + ' : ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
-                                                                }
-                                                            }
-                                                        }]
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
+                                
                             ]
                         },
                         // </editor-fold>

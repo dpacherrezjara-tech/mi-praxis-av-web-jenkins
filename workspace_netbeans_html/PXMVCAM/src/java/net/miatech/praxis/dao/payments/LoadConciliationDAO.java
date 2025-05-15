@@ -7374,7 +7374,8 @@ public class LoadConciliationDAO {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
-        long lngTotQTYTKT = 0, totSVFOP = 0;
+        long lngTotQTYTKT = 0;
+        float totSVFOP = 0;
         HashMap<String, String> hmDescSTCONL = new HashMap<String, String>();
         hmDescSTCONL.put("", "");
         hmDescSTCONL.put("1", "Accounted");
@@ -7428,7 +7429,7 @@ public class LoadConciliationDAO {
 
             while (rst.next()) {
                 lngTotQTYTKT = rst.getLong("QTYTKT");
-                totSVFOP = rst.getLong("SVFOP");
+                totSVFOP = rst.getFloat("SVFOP");
             }
             rst.close();
 
