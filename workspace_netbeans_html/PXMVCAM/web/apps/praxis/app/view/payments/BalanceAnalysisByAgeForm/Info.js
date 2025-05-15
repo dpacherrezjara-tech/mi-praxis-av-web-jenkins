@@ -38,7 +38,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                             id: prototype.id + '-panelGridData',
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
-//                            height: 800,
+                            hidden: true,
                             width: 1800,
                             margin: '20 0 0 0 ',
                             layout: {
@@ -6096,7 +6096,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                             id: prototype.id + '-panelGridConciliation',
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
-                            hidden: true,
+                            hidden: false,
 //                            width: 1800,
 //                            margin: '20 0 0 0 ',
 //                            layout: {
@@ -7039,7 +7039,6 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                             ]
                         },
                         // </editor-fold>
-                        
                         {
                             xtype: 'panel',
                             id: prototype.id + '-pie',
