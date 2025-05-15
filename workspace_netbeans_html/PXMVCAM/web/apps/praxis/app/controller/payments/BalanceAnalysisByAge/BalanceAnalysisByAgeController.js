@@ -2262,15 +2262,13 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                         var res = Ext.JSON.decode(response._response.responseText);
                         console.log(res, 'searchTotalConciliation')
 
-
                         if (obj.data.length === 0) {
                             Ext.getCmp(prototype.id + '-graficosAñosC').bindStore('Ext.data.Store', {data: [], autoLoad: true});
                             Ext.getCmp(prototype.id + '-graficosAñosAmountC').bindStore('Ext.data.Store', {data: [], autoLoad: true});
                             Ext.getCmp(prototype.id + '-displayPolarSTC').bindStore(Ext.create('Ext.data.Store', {data: [], autoLoad: true}));
                             Ext.getCmp(prototype.id + '-displayPolarST_TC').bindStore('Ext.data.Store', {data: [], autoLoad: true});
                             Ext.getCmp(prototype.id + '-displayPolarST2C').bindStore('Ext.data.Store', {data: [], autoLoad: true});
-                            Ext.getCmp(prototype.id + '-displayPolarST2_TC').bindStore('Ext.data.Store', {data: [], autoLoad: true});
-                            Ext.getCmp(prototype.id + '-gridDataConciliation').setStore(Ext.create('Ext.data.TreeStore', {root: {}}));
+                            Ext.getCmp(prototype.id + '-gridDataConciZ').setStore(Ext.create('Ext.data.TreeStore', {root: {}}));
                             global.Msg({
                                 msg: 'Data not found.'
                             });
@@ -2599,7 +2597,6 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                 root: dataRoot
                             });
 
-//                            Ext.getCmp(prototype.id + '-gridDataConciliation').setStore(storeTree);
                             Ext.getCmp(prototype.id + '-gridDataConciZ').setStore(storeTree);
 
 //                            if(me.typeBean == 'D'){
