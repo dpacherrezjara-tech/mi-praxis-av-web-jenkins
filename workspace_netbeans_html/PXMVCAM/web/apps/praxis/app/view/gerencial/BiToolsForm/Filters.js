@@ -1845,31 +1845,103 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Filters', {
                                         },
                                         {xtype: 'tbspacer', width: 15},
                                         {
-                                            xtype: 'label',
-                                            text: 'Country:',
-//                                            padding: '15 0 0 10',
-                                            margin: '15 0 0 0',
-                                            width: 50
-                                        },
-                                        {
-                                            xtype: 'combo',
-                                            id: prototype.id + '-cmbCountry',
-                                            queryMode: 'local',
+                                            xtype: 'panel',
+                                            bodyStyle: 'background: transparent',
+                                            border: false,
                                             margin: '10 0 0 0',
-                                            allowBlank: false,
-                                            forceSelection: true,
-                                            selectOnFocus: true,
-                                            caseSensitive: false,
-                                            autoSelect: true,
-                                            editable: true,
-                                            width: 189,
-                                            typeAhead: true,
-                                            valueField: 'A006PAIS',
-                                            displayField: 'A006NOMBRE',
-                                            listConfig: {maxHeight: 111},
-                                            enableKeyEvents: true,
-                                            triggerAction: 'all',
+                                            layout: 'vbox',
+                                            pack: 'center',
+                                            items: [
+                                                {
+                                                    xtype: 'panel',
+                                                    bodyStyle: 'background: transparent',
+                                                    border: false,
+                                                    layout: 'hbox',
+                                                    pack: 'center',
+                                                    items: [
+                                                        {
+                                                            xtype: 'label',
+                                                            text: 'Country',
+                                                            margin: '3 0 0 3',
+//                                                            id: prototype.id + '-country',
+                                                            width: 60
+                                                        },
+                                                        {
+                                                            xtype: 'component',
+                                                            id: prototype.id + '-btnToggleSwitch',
+                                                            margin: '3 0 0 3',
+                                                            html: '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Modo Alternancia</title><style>.toggle-container{display:inline-block;position:relative;width:30px;height:16px;}.toggle-input{opacity:0;width:0;height:0;}.toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#72e34f;transition:.4s;border-radius:16px;}.toggle-slider::before{position:absolute;content:"";height:12px;width:12px;border-radius:50%;left:2px;bottom:2px;background-color:white;transition:.4s;}.toggle-input:checked+.toggle-slider{background-color:#4c7daf;}.toggle-input:checked+.toggle-slider::before{transform:translateX(16px);}</style></head><body><label class="toggle-container"><input type="checkbox" class="toggle-input"><span class="toggle-slider"></span></label></body></html>',
+                                                            tooltip: 'Export to Report',
+                                                            listeners: {
+                                                                change: 'chgBash',
+                                                                click: 'clickToggleSwitch'
+                                                            }
+                                                        },
+                                                        {
+                                                            xtype: 'label',
+                                                            text: 'Processor',
+                                                            margin: '3 0 0 13',
+//                                                            id: prototype.id + '-EXT',
+                                                            width: 60
+                                                        },
+                                                    ]
+                                                },
+                                                {
+                                                    xtype: 'combo',
+                                                    id: prototype.id + '-cmbCountry',
+                                                    queryMode: 'local',
+                                                    margin: '10 0 0 0',
+                                                    allowBlank: false,
+                                                    forceSelection: true,
+                                                    selectOnFocus: true,
+                                                    caseSensitive: false,
+                                                    autoSelect: true,
+                                                    editable: true,
+                                                    width: 160,
+                                                    typeAhead: true,
+                                                    valueField: 'A006PAIS',
+                                                    displayField: 'A006NOMBRE',
+                                                    listConfig: {maxHeight: 111},
+                                                    enableKeyEvents: true,
+                                                    triggerAction: 'all',
+                                                },
+                                                {
+                                                    xtype: 'combo',
+                                                    id: prototype.id + '-cmbCOREP',
+                                                    //                            fieldLabel: 'Doc',
+                                                    width: 160,
+                                                    emptyText: 'All',
+                                                    margin: '10 0 0 0',
+                                                    hidden: true,
+                                                    value: [],
+                                                    displayField: 'NAME',
+                                                    valueField: 'VALUE',
+                                                    queryMode: 'local',
+                                                    filterPickList: true,
+                                                    editable: true,
+//                                                    multiSelect: true,
+                                                    forceSelection: true,
+
+                                                },
+                                            ]
                                         },
+
+//                                        {
+//                                            xtype: 'label',
+//                                            text: ' ',
+//                                            margin: '13 0 0 10',
+//                                            id: prototype.id + '-TEST',
+//                                            hidden: true,
+//                                            width: 60
+//                                        },
+//                                        {
+//                                            xtype: 'label',
+//                                            text: 'Country:',
+////                                            padding: '15 0 0 10',
+//                                            margin: '15 0 0 0',
+//                                            width: 50
+//                                        },
+
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'combo',
