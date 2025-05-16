@@ -32,7 +32,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         prototype.url = CONTEXTPATH + '/BalanceAnalysisByAge';
         prototype.urlMaster = CONTEXTPATH + '/MasterController';
         this.childs = Ext.getCmp(prototype.id + '-panelMain').items.items;
-        me.panelActual = '-panelGridData';
+        me.panelActual = '-panelGridConciliation';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
 
 
@@ -334,10 +334,20 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         let panelDataProvisions = Ext.getCmp(prototype.id + '-boxDataProvisions')
         let panelGridData = Ext.getCmp(prototype.id + '-panelGridData')
         let panelGridConciliation = Ext.getCmp(prototype.id + '-panelGridConciliation')
-        if (panelReportDay.isVisible()) {
+        console.log(panelGridData.isVisible(), 'VISIBILIDAD?')
+        if (panelGridConciliation.isVisible()) {
+            this.setFormatParameter2();
+            this.setGridDataConciliation();
+        }
+        
+        else if (panelReportDay.isVisible()) {
             me.typeBean = 'S' //Search
             this.setFormatParameter2();
             this.setGridReportDay();
+        } else if (panelGridConciliation.isVisible()) {
+            console.log('ENTRE DOS')
+            this.setFormatParameter2();
+            this.setGridDataConciliation();
         } else if (panelMain.isVisible()) {
             this.setFormatParameter();
             this.setGridData();
@@ -360,14 +370,12 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             this.setFormatParameter3();
             this.searchClarification();
         } else if (panelGridData.isVisible()) {
+            console.log('ENTRE UNO')
             this.setFormatParameter2();
             this.setGridDataTotal();
         } else if (panelDataProvisions.isVisible()) {
             this.setFormatParameter4();
             this.searchProvisions();
-        } else if (panelGridConciliation.isVisible()) {
-            this.setFormatParameter2();
-            this.setGridDataConciliation();
         }
     },
     onChkboxPending: function (checkbox, newValue, oldValue) {
@@ -871,6 +879,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
     },
     onChangeSelectBy: function (combo, newValue, oldValue) {
         this.setFormatParameter2();
+        console.log(newValue,'NUEVO VALOR OBSERVAR ACA')
         if (newValue === 'T') {
             this.setGridDataTotal();
 //            Ext.getCmp(prototype.id + '-contentFilter').show();
@@ -905,7 +914,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             
         } else if (newValue === 'X') {
             Ext.getCmp(prototype.id + '-pie').setVisible(false);
-//            this.setFormatParameter4();
+            this.setFormatParameter2();
             this.setGridDataConciliation();
             Ext.getCmp(prototype.id + '-contentFilter2').hide();
             Ext.getCmp(prototype.id + '-contentFilter3').hide();

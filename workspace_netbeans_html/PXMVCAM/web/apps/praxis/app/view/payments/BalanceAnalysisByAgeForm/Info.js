@@ -38,7 +38,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                             id: prototype.id + '-panelGridData',
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
-//                            height: 800,
+                            hidden: true,
                             width: 1800,
                             margin: '20 0 0 0 ',
                             layout: {
@@ -6096,7 +6096,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                             id: prototype.id + '-panelGridConciliation',
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
-                            hidden: true,
+                            hidden: false,
 //                            width: 1800,
 //                            margin: '20 0 0 0 ',
 //                            layout: {
@@ -6129,7 +6129,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                 {
                                                     xtype: 'treepanel',
                                                     id: prototype.id + '-gridDataConciZ',
-                                                    width: 1235,
+                                                    width: 1300,
                                                     style: 'margin-top:40px',
                                                     reserveScrollbar: true,
                                                     useArrows: true,
@@ -6202,17 +6202,30 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                 }
                                                             },
                                                             {
+                                                                text: 'Currency',
+                                                                width: 65,
+                                                                dataIndex: 'CURRENCY',
+                                                                align: 'center',
+                                                                style: ' background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:center;";
+                                                                    let data = record.data;
+                                                                    console.log(data.QRATECON, 'RATECON!!')
+                                                                    let perc1 = data.QRATECON === 0 ? 0 : data.QRATECON;
+                                                                    return '<b style="font-size:14px;">USD</b>';
+                                                                }
+                                                            },
+                                                            {
                                                                 text: 'Sale Information',
                                                                 menuDisabled: true,
-                                                                style: 'background: #6C87A8;',
+                                                                style: 'background: #5dd92d;',
                                                                 columns: [
-                                                                    
                                                                             {
                                                                                 text: 'Total',
                                                                                 width: 120,
                                                                                 dataIndex: 'QSVFOPUSDS',
                                                                                 align: 'center',
-                                                                                style: ' background: #6C87A8;',
+                                                                                style: ' background: #5dd92d;',
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:right;font-size:14px";
                                                                                     value = Ext.util.Format.number(value, '0,000');
@@ -6229,7 +6242,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                                 width: 120,
                                                                                 dataIndex: 'QSVFOPUSDC',
                                                                                 align: 'center',
-                                                                                style: ' background: #6C87A8;',
+                                                                                style: ' background: #5dd92d;',
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:right;";
                                                                                     value = Ext.util.Format.number(value, '0,000');
@@ -6246,7 +6259,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                                 width: 65,
                                                                                 dataIndex: 'QRATECON',
                                                                                 align: 'center',
-                                                                                style: ' background: #6C87A8;',
+                                                                                style: ' background: #5dd92d;',
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "text-align:right;";
                                                                                     let data = record.data;
@@ -6265,14 +6278,14 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                             {
                                                                 text: 'Settlement Information',
                                                                 menuDisabled: true,
-                                                                style: 'background: #7D9F7D;',
+                                                                style: 'background: #0066ff;',
                                                                 columns: [
                                                                     {
                                                                         text: '% Match',
                                                                         width: 65,
                                                                         dataIndex: 'QRATECONL',
                                                                         align: 'center',
-                                                                        style: ' background: #7D9F7D;',
+                                                                        style: ' background: #0066ff;',
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:right;";
                                                                             let data = record.data;
@@ -6291,7 +6304,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                         width: 120,
                                                                         dataIndex: 'QSVFOPUSDLT',
                                                                         align: 'center',
-                                                                        style: ' background: #7D9F7D;',
+                                                                        style: ' background: #0066ff;',
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:right;";
                                                                             value = Ext.util.Format.number(value, '0,000');
@@ -6308,7 +6321,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                         width: 120,
                                                                         dataIndex: 'QSVFOPUSDL',
                                                                         align: 'center',
-                                                                        style: ' background: #7D9F7D;',
+                                                                        style: ' background: #0066ff;',
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:right;";
                                                                             value = Ext.util.Format.number(value, '0,000');
@@ -6325,7 +6338,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                         width: 90,
                                                                         dataIndex: 'QSVFOPUSDP',
                                                                         align: 'center',
-                                                                        style: ' background: #7D9F7D;',
+                                                                        style: ' background: #0066ff;',
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:right;";
                                                                             value = Ext.util.Format.number(value, '0,000');
@@ -6403,7 +6416,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                 {
                                                     xtype: 'panel',
                                                     id: prototype.id + '-SummaryCardDataCon',
-                                                    width: 1235,
+                                                    width: 1300,
                                                     align: 'left',
                                                     margin: '0 0 0 0 ',
                                                     layout: {
@@ -6419,7 +6432,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                         style: 'background:#7F98A8;color:white;text-align:right;font-weight:bold;border: 0.3px #4A6371 solid;font-size:13px'
                                                     },
                                                     items: [
-                                                        {width: 200, id: prototype.id + '-totQSALES_CONZ', value:'Totals'},
+                                                        {width: 265, id: prototype.id + '-totQSALES_CONZ', value:'Totals'},
                                                         {width: 120, id: prototype.id + '-totQSALES_CON'},
                                                         {width: 120, id: prototype.id + '-totSVFOPUSDS_CON'},
                                                         {width: 65, id: prototype.id + '-perc2_CON'},
@@ -6506,10 +6519,10 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
         },
         subStyle: {
             fill: [
-                '#6C87A8',  // Total Sales - azul medio
-                '#C3D8EE',  // Match Sales - azul claro
-                '#7D9F7D',  // Total Sett. - verde medio
-                '#A1F0C0'   // Match Sett. - verde claro
+                '#00FF00',  // Total Sales - azul medio
+                '#5dd92d',  // Match Sales - azul claro
+                '#0000FF',  // Total Sett. - verde medio
+                '#0066ff'   // Match Sett. - verde claro
             ]
         },
         tooltip: {
@@ -6680,6 +6693,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                             }
                                                         },
                                                         highlight: true,
+                                                        rotation: 70,
                                                         tooltip: {
                                                             trackMouse: true,
                                                             height: 28,
@@ -6734,6 +6748,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                             }
                                                         },
                                                         highlight: true,
+                                                        rotation: 70,
                                                         tooltip: {
                                                             trackMouse: true,
                                                             height: 28,
@@ -7024,7 +7039,6 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                             ]
                         },
                         // </editor-fold>
-                        
                         {
                             xtype: 'panel',
                             id: prototype.id + '-pie',
