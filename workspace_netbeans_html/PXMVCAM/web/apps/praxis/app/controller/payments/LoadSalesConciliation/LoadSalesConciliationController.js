@@ -75,6 +75,22 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
     xpanel_afterrender: function (obj, e) {
         console.log('XDXDXDDXDXD');
         this.setStoreData();
+        
+        $('#LoadSalesConciliationForm-btnToggleSwitch').change(function () {
+            me.procesador();
+        });
+        
+    },
+    procesador: function () {
+        let cmbCorep = Ext.getCmp(prototype.id + '-cmbCOREP');
+        let cmbCountry = Ext.getCmp(prototype.id + '-cmbCountry');
+        if (!cmbCorep.isVisible()) {
+            Ext.getCmp(prototype.id + '-cmbCOREP').show();
+            Ext.getCmp(prototype.id + '-cmbCountry').hide();
+        } else {
+            Ext.getCmp(prototype.id + '-cmbCountry').show();
+            Ext.getCmp(prototype.id + '-cmbCOREP').hide();
+        }
     },
     eventKey: function (e, eOpts) {
         if (eOpts.getKey() === 13) {
@@ -98,6 +114,7 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
 
 
         this.paramsObtainData.COUNTRY = 2;
+        this.paramsObtainData.COREP = 2;
         this.paramsObtainData.USERPERMIS = 2;
         this.paramsObtainData.NPROG = sessionStorage.getItem('nprog');
         console.log(this.paramsObtainData, 'this.paramsObtainData')
@@ -118,6 +135,12 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
                     data: me.lstCountry,
                     autoLoad: true
                 });
+                
+                var storeDataProcessor = Ext.create('Ext.data.Store', {
+                    data: res.lstProcessor,
+                    autoLoad: true
+                });
+                
                 if (res.userPermis.PERMM === 'Y') {
                     Ext.getCmp(prototype.id + '-btnQuery').show();
                 } else {
@@ -125,6 +148,8 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
                 }
                 Ext.getCmp(prototype.id + '-cmbCountry').bindStore(storeData3);
                 Ext.getCmp(prototype.id + '-cmbCountry').setValue('CO');
+                Ext.getCmp(prototype.id + '-cmbCOREP').bindStore(storeDataProcessor);
+                Ext.getCmp(prototype.id + '-cmbCOREP').setValue('CO');
                 global.clear();
 
             }
@@ -360,16 +385,37 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
     },
     onReconciliationMonth: function () {
         let beanReconciliation = {}
+        
+        let cmbCorep = Ext.getCmp(prototype.id + '-cmbCOREP');
+        if (cmbCorep.isVisible()) {
+            
+            beanReconciliation.IN_COREP = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
+            beanReconciliation.IN_SCOUNTRY = '';
+            
+            if (beanReconciliation.IN_COREP === '') {
+                global.Msg({msg: "Complete Processor"});
+                return false;
+            }
+            
+        } else {
+            
+            beanReconciliation.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
+            beanReconciliation.IN_COREP = '';
+            
+            if (beanReconciliation.IN_SCOUNTRY === '') {
+                global.Msg({msg: "Complete country"});
+                return false;
+            }
+            
+        }
+        
         beanReconciliation.IN_SDATE = Ext.getCmp(prototype.id + '-cmbYear').getValue() + Ext.getCmp(prototype.id + '-cmbMonth').getValue()
-        beanReconciliation.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue()
         if (beanReconciliation.IN_SDATE.length !== 6) {
             global.Msg({msg: "Complete date"});
             return false;
         }
-        if (beanReconciliation.IN_SCOUNTRY === '') {
-            global.Msg({msg: "Complete country"});
-            return false;
-        }
+        
+        console.log(beanReconciliation,'beanReconciliation')
         Ext.Msg.show({
             title: '.:PRAXIS:.',
             msg: 'Monthly reconciliation?',
