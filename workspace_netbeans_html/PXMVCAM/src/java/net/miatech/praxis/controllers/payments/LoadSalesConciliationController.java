@@ -423,7 +423,11 @@ public class LoadSalesConciliationController extends BaseController {
                             
                             
                             try {
-                                obj.SDATE = formatter.formatCellValue(row.getCell(0)) == null ? "" : formatter.formatCellValue(row.getCell(0)).trim().substring(4) + formatter.formatCellValue(row.getCell(0)).trim().substring(2,4) + formatter.formatCellValue(row.getCell(0)).trim().substring(0,2);                            
+                                obj.SDATE = formatter.formatCellValue(row.getCell(0)) == null ? "" : formatter.formatCellValue(row.getCell(0));
+                                if( obj.SDATE.length() == 7 ){
+                                    obj.SDATE = "0" + obj.SDATE;
+                                }
+                                obj.SDATE = obj.SDATE.trim().substring(4) + obj.SDATE.trim().substring(2,4) + obj.SDATE.trim().substring(0,2);                            
                             } catch (Exception e){
                                 obj.SDATE = "";
                                 System.out.println("error SDATE: " + formatter.formatCellValue(row.getCell(0)));
