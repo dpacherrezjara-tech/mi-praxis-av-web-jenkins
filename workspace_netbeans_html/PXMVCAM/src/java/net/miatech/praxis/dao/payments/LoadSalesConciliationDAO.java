@@ -588,7 +588,7 @@ public class LoadSalesConciliationDAO {
         A2290Filter objRtn = new A2290Filter();
         CallableStatement cstmt01 = null;
         ResultSet rs01 = null;
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMANUAL_PREV_V1(?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMANUAL_PREV_V1(?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -598,14 +598,15 @@ public class LoadSalesConciliationDAO {
             cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.IN_SDATE.trim());
             cstmt01.setString(3, filter.IN_SCOUNTRY.trim());
-            cstmt01.setString(4, user.getUserInfo().USR);
-            cstmt01.setString(5, Functions.getFechaActual());
-            cstmt01.setString(6, Functions.getHoraActual());
-            cstmt01.registerOutParameter(7, Types.INTEGER);
+            cstmt01.setString(4, filter.IN_COREP.trim());
+            cstmt01.setString(5, user.getUserInfo().USR);
+            cstmt01.setString(6, Functions.getFechaActual());
+            cstmt01.setString(7, Functions.getHoraActual());
             cstmt01.registerOutParameter(8, Types.INTEGER);
+            cstmt01.registerOutParameter(9, Types.INTEGER);
             cstmt01.execute();
-            objRtn.QTYRECORDS =  cstmt01.getInt(7);
-            objRtn.TRANL =  cstmt01.getInt(8);
+            objRtn.QTYRECORDS =  cstmt01.getInt(8);
+            objRtn.TRANL =  cstmt01.getInt(9);
             objRtn.USCR =  user.getUserInfo().USR;  
             objRtn.FECR =  Functions.getFechaActual();  
             objRtn.HOCR =  Functions.getHoraActual();
