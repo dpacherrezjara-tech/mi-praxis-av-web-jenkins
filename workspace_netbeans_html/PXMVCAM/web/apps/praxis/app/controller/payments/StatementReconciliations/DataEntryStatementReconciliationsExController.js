@@ -144,7 +144,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                     this.beanResult.SCOUNTRY.includes("UY"))  && !this.beanResult.COREP.includes("NB") &&
                     !this.beanResult.COREP.includes("ET") && !this.beanResult.COREP.includes("WQ") && 
                     !(this.beanResult.COREP.includes("EV") && this.beanResult.SCOUNTRY.includes("PR")) && !this.beanResult.COREP.includes("TB") &&
-                    !["CT", "SK","BD"].includes(this.beanResult.COREP) ) {
+                    !["CT", "SK","BD","DS"].includes(this.beanResult.COREP) ) {
                 //WITH HEADER
                 Ext.getCmp(prototype.id + '-header').show();
                 Ext.getCmp(prototype.id + '-detail').hide();
@@ -195,7 +195,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                     this.beanResult.SCOUNTRY.includes("UY"))  && !this.beanResult.COREP.includes("NB") &&
                     !this.beanResult.COREP.includes("ET") && !this.beanResult.COREP.includes("WQ") && 
                     !(this.beanResult.COREP.includes("EV") && this.beanResult.SCOUNTRY.includes("PR")) && !this.beanResult.COREP.includes("TB") &&
-                    !["CT", "SK","BD"].includes(this.beanResult.COREP) ) {
+                    !["CT", "SK","BD","DS"].includes(this.beanResult.COREP) ) {
                 Ext.getCmp(prototype.id + '-header').show();
                 Ext.getCmp(prototype.id + '-detail').hide();
                 Ext.getCmp(prototype.id + '-panelScanHead').show();
