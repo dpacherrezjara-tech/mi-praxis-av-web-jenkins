@@ -648,6 +648,11 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
             }else{
                 me.beanDetailTW.COREP = "";
             }
+            if ( Ext.getCmp(prototype.id + '-chkPNR').getValue() ){
+                me.beanDetailTW.SPNR = "Y";
+            }else{
+                me.beanDetailTW.SPNR = "";
+            }
             me.beanDetailTW.DIFFDAYS = parseInt(Ext.getCmp(prototype.id + '-cmbDiffDays').getValue(), 10)
             me.beanDetailTW.RQUERY = rquery;
             me.beanDetailTW.TQUERY = tquery;
@@ -908,6 +913,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
                 SCURRENCY: record.get('SCURRENCY'),
                 VFOP: record.get('SVFOP_101'),
                 DIFFDAYS: parseInt(Ext.getCmp(prototype.id + '-cmbDiffDays').getValue(), 10),
+                SPNR: Ext.getCmp(prototype.id + '-chkPNR').getValue() === true ? "Y" : "",
                 RQUERY: rquery,
                 TQUERY: tquery,
                 RULE: codrule
@@ -980,7 +986,11 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
         }else{
             me.beanDetailTW.COREP = "";
         }
-        
+         if ( Ext.getCmp(prototype.id + '-chkPNR').getValue() ){
+            me.beanDetailTW.SPNR = "Y";
+        }else{
+            me.beanDetailTW.SPNR = "";
+        }
         me.beanDetailTW.DIFFDAYS = parseInt(Ext.getCmp(prototype.id + '-cmbDiffDays').getValue(), 10)
         me.beanDetailTW.strSQL = this.armandoQuery();
         me.beanDetailTW.CODRULE = codrule;
@@ -2137,6 +2147,12 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
                 bean.COREP = Ext.getCmp(prototype.id + '-cmbCOREP').getValue()
             }else{
                 bean.COREP = "";
+            }
+            
+            if ( Ext.getCmp(prototype.id + '-chkPNR').getValue() ){
+                bean.SPNR = "Y";
+            }else{
+                bean.SPNR = "";
             }
             bean.DIFFDAYS = parseInt(Ext.getCmp(prototype.id + '-cmbDiffDays').getValue(), 10)
             bean.RQUERY = rquery;
