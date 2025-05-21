@@ -310,7 +310,7 @@ public class ManualConciliationDAO {
         CallableStatement cstmt = null;
         Connection cnx = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCF2_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCF2_V2(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -336,11 +336,12 @@ public class ManualConciliationDAO {
                 cstmt.setString(15, filter.SCURRENCY.trim());
                 cstmt.setDouble(16, filter.VFOP);
                 cstmt.setInt(17, filter.DIFFDAYS);
-                cstmt.setString(18, filter.RQUERY.trim());
-                cstmt.setString(19, filter.TQUERY.trim());
-                cstmt.setString(20, user.getUserInfo().USR);
-                cstmt.setString(21, Functions.getFechaActual());
-                cstmt.setString(22, Functions.getHoraActual());
+                cstmt.setString(18, filter.SPNR.trim());
+                cstmt.setString(19, filter.RQUERY.trim());
+                cstmt.setString(20, filter.TQUERY.trim());
+                cstmt.setString(21, user.getUserInfo().USR);
+                cstmt.setString(22, Functions.getFechaActual());
+                cstmt.setString(23, Functions.getHoraActual());
                 cstmt.execute();
                 cstmt.close();
                 count++;
@@ -383,20 +384,21 @@ public class ManualConciliationDAO {
             CallableStatement cstmt = null;
             Connection cnx = null;
 
-            String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCF2ALL_V1(?,?,?,?,?,?,?,?,?)}";
+            String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCF2ALL_V2(?,?,?,?,?,?,?,?,?,?)}";
 
             try {
                 cnx = session.getCNXIBMDB2().getIBMDB2Connection();
                 cstmt = cnx.prepareCall(SQLCLL01);
                 cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
                 cstmt.setString(2, filter.CODRULE.trim());
-                cstmt.setInt(3, filter.DIFFDAYS);
-                cstmt.setString(4, filter.RQUERY.trim());
-                cstmt.setString(5, filter.TQUERY.trim());
-                cstmt.setString(6, filter.TTABLE.trim());
-                cstmt.setString(7, user.getUserInfo().USR);
-                cstmt.setString(8, Functions.getFechaActual());
-                cstmt.setString(9, Functions.getHoraActual());
+                cstmt.setString(3, filter.SPNR.trim());
+                cstmt.setInt(4, filter.DIFFDAYS);
+                cstmt.setString(5, filter.RQUERY.trim());
+                cstmt.setString(6, filter.TQUERY.trim());
+                cstmt.setString(7, filter.TTABLE.trim());
+                cstmt.setString(8, user.getUserInfo().USR);
+                cstmt.setString(9, Functions.getFechaActual());
+                cstmt.setString(10, Functions.getHoraActual());
                 cstmt.execute();
                 cstmt.close();
                 count++;
@@ -431,7 +433,7 @@ public class ManualConciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".REPF2SELEC_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".REPF2SELEC_V2(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -449,10 +451,11 @@ public class ManualConciliationDAO {
             cstmt.setString(9, filter.SCURRENCY);
             cstmt.setString(10, filter.SCOUNTRY);
             cstmt.setString(11, filter.COREP);
-            cstmt.setInt(12, filter.DIFFDAYS);
-            cstmt.setString(13, filter.RQUERY.trim());
-            cstmt.setString(14, filter.TQUERY.trim());
-            cstmt.setString(15, filter.TTABLE.trim());
+            cstmt.setString(12, filter.SPNR);
+            cstmt.setInt(13, filter.DIFFDAYS);
+            cstmt.setString(14, filter.RQUERY.trim());
+            cstmt.setString(15, filter.TQUERY.trim());
+            cstmt.setString(16, filter.TTABLE.trim());
 
             cstmt.execute();
 
@@ -1248,17 +1251,17 @@ public class ManualConciliationDAO {
         ResultSet rst = null;
         ResultSet rst2 = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF101_F2_V2(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF101_F2_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(12, Types.INTEGER);
             cstmt.registerOutParameter(13, Types.INTEGER);
             cstmt.registerOutParameter(14, Types.INTEGER);
             cstmt.registerOutParameter(15, Types.INTEGER);
+            cstmt.registerOutParameter(16, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.strFecFiltro);
@@ -1266,27 +1269,28 @@ public class ManualConciliationDAO {
             cstmt.setString(4, filter.strSQL.trim());
             cstmt.setString(5, filter.SCOUNTRY);
             cstmt.setString(6, filter.COREP);
-            cstmt.setInt(7, filter.DIFFDAYS);
-            cstmt.setString(8, filter.RQUERY);
-            cstmt.setString(9, filter.TQUERY);
-            cstmt.setString(10, filter.TTABLE);
-            cstmt.registerOutParameter(11, Types.INTEGER);
-            cstmt.setInt(12, filter.page.PAGNUM);
-            cstmt.setInt(13, filter.page.PAGROW);
-            cstmt.setInt(14, filter.page.TOTPAG);
-            cstmt.setInt(15, filter.page.TOTROW);
+            cstmt.setString(7, filter.SPNR);
+            cstmt.setInt(8, filter.DIFFDAYS);
+            cstmt.setString(9, filter.RQUERY);
+            cstmt.setString(10, filter.TQUERY);
+            cstmt.setString(11, filter.TTABLE);
+            cstmt.registerOutParameter(12, Types.INTEGER);
+            cstmt.setInt(13, filter.page.PAGNUM);
+            cstmt.setInt(14, filter.page.PAGROW);
+            cstmt.setInt(15, filter.page.TOTPAG);
+            cstmt.setInt(16, filter.page.TOTROW);
             cstmt.execute();
 
             rst = cstmt.getResultSet();
-            lngQTYTKT = cstmt.getInt(11);
-            filter.page.PAGNUM = cstmt.getInt(12);
-            filter.page.PAGROW = cstmt.getInt(13);
-            filter.page.TOTPAG = cstmt.getInt(14);
-            filter.page.TOTROW = cstmt.getInt(15);
+            lngQTYTKT = cstmt.getInt(12);
+            filter.page.PAGNUM = cstmt.getInt(13);
+            filter.page.PAGROW = cstmt.getInt(14);
+            filter.page.TOTPAG = cstmt.getInt(15);
+            filter.page.TOTROW = cstmt.getInt(16);
 
             while (rst.next()) {
 
-                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100_F2_V2(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100_F2_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
                 Connection cnx2 = null;
                 try {
@@ -1302,10 +1306,11 @@ public class ManualConciliationDAO {
                     cstmt2.setString(7, rst.getString("SCARDN_101"));
                     cstmt2.setString(8, rst.getString("SAUTHOC_101"));
                     cstmt2.setString(9, rst.getString("SAGENT_101"));
-                    cstmt2.setInt(10, filter.DIFFDAYS);
-                    cstmt2.setString(11, filter.RQUERY.trim());
-                    cstmt2.setString(12, filter.TQUERY.trim());
-                    cstmt2.setString(13, filter.TTABLE.trim());
+                    cstmt2.setString(10, rst.getString("FLAG"));
+                    cstmt2.setInt(11, filter.DIFFDAYS);
+                    cstmt2.setString(12, filter.RQUERY.trim());
+                    cstmt2.setString(13, filter.TQUERY.trim());
+                    cstmt2.setString(14, filter.TTABLE.trim());
 
                     cstmt2.execute();
 
@@ -1405,7 +1410,7 @@ public class ManualConciliationDAO {
         ResultSet rst = null;
         ResultSet rst2 = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF101_F2_EX_V2(?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF101_F2_EX_V1(?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1418,10 +1423,11 @@ public class ManualConciliationDAO {
             cstmt.setString(4, filter.strSQL.trim());
             cstmt.setString(5, filter.SCOUNTRY);
             cstmt.setString(6, filter.COREP);
-            cstmt.setInt(7, filter.DIFFDAYS);
-            cstmt.setString(8, filter.RQUERY);
-            cstmt.setString(9, filter.TQUERY);
-            cstmt.setString(10, filter.TTABLE);
+            cstmt.setString(7, filter.SPNR);
+            cstmt.setInt(8, filter.DIFFDAYS);
+            cstmt.setString(9, filter.RQUERY);
+            cstmt.setString(10, filter.TQUERY);
+            cstmt.setString(11, filter.TTABLE);
 
             cstmt.execute();
 
@@ -1429,7 +1435,7 @@ public class ManualConciliationDAO {
 
             while (rst.next()) {
 
-                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100_F2_V2(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100_F2_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
                 Connection cnx2 = null;
                 try {
@@ -1445,10 +1451,11 @@ public class ManualConciliationDAO {
                     cstmt2.setString(7, rst.getString("SCARDN_101"));
                     cstmt2.setString(8, rst.getString("SAUTHOC_101"));
                     cstmt2.setString(9, rst.getString("SAGENT_101"));
-                    cstmt2.setInt(10, filter.DIFFDAYS);
-                    cstmt2.setString(11, filter.RQUERY.trim());
-                    cstmt2.setString(12, filter.TQUERY.trim());
-                    cstmt2.setString(13, filter.TTABLE.trim());
+                    cstmt2.setString(10, rst.getString("FLAG"));
+                    cstmt2.setInt(11, filter.DIFFDAYS);
+                    cstmt2.setString(12, filter.RQUERY.trim());
+                    cstmt2.setString(13, filter.TQUERY.trim());
+                    cstmt2.setString(14, filter.TTABLE.trim());
 
                     cstmt2.execute();
 

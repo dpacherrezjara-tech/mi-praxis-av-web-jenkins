@@ -1944,40 +1944,59 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Filters', {
 
                                         {xtype: 'tbspacer', width: 10},
                                         {
-                                            xtype: 'combo',
-                                            id: prototype.id + '-cmbDiffDays',
-                                            fieldLabel: 'Day diff',
-                                            margin: '10 0 0 0',
-                                            labelAlign: 'right',
-                                            queryMode: 'local',
-                                            triggerAction: 'all',
-                                            editable: false,
-                                            autoSelect: false,
-                                            enableKeyEvents: true,
-                                            caseSensitive: true,
-                                            valueField: 'value',
-                                            displayField: 'description',
-                                            emptyText: 'All',
-                                            labelWidth: 50,
-                                            width: 120,
-                                            anchor: '100%',
-                                            value: '0',
-                                            store: {
-                                                fields: ['value', 'description'],
-                                                data: [
-                                                    {value: '0', description: '0 days'},
-                                                    {value: '1', description: '1 day'},
-                                                    {value: '2', description: '2 days'},
-                                                    {value: '3', description: '3 days'},
-                                                    {value: '4', description: '4 days'},
-                                                    {value: '5', description: '5 days'},
-                                                    {value: '6', description: '6 days'},
-                                                    {value: '7', description: '7 days'}
-                                                ]
-                                            },
-                                            listeners: {
-                                                change: 'onRefreshToDays'
-                                            },
+                                            xtype: 'panel',
+                                            bodyStyle: 'background: transparent',
+                                            border: false,
+                                            margin: '0 0 0 0',
+                                            layout: 'vbox',
+                                            pack: 'center',
+                                            items: [
+                                                {
+                                                    xtype: 'combo',
+                                                    id: prototype.id + '-cmbDiffDays',
+                                                    fieldLabel: 'Day diff',
+                                                    margin: '10 0 0 0',
+                                                    labelAlign: 'right',
+                                                    queryMode: 'local',
+                                                    triggerAction: 'all',
+                                                    editable: false,
+                                                    autoSelect: false,
+                                                    enableKeyEvents: true,
+                                                    caseSensitive: true,
+                                                    valueField: 'value',
+                                                    displayField: 'description',
+                                                    emptyText: 'All',
+                                                    labelWidth: 50,
+                                                    width: 120,
+                                                    anchor: '100%',
+                                                    value: '0',
+                                                    store: {
+                                                        fields: ['value', 'description'],
+                                                        data: [
+                                                            {value: '0', description: '0 days'},
+                                                            {value: '1', description: '1 day'},
+                                                            {value: '2', description: '2 days'},
+                                                            {value: '3', description: '3 days'},
+                                                            {value: '4', description: '4 days'},
+                                                            {value: '5', description: '5 days'},
+                                                            {value: '6', description: '6 days'},
+                                                            {value: '7', description: '7 days'}
+                                                        ]
+                                                    },
+                                                    listeners: {
+                                                        change: 'onRefreshToDays'
+                                                    },
+                                                },
+                                                {
+                                                    xtype: 'checkboxfield',
+                                                    margin: '5 0 0 5',
+                                                    id: prototype.id + '-chkPNR',
+                                                    boxLabel: '<b>PNR</b>',
+                                                    checked: false,
+                                                    hidden: false,
+                                                    width: 50,
+                                                },
+                                            ]
                                         },
                                     ]
                                 },

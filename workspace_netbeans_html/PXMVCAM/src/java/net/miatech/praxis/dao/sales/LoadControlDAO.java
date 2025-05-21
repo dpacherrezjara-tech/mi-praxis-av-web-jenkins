@@ -54,8 +54,7 @@ public class LoadControlDAO {
             cstmt01.registerOutParameter(10, Types.INTEGER);
             cstmt01.registerOutParameter(11, Types.INTEGER);
             cstmt01.registerOutParameter(12, Types.INTEGER);
-            
-            //cstmt01.setString(1, filter.IN_A1698CCUST);
+//          cstmt01.setString(1, filter.IN_A1698CCUST);
             cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.IN_A1698SOURC);
             cstmt01.setString(3, filter.IN_A1698PAIS);
