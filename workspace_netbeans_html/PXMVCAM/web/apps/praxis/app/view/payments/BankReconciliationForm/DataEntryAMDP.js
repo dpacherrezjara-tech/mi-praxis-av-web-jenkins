@@ -1785,6 +1785,41 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
 
                                                 },
                                                 {xtype: 'tbspacer', width: 20},
+                                                 {
+                                                    xtype: 'label',
+                                                    text: 'Customer',
+                                                    textAlign: 'center',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    margin: '4 4 4 4',
+                                                    width: 80
+                                                },
+                                                {xtype: 'tbspacer', width: 5},
+                                                {
+                                                    xtype: 'combo',
+                                                    id: prototype.id + '-cmbCLIENT',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    fieldStyle: 'text-align:left;',
+                                                    valueField: 'CODE',
+                                                    displayField: 'NAME',
+                                                    queryMode: 'local',
+                                                    triggerAction: 'all',
+                                                    filterPickList: true,
+                                                    width: 100,
+                                                    editable: false,
+                                                    value: '134',
+                                                    forceSelection: true,
+                                                    // multiSelect eliminado
+                                                    store: Ext.create('Ext.data.Store', {
+                                                        fields: ['CODE', 'NAME'],
+                                                        data: [
+                                                            { CODE: '134', NAME: 'AVIANCA' },
+                                                            { CODE: '202', NAME: 'TACA' },
+                                                            { CODE: '133', NAME: 'LACSA' },
+                                                            { CODE: '547', NAME: 'AEROGAL' }
+                                                        ]
+                                                    })
+                                                },
+                                                {xtype: 'tbspacer', width: 20},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Consol.',
