@@ -5832,24 +5832,25 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_MDP_SCAN_2(?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_MDP_SCAN_V3(?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.setString(1, filter.CCUSTCC.trim());
+            cstmt.setString(1, filter.CCUST.trim());
             cstmt.setString(2, filter.TICKET.trim());
             cstmt.setString(3, filter.CARD1.trim());
             cstmt.setString(4, filter.CARD2.trim());
             cstmt.setString(5, filter.SAUTHOC.trim());
-            cstmt.setString(6, filter.SDATE.trim());
-            cstmt.setString(7, filter.SPNR.trim());
-            cstmt.setString(8, filter.SAGENT.trim());
-            cstmt.setString(9, filter.SCURRENCY.trim());
-            cstmt.setString(10, filter.SCARCOD.trim());
-            cstmt.setString(11, filter.SCONSOL.trim());
+            cstmt.setString(6, filter.SDATE_MIN.trim());
+            cstmt.setString(7, filter.SDATE_MAX.trim());
+            cstmt.setString(8, filter.SPNR.trim());
+            cstmt.setString(9, filter.SAGENT.trim());
+            cstmt.setString(10, filter.SCURRENCY.trim());
+            cstmt.setString(11, filter.SCARCOD.trim());
+            cstmt.setString(12, filter.SCONSOL.trim());
 
             cstmt.execute();
 
@@ -5944,7 +5945,7 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_MDP_SCAN_PENDING_1(?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_MDP_SCAN_PENDING(?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {

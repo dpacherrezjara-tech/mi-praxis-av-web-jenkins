@@ -45,6 +45,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                 } else
                     global.Msg({msg: res.sesion});
             }
+            
         });
         
         this.mostrarData();
@@ -89,11 +90,28 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.bean_scan.CARD1 = Ext.getCmp(prototype.id + '-txtCard11').getValue();
         this.bean_scan.CARD2 = Ext.getCmp(prototype.id + '-txtCard22').getValue();
         this.bean_scan.SAUTHOC = Ext.getCmp(prototype.id + '-txtApproval').getValue();
-        this.bean_scan.SDATE = (Ext.getCmp(prototype.id + '-txtFromDate').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(this.getValue("txtFromDate"), 'Ymd');
+        let fechaBaseRaw = Ext.getCmp(prototype.id + '-txtFromDate').getValue() || fecha_a_validar;
+
+        if (fechaBaseRaw) {
+            // Asegúrate de que sea tipo Date
+            let fechaBase = Ext.isDate(fechaBaseRaw) ? fechaBaseRaw : Ext.Date.parse(fechaBaseRaw, 'Y-m-d');
+
+            if (fechaBase) {
+                this.bean_scan.SDATE = Ext.Date.format(fechaBase, 'Ymd');
+                let dateMin = Ext.Date.add(fechaBase, Ext.Date.DAY, -3);
+                let dateMax = Ext.Date.add(fechaBase, Ext.Date.DAY, 3);
+                this.bean_scan.SDATE_MIN = Ext.Date.format(dateMin, 'Ymd');
+                this.bean_scan.SDATE_MAX = Ext.Date.format(dateMax, 'Ymd');
+            } else {
+                console.warn('La fecha ingresada no es válida.');
+            }
+        }
         this.bean_scan.SPNR = Ext.getCmp(prototype.id + '-txtScanPNR').getValue();
         this.bean_scan.SAGENT = Ext.getCmp(prototype.id + '-txtScanSAGENT').getValue();
         this.bean_scan.SCURRENCY = this.bean.SCURRENCY;
         this.bean_scan.CCUSTCC = Ext.getCmp(prototype.id + '-de-txtCCUSTCC').getValue();
+        console.log("esto es el CCUST",this.bean_scan.CCUSTCC)
+        this.bean_scan.CCUST = Ext.getCmp(prototype.id + '-cmbCLIENT').getValue();
 //        this.bean_scan.SCARCOD = Ext.getCmp(prototype.id + '-cmbSCARCOD').getValue();
         this.bean_scan.SCARCOD = this.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbSCARCOD'));
         this.bean_scan.SCONSOL = Ext.getCmp(prototype.id + '-txtSCONSOL').getValue();
@@ -106,7 +124,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                 !this.bean_scan.SPNR &&
                 !this.bean_scan.SAGENT &&
                 !this.bean_scan.SCARCOD &&
-                !this.bean_scan.SCONSOL
+                !this.bean_scan.SCONSOL 
                 ) {
             console.log("Todos los campos son vacíos. No se realizará la solicitud Ajax.");
             global.Msg({msg: 'Fields to Scan must be filled out'});
@@ -160,7 +178,6 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             success: function (response, opts) {
                 Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
                 var res = Ext.JSON.decode(response.responseText);
-                console.log(res);
                 if (res.success) {
 
                     let ticketsOcupados = [];
@@ -342,6 +359,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             params: {beanString: JSON.stringify(this.dataObtain)},
             success: function (response, options) {
                 var res = Ext.JSON.decode(response.responseText);
+                console.log(window.data[1].CCUST,"prueba"); 
+                console.log(window.data[1],"ss")
+                console.log(window);
+                console.log(res,"Obteniendores ");
                 if (res.success) {
                     me.lstCard = res.lstCard;
                     Ext.getCmp(prototype.id + '-cmbSCARCOD').bindStore(
