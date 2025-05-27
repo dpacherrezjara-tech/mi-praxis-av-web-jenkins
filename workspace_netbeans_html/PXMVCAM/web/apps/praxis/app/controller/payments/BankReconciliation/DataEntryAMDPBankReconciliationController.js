@@ -29,24 +29,24 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
     },
     afterRender: function () {
         
-        Ext.Ajax.request({
-            url: prototype.urlMaster + '/obtainData',
-            method: 'POST',
-            timeout: 60000000,
-            params: {beanString: JSON.stringify({USERPERMIS: 2, NPROG: sessionStorage.getItem('nprog')})},
-            success: function (response, options) {
-                var res = Ext.JSON.decode(response.responseText);
-                if (res.success) {
-                    if (res.userPermis.PERMM === 'Y') {
-                        Ext.getCmp(prototype.id + '-btn-reverse').show();
-                    } else {
-                        Ext.getCmp(prototype.id + '-btn-reverse').hide();
-                    }
-                } else
-                    global.Msg({msg: res.sesion});
-            }
-            
-        });
+//        Ext.Ajax.request({
+//            url: prototype.urlMaster + '/obtainData',
+//            method: 'POST',
+//            timeout: 60000000,
+//            params: {beanString: JSON.stringify({USERPERMIS: 2, NPROG: sessionStorage.getItem('nprog')})},
+//            success: function (response, options) {
+//                var res = Ext.JSON.decode(response.responseText);
+//                if (res.success) {
+//                    if (res.userPermis.PERMM === 'Y') {
+//                        Ext.getCmp(prototype.id + '-btn-reverse').show();
+//                    } else {
+//                        Ext.getCmp(prototype.id + '-btn-reverse').hide();
+//                    }
+//                } else
+//                    global.Msg({msg: res.sesion});
+//            }
+//            
+//        });
         
         this.mostrarData();
         Ext.getCmp(prototype.id + '-btn-save').hide();
@@ -359,9 +359,6 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             params: {beanString: JSON.stringify(this.dataObtain)},
             success: function (response, options) {
                 var res = Ext.JSON.decode(response.responseText);
-                console.log(window.data[1].CCUST,"prueba"); 
-                console.log(window.data[1],"ss")
-                console.log(window);
                 console.log(res,"Obteniendores ");
                 if (res.success) {
                     me.lstCard = res.lstCard;
