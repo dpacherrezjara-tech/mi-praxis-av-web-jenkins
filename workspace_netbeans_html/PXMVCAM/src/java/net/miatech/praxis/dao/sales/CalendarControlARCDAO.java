@@ -53,7 +53,7 @@ public class CalendarControlARCDAO {
         CallableStatement cstmt01 = null;
         ResultSet rs01 = null;
 
-        String SQLCLL01 = "{CALL PX036S01A1527(?,?)}";
+        String SQLCLL01 = "{CALL PRAXIS.SQPCA0001(?,?)}";
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
