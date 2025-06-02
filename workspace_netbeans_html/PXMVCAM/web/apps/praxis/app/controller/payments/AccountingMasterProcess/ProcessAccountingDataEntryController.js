@@ -62,32 +62,34 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.ProcessAccoun
     onProcessClick: function (btn) {
         let params = this.formatParameters();
         console.log('Execute Params: ', params);
+        
+        if(params.IN_TIPOCON!=='ADJ'){
+            //* Accounting Date can't be greater than  from and to
+            // IN_FCONT > IN_PRDAF
+            // IN_FCONT > IN_PRDAT
+            const {IN_FCONT, IN_PRDAF, IN_PRDAT} = params;
 
-        //* Accounting Date can't be greater than  from and to
-        // IN_FCONT > IN_PRDAF
-        // IN_FCONT > IN_PRDAT
-        const {IN_FCONT, IN_PRDAF, IN_PRDAT} = params;
+            let date_IN_FCONT = new Date(IN_FCONT.substring(0, 4), IN_FCONT.substring(4, 6) - 1, IN_FCONT.substring(6, 8));
+            let date_IN_PRDAF = new Date(IN_PRDAF.substring(0, 4), IN_PRDAF.substring(4, 6) - 1, IN_PRDAF.substring(6, 8));
+            let date_IN_PRDAT = new Date(IN_PRDAT.substring(0, 4), IN_PRDAT.substring(4, 6) - 1, IN_PRDAT.substring(6, 8));
 
-        let date_IN_FCONT = new Date(IN_FCONT.substring(0, 4), IN_FCONT.substring(4, 6) - 1, IN_FCONT.substring(6, 8));
-        let date_IN_PRDAF = new Date(IN_PRDAF.substring(0, 4), IN_PRDAF.substring(4, 6) - 1, IN_PRDAF.substring(6, 8));
-        let date_IN_PRDAT = new Date(IN_PRDAT.substring(0, 4), IN_PRDAT.substring(4, 6) - 1, IN_PRDAT.substring(6, 8));
+            // console.log({date_IN_FCONT, date_IN_PRDAF, date_IN_PRDAT});        
 
-        // console.log({date_IN_FCONT, date_IN_PRDAF, date_IN_PRDAT});        
-
-        if (date_IN_FCONT < date_IN_PRDAF || date_IN_FCONT < date_IN_PRDAT) {
-            Ext.Msg.show(
-                    {
-                        title: '.:PRAXIS:.',
-                        msg: "The field Accounting Date can't be greater than From and To",
-                        buttons: Ext.MessageBox.OK,
-                        scope: this,
-                        animateTarget: btn,
-                        icon: Ext.MessageBox.WARNING,
-                        modal: true
-                    });
-            return;
+            if (date_IN_FCONT < date_IN_PRDAF || date_IN_FCONT < date_IN_PRDAT) {
+                Ext.Msg.show(
+                        {
+                            title: '.:PRAXIS:.',
+                            msg: "The field Accounting Date can't be greater than From and To",
+                            buttons: Ext.MessageBox.OK,
+                            scope: this,
+                            animateTarget: btn,
+                            icon: Ext.MessageBox.WARNING,
+                            modal: true
+                        });
+                return;
+            }
         }
-
+        
         Ext.Msg.show(
                 {
                     title: '.:PRAXIS:.',
