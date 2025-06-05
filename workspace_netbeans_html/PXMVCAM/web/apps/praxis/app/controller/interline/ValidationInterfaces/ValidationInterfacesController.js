@@ -558,7 +558,7 @@ Ext.define('Ext.Praxis.controller.interline.ValidationInterfaces.ValidationInter
     exportExcel: function() {
         console.log(this.boxActual,'this.boxActual')
         console.log(me.boxActual,'this.boxActual')
-        if (this.boxActual === '-boxMainData') {
+        if (this.boxActual === '-vskMain') {
             console.log('entre excel')
             me.goURLpost('excelAccountingInterfaces', this.searchParams.beanString, Ext.getCmp(prototype.id + '-gridData').config.columns.items);
         }
