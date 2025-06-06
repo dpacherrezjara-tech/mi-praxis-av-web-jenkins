@@ -29,8 +29,6 @@ Ext.define('Ext.Praxis.controller.main.MainController', {
         console.log('-----------  afterRender ----------');
         var URLactual = window.location;
         hash = URLactual.hash;
-        console.log('isDashboard hash: '+hash);
-        console.log('isDashboard: '+isDashboard);
 
         if (!isDashboard) {
             //this.toggleView(false);
@@ -69,7 +67,7 @@ Ext.define('Ext.Praxis.controller.main.MainController', {
             success: function(response) {
                 var mtype = response.MTYPE;
                 MTYPE = response.MTYPE;
-                console.log(mtype);
+//                console.log(mtype);
                 if (mtype !== 0) {
                     me.toggleView(false);
                     me.loadMenu();
@@ -116,11 +114,9 @@ Ext.define('Ext.Praxis.controller.main.MainController', {
                         lg(err);
                     },
                     success: function(response) {
-                        console.log('Result getMenu0');
 
                         try {
                             isDashboard = true;
-                            console.log('isDashboard_2 hash: '+hash);
                             if (isDashboard && hash.trim() === '') {
                                 me.toggleView(true);
                             } else {
@@ -155,12 +151,8 @@ Ext.define('Ext.Praxis.controller.main.MainController', {
 
                             $('.dashboardButton').on('click', function(e) {
                                 var menu = e.currentTarget;
-                                console.log("Clic en menu");
-                                console.log(menu);
                                 var nprog = menu.getAttribute('data-nprog').trim();
-                                console.log('set optionSelectDashboard');
                                 optionSelectDashboard = { nprog: nprog };
-                                console.log(optionSelectDashboard);
                                 if (nprog !== 'PX00PRAXIS') {
                                     var view = menu.getAttribute('data-view').trim();
 
@@ -328,7 +320,6 @@ Ext.define('Ext.Praxis.controller.main.MainController', {
             success: function(response) {
                 try {
                     data = response;
-                    console.log('Begin MENU 00');
                     $.each(data, function(x, y) {
                         if (y.DESC1.trim() !== 'Table Maintenance') {
                             if (y.SMENU === '000' && y.MENU !== '00') {
@@ -341,7 +332,6 @@ Ext.define('Ext.Praxis.controller.main.MainController', {
                             }
                         }
                     });
-                    console.log('End MENU 00');
                     // Cargar menu lateral
                     var menuLateral = $('#menuLateral')[0];
 
@@ -444,7 +434,7 @@ Ext.define('Ext.Praxis.controller.main.MainController', {
 
                     var m, c = modulos.length;
 
-                    console.log(c);
+//                    console.log(c);
                     for (m = 0; m < c; m++) {
                         htmlContent = '';
                         lista = [];

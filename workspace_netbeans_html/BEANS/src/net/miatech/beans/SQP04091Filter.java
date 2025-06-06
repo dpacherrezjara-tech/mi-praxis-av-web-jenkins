@@ -12,6 +12,8 @@ import net.miatech.praxis.A4022;
  * @author vhidalgo
  */
 public class SQP04091Filter extends A4022 {
+    public String IN_FECHA_FROM = "";
+    public String IN_FECHA_TO = "";
     public String IN_DATEFROM = "";
     public String IN_DATETO = "";
     public String IN_OPTION = "";    
@@ -31,8 +33,21 @@ public class SQP04091Filter extends A4022 {
     
     
     public String CODPRO = ""; 
+    public String CURRENCY = ""; 
     public String TDOC = ""; 
     public String VALDATE = ""; 
+    public String MONTH_NAME = ""; 
+    public String HOLIDAY_TACA = ""; 
+    public String HOLIDAY_WP_UK = ""; 
+    public String HOLIDAY_WP_BANCARD = ""; 
+    public String HOLIDAY_AMEX = ""; 
+    public String HOLIDAY_DISCOVER = ""; 
+    public String DATE_FROM = ""; 
+    public String NUMBER_WEAK = ""; 
+    public String NUMBERWEAK = ""; 
+    public String WEEK_START_DATE = ""; 
+    public String WEEK_END_DATE = ""; 
+    public String DAY_NUMBER_EKED = ""; 
     public String DAY_NAME = ""; 
     public String SDATE = ""; 
     public String SAGENT = ""; 
@@ -69,6 +84,122 @@ public class SQP04091Filter extends A4022 {
     public double VARIACION = 0;
     public double IMPORTE = 0;
     public double PORCENTAJE_VARIACION = 0;
+    
+    public double AMOUNT_WP_UK_CO = 0;
+    public double AMOUNT_BANCARD_CO = 0;
+    public double AMOUNT_AMEX_CO = 0;
+    public double AMOUNT_DISCOVER_CO = 0;
+    public double AMOUNT_WP_UK_SA = 0;
+    public double AMOUNT_BANCARD_SA = 0;
+    public double AMOUNT_AMEX_SA = 0;
+    public double AMOUNT_DISCOVER_SA = 0;
+    public double TOTAL_CO = 0;
+    public double TOTAL_SA = 0;
+    public double TOTAL_CO_AND_SA = 0;
+    
+    public double AVG_WP_UK_CO = 0;
+    public double AVG_BANCARD_CO = 0;
+    public double AVG_AMEX_CO = 0;
+    public double AVG_DISCOVER_CO = 0;
+    public double AVG_WP_UK_SA = 0;
+    public double AVG_BANCARD_SA = 0;
+    public double AVG_AMEX_SA = 0;
+    public double AVG_DISCOVER_SA = 0;
+    public double AVG_TOTAL_CO = 0;
+    public double AVG_TOTAL_SA = 0;
+    public double AVG_TOTAL_CO_SA = 0;
+    
+    public double VAR_WP_UK_CO = 0;
+    public double VAR_BANCARD_CO = 0;
+    public double VAR_AMEX_CO = 0;
+    public double VAR_DISCOVER_CO = 0;
+    
+    public double VAR_WP_UK_SA = 0;
+    public double VAR_BANCARD_SA = 0;
+    public double VAR_AMEX_SA = 0;
+    public double VAR_DISCOVER_SA = 0;
+    
+    public double VAR_TOTAL_CO = 0;
+    public double VAR_TOTAL_SA = 0;
+    public double VAR_TOTAL_CO_SA = 0;
+    
+    
+    
+    public double TOTAL_AMOUNT_WP_UK_CO = 0;
+    public double TOTAL_AMOUNT_BANCARD_CO = 0;
+    public double TOTAL_AMOUNT_AMEX_CO = 0;
+    public double TOTAL_AMOUNT_DISCOVER_CO = 0;
+    
+    public double TOTAL_AMOUNT_WP_UK_SA = 0;
+    public double TOTAL_AMOUNT_BANCARD_SA = 0;
+    public double TOTAL_AMOUNT_AMEX_SA = 0;
+    public double TOTAL_AMOUNT_DISCOVER_SA = 0;
+    
+    public double TOTAL_TOTAL_CO = 0;
+    public double TOTAL_TOTAL_SA = 0;
+    public double TOTAL_TOTAL_CO_AND_SA = 0;
+    
+    public double TOTAL_AVG_WP_UK_CO = 0;
+    public double TOTAL_AVG_BANCARD_CO = 0;
+    public double TOTAL_AVG_AMEX_CO = 0;
+    public double TOTAL_AVG_DISCOVER_CO = 0;
+    
+    public double TOTAL_AVG_WP_UK_SA = 0;
+    public double TOTAL_AVG_BANCARD_SA = 0;
+    public double TOTAL_AVG_AMEX_SA = 0;
+    public double TOTAL_AVG_DISCOVER_SA = 0;
+    
+    public double TOTAL_AVG_TOTAL_CO = 0;
+    public double TOTAL_AVG_TOTAL_SA = 0;
+    public double TOTAL_AVG_TOTAL_CO_SA = 0;
+    
+    public double TOTAL_VAR_WP_UK_CO = 0;
+    public double TOTAL_VAR_BANCARD_CO = 0;
+    public double TOTAL_VAR_AMEX_CO = 0;
+    public double TOTAL_VAR_DISCOVER_CO = 0;
+    
+    public double TOTAL_VAR_WP_UK_SA = 0;
+    public double TOTAL_VAR_BANCARD_SA = 0;
+    public double TOTAL_VAR_AMEX_SA = 0;
+    public double TOTAL_VAR_DISCOVER_SA = 0;
+    
+    public double TOTAL_VAR_TOTAL_CO = 0;
+    public double TOTAL_VAR_TOTAL_SA = 0;
+    public double TOTAL_VAR_TOTAL_CO_SA = 0;
+    
+    public double TOTAL_AMOUNT_TACA = 0;
+    public double TOTAL_AMOUNT_CRC = 0;
+    public double TOTAL_TOTAL_TACA = 0;
+    public double TOTAL_TOTAL_CRC = 0;
+    public double TOTAL_TOTAL_TACA_CRC = 0;
+    public double TOTAL_AVG_TACA = 0;
+    public double TOTAL_AVG_CRC = 0;
+    public double TOTAL_AVG_TOTAL_TACA = 0;
+    public double TOTAL_AVG_TOTAL_CRC = 0;
+    public double TOTAL_AVG_TOTAL_TACA_CRC = 0;
+    public double TOTAL_VAR_TACA = 0;
+    public double TOTAL_VAR_CRC = 0;
+    public double TOTAL_VAR_TOTAL_TACA = 0;
+    public double TOTAL_VAR_TOTAL_CRC = 0;
+    public double TOTAL_VAR_TOTAL_TACA_CRC = 0;
+    
+    public double AMOUNT_TACA = 0;
+    public double AMOUNT_CRC = 0;
+    public double TOTAL_TACA = 0;
+    public double TOTAL_CRC = 0;
+    public double TOTAL_TACA_CRC = 0;
+    public double AVG_TACA = 0;
+    public double AVG_CRC = 0;
+    public double AVG_TOTAL_TACA = 0;
+    public double AVG_TOTAL_CRC = 0;
+    public double AVG_TOTAL_TACA_CRC = 0;
+    public double VAR_TACA = 0;
+    public double VAR_CRC = 0;
+    public double VAR_TOTAL_TACA = 0;
+    public double VAR_TOTAL_CRC = 0;
+    public double VAR_TOTAL_TACA_CRC = 0;
+    
+    
     
     public String IDCONT = "";
     public String INTERFACE = "";
