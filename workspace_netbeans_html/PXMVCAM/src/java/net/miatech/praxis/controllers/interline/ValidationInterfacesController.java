@@ -104,9 +104,9 @@ public class ValidationInterfacesController extends BaseController {
             filter.page.START = 0;
             filter.page.LIMIT = 0;
             int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
-            filter.page.PAGROW = 20;
+            filter.page.PAGROW = -1;
             start = (start != 0 ? start : 0);
-            filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;            
+            filter.page.PAGNUM = 1;            
             logic = new ValidationInterfacesLogic();
             logic.setSession((IServerSession) serverSession.getServerSession());
             listaData = logic.searchAccountingInterfaces(filter);
