@@ -8,7 +8,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryReport', {
     title: 'Ticket Report - Data Entry Report Form',
     header: true,
     height: 200,
-    width: 1030,
+    width: 1350,
     resizable: false,
     layout: 'fit',
     modal: true,
@@ -20,7 +20,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryReport', {
         {
             xtype: 'form',
             height: 200,
-            width: 1030,
+            width: 1350,
             scrollable: true,
             defaults: {
                 style: 'margin: 3px;',
@@ -41,7 +41,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryReport', {
                             border: false,
                             bodyStyle: 'background:white;',
                             margin: '0 20 3 10',
-                            width: 1020,
+                            width: 1350,
                             defaults: {
                                 anchor: '100%'
                             },
@@ -52,7 +52,7 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryReport', {
                                     border: false,
                                     bodyStyle: 'background:white;',
                                     margin: '40 0 0 0',
-                                    width: 1010,
+                                    width: 1350,
                                     defaults: {
                                         anchor: '100%'
                                     },
@@ -229,24 +229,61 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryReport', {
                                             width: 160,
                                             anchor: '100%'
                                         },
-                                        {xtype: 'tbspacer', width: 20},
+                                        {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'combo',
                                             id: prototype.id + '-cmbSCURRENCY',
                                             fieldLabel: 'Currency',
-                                            labelAlign: 'right',
                                             queryMode: 'local',
-                                            triggerAction: 'all',
-                                            editable: false,
-                                            autoSelect: false,
-                                            enableKeyEvents: true,
-                                            caseSensitive: true,
-                                            valueField: 'code',
-                                            displayField: 'name',
-                                            emptyText: 'All',
+                                            allowBlank: false,
+                                            forceSelection: true,
+                                            selectOnFocus: true,
+                                            caseSensitive: false,
+                                            autoSelect: true,
                                             labelWidth: 60,
-                                            width: 160,
-                                            anchor: '100%'
+                                            width: 200,
+                                            typeAhead: true,
+                                            valueField: 'A005KEY',
+                                            displayField: 'A005KEY2',
+                                            listConfig: {maxHeight: 111},
+                                            enableKeyEvents: true,
+                                            triggerAction: 'all',
+                                            listeners: {
+                                                blur: function (combo) {
+                                                    if (!combo.getValue()) {
+                                                        combo.setValue('');
+                                                    }
+                                                },
+                                            }
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbSCOUNTRY',
+                                            fieldLabel: 'Country',
+                                            
+                                            queryMode: 'local',
+                                            allowBlank: false,
+                                            forceSelection: true,
+                                            selectOnFocus: true,
+                                            caseSensitive: false,
+                                            autoSelect: true,
+                                            labelWidth: 60,
+                                            width: 250,
+                                            typeAhead: true,
+                                            
+                                            valueField: 'A006PAIS',
+                                            displayField: 'A006NOMBRE',
+                                            listConfig: {maxHeight: 200},
+                                            enableKeyEvents: true,
+                                            triggerAction: 'all',
+                                            listeners: {
+                                                blur: function (combo) {
+                                                    if (!combo.getValue()) {
+                                                        combo.setValue('');
+                                                    }
+                                                },
+                                            }
                                         },
                                         {xtype: 'tbspacer', width: 30},
                                         {

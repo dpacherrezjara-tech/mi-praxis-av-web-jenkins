@@ -51,6 +51,41 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryReportSa
         Ext.getCmp(prototype.id + '-cmbDateToDayReport').bindStore(win.getStoreDays(false));
         Ext.getCmp(prototype.id + '-cmbDateFromDayReport').setValue("01");
         Ext.getCmp(prototype.id + '-cmbDateToDayReport').setValue("01");
+        
+        
+        Ext.Ajax.request({
+            url: prototype.urlMaster + '/obtainData',
+            method: 'POST',
+            timeout: 60000000,
+            params: {
+                beanString: JSON.stringify({
+                    COUNTRY: 2,
+                    CURRENCY: 2,
+                })
+            },
+            success: function (response, options) {
+                var res = Ext.JSON.decode(response.responseText);
+                if (res.success) {
+                    console.log(res,'GA')
+                    Ext.getCmp(prototype.id + '-cmbSCOUNTRY').bindStore(
+                        Ext.create('Ext.data.Store', {data: res.lstCountry, autoLoad: true})
+                    );
+            
+                    Ext.getCmp(prototype.id + '-cmbSCURRENCY').bindStore(
+                        Ext.create('Ext.data.Store', {data: res.lstCurrencies, autoLoad: true})
+                    );
+                    
+                    win.setValue('cmbSCOUNTRY', '');
+                    win.setValue('cmbSCURRENCY', '');
+                } else
+//                    global.Msg({msg: res.sesion});
+                    global.clear();
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+            }
+        });
+        
 
         Ext.getCmp(prototype.id + '-cmbTDOCRe').bindStore(Ext.create('Ext.data.ArrayStore',
                 {
@@ -95,6 +130,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryReportSa
         me.bean.IN_TDOC = Ext.getCmp(prototype.id + '-cmbTDOCRe').getValue();
         me.bean.IN_STAT = Ext.getCmp(prototype.id + '-cmbSTREP').getValue();
         me.bean.IN_SCURRENCY = Ext.getCmp(prototype.id + '-cmbSCURRENCY').getValue();
+        me.bean.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbSCOUNTRY').getValue();
 
         if (win.getValue('chkTPS')) {
             me.bean.IN_TP = 'Y';
@@ -107,6 +143,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryReportSa
             beanString: beanString,
             bean: me.bean
         };
+        console.log(searchParams,'searchParams')
     },
     imgExcel: function (obj, e) {
 
