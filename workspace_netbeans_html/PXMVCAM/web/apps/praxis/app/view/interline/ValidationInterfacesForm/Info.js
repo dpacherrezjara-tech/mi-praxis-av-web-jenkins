@@ -69,6 +69,7 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Info', {
                                                 text: 'ID Cont',
                                                 width: 90,
                                                 dataIndex: 'IDCONT',
+                                                hidden: true,
                                                 align: 'center',
                                                 style: 'padding: 6px;',  // Agregar padding al encabezado de la columna
                                                 renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {

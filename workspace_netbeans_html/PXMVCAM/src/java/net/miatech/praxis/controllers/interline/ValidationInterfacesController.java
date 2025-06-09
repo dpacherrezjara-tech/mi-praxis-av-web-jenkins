@@ -164,23 +164,23 @@ public class ValidationInterfacesController extends BaseController {
                     Cell CH1_13 = row1.createCell(13);
                     Cell CH1_14 = row1.createCell(14);
 
-                    CH1_0.setCellValue("IDCONT");
-                    CH1_1.setCellValue("INTERFACE");
-                    CH1_2.setCellValue("BANDOC");
-                    CH1_3.setCellValue("PROCESADOR");
-                    CH1_4.setCellValue("REFERENCIA");
-                    CH1_5.setCellValue("MONEDA_LIQ");
-                    CH1_6.setCellValue("VALOR_LIQ");
-                    CH1_7.setCellValue("COMISION");
-                    CH1_8.setCellValue("RTEFUE");
-                    CH1_9.setCellValue("RTEIVA");
-                    CH1_10.setCellValue("RTEICA");
-                    CH1_11.setCellValue("NETO");
-                    CH1_12.setCellValue("MONEDAPAGO");
-                    CH1_13.setCellValue("LIQ_IMPORTEPAG");
-                    CH1_14.setCellValue("TAX_IMPORTEPAG");
+//                    CH1_0.setCellValue("IDCONT");
+                    CH1_0.setCellValue("INTERFACE");
+                    CH1_1.setCellValue("BANDOC");
+                    CH1_2.setCellValue("PROCESADOR");
+                    CH1_3.setCellValue("REFERENCIA");
+                    CH1_4.setCellValue("MONEDA_LIQ");
+                    CH1_5.setCellValue("VALOR_LIQ");
+                    CH1_6.setCellValue("COMISION");
+                    CH1_7.setCellValue("RTEFUE");
+                    CH1_8.setCellValue("RTEIVA");
+                    CH1_9.setCellValue("RTEICA");
+                    CH1_10.setCellValue("NETO");
+                    CH1_11.setCellValue("MONEDAPAGO");
+                    CH1_12.setCellValue("LIQ_IMPORTEPAG");
+                    CH1_13.setCellValue("TAX_IMPORTEPAG");
 
-                    CH1_0.setCellStyle(headerStyle);
+//                    CH1_0.setCellStyle(headerStyle);
                     CH1_1.setCellStyle(headerStyle);
                     CH1_2.setCellStyle(headerStyle);
                     CH1_3.setCellStyle(headerStyle);
@@ -194,7 +194,7 @@ public class ValidationInterfacesController extends BaseController {
                     CH1_11.setCellStyle(headerStyle);
                     CH1_12.setCellStyle(headerStyle);
                     CH1_13.setCellStyle(headerStyle);
-                    CH1_14.setCellStyle(headerStyle);
+//                    CH1_14.setCellStyle(headerStyle);
 
                     ++vj;
 
@@ -214,23 +214,23 @@ public class ValidationInterfacesController extends BaseController {
                         Cell rcell11 = row1.createCell(11);
                         Cell rcell12 = row1.createCell(12);
                         Cell rcell13 = row1.createCell(13);
-                        Cell rcell14 = row1.createCell(14);
+//                        Cell rcell14 = row1.createCell(14);
 
-                        rcell0.setCellValue(listaData.get(vi).IDCONT);
-                        rcell1.setCellValue(listaData.get(vi).INTERFACE);
-                        rcell2.setCellValue(listaData.get(vi).BANDOC);
-                        rcell3.setCellValue(listaData.get(vi).PROCESADOR);
-                        rcell4.setCellValue(listaData.get(vi).REFERENCIA);
-                        rcell5.setCellValue(listaData.get(vi).MONEDA_LIQ);
-                        rcell6.setCellValue(listaData.get(vi).VALOR_LIQ);
-                        rcell7.setCellValue(listaData.get(vi).COMISION);
-                        rcell8.setCellValue(listaData.get(vi).RTEFUE);
-                        rcell9.setCellValue(listaData.get(vi).RTEIVA);
-                        rcell10.setCellValue(listaData.get(vi).RTEICA);
-                        rcell11.setCellValue(listaData.get(vi).NETO);
-                        rcell12.setCellValue(listaData.get(vi).MONEDA_PAGO);
-                        rcell13.setCellValue(listaData.get(vi).LIQ_IMPORTE_PAG);
-                        rcell14.setCellValue(listaData.get(vi).TAX_IMPORTE_PAG);
+//                        rcell0.setCellValue(listaData.get(vi).IDCONT);
+                        rcell0.setCellValue(listaData.get(vi).INTERFACE);
+                        rcell1.setCellValue(listaData.get(vi).BANDOC);
+                        rcell2.setCellValue(listaData.get(vi).PROCESADOR);
+                        rcell3.setCellValue(listaData.get(vi).REFERENCIA);
+                        rcell4.setCellValue(listaData.get(vi).MONEDA_LIQ);
+                        rcell5.setCellValue(listaData.get(vi).VALOR_LIQ);
+                        rcell6.setCellValue(listaData.get(vi).COMISION);
+                        rcell7.setCellValue(listaData.get(vi).RTEFUE);
+                        rcell8.setCellValue(listaData.get(vi).RTEIVA);
+                        rcell9.setCellValue(listaData.get(vi).RTEICA);
+                        rcell10.setCellValue(listaData.get(vi).NETO);
+                        rcell11.setCellValue(listaData.get(vi).MONEDA_PAGO);
+                        rcell12.setCellValue(listaData.get(vi).LIQ_IMPORTE_PAG);
+                        rcell13.setCellValue(listaData.get(vi).TAX_IMPORTE_PAG);
                         iter.next();
                         ++vi;
                         ++vj;
@@ -250,7 +250,7 @@ public class ValidationInterfacesController extends BaseController {
                     sheet.autoSizeColumn(11, true);
                     sheet.autoSizeColumn(12, true);
                     sheet.autoSizeColumn(13, true);
-                    sheet.autoSizeColumn(14, true);
+//                    sheet.autoSizeColumn(14, true);
                     
                 //============================================
                 response.setContentType("application/vnd.openxml");
