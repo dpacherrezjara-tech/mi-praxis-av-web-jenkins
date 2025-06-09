@@ -5710,7 +5710,7 @@ public class LoadConciliationDAO {
         hmDescReglas.put("V", "By IATA/SDATE");
         hmDescReglas.put("T", "By WEB-OPER");
         
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".MPS097(?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS097(?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -5722,8 +5722,9 @@ public class LoadConciliationDAO {
             cstmt.setString(3, filter.IN_FECHA_TO);
             cstmt.setString(4, filter.IN_TDOC);
             cstmt.setString(5, filter.IN_SCURRENCY);
-            cstmt.setString(6, filter.IN_TP);
-            cstmt.setString(7, filter.IN_STAT);
+            cstmt.setString(6, filter.IN_SCOUNTRY);
+            cstmt.setString(7, filter.IN_TP);
+            cstmt.setString(8, filter.IN_STAT);
             cstmt.execute();
 
             rst = cstmt.getResultSet();
