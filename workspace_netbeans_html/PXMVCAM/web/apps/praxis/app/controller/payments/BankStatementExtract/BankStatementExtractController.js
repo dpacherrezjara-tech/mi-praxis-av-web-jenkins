@@ -152,14 +152,30 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
             let comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
             let comboFromDay = Ext.getCmp(prototype.id + '-cmbDateFromDay');
             let comboToDay = Ext.getCmp(prototype.id + '-cmbDateToDay');
-            
+
             comboFromYear.setValue('2024');
             comboToYear.setValue('2024');
             comboFromMonth.setValue('');
             comboToMonth.setValue('');
             comboFromDay.setValue('');
             comboToDay.setValue('');
+        } else {
+            var currentYear = new Date().getFullYear();
+            var comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYear');
+            var comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYear');
+            let comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonth');
+            let comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
+            let comboFromDay = Ext.getCmp(prototype.id + '-cmbDateFromDay');
+            let comboToDay = Ext.getCmp(prototype.id + '-cmbDateToDay');
+
+            comboFromYear.setValue(currentYear);
+            comboToYear.setValue(currentYear);
+            comboFromMonth.setValue('');
+            comboToMonth.setValue('');
+            comboFromDay.setValue('');
+            comboToDay.setValue('');
         }
+
         // -------------------------------------------------------------------------
 
         this.setFormatParameter();
