@@ -257,7 +257,12 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 align: 'center',
                                                                 style: 'padding: 6px; background: #7A88A2;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:right;";
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                     value = Ext.util.Format.number(value, '0,000.00');
                                                                     return '<b>' + value + '</b>';
@@ -276,7 +281,11 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 align: 'center',
                                                                 style: 'padding: 6px; background: #7A88A2;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:right;";
+                                                                    if (record.data.HOLIDAY_WP_BANCARD.trim() !== '-' && record.data.HOLIDAY_WP_BANCARD.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                     value = Ext.util.Format.number(value, '0,000.00');
                                                                     return '<b>' + value + '</b>';
@@ -295,7 +304,11 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 align: 'center',
                                                                 style: 'padding: 6px; background: #7A88A2;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:right;";
+                                                                    if (record.data.HOLIDAY_AMEX.trim() !== '-' && record.data.HOLIDAY_AMEX.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                     value = Ext.util.Format.number(value, '0,000.00');
                                                                     return '<b>' + value + '</b>';
@@ -314,7 +327,11 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 align: 'center',
                                                                 style: 'padding: 6px; background: #7A88A2;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:right;";
+                                                                    if (record.data.HOLIDAY_DISCOVER.trim() !== '-' && record.data.HOLIDAY_DISCOVER.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                     value = Ext.util.Format.number(value, '0,000.00');
                                                                     return '<b>' + value + '</b>';
@@ -1858,7 +1875,11 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 align: 'center',
                                                                 style: 'padding: 6px; background: #7A88A2;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:right;";
+                                                                    if (record.data.HOLIDAY_TACA !== '-') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                     value = Ext.util.Format.number(value, '0,000.00');
                                                                     return '<b>' + value + '</b>';
