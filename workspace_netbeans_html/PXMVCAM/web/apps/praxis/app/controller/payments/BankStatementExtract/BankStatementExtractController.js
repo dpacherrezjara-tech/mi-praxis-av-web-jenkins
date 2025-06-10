@@ -31,6 +31,9 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
         global.selectedChild(me.childs, prototype.id + me.panelActual);
         this.control({
             // -------------------Eventos Genericos --------------------
+            '#BankStatementExtractForm-rbChart_IA': {
+                change: this.rbChart_IA_change
+            },
             '#BankStatementExtractForm-xpanel': {
                 afterrender: this.xpanel_afterrender
             },
@@ -130,6 +133,44 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(year);
         Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue(month);
     },
+    rbChart_IA_change: function(radioGroup, newValue, oldValue) {
+        let rbValue = newValue.rb;
+        var comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYear');
+        var comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYear');
+        let comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonth');
+        let comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
+        let comboFromDay = Ext.getCmp(prototype.id + '-cmbDateFromDay');
+        let comboToDay = Ext.getCmp(prototype.id + '-cmbDateToDay');
+
+        if (rbValue === 'rbc1_IA') { // Historic
+            comboFromYear.setValue('2024');
+            comboToYear.setValue('2024');
+            comboFromMonth.setValue('');
+            comboToMonth.setValue('');
+            comboFromDay.setValue('');
+            comboToDay.setValue('');
+            comboFromMonth.setDisabled(true);
+            comboFromDay.setDisabled(true);
+            comboToMonth.setDisabled(true);
+            comboToDay.setDisabled(true);
+            comboFromYear.setDisabled(true);
+            comboToYear.setDisabled(true);
+        } else { // Current
+            var currentYear = new Date().getFullYear();
+            comboFromYear.setValue(currentYear);
+            comboToYear.setValue(currentYear);
+            comboFromMonth.setValue('');
+            comboToMonth.setValue('');
+            comboFromDay.setValue('');
+            comboToDay.setValue('');
+            comboFromMonth.setDisabled(false);
+            comboFromDay.setDisabled(false);
+            comboToMonth.setDisabled(false);
+            comboToDay.setDisabled(false);
+            comboFromYear.setDisabled(false);
+            comboToYear.setDisabled(false);
+        }
+    },
     btnSearch_click: function () {
         this.onChangeRadio();
     },
@@ -137,46 +178,13 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
         const valueTypeVisualization = Ext.getCmp(prototype.id + '-typeVisualization').getValue();
         const valuetypeReport = Ext.getCmp(prototype.id + '-typeReport').getValue();
 
-        // Obtención segura del valor seleccionado del radiogroup
         var rbValue = '';
         var radioGroup = Ext.getCmp(prototype.id + '-rbChart_IA');
         if (radioGroup && radioGroup.getValue() && radioGroup.getValue().rb) {
             rbValue = radioGroup.getValue().rb;
         }
 
-        // --------- NUEVO: Si seleccionan Historic, setea los años a 2024 ---------
-        if (rbValue === 'rbc1_IA') {
-            var comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYear');
-            var comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYear');
-            let comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonth');
-            let comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
-            let comboFromDay = Ext.getCmp(prototype.id + '-cmbDateFromDay');
-            let comboToDay = Ext.getCmp(prototype.id + '-cmbDateToDay');
-
-            comboFromYear.setValue('2024');
-            comboToYear.setValue('2024');
-            comboFromMonth.setValue('');
-            comboToMonth.setValue('');
-            comboFromDay.setValue('');
-            comboToDay.setValue('');
-        } else {
-            var currentYear = new Date().getFullYear();
-            var comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYear');
-            var comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYear');
-            let comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonth');
-            let comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
-            let comboFromDay = Ext.getCmp(prototype.id + '-cmbDateFromDay');
-            let comboToDay = Ext.getCmp(prototype.id + '-cmbDateToDay');
-
-            comboFromYear.setValue(currentYear);
-            comboToYear.setValue(currentYear);
-            comboFromMonth.setValue('');
-            comboToMonth.setValue('');
-            comboFromDay.setValue('');
-            comboToDay.setValue('');
-        }
-
-        // -------------------------------------------------------------------------
+        // NO CAMBIES NI LIMPIES COMBOS ACÁ
 
         this.setFormatParameter();
 
