@@ -128,11 +128,19 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
                             fieldLabel: 'File',
                             buttonText: 'Select File...',
                             allowBlank: false
-                        }]
+                        },
+                        {
+                            xtype: 'label',
+                            width: '100%',
+                            html: '<b style="color:#c82d2d;font-size:9px;text-align:right;display:block">Required Layout (*): REFER-VALDATE</b>'
+                        }
+                    ]
                 }],
+            buttonAlign: 'center',
             buttons: [{
                     text: 'Process Provision',
                     iconCls: 'prx-icon-reload',
+                    scale:'medium',
                     handler: function (btn) {
                         var form = btn.up('window').down('form').getForm();
                         if (form.isValid()) {
@@ -167,41 +175,41 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
         });
         winProvis.show();
     },
-    downloadResultProvis: function(result){
+    downloadResultProvis: function (result) {
         const me = this;
         Ext.Msg.show(
-        {
-            title: '.:PRAXIS:.',
-            msg: 'Download Result?',
-            buttons: Ext.MessageBox.YESNO,
-            scope: this,
-            icon: Ext.MessageBox.QUESTION,
-            modal: true,
-            fn: function (btn) {
-                if (btn === 'yes') {
-                    console.log(result);
-                    let data = JSON.parse(result.data);
-                    me.createExcelProvis(data);
-                }
-            }
-        });
+                {
+                    title: '.:PRAXIS:.',
+                    msg: 'Download Result?',
+                    buttons: Ext.MessageBox.YESNO,
+                    scope: this,
+                    icon: Ext.MessageBox.QUESTION,
+                    modal: true,
+                    fn: function (btn) {
+                        if (btn === 'yes') {
+                            console.log(result);
+                            let data = JSON.parse(result.data);
+                            me.createExcelProvis(data);
+                        }
+                    }
+                });
     },
-    createExcelProvis : async function (data){
-        
-        let excelData = data.map(x=>{
+    createExcelProvis: async function (data) {
+
+        let excelData = data.map(x => {
             let layout = {
-                'Bank Doc.':x.bandoc,
-                'Value Date':x.valdate,
-                'Reference':x.refer,
-                'Status Prov': x.stprov === 'Y'? 'YES':'NO',
+                'Bank Doc.': x.bandoc,
+                'Value Date': x.valdate,
+                'Reference': x.refer,
+                'Status Prov': x.stprov === 'Y' ? 'YES' : 'NO',
                 'Account Prov.': x.accprov,
                 'Date Prov.': x.fecprov,
                 'Corrl AV': x.corrlav
             };
             return layout;
         });
-        global.writeExcelFromJson(excelData,'Provision Success');
-        
+        global.writeExcelFromJson(excelData, 'Provision Success');
+
     },
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Utilitarios">
