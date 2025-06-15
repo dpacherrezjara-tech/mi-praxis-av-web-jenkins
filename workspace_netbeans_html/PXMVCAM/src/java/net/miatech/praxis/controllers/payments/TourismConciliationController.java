@@ -103,7 +103,7 @@ public class TourismConciliationController extends BaseController {
                 filter.page.PAGNUM = 1;
             }
 
-            lst = logic.loadPX268SQP00675(filter);
+            lst = logic.loadMPF146SQP00905(filter);
         } catch (Exception e) {
             throw new SpringException(e);
         }

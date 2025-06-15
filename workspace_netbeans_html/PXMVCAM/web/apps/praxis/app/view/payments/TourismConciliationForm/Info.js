@@ -62,18 +62,18 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                                         },
                                         items: [
                                             {
-                                                text: 'CCUST', dataIndex: 'strFecha', width: 105
+                                                text: 'CCUST', dataIndex: 'CCUST', width: 105
                                             },
-                                                {text: 'SDATE', dataIndex: 'PERIOD', width: 105},
-                                                {text: 'SAGENT', dataIndex: 'PERIOD', width: 105},
-                                                {text: 'STVAL', dataIndex: 'PERIOD', width: 105},
-                                                {text: 'SVFOP', dataIndex: 'PERIOD', width: 105},
-                                                {text: 'QTYTRAN1', dataIndex: 'PERIOD', width: 105},
-                                                {text: 'REFER', dataIndex: 'PERIOD', width: 105},
-                                                {text: 'DATEC', dataIndex: 'PERIOD', width: 105},
-                                                {text: 'TRANC', dataIndex: 'PERIOD', width: 105},
-                                                {text: 'DATCO', dataIndex: 'PERIOD', width: 105},
-                                                {text: 'FREGLA', dataIndex: 'PERIOD', width: 105},
+                                                {text: 'SDATE', dataIndex: 'SDATE', width: 105},
+                                                {text: 'SAGENT', dataIndex: 'SAGENT', width: 105},
+                                                {text: 'STVAL', dataIndex: 'STVAL', width: 105},
+                                                {text: 'SVFOP', dataIndex: 'SVFOP', width: 105},
+                                                {text: 'QTYTRAN1', dataIndex: 'QTYTRAN1', width: 105},
+                                                {text: 'REFER', dataIndex: 'REFER', width: 105},
+                                                {text: 'DATEC', dataIndex: 'DATEC', width: 105},
+                                                {text: 'TRANC', dataIndex: 'TRANC', width: 105},
+                                                {text: 'DATCO', dataIndex: 'DATCO', width: 105},
+                                                {text: 'FREGLA', dataIndex: 'FREGLA', width: 105},
                                             
                                         ]
                                     }

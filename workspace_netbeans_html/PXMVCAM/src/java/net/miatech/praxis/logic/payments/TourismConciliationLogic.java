@@ -24,8 +24,8 @@ public class TourismConciliationLogic {
 
     }
     
-    public List<A2282Filter> loadPX268SQP00675(A2282Filter filter) throws SQLException, Exception {
-        return TourismConciliationDAO.loadPX268SQP00675(filter);
+    public List<A2282Filter> loadMPF146SQP00905(A2282Filter filter) throws SQLException, Exception {
+        return TourismConciliationDAO.loadMPF146SQP00905(filter);
     }
     
     public List<A2282Filter> loadPX268SQP00907(A2282Filter filter) throws SQLException, Exception {

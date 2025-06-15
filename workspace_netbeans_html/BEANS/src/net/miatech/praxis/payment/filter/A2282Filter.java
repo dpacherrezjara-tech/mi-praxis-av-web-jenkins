@@ -22,7 +22,20 @@ public class A2282Filter extends A2282 {
      public String IN_PERIOD = "";
      public double TOTdblAmount =0; 
      public double dblAmount =0; 
+     
      public long RN = 0; 
+     
+     //datos del mpf
+     public String SDATE = "";
+     public String SAGENT = "";
+     public String STVAL = "";
+     public String SVFOP = "";
+     public double QTYTRAN1 = 0; 
+     public String REFER = "";
+     public String DATEC = "";
+     public String TRANC = "";
+     public String DATCO = "";
+     public String FREGLA = "";
      
      public Pagination page = new Pagination();
 }
