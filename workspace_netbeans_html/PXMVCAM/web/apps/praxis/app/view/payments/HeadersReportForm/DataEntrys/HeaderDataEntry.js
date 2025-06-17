@@ -1,4 +1,4 @@
-prototype.idDE = prototype.id + '-HeaderDataEntry';
+prototype.idDEheader = prototype.id + '-HeaderDataEntry';
 
 Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntry', {
     extend: 'Ext.window.Window',
@@ -20,7 +20,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntr
     items: [
         {
             xtype: 'form',
-            id: prototype.idDE + '-mainForm',
+            id: prototype.idDEheader + '-mainForm',
             layout: {
                 type: 'vbox',
                 pack: 'center'
@@ -68,7 +68,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntr
                                     xtype: 'combobox',
                                     labelStyle: 'font-weight:bold;',
                                     fieldLabel: 'Acc. Type',
-                                    id: prototype.idDE + '-cmbTIPOCON',
+                                    id: prototype.idDEheader + '-cmbTIPOCON',
                                     name: 'TIPOCON',
                                     store: Ext.create('Ext.data.SimpleStore', {
                                         fields: ['code', 'name'],
@@ -147,9 +147,13 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntr
                                     store: Ext.create('Ext.data.SimpleStore', {
                                         fields: ['code', 'name'],
                                         data: [
-                                            ['1', 'Loaded'],
-                                            ['5', 'Sended to AV'],
-                                            ['6', 'Partially Loaded']
+                                            ['5', 'SFTP'],
+                                            ['L', 'Loaded'],
+                                            ['R', 'Rejected'],
+                                            ['P', 'Re-Process'],
+                                            ['J', 'Justified'],
+                                            ['6', 'Partially Rejected'],
+                                            ['9', 'Partially Justified']
                                         ]
                                     }),
                                     labelWidth: 80,
@@ -178,41 +182,101 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntr
                     },
                     items: [
                         {
-                            xtype: 'grid',
-                            titleAlign: 'center',
-                            minHeight: 100,
-                            maxHeight: 140,
-                            viewConfig: {
-                                stripeRows: true,
-                                enableTextSelection: true,
-                                markDirty: false
-                            },
-                            columnLines: true,
-                            title: 'Files',
-                            id: prototype.idDE + '-gridFiles',
+                            xtype: 'tabpanel',
+                            id: prototype.idDEheader + '-tabMain',
                             width: '100%',
-                            columns: {
-                                defaults: {
-                                    align: 'center',
-                                    menuDisabled: true,
-                                    sortable: true
+                            height: 'auto',
+                            border: false,
+                            margin: '0 1 0 1',
+                            bodyStyle: 'background: transparent',
+                            defaults: {
+                                //margin: '0 5 0 5',
+                                height: 'auto',
+                                autoScroll: false,
+                                layout: 'fit'
+                            },
+                            items: [
+                                {
+                                    title: 'Interfaces',
+                                    itemId: 'F',
+                                    id: prototype.idDEheader + '-tabFiles',
+                                    items: [
+                                        {
+                                            xtype: 'grid',
+                                            minHeight: 100,
+                                            maxHeight: 140,
+                                            viewConfig: {
+                                                stripeRows: true,
+                                                enableTextSelection: true,
+                                                markDirty: false
+                                            },
+                                            columnLines: true,
+                                            id: prototype.idDEheader + '-gridFiles',
+                                            width: '100%',
+                                            columns: {
+                                                defaults: {
+                                                    align: 'center',
+                                                    menuDisabled: true,
+                                                    sortable: true
+                                                },
+                                                items: [
+                                                    {
+                                                        text: 'RN',
+                                                        locked: true,
+                                                        xtype: 'rownumberer', // Columna de número de fila
+                                                        width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
+                                                    },
+                                                    {text: 'File Name', dataIndex: 'FILENAM', flex: 1},
+                                                    {text: 'Date', dataIndex: 'FSEND', width: 100},
+                                                    {text: 'Hour', dataIndex: 'HSEND', width: 80}
+                                                ]
+                                            }
+                                        }
+                                    ]
                                 },
-                                items: [
-                                    {
-                                        text: 'RN',
-                                        locked: true,
-                                        xtype: 'rownumberer', // Columna de número de fila
-                                        width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
-                                    },
-                                    {text: 'File Name', dataIndex: 'FILENAM', flex: 1},
-                                    {text: 'Date', dataIndex: 'FSEND', width: 100},
-                                    {text: 'Hour', dataIndex: 'HSEND', width: 80}
-                                ]
-                            }
+                                {
+                                    title: 'Supports',
+                                    itemId: 'S',
+                                    hidden:true,
+                                    id: prototype.idDEheader + '-tabSupports',
+                                    items: [
+                                        {
+                                            xtype: 'grid',
+                                            minHeight: 100,
+                                            maxHeight: 140,
+                                            viewConfig: {
+                                                stripeRows: true,
+                                                enableTextSelection: true,
+                                                markDirty: false
+                                            },
+                                            columnLines: true,
+                                            id: prototype.idDEheader + '-gridSupports',
+                                            width: '100%',
+                                            columns: {
+                                                defaults: {
+                                                    align: 'center',
+                                                    menuDisabled: true,
+                                                    sortable: true
+                                                },
+                                                items: [
+                                                    {
+                                                        text: 'RN',
+                                                        locked: true,
+                                                        xtype: 'rownumberer', // Columna de número de fila
+                                                        width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
+                                                    },
+                                                    {text: 'File Name', dataIndex: 'FILENAM', flex: 1}
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
                         },
+
                         {
                             xtype: 'tabpanel',
-                            id: prototype.idDE + '-tabMain',
+                            id: prototype.idDEheader + '-tabMain2',
                             width: '100%',
                             height: 'auto',
                             border: false,
@@ -241,12 +305,12 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntr
                                 {
                                     title: 'Accounted',
                                     itemId: 'A',
-                                    id: prototype.idDE + '-tabAccounted',
+                                    id: prototype.idDEheader + '-tabAccounted',
                                     items: [
                                         {
                                             xtype: 'grid',
                                             border: false,
-                                            id: prototype.idDE + '-gridAccounted',
+                                            id: prototype.idDEheader + '-gridAccounted',
                                             emptyText: 'No documents available',
                                             tbar: {
                                                 xtype: 'panel',
@@ -282,6 +346,17 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntr
                                                         maxLength: 10,
                                                         listeners: {
                                                             change: 'onChangeBandoc'
+                                                        }
+                                                    },
+                                                    {
+                                                        xtype: 'button',
+                                                        margin: '2 5 2 5',
+                                                        scale: 'small',
+                                                        text: 'Reject All',
+                                                        id: prototype.idDEheader + '-btn-rejectAll',
+                                                        iconCls: 'prx-icon-incomplete',
+                                                        listeners: {
+                                                            click: 'onRejectAll'
                                                         }
                                                     }
                                                 ]
@@ -381,7 +456,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntr
                                                     {
                                                         sortable: false,
                                                         xtype: 'actioncolumn',
-                                                        id: prototype.idDE + '-btnRejectRec',
+                                                        id: prototype.idDEheader + '-btnRejectRec',
                                                         width: 50,
                                                         text: 'Rej.',
                                                         align: 'center',
@@ -401,12 +476,12 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntr
                                 {
                                     title: 'Rejected',
                                     itemId: 'R',
-                                    id: prototype.idDE + '-tabRejected',
+                                    id: prototype.idDEheader + '-tabRejected',
                                     items: [
                                         {
                                             xtype: 'grid',
                                             border: false,
-                                            id: prototype.idDE + '-gridRejected',
+                                            id: prototype.idDEheader + '-gridRejected',
                                             emptyText: 'No documents available',
                                             bbar: {
                                                 xtype: 'pagingtoolbar',
@@ -448,60 +523,36 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntr
                                                             }
                                                         ]
                                                     },
-                                                    {text: 'Reference', dataIndex: 'REFER', width: 160},
-                                                    {text: 'Bank Doc.', dataIndex: 'BANDOC', width: 150},
-                                                    {text: 'Value Date', dataIndex: 'VALDATE', width: 120},
-                                                    {text: 'Qty SEQ', dataIndex: 'SEQNBR', width: 80},
-                                                    {text: 'Processor', dataIndex: 'CODPRO', width: 150},
-                                                    {text: 'Type', dataIndex: 'MODO', width: 70,
+                                                    {text: 'Status', dataIndex: 'STREJ', width: 70,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             //metaData.style = "background-color:#838187";
                                                             const opts = {
-                                                                'P': () => {
+                                                                'R': () => {
                                                                     metaData.style = "font-weight:bold";
-                                                                    return 'PAX CO';
+                                                                    return 'Rejected';
                                                                 },
-                                                                'A': () => {
+                                                                'S': () => {
                                                                     metaData.style = "font-weight:bold";
-                                                                    return 'CGO CO';
-                                                                },
-                                                                'C': () => {
-                                                                    metaData.style = "font-weight:bold";
-                                                                    return 'COR CO';
-                                                                },
-                                                                'E': () => {
-                                                                    metaData.style = "font-weight:bold";
-                                                                    return 'PAX EXT';
-                                                                },
-                                                                'G': () => {
-                                                                    metaData.style = "font-weight:bold";
-                                                                    return 'CGO EXT';
-                                                                },
-                                                                'T': () => {
-                                                                    metaData.style = "font-weight:bold";
-                                                                    return 'TAX EXT';
-                                                                },
-                                                                'D': () => {
-                                                                    metaData.style = "font-weight:bold";
-                                                                    return 'DEB CO';
-                                                                },
-                                                                'B': () => {
-                                                                    metaData.style = "font-weight:bold";
-                                                                    return 'DEB EXT';
+                                                                    return 'Solved';
                                                                 },
                                                                 'J': () => {
                                                                     metaData.style = "font-weight:bold";
-                                                                    return 'ADJ CO';
+                                                                    return 'Justified';
                                                                 },
-                                                                'K': () => {
+                                                                'P': () => {
                                                                     metaData.style = "font-weight:bold";
-                                                                    return 'ADJ EXT';
+                                                                    return 'Re-Process';
                                                                 }
                                                             };
                                                             return opts[value] ? opts[value]() : '';
                                                         }
                                                     },
-                                                    {text: 'Rejection Error', dataIndex: 'DESCR', width: 320}
+                                                    {text: 'Reference', dataIndex: 'REFER', width: 160},
+                                                    {text: 'Bank Doc.', dataIndex: 'BANDOC', width: 150},
+                                                    {text: 'Value Date', dataIndex: 'VALDATE', width: 120},
+                                                    {text: 'Processor', dataIndex: 'CODPRO', width: 150},
+                                                    {text: 'Code', dataIndex: 'CODREC', width: 100},
+                                                    {text: 'Comment', dataIndex: 'OBSERV', width: 450}
                                                 ]
                                             }
                                         }
@@ -560,6 +611,22 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntr
                                     name: 'TSCR'
                                 }
                             ]
+                        },
+                        {
+                            items: [
+                                {
+                                    labelWidth: 75,
+                                    width: 175,
+                                    fieldLabel: 'User Upd.',
+                                    name: 'USUP'
+                                },
+                                {
+                                    labelWidth: 75,
+                                    width: 200,
+                                    fieldLabel: 'Date Upd.',
+                                    name: 'TSUP'
+                                }
+                            ]
                         }
                     ]
                 }
@@ -580,28 +647,20 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntr
             fieldStyle: 'text-align:center',
             defaults: {
                 scale: 'medium',
-                margin: '5 0 5 0'
+                margin: '5 5 5 5'
             },
             items: [
                 {
                     text: 'Save',
-                    id: prototype.idDE + '-btn-save',
+                    id: prototype.idDEheader + '-btn-save',
                     iconCls: 'prx-icon-image-update',
                     listeners: {
                         click: 'onSaveRecord'
                     }
                 },
                 {
-                    text: 'Reject',
-                    id: prototype.idDE + '-btn-rejectAll',
-                    iconCls: 'prx-icon-incomplete',
-                    listeners: {
-                        click: 'onRejectAll'
-                    }
-                },
-                {
                     text: 'Cancel',
-                    id: prototype.idDE + '-btn-cancel',
+                    id: prototype.idDEheader + '-btn-cancel',
                     iconCls: 'prx-icon-cancel',
                     listeners: {
                         click: 'onCancelClick'
