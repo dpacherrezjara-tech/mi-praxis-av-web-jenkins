@@ -19,7 +19,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
             defaults: {
                 bodyStyle: 'background: transparent;',
                 border: false,
-                width: 1500,
+                width: 770 ,
                 height: 'auto',
                 align: 'center'
             },
@@ -39,8 +39,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: true,
                             height: 'auto',
-                            width: 1155,
-                            margin: '0 0 0 0 ',
+                            width: 770 ,
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -49,11 +48,12 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridMainData',
-                                    width: 1442,
+                                    width: 762 ,
                                     columnLines: true,
-//                                    features: [{
-//                                        ftype: 'summary'
-//                                    }],
+                                    menuDisabled: true,
+                                     viewConfig: {
+                                        forceFit: false
+                                    },
                                     columns: {
                                         defaults: {
                                             menuDisabled: true,
@@ -62,179 +62,71 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                                         },
                                         items: [
                                             {
-                                                text: 'CCUST', dataIndex: 'CCUST', width: 105
+                                                text: 'Sales Date',
+                                                dataIndex: 'SDATE',
+                                                width: 105,
+                                                menudisabled: false,
+                                                listeners: {
+                                                    click: 'detailMPF100'
+                                                }
                                             },
-                                                {text: 'SDATE', dataIndex: 'SDATE', width: 105},
-                                                {text: 'SAGENT', dataIndex: 'SAGENT', width: 105},
-                                                {text: 'STVAL', dataIndex: 'STVAL', width: 105},
-                                                {text: 'SVFOP', dataIndex: 'SVFOP', width: 105},
-                                                {text: 'QTYTRAN1', dataIndex: 'QTYTRAN1', width: 105},
-                                                {text: 'REFER', dataIndex: 'REFER', width: 105},
-                                                {text: 'DATEC', dataIndex: 'DATEC', width: 105},
-                                                {text: 'TRANC', dataIndex: 'TRANC', width: 105},
-                                                {text: 'DATCO', dataIndex: 'DATCO', width: 105},
-                                                {text: 'FREGLA', dataIndex: 'FREGLA', width: 105},
-                                            
-                                        ]
-                                    }
-                                },
-                                {
-                                    xtype: 'panel',
-                                    id: prototype.id + '-panelDataSummary',
-                                    width: 1442,
-                                    align: 'left',
-                                    margin: '0 0 0 0 ',
-                                    layout: {
-                                        type: 'hbox',
-                                        align: 'center'
-                                    },
-                                    defaults: {
-                                        xtype: 'label',
-                                        align: 'center',
-                                        html: '' + '&nbsp',
-                                        height: 25,
-                                        padding: '5 5 5 0',
-                                        style: 'background:#A0BFD3;color:#244066;text-align:right;font-weight:bold;border: 0.3px #4A6371 solid;font-size:10px'
-                                    },
-                                    items: [
-                                        {width: 610},
-                                        {width: 90, id: prototype.id + '-TOTdblAmount'},
-                                        {width: 740}
-                                    ]
-                                },             
-                            ]
-                        },
-                        {
-                            xtype: 'panel',
-                            id: prototype.id + '-boxTKT',
-                            bodyStyle: 'background-color: #E3EAEF;',
-                            border: true,
-                            height: 'auto',
-                            width: 1442,
-                            margin: '0 0 0 0 ',
-                            layout: {
-                                type: 'vbox',
-                                align: 'center'
-                            },
-                            items: [
-                                {
-                                    xtype: 'grid',
-                                    id: prototype.id + '-gridTKT',
-                                    width: 1442,
-                                    columnLines: true,
-//                                    features: [{
-//                                        ftype: 'summary'
-//                                    }],
-                                    columns: {
-                                        defaults: {
-                                            menuDisabled: true,
-                                            sortable: false,
-                                            align: 'center'
-                                        },
-                                        items: [
+                                            { text: 'Agent', dataIndex: 'SAGENT', width: 105 },
                                             {
-                                                text: 'Issue',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: false,
-                                                    align: 'center'
-                                                },
-                                                columns: [
-                                                    {text: 'Date', dataIndex: 'strFecha', width: 105}
-                                                ]
-                                            },
-                                            {text: 'Period', dataIndex: 'PERIOD', width: 65},
-                                            {
-                                                text: 'Transacction',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: false,
-                                                    align: 'center'
-                                                },
-                                                columns: [
-                                                    {text: 'Type', dataIndex: 'strDescrip2', width: 90}
-                                                ]
+                                                text: 'Status',
+                                                dataIndex: 'STVAL',
+                                                width: 105,
+                                                editor: { xtype: 'textfield', editable: false },
+                                                renderer: function (value, metaData, record) {
+                                                    metaData.style = "text-align:center;";
+                                                    if (record.data.TDOC === 'A') {
+                                                        metaData.style += "background-color:#bff5bf;";
+                                                    }
+                                                    if (record.data.STVAL === '1') {
+                                                        value = 'Match';
+                                                    } else if (record.data.STVAL === '5') {
+                                                        value = 'Match manual.';
+                                                    } else {
+                                                        value = 'Open';
+                                                    }
+                                                    return value;
+                                                }
                                             },
                                             {
-                                                text: 'Credit Card',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: false,
-                                                    align: 'center'
-                                                },
-                                                columns: [
-                                                    {text: 'Code', dataIndex: 'ENTITY', width: 60},
-                                                    {text: 'Number', dataIndex: 'CREDITCARD', width: 130}
-                                                ]
+                                                text: 'Amount',
+                                                dataIndex: 'SVFOP',
+                                                width: 92,
+                                                editor: { xtype: 'textfield', editable: false },
+                                                renderer: function (value, metaData, record) {
+                                                    metaData.style = "text-align:right;";
+                                                    if (record.data.TDOC === 'A') {
+                                                        metaData.style += "background-color:#bff5bf;";
+                                                    }
+                                                    return Ext.util.Format.number(value, '0,000.00');
+                                                }
                                             },
+                                            { text: 'Document', dataIndex: 'QTYTRAN1', width: 105 },
                                             {
-                                                text: 'Exp.',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: false,
-                                                    align: 'center'
-                                                },
-                                                columns: [
-                                                    {text: 'Date', dataIndex: 'EXPDATE', width: 80}
-                                                ]
+                                                text: 'Invoice',
+                                                dataIndex: 'REFER',
+                                                width: 105,
+                                                menudisabled: true,
+                                                listeners: {
+                                                    click: 'detailMPF100'
+                                                }
                                             },
-                                            {text: 'Currency', dataIndex: 'CURRENC', width: 80},
-                                            {text: 'AMOUNT', dataIndex: 'AMOUNT', width: 90},
-                                            {text: 'Ticket', dataIndex: 'DOCNUM', width: 120},
+                                            { text: 'CERROR', dataIndex: 'CERROR', width: 105 },
                                             {
-                                                text: 'Check',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: false,
-                                                    align: 'center'
-                                                },
-                                                columns: [
-                                                    {text: 'Digit', dataIndex: 'DOCIND', width: 60}
-                                                ]
-                                            },
-                                            {text: 'Agente', dataIndex: 'AGENTE', width: 90},
-                                            {
-                                                text: 'Processing',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: false,
-                                                    align: 'center'
-                                                },
-                                                columns: [
-                                                    {text: 'IND', dataIndex: 'strDescrip', width: 200}
-                                                ]
-                                            },
-                                            {
-                                                text: 'Aproved',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: false,
-                                                    align: 'center'
-                                                },
-                                                columns: [
-                                                    {text: 'Code', dataIndex: 'APPROVCOD', width: 90}
-                                                ]
-                                            },
-                                            {
-                                                text: 'Customer File',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: false,
-                                                    align: 'center'
-                                                },
-                                                columns: [
-                                                    {text: 'Reference', dataIndex: 'CUSTFILE', width: 90}
-                                                ]
-                                            },
-                                            {
-                                                text: 'Total',
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: false,
-                                                    align: 'center'
-                                                },
-                                                columns: [
-                                                    {text: 'Transaction', dataIndex: 'RN', width: 90}
+                                                xtype: 'actioncolumn',
+                                                id: prototype.id + '-detailTourism',
+                                                width: 40,
+                                                text: 'View',
+                                                align: 'center',
+                                                items: [
+                                                    {
+                                                        iconCls: 'prx-icon-edit',
+                                                        tooltip: 'View',
+                                                        handler: 'onEditClick'
+                                                    }
                                                 ]
                                             }
                                         ]
@@ -242,10 +134,9 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                                 },
                                 {
                                     xtype: 'panel',
-                                    id: prototype.id + '-panelDataSummary2',
-                                    width: 1442,
+                                    id: prototype.id + '-panelDataSummary',
+                                    width: 770,
                                     align: 'left',
-                                    margin: '0 0 0 0 ',
                                     layout: {
                                         type: 'hbox',
                                         align: 'center'
@@ -253,19 +144,28 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                                     defaults: {
                                         xtype: 'label',
                                         align: 'center',
-                                        html: '' + '&nbsp',
+                                        html: '&nbsp;',
                                         height: 25,
                                         padding: '5 5 5 0',
                                         style: 'background:#A0BFD3;color:#244066;text-align:right;font-weight:bold;border: 0.3px #4A6371 solid;font-size:10px'
                                     },
                                     items: [
-                                        {width: 610},
-                                        {width: 90},
-                                        {width: 740}
+                                        { width: 105 }, // Sales Date
+                                        { width: 105 }, // Agent
+                                        { width: 105 }, // Status
+                                        {
+                                            width: 92,
+                                            id: prototype.id + '-TOTdblAmount'
+                                        },
+                                        { width: 105 }, // Document
+                                        { width: 105 }, // Invoice
+                                        { width: 105 }, // CERROR
+                                        { width: 40 }   // View column
                                     ]
-                                },             
+                                }
                             ]
                         },
+                        
                         {
                             xtype: 'panel',
                             id: prototype.id + '-pie',
@@ -274,26 +174,20 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                                 pack: 'center'
                             },
                             border: true,
-                            width: 1442,
+                            width: 770,
                             height: 25,
                             bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
-//                                    defaults: {
-//                                        border: true,
-//                                        padding: '0px 5px 0px 5px'
-//                                    },
-//                                    padding: '1px 5px 1px 5px',
                             items: [
                                 {
                                     xtype: 'panel',
-                                    width: 1442,
+                                    width: 762,
                                     height: 25,
                                     layout: {
                                         type: 'hbox',
                                         pack: 'center'
                                     },
                                     defaults: {
-                                        xtype: 'label',
-//                                                margin: '3px 0px 0px 5px'
+                                        xtype: 'label'
                                     },
                                     items: [
                                         {
@@ -314,7 +208,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                                             text: '0',
                                             width: 50
                                         },
-                                        {xtype: 'tbspacer', width: 100},
+                                        { xtype: 'tbspacer', width: 100 },
                                         {
                                             text: 'Total found',
                                             width: 80
@@ -327,10 +221,9 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                                     ]
                                 }
                             ]
-                        },
+                        }
                     ]
                 },
-
                 {
                     region: 'south',
                     layout: 'border',
@@ -344,7 +237,4 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
             ]
         }
     ]
-}
-);
-
-
+});

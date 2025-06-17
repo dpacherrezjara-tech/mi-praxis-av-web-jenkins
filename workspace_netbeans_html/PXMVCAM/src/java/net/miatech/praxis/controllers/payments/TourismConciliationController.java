@@ -11,8 +11,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,11 +36,14 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -109,6 +114,43 @@ public class TourismConciliationController extends BaseController {
         }
         return lst;
     }
+    
+    @RequestMapping(value = "searchDateEntry")
+    public @ResponseBody String searchDateEntry(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- Tourism Conciliation : Search data Entry -------------");
+
+        map.put("success", true);
+        List<A2282Filter> lst = this.getListsearchDateEntry(request, false);
+        System.out.println("Total : " + lst.size());
+
+        map.put("total", lst.size());
+        map.put("data", lst);
+
+        return new Gson().toJson(map);
+    }
+    
+    public List<A2282Filter> getListsearchDateEntry(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2282Filter> lst = new ArrayList<>();
+        A2282Filter filter;
+        Gson gson = new Gson();
+
+        try {
+            String beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2282Filter.class);
+
+            logic = new TourismConciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            lst = logic.loadMPF101SQP00909(filter);
+
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+
+        return lst;
+    }
+
 
     @RequestMapping(value = "searchTKT")
     public @ResponseBody
@@ -168,7 +210,7 @@ public class TourismConciliationController extends BaseController {
         }
         return lst;
     }
-
+    
     @RequestMapping(value = "getXLSX")
     public @ResponseBody
     void getXLSX(HttpServletRequest request, HttpServletResponse response) {

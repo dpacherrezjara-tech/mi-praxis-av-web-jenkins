@@ -37,5 +37,38 @@ public class A2282Filter extends A2282 {
      public String DATCO = "";
      public String FREGLA = "";
      
+     //DATOS DEL MPF101
+     public String TDOC = "";
+     public String CERROR = "";
+     public String SCOUNTRY = "";
+     public String NEGOC = "";
+     public String MERCHNC = "";
+     public String SUCMERCH = "";
+     public String SPNR = "";
+     public String CODPRO = "";
+     public String PRDA = "";
+     public String PAYDATE = "";
+     public String VALDATE = "";
+     public String SCARCOD = "";
+     public String SCARDN = "";
+     public String SCARDNCOR = "";
+     public String SAUTHOC = "";
+     public String BANDOC = "";
+     public String TERMI = "";
+     public String ACCNUMBER = "";
+     public double QTYTKT = 0; 
+     public double NETO = 0; 
+     public String SCURRENCY = "";
+     public String STVALS = "";
+     public String SDATES = "";
+     public String DATECS = "";
+     public String TRANCS = "";
+     public String DATECI = "";
+     public String TRANCI = "";
+     public String DATECT = "";
+     public String TRANCT = "";
+     public double SVFOPC = 0;
+     
+     
      public Pagination page = new Pagination();
 }

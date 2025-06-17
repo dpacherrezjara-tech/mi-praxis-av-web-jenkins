@@ -7,6 +7,7 @@ package net.miatech.praxis.logic.payments;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.praxis.dao.payments.TourismConciliationDAO;
 import net.miatech.praxis.payment.filter.A2282Filter;
@@ -30,6 +31,10 @@ public class TourismConciliationLogic {
     
     public List<A2282Filter> loadPX268SQP00907(A2282Filter filter) throws SQLException, Exception {
         return TourismConciliationDAO.loadPX268SQP00907(filter);
+    }
+    
+    public List<A2282Filter> loadMPF101SQP00909(A2282Filter filter) throws Exception {
+        return TourismConciliationDAO.loadMPF101SQP00909(filter);
     }
 
 }

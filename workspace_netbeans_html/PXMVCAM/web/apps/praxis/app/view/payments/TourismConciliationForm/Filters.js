@@ -208,17 +208,17 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Filters', {
                     hidden: false,
                     margin: '4px 89px 4px 8px'
                 },
-                {
-                    xtype: 'combo',
-//                    fieldLabel: '',
-                    id: prototype.id+'-cmbTRANSTYPE',
-                    queryMode: 'local',
-                    editable: false,
-                    selectOnFocus: false,
-                    valueField: 'code',
-                    displayField: 'name',
-                    width: 73
-                },
+//                {
+//                    xtype: 'combo',
+////                    fieldLabel: '',
+//                    id: prototype.id+'-cmbTRANSTYPE',
+//                    queryMode: 'local',
+//                    editable: false,
+//                    selectOnFocus: false,
+//                    valueField: 'code',
+//                    displayField: 'name',
+//                    width: 73
+//                },
                 {
                     xtype: 'textfield',
                     fieldLabel: 'Agente:',
@@ -236,18 +236,15 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Filters', {
                 },
                 {
                     xtype: 'textfield',
-                    fieldLabel: 'Ticket:',
-                    id: prototype.id+'-txtTKT',                                   
+                    fieldLabel: 'Sales Date:',
+                    id: prototype.id+'-txtDate',                                   
                     allowBlank: true,
-                    maskRe: /[0-9]/,
+                    maskRe: /[0-8]/,
                     enforceMaxLength: true,
                     maxLength:13,
                     labelWidth: 145,
                     width: 287,
-                    enableKeyEvents: true,
-                    listeners: {
-                        keypress: 'BuscarTKT_keyDownHandler'
-                    }               
+                    enableKeyEvents: true,             
                 }
             ]
         } 

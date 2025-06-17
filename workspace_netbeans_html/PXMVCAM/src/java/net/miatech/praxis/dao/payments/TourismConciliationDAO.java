@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.praxis.payment.filter.A2282Filter;
@@ -65,7 +66,7 @@ public class TourismConciliationDAO {
         cstmt.setString(2, Functions.getFechaActual().substring(0, 4));
         cstmt.setString(3, filter.IN_DATE_FROM.trim());
         cstmt.setString(4, filter.IN_DATE_TO.trim());
-        cstmt.setString(5, filter.STVAL.trim());
+        cstmt.setString(5, filter.SDATE.trim());
         cstmt.setString(6, filter.SAGENT.trim());
 
         cstmt.registerOutParameter(7, Types.INTEGER);
@@ -105,6 +106,7 @@ public class TourismConciliationDAO {
                 objRtn.TRANC = rs01.getString("TRANC").trim();
                 objRtn.DATCO = rs01.getString("DATCO").trim();
                 objRtn.FREGLA = rs01.getString("FREGLA").trim();
+                objRtn.CERROR = rs01.getString("ERROR_DESC").trim();
                 objRtn.TOTdblAmount = dblAmount;
 
                 objRtn.page.PAGNUM = filter.page.PAGNUM;
@@ -213,5 +215,81 @@ public class TourismConciliationDAO {
 
         return lstObjetos;
     }
+    
+    public List<A2282Filter> loadMPF101SQP00909(A2282Filter filter) throws SQLException, Exception {
+        List<A2282Filter> list = new ArrayList<>();
+        CallableStatement cstmt = null;
+        ResultSet rs = null;
+        Connection cnx = null;
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            String sql = "{CALL PRAXISMP.SQP00909(?, ?, ?)}";
+            cstmt = cnx.prepareCall(sql);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.SDATE);
+            cstmt.setString(3, filter.REFER);
+
+            boolean hasResults = cstmt.execute();
+            if (hasResults) {
+                rs = cstmt.getResultSet();
+                while (rs.next()) {
+                    A2282Filter item = new A2282Filter();
+
+                    item.TDOC = rs.getString("TDOC");
+                    item.STVAL = rs.getString("STVAL");
+                    item.SCOUNTRY = rs.getString("SCOUNTRY");
+                    item.SDATE = rs.getString("SDATE");
+                    item.SAGENT = rs.getString("SAGENT");
+                    item.NEGOC = rs.getString("NEGOC");
+                    item.MERCHNC = rs.getString("MERCHNC");
+                    item.SUCMERCH = rs.getString("SUCMERCH");
+                    item.SPNR = rs.getString("SPNR");
+                    item.CODPRO = rs.getString("CODPRO");
+                    item.PRDA = rs.getString("PRDA");
+                    item.PAYDATE = rs.getString("PAYDATE");
+                    item.VALDATE = rs.getString("VALDATE");
+                    item.SCARCOD = rs.getString("SCARCOD");
+                    item.SCARDN = rs.getString("SCARDN");
+                    item.SCARDNCOR = rs.getString("SCARDNCOR");
+                    item.SAUTHOC = rs.getString("SAUTHOC");
+                    item.BANDOC = rs.getString("BANDOC");
+                    item.TERMI = rs.getString("TERMI");
+                    item.ACCNUMBER = rs.getString("ACCNUMBER");
+                    item.QTYTKT = rs.getDouble("QTYTKT");
+                    item.FREGLA = rs.getString("FREGLA");
+                    item.SCURRENCY = rs.getString("SCURRENCY");
+                    item.SVFOP = rs.getString("SVFOP");
+                    item.NETO = rs.getDouble("NETO");
+                    item.SVFOPC = rs.getDouble("SVFOPC");
+                    item.STVALS = rs.getString("STVALS");
+                    item.SDATES = rs.getString("SDATES");
+                    item.DATECS = rs.getString("DATECS");
+                    item.TRANCS = rs.getString("TRANCS");
+                    item.DATECI = rs.getString("DATECI");
+                    item.TRANCI = rs.getString("TRANCI");
+                    item.TRANC = rs.getString("TRANC");
+                    item.USCR = rs.getString("USCR");
+                    item.HOCR = rs.getString("HOCR");
+                    item.USUP = rs.getString("USUP");
+                    item.FEUP = rs.getString("FEUP");
+                    item.HOUP = rs.getString("HOUP");
+                    item.DATECT = rs.getString("DATECT");
+                    item.REFER = rs.getString("REFER");
+
+                    list.add(item);
+                }
+            }
+
+        } finally {
+            if (rs != null) try { rs.close(); } catch (Exception e) {}
+            if (cstmt != null) try { cstmt.close(); } catch (Exception e) {}
+            if (cnx != null) session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+        }
+
+        return list;
+    }
+
     
 }
