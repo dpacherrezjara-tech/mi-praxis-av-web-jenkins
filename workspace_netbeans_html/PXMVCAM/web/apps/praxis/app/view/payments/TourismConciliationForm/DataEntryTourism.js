@@ -477,7 +477,38 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
             readOnly: false,
             fieldStyle: 'text-align:center;',
             width: 120
-        }
+        },
+        { xtype: 'tbspacer', width: 10 },
+        {
+            xtype: 'label',
+            text: 'Amount',
+            style: 'font-weight:bold;color:#0B333C;',
+            width: 120
+        },
+        { xtype: 'tbspacer', width: 10 },
+        {
+            xtype: 'textfield',
+            id: prototype.id + '-de-txtComentAdjust',
+            readOnly: false,
+            fieldStyle: 'text-align:center;',
+            width: 120
+        },
+        { xtype: 'tbspacer', width: 10 },
+        {
+            xtype: 'label',
+            text: 'total Amount',
+            style: 'font-weight:bold;color:#0B333C;',
+            width: 120
+        },
+        { xtype: 'tbspacer', width: 10 },
+        {
+            xtype: 'textfield',
+            id: prototype.id + '-de-txtComentAdjustSum',
+            readOnly: false,
+            fieldStyle: 'text-align:center;',
+            width: 120
+        },
+        
     ]
 },
 

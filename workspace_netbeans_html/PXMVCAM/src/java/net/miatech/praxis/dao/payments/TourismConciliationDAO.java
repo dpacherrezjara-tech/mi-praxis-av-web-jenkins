@@ -107,6 +107,7 @@ public class TourismConciliationDAO {
                 objRtn.DATCO = rs01.getString("DATCO").trim();
                 objRtn.FREGLA = rs01.getString("FREGLA").trim();
                 objRtn.CERROR = rs01.getString("ERROR_DESC").trim();
+                objRtn.ADJUST = rs01.getString("MONTOADJUST").trim();
                 objRtn.TOTdblAmount = dblAmount;
 
                 objRtn.page.PAGNUM = filter.page.PAGNUM;

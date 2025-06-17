@@ -67,6 +67,7 @@ public class A2282Filter extends A2282 {
      public String TRANCI = "";
      public String DATECT = "";
      public String TRANCT = "";
+     public String ADJUST = "";
      public double SVFOPC = 0;
      
      
