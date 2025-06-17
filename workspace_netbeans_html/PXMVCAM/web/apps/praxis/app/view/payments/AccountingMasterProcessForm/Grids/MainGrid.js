@@ -120,43 +120,51 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.MainGrid'
                                 '0': ()=>{
                                     metaData.style = "background-color:#838187;font-weight:bold";
                                     return 'Processing ️🔃';
-                                }, 
+                                },
+                                '2': ()=>{
+                                    metaData.style = "background-color:#fdb333;font-weight:bold";
+                                    return 'Accounting Errors 🚫️';
+                                },
+                                '8': ()=>{
+                                    metaData.style = "background-color:#f7ec35;font-weight:bold";
+                                    return 'No Data ️⭕';
+                                },
+                                '4': ()=>{
+                                    metaData.style = "background-color:#f7ec35;font-weight:bold";
+                                    return 'Reversed ⛔';
+                                },
                                 '3': ()=>{
                                     metaData.style = "background-color:#8cdfe3;font-weight:bold";
                                     return 'Ready to Send ️🆗';
                                 },
                                 '5': ()=>{
                                     metaData.style = "background-color:#9187e1;font-weight:bold";
-                                    return 'Sended to AV ️🆗';
+                                    return 'SFTP ️🆗';
                                 },
-                                '1': ()=>{
+                                'L': ()=>{
                                     metaData.style = "background-color:#88d556;font-weight:bold";
                                     return 'Loaded to SAP ☑';
-                                }, 
+                                },
                                 '6': ()=>{
                                     metaData.style = "background-color:#88d556;font-weight:bold";
-                                    return 'Partially Loaded to SAP ☑';
-                                }, 
-                                '2': ()=>{
-                                    metaData.style = "background-color:#fdb333;font-weight:bold";
-                                    return 'Accounting Errors 🚫️';
+                                    return 'Partially Rejected ↩️';
+                                },
+                                '9': ()=>{
+                                    metaData.style = "background-color:#88d556;font-weight:bold";
+                                    return 'Partially Justified ↩️';
+                                },
+                                'J': ()=>{
+                                    metaData.style = "background-color:#f7ec35;color:#ce3232;font-weight:bold";
+                                    return 'Justified ⏺️';
+                                },
+                                'R': ()=>{
+                                    metaData.style = "background-color:#f7ec35;color:#ce3232;font-weight:bold";
+                                    return 'Rejected ❌';
                                 },
                                 '7': ()=>{
                                     metaData.style = "background-color:#f7ec35;font-weight:bold";
                                     return 'Process Error ⚠️';
-                                }, //❌🚫☢️🆗✅⛔⚠️⭕☑️🔃
-                                '8': ()=>{
-                                    metaData.style = "background-color:#f7ec35;font-weight:bold";
-                                    return 'No Data ️⭕';
-                                },
-                                '9': ()=>{
-                                    metaData.style = "background-color:#f7ec35;color:#ce3232;font-weight:bold";
-                                    return 'Rejected by AV ❌';
-                                },
-                                '4': ()=>{
-                                    metaData.style = "background-color:#f7ec35;font-weight:bold";
-                                    return 'Reversed ⛔';
-                                }
+                                } //❌🚫☢️🆗✅⛔⚠️⭕☑️🔃
                             };
                             return opts[value]();
                         }

@@ -6,14 +6,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import net.miatech.praxis.classes.CurrentSession;
-import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.logic.payments.AccountingReportLogic;
-import net.miatech.praxis.payment.dto.AccountingInterface;
 import net.miatech.praxis.payment.dto.EVALBANDOCFilter;
 import net.miatech.praxis.payment.dto.SPACR001Filter;
 import net.miatech.praxis.payment.dto.SPACR002Filter;
@@ -32,8 +29,6 @@ import net.miatech.praxis.payment.dto.SPACR018Filter;
 import net.miatech.praxis.payment.dto.SPACR019Filter;
 import net.miatech.praxis.payment.dto.SPACR021Filter;
 import net.miatech.praxis.payment.dto.SPACR024Filter;
-import net.miatech.praxis.payment.dto.SPMC007Filter;
-import net.miatech.praxis.payment.entities.A4545;
 import net.miatech.praxis.utils.ExportUtils;
 import net.miatech.praxis.utils.ResponseUtils;
 import net.miatech.praxis.utils.SpringWS;
@@ -42,7 +37,9 @@ import net.miatech.utils.Functions;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -133,192 +130,31 @@ public class AccountingReportController{
     public ResponseEntity<?> downloadAccounting(@RequestBody SPACR021Filter filter) throws Exception {
         System.out.println("***** AccountingMaster - downloadAccounting *****");
         String zipName = "AccountingMaster_" + Functions.getFechaActual() + Functions.getHoraActual();
-        List<AccountingInterface> accountingInterfaces = formatInterfases(filter);
-        return exportUtils.createZip(accountingInterfaces, zipName);
+        Gson gson = new Gson();
+        Map<String, Object> map = new HashMap();
+        map.put("IN_CCUST", filter.getIN_CCUST());
+        map.put("IN_USER", cs.getServerSession().getUserView().getCustomerInfo().USR.trim());
+        map.put("IN_IDCONT", filter.getIN_IDCONT().trim());
+        byte[] file = ws.getFile(gson.toJson(map), "Accounting/downloadInterfase");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", zipName + ".zip");
+        return new ResponseEntity<>(file, headers, HttpStatus.OK);
+        
     }
 
     @RequestMapping(value = "uploadAccounting", method = RequestMethod.POST)
     public ResponseEntity<?> uploadAccounting(@RequestBody SPACR021Filter filter) throws Exception {
         System.out.println("***** AccountingMaster - uploadAccounting *****");
         Gson gson = new Gson();
-        List<AccountingInterface> lstResponse = formatInterfases(filter);
         Map<String, Object> map = new HashMap();
-        map.put("userName", cs.getServerSession().getUserView().getCustomerInfo().USR.trim());
-        map.put("idCont", filter.getIN_IDCONT().trim());
-        map.put("dto", lstResponse);
+        map.put("IN_CCUST", filter.getIN_CCUST());
+        map.put("IN_USER", cs.getServerSession().getUserView().getCustomerInfo().USR.trim());
+        map.put("IN_IDCONT", filter.getIN_IDCONT().trim());
         String body = gson.toJson(map);
         boolean res = ws.postAsync(body, "Accounting/sendInterfaseToSFTP");
         map.put("success", res);
         return ResponseUtils.ok(map);
-    }
-
-    List<AccountingInterface> formatInterfases(SPACR021Filter filter) throws Exception {
-        filter = logic.loadSPACR021Filter(filter);
-        String fechaEnvio = Functions.getFechaActual("yyMMdd");
-        String horaEnvio = Functions.getHoraActualHHMM().replace(":", "");
-
-        List<AccountingInterface> lst = new ArrayList<>();
-        if (filter.getResponse() != null) {
-            String corrlAV = filter.getResponse().get(0).getA4545HEADE();
-            String fechaContable = filter.getResponse().get(0).getA4545PSTGD().substring(2, 6);
-            String fileNameTemp = "TC_" + fechaContable + "_" + fechaEnvio + "_" + horaEnvio;
-            String procesador = filter.getIN_CODPRO().trim();
-            final String cliente = filter.getIN_CCUST();
-
-            List<A4545> result = filter.getResponse();
-            Map<String, List<A4545>> gb = this.groupByModo(result);
-
-            String fileHeader = "SEQUENCE\tHEADER_TXT\tCOMP_CODE\tDOC_DATE\tPSTNG_DATE\tTRANS_DATE\tDOC_TYPE\tREF_DOC_NO\tZZ_AUTH_CODE\tPOSTING_KEY\tITEMNO_ACC\t"
-                    + "GL_ACCOUNT\tITEM_TEXT\tREF_KEY_1\tREF_KEY_2\tREF_KEY_3\tBUS_AREA\tCOSTCENTER\tPROFIT_CTR\tCUSTOMER\tNAME\tCITY\tCOUNTRY\tCURRENCY\t"
-                    + "AMT_DOCCUR\tAMT_BASE\tTAX_AMT\tZZ_LEGAL_INV\tZZ_LEGACY_INV\tZZ_ACM_ADM_NO\tPYMT_METH\tWTH_TYPE1\tWTH_CODE1\tWTH_BASE1\tWTH_AMT1\t"
-                    + "WTH_TYPE2\tWTH_CODE2\tWTH_BASE2\tWTH_AMT2\tWTH_TYPE3\tWTH_CODE3\tWTH_BASE3\tWTH_AMT3\tWTH_TYPE4\tWTH_CODE4\tWTH_BASE4\tWTH_AMT4\t"
-                    + "WTH_TYPE5\tWTH_CODE5\tWTH_BASE5\tWTH_AMT5\tWTH_TYPE6\tWTH_CODE6\tWTH_BASE6\tWTH_AMT6\tPAYMT_REF\tALLOC_NMBR\tBUS_PLACE";
-            gb.forEach((obj, row) -> {
-                String modo = getModoDesc(obj);
-                final List<String> interfase = new ArrayList<>();
-                interfase.add(fileHeader);
-
-                int[] fileNumber = {0};
-                int[] secuencia = {0};
-                int[] lineCount = {0};
-                row.forEach((data) -> {
-                    lineCount[0]++;
-
-                    long countSeq = row.stream()
-                            .filter(person -> Objects.equals(person.getA4545SEQ(), data.getA4545SEQ())) // Condición
-                            .count();
-
-                    if ((countSeq + lineCount[0]) > 9000 && secuencia[0] != data.getA4545SEQ()) {
-                        fileNumber[0]++;
-                        AccountingInterface dto = new AccountingInterface();
-                        dto.setFechaContable(fechaContable);
-                        dto.setFechaEnvio(fechaEnvio);
-                        dto.setHoraEnvio(horaEnvio);
-                        dto.setCliente(cliente);
-                        dto.setProceso(modo);
-                        dto.setCodigoProcesador(procesador);
-                        dto.setCorrlAV(corrlAV);
-                        dto.setFileNumber(fileNumber[0]);
-                        dto.setTipoConta(obj);
-                        String fileName = fileNameTemp + "_" + cliente + "_"
-                                + modo + "_" + procesador + "_" + fileNumber[0];
-                        dto.setFileName(fileName);
-                        List<String> dtoInterfase = new ArrayList<>(interfase);
-                        dto.setInterfase(dtoInterfase);
-                        lst.add(dto);
-                        interfase.clear();
-                        interfase.add(fileHeader);
-                        lineCount[0] = 0;
-                    }
-
-                    StringBuilder sb = new StringBuilder();
-                    sb.append(data.getA4545SEQ()).append("\t");                   // SEQUENCE
-                    sb.append(data.getA4545HEADE().trim()).append("\t");          // HEADER_TXT
-                    sb.append(data.getA4545COMPC().trim()).append("\t");          // COMP_CODE
-                    sb.append(data.getA4545DOCD().trim()).append("\t");           // DOC_DATE
-                    sb.append(data.getA4545PSTGD().trim()).append("\t");          // PSTNG_DATE
-                    sb.append(data.getA4545TRASD().trim()).append("\t");          // TRANS_DATE
-                    sb.append(data.getA4545DOCT().trim()).append("\t");           // DOC_TYPE
-                    sb.append(data.getA4545REFD().trim()).append("\t");           // REF_DOC_NO
-                    sb.append("").append("\t");                                            // ZZ_AUTH_CODE
-                    sb.append(data.getA4545PKEY().trim()).append("\t");           // POSTING_KEY
-                    sb.append(data.getA4545ITEM()).append("\t");                  // ITEMNO_ACC
-                    sb.append(data.getA4545CUENT().trim()).append("\t");          // GL_ACCOUNT
-                    sb.append(data.getA4545TEXTD().trim()).append("\t");          // ITEM_TEXT
-                    sb.append(data.getA4545REFK().trim()).append("\t");           // REF_KEY_1
-                    sb.append(data.getA4545REFK2().trim()).append("\t");          // REF_KEY_2
-                    sb.append(data.getA4545REFB().trim()).append("\t");           // REF_KEY_3
-                    sb.append("").append("\t");                                            // BUS_AREA
-                    sb.append(data.getA4545CCOST().trim()).append("\t");          // COSTCENTER
-                    sb.append(data.getA4545PROFI().trim()).append("\t");          // PROFIT_CTR
-                    sb.append(data.getA4545CUSTO().trim()).append("\t");          // CUSTOMER
-                    sb.append("").append("\t");                                            // NAME
-                    sb.append("").append("\t");                                            // CITY
-                    sb.append("").append("\t");                                            // COUNTRY
-                    sb.append(data.getA4545CUR().trim()).append("\t");            // CURRENCY
-
-                    if (data.getA4545CUR().equals("COP")) {
-                        Long AMT_DOCCUR = data.getA4545ACTIV().longValue();
-                        sb.append(AMT_DOCCUR).append("\t");                                 // AMT_DOCCUR
-                    } else {
-                        sb.append(data.getA4545ACTIV()).append("\t");              // AMT_DOCCUR
-                    }
-                    sb.append("").append("\t");                                            // AMT_BASE
-                    sb.append("").append("\t");                                            // TAX_AMT
-                    sb.append("").append("\t");                                            // ZZ_LEGAL_INV
-                    sb.append("").append("\t");                                            // ZZ_LEGACY_INV
-                    sb.append("").append("\t");                                            // ZZ_ACM_ADM_NO
-                    sb.append(data.getA4545MPAGO().trim()).append("\t");          // PYMT_METH
-
-                    sb.append("").append("\t");                                            // WTH_TYPE1
-                    sb.append("").append("\t");                                            // WTH_CODE1
-                    sb.append("").append("\t");                                            // WTH_BASE1
-                    sb.append("").append("\t");                                            // WTH_AMT1
-
-                    sb.append("").append("\t");                                            // WTH_TYPE2
-                    sb.append("").append("\t");                                            // WTH_CODE2
-                    sb.append("").append("\t");                                            // WTH_BASE2
-                    sb.append("").append("\t");                                            // WTH_AMT2
-
-                    sb.append("").append("\t");                                            // WTH_TYPE3
-                    sb.append("").append("\t");                                            // WTH_CODE3
-                    sb.append("").append("\t");                                            // WTH_BASE3
-                    sb.append("").append("\t");                                            // WTH_AMT3
-
-                    sb.append("").append("\t");                                            // WTH_TYPE4
-                    sb.append("").append("\t");                                            // WTH_CODE4
-                    sb.append("").append("\t");                                            // WTH_BASE4
-                    sb.append("").append("\t");                                            // WTH_AMT4
-
-                    sb.append("").append("\t");                                            // WTH_TYPE5
-                    sb.append("").append("\t");                                            // WTH_CODE5
-                    sb.append("").append("\t");                                            // WTH_BASE5
-                    sb.append("").append("\t");                                            // WTH_AMT5
-
-                    sb.append("").append("\t");                                            // WTH_TYPE6
-                    sb.append("").append("\t");                                            // WTH_CODE6
-                    sb.append("").append("\t");                                            // WTH_BASE6
-                    sb.append("").append("\t");                                            // WTH_AMT6
-
-                    sb.append(data.getA4545REPAG().trim()).append("\t");          // PAYMT_REF
-                    sb.append(data.getA4545ANUMB().trim()).append("\t");          // ALLOC_NMBR
-                    sb.append(data.getA4545PLACE().trim());                         // BUS_PLACE
-
-                    interfase.add(sb.toString());
-
-                    secuencia[0] = data.getA4545SEQ();
-
-                });
-
-                if (interfase.size() > 1) {
-                    fileNumber[0]++;
-                    AccountingInterface dto = new AccountingInterface();
-                    dto.setFechaContable(fechaContable);
-                    dto.setFechaEnvio(fechaEnvio);
-                    dto.setHoraEnvio(horaEnvio);
-                    dto.setCliente(cliente);
-                    dto.setProceso(modo);
-                    dto.setCodigoProcesador(procesador);
-                    dto.setCorrlAV(corrlAV);
-                    dto.setFileNumber(fileNumber[0]);
-                    dto.setTipoConta(obj);
-                    String fileName = fileNameTemp + "_" + cliente + "_"
-                            + modo + "_" + procesador + "_" + fileNumber[0];
-                    dto.setFileName(fileName);
-                    dto.setInterfase(interfase);
-                    lst.add(dto);
-                }
-            });
-        }
-        return lst;
-    }
-
-    private Map< String, List<A4545>> groupByModo(List<A4545> lst) {
-        Map<String, List<A4545>> gb = lst.stream()
-                .collect(Collectors.groupingBy(
-                        fila -> fila.getA4545MODO() // Extraer el valor de la columna "MODO"
-                ));
-        return gb;
     }
 
     @RequestMapping(value = "reverseAccounting", method = RequestMethod.POST)
@@ -331,21 +167,10 @@ public class AccountingReportController{
     @RequestMapping(value = "processAccounting", method = RequestMethod.POST)
     public ResponseEntity<?> processAccounting(@RequestBody SPACR001Filter params) throws Exception {
         System.out.println("***** AccountingMaster - processAccounting *****");
-        SPMC007Filter filter = SPMC007Filter.builder()
-                .IN_KEY3("CONTABLEAV")
-                .IN_CORRL(params.getIN_TIPOCON())
-                .build();
-        filter = logic.loadSPMC007Filter(filter);
         Map<String, Object> map = new HashMap<>();
-        if (filter.getSTAT().equals("X")) {
-            map.put("STATUS", false);
-            map.put("MSG", "Another process is Running.");
-        } else {
-            //logic.loadSPACR001Filter(params);
-            ws.postAsync(new Gson().toJson(params), "Accounting/processAccounting");
-            map.put("STATUS", true);
-            map.put("MSG", "Process Running.");
-        }
+        boolean res = ws.postAsync(new Gson().toJson(params), "Accounting/processAccounting");
+        map.put("STATUS", res);
+        map.put("MSG",res? "Process Running.": "Error on process.");
         return ResponseUtils.ok(map);
     }
 
