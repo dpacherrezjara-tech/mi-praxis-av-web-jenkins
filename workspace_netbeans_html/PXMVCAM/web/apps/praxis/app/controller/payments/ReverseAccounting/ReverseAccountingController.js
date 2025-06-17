@@ -14,28 +14,8 @@ Ext.define('Ext.Praxis.controller.payments.ReverseAccounting.ReverseAccountingCo
     init: function (view) {
     },
     afterRender: async function () {
-
+        this.loadGrid();
     },
-//    loadFilters: async function () {
-//        const me = this;
-//        me.view.mask('Loading...');
-//        try {
-//            const res = await me.miscRequest.get('/loadAccountingProcs');
-//
-//            const data = res.data;
-//            me.procesadores = data.response;
-//            const ccust = Ext.getCmp(prototype.id + '-cmbCcust');
-//            ccust.fireEvent('change', {});
-//        } catch (e) {
-//            console.error(e);
-//            me.notifier.alert('Filters not loaded');
-//        } finally {
-//            me.view.unmask();
-//            me.loadGrid();
-//        }
-//
-//    },
-
     formatParams: function () {
         const formFilters = Ext.getCmp(prototype.id + '-formFilters').getForm();
         console.log('Search Params: ', formFilters.getValues());
@@ -46,8 +26,8 @@ Ext.define('Ext.Praxis.controller.payments.ReverseAccounting.ReverseAccountingCo
         let params = me.formatParams();
         const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
         mainPanel.removeAll();
-        const panelDetail = Ext.create('Ext.Praxis.view.payments.ReverseAccountingForm.Grids.MainGrid', {
-            id: prototype.id + '-MainGrid-1',
+        const panelDetail = Ext.create('Ext.Praxis.view.payments.ReverseAccountingForm.Grids.ReverseAccountingGrid', {
+            id: prototype.id + '-ReverseAccountingGrid-1',
             searchParams: params
         });
         mainPanel.add(panelDetail);

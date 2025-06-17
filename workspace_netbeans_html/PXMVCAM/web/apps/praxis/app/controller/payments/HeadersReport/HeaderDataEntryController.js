@@ -33,11 +33,12 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
             const files = res.lstRs.at(1);
             const bandocs = res.lstRs.at(2);
             const rejections = res.lstRs.at(3);
+            const supports = res.lstRs.at(4);
             let info = header.at(0);
             global.cleanPXobj(info);
             mainForm.reset();
             mainForm.setValues(info);
-            me.bindData(info, files, bandocs, rejections);
+            me.bindData(info, files, bandocs, rejections, supports);
         } catch (e) {
             console.error(e);
             me.view.close();
@@ -45,14 +46,23 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
             me.view.setLoading(false);
         }
     },
-    bindData: function (info, files, bandocs, rejections) {
+    bindData: function (info, files, bandocs, rejections, supports) {
         const me = this;
-        //console.log(info.STCONT);
-        let sts = ['6', '9','L','R','J'];
+        const tab2 = Ext.getCmp(prototype.idDEheader + '-tabMain2');
+        let sts = ['6', '9', 'L', 'R', 'J'];
         if (sts.includes(info.STCONT)) {
             Ext.getCmp(prototype.idDEheader + '-btn-save').hide();
             Ext.getCmp(prototype.idDEheader + '-btnRejectRec').hide();
             Ext.getCmp(prototype.idDEheader + '-btn-rejectAll').hide();
+            if(info.STCONT!=='L'){
+                Ext.getCmp(prototype.idDEheader + '-tabAccounted').tab.hide();
+                Ext.getCmp(prototype.idDEheader + '-tabRejected').tab.show();
+                tab2.setActiveTab(1);
+            }else{
+                Ext.getCmp(prototype.idDEheader + '-tabAccounted').tab.show();
+                Ext.getCmp(prototype.idDEheader + '-tabRejected').tab.hide();
+                tab2.setActiveTab(0);
+            }
         } else {
             Ext.getCmp(prototype.idDEheader + '-btn-save').show();
             Ext.getCmp(prototype.idDEheader + '-btnRejectRec').show();
@@ -61,6 +71,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
         me.dataFiles = files;
         me.dataAcc = bandocs;
         me.dataRej = rejections;
+        me.supports = supports;
         me.loadStores();
     },
     loadStores: function () {
@@ -68,9 +79,12 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
         const filesGrid = Ext.getCmp(prototype.idDEheader + '-gridFiles');
         const accountedGrid = Ext.getCmp(prototype.idDEheader + '-gridAccounted');
         const rejectionsGrid = Ext.getCmp(prototype.idDEheader + '-gridRejected');
+        const supportsGrid = Ext.getCmp(prototype.idDEheader + '-gridSupports');
+        const supportsTab = Ext.getCmp(prototype.idDEheader + '-tabSupports');
         let storeFiles = new Ext.data.Store({
             data: me.dataFiles
         });
+
         let storeAcc = new Ext.data.Store({
             pageSize: 50,
             data: me.dataAcc,
@@ -90,6 +104,18 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
         filesGrid.setStore(storeFiles);
         accountedGrid.setStore(storeAcc);
         rejectionsGrid.setStore(storeRej);
+        
+
+        if (me.supports.length > 0) {
+            let storeSupports = new Ext.data.Store({
+                data: me.supports
+            });
+            supportsGrid.setStore(storeSupports);
+            supportsTab.tab.show();
+        }else{
+            supportsTab.tab.hide();
+        }
+
         me.view.center();
     },
     onCancelClick: function () {
@@ -189,7 +215,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
                         xtype: 'textfield',
                         id: prototype.idDEheader + '-txtFreeText',
                         hidden: true,
-                        margin:'5 5 5 5',
+                        margin: '5 5 5 5',
                         width: 600,
                         labelWidth: 120,
                         labelStyle: 'font-weight:bold;',

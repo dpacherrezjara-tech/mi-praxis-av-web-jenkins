@@ -197,7 +197,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntr
                             },
                             items: [
                                 {
-                                    title: 'Files',
+                                    title: 'Interfaces',
                                     itemId: 'F',
                                     id: prototype.idDEheader + '-tabFiles',
                                     items: [
@@ -229,6 +229,43 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntr
                                                     {text: 'File Name', dataIndex: 'FILENAM', flex: 1},
                                                     {text: 'Date', dataIndex: 'FSEND', width: 100},
                                                     {text: 'Hour', dataIndex: 'HSEND', width: 80}
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    title: 'Supports',
+                                    itemId: 'S',
+                                    hidden:true,
+                                    id: prototype.idDEheader + '-tabSupports',
+                                    items: [
+                                        {
+                                            xtype: 'grid',
+                                            minHeight: 100,
+                                            maxHeight: 140,
+                                            viewConfig: {
+                                                stripeRows: true,
+                                                enableTextSelection: true,
+                                                markDirty: false
+                                            },
+                                            columnLines: true,
+                                            id: prototype.idDEheader + '-gridSupports',
+                                            width: '100%',
+                                            columns: {
+                                                defaults: {
+                                                    align: 'center',
+                                                    menuDisabled: true,
+                                                    sortable: true
+                                                },
+                                                items: [
+                                                    {
+                                                        text: 'RN',
+                                                        locked: true,
+                                                        xtype: 'rownumberer', // Columna de número de fila
+                                                        width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
+                                                    },
+                                                    {text: 'File Name', dataIndex: 'FILENAM', flex: 1}
                                                 ]
                                             }
                                         }
