@@ -1909,15 +1909,15 @@ public class MasterDAO {
 
     public Connection getIBMDB2Connection() {
         //SETEO DE ORIGEN
-        String url = "jdbc:as400://10.0.0.25/PRAXIS;libraries=PRAXIS"; //PRODUCCION
-        //String url = "jdbc:as400://10.0.0.47/PRAXIS;libraries=PRAXISMP"; //DESARROLLO
+        //String url = "jdbc:as400://10.0.0.25/PRAXIS;libraries=PRAXIS"; //PRODUCCION
+        String url = "jdbc:as400://10.0.0.47/PRAXIS;libraries=PRAXISMP"; //DESARROLLO
 
         try {
             Class.forName("com.ibm.as400.access.AS400JDBCDriver");
             DriverManager.setLoginTimeout(60 * 10); // 10min
 
-            //return DriverManager.getConnection(url, "RBTAVIANCA", "rbtavia"); //DESARROLLO
-            return DriverManager.getConnection(url, "USRWEBAV", "gt23yv90");//PRODUCCION
+            return DriverManager.getConnection(url, "RBTAVIANCA", "rbtavia"); //DESARROLLO
+            //return DriverManager.getConnection(url, "USRWEBAV", "gt23yv90");//PRODUCCION
         } catch (Exception ex) {
             return null;
         }
