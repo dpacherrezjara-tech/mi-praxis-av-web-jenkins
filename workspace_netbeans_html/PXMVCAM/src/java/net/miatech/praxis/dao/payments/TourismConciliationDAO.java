@@ -101,7 +101,7 @@ public class TourismConciliationDAO {
                 objRtn.STVAL = rs01.getString("STVAL").trim();
                 objRtn.SVFOP = rs01.getString("SVFOP").trim();
                 objRtn.QTYTRAN1 = rs01.getDouble("QTYTRAN1");
-                objRtn.REFER = rs01.getString("REFER").trim();
+                objRtn.REFER = rs01.getString("REFERTOUR").trim();
                 objRtn.DATEC = rs01.getString("DATEC").trim();
                 objRtn.TRANC = rs01.getString("TRANC").trim();
                 objRtn.DATCO = rs01.getString("DATCO").trim();
