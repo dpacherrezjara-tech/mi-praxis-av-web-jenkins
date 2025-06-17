@@ -38,6 +38,7 @@ Ext.define('Ext.Praxis.controller.payments.ReverseAccounting.ReverseAccountingDa
             Ext.getCmp(prototype.idDE + '-txtBpoComment').setReadOnly(false);
             Ext.getCmp(prototype.idDE + '-btn-save').show();
         }
+        me.view.center();
     },
     onUpdateRejection: function () {
         const me = this;

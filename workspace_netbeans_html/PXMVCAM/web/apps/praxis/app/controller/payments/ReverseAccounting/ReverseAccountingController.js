@@ -14,7 +14,16 @@ Ext.define('Ext.Praxis.controller.payments.ReverseAccounting.ReverseAccountingCo
     init: function (view) {
     },
     afterRender: async function () {
+        await this.loadFilters();
         this.loadGrid();
+    },
+    loadFilters: async function(){
+        const me = this;
+        me.view.setLoading(true);
+        const misc = await global.callStoreGet('PRAXISMP','SPMC001',{});
+        global.setComboStore(Ext.getCmp(prototype.id + '-cmbCODPRO'),misc.lstRs.at(0),'CODE','NAME','');
+        me.view.setLoading(false);
+      //PRAXISMP.SPMC001  
     },
     formatParams: function () {
         const formFilters = Ext.getCmp(prototype.id + '-formFilters').getForm();
