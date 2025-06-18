@@ -93,7 +93,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                                             },
                                             {
                                                 text: 'Amount',
-                                                dataIndex: 'SVFOP',
+                                                dataIndex: 'SVFOPS',
                                                 width: 132,
                                                 editor: { xtype: 'textfield', editable: false },
                                                 renderer: function (value, metaData, record) {

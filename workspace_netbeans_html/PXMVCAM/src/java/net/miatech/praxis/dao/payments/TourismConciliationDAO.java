@@ -55,7 +55,7 @@ public class TourismConciliationDAO {
     ResultSet rs01 = null;
     double dblAmount = 0;
 
-    String SQLCLL01 = "{CALL PRAXISMP.SQP00905(?,?,?,?,?,?,?,?,?,?)}";
+    String SQLCLL01 = "{CALL PRAXISMP.SQP00905(?,?,?,?,?,?,?,?,?,?,?)}";
     Connection cnx = null;
 
     try {
@@ -68,23 +68,24 @@ public class TourismConciliationDAO {
         cstmt.setString(4, filter.IN_DATE_TO.trim());
         cstmt.setString(5, filter.SDATE.trim());
         cstmt.setString(6, filter.SAGENT.trim());
+        cstmt.setString(7, filter.CERROR.trim());
 
-        cstmt.registerOutParameter(7, Types.INTEGER);
         cstmt.registerOutParameter(8, Types.INTEGER);
         cstmt.registerOutParameter(9, Types.INTEGER);
         cstmt.registerOutParameter(10, Types.INTEGER);
+        cstmt.registerOutParameter(11, Types.INTEGER);
 
-        cstmt.setInt(7, filter.page.PAGNUM);
-        cstmt.setInt(8, filter.page.PAGROW);
-        cstmt.setInt(9, filter.page.TOTPAG);
-        cstmt.setInt(10, filter.page.TOTROW);
+        cstmt.setInt(8, filter.page.PAGNUM);
+        cstmt.setInt(9, filter.page.PAGROW);
+        cstmt.setInt(10, filter.page.TOTPAG);
+        cstmt.setInt(11, filter.page.TOTROW);
 
         cstmt.execute();
 
-        filter.page.PAGNUM = cstmt.getInt(7);
-        filter.page.PAGROW = cstmt.getInt(8);
-        filter.page.TOTPAG = cstmt.getInt(9);
-        filter.page.TOTROW = cstmt.getInt(10);
+        filter.page.PAGNUM = cstmt.getInt(8);
+        filter.page.PAGROW = cstmt.getInt(9);
+        filter.page.TOTPAG = cstmt.getInt(10);
+        filter.page.TOTROW = cstmt.getInt(11);
 
         rs01 = cstmt.getResultSet();
         if (rs01.next()) {
@@ -99,7 +100,7 @@ public class TourismConciliationDAO {
                 objRtn.SDATE = rs01.getString("SDATE").trim();
                 objRtn.SAGENT = rs01.getString("SAGENT").trim();
                 objRtn.STVAL = rs01.getString("STVAL").trim();
-                objRtn.SVFOP = rs01.getString("SVFOP").trim();
+                objRtn.SVFOPS = rs01.getDouble("SVFOP");
                 objRtn.QTYTRAN1 = rs01.getDouble("QTYTRAN1");
                 objRtn.REFER = rs01.getString("REFERTUR").trim();
                 objRtn.DATEC = rs01.getString("DATEC").trim();
@@ -107,7 +108,8 @@ public class TourismConciliationDAO {
                 objRtn.DATCO = rs01.getString("DATCO").trim();
                 objRtn.FREGLA = rs01.getString("FREGLA").trim();
                 objRtn.CERROR = rs01.getString("ERROR_DESC").trim();
-                objRtn.ADJUST = rs01.getString("MONTOADJUST").trim();
+                objRtn.SVFOPA = rs01.getDouble("MONTOADJUST");
+                objRtn.TOTALSVFOP = objRtn.SVFOPS + objRtn.SVFOPA;
                 objRtn.TOTdblAmount = dblAmount;
 
                 objRtn.page.PAGNUM = filter.page.PAGNUM;

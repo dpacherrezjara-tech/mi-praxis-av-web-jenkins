@@ -257,8 +257,9 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.TourismConciliati
         me.bean.PROCIND = Ext.getCmp(prototype.id + '-cmbPROCIND').getValue();
         me.bean.SDATE = Ext.getCmp(prototype.id + '-txtDate').getValue();
         me.bean.AGENTE = Ext.getCmp(prototype.id + '-txtAGENTE').getValue( );
+        me.bean.CERROR = Ext.getCmp(prototype.id + '-cmbStatus').getValue( );
 //        me.bean.TRANSTYPE = Ext.getCmp(prototype.id + '-cmbTRANSTYPE').getValue();
-                
+       console.log(me.bean, 'me.bean')         
         var beanString = JSON.stringify(me.bean);
         searchParams = {
             beanString: beanString,
