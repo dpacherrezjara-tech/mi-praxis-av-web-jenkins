@@ -1,17 +1,17 @@
 
 prototype.id = 'UserMaintenanceForm';
 prototype.url = CONTEXTPATH + '/UserMaintenance';
-
+//Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceController
 Ext.define('Ext.Praxis.view.payments.UserMaintenanceForm.UserMaintenanceForm', {
     extend: 'Ext.form.Panel',
     alias: 'widget.UserMaintenanceForm',
     requires: [
         'Ext.Praxis.view.payments.UserMaintenanceForm.Options',
-        //'Ext.Praxis.view.payments.UserMaintenanceForm.Filters',
+        'Ext.Praxis.view.payments.UserMaintenanceForm.Filters',
        // 'Ext.Praxis.view.payments.UserMaintenanceForm.Info',
-                // 'Ext.Praxis.controller.payments.UserMaintenanceFormForm.UserMaintenanceFormController'
+        'Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceController'
     ],
-    //  controller: 'UserMaintenanceFormController',
+     controller: 'UserMaintenanceController',
     layout: {
         type: 'fit'
     },
