@@ -44,14 +44,12 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
     Ext.getCmp(prototype.id + '-de-txtSCARCODE').setValue(this.bean.QTYTRAN1);
     Ext.getCmp(prototype.id + '-de-txtSCARDN').setValue(this.bean.QTYDOC);
     Ext.getCmp(prototype.id + '-de-txtComentSAUTHOC').setValue(this.bean.CERROR);
-    let value = Ext.util.Format.number(this.bean.SVFOP, '0,000.00');
-    let valueAdjust = Ext.util.Format.number(this.bean.ADJUST, '0,000.00');
-    let valueAdjustTotal = this.bean.SVFOP + this.bean.ADJUST;
-    console.log(valueAdjustTotal,"Esto es mi total")
+    let value = Ext.util.Format.number(this.bean.SVFOPS, '0,000.00');
+    let valueAdjust = Ext.util.Format.number(this.bean.SVFOPA, '0,000.00');
+    let valueAdjustTotal = Ext.util.Format.number(this.bean.TOTALSVFOP, '0,000.00');
     Ext.getCmp(prototype.id + '-de-txtAmountTouris').setValue(value);
     Ext.getCmp(prototype.id + '-de-txtComentAdjust').setValue(valueAdjust);
-    Ext.getCmp(prototype.id + '-de-txtComentAdjustSum').setValue(2);
-    
+    Ext.getCmp(prototype.id + '-de-txtComentAdjustSum').setValue(valueAdjustTotal);
     
     let status;
     if (this.bean.STVAL === '1') {
