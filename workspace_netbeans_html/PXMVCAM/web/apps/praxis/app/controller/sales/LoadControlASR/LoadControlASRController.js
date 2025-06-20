@@ -586,10 +586,11 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlASR.LoadControlASRController'
             method: 'POST',
             timeout: 60000000,
             params: beanfilter,
-            beforerequest: Ext.getCmp(prototype.id + '-boxErrorsFormat').mask('Loading...', ''),
+            // beforerequest: Ext.getCmp(prototype.id + '-boxErrorsFormat').mask('Loading...', ''),
+            beforerequest: Ext.getCmp(prototype.id + '-form').mask('Loading...', ''),
             success: function (response, options) {
                 var res = Ext.JSON.decode(response.responseText);
-                Ext.getCmp(prototype.id + '-boxErrorsFormat').unmask('Loading...', '');
+                Ext.getCmp(prototype.id + '-form').unmask('Loading...', '');
                 console.log(res);
                 if (res.success) {
                     var objRtn = res.filter;
