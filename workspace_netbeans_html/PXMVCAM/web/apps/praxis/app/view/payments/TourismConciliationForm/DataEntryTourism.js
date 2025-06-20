@@ -298,225 +298,233 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
 //                                        {xtype: 'tbspacer', width: 10}
 //                                    ]
 //                                },
-                                
-                                
-                                
-                                
-                                
+
+
+
+
+
                                 {
-    xtype: 'label',
-    text: 'Sales Information',
-    style: 'font-weight:bold;color:#0B333C;text-decoration: underline;',
-    bodyStyle: 'background:#E5ECEF;',
-    width: 334,
-    height: 20,
-    margin: '4 2 4 8'
-},
-{
-    xtype: 'panel',
-    layout: 'hbox',
-    bodyStyle: 'background:#efe5e5;',
-    margin: '0 2 0 20',
-    items: [
-        {
-            xtype: 'label',
-            text: 'Sales Date',
-            style: 'font-weight:bold;color:#0B333C;',
-            width: 120
-        },
-        { xtype: 'tbspacer', width: 10 },
-        {
-            xtype: 'textfield',
-            id: prototype.id + '-de-txtBSUMDATE',
-            readOnly: true,
-            fieldStyle: 'text-align:center;',
-            width: 100
-        },
-        { xtype: 'tbspacer', width: 50 },
-        {
-            xtype: 'label',
-            text: 'Doc. Type',
-            style: 'font-weight:bold;color:#0B333C;',
-            width: 80
-        },
-        { xtype: 'tbspacer', width: 10 },
-        {
-            xtype: 'textfield',
-            id: prototype.id + '-de-txtTDOC',
-            readOnly: true,
-            fieldStyle: 'text-align:center;',
-            width: 80
-        },
-        { xtype: 'tbspacer', width: 50 },
-        {
-            xtype: 'label',
-            text: 'Agent',
-            style: 'font-weight:bold;color:#0B333C;',
-            width: 120
-        },
-        { xtype: 'tbspacer', width: 10 },
-        {
-            xtype: 'textfield',
-            id: prototype.id + '-de-txtBANDOC',
-            readOnly: true,
-            fieldStyle: 'text-align:center;',
-            width: 120
-        },
-        { xtype: 'tbspacer', width: 50 },
-        {
-            xtype: 'label',
-            text: 'Status',
-            style: 'font-weight:bold;color:#0B333C;',
-            width: 120
-        },
-        { xtype: 'tbspacer', width: 10 },
-        {
-            xtype: 'textfield',
-            id: prototype.id + '-de-txtSTATUS',
-            readOnly: true,
-            fieldStyle: 'text-align:center;',
-            width: 120
-        }
-    ]
-},
+                                    xtype: 'label',
+                                    text: 'Sales Information',
+                                    style: 'font-weight:bold;color:#0B333C;text-decoration: underline;',
+                                    bodyStyle: 'background:#E5ECEF;',
+                                    width: 334,
+                                    height: 20,
+                                    margin: '4 2 4 8'
+                                },
+                                {
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    bodyStyle: 'background:#efe5e5;',
+                                    margin: '0 2 0 20',
+                                    items: [
+                                        {
+                                            xtype: 'label',
+                                            text: 'Sales Date',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 120
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtBSUMDATE',
+                                            readOnly: true,
+                                            fieldStyle: 'text-align:center;',
+                                            width: 100
+                                        },
+                                        {xtype: 'tbspacer', width: 50},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Doc. Type',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 80
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtTDOC',
+                                            readOnly: true,
+                                            fieldStyle: 'text-align:center;',
+                                            width: 80
+                                        },
+                                        {xtype: 'tbspacer', width: 50},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Agent',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 120
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtBANDOC',
+                                            readOnly: true,
+                                            fieldStyle: 'text-align:center;',
+                                            width: 120
+                                        },
+                                        {xtype: 'tbspacer', width: 50},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Status',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 120
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtSTATUS',
+                                            readOnly: true,
+                                            fieldStyle: 'text-align:center;',
+                                            width: 120
+                                        }
+                                    ]
+                                },
 
-{
-    xtype: 'panel',
-    layout: 'hbox',
-    bodyStyle: 'background:#efe5e5;',
-    margin: '0 2 0 20',
-    items: [
-        {
-            xtype: 'label',
-            text: 'Invoice',
-            style: 'font-weight:bold;color:#0B333C;',
-            width: 120
-        },
-        { xtype: 'tbspacer', width: 10 },
-        {
-            xtype: 'textfield',
-            id: prototype.id + '-de-txtPAYDATE',
-            readOnly: true,
-            fieldStyle: 'text-align:center;',
-            width: 100
-        },
-        { xtype: 'tbspacer', width: 50 },
-        {
-            xtype: 'label',
-            text: 'Qty trans.',
-            style: 'font-weight:bold;color:#0B333C;',
-            width: 80
-        },
-        { xtype: 'tbspacer', width: 10 },
-        {
-            xtype: 'textfield',
-            id: prototype.id + '-de-txtSCARCODE',
-            readOnly: true,
-            fieldStyle: 'text-align:center;',
-            width: 80
-        },
-        { xtype: 'tbspacer', width: 50 },
-        {
-            xtype: 'label',
-            text: 'Qty Doc.',
-            style: 'font-weight:bold;color:#0B333C;',
-            width: 120
-        },
-        { xtype: 'tbspacer', width: 10 },
-        {
-            xtype: 'textfield',
-            id: prototype.id + '-de-txtSCARDN',
-            readOnly: true,
-            fieldStyle: 'text-align:center;',
-            width: 120
-        },
-        { xtype: 'tbspacer', width: 50 },
-        {
-            xtype: 'label',
-            text: 'Amount',
-            style: 'font-weight:bold;color:#0B333C;',
-            width: 120
-        },
-        { xtype: 'tbspacer', width: 10 },
-        {
-            xtype: 'textfield',
-            id: prototype.id + '-de-txtAmountTouris',
-            readOnly: true,
-            fieldStyle: 'text-align:center;',
-            width: 120
-        }
-        
-    ]
-},
+                                {
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    bodyStyle: 'background:#efe5e5;',
+                                    margin: '0 2 0 20',
+                                    items: [
+                                        {
+                                            xtype: 'label',
+                                            text: 'Invoice',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 120
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtPAYDATE',
+                                            readOnly: true,
+                                            fieldStyle: 'text-align:center;',
+                                            width: 100
+                                        },
+                                        {xtype: 'tbspacer', width: 50},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Qty trans.',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 80
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtSCARCODE',
+                                            readOnly: true,
+                                            fieldStyle: 'text-align:center;',
+                                            width: 80
+                                        },
+                                        {xtype: 'tbspacer', width: 50},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Qty Doc.',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 120
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtSCARDN',
+                                            readOnly: true,
+                                            fieldStyle: 'text-align:center;',
+                                            width: 120
+                                        },
+                                        {xtype: 'tbspacer', width: 50},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Amount',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 120
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtAmountTouris',
+                                            readOnly: true,
+                                            fieldStyle: 'text-align:center;',
+                                            width: 120
+                                        }
 
-{
-    xtype: 'label',
-    text: 'Adjust Information',
-    style: 'font-weight:bold;color:#0B333C;text-decoration: underline;',
-    bodyStyle: 'background:#E5ECEF;',
-    width: 334,
-    height: 20,
-    margin: '4 2 4 8'
-},
-{
-    xtype: 'panel',
-    layout: 'hbox',
-    bodyStyle: 'background:#efe5e5;',
-    margin: '0 2 0 20',
-    items: [
-        {
-            xtype: 'label',
-            text: 'Coment',
-            style: 'font-weight:bold;color:#0B333C;',
-            width: 120
-        },
-        { xtype: 'tbspacer', width: 10 },
-        {
-            xtype: 'textfield',
-            id: prototype.id + '-de-txtComentSAUTHOC',
-            readOnly: false,
-            fieldStyle: 'text-align:center;',
-            width: 120
-        },
-        { xtype: 'tbspacer', width: 10 },
-        {
-            xtype: 'label',
-            text: 'Amount',
-            style: 'font-weight:bold;color:#0B333C;',
-            width: 120
-        },
-        { xtype: 'tbspacer', width: 10 },
-        {
-            xtype: 'textfield',
-            id: prototype.id + '-de-txtComentAdjust',
-            readOnly: false,
-            fieldStyle: 'text-align:center;',
-            width: 120
-        },
-        { xtype: 'tbspacer', width: 10 },
-        {
-            xtype: 'label',
-            text: 'total Amount',
-            style: 'font-weight:bold;color:#0B333C;',
-            width: 120
-        },
-        { xtype: 'tbspacer', width: 10 },
-        {
-            xtype: 'textfield',
-            id: prototype.id + '-de-txtComentAdjustSum',
-            readOnly: false,
-            fieldStyle: 'text-align:center;',
-            width: 120
-        },
-        
-    ]
-},
+                                    ]
+                                },
 
+                                {
+                                    xtype: 'label',
+                                    text: 'Adjust Information',
+                                    style: 'font-weight:bold;color:#0B333C;text-decoration: underline;',
+                                    bodyStyle: 'background:#E5ECEF;',
+                                    width: 334,
+                                    height: 20,
+                                    margin: '4 2 4 8'
+                                },
+                                {
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    bodyStyle: 'background:#efe5e5;',
+                                    margin: '0 2 0 20',
+                                    items: [
+                                        {
+                                            xtype: 'label',
+                                            text: 'Coment',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 120
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtComentSAUTHOC',
+                                            readOnly: false,
+                                            fieldStyle: 'text-align:center;',
+                                            width: 120
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Amount',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 120
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtComentAdjust',
+                                            readOnly: false,
+                                            fieldStyle: 'text-align:center;',
+                                            width: 120
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'label',
+                                            text: 'total Amount',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 120
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtComentAdjustSum',
+                                            readOnly: false,
+                                            fieldStyle: 'text-align:center;',
+                                            width: 120
+                                        },
+                                        
 
-
+                                    ]
+                                },
                                 
-
+                                {xtype: 'tbspacer', width: 10},
                                 
+                                               {
+                                    xtype: 'label',
+                                    text: 'Nueva Grilla',
+                                    style: 'font-weight:bold;color:#0B333C;text-decoration: underline;',
+                                    bodyStyle: 'background:#E5ECEF;',
+                                    width: 334,
+                                    height: 20,
+                                    margin: '4 2 4 8'
+                                },
+
                                 {
                                     xtype: 'panel',
                                     layout: 'hbox',
@@ -524,82 +532,90 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                     margin: '0 2 0 20',
                                     bodyStyle: 'background:#efe5e5;',
                                     items: [
+
+                                        /// aqui empeiza
+
+
+
+
                                         
+                                              
+                                            
                                         
-                                        
+                                                // termina
                                     ]
                                 },
-                                {
-                                    xtype: 'panel',
-                                    layout: 'hbox',
-                                    border: false,
-                                    id: prototype.id + '-PanelGridAndComments',
-                                    margin: '10 0 10 200',
-                                    items: [
-                                        {
-                                            xtype: 'tbspacer',
-                                            width: 60,
-                                            margin: '30 30 0 30',
-                                            id: prototype.id + '-vacioComment',
-                                        },
-                                        
-                                        {
-                                            xtype: 'panel',
-                                            layout: 'vbox',
-                                            border: false,
-                                            margin: '0 0 0 0',
-                                            items: [
-                                                {
-                                                    xtype: 'panel',
-                                                    layout: 'hbox',
-                                                    border: false,
-                                                    margin: '10 0 10 0',
-                                                    id: prototype.id + '-PanelComments',
-                                                    hidden: true,
-                                                    height: 30,
-                                                    width: 592,
-                                                    bodyStyle: 'background:#efe5e5;',
-                                                    items: [
-                                                        {
-                                                            xtype: 'label',
+//                                {
+//                                    xtype: 'panel',
+//                                    layout: 'hbox',
+//                                    border: false,
+//                                    id: prototype.id + '-PanelGridAndComments',
+//                                    margin: '10 0 10 200',
+//                                    items: [
+//                                        {
+//                                            xtype: 'tbspacer',
+//                                            width: 60,
+//                                            margin: '30 30 0 30',
+//                                            id: prototype.id + '-vacioComment',
+//                                        },
+//                                        
+//                                        {
+//                                            xtype: 'panel',
+//                                            layout: 'vbox',
+//                                            border: false,
+//                                            margin: '0 0 0 0',
+//                                            items: [
+//                                                {
+//                                                    xtype: 'panel',
+//                                                    layout: 'hbox',
+//                                                    border: false,
+//                                                    margin: '10 0 10 0',
+//                                                    id: prototype.id + '-PanelComments',
+//                                                    hidden: true,
+//                                                    height: 30,
+//                                                    width: 592,
+//                                                    bodyStyle: 'background:#efe5e5;',
+//                                                    items: [
+//                                                        {
+//                                                            xtype: 'label',
+////                                                            style: 'font-weight:bold;color:#0B333C;',
+//                                                            margin: '5 0 0 10',
+//                                                            text: 'BPO Comment:',
+//                                                            width: 90
+//                                                        },
+//                                                        {xtype: 'tbspacer', width: 5},
+//                                                        {
+//                                                            xtype: 'label',
+//                                                            text: '(*)',
+//                                                            margin: '5 2 0 0',
+//                                                            id: prototype.id + '-COMENT_Forced',
+//                                                            hidden: true,
+//                                                            style: 'font-weight:bold;color:red;',
+//                                                            width: 20
+//                                                        },
+//                                                        {
+//                                                            xtype: 'combo',
+//                                                            id: prototype.id + '-cmbCOMENT',
+//                                                            margin: '5 0 0 0',
 //                                                            style: 'font-weight:bold;color:#0B333C;',
-                                                            margin: '5 0 0 10',
-                                                            text: 'BPO Comment:',
-                                                            width: 90
-                                                        },
-                                                        {xtype: 'tbspacer', width: 5},
-                                                        {
-                                                            xtype: 'label',
-                                                            text: '(*)',
-                                                            margin: '5 2 0 0',
-                                                            id: prototype.id + '-COMENT_Forced',
-                                                            hidden: true,
-                                                            style: 'font-weight:bold;color:red;',
-                                                            width: 20
-                                                        },
-                                                        {
-                                                            xtype: 'combo',
-                                                            id: prototype.id + '-cmbCOMENT',
-                                                            margin: '5 0 0 0',
-                                                            style: 'font-weight:bold;color:#0B333C;',
-                                                            fieldStyle: 'text-align:left;',
-                                                            queryMode: 'local',
-                                                            triggerAction: 'all',
-                                                            valueField: 'CODE',
-                                                            displayField: 'NAME',
-                                                            width: 460,
-                                                            labelWidth: 10,
-                                                            hidden: false,
-                                                            hiddenLabel: false
-                                                        },
-                                                    ]
-                                                },
-                                                
-                                                
-                                            ]
-                                        },
-                                    ]
-                                },
+//                                                            fieldStyle: 'text-align:left;',
+//                                                            queryMode: 'local',
+//                                                            triggerAction: 'all',
+//                                                            valueField: 'CODE',
+//                                                            displayField: 'NAME',
+//                                                            width: 460,
+//                                                            labelWidth: 10,
+//                                                            hidden: false,
+//                                                            hiddenLabel: false
+//                                                        },
+//                                                    ]
+//                                                },
+//                                                
+//                                                
+//                                            ]
+//                                        },
+//                                    ]
+//                                },
 
                                 //CONTAIN
                                 {
@@ -1427,7 +1443,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                                                                             return value;
                                                                                         }
                                                                                     },
-                                                                                    
+
                                                                                     {text: 'Sales<br>Date', dataIndex: 'SDATE', width: 90, id: prototype.id + '-gridA720FECVTA',
                                                                                         editor: {xtype: 'textfield', editable: false},
                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
@@ -1438,7 +1454,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                                                                             return value;
                                                                                         }
                                                                                     },
-                                                                                    
+
                                                                                     {text: 'Country', dataIndex: 'SCOUNTRY', width: 65,
                                                                                         editor: {xtype: 'textfield', editable: false},
                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
@@ -1449,7 +1465,6 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                                                                             return value;
                                                                                         }
                                                                                     },
-                                                                                    
 
                                                                                     {
                                                                                         text: 'Credit Card',
@@ -1459,7 +1474,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                                                                             align: 'center'
                                                                                         },
                                                                                         columns: [
-                                                                                            
+
                                                                                             {text: 'Number', dataIndex: 'SCARDN', width: 200,
                                                                                                 editor: {xtype: 'textfield', editable: false},
                                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
@@ -1494,7 +1509,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                                                                             return value;
                                                                                         }
                                                                                     },
-                         
+
                                                                                     {text: 'Curr', dataIndex: 'SCURRENCY', width: 65,
                                                                                         editor: {xtype: 'textfield', editable: false},
                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
@@ -1527,7 +1542,6 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                                                                             return value;
                                                                                         },
                                                                                     },
-
 //                                                                                    {text: 'CFUENTE', dataIndex: 'CFUENTE', width: 75, hidden: true,
 //                                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
 //                                                                                            metaData.style = "text-align:center;";
@@ -1538,7 +1552,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
 //                                                                                        }
 //                                                                                    }
 
-                  
+
                                                                                 ]
                                                                             }
                                                                         },
@@ -1702,7 +1716,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                                                                             align: 'center'
                                                                                         },
                                                                                         columns: [
-                                                                                
+
                                                                                             {text: 'Number', dataIndex: 'SCARDN', width: 130,
                                                                                                 editor: {xtype: 'textfield', editable: false},
                                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
@@ -1791,8 +1805,6 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                                             ],
 
                                                         },
-                                                        
-                                                        
                                                     ]
                                                 },
                                                         //                                       
@@ -2032,7 +2044,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                 click: 'onDeleteClick'
                             }
                         },
-                        {   
+                        {
                             hidden: true,
                             text: 'Reverse Match',
                             id: prototype.id + '-btn-reverse',

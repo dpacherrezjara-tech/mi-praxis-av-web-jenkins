@@ -123,6 +123,7 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.TourismConciliati
         Ext.getCmp(prototype.id + '-cmbCode').disable();
 //        Ext.getCmp(prototype.id + '-cmbTRANSTYPE').disable();
         Ext.getCmp(prototype.id + '-txtAGENTE').disable();
+        Ext.getCmp(prototype.id + '-txtReferTur').disable();
     },
     
     HabilitarCampo: function() {
@@ -137,6 +138,7 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.TourismConciliati
 //        Ext.getCmp(prototype.id + '-cmbCode').enable();
 //        Ext.getCmp(prototype.id + '-cmbTRANSTYPE').enable();
         Ext.getCmp(prototype.id + '-txtAGENTE').enable();
+        Ext.getCmp(prototype.id + '-txtReferTur').enable();
     },
     
     eventKey: function (e, eOpts) {
@@ -290,7 +292,8 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.TourismConciliati
 //        me.bean.PERIOD = Ext.getCmp(prototype.id + '-cmbPERNUM').getValue();
 //        me.bean.PROCIND = Ext.getCmp(prototype.id + '-cmbPROCIND').getValue();
 //        me.bean.SDATE = Ext.getCmp(prototype.id + '-txtDate').getValue();
-        me.bean.AGENTE = Ext.getCmp(prototype.id + '-txtAGENTE').getValue( );
+        me.bean.SAGENT = Ext.getCmp(prototype.id + '-txtAGENTE').getValue( );
+        me.bean.REFER = Ext.getCmp(prototype.id + '-txtReferTur').getValue( );
         me.bean.CERROR = Ext.getCmp(prototype.id + '-cmbStatus').getValue( );
 //        me.bean.TRANSTYPE = Ext.getCmp(prototype.id + '-cmbTRANSTYPE').getValue();
        console.log(me.bean, 'me.bean')         
@@ -334,7 +337,11 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.TourismConciliati
             global.Msg({msg: msj
             });
         }
+        
         else {
+            
+            
+            console.log(searchParams,"prueba parametros");
             var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
                 proxy: {
                     url: prototype.url + '/search'
@@ -479,6 +486,7 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.TourismConciliati
 //        Ext.getCmp(prototype.id + '-cmbPROCIND').setValue('');
 //        Ext.getCmp(prototype.id + '-cmbCode').setValue('');
         Ext.getCmp(prototype.id + '-txtAGENTE').setValue('');
+        Ext.getCmp(prototype.id + '-txtReferTur').setValue('');
 //        Ext.getCmp(prototype.id + '-txtTKT').setValue('');
         Ext.getCmp(prototype.id + '-cmbDateFromYear').setValue(this.fecha.getFullYear());
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(this.fecha.getFullYear());
@@ -622,7 +630,7 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.TourismConciliati
             
             Ext.getCmp(prototype.id + '-cmbDateFromDay').setDisabled(true);
             Ext.getCmp(prototype.id + '-cmbDateToDay').setDisabled(true);
-            Ext.getCmp(prototype.id + '-cmbDateToMonth').setDisabled(true);
+//            Ext.getCmp(prototype.id + '-cmbDateToMonth').setDisabled(true);
             Ext.getCmp(prototype.id + '-cmbDateToDay').setValue('');
             Ext.getCmp(prototype.id + '-cmbDateFromDay').setValue('');
 

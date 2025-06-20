@@ -55,7 +55,7 @@ public class TourismConciliationDAO {
     ResultSet rs01 = null;
     double dblAmount = 0;
 
-    String SQLCLL01 = "{CALL PRAXISMP.SQP00905(?,?,?,?,?,?,?,?,?,?,?)}";
+    String SQLCLL01 = "{CALL PRAXISMP.SQP00905_V20(?,?,?,?,?,?,?,?,?,?,?,?)}";
     Connection cnx = null;
 
     try {
@@ -68,24 +68,26 @@ public class TourismConciliationDAO {
         cstmt.setString(4, filter.IN_DATE_TO.trim());
         cstmt.setString(5, filter.SDATE.trim());
         cstmt.setString(6, filter.SAGENT.trim());
-        cstmt.setString(7, filter.CERROR.trim());
+        cstmt.setString(7, filter.REFER.trim());
+        cstmt.setString(8, filter.CERROR.trim());
+//        cstmt.setString(7, filter.CERROR.trim());
 
-        cstmt.registerOutParameter(8, Types.INTEGER);
         cstmt.registerOutParameter(9, Types.INTEGER);
         cstmt.registerOutParameter(10, Types.INTEGER);
         cstmt.registerOutParameter(11, Types.INTEGER);
+        cstmt.registerOutParameter(12, Types.INTEGER);
 
-        cstmt.setInt(8, filter.page.PAGNUM);
-        cstmt.setInt(9, filter.page.PAGROW);
-        cstmt.setInt(10, filter.page.TOTPAG);
-        cstmt.setInt(11, filter.page.TOTROW);
+        cstmt.setInt(9, filter.page.PAGNUM);
+        cstmt.setInt(10, filter.page.PAGROW);
+        cstmt.setInt(11, filter.page.TOTPAG);
+        cstmt.setInt(12, filter.page.TOTROW);
 
         cstmt.execute();
 
-        filter.page.PAGNUM = cstmt.getInt(8);
-        filter.page.PAGROW = cstmt.getInt(9);
-        filter.page.TOTPAG = cstmt.getInt(10);
-        filter.page.TOTROW = cstmt.getInt(11);
+        filter.page.PAGNUM = cstmt.getInt(9);
+        filter.page.PAGROW = cstmt.getInt(10);
+        filter.page.TOTPAG = cstmt.getInt(11);
+        filter.page.TOTROW = cstmt.getInt(12);
 
         rs01 = cstmt.getResultSet();
         if (rs01.next()) {
@@ -120,7 +122,16 @@ public class TourismConciliationDAO {
                 list.add(objRtn);
             }
         }
-    } finally {
+        
+    } 
+    
+    
+    catch (Exception e) {
+            e.printStackTrace();
+        }
+    
+    
+    finally {
         if (rs01 != null) try { rs01.close(); } catch (SQLException e) { logError.error("Error cerrando rs01", e); }
         if (cstmt != null) try { cstmt.close(); } catch (SQLException e) { logError.error("Error cerrando cstmt", e); }
         session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
@@ -195,6 +206,9 @@ public class TourismConciliationDAO {
                 lstObjetos.add(objRtn);
             }
 
+            
+            
+            
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -280,6 +294,7 @@ public class TourismConciliationDAO {
                     item.HOUP = rs.getString("HOUP");
                     item.DATECT = rs.getString("DATECT");
                     item.REFER = rs.getString("REFER");
+                   
 
                     list.add(item);
                 }

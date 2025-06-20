@@ -326,7 +326,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Filters', {
                             }
                         },
                         //</editor-fold>
-                        {xtype: 'tbspacer', width: 30},
+                        {xtype: 'tbspacer', width: 15},
                 
                 
                 
@@ -377,37 +377,70 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Filters', {
 
                 {
                     xtype: 'textfield',
-                    fieldLabel: 'Agente:',
-                    id: prototype.id+'-txtAGENTE',                                   
+                    fieldLabel: 'Refer:',
+                    id: prototype.id+'-txtReferTur',                                   
                     maskRe: /[0-9]/,
                     enforceMaxLength: true,
                     maxLength:8,
-                    labelWidth: 120,
-                    width: 230,
+                    labelWidth: 70,
+                    width: 180,
                     enableKeyEvents: true,
                     listeners: {
                         keypress: 'eventKey'
                     },
-                    margin: '0 0 0 78'
+                    margin: '0 0 0 5'
                 },
-                
-                
-                
-                                {
-                    xtype: 'label',
-                    text: 'Status :',
-                    padding: '3 0',
-                    hidden: false,
-                    width: 64,
-                    autoEl: {
-                        tag: 'label',
-                        'data-qtip': 'Status'
+
+
+
+
+
+                {
+                    xtype: 'textfield',
+                    fieldLabel: 'Agent:',
+                    id: prototype.id+'-txtAGENTE',                                   
+                    maskRe: /[0-9]/,
+                    enforceMaxLength: true,
+                    maxLength:8,
+                    labelWidth: 70,
+                    width: 180,
+                    enableKeyEvents: true,
+                    listeners: {
+                        keypress: 'eventKey'
                     },
-                    margin: '0 0 0 78'
+                    margin: '0 0 0 5'
                 },
+                
+//                
+//                     {
+//                    xtype: 'textfield',
+//                    fieldLabel: 'sssss:',
+//                  
+//                },
+                
+                
+                
+                
+//                                {
+//                    xtype: 'label',
+//                    text: 'Status :',
+//                    padding: '3 0',
+//                    hidden: false,
+//                    width: 64,
+//                    autoEl: {
+//                        tag: 'label',
+//                        'data-qtip': 'Status'
+//                    },
+//                    margin: '0 0 0 18'
+//                },
+                
                 {
                     xtype: 'combo',
+                    fieldLabel: 'Status: ',
                     id: prototype.id + '-cmbStatus',
+                    labelWidth: 70,
+                    width: 180,
+                    
 //                            fieldLabel: 'Doc',
                     store: new Ext.data.SimpleStore({
                         fields: ['value', 'description'],
@@ -415,7 +448,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Filters', {
                             ["", "All"],["72", "Match"], ["73", "Surpluses"], ["74", "Shortages"]
                         ]
                     }),
-                    width: 100,
+//                    width: 100,
                     emptyText: 'All',
                     value: '',
                     displayField: 'description',
@@ -427,6 +460,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Filters', {
                     forceSelection: true,
 
                 },
+                {xtype: 'tbspacer', width: 30},
 
 
 
