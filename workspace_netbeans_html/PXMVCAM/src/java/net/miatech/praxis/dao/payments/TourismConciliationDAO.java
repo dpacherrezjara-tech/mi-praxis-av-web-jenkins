@@ -55,7 +55,7 @@ public class TourismConciliationDAO {
     ResultSet rs01 = null;
     double dblAmount = 0;
 
-    String SQLCLL01 = "{CALL PRAXISMP.SQP00905_V20(?,?,?,?,?,?,?,?,?,?,?,?)}";
+    String SQLCLL01 = "{CALL PRAXISMP.MPS227(?,?,?,?,?,?,?,?,?,?,?,?)}";
     Connection cnx = null;
 
     try {
@@ -104,13 +104,15 @@ public class TourismConciliationDAO {
                 objRtn.STVAL = rs01.getString("STVAL").trim();
                 objRtn.SVFOPS = rs01.getDouble("SVFOP");
                 objRtn.QTYTRAN1 = rs01.getDouble("QTYTRAN1");
+                objRtn.QTYDOC = rs01.getDouble("QTYDOC");
                 objRtn.REFER = rs01.getString("REFERTUR").trim();
                 objRtn.DATEC = rs01.getString("DATEC").trim();
                 objRtn.TRANC = rs01.getString("TRANC").trim();
                 objRtn.DATCO = rs01.getString("DATCO").trim();
                 objRtn.FREGLA = rs01.getString("FREGLA").trim();
+                objRtn.TDOC = rs01.getString("TDOC").trim();
                 objRtn.CERROR = rs01.getString("ERROR_DESC").trim();
-                objRtn.SVFOPA = rs01.getDouble("MONTOADJUST");
+//                objRtn.SVFOPA = rs01.getDouble("MONTOADJUST");
                 objRtn.TOTALSVFOP = objRtn.SVFOPS + objRtn.SVFOPA;
                 objRtn.TOTdblAmount = dblAmount;
 
@@ -241,7 +243,7 @@ public class TourismConciliationDAO {
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-            String sql = "{CALL PRAXISMP.SQP00909(?, ?, ?)}";
+            String sql = "{CALL PRAXISMP.MPS227PAYMENTS(?, ?, ?)}";
             cstmt = cnx.prepareCall(sql);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
@@ -294,6 +296,53 @@ public class TourismConciliationDAO {
                     item.HOUP = rs.getString("HOUP");
                     item.DATECT = rs.getString("DATECT");
                     item.REFER = rs.getString("REFER");
+                   
+
+                    list.add(item);
+                }
+            }
+
+        } finally {
+            if (rs != null) try { rs.close(); } catch (Exception e) {}
+            if (cstmt != null) try { cstmt.close(); } catch (Exception e) {}
+            if (cnx != null) session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+        }
+
+        return list;
+    }
+    
+    public List<A2282Filter> loadMPF148MPS227(A2282Filter filter) throws SQLException, Exception {
+        List<A2282Filter> list = new ArrayList<>();
+        CallableStatement cstmt = null;
+        ResultSet rs = null;
+        Connection cnx = null;
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            String sql = "{CALL PRAXISMP.MPS227DETAIL(?, ?, ?)}";
+            cstmt = cnx.prepareCall(sql);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.SDATE);
+            cstmt.setString(3, filter.REFER);
+
+            boolean hasResults = cstmt.execute();
+            if (hasResults) {
+                rs = cstmt.getResultSet();
+                while (rs.next()) {
+                    A2282Filter item = new A2282Filter();
+
+                    item.TDOC = rs.getString("TDOC");
+                    item.BANDOC = rs.getString("BANDOC");
+                    item.SCURRENCY = rs.getString("SCURRENCY");
+                    item.SVFOPT = rs.getDouble("SVFOP");
+                    item.DATECI = rs.getString("DATECI");
+                    item.TRANCI = rs.getString("TRANCI");
+                    item.DATECT = rs.getString("DATECT");
+                    item.REFER = rs.getString("REFERTUR");
+                    item.FECR = rs.getString("FECR");
+                    item.USCR = rs.getString("USCR");
+                    item.HOCR = rs.getString("HOCR");
                    
 
                     list.add(item);

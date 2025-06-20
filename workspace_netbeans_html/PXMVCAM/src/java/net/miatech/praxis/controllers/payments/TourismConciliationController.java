@@ -121,10 +121,12 @@ public class TourismConciliationController extends BaseController {
 
         map.put("success", true);
         List<A2282Filter> lst = this.getListsearchDateEntry(request, false);
+        List<A2282Filter> lst2 = this.getListMPF148(request, false);
         System.out.println("Total : " + lst.size());
 
         map.put("total", lst.size());
         map.put("data", lst);
+        map.put("data2", lst2);
 
         return new Gson().toJson(map);
     }
@@ -143,6 +145,28 @@ public class TourismConciliationController extends BaseController {
             logic.setSession(this.serverSession.getServerSession());
 
             lst = logic.loadMPF101SQP00909(filter);
+
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+
+        return lst;
+    }
+    
+    public List<A2282Filter> getListMPF148(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2282Filter> lst = new ArrayList<>();
+        A2282Filter filter;
+        Gson gson = new Gson();
+
+        try {
+            String beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2282Filter.class);
+
+            logic = new TourismConciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            lst = logic.loadMPF148MPS227(filter);
 
         } catch (Exception e) {
             throw new SpringException(e);

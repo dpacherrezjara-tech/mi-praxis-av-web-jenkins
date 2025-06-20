@@ -35,6 +35,7 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
     console.log(this.bean,"datos para la conciliacion");
     
     // Rellenando el SALES DATE
+    
     Ext.getCmp(prototype.id + '-de-txtBSUMDATE').setValue(this.bean.SDATE);
     Ext.getCmp(prototype.id + '-de-txtTDOC').setValue(this.bean.TDOC);
 //    Ext.getCmp(prototype.id + '-de-txtBANDOC').setValue(this.bean.STVAL);
@@ -48,8 +49,8 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
     let valueAdjust = Ext.util.Format.number(this.bean.SVFOPA, '0,000.00');
     let valueAdjustTotal = Ext.util.Format.number(this.bean.TOTALSVFOP, '0,000.00');
     Ext.getCmp(prototype.id + '-de-txtAmountTouris').setValue(value);
-    Ext.getCmp(prototype.id + '-de-txtComentAdjust').setValue(valueAdjust);
-    Ext.getCmp(prototype.id + '-de-txtComentAdjustSum').setValue(valueAdjustTotal);
+//    Ext.getCmp(prototype.id + '-de-txtComentAdjust').setValue(valueAdjust);
+//    Ext.getCmp(prototype.id + '-de-txtComentAdjustSum').setValue(valueAdjustTotal);
     
     let status;
     if (this.bean.STVAL === '1') {
@@ -81,14 +82,17 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
     url: prototype.url + '/searchDateEntry',
     method: 'POST',
     timeout: 60000,
+//    beforerequest: Ext.getCmp(prototype.id + '-DataEntryTourism').mask('Loading...'),
     params: {
         beanString: Ext.encode(this.bean)
     },
     success: function (response) {
         const res = Ext.decode(response.responseText);
+        console.log(res,'res')
         if (res.success) {
 
             var grid = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+            var grid2 = Ext.getCmp(prototype.id + '-gridDataDetail');
             if (grid) {
                 var storeData = Ext.create('Ext.data.Store', {
                     data: res.data,
@@ -115,6 +119,41 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
 
                 console.log(total, "⇨ Sum Amount");
                 console.log(count, "⇨ Qty Tkt");
+            } else{
+                console.error("no existe grilla");
+            }
+            if( grid2 ){
+                var storeData2 = Ext.create('Ext.data.Store', {
+                    data: res.data2,
+                    autoLoad: true
+                });
+                grid2.bindStore(storeData2);
+
+//                let lista = {};
+//                lista.push({
+//                    TDOC: 'Sales', SVFOPT: 66000
+//                },{DOC: 'Sales', SVFOPT: 66000},
+//                {DOC: 'Sales', SVFOPT: 66000})
+
+                 //✅ Calcular suma y cantidad directamente desde res.data
+                let total = 0;
+                let count = 0;
+
+                for (let i = 0; i < res.data2.length; i++) {
+                    const row = res.data2[i];
+                    console.log(row,'row')
+                    const amount = row.SVFOPT;
+                    total += amount;
+                    count++;
+                }
+                console.log(total,'total')
+                Ext.getCmp(prototype.id + '-de-txtSumAmountDetail').setValue(
+                    Ext.util.Format.number(total, '0,000.00')
+                );
+//                Ext.getCmp(prototype.id + '-de-QtyTkt').setValue(count);
+                grid.getView().refresh();
+            }else{
+                console.error("no existe grilla");
             }
 
         } else {
