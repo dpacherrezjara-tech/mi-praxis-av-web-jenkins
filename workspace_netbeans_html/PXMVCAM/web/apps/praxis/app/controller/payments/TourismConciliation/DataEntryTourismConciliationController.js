@@ -31,24 +31,35 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
 //        this.lstAdjustment = [];
     },
     afterRender: function () {
-    const me = this;
+//    const me = this;
     console.log(this.bean,"datos para la conciliacion");
     
     // Rellenando el SALES DATE
     
-    Ext.getCmp(prototype.id + '-de-txtBSUMDATE').setValue(this.bean.SDATE);
-    Ext.getCmp(prototype.id + '-de-txtTDOC').setValue(this.bean.TDOC);
-//    Ext.getCmp(prototype.id + '-de-txtBANDOC').setValue(this.bean.STVAL);
-//    Ext.getCmp(prototype.id + '-de-txtCODEBANK').setValue(this.bean.STVAL);
-    Ext.getCmp(prototype.id + '-de-txtBANDOC').setValue(this.bean.SAGENT);
-    Ext.getCmp(prototype.id + '-de-txtPAYDATE').setValue(this.bean.REFER);
-    Ext.getCmp(prototype.id + '-de-txtSCARCODE').setValue(this.bean.QTYTRAN1);
-    Ext.getCmp(prototype.id + '-de-txtSCARDN').setValue(this.bean.QTYDOC);
-    Ext.getCmp(prototype.id + '-de-txtComentSAUTHOC').setValue(this.bean.CERROR);
-    let value = Ext.util.Format.number(this.bean.SVFOPS, '0,000.00');
-    let valueAdjust = Ext.util.Format.number(this.bean.SVFOPA, '0,000.00');
-    let valueAdjustTotal = Ext.util.Format.number(this.bean.TOTALSVFOP, '0,000.00');
-    Ext.getCmp(prototype.id + '-de-txtAmountTouris').setValue(value);
+
+        let value = Ext.util.Format.number(this.bean.SVFOPS, '0,000.00');
+        let valueAdjust = Ext.util.Format.number(this.bean.SVFOPA, '0,000.00');
+        let valueAdjustTotal = Ext.util.Format.number(this.bean.TOTALSVFOP, '0,000.00');
+    
+        Ext.getCmp(prototype.id + '-de-txtBSUMDATE').setValue(this.bean.SDATE);
+    //    Ext.getCmp(prototype.id + '-de-txtTDOC').setValue(this.bean.TDOC);
+    //    Ext.getCmp(prototype.id + '-de-txtBANDOC').setValue(this.bean.STVAL);
+    //    Ext.getCmp(prototype.id + '-de-txtCODEBANK').setValue(this.bean.STVAL);
+        Ext.getCmp(prototype.id + '-de-txtBANDOC').setValue(this.bean.SAGENT);
+        Ext.getCmp(prototype.id + '-de-txtPAYDATE').setValue(this.bean.REFER);
+        Ext.getCmp(prototype.id + '-de-txtSCARCODE').setValue(this.bean.QTYTRAN1);
+        Ext.getCmp(prototype.id + '-de-txtSCARDN').setValue(this.bean.QTYDOC);
+        Ext.getCmp(prototype.id + '-de-txtComentSAUTHOC').setValue(this.bean.CERROR);
+
+        Ext.getCmp(prototype.id + '-de-txtAmountTouris').setValue(value);
+        
+        Ext.getCmp(prototype.id + '-txtUSCR').setValue(this.bean.USCR);
+                
+        meDe.setValue('txtFECR', this.bean.FECR);
+        meDe.setValue('txtHOCR', this.bean.HOCR);
+        meDe.setValue('txtUSUP', this.bean.USUP);
+        meDe.setValue('txtFEUP', this.bean.FEUP);
+        meDe.setValue('txtHOUP', this.bean.HOUP);
 //    Ext.getCmp(prototype.id + '-de-txtComentAdjust').setValue(valueAdjust);
 //    Ext.getCmp(prototype.id + '-de-txtComentAdjustSum').setValue(valueAdjustTotal);
     
@@ -93,6 +104,11 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
 
             var grid = Ext.getCmp(prototype.id + '-gridDataInfoScan');
             var grid2 = Ext.getCmp(prototype.id + '-gridDataDetail');
+            var grid3 = Ext.getCmp(prototype.id + '-gridDataTotales');
+            
+            let total = 0;
+            let count = 0;
+            
             if (grid) {
                 var storeData = Ext.create('Ext.data.Store', {
                     data: res.data,
@@ -101,8 +117,7 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
                 grid.bindStore(storeData);
 
                 // ✅ Calcular suma y cantidad directamente desde res.data
-                let total = 0;
-                let count = 0;
+                
 
                 for (let i = 0; i < res.data.length; i++) {
                     const row = res.data[i];
@@ -126,7 +141,7 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
                 var storeData2 = Ext.create('Ext.data.Store', {
                     data: res.data2,
                     autoLoad: true
-                });
+                })
                 grid2.bindStore(storeData2);
 
 //                let lista = {};
@@ -155,6 +170,43 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
             }else{
                 console.error("no existe grilla");
             }
+            ////////////////////////////////
+            
+               if( grid3 ){
+                   
+                   
+
+
+                        // Datos fijos
+                        var datosFijos = [
+                            {TDOC: 'Sales', SVFOPT: meDe.bean.SVFOPS},
+                            {TDOC: 'Bandoc settlement ', SVFOPT: total},
+                            {TDOC: 'Card settlement', SVFOPT: meDe.getTotalAmountScan()}
+                        ];
+                   
+                   
+                   // Crear el store
+                        var storeTotales = Ext.create('Ext.data.Store', {
+                            fields: ['TDOC', 'SVFOPT'], // Define los campos esperados
+                            data: datosFijos
+                        });
+                     
+   
+           
+
+                 //✅ Calcular suma y cantidad directamente desde res.data
+            
+//                Ext.
+//                getCmp(prototype.id + '-de-QtyTkt').setValue(count);
+                        grid3.bindStore(storeTotales);
+                        grid3.getView().refresh();
+            }else{
+                console.error("no existe grilla");
+            }
+            
+            
+            
+            //////////////////////////////////
 
         } else {
             global.Msg({ msg: res.msg || 'Error en búsqueda' });
@@ -170,8 +222,10 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
 
 },
 
-updateSumandQTYAmount: function() {
-    const grid = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+
+
+getTotalAmountScan : function(){
+     const grid = Ext.getCmp(prototype.id + '-gridDataInfoScan');
     const store = grid.getStore();
 
     let total = 0;
@@ -180,6 +234,28 @@ updateSumandQTYAmount: function() {
         const amount = parseFloat(record.get('SVFOP')) || 0;
         total += amount;
     });
+    
+    return total;
+    
+    
+    
+},
+
+
+
+updateSumandQTYAmount: function() {
+//    const grid = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+//    const store = grid.getStore();
+//
+//    let total = 0;
+//
+//    store.each(function (record) {
+//        const amount = parseFloat(record.get('SVFOP')) || 0;
+//        total += amount;
+//    });
+
+
+    let total = meDe.getTotalAmountScan();
 
     Ext.getCmp(prototype.id + '-de-txtSumAmount').setValue(
         Ext.util.Format.number(total, '0,000.00')
@@ -881,7 +957,7 @@ searchDataWithBean: function (bean) {
         this.setValue('de-txtDES_CERROR', '');
         this.setValue('de-txtFromDateBSUMDATE', '');
         this.setValue('de-txtBSUMDATE', '');
-        this.setValue('de-txtTDOC', '');
+        this.setValue('de-txtBANDOC', '');
         this.setValue('de-txtSPNR', '');
         this.setValue('de-txtBANDOC', '');
         this.setValue('de-txtCCUSTCC', '');

@@ -55,7 +55,7 @@ public class TourismConciliationDAO {
     ResultSet rs01 = null;
     double dblAmount = 0;
 
-    String SQLCLL01 = "{CALL PRAXISMP.MPS227(?,?,?,?,?,?,?,?,?,?,?,?)}";
+String SQLCLL01 = "{CALL PRAXISMP.MPS227(?,?,?,?,?,?,?,?,?,?,?,?)}";
     Connection cnx = null;
 
     try {
@@ -112,6 +112,15 @@ public class TourismConciliationDAO {
                 objRtn.FREGLA = rs01.getString("FREGLA").trim();
                 objRtn.TDOC = rs01.getString("TDOC").trim();
                 objRtn.CERROR = rs01.getString("ERROR_DESC").trim();
+                
+                
+                objRtn.FECR = rs01.getString("FECR").trim();
+                objRtn.HOCR = rs01.getString("HOCR").trim();
+                objRtn.USUP = rs01.getString("USUP").trim();
+                objRtn.USCR = rs01.getString("USCR").trim();
+                objRtn.FEUP = rs01.getString("FEUP").trim();
+                objRtn.HOUP = rs01.getString("HOUP").trim();
+                
 //                objRtn.SVFOPA = rs01.getDouble("MONTOADJUST");
                 objRtn.TOTALSVFOP = objRtn.SVFOPS + objRtn.SVFOPA;
                 objRtn.TOTdblAmount = dblAmount;
@@ -121,7 +130,7 @@ public class TourismConciliationDAO {
                 objRtn.page.TOTPAG = filter.page.TOTPAG;
                 objRtn.page.TOTROW = filter.page.TOTROW;
 
-                list.add(objRtn);
+                list.add(objRtn);              
             }
         }
         

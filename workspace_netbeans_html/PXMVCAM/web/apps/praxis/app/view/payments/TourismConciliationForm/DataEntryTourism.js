@@ -23,7 +23,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
             width: 1310,
             scrollable: true,
             defaults: {
-                style: 'margin: 3px;',
+                style: 'margin: 30px;',
                 border: false
             },
             items: [
@@ -333,26 +333,26 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                             width: 100
                                         },
                                         {xtype: 'tbspacer', width: 50},
-                                        {
-                                            xtype: 'label',
-                                            text: 'Doc. Type',
-                                            style: 'font-weight:bold;color:#0B333C;',
-                                            width: 80
-                                        },
-                                        {xtype: 'tbspacer', width: 10},
-                                        {
-                                            xtype: 'textfield',
-                                            id: prototype.id + '-de-txtTDOC',
-                                            readOnly: true,
-                                            fieldStyle: 'text-align:center;',
-                                            width: 80
-                                        },
-                                        {xtype: 'tbspacer', width: 50},
+//                                        {
+//                                            xtype: 'label',
+//                                            text: 'Doc. Type',
+//                                            style: 'font-weight:bold;color:#0B333C;',
+//                                            width: 80
+//                                        },
+//                                        {xtype: 'tbspacer', width: 10},
+//                                        {
+//                                            xtype: 'textfield',
+////                                            id: prototype.id + '-de-txtTDOC',
+//                                            readOnly: true,
+//                                            fieldStyle: 'text-align:center;',
+//                                            width: 80
+//                                        },
+                                       
                                         {
                                             xtype: 'label',
                                             text: 'Agent',
                                             style: 'font-weight:bold;color:#0B333C;',
-                                            width: 120
+                                            width: 80
                                         },
                                         {xtype: 'tbspacer', width: 10},
                                         {
@@ -373,6 +373,21 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                         {
                                             xtype: 'textfield',
                                             id: prototype.id + '-de-txtSTATUS',
+                                            readOnly: true,
+                                            fieldStyle: 'text-align:center;',
+                                            width: 120
+                                        },
+                                        {xtype: 'tbspacer', width: 50},
+                                        {
+                                            xtype: 'label',
+                                            text: '',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 120
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'textfield',
+//                                            id: prototype.id + '-de-txtTDOC',
                                             readOnly: true,
                                             fieldStyle: 'text-align:center;',
                                             width: 120
@@ -405,6 +420,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                             xtype: 'label',
                                             text: 'Qty trans.',
                                             style: 'font-weight:bold;color:#0B333C;',
+//                                            margin: '05 2 0 20',
                                             width: 80
                                         },
                                         {xtype: 'tbspacer', width: 10},
@@ -413,7 +429,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                             id: prototype.id + '-de-txtSCARCODE',
                                             readOnly: true,
                                             fieldStyle: 'text-align:center;',
-                                            width: 80
+                                            width: 120
                                         },
                                         {xtype: 'tbspacer', width: 50},
                                         {
@@ -435,9 +451,18 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                             xtype: 'label',
                                             text: 'Amount',
                                             style: 'font-weight:bold;color:#0B333C;',
-                                            width: 120
+                                            width: 80
                                         },
-                                        {xtype: 'tbspacer', width: 10},
+                                        
+                                        {
+                                            xtype: 'textfield',
+                                            value: 'COP',
+                                            readOnly: true,
+                                            fieldStyle: 'text-align:center;',
+                                            width: 30
+                                            
+                                        },
+                                        {xtype: 'tbspacer', width: 20},
                                         {
                                             xtype: 'textfield',
                                             id: prototype.id + '-de-txtAmountTouris',
@@ -928,12 +953,14 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                                                     return value;
                                                                 }
                                                             },
-                                                            {header: 'Amount', dataIndex: 'SVFOP', width: 100, xtype: 'gridcolumn',
+                                                            {header: 'Amount', dataIndex: 'SVFOPT', width: 100, xtype: 'gridcolumn',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;background-color:#F0FA8F";
                                                                     value = Ext.util.Format.number(value, '0,000.00');
                                                                     return value;
-                                                                },
+                                                                },  
+                                                                
+                                                                
 
                                                                 editor: {
                                                                     xtype: 'textfield',
