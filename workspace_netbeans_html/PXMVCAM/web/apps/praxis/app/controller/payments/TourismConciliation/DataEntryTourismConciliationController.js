@@ -38,8 +38,8 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
     
 
         let value = Ext.util.Format.number(this.bean.SVFOPS, '0,000.00');
-        let valueAdjust = Ext.util.Format.number(this.bean.SVFOPA, '0,000.00');
-        let valueAdjustTotal = Ext.util.Format.number(this.bean.TOTALSVFOP, '0,000.00');
+//        let valueAdjust = Ext.util.Format.number(this.bean.SVFOPA, '0,000.00');
+//        let valueAdjustTotal = Ext.util.Format.number(this.bean.TOTALSVFOP, '0,000.00');
     
         Ext.getCmp(prototype.id + '-de-txtBSUMDATE').setValue(this.bean.SDATE);
     //    Ext.getCmp(prototype.id + '-de-txtTDOC').setValue(this.bean.TDOC);
@@ -106,8 +106,11 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
             var grid2 = Ext.getCmp(prototype.id + '-gridDataDetail');
             var grid3 = Ext.getCmp(prototype.id + '-gridDataTotales');
             
-            let total = 0;
-            let count = 0;
+            let totalAmountScan = 0;
+            let totalAmountDetail = 0;
+            let amountAdjust = 0;
+            let countScan = 0;
+            let countDetail = 0;
             
             if (grid) {
                 var storeData = Ext.create('Ext.data.Store', {
@@ -122,18 +125,18 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
                 for (let i = 0; i < res.data.length; i++) {
                     const row = res.data[i];
                     const amount = parseFloat(row.SVFOP) || 0;
-                    total += amount;
-                    count++;
+                    totalAmountScan += amount;
+                    countScan++;
                 }
 
                 Ext.getCmp(prototype.id + '-de-txtSumAmount').setValue(
-                    Ext.util.Format.number(total, '0,000.00')
+                    Ext.util.Format.number(totalAmountScan, '0,000.00')
                 );
-                Ext.getCmp(prototype.id + '-de-QtyTkt').setValue(count);
+                Ext.getCmp(prototype.id + '-de-QtyTkt').setValue(countScan);
                 grid.getView().refresh();
 
-                console.log(total, "⇨ Sum Amount");
-                console.log(count, "⇨ Qty Tkt");
+//                console.log(total, "⇨ Sum Amount");
+//                console.log(count, "⇨ Qty Tkt");
             } else{
                 console.error("no existe grilla");
             }
@@ -144,26 +147,23 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
                 })
                 grid2.bindStore(storeData2);
 
-//                let lista = {};
-//                lista.push({
-//                    TDOC: 'Sales', SVFOPT: 66000
-//                },{DOC: 'Sales', SVFOPT: 66000},
-//                {DOC: 'Sales', SVFOPT: 66000})
 
                  //✅ Calcular suma y cantidad directamente desde res.data
-                let total = 0;
-                let count = 0;
 
                 for (let i = 0; i < res.data2.length; i++) {
+                    
                     const row = res.data2[i];
                     console.log(row,'row')
+                    if(row.TDOC === 'A' ){
+                        amountAdjust = row.SVFOPT
+                    }
                     const amount = row.SVFOPT;
-                    total += amount;
-                    count++;
+                    totalAmountDetail += amount;
+                    countDetail++;
+                    
                 }
-                console.log(total,'total')
                 Ext.getCmp(prototype.id + '-de-txtSumAmountDetail').setValue(
-                    Ext.util.Format.number(total, '0,000.00')
+                    Ext.util.Format.number(totalAmountDetail, '0,000.00')
                 );
 //                Ext.getCmp(prototype.id + '-de-QtyTkt').setValue(count);
                 grid.getView().refresh();
@@ -180,8 +180,8 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
                         // Datos fijos
                         var datosFijos = [
                             {TDOC: 'Sales', SVFOPT: meDe.bean.SVFOPS},
-                            {TDOC: 'Bandoc settlement ', SVFOPT: total},
-                            {TDOC: 'Card settlement', SVFOPT: meDe.getTotalAmountScan()}
+                            {TDOC: 'Bandoc settlement ', SVFOPT: totalAmountDetail},
+                            {TDOC: 'Card settlement', SVFOPT: totalAmountScan}
                         ];
                    
                    
@@ -190,16 +190,13 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
                             fields: ['TDOC', 'SVFOPT'], // Define los campos esperados
                             data: datosFijos
                         });
-                     
-   
-           
-
-                 //✅ Calcular suma y cantidad directamente desde res.data
-            
-//                Ext.
-//                getCmp(prototype.id + '-de-QtyTkt').setValue(count);
+                        console.log(amountAdjust, 'amountAdjust')
                         grid3.bindStore(storeTotales);
                         grid3.getView().refresh();
+                        Ext.getCmp(prototype.id + '-de-txtAmountAdjusment').setValue(
+                    Ext.util.Format.number(amountAdjust, '0,000.00')
+                );
+                        
             }else{
                 console.error("no existe grilla");
             }
