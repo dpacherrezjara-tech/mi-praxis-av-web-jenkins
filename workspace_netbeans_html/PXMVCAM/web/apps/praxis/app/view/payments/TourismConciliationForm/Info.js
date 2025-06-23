@@ -19,7 +19,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
             defaults: {
                 bodyStyle: 'background: transparent;',
                 border: false,
-                width: 770 ,
+                width: 1080 ,
                 height: 'auto',
                 align: 'center'
             },
@@ -39,7 +39,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: true,
                             height: 'auto',
-                            width: 770 ,
+                            width: 1080 ,
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -48,7 +48,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridMainData',
-                                    width: 762 ,
+                                    width: 1070 ,
                                     columnLines: true,
                                     menuDisabled: true,
                                      viewConfig: {
@@ -91,13 +91,47 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                                                     return value;
                                                 }
                                             },
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                               { text: 'Refer', dataIndex: 'REFER', width: 105 },
+//                                            {
+//                                                text: 'Status',
+//                                                dataIndex: 'STVAL',
+//                                                width: 105,
+//                                                editor: { xtype: 'textfield', editable: false },
+//                                                renderer: function (value, metaData, record) {
+//                                                    metaData.style = "text-align:center;";
+//                                                    if (record.data.TDOC === 'A') {
+//                                                        metaData.style += "background-color:#bff5bf;";
+//                                                    }
+//                                                    if (record.data.STVAL === '1') {
+//                                                        value = 'Match';
+//                                                    } else if (record.data.STVAL === '5') {
+//                                                        value = 'Match manual.';
+//                                                    } else {
+//                                                        value = 'Open';
+//                                                    }
+//                                                    return value;
+//                                                }
+//                                            },
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
                                             {
                                                 text: 'Amount',
-                                                dataIndex: 'SVFOP',
-                                                width: 92,
+                                                dataIndex: 'SVFOPS',
+                                                width: 132,
                                                 editor: { xtype: 'textfield', editable: false },
                                                 renderer: function (value, metaData, record) {
-                                                    metaData.style = "text-align:right;";
+                                                    metaData.style = "text-align:center;";
                                                     if (record.data.TDOC === 'A') {
                                                         metaData.style += "background-color:#bff5bf;";
                                                     }
@@ -108,17 +142,17 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                                             {
                                                 text: 'Invoice',
                                                 dataIndex: 'REFER',
-                                                width: 105,
+                                                width: 135,
                                                 menudisabled: true,
                                                 listeners: {
                                                     click: 'detailMPF100'
                                                 }
                                             },
-                                            { text: 'CERROR', dataIndex: 'CERROR', width: 105 },
+                                            { text: 'Coment', dataIndex: 'CERROR', width: 175 },
                                             {
                                                 xtype: 'actioncolumn',
                                                 id: prototype.id + '-detailTourism',
-                                                width: 40,
+                                                width: 100,
                                                 text: 'View',
                                                 align: 'center',
                                                 items: [
@@ -135,7 +169,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                                 {
                                     xtype: 'panel',
                                     id: prototype.id + '-panelDataSummary',
-                                    width: 770,
+                                    width: 1070,
                                     align: 'left',
                                     layout: {
                                         type: 'hbox',
@@ -152,15 +186,16 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                                     items: [
                                         { width: 105 }, // Sales Date
                                         { width: 105 }, // Agent
+                                        { width: 105 }, // refer
                                         { width: 105 }, // Status
                                         {
-                                            width: 92,
+                                            width: 132,
                                             id: prototype.id + '-TOTdblAmount'
                                         },
                                         { width: 105 }, // Document
-                                        { width: 105 }, // Invoice
-                                        { width: 105 }, // CERROR
-                                        { width: 40 }   // View column
+                                        { width: 135 }, // Invoice
+                                        { width: 175 }, // CERROR
+                                        { width: 100 }   // View column
                                     ]
                                 }
                             ]
@@ -180,7 +215,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                             items: [
                                 {
                                     xtype: 'panel',
-                                    width: 762,
+                                    width: 1070,
                                     height: 25,
                                     layout: {
                                         type: 'hbox',

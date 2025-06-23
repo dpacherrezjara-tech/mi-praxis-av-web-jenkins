@@ -31,6 +31,9 @@ public class A2282Filter extends A2282 {
      public String STVAL = "";
      public String SVFOP = "";
      public double QTYTRAN1 = 0; 
+     public double SVFOPS = 0; 
+     public double SVFOPA = 0; 
+     public double TOTALSVFOP = 0; 
      public String REFER = "";
      public String DATEC = "";
      public String TRANC = "";
