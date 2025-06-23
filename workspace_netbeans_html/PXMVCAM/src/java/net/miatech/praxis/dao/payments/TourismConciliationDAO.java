@@ -101,6 +101,8 @@ String SQLCLL01 = "{CALL PRAXISMP.MPS227(?,?,?,?,?,?,?,?,?,?,?,?)}";
                 objRtn.CCUST = rs01.getString("CCUST").trim();
                 objRtn.SDATE = rs01.getString("SDATE").trim();
                 objRtn.SAGENT = rs01.getString("SAGENT").trim();
+                objRtn.SAGENT_DESC = rs01.getString("SAGENT_DESC").trim();
+                
                 objRtn.STVAL = rs01.getString("STVAL").trim();
                 objRtn.SVFOPS = rs01.getDouble("SVFOP");
                 objRtn.QTYTRAN1 = rs01.getDouble("QTYTRAN1");

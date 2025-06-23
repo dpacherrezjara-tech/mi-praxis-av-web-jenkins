@@ -321,7 +321,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                         {
                                             xtype: 'label',
                                             text: 'Sales Date',
-                                            style: 'font-weight:bold;color:#0B333C;',
+                                            style: 'font-weight:bold;color:#0B333C;padding-top: 5px; text-align:center;',
                                             width: 120
                                         },
                                         {xtype: 'tbspacer', width: 10},
@@ -351,7 +351,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                         {
                                             xtype: 'label',
                                             text: 'Agent',
-                                            style: 'font-weight:bold;color:#0B333C;',
+                                            style: 'font-weight:bold;color:#0B333C;padding-top: 5px; text-align:center;',
                                             width: 80
                                         },
                                         {xtype: 'tbspacer', width: 10},
@@ -360,13 +360,13 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                             id: prototype.id + '-de-txtBANDOC',
                                             readOnly: true,
                                             fieldStyle: 'text-align:center;',
-                                            width: 120
+                                            width: 250
                                         },
                                         {xtype: 'tbspacer', width: 50},
                                         {
                                             xtype: 'label',
                                             text: 'Status',
-                                            style: 'font-weight:bold;color:#0B333C;',
+                                            style: 'font-weight:bold;color:#0B333C; ',
                                             width: 120
                                         },
                                         {xtype: 'tbspacer', width: 10},
@@ -384,14 +384,14 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                             style: 'font-weight:bold;color:#0B333C;',
                                             width: 120
                                         },
-                                        {xtype: 'tbspacer', width: 10},
-                                        {
-                                            xtype: 'textfield',
-//                                            id: prototype.id + '-de-txtTDOC',
-                                            readOnly: true,
-                                            fieldStyle: 'text-align:center;',
-                                            width: 120
-                                        }
+//                                        {xtype: 'tbspacer', width: 10},
+//                                        {
+//                                            xtype: 'textfield',
+////                                            id: prototype.id + '-de-txtTDOC',
+//                                            readOnly: true,
+//                                            fieldStyle: 'text-align:center;',
+//                                            width: 120
+//                                        }
                                     ]
                                 },
 
@@ -404,7 +404,8 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                         {
                                             xtype: 'label',
                                             text: 'Invoice',
-                                            style: 'font-weight:bold;color:#0B333C;',
+                                            style: 'font-weight:bold;color:#0B333C; padding-top: 5px; text-align:center;',
+//                                            margin: '20 0 5 0',
                                             width: 120
                                         },
                                         {xtype: 'tbspacer', width: 10},
@@ -419,7 +420,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                         {
                                             xtype: 'label',
                                             text: 'Qty trans.',
-                                            style: 'font-weight:bold;color:#0B333C;',
+                                            style: 'font-weight:bold;color:#0B333C;padding-top: 5px; text-align:center;',
 //                                            margin: '05 2 0 20',
                                             width: 80
                                         },
@@ -435,7 +436,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                         {
                                             xtype: 'label',
                                             text: 'Qty Doc.',
-                                            style: 'font-weight:bold;color:#0B333C;',
+                                            style: 'font-weight:bold;color:#0B333C;padding-top: 5px; text-align:center;',
                                             width: 120
                                         },
                                         {xtype: 'tbspacer', width: 10},
@@ -450,7 +451,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                         {
                                             xtype: 'label',
                                             text: 'Amount',
-                                            style: 'font-weight:bold;color:#0B333C;',
+                                            style: 'font-weight:bold;color:#0B333C;padding-top: 5px; text-align:center;',
                                             width: 80
                                         },
 
@@ -995,7 +996,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                                         {
                                                             xtype: 'label',
                                                             text: 'Adjustment:',
-                                                            style: 'font-weight:bold;color:#0B333C;',
+                                                            style: 'font-weight:bold;',
                                                             margin: '3 0 0 0',
                                                             width: 100
                                                         },
@@ -1003,7 +1004,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                                         {
                                                             xtype: 'textfield',
                                                             id: prototype.id + '-de-txtAmountAdjusment',
-                                                            fieldStyle: 'text-align:right',
+                                                            fieldStyle: 'text-align:right; ',                                                
                                                             enforceMaxLength: true,
                                                             readOnly: true,
                                                             width: 102
@@ -1655,24 +1656,24 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                                     }
                                                 },
                                                 {xtype: 'tbspacer', width: 20},
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Adjustment',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    margin: '4 4 4 4',
-                                                    width: 80
-                                                },
-                                                {xtype: 'tbspacer', width: 10},
-                                                {
-                                                    xtype: 'textfield',
-                                                    id: prototype.id + '-de-CODADJU',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    fieldStyle: 'text-align:left;',
-                                                    enforceMaxLength: true,
-                                                    readOnly: true,
-                                                    maxLength: 50,
-                                                    width: 200,
-                                                },
+//                                                {
+//                                                    xtype: 'label',
+//                                                    text: 'Adjustmentss',
+//                                                    style: 'font-weight:bold;color:#0B333C;',
+//                                                    margin: '4 4 4 4',
+//                                                    width: 80
+//                                                },
+//                                                {xtype: 'tbspacer', width: 10},
+//                                                {
+//                                                    xtype: 'textfield',
+//                                                    id: prototype.id + '-de-CODADJU',
+//                                                    style: 'font-weight:bold;color:#0B333C;',
+//                                                    fieldStyle: 'text-align:left;',
+//                                                    enforceMaxLength: true,
+//                                                    readOnly: true,
+//                                                    maxLength: 50,
+//                                                    width: 200,
+//                                                },
                                                 {xtype: 'tbspacer', width: 20},
                                                 {
                                                     xtype: 'label',

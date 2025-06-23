@@ -96,7 +96,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                                                     } else if (record.data.STVAL === '5') {
                                                         value = 'Match manual.';
                                                     } else {
-                                                        value = 'Open';
+                                                        value = 'Pending';
                                                     }
                                                     return value;
                                                 }

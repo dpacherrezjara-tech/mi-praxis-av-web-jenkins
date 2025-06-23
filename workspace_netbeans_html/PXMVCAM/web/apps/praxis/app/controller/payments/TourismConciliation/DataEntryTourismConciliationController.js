@@ -34,7 +34,12 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
 //    const me = this;
     console.log(this.bean,"datos para la conciliacion");
     
-    // Rellenando el SALES DATE
+    
+    
+    
+    
+    
+    // Rellenando el SALES information
     
 
         let value = Ext.util.Format.number(this.bean.SVFOPS, '0,000.00');
@@ -45,7 +50,9 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
     //    Ext.getCmp(prototype.id + '-de-txtTDOC').setValue(this.bean.TDOC);
     //    Ext.getCmp(prototype.id + '-de-txtBANDOC').setValue(this.bean.STVAL);
     //    Ext.getCmp(prototype.id + '-de-txtCODEBANK').setValue(this.bean.STVAL);
-        Ext.getCmp(prototype.id + '-de-txtBANDOC').setValue(this.bean.SAGENT);
+    
+    
+        Ext.getCmp(prototype.id + '-de-txtBANDOC').setValue(this.bean.SAGENT_DESC);
         Ext.getCmp(prototype.id + '-de-txtPAYDATE').setValue(this.bean.REFER);
         Ext.getCmp(prototype.id + '-de-txtSCARCODE').setValue(this.bean.QTYTRAN1);
         Ext.getCmp(prototype.id + '-de-txtSCARDN').setValue(this.bean.QTYDOC);
@@ -191,11 +198,33 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
                             data: datosFijos
                         });
                         console.log(amountAdjust, 'amountAdjust')
+                        
+                        
                         grid3.bindStore(storeTotales);
                         grid3.getView().refresh();
-                        Ext.getCmp(prototype.id + '-de-txtAmountAdjusment').setValue(
-                    Ext.util.Format.number(amountAdjust, '0,000.00')
-                );
+                        
+                        //obtener el campo ajuste
+                        
+                        var validAdjus = Ext.getCmp(prototype.id + '-de-txtAmountAdjusment');
+                        
+                        // formatea y asignar el  valor
+                        
+                        var formattedValue = Ext.util.Format.number(amountAdjust, '0,000.00');
+                        validAdjus.setValue(formattedValue);
+                        
+                        // cambiar el color de fondo
+                        
+                        if (amountAdjust > 0) {
+                            validAdjus.setFieldStyle('text-align:right; background-color: #FFCCCC;'); // verde claro
+                        } else if (amountAdjust < 0) {
+                            validAdjus.setFieldStyle('text-align:right; background-color: #CCFFCC;'); // rojo claro
+                        } else {
+                            validAdjus.setFieldStyle('text-align:right; background-color: #FFFFFF;'); // blanco neutro
+                        }
+                        
+//                        Ext.getCmp(prototype.id + '-de-txtAmountAdjusment').setValue(
+//                    Ext.util.Format.number(amountAdjust, '0,000.00')
+//                );
                         
             }else{
                 console.error("no existe grilla");
