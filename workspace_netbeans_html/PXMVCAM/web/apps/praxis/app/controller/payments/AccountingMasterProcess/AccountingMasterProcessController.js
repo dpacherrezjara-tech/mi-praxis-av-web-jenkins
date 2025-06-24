@@ -17,7 +17,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
         prototype.url = CONTEXTPATH + '/AccountingReport';
         prototype.width = 1900;
         prototype.height = 630;
-        fechaActual = new Date(), mesActual = fechaActual.getMonth(), anioActual = fechaActual.getFullYear();
+        fechaActual = new Date(),mesActual = fechaActual.getMonth(),anioActual = fechaActual.getFullYear();
     },
     afterRender: async function () {
         await this.loadFilters();
@@ -51,7 +51,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
         const tipocon = Ext.getCmp(prototype.id + '-cmbTIPOCON');
         const cmbProc = Ext.getCmp(prototype.id + '-cmbCODPRO');
         let data = me.procesadores.filter(x =>
-            x.A4451CCUST === cmbCccust.value && x.A4451CORRL === tipocon.value);
+                x.A4451CCUST === cmbCccust.value && x.A4451CORRL === tipocon.value);
         global.setComboStore(cmbProc, data, 'A4451KEY2', 'A4451DESC1', '');
     },
     loadGrid: async function () {
@@ -78,7 +78,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
         });
         dataEntry.show();
     },
-    onSapClick: function () {
+    onSapClick:function(){
         const me = this;
         const dataEntry = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.SapLoadDataEntry', {
             id: prototype.id + '-SapLoadDataEntry-1',
