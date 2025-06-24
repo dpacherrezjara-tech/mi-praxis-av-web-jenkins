@@ -28,6 +28,8 @@ public class A2282Filter extends A2282 {
      //datos del mpf
      public String SDATE = "";
      public String SAGENT = "";
+     public String SAGENT_DESC = "";
+     
      public String STVAL = "";
      public String SVFOP = "";
      public double QTYTRAN1 = 0; 
