@@ -67,7 +67,7 @@ public class PerProController extends BaseController {
     public @ResponseBody String search(ModelMap map, HttpServletRequest request) {
         
         PX041S01INF001Filter filter = new PX041S01INF001Filter();
-        filter.VP_CCUST = "134";
+        filter.VP_CCUST = "139";
         filter.VP_APLICA = "PX";
         
         if(request.getParameter("option")!=null && request.getParameter("group")!=null)
