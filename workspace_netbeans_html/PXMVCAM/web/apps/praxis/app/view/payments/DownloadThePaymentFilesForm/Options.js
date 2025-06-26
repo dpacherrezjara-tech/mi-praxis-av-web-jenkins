@@ -1,4 +1,4 @@
-Ext.define('Ext.Praxis.view.payments.UserMaintenanceForm.Options', {
+Ext.define('Ext.Praxis.view.payments.DownloadThePaymentFilesForm.Options', {
     extend: 'Ext.form.Panel',
     alias: 'widget.' + prototype.id + '-options',
     border: false,
@@ -139,12 +139,6 @@ Ext.define('Ext.Praxis.view.payments.UserMaintenanceForm.Options', {
                             id: prototype.id + '-btnClear',
                             iconCls: 'prx-icon-clear',
                             tooltip: 'Clear Options'
-                        },
-                        {
-                            xtype: 'button',
-                            id: prototype.id + '-btnAdd',
-                            iconCls: 'prx-icon-add',
-                            tooltip: 'New'
                         }
                     ]
                 }

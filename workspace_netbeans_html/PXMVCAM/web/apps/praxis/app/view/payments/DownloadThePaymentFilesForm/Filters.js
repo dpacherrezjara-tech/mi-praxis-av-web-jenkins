@@ -1,4 +1,4 @@
-Ext.define('Ext.Praxis.view.payments.UserMaintenanceForm.Filters', {
+Ext.define('Ext.Praxis.view.payments.DownloadThePaymentFilesForm.Filters', {
     extend: 'Ext.form.Panel',
     alias: 'widget.' + prototype.id + '-filters',
     border: true,

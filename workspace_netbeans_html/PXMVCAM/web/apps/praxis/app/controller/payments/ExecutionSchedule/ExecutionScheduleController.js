@@ -1,7 +1,7 @@
 
-Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceController', {
+Ext.define('Ext.Praxis.controller.payments.ExecutionSchedule.ExecutionScheduleController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.UserMaintenanceController',
+    alias: 'controller.ExecutionScheduleController',
     childs: '5',
     bean: '',
     paginActual: '',
@@ -18,41 +18,41 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceContro
 
     init: function (view) {
         me = this;
-        prototype.id = 'UserMaintenanceForm';
-        prototype.url = CONTEXTPATH + '/UserMaintenance';
+        prototype.id = 'ExecutionScheduleForm';
+        prototype.url = CONTEXTPATH + '/ExecutionSchedule';
         this.childs = Ext.getCmp(prototype.id + '-panelMain').items.items;
         me.panelActual = '-panelGridDataMain';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
         this.control({
 //            //   -------------------Eventos Genericos --------------------
-            '#UserMaintenanceForm-xpanel': {
+            '#ExecutionScheduleForm-xpanel': {
                 afterrender: me.xpanel_afterrender
             },
-            '#UserMaintenanceForm-btnSearch': {
+            '#ExecutionScheduleForm-btnSearch': {
                 click: this.onSearchClick
             },
-            '#UserMaintenanceForm-btnClear': {
+            '#ExecutionScheduleForm-btnClear': {
                 click: this.btnClear_click
             },
-            '#UserMaintenanceForm-btnExcel': {
+            '#ExecutionScheduleForm-btnExcel': {
                 click: this.btnExcel_click
             },
-            '#UserMaintenanceForm-btnFilter': {
+            '#ExecutionScheduleForm-btnFilter': {
                 click: this.btnFilter_click
             },
-            '#UserMaintenanceForm-btnAdd': {
+            '#ExecutionScheduleForm-btnAdd': {
                 click: this.btnAdd_click
             },
-            '#UserMaintenanceForm-btn-pag-first': {
+            '#ExecutionScheduleForm-btn-pag-first': {
                 click: this.pagFirst
             },
-            '#UserMaintenanceForm-btn-pag-previous': {
+            '#ExecutionScheduleForm-btn-pag-previous': {
                 click: this.pagPrevious
             },
-            '#UserMaintenanceForm-btn-pag-next': {
+            '#ExecutionScheduleForm-btn-pag-next': {
                 click: this.pagNext
             },
-            '#UserMaintenanceForm-btn-pag-last': {
+            '#ExecutionScheduleForm-btn-pag-last': {
                 click: this.pagLast
             },
         });
@@ -72,9 +72,6 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceContro
     },
 
     obtainData: function () {
-
-        Ext.getCmp(prototype.id + '-txtUser').setValue('');
-        Ext.getCmp(prototype.id + '-txtUser').hide();
         var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro');
         var CmbTypeprocesa = Ext.getCmp(prototype.id + '-CmbTypeprocesa');
 
@@ -83,8 +80,8 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceContro
             autoLoad: false,
             fields: ['code', 'name'],
             data: [
-                ["1", "System Date"],
-                ["2", "User"]
+                ["1", "System date"],
+                ["2", "Execution date"]
             ]
         }));
         cmbFecFiltro.setValue("1");
@@ -106,12 +103,13 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceContro
             ]
         }));
         CmbTypeprocesa.setValue("");
+        ;
         //
         var grid01 = Ext.getCmp(prototype.id + '-gridDataMain');
         var store01 = Ext.create('Ext.data.Store', {
             proxy: {
                 type: 'ajax',
-                url: prototype.url + '/SearchUserMant/',
+                url: prototype.url + '/SearchCalendar/',
                 timeout: '300000',
                 reader: {
                     type: 'json',
@@ -127,19 +125,10 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceContro
 
     },
     onCmbSearchChange: function (obj, records, eOpts) {
-        if (obj.getValue() === "1") {
-            Ext.getCmp(prototype.id + '-txtUser').setValue('');
-            Ext.getCmp(prototype.id + '-txtUser').hide();
+        if (obj.getValue() === "1" || obj.getValue() === "2") {
             Ext.getCmp(prototype.id + '-txtFilterDateFrom').show();
             Ext.getCmp(prototype.id + '-txtFilterDateTo').show();
-        } else if (obj.getValue() === "2") {
-            Ext.getCmp(prototype.id + '-txtUser').setValue('');
-            Ext.getCmp(prototype.id + '-txtUser').show();
-            Ext.getCmp(prototype.id + '-txtFilterDateFrom').hide();
-            Ext.getCmp(prototype.id + '-txtFilterDateTo').hide();
         } else {
-            Ext.getCmp(prototype.id + '-txtUser').setValue('');
-            Ext.getCmp(prototype.id + '-txtUser').hide();
             Ext.getCmp(prototype.id + '-txtFilterDateFrom').show();
             Ext.getCmp(prototype.id + '-txtFilterDateTo').show();
         }
@@ -148,22 +137,13 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceContro
         var me = this;
         var grid01 = Ext.getCmp(prototype.id + '-gridDataMain');
         var store01 = grid01.getStore();
-        var txtFilterDateFrom = Ext.getCmp(prototype.id + '-txtFilterDateFrom').getValue();
-        var txtFilterDateTo = Ext.getCmp(prototype.id + '-txtFilterDateTo').getValue();
-        var txtUser = Ext.getCmp(prototype.id + '-txtUser').getValue();
+        var txtFilterDateFrom = Ext.getCmp(prototype.id + '-txtFilterDateFrom').getRawValue();
+        var txtFilterDateTo = Ext.getCmp(prototype.id + '-txtFilterDateTo').getRawValue();
         var CmbTypeprocesa = Ext.getCmp(prototype.id + '-CmbTypeprocesa').getValue();
         var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue();
 
-        if (Ext.String.trim(Ext.getCmp(prototype.id + '-txtFilterDateFrom').getRawValue()) !== '' &&
-                Ext.String.trim(Ext.getCmp(prototype.id + '-txtFilterDateTo').getRawValue()) !== '') {
-            if (this.compareDate(Ext.getCmp(prototype.id + '-txtFilterDateFrom').getRawValue(), Ext.getCmp(prototype.id + '-txtFilterDateTo').getRawValue())) {
-                Ext.Msg.alert('.: PRAXIS :.', 'the starting date must be less than the end date');
-                return;
-            }
-        }
         me.beanTMP.IN_OPTION = cmbFecFiltro;
         me.beanTMP.IN_TYPEPROCES = CmbTypeprocesa;
-        me.beanTMP.IN_USER = txtUser;
         me.beanTMP.IN_DATETO = txtFilterDateTo;
         me.beanTMP.IN_DATEFROM = txtFilterDateFrom;
         store01.loadPage(1, {
@@ -175,22 +155,13 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceContro
     },
     btnExcel_click: function (obj, e) {
         var me = this;
-        var txtFilterDateFrom = Ext.getCmp(prototype.id + '-txtFilterDateFrom').getValue();
-        var txtFilterDateTo = Ext.getCmp(prototype.id + '-txtFilterDateTo').getValue();
-        var txtUser = Ext.getCmp(prototype.id + '-txtUser').getValue();
+        var txtFilterDateFrom = Ext.getCmp(prototype.id + '-txtFilterDateFrom').getRawValue();
+        var txtFilterDateTo = Ext.getCmp(prototype.id + '-txtFilterDateTo').getRawValue();
         var CmbTypeprocesa = Ext.getCmp(prototype.id + '-CmbTypeprocesa').getValue();
         var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue();
 
-        if (Ext.String.trim(Ext.getCmp(prototype.id + '-txtFilterDateFrom').getRawValue()) !== '' &&
-                Ext.String.trim(Ext.getCmp(prototype.id + '-txtFilterDateTo').getRawValue()) !== '') {
-            if (this.compareDate(Ext.getCmp(prototype.id + '-txtFilterDateFrom').getRawValue(), Ext.getCmp(prototype.id + '-txtFilterDateTo').getRawValue())) {
-                Ext.Msg.alert('.: PRAXIS :.', 'the starting date must be less than the end date');
-                return;
-            }
-        }
         me.beanEXCEL.IN_OPTION = cmbFecFiltro;
         me.beanEXCEL.IN_TYPEPROCES = CmbTypeprocesa;
-        me.beanEXCEL.IN_USER = txtUser;
         me.beanEXCEL.IN_DATETO = txtFilterDateTo;
         me.beanEXCEL.IN_DATEFROM = txtFilterDateFrom;
 
@@ -207,6 +178,26 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceContro
                 }
             }
         });
+    },
+    
+    onRendererColumnOnStatus: function (value, metaData, record, rowIndex, colIndex, store, view) {
+        switch (String(record.get('A4718ESTAT'))) {
+            case 'P':
+                value = 'yellow';
+                break;
+            case 'D':
+                value = 'silver';
+                break;
+            case 'N':
+                value = 'silver';
+                break;
+            case 'A':
+                value = 'green';
+                break;
+            default:
+                value = 'red';
+        }
+        return '<i class="fas fa-circle" style="font-size: 16px; color:' + value + ';"></i>';
     },
 
     setFormatParameter: function () {
@@ -790,7 +781,7 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceContro
     winDataEntry: function (action, rec) {
         action = action === null || action === undefined ? 'U' : action;
         rec = rec === null || rec === undefined ? {} : rec;
-        Ext.create('Ext.Praxis.view.payments.UserMaintenanceForm.DataEntryUserMaintenance', {
+        Ext.create('Ext.Praxis.view.payments.ExecutionScheduleForm.DataEntryExecutionSchedule', {
             //id: prototype.id01 + '-dataEntryUserMain',
             params: {
                 action: action,
@@ -820,7 +811,7 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceContro
         }
     },
     btnClear_click: function (obj, e) {
-        Ext.getCmp( prototype.id + '-txtUser').setValue('');
+        Ext.getCmp(prototype.id + '-txtUser').setValue('');
         Ext.getCmp(prototype.id + '-CmbTypeprocesa').setValue('');
         Ext.getCmp(prototype.id + '-txtFilterDateTo').setValue('');
         Ext.getCmp(prototype.id + '-txtFilterDateFrom').setValue('');

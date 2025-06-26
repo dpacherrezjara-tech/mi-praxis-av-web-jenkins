@@ -1,5 +1,5 @@
 valor = '0';
-Ext.define('Ext.Praxis.view.payments.UserMaintenanceForm.Info', {
+Ext.define('Ext.Praxis.view.payments.ExecutionScheduleForm.Info', {
     extend: 'Ext.form.Panel',
     alias: 'widget.' + prototype.id + '-info',
     layout: 'border',
@@ -40,7 +40,7 @@ Ext.define('Ext.Praxis.view.payments.UserMaintenanceForm.Info', {
                             padding: '1',
                             border: true,
                             height: 560,
-                            width: 1040,
+                            width: 700,
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -50,7 +50,7 @@ Ext.define('Ext.Praxis.view.payments.UserMaintenanceForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataMain',
                                     height: 520,
-                                    width: 1040,
+                                    width: 700,
                                     columnLines: true,
                                     columns: {
                                         defaults: {
@@ -59,47 +59,22 @@ Ext.define('Ext.Praxis.view.payments.UserMaintenanceForm.Info', {
                                             align: 'center'
                                         },
                                         items:
-                                                [
-                                                    {text: 'User', dataIndex: 'A4717USER', width: 200},
-                                                    {text: 'Pass', dataIndex: 'A4717PSCO', width: 100},
-                                                    {text: 'Processor </br> type', dataIndex: 'A4717TYPEDES', width: 200},
-                                                    {text: 'User Created',
-                                                        defaults: {
-                                                            menuDisabled: true,
-                                                            sortable: true,
-                                                            align: 'center',
-                                                            border: true
-                                                        },
-                                                        columns: [
-                                                            {text: 'User', dataIndex: 'A4717USRIN', width: 80},
-                                                            {text: 'date', dataIndex: 'A4717FECIN', width: 80},
-                                                            {text: 'Time', dataIndex: 'A4717HORIN', width: 80}
-                                                        ]
-                                                    },
-                                                    {text: 'User Modified',
-                                                        defaults: {
-                                                            menuDisabled: true,
-                                                            sortable: true,
-                                                            align: 'center',
-                                                            border: true
-                                                        },
-                                                        columns: [
-                                                            {text: 'User', dataIndex: 'A4717USRAC', width: 80},
-                                                            {text: 'date', dataIndex: 'A4717FECAC', width: 80},
-                                                            {text: 'Time', dataIndex: 'A4717HORAC', width: 80}
-                                                        ]
-                                                    },
+                                                [   {text: 'System </br>date', dataIndex: 'A4718FECIN', width: 75},
+                                                    {text: 'Execution </br>date', dataIndex: 'A4718FDCAR', width: 75},
+                                                    {text: 'Processor </br> type', dataIndex: 'A4718TYPEDES', width: 200},
+                                                    {text: 'Status', dataIndex: 'A4718ESTATDES', width: 200, sortable: false, align: 'right'},
+                                                    {text: '', dataIndex: '', width: 60, renderer: 'onRendererColumnOnStatus'},
                                                     {
                                                         sortable: false,
                                                         xtype: 'actioncolumn',
+                                                        text: 'Edit',
                                                         width: 50,
                                                         align: 'center',
                                                         items: [
                                                             {
                                                                 iconCls: 'prx-icon-edit',
-                                                                tooltip: 'Detail',
-                                                                handler: 'viewDataEntry_clickHandler',
-                                                                isActionDisabled: 'OnEditActionDisabled'
+                                                                tooltip: 'Edit',
+                                                                handler: 'viewDataEntry_clickHandler'
                                                             }
                                                         ]
                                                     }
@@ -116,14 +91,14 @@ Ext.define('Ext.Praxis.view.payments.UserMaintenanceForm.Info', {
                                 pack: 'center'
                             },
                             border: false,
-                            width: 1040,
+                            width: 700,
                             margin: '10 0 0 0 ',
                             height: 25,
                             bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
                             items: [
                                 {
                                     xtype: 'panel',
-                                    width: 1040,
+                                    width: 700,
                                     height: 25,
                                     layout: {
                                         type: 'hbox',

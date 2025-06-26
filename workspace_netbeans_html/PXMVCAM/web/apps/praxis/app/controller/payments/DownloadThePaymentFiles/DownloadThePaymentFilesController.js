@@ -1,7 +1,7 @@
 
-Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceController', {
+Ext.define('Ext.Praxis.controller.payments.DownloadThePaymentFiles.DownloadThePaymentFilesController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.UserMaintenanceController',
+    alias: 'controller.DownloadThePaymentFilesController',
     childs: '5',
     bean: '',
     paginActual: '',
@@ -12,29 +12,30 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceContro
 
     dup: '',
     searchParams: {},
+    beanDownload: {},
     dataGrid: [],
     beanTMP: {},
     beanEXCEL: {},
 
     init: function (view) {
         me = this;
-        prototype.id = 'UserMaintenanceForm';
-        prototype.url = CONTEXTPATH + '/UserMaintenance';
+        prototype.id = 'DownloadThePaymentFilesForm';
+        prototype.url = CONTEXTPATH + '/DownloadThePaymentFiles';
         this.childs = Ext.getCmp(prototype.id + '-panelMain').items.items;
         me.panelActual = '-panelGridDataMain';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
         this.control({
 //            //   -------------------Eventos Genericos --------------------
-            '#UserMaintenanceForm-xpanel': {
+            '#DownloadThePaymentFilesForm-xpanel': {
                 afterrender: me.xpanel_afterrender
             },
-            '#UserMaintenanceForm-btnSearch': {
+            '#DownloadThePaymentFilesForm-btnSearch': {
                 click: this.onSearchClick
             },
-            '#UserMaintenanceForm-btnClear': {
+            '#DownloadThePaymentFilesForm-btnClear': {
                 click: this.btnClear_click
             },
-            '#UserMaintenanceForm-btnExcel': {
+            '#DownloadThePaymentFilesForm-btnExcel': {
                 click: this.btnExcel_click
             },
             '#UserMaintenanceForm-btnFilter': {
@@ -54,7 +55,7 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceContro
             },
             '#UserMaintenanceForm-btn-pag-last': {
                 click: this.pagLast
-            },
+            }
         });
     },
 
@@ -72,9 +73,6 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceContro
     },
 
     obtainData: function () {
-
-        Ext.getCmp(prototype.id + '-txtUser').setValue('');
-        Ext.getCmp(prototype.id + '-txtUser').hide();
         var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro');
         var CmbTypeprocesa = Ext.getCmp(prototype.id + '-CmbTypeprocesa');
 
@@ -83,8 +81,8 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceContro
             autoLoad: false,
             fields: ['code', 'name'],
             data: [
-                ["1", "System Date"],
-                ["2", "User"]
+                ["1", "System date"],
+                ["2", "Execution date"]
             ]
         }));
         cmbFecFiltro.setValue("1");
@@ -111,7 +109,7 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceContro
         var store01 = Ext.create('Ext.data.Store', {
             proxy: {
                 type: 'ajax',
-                url: prototype.url + '/SearchUserMant/',
+                url: prototype.url + '/SearchCalendar/',
                 timeout: '300000',
                 reader: {
                     type: 'json',
@@ -127,43 +125,44 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceContro
 
     },
     onCmbSearchChange: function (obj, records, eOpts) {
-        if (obj.getValue() === "1") {
-            Ext.getCmp(prototype.id + '-txtUser').setValue('');
-            Ext.getCmp(prototype.id + '-txtUser').hide();
+        if (obj.getValue() === "1" || obj.getValue() === "2") {
             Ext.getCmp(prototype.id + '-txtFilterDateFrom').show();
             Ext.getCmp(prototype.id + '-txtFilterDateTo').show();
-        } else if (obj.getValue() === "2") {
-            Ext.getCmp(prototype.id + '-txtUser').setValue('');
-            Ext.getCmp(prototype.id + '-txtUser').show();
-            Ext.getCmp(prototype.id + '-txtFilterDateFrom').hide();
-            Ext.getCmp(prototype.id + '-txtFilterDateTo').hide();
         } else {
-            Ext.getCmp(prototype.id + '-txtUser').setValue('');
-            Ext.getCmp(prototype.id + '-txtUser').hide();
             Ext.getCmp(prototype.id + '-txtFilterDateFrom').show();
             Ext.getCmp(prototype.id + '-txtFilterDateTo').show();
         }
+    },
+    onRendererColumnOnStatus: function (value, metaData, record, rowIndex, colIndex, store, view) {
+        switch (String(record.get('A4719ESTAT'))) {
+            case 'P':
+                value = 'yellow';
+                break;
+            case 'D':
+                value = 'silver';
+                break;
+            case 'N':
+                value = 'silver';
+                break;
+            case 'A':
+                value = 'green';
+                break;
+            default:
+                value = 'red';
+        }
+        return '<i class="fas fa-circle" style="font-size: 16px; color:' + value + ';"></i>';
     },
     onSearchClick: function (btn) {
         var me = this;
         var grid01 = Ext.getCmp(prototype.id + '-gridDataMain');
         var store01 = grid01.getStore();
-        var txtFilterDateFrom = Ext.getCmp(prototype.id + '-txtFilterDateFrom').getValue();
-        var txtFilterDateTo = Ext.getCmp(prototype.id + '-txtFilterDateTo').getValue();
-        var txtUser = Ext.getCmp(prototype.id + '-txtUser').getValue();
+        var txtFilterDateFrom = Ext.getCmp(prototype.id + '-txtFilterDateFrom').getRawValue();
+        var txtFilterDateTo = Ext.getCmp(prototype.id + '-txtFilterDateTo').getRawValue();
         var CmbTypeprocesa = Ext.getCmp(prototype.id + '-CmbTypeprocesa').getValue();
         var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue();
-
-        if (Ext.String.trim(Ext.getCmp(prototype.id + '-txtFilterDateFrom').getRawValue()) !== '' &&
-                Ext.String.trim(Ext.getCmp(prototype.id + '-txtFilterDateTo').getRawValue()) !== '') {
-            if (this.compareDate(Ext.getCmp(prototype.id + '-txtFilterDateFrom').getRawValue(), Ext.getCmp(prototype.id + '-txtFilterDateTo').getRawValue())) {
-                Ext.Msg.alert('.: PRAXIS :.', 'the starting date must be less than the end date');
-                return;
-            }
-        }
+        
         me.beanTMP.IN_OPTION = cmbFecFiltro;
         me.beanTMP.IN_TYPEPROCES = CmbTypeprocesa;
-        me.beanTMP.IN_USER = txtUser;
         me.beanTMP.IN_DATETO = txtFilterDateTo;
         me.beanTMP.IN_DATEFROM = txtFilterDateFrom;
         store01.loadPage(1, {
@@ -177,7 +176,6 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceContro
         var me = this;
         var txtFilterDateFrom = Ext.getCmp(prototype.id + '-txtFilterDateFrom').getValue();
         var txtFilterDateTo = Ext.getCmp(prototype.id + '-txtFilterDateTo').getValue();
-        var txtUser = Ext.getCmp(prototype.id + '-txtUser').getValue();
         var CmbTypeprocesa = Ext.getCmp(prototype.id + '-CmbTypeprocesa').getValue();
         var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue();
 
@@ -190,7 +188,6 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceContro
         }
         me.beanEXCEL.IN_OPTION = cmbFecFiltro;
         me.beanEXCEL.IN_TYPEPROCES = CmbTypeprocesa;
-        me.beanEXCEL.IN_USER = txtUser;
         me.beanEXCEL.IN_DATETO = txtFilterDateTo;
         me.beanEXCEL.IN_DATEFROM = txtFilterDateFrom;
 
@@ -779,28 +776,49 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceContro
 
         return msj;
     },
-    btnAdd_click: function () {
-        this.winDataEntry('I');
-    },
-
     viewDataEntry_clickHandler: function (grid, rowIndex, colIndex) {
+        var me = this;
         var rec = grid.getStore().getAt(rowIndex);
-        this.winDataEntry('U', rec);
-    },
-    winDataEntry: function (action, rec) {
-        action = action === null || action === undefined ? 'U' : action;
-        rec = rec === null || rec === undefined ? {} : rec;
-        Ext.create('Ext.Praxis.view.payments.UserMaintenanceForm.DataEntryUserMaintenance', {
-            //id: prototype.id01 + '-dataEntryUserMain',
-            params: {
-                action: action,
-                rec: rec,
-                instancia: me,
-                panel: me.panelActual
+        if (rec.data.A4719ESTAT === 'A') {
+            var type = '';
+            if (rec.data.A4719TYPE === 'PBPV') {
+                type = 'PRODUBANCO/ECUADOR/PVA';
+            } else if (rec.data.A4719TYPE === 'PSE') {
+                type = 'PSE';
+            } else if (rec.data.A4719TYPE === 'CRDO') {
+                type = 'CREDOMATIC';
+            } else if (rec.data.A4719TYPE === 'PBDI') {
+                type = 'PRODUBANCO/ECUADOR/Diners';
+            } else if (rec.data.A4719TYPE === 'WOIQ') {
+                type = 'WPIQ';
             }
-        }).show();
-    },
 
+
+            me.beanDownload.IN_DATETO = rec.data.A4719FCARG;
+            me.beanDownload.IN_TYPEPROCES = rec.data.A4719TYPE;
+            me.beanDownload.IN_PROCESADOR = type;
+            me.exportFiles(prototype.url + '/DownloadFiles_python?beanString=' + encodeURI(JSON.stringify(me.beanDownload)));
+        } else {
+            Ext.Msg.alert('.: PRAXIS :.', 'The process status must be completed in order to perform the download.');
+            return;
+        }
+
+    },
+    exportFiles: function (_path) {
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Download Files zip ?',
+            buttons: Ext.MessageBox.OKCANCEL,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'ok') {
+                    global.getFile(_path);
+                }
+            }
+        });
+    },
     btnBack_click: function (obj, e) {
 
         if (me.drillDown.length > 0) {
@@ -820,7 +838,6 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceContro
         }
     },
     btnClear_click: function (obj, e) {
-        Ext.getCmp( prototype.id + '-txtUser').setValue('');
         Ext.getCmp(prototype.id + '-CmbTypeprocesa').setValue('');
         Ext.getCmp(prototype.id + '-txtFilterDateTo').setValue('');
         Ext.getCmp(prototype.id + '-txtFilterDateFrom').setValue('');

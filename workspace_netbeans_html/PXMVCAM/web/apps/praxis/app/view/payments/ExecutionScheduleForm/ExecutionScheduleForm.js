@@ -1,17 +1,16 @@
 
-prototype.id = 'UserMaintenanceForm';
-prototype.url = CONTEXTPATH + '/UserMaintenance';
-//Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceController
-Ext.define('Ext.Praxis.view.payments.UserMaintenanceForm.UserMaintenanceForm', {
+prototype.id = 'ExecutionScheduleForm';
+prototype.url = CONTEXTPATH + '/ExecutionSchedule';
+Ext.define('Ext.Praxis.view.payments.ExecutionScheduleForm.ExecutionScheduleForm', {
     extend: 'Ext.form.Panel',
-    alias: 'widget.UserMaintenanceForm',
+    alias: 'widget.ExecutionScheduleForm',
     requires: [
-        'Ext.Praxis.view.payments.UserMaintenanceForm.Options',
-        'Ext.Praxis.view.payments.UserMaintenanceForm.Filters',
-        'Ext.Praxis.view.payments.UserMaintenanceForm.Info',
-        'Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceController'
+        'Ext.Praxis.view.payments.ExecutionScheduleForm.Options',
+        'Ext.Praxis.view.payments.ExecutionScheduleForm.Filters',
+        'Ext.Praxis.view.payments.ExecutionScheduleForm.Info',
+        'Ext.Praxis.controller.payments.ExecutionSchedule.ExecutionScheduleController'
     ],
-     controller: 'UserMaintenanceController',
+    controller: 'ExecutionScheduleController',
     layout: {
         type: 'fit'
     },

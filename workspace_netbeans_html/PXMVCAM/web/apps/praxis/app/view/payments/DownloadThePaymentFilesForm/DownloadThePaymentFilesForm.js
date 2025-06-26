@@ -1,17 +1,16 @@
 
-prototype.id = 'UserMaintenanceForm';
-prototype.url = CONTEXTPATH + '/UserMaintenance';
-//Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceController
-Ext.define('Ext.Praxis.view.payments.UserMaintenanceForm.UserMaintenanceForm', {
+prototype.id = 'DownloadThePaymentFilesForm';
+prototype.url = CONTEXTPATH + '/DownloadThePaymentFiles';
+Ext.define('Ext.Praxis.view.payments.DownloadThePaymentFilesForm.DownloadThePaymentFilesForm', {
     extend: 'Ext.form.Panel',
-    alias: 'widget.UserMaintenanceForm',
+    alias: 'widget.DownloadThePaymentFilesForm',
     requires: [
-        'Ext.Praxis.view.payments.UserMaintenanceForm.Options',
-        'Ext.Praxis.view.payments.UserMaintenanceForm.Filters',
-        'Ext.Praxis.view.payments.UserMaintenanceForm.Info',
-        'Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceController'
+        'Ext.Praxis.view.payments.DownloadThePaymentFilesForm.Options',
+        'Ext.Praxis.view.payments.DownloadThePaymentFilesForm.Filters',
+        'Ext.Praxis.view.payments.DownloadThePaymentFilesForm.Info',
+        'Ext.Praxis.controller.payments.DownloadThePaymentFiles.DownloadThePaymentFilesController'
     ],
-     controller: 'UserMaintenanceController',
+    controller: 'DownloadThePaymentFilesController',
     layout: {
         type: 'fit'
     },

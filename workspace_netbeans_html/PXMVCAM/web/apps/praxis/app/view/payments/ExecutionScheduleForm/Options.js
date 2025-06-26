@@ -1,4 +1,4 @@
-Ext.define('Ext.Praxis.view.payments.UserMaintenanceForm.Options', {
+Ext.define('Ext.Praxis.view.payments.ExecutionScheduleForm.Options', {
     extend: 'Ext.form.Panel',
     alias: 'widget.' + prototype.id + '-options',
     border: false,
