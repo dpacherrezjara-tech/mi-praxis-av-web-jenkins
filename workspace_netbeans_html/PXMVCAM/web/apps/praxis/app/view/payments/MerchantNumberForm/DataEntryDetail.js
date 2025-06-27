@@ -941,9 +941,43 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetail', {
                                         maxLength: 8,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
-                                        width: 130
+                                        width: 110
                                     },
-                                    {xtype: 'tbspacer', width: 490},
+                                    {xtype: 'tbspacer', width: 140},
+                                    
+                                    
+                                    
+                                    ///cod pro
+                                    
+                                    
+                                          {
+                                        xtype: 'label',
+                                        text: 'Cod. Pro',
+                                        style: 'font-weight:bold;',
+                                        width: 115
+                                    },
+                                    {xtype: 'tbspacer', width: 15},
+                                    
+                                  
+                                    {
+                                        xtype: 'textfield',
+                                        id: prototype.id + '-CODPRO_2',
+                                        fieldStyle: 'text-align:center',
+                                        enforceMaxLength: true,
+                                        editable: true,
+                                        enabled: true,
+                                        maxLength: 8,
+                                        maskRe: /[a-zA-Z0-9]/,
+                                        readOnly: false,
+                                        width: 90
+                                    },
+                                    
+                                    {xtype: 'tbspacer', width: 150},
+                                    
+                                    
+                                    /////
+                                    
+                                    
                                     {
                                         xtype: 'label',
                                         text: 'ID B. Cen.',
