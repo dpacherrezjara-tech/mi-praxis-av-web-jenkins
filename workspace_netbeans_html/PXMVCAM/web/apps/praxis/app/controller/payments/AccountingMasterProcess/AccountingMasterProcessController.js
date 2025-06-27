@@ -223,8 +223,8 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
                     fn: function (btn) {
                         if (btn === 'yes') {
                             console.log(result);
-                            let data = JSON.parse(result.data);
-                            me.createExcelProvis(data);
+                            //let data = JSON.parse(result);
+                            me.createExcelProvis(result);
                         }
                     }
                 });
@@ -233,13 +233,13 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
 
         let excelData = data.map(x => {
             let layout = {
-                'Bank Doc.': x.bandoc,
-                'Value Date': x.valdate,
-                'Reference': x.refer,
-                'Status Prov': x.stprov === 'Y' ? 'YES' : 'NO',
-                'Account Prov.': x.accprov,
-                'Date Prov.': x.fecprov,
-                'Corrl AV': x.corrlav
+                'Bank Doc.': x.BANDOC,
+                'Value Date': x.VALDATE,
+                'Reference': x.REFER,
+                'Status Prov': x.STPROV === 'Y' ? 'YES' : 'NO',
+                'Account Prov.': x.ACCPROV,
+                'Date Prov.': x.FECPROV,
+                'Corrl AV': x.CORRLAV
             };
             return layout;
         });
