@@ -185,10 +185,15 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
         form.setLoading(true);
         const file = Ext.getCmp(prototype.id + '-fileProvision').fileInputEl.dom.files[0];
         if (file) {
+            let nameFile = file.name;
             global.readExcelFile(file, async (json) => {
                 try {
-                    const tmp = await global.loadRecordsOnTable('PRAXISMP','XTEMPO',json);
-                    const res = await global.callStorePost('PRAXISMP','SPGCON009',{
+                    json = json.map(x => ({
+                            FILENAM: nameFile,
+                            ...x
+                        }));
+                    const tmp = await global.loadRecordsOnTable('PRAXISMP', 'XTEMPO', json);
+                    const res = await global.callStorePost('PRAXISMP', 'SPGCON009', {
                         IN_CUUID: tmp.cuuid,
                         IN_FUUID: tmp.fuuid
                     });
@@ -200,7 +205,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
                 }
 
             });
-        }else{
+        } else {
             this.notifier.alert('Select file to process');
             form.setLoading(true);
         }
