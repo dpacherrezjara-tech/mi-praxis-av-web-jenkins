@@ -22,6 +22,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         this.p = this.view.params;
         this.actionCode = this.p.action;
         this.bean = this.p.rec;
+        this.code = this.p.codpro;
         this.colIndex = this.p.rec.colIndex;
         this.merchantSelected = this.bean.data.CMERCHAN
         console.log(this.bean, 'THIS.BEAN')
@@ -124,7 +125,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                 Ext.getCmp(prototype.id + '-btn-save_D').show();
                 Ext.getCmp(prototype.id + '-btn-update_D').hide();
                 Ext.getCmp(prototype.id + '-btn-delete_D').hide();
-                Ext.getCmp(prototype.id + '-btn-cancel_D').show();
+                Ext.getCmp(prototype.id + '-btn-cancel_D').hide();
                 break;
             case 'U':
 //                this.getData();
@@ -160,6 +161,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                 Ext.getCmp(prototype.id + '-SBENCEN_D').setEditable(true);
                 Ext.getCmp(prototype.id + '-COSTCEN_D').setEditable(true);
                 Ext.getCmp(prototype.id + '-IDFBENEF_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-CODPRO_2').setEditable(true);
 //                Ext.getCmp(prototype.id + '-bankSection').hide();
 //                Ext.getCmp(prototype.id + '-iataSection').hide();
 //                Ext.getCmp(prototype.id + '-bSection_1').hide();
@@ -271,6 +273,10 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         this.setValue('ACCNUMA_D', this.bean.data.ACCNUMA)
         this.setValue('IDFISCAL_D', this.bean.data.IDFISCAL)
         this.setValue('BENCEN_D', this.bean.data.BENCEN)
+        
+        
+        this.setValue('CODPRO_2', this.code);
+        
         this.setValue('DEUSAP_D', this.bean.data.DEUSAP)
         this.setValue('SAGENT_D', this.bean.data.SAGENT)
         this.setValue('CANAL_D', this.bean.data.CANAL)
@@ -315,6 +321,9 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         beanTemp.IN_FRANC2 = this.getValue("de-txtFRANCH2_D")
         beanTemp.IN_FRANC3 = this.getValue("de-txtFRANCH3_D")
         beanTemp.IN_FRANC4 = this.getValue("de-txtFRANCH4_D")
+        
+        beanTemp.IN_CODPRO_2 = this.getValue("CODPRO_2")
+//        
         
         beanTemp.IN_EQUIVA1 = this.getValue("de-txtEQUIVALENT_1")
         beanTemp.IN_EQUIVA2 = this.getValue("de-txtEQUIVALENT_2")
