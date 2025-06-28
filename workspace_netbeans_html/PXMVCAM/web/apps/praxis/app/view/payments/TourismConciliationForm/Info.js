@@ -19,7 +19,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
             defaults: {
                 bodyStyle: 'background: transparent;',
                 border: false,
-                width: 1080,
+                width: 1080 ,
                 height: 'auto',
                 align: 'center'
             },
@@ -39,7 +39,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: true,
                             height: 'auto',
-                            width: 1000,
+                            width: 1080 ,
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -48,10 +48,10 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridMainData',
-                                    width: 965,
+                                    width: 1070 ,
                                     columnLines: true,
                                     menuDisabled: true,
-                                    viewConfig: {
+                                     viewConfig: {
                                         forceFit: false
                                     },
                                     columns: {
@@ -68,26 +68,16 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                                                 menudisabled: false,
                                                 listeners: {
                                                     click: 'detailMPF100'
-                                                },
-                                                renderer: function (value, metaData, record) {
-                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                    return  value;
                                                 }
                                             },
-                                            {text: 'Agent', dataIndex: 'SAGENT', width: 105,
-                                                renderer: function (value, metaData, record) {
-                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                    return  value;
-                                                }
-                                            },
+                                            { text: 'Agent', dataIndex: 'SAGENT', width: 105 },
                                             {
                                                 text: 'Status',
                                                 dataIndex: 'STVAL',
                                                 width: 105,
-                                                editor: {xtype: 'textfield', editable: false},
+                                                editor: { xtype: 'textfield', editable: false },
                                                 renderer: function (value, metaData, record) {
                                                     metaData.style = "text-align:center;";
-                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                     if (record.data.TDOC === 'A') {
                                                         metaData.style += "background-color:#bff5bf;";
                                                     }
@@ -96,18 +86,19 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                                                     } else if (record.data.STVAL === '5') {
                                                         value = 'Match manual.';
                                                     } else {
-                                                        value = 'Pending';
+                                                        value = 'Open';
                                                     }
                                                     return value;
                                                 }
                                             },
-
-//                                            {text: 'Refer', dataIndex: 'REFER', width: 105,
-//                                                renderer: function (value, metaData, record) {
-//                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-//                                                    return  value;
-//                                                }
-//                                            },
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                               { text: 'Refer', dataIndex: 'REFER', width: 105 },
 //                                            {
 //                                                text: 'Status',
 //                                                dataIndex: 'STVAL',
@@ -128,27 +119,26 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
 //                                                    return value;
 //                                                }
 //                                            },
-
-
-
-
-
-
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
                                             {
                                                 text: 'Amount',
                                                 dataIndex: 'SVFOPS',
                                                 width: 132,
-                                                editor: {xtype: 'textfield', editable: false},
+                                                editor: { xtype: 'textfield', editable: false },
                                                 renderer: function (value, metaData, record) {
                                                     metaData.style = "text-align:center;";
-
                                                     if (record.data.TDOC === 'A') {
                                                         metaData.style += "background-color:#bff5bf;";
                                                     }
                                                     return Ext.util.Format.number(value, '0,000.00');
                                                 }
                                             },
-                                            {text: 'Document', dataIndex: 'QTYTRAN1', width: 105},
+                                            { text: 'Document', dataIndex: 'QTYTRAN1', width: 105 },
                                             {
                                                 text: 'Invoice',
                                                 dataIndex: 'REFER',
@@ -156,13 +146,9 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                                                 menudisabled: true,
                                                 listeners: {
                                                     click: 'detailMPF100'
-                                                },
-                                                renderer: function (value, metaData, record) {
-                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                    return  value;
                                                 }
                                             },
-                                            {text: 'Coment', dataIndex: 'CERROR', width: 175},
+                                            { text: 'Coment', dataIndex: 'CERROR', width: 175 },
                                             {
                                                 xtype: 'actioncolumn',
                                                 id: prototype.id + '-detailTourism',
@@ -183,9 +169,8 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                                 {
                                     xtype: 'panel',
                                     id: prototype.id + '-panelDataSummary',
-                                    width: 965,
-                                    align: 'center',
-                                    margin: '0 0 0 40',
+                                    width: 1070,
+                                    align: 'left',
                                     layout: {
                                         type: 'hbox',
                                         align: 'center'
@@ -195,28 +180,27 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                                         align: 'center',
                                         html: '&nbsp;',
                                         height: 25,
-//                                        padding: '5 5 5 0',
-                                        padding: '5 5 5 40',
+                                        padding: '5 5 5 0',
                                         style: 'background:#A0BFD3;color:#244066;text-align:right;font-weight:bold;border: 0.3px #4A6371 solid;font-size:10px'
                                     },
                                     items: [
-                                        {width: 105}, // Sales Date
-                                        {width: 105}, // Agent
-                                        
-                                        {width: 105}, // Status
+                                        { width: 105 }, // Sales Date
+                                        { width: 105 }, // Agent
+                                        { width: 105 }, // refer
+                                        { width: 105 }, // Status
                                         {
                                             width: 132,
                                             id: prototype.id + '-TOTdblAmount'
                                         },
-                                        {width: 105}, // Document
-                                        {width: 135}, // Invoice
-                                        {width: 175}, // CERROR
-                                        {width: 100}   // View column
+                                        { width: 105 }, // Document
+                                        { width: 135 }, // Invoice
+                                        { width: 175 }, // CERROR
+                                        { width: 100 }   // View column
                                     ]
                                 }
                             ]
                         },
-
+                        
                         {
                             xtype: 'panel',
                             id: prototype.id + '-pie',
@@ -225,13 +209,13 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                                 pack: 'center'
                             },
                             border: true,
-                            width: 965,
+                            width: 770,
                             height: 25,
                             bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
                             items: [
                                 {
                                     xtype: 'panel',
-                                    width: 965,
+                                    width: 1070,
                                     height: 25,
                                     layout: {
                                         type: 'hbox',
@@ -259,7 +243,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                                             text: '0',
                                             width: 50
                                         },
-                                        {xtype: 'tbspacer', width: 100},
+                                        { xtype: 'tbspacer', width: 100 },
                                         {
                                             text: 'Total found',
                                             width: 80

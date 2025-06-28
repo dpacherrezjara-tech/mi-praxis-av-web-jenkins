@@ -1119,7 +1119,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         readOnly: false,
                                         width: 150
                                     },
-                                    {xtype: 'tbspacer', width: 90},
+                                    {xtype: 'tbspacer', width: 100},
                                     {
                                         xtype: 'label',
                                         text: 'Aux Bank Acc',
@@ -1194,7 +1194,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         maxLength: 8,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
-                                        width: 130
+                                        width: 120
                                     },
                                     {xtype: 'tbspacer', width: 120},
                                     {
@@ -1238,9 +1238,9 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         xtype: 'label',
                                         text: 'Prof. Cent',
                                         style: 'font-weight:bold;',
-                                        width: 80
+                                        width: 115
                                     },
-                                    {xtype: 'tbspacer', width: 40},
+                                    {xtype: 'tbspacer', width: 5},
                                     {
                                         xtype: 'textfield',
                                         id: prototype.id + '-BENCEN',
@@ -1253,46 +1253,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                         readOnly: false,
                                         width: 130
                                     },
-                                    {xtype: 'tbspacer', width: 120},
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    ////
-                                    // agregamos conpro
-                                    
-                                    
-                                             {
-                                        xtype: 'label',
-                                        text: 'Cod. Pro',
-                                        style: 'font-weight:bold;',
-                                        width: 80
-                                    },
-                                    {xtype: 'tbspacer', width: 50},
-                                     {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-CODPRO',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: true,
-                                        enabled: true,
-                                        maxLength: 8,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 130
-                                    },
-                                    
-                                    
-                                    {xtype: 'tbspacer', width: 110},
-                                    
-                                    
-                                    
-                                    //finish
-                                    
-                                    
-                                    
-                                    
+                                    {xtype: 'tbspacer', width: 490},
                                     {
                                         xtype: 'label',
                                         text: 'ID B. Cen.',
@@ -1958,7 +1919,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
 //                                            xtype: 'label',
 //                                            labelAlign: 'center',
 //                                            padding: '1px 1px 1px 1px',
-//                                            html: '<strong style="color:#AC4546;font-size:13px;">(*)<Fstrong>',
+//                                            html: '<strong style="color:#AC4546;font-size:13px;">(*)</strong>',
 //                                            width: 30,
 //                                            autoEl: {
 //                                                tag: 'label',
@@ -2088,7 +2049,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
 //                                                    widget: {
 //                                                        xtype: 'button',
 //                                                        iconCls: 'prx-icon-delete',
-//                                                        tooltip: 'removgridDataAirporte',
+//                                                        tooltip: 'remove',
 //                                                        listeners: {
 //                                                            click: function (button, e, eOpts) {
 //                                                                var record = button.getWidgetRecord();
