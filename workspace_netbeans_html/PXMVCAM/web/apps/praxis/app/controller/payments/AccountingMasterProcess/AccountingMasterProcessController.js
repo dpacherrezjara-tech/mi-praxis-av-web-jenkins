@@ -112,6 +112,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
         const winProvis = Ext.create('Ext.window.Window', {
             title: 'Provision - Form',
             width: 400,
+            id: prototype.id + '-provisionForm',
             layout: 'fit',
             modal: true,
             items: [{
@@ -123,6 +124,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
                     },
                     items: [{
                             xtype: 'filefield',
+                            id: prototype.id + '-fileProvision',
                             name: 'file',
                             labelWidth: 50,
                             fieldLabel: 'File',
@@ -140,7 +142,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
             buttons: [{
                     text: 'Process Provision',
                     iconCls: 'prx-icon-reload',
-                    scale:'medium',
+                    scale: 'medium',
                     handler: function (btn) {
                         var form = btn.up('window').down('form').getForm();
                         if (form.isValid()) {
@@ -154,17 +156,19 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
                                         modal: true,
                                         fn: function (btn) {
                                             if (btn === 'yes') {
-                                                form.submit({
-                                                    url: CONTEXTPATH + '/AccountingReport/processProvision', // <-- cambiá esto
-                                                    waitMsg: 'Loading File...',
-                                                    success: function (fp, o) {
-                                                        new AWN().success('File Uploaded Successfully');
-                                                        me.downloadResultProvis(o.result);
-                                                    },
-                                                    failure: function (fp, o) {
-                                                        new AWN().alert('Error on load File');
-                                                    }
-                                                });
+                                                me.loadProvision();
+                                                /*
+                                                 form.submit({
+                                                 url: CONTEXTPATH + '/AccountingReport/processProvision', // <-- cambiá esto
+                                                 waitMsg: 'Loading File...',
+                                                 success: function (fp, o) {
+                                                 new AWN().success('File Uploaded Successfully');
+                                                 me.downloadResultProvis(o.result);
+                                                 },
+                                                 failure: function (fp, o) {
+                                                 new AWN().alert('Error on load File');
+                                                 }
+                                                 });*/
                                             }
                                         }
                                     });
@@ -174,6 +178,37 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
                 }]
         });
         winProvis.show();
+    },
+    loadProvision: async function () {
+        const me = this;
+        const form = Ext.getCmp(prototype.id + '-provisionForm');
+        form.setLoading(true);
+        const file = Ext.getCmp(prototype.id + '-fileProvision').fileInputEl.dom.files[0];
+        if (file) {
+            let nameFile = file.name;
+            global.readExcelFile(file, async (json) => {
+                try {
+                    json = json.map(x => ({
+                            FILENAM: nameFile,
+                            ...x
+                        }));
+                    const tmp = await global.loadRecordsOnTable('PRAXISMP', 'XTEMPO', json);
+                    const res = await global.callStorePost('PRAXISMP', 'SPGCON009', {
+                        IN_CUUID: tmp.cuuid,
+                        IN_FUUID: tmp.fuuid
+                    });
+                    me.downloadResultProvis(res.data.lstRs.at(0));
+                } catch (e) {
+                    console.error(e);
+                } finally {
+                    form.setLoading(false);
+                }
+
+            });
+        } else {
+            this.notifier.alert('Select file to process');
+            form.setLoading(true);
+        }
     },
     downloadResultProvis: function (result) {
         const me = this;
@@ -188,8 +223,8 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
                     fn: function (btn) {
                         if (btn === 'yes') {
                             console.log(result);
-                            let data = JSON.parse(result.data);
-                            me.createExcelProvis(data);
+                            //let data = JSON.parse(result);
+                            me.createExcelProvis(result);
                         }
                     }
                 });
@@ -198,13 +233,13 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
 
         let excelData = data.map(x => {
             let layout = {
-                'Bank Doc.': x.bandoc,
-                'Value Date': x.valdate,
-                'Reference': x.refer,
-                'Status Prov': x.stprov === 'Y' ? 'YES' : 'NO',
-                'Account Prov.': x.accprov,
-                'Date Prov.': x.fecprov,
-                'Corrl AV': x.corrlav
+                'Bank Doc.': x.BANDOC,
+                'Value Date': x.VALDATE,
+                'Reference': x.REFER,
+                'Status Prov': x.STPROV === 'Y' ? 'YES' : 'NO',
+                'Account Prov.': x.ACCPROV,
+                'Date Prov.': x.FECPROV,
+                'Corrl AV': x.CORRLAV
             };
             return layout;
         });
