@@ -11,7 +11,7 @@ Ext.define('Ext.Praxis.view.payments.ReverseAccountingForm.ReverseAccountingForm
         'Ext.Praxis.controller.payments.ReverseAccounting.ReverseAccountingController',
         'Ext.Praxis.view.payments.ReverseAccountingForm.Options',
         'Ext.Praxis.view.payments.ReverseAccountingForm.Filters',
-        'Ext.Praxis.view.payments.ReverseAccountingForm.Grids.ReverseAccountingGrid',
+        'Ext.Praxis.view.payments.ReverseAccountingForm.Grids.MainGrid',
 //        'Ext.Praxis.view.payments.AccountingReportForm.Grids.ErrorsGrid'
     ],
     controller: 'ReverseAccountingController',

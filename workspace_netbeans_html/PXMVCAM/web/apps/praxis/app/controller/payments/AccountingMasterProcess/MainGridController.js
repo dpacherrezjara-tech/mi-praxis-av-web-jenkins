@@ -18,7 +18,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridContr
         const view = me.view;
         let username = document.getElementById('menuUser').innerText.trim();
         const btnUpload = Ext.getCmp(prototype.id + '-uploadAccountingBtn');
-        if(username === 'MPACHECO' || username==='PXAVAPID'){
+        if(username === 'MPACHECO' || username==='MPACHECOD'){
             btnUpload.show();
         }else{
             btnUpload.hide();
