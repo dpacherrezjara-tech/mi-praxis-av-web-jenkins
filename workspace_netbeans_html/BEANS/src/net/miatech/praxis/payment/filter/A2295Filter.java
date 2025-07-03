@@ -87,4 +87,12 @@ public class A2295Filter  extends A2295{
     
     public long RN = 0;
     public Pagination page = new Pagination();
+    
+    // NEW REPORT
+    public String FDESD = "";
+    public String MCLOS = "";
+    public String SCURREVEN = "";
+    public String SPAYMENT = "";
+    public double SVFOPC1 = 0;
+    public double SVFOPUSD = 0;
 }
