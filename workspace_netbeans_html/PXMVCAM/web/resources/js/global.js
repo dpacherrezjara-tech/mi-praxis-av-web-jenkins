@@ -1813,6 +1813,39 @@ var LarSyrExt = function () {
         // Descargar archivo
         XLSX.writeFile(wb, name + "_" + uuid + ".xlsx");
     };
+    this.formatTimeStamp = function (value) {
+        if (value) {
+            const formatter = new Intl.DateTimeFormat('es-ES', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            return formatter.format(new Date(value));
+        } else {
+            return '';
+        }
+    };
+    this.readExcelFile = async function (file, callback) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, {type: 'array'});
+
+            const sheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
+
+            const jsonData = XLSX.utils.sheet_to_json(worksheet, {defval: ''});
+
+            callback(jsonData); // Aquí devuelves los datos
+        };
+
+        reader.readAsArrayBuffer(file);
+    };
+    
     this.loadRecordsOnTable = async function (library, table, lst) {
         let uuid = crypto.randomUUID().replace(/-/g, '');
         let fuuid = new Date().toISOString().split('T')[0].replace(/-/g, '');
@@ -1846,38 +1879,6 @@ var LarSyrExt = function () {
             return {
                 success: false
             };
-        }
-    };
-    this.readExcelFile = async function (file, callback) {
-        const reader = new FileReader();
-
-        reader.onload = function (e) {
-            const data = new Uint8Array(e.target.result);
-            const workbook = XLSX.read(data, {type: 'array'});
-
-            const sheetName = workbook.SheetNames[0];
-            const worksheet = workbook.Sheets[sheetName];
-
-            const jsonData = XLSX.utils.sheet_to_json(worksheet, {defval: ''});
-
-            callback(jsonData); // Aquí devuelves los datos
-        };
-
-        reader.readAsArrayBuffer(file);
-    };
-    this.formatTimeStamp = function (value) {
-        if (value) {
-            const formatter = new Intl.DateTimeFormat('es-ES', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            });
-            return formatter.format(new Date(value));
-        } else {
-            return '';
         }
     };
 };
