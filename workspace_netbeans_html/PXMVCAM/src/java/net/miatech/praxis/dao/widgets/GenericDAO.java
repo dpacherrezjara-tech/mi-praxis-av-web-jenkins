@@ -88,6 +88,18 @@ public class GenericDAO implements GenericLogic {
         return filter;
     }
 
+    @Override
+    public void loadRecordsOnTable(String LIBRARY, String TABLE, List<RecordsFilter> lst) throws Exception {
+        final String sql = "INSERT INTO "+LIBRARY+"."+TABLE+" (CUUID,FUUID,TRAMA) "
+                + "VALUES"
+                + "(:CUUID,:FUUID,:TRAMA)";
+        BeanPropertySqlParameterSource[] insertParams = new BeanPropertySqlParameterSource[lst.size()];
+        for (int i = 0; i < lst.size(); i++) {
+            insertParams[i] = new BeanPropertySqlParameterSource(lst.get(i));
+        }
+        jdbcUtils.executeNamedParam(sql, insertParams);
+    }
+    
     @Async
     @Override
     public Map<String, Object> callStoreProcedureAsync(CallStoreFilter filter) throws Exception {
@@ -110,15 +122,5 @@ public class GenericDAO implements GenericLogic {
         return res;
     }
 
-    @Override
-    public void loadRecordsOnTable(String LIBRARY, String TABLE, List<RecordsFilter> lst) throws Exception {
-        final String sql = "INSERT INTO "+LIBRARY+"."+TABLE+" (CUUID,FUUID,TRAMA) "
-                + "VALUES"
-                + "(:CUUID,:FUUID,:TRAMA)";
-        BeanPropertySqlParameterSource[] insertParams = new BeanPropertySqlParameterSource[lst.size()];
-        for (int i = 0; i < lst.size(); i++) {
-            insertParams[i] = new BeanPropertySqlParameterSource(lst.get(i));
-        }
-        jdbcUtils.executeNamedParam(sql, insertParams);
-    }
+    
 }

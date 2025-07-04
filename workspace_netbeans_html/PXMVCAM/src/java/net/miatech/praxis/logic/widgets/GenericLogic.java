@@ -11,8 +11,13 @@ import net.miatech.praxis.payment.dto.CallStorePaggin;
  * @author dvicente
  */
 public interface GenericLogic {
-    Map<String,Object> callStoreProcedure(CallStoreFilter filter) throws Exception;
-    Map<String,Object> callStoreProcedureAsync(CallStoreFilter filter) throws Exception;
-    CallStorePaggin callStoreProcedurePaggin(CallStorePaggin filter) throws Exception;
+    
     void loadRecordsOnTable(String LIBRARY,String TABLE,List<RecordsFilter> lst) throws Exception;
+    
+    Map<String,Object> callStoreProcedure(CallStoreFilter filter) throws Exception;
+    
+    Map<String,Object> callStoreProcedureAsync(CallStoreFilter filter) throws Exception;
+    
+    CallStorePaggin callStoreProcedurePaggin(CallStorePaggin filter) throws Exception;
+    
 }
