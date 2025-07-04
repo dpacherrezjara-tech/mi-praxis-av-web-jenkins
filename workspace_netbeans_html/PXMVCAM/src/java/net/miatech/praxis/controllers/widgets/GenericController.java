@@ -1,6 +1,8 @@
 package net.miatech.praxis.controllers.widgets;
 
+import java.util.List;
 import java.util.Map;
+import net.miatech.praxis.generics.RecordsFilter;
 import net.miatech.praxis.logic.widgets.GenericLogic;
 import net.miatech.praxis.payment.dto.CallStoreFilter;
 import net.miatech.praxis.payment.dto.CallStorePaggin;
@@ -49,6 +51,18 @@ public class GenericController {
         return ResponseUtils.create();
     }
     
+    @RequestMapping(value = "loadRecordsOnTable/{library}/{table}",method = RequestMethod.POST)
+    public ResponseEntity<?> loadRecordsOnTable(
+            @PathVariable String library,
+            @PathVariable String table, 
+            @RequestBody List<RecordsFilter> lst) throws Exception {
+        System.out.println("***** Generic - loadRecordsOnTable *****");
+        System.out.println("Parameters: " + library + "." + table);
+        System.out.println("Total Records on load: " + lst.size() );
+        logic.loadRecordsOnTable(library, table, lst);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+            
     @RequestMapping(value = "CallStorePaggin/{library}/{procedure}")
     public ResponseEntity<?> CallStorePaggin(
             @PathVariable String library,
@@ -63,4 +77,5 @@ public class GenericController {
         System.out.println("Parameters: " + library + "." + procedure);
         return new ResponseEntity(logic.callStoreProcedurePaggin(filter),HttpStatus.OK) ;
     }
+    
 }
