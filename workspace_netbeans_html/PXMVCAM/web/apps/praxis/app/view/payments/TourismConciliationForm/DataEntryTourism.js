@@ -46,263 +46,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                 anchor: '100%'
                             },
                             items: [
-//                                {
-//                                    xtype: 'label',
-//                                    text: 'General Information',
-//                                    style: 'font-weight:bold;color:#0B333C;text-decoration-line: underline;',
-//                                    bodyStyle: 'background:#E5ECEF;',
-//                                    fontSize: '11',
-//                                    width: 334,
-//                                    height: 20,
-//                                    margin: '4 200 4 8'
-//                                },
-//                                {
-//                                    xtype: 'panel',
-//                                    layout: 'hbox',
-//                                    border: false,
-//                                    bodyStyle: 'background:#efe5e5;',
-//                                    margin: '0 2 0 20',
-//                                    defaults: {
-//                                        anchor: '100%',
-//                                        width: 1120
-//                                    },
-//                                    items: [
-//                                        {xtype: 'tbspacer', width: 7, height: 24},
-//                                        {
-//                                            xtype: 'label',
-//                                            text: 'Processing Date',
-//                                            style: 'font-weight:bold;color:#0B333C;',
-//                                            width: 120
-//                                        },
-//                                        {xtype: 'tbspacer', width: 10},
-//                                        {
-//                                            xtype: 'textfield',
-//                                            id: prototype.id + '-de-txtPRDA',
-//                                            fieldStyle: 'text-align:center',
-//                                            enforceMaxLength: true,
-//                                            readOnly: true,
-//                                            width: 100,
-//                                        },
-//                                        {xtype: 'tbspacer', width: 100},
-//                                        {
-//                                            xtype: 'label',
-//                                            text: 'Merchant ID',
-//                                            style: 'font-weight:bold;color:#0B333C;',
-//                                            width: 120
-//                                        },
-//                                        {xtype: 'tbspacer', width: 10},
-//                                        {
-//                                            xtype: 'textfield',
-//                                            id: prototype.id + '-de-txtMERCHID',
-//                                            fieldStyle: 'text-align:center',
-//                                            enforceMaxLength: true,
-//                                            readOnly: true,
-//                                            width: 100,
-//                                        },
-//                                        {xtype: 'tbspacer', width: 70},
-//                                        {
-//                                            xtype: 'label',
-//                                            text: 'Agent',
-//                                            style: 'font-weight:bold;color:#0B333C;',
-//                                            width: 90
-//                                        },
-//                                        {xtype: 'tbspacer', width: 10},
-//                                        {
-//                                            xtype: 'textfield',
-//                                            id: prototype.id + '-de-txtSAGENT',
-//                                            fieldStyle: 'text-align:left',
-//                                            enforceMaxLength: true,
-//                                            readOnly: true,
-//                                            width: 180,
-//                                        },
-//                                        {xtype: 'tbspacer', width: 70},
-//                                        {
-//                                            xtype: 'label',
-//                                            text: 'Terminal',
-//                                            style: 'font-weight:bold;color:#0B333C;',
-//                                            width: 90
-//                                        },
-//                                        {xtype: 'tbspacer', width: 10},
-//                                        {
-//                                            xtype: 'textfield',
-//                                            id: prototype.id + '-de-txtTERMI',
-//                                            fieldStyle: 'text-align:center',
-//                                            enforceMaxLength: true,
-//                                            readOnly: true,
-//                                            width: 130,
-//                                        },
-//                                        {xtype: 'tbspacer', width: 10},
-//                                    ]
-//                                },
-//                                {
-//                                    xtype: 'panel',
-//                                    layout: 'hbox',
-//                                    border: false,
-//                                    bodyStyle: 'background:#efe5e5;',
-//                                    margin: '0 2 0 20',
-//                                    items: [
-//                                        {xtype: 'tbspacer', width: 7, height: 24},
-//                                        {
-//                                            xtype: 'label',
-//                                            text: 'ID Submission',
-//                                            style: 'font-weight:bold;color:#0B333C;',
-//                                            width: 120
-//                                        },
-//                                        {xtype: 'tbspacer', width: 10},
-//                                        {
-//                                            xtype: 'textfield',
-//                                            id: prototype.id + '-de-txtIDITEMS',
-//                                            fieldStyle: 'text-align:center',
-//                                            enforceMaxLength: true,
-//                                            readOnly: true,
-//                                            width: 100
-//                                        },
-//                                        {xtype: 'tbspacer', width: 100},
-//                                        {
-//                                            xtype: 'label',
-//                                            text: 'Inst.Pay. Plan',
-//                                            style: 'font-weight:bold;color:#0B333C;',
-//                                            width: 120
-//                                        },
-//                                        {xtype: 'tbspacer', width: 10},
-//                                        {
-//                                            xtype: 'textfield',
-//                                            id: prototype.id + '-de-txtINSTPLA',
-//                                            fieldStyle: 'text-align:center',
-//                                            enforceMaxLength: true,
-//                                            readOnly: true,
-//                                            width: 100
-//                                        },
-//                                        {xtype: 'tbspacer', width: 70},
-//                                        {
-//                                            xtype: 'label',
-//                                            text: 'Country',
-//                                            style: 'font-weight:bold;color:#0B333C;',
-//                                            width: 90
-//                                        },
-//                                        {xtype: 'tbspacer', width: 10},
-//                                        {
-//                                            xtype: 'textfield',
-//                                            id: prototype.id + '-de-txtCOUNTRY',
-//                                            fieldStyle: 'text-align:center',
-//                                            enforceMaxLength: true,
-//                                            readOnly: true,
-//                                            width: 180
-//                                        },
-//                                        {xtype: 'tbspacer', width: 70},
-//                                        {
-//                                            xtype: 'label',
-//                                            text: 'Business',
-//                                            style: 'font-weight:bold;color:#0B333C;',
-//                                            width: 90
-//                                        },
-//                                        {xtype: 'tbspacer', width: 10},
-//                                        {
-//                                            xtype: 'textfield',
-//                                            id: prototype.id + '-de-txtNEGOC',
-//                                            fieldStyle: 'text-align:center',
-//                                            enforceMaxLength: true,
-//                                            readOnly: true,
-//                                            width: 130
-//                                        },
-//                                        {xtype: 'tbspacer', width: 10}
-//                                    ]
-//                                },
-//                                {
-//                                    xtype: 'panel',
-//                                    layout: 'hbox',
-//                                    border: false,
-//                                    bodyStyle: 'background:#efe5e5;',
-//                                    margin: '0 2 0 20',
-//                                    items: [
-//                                        {xtype: 'tbspacer', width: 7, height: 24},
-//                                        {
-//                                            xtype: 'label',
-//                                            text: 'Invoice Ref.Nbr',
-//                                            style: 'font-weight:bold;color:#0B333C;',
-//                                            width: 120
-//                                        },
-//                                        {xtype: 'tbspacer', width: 10},
-//                                        {
-//                                            xtype: 'textfield',
-//                                            id: prototype.id + '-de-txtINVORNBR',
-//                                            fieldStyle: 'text-align:center',
-//                                            enforceMaxLength: true,
-//                                            readOnly: true,
-//                                            width: 100
-//                                        },
-//                                        {xtype: 'tbspacer', width: 100},
-//                                        {
-//                                            xtype: 'label',
-//                                            text: 'Zone',
-//                                            hidden: true,
-//                                            style: 'font-weight:bold;color:#0B333C;',
-//                                            width: 120
-//                                        },
-//                                        {
-//                                            xtype: 'textfield',
-//                                            id: prototype.id + '-de-txtZONE',
-//                                            fieldStyle: 'text-align:center',
-//                                            enforceMaxLength: true,
-//                                            readOnly: true,
-//                                            hidden: true,
-//                                            width: 100
-//                                        },
-//                                        {
-//                                            xtype: 'label',
-//                                            text: 'Inst. Payment',
-//                                            style: 'font-weight:bold;color:#0B333C;',
-//                                            width: 120
-//                                        },
-//                                        {xtype: 'tbspacer', width: 10},
-//                                        {
-//                                            xtype: 'textfield',
-//                                            id: prototype.id + '-de-txtINSTPAY',
-//                                            fieldStyle: 'text-align:center',
-//                                            enforceMaxLength: true,
-//                                            readOnly: true,
-//                                            width: 100
-//                                        },
-//                                        {xtype: 'tbspacer', width: 70},
-//                                        {
-//                                            xtype: 'label',
-//                                            text: 'ID Transaction',
-//                                            style: 'font-weight:bold;color:#0B333C;',
-//                                            width: 90
-//                                        },
-//                                        {xtype: 'tbspacer', width: 10},
-//                                        {
-//                                            xtype: 'textfield',
-//                                            id: prototype.id + '-de-txtIDITEMT',
-//                                            fieldStyle: 'text-align:center',
-//                                            enforceMaxLength: true,
-//                                            readOnly: true,
-//                                            width: 180
-//                                        },
-//                                        {xtype: 'tbspacer', width: 70},
-//                                        {
-//                                            xtype: 'label',
-//                                            text: 'Processor',
-//                                            style: 'font-weight:bold;color:#0B333C;',
-//                                            width: 90
-//                                        },
-//                                        {xtype: 'tbspacer', width: 10},
-//                                        {
-//                                            xtype: 'textfield',
-//                                            id: prototype.id + '-de-txtCOREP',
-//                                            fieldStyle: 'text-align:center',
-//                                            enforceMaxLength: true,
-//                                            readOnly: true,
-//                                            width: 130
-//                                        },
-//                                        {xtype: 'tbspacer', width: 10}
-//                                    ]
-//                                },
-
-
-
-
-
+//                            
                                 {
                                     xtype: 'label',
                                     text: 'Sales Information',
@@ -317,6 +61,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                     layout: 'hbox',
                                     bodyStyle: 'background:#efe5e5;',
                                     margin: '0 2 0 20',
+                                    
                                     items: [
                                         {
                                             xtype: 'label',
@@ -332,21 +77,8 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                             fieldStyle: 'text-align:center;',
                                             width: 100
                                         },
-                                        {xtype: 'tbspacer', width: 50},
-//                                        {
-//                                            xtype: 'label',
-//                                            text: 'Doc. Type',
-//                                            style: 'font-weight:bold;color:#0B333C;',
-//                                            width: 80
-//                                        },
-//                                        {xtype: 'tbspacer', width: 10},
-//                                        {
-//                                            xtype: 'textfield',
-////                                            id: prototype.id + '-de-txtTDOC',
-//                                            readOnly: true,
-//                                            fieldStyle: 'text-align:center;',
-//                                            width: 80
-//                                        },
+                                        {xtype: 'tbspacer', width: 40},
+//                                   
 
                                         {
                                             xtype: 'label',
@@ -354,20 +86,24 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                             style: 'font-weight:bold;color:#0B333C;padding-top: 5px; text-align:center;',
                                             width: 80
                                         },
-                                        {xtype: 'tbspacer', width: 10},
+                                        {xtype: 'tbspacer', width: 20},
+                        
+                                        
                                         {
                                             xtype: 'textfield',
                                             id: prototype.id + '-de-txtBANDOC',
                                             readOnly: true,
                                             fieldStyle: 'text-align:center;',
-                                            width: 250
+                                            width: 300,
+//                                            
                                         },
                                         {xtype: 'tbspacer', width: 50},
                                         {
                                             xtype: 'label',
                                             text: 'Status',
                                             style: 'font-weight:bold;color:#0B333C; ',
-                                            width: 120
+                                            margin: '05 0 0 20',
+                                            width: 100
                                         },
                                         {xtype: 'tbspacer', width: 10},
                                         {
@@ -377,13 +113,13 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                             fieldStyle: 'text-align:center;',
                                             width: 120
                                         },
-                                        {xtype: 'tbspacer', width: 50},
-                                        {
-                                            xtype: 'label',
-                                            text: '',
-                                            style: 'font-weight:bold;color:#0B333C;',
-                                            width: 120
-                                        },
+//                                        {xtype: 'tbspacer', width: 50},
+//                                        {
+//                                            xtype: 'label',
+//                                            text: '',
+//                                            style: 'font-weight:bold;color:#0B333C;',
+//                                            width: 120
+//                                        },
 //                                        {xtype: 'tbspacer', width: 10},
 //                                        {
 //                                            xtype: 'textfield',
@@ -430,14 +166,14 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                             id: prototype.id + '-de-txtSCARCODE',
                                             readOnly: true,
                                             fieldStyle: 'text-align:center;',
-                                            width: 120
+                                            width: 80
                                         },
                                         {xtype: 'tbspacer', width: 50},
                                         {
                                             xtype: 'label',
                                             text: 'Qty Doc.',
                                             style: 'font-weight:bold;color:#0B333C;padding-top: 5px; text-align:center;',
-                                            width: 120
+                                            width: 80
                                         },
                                         {xtype: 'tbspacer', width: 10},
                                         {
@@ -445,7 +181,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                             id: prototype.id + '-de-txtSCARDN',
                                             readOnly: true,
                                             fieldStyle: 'text-align:center;',
-                                            width: 120
+                                            width: 80
                                         },
                                         {xtype: 'tbspacer', width: 50},
                                         {

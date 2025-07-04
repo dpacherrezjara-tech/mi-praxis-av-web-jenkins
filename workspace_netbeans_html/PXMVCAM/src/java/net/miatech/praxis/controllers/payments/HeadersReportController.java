@@ -22,15 +22,11 @@ import net.miatech.praxis.utils.SpringWS;
 import net.miatech.utils.CustomExcelCell;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -70,7 +66,6 @@ public class HeadersReportController {
         return ResponseUtils.ok(filter);
     }
 
-    /*
     @RequestMapping(value = "maintenanceHeader",method = RequestMethod.POST)
     public ResponseEntity<?> maintenanceHeader(@RequestBody SPHRP003Filter params) throws Exception {
         System.out.println("***** HeadersReport - maintenanceHeader *****");
@@ -91,7 +86,7 @@ public class HeadersReportController {
         ws.postAsync(body, "Accounting/sendInterfaseToSFTP");
         
         return ResponseUtils.create();
-    }*/
+    }
     
     @RequestMapping(value = "loadWeekHeaders")
     public ResponseEntity<?> loadWeekHeaders(SPHRP005Filter params) throws Exception {
@@ -107,18 +102,6 @@ public class HeadersReportController {
         SPHRP006Filter filter = logic.loadSPHRP006Filter(params);
         System.out.println("Total: " + filter.getResponse().size());
         return ResponseUtils.ok(filter);
-    }
-    
-    @RequestMapping(value = "/maintenanceHeader",method = RequestMethod.POST)
-    public ResponseEntity<?> maintenanceHeader(@RequestParam("files") List<MultipartFile> archivos,@RequestParam String params) {
-        try {
-            boolean res = ws.postFilesAsync(params,archivos,"Accounting/maintenanceHeader");
-            Map<String,Object> body = new HashMap<>();
-            body.put("success", res);
-            return new ResponseEntity<>(body,HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
     
     //<editor-fold defaultstate="collapsed" desc="Exceles">

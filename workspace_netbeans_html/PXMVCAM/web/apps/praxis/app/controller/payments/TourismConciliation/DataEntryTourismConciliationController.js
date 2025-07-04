@@ -52,7 +52,7 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
     //    Ext.getCmp(prototype.id + '-de-txtCODEBANK').setValue(this.bean.STVAL);
     
     
-        Ext.getCmp(prototype.id + '-de-txtBANDOC').setValue(this.bean.SAGENT_DESC);
+        Ext.getCmp(prototype.id + '-de-txtBANDOC').setValue(this.bean.SAGENT + ' - ' + this.bean.SAGENT_DESC);
         Ext.getCmp(prototype.id + '-de-txtPAYDATE').setValue(this.bean.REFER);
         Ext.getCmp(prototype.id + '-de-txtSCARCODE').setValue(this.bean.QTYTRAN1);
         Ext.getCmp(prototype.id + '-de-txtSCARDN').setValue(this.bean.QTYDOC);
