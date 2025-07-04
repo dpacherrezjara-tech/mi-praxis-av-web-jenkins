@@ -51,6 +51,18 @@ public class GenericController {
         return ResponseUtils.create();
     }
     
+    @RequestMapping(value = "loadRecordsOnTable/{library}/{table}",method = RequestMethod.POST)
+    public ResponseEntity<?> loadRecordsOnTable(
+            @PathVariable String library,
+            @PathVariable String table, 
+            @RequestBody List<RecordsFilter> lst) throws Exception {
+        System.out.println("***** Generic - loadRecordsOnTable *****");
+        System.out.println("Parameters: " + library + "." + table);
+        System.out.println("Total Records on load: " + lst.size() );
+        logic.loadRecordsOnTable(library, table, lst);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+            
     @RequestMapping(value = "CallStorePaggin/{library}/{procedure}")
     public ResponseEntity<?> CallStorePaggin(
             @PathVariable String library,
@@ -66,15 +78,4 @@ public class GenericController {
         return new ResponseEntity(logic.callStoreProcedurePaggin(filter),HttpStatus.OK) ;
     }
     
-    @RequestMapping(value = "loadRecordsOnTable/{library}/{table}",method = RequestMethod.POST)
-    public ResponseEntity<?> loadRecordsOnTable(
-            @PathVariable String library,
-            @PathVariable String table, 
-            @RequestBody List<RecordsFilter> lst) throws Exception {
-        System.out.println("***** Generic - loadRecordsOnTable *****");
-        System.out.println("Parameters: " + library + "." + table);
-        System.out.println("Total Records on load: " + lst.size() );
-        logic.loadRecordsOnTable(library, table, lst);
-        return new ResponseEntity(HttpStatus.OK);
-    }
 }
