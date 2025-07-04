@@ -1778,73 +1778,6 @@ var LarSyrExt = function () {
             return null;
         }
     };
-    this.writeExcelFromJson = async function (data, name) {
-        const ws = XLSX.utils.json_to_sheet(data);
-
-        const headers = Object.keys(data[0]);
-
-        //Define Headers
-        const headerStyle = {
-            font: {bold: true, color: {rgb: "FFFFFF"}}, // Texto blanco y negrita
-            fill: {fgColor: {rgb: "FF0000"}}, // Fondo rojo
-            alignment: {horizontal: "center", vertical: "center"}, // Centrado
-            border: {
-                top: {style: "thin", color: {rgb: "FFFFFF"}},
-                bottom: {style: "thin", color: {rgb: "FFFFFF"}},
-                left: {style: "thin", color: {rgb: "FFFFFF"}},
-                right: {style: "thin", color: {rgb: "FFFFFF"}}
-            }
-        };
-
-        // Aplicar estilos solo a los headers
-        headers.forEach((_, colIndex) => {
-            const cellAddress = XLSX.utils.encode_cell({r: 0, c: colIndex});
-            if (!ws[cellAddress]) {
-                ws[cellAddress] = {v: headers[colIndex]}; // Asegurar que la celda existe
-            }
-            ws[cellAddress].s = headerStyle;
-        });
-
-        // Crear libro de Excel
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "result");
-
-        let uuid = crypto.randomUUID().replace(/-/g, '').substring(0, 6);
-        // Descargar archivo
-        XLSX.writeFile(wb, name + "_" + uuid + ".xlsx");
-    };
-    this.formatTimeStamp = function (value) {
-        if (value) {
-            const formatter = new Intl.DateTimeFormat('es-ES', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            });
-            return formatter.format(new Date(value));
-        } else {
-            return '';
-        }
-    };
-    this.readExcelFile = async function (file, callback) {
-        const reader = new FileReader();
-
-        reader.onload = function (e) {
-            const data = new Uint8Array(e.target.result);
-            const workbook = XLSX.read(data, {type: 'array'});
-
-            const sheetName = workbook.SheetNames[0];
-            const worksheet = workbook.Sheets[sheetName];
-
-            const jsonData = XLSX.utils.sheet_to_json(worksheet, {defval: ''});
-
-            callback(jsonData); // Aquí devuelves los datos
-        };
-
-        reader.readAsArrayBuffer(file);
-    };
     
     this.loadRecordsOnTable = async function (library, table, lst) {
         let uuid = crypto.randomUUID().replace(/-/g, '');
@@ -1881,6 +1814,78 @@ var LarSyrExt = function () {
             };
         }
     };
+    
+    this.writeExcelFromJson = async function (data, name) {
+        const ws = XLSX.utils.json_to_sheet(data);
+
+        const headers = Object.keys(data[0]);
+
+        //Define Headers
+        const headerStyle = {
+            font: {bold: true, color: {rgb: "FFFFFF"}}, // Texto blanco y negrita
+            fill: {fgColor: {rgb: "FF0000"}}, // Fondo rojo
+            alignment: {horizontal: "center", vertical: "center"}, // Centrado
+            border: {
+                top: {style: "thin", color: {rgb: "FFFFFF"}},
+                bottom: {style: "thin", color: {rgb: "FFFFFF"}},
+                left: {style: "thin", color: {rgb: "FFFFFF"}},
+                right: {style: "thin", color: {rgb: "FFFFFF"}}
+            }
+        };
+
+        // Aplicar estilos solo a los headers
+        headers.forEach((_, colIndex) => {
+            const cellAddress = XLSX.utils.encode_cell({r: 0, c: colIndex});
+            if (!ws[cellAddress]) {
+                ws[cellAddress] = {v: headers[colIndex]}; // Asegurar que la celda existe
+            }
+            ws[cellAddress].s = headerStyle;
+        });
+
+        // Crear libro de Excel
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "result");
+
+        let uuid = crypto.randomUUID().replace(/-/g, '').substring(0, 6);
+        // Descargar archivo
+        XLSX.writeFile(wb, name + "_" + uuid + ".xlsx");
+    };
+    
+    this.formatTimeStamp = function (value) {
+        if (value) {
+            const formatter = new Intl.DateTimeFormat('es-ES', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            return formatter.format(new Date(value));
+        } else {
+            return '';
+        }
+    };
+    
+    this.readExcelFile = async function (file, callback) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, {type: 'array'});
+
+            const sheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
+
+            const jsonData = XLSX.utils.sheet_to_json(worksheet, {defval: ''});
+
+            callback(jsonData); // Aquí devuelves los datos
+        };
+
+        reader.readAsArrayBuffer(file);
+    };
+    
+    
 };
 
 var global = new LarSyrExt();
