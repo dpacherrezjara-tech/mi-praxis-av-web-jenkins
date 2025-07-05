@@ -221,6 +221,19 @@ public class AccountingReportController{
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
+    
+    @RequestMapping(value = "executeProvision", method = RequestMethod.POST)
+    public ResponseEntity<?> executeProvision(@RequestBody Map<String,Object> params) throws Exception {
+        System.out.println("***** AccountingMaster - executeProvision *****");
+        Map<String, Object> map = new HashMap<>(params);
+        
+        map.put("IN_USER", cs.getServerSession().getUserView().getCustomerInfo().USR.trim());
+        
+        boolean res = ws.postAsync(new Gson().toJson(map), "Accounting/loadProvision");
+        map.put("STATUS", res);
+        map.put("MSG",res? "Process Running.": "Error on process.");
+        return ResponseUtils.ok(map);
+    }
 
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Excel">
