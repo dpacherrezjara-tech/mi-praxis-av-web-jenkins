@@ -184,6 +184,8 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
         const form = Ext.getCmp(prototype.id + '-provisionForm');
         form.setLoading(true);
         const file = Ext.getCmp(prototype.id + '-fileProvision').fileInputEl.dom.files[0];
+//        const userCurrent = document.getElementById("menuUser").textContent;
+//       , IN_USER: userCurrent
         if (file) {
             let nameFile = file.name;
             global.readExcelFile(file, async (json) => {
@@ -193,11 +195,29 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
                             ...x
                         }));
                     const tmp = await global.loadRecordsOnTable('PRAXISMP', 'XTEMPO', json);
-                    const res = await global.callStorePost('PRAXISMP', 'SPGCON009', {
+                    
+//                    const res = await global.callStorePost('PRAXISMP', 'SPGCON009', {
+//                        IN_CUUID: tmp.cuuid,
+//                        IN_FUUID: tmp.fuuid,
+//                        IN_USER: userCurrent
+//                    });
+                    
+                    const res = await me.request.post('/executeProvision', {
                         IN_CUUID: tmp.cuuid,
                         IN_FUUID: tmp.fuuid
                     });
-                    me.downloadResultProvis(res.data.lstRs.at(0));
+                    console.log("res: ",res);
+                    
+                    const data = res.data;
+                    console.log("data: ",data);
+                    
+                    if (data && data.STATUS === true) {
+                        global.Msg({msg: 'Provision started'});
+                    } else {
+                        global.Msg({msg: 'Provision failed'});
+                    }
+                    
+//                    me.downloadResultProvis(res.data.lstRs.at(0));
                 } catch (e) {
                     console.error(e);
                 } finally {
