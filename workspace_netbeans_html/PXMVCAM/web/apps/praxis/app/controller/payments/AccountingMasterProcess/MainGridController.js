@@ -8,9 +8,9 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridContr
     }),
     notifier: new AWN(),
     init: function (view) {
-        if(view.backButton){
+        if (view.backButton) {
             Ext.getCmp(prototype.id + '-main-btnBack').show();
-            Ext.getCmp(prototype.id + '-main-btnBack').on('click',view.backButton);
+            Ext.getCmp(prototype.id + '-main-btnBack').on('click', view.backButton);
         }
     },
     afterRender: async function (obj, e) {
@@ -18,9 +18,9 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridContr
         const view = me.view;
         let username = document.getElementById('menuUser').innerText.trim();
         const btnUpload = Ext.getCmp(prototype.id + '-uploadAccountingBtn');
-        if(username === 'MPACHECO' || username==='MPACHECOD'){
+        if (username === 'MPACHECO' || username === 'PXAVAPID' || username === 'GLADYSA' || 'PXAVAPI') {
             btnUpload.show();
-        }else{
+        } else {
             btnUpload.hide();
         }
         this.getData(view);
@@ -58,7 +58,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridContr
         });
         view.setStore(store);
     },
-    onViewPostErrors: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+    onViewPostErrors: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
         const me = this;
         let valorCelda = td.textContent || td.innerText;
         if (valorCelda === '0') {
@@ -68,23 +68,23 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridContr
         const {IDCONT} = record.data;
         let params = {
             IN_IDCONT: IDCONT,
-            IN_TIPO : 'POS',
+            IN_TIPO: 'POS',
             IN_STREV: '',
             IN_CERROR: ''
         };
         const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
         mainPanel.items.items.at(-1).hide();
-        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.ErrorsGrid',{
+        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.ErrorsGrid', {
             id: prototype.id + '-ErrorsGrid-1',
             searchParams: params,
-            backButton: ()=> {
+            backButton: () => {
                 mainPanel.items.items.at(-1).destroy();
                 mainPanel.items.items.at(-1).show();
             }
         });
         mainPanel.add(newPanel);
     },
-    onViewDownloadFiles: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+    onViewDownloadFiles: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
         const me = this;
         let valorCelda = td.textContent || td.innerText;
         if (valorCelda === '0') {
@@ -92,130 +92,130 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridContr
             return;
         }
         const {IDCONT} = record.data;
-        let params = {
-            IN_IDCONT: IDCONT 
-        };
-        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
-        mainPanel.items.items.at(-1).hide();
-        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.DownloadFilesGrid',{
-            id: prototype.id + '-DownloadFilesGrid-1',
-            searchParams: params,
-            backButton: ()=> {
-                mainPanel.items.items.at(-1).destroy();
-                mainPanel.items.items.at(-1).show();
-            }
-        });
-        mainPanel.add(newPanel);
-    },
-    onViewPreErrors: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
-        const me = this;
-        let valorCelda = td.textContent || td.innerText;
-        if (valorCelda === '0') {
-            global.Msg({msg: 'No data'});
-            return;
-        }
-        const {IDCONT} = record.data;
-        let params = {
-            IN_IDCONT: IDCONT,
-            IN_TIPO : 'PRE',
-            IN_STREV: '',
-            IN_CERROR: ''
-        };
-        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
-        mainPanel.items.items.at(-1).hide();
-        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.ErrorsGrid',{
-            id: prototype.id + '-ErrorsGrid-2',
-            searchParams: params,
-            backButton: ()=> {
-                mainPanel.items.items.at(-1).destroy();
-                mainPanel.items.items.at(-1).show();
-            }
-        });
-        mainPanel.add(newPanel);
-    },
-    onLoadSettlements : function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
-        const me = this;
-        let valorCelda = td.textContent || td.innerText;
-        if (valorCelda === '0') {
-            global.Msg({msg: 'No data'});
-            return;
-        }
-        const {CCUST,TIPOCON,IDCONT,FCONT} = record.data;
-        let params = {
-            IN_CCUST: CCUST,
-            IN_TIPOCON : TIPOCON,
-            IN_IDCONT: IDCONT,
-            IN_FCONT: FCONT
-        };
-        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
-        mainPanel.items.items.at(-1).hide();
-        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.SettlementGrid',{
-            id: prototype.id + '-SettlementGrid-2',
-            searchParams: params,
-            backButton: ()=> {
-                mainPanel.items.items.at(-1).destroy();
-                mainPanel.items.items.at(-1).show();
-            }
-        });
-        mainPanel.add(newPanel);
-    },
-    onLoadBandocsSap: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
-        const me = this;
-        let valorCelda = td.textContent || td.innerText;
-        if (valorCelda === '0') {
-            global.Msg({msg: 'No data'});
-            return;
-        }
-        const {CCUST,IDCONT,FCONT} = record.data;
-        let params = {
-            IN_CCUST: CCUST,
-            IN_IDCONT: IDCONT,
-            IN_FCONT: FCONT
-        };
-        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
-        mainPanel.items.items.at(-1).hide();
-        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.BandocsGrid',{
-            id: prototype.id + '-BandocsGrid-1',
-            searchParams: params,
-            backButton: ()=> {
-                mainPanel.items.items.at(-1).destroy();
-                mainPanel.items.items.at(-1).show();
-            }
-        });
-        mainPanel.add(newPanel);
-    },
-    onOpenLogger: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
-        const { IDCONT } = record.data;
         let params = {
             IN_IDCONT: IDCONT
         };
-        const newWin = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.LoggerDataEntry',{
+        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
+        mainPanel.items.items.at(-1).hide();
+        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.DownloadFilesGrid', {
+            id: prototype.id + '-DownloadFilesGrid-1',
+            searchParams: params,
+            backButton: () => {
+                mainPanel.items.items.at(-1).destroy();
+                mainPanel.items.items.at(-1).show();
+            }
+        });
+        mainPanel.add(newPanel);
+    },
+    onViewPreErrors: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
+        const me = this;
+        let valorCelda = td.textContent || td.innerText;
+        if (valorCelda === '0') {
+            global.Msg({msg: 'No data'});
+            return;
+        }
+        const {IDCONT} = record.data;
+        let params = {
+            IN_IDCONT: IDCONT,
+            IN_TIPO: 'PRE',
+            IN_STREV: '',
+            IN_CERROR: ''
+        };
+        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
+        mainPanel.items.items.at(-1).hide();
+        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.ErrorsGrid', {
+            id: prototype.id + '-ErrorsGrid-2',
+            searchParams: params,
+            backButton: () => {
+                mainPanel.items.items.at(-1).destroy();
+                mainPanel.items.items.at(-1).show();
+            }
+        });
+        mainPanel.add(newPanel);
+    },
+    onLoadSettlements: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
+        const me = this;
+        let valorCelda = td.textContent || td.innerText;
+        if (valorCelda === '0') {
+            global.Msg({msg: 'No data'});
+            return;
+        }
+        const {CCUST, TIPOCON, IDCONT, FCONT} = record.data;
+        let params = {
+            IN_CCUST: CCUST,
+            IN_TIPOCON: TIPOCON,
+            IN_IDCONT: IDCONT,
+            IN_FCONT: FCONT
+        };
+        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
+        mainPanel.items.items.at(-1).hide();
+        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.SettlementGrid', {
+            id: prototype.id + '-SettlementGrid-2',
+            searchParams: params,
+            backButton: () => {
+                mainPanel.items.items.at(-1).destroy();
+                mainPanel.items.items.at(-1).show();
+            }
+        });
+        mainPanel.add(newPanel);
+    },
+    onLoadBandocsSap: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
+        const me = this;
+        let valorCelda = td.textContent || td.innerText;
+        if (valorCelda === '0') {
+            global.Msg({msg: 'No data'});
+            return;
+        }
+        const {CCUST, IDCONT, FCONT} = record.data;
+        let params = {
+            IN_CCUST: CCUST,
+            IN_IDCONT: IDCONT,
+            IN_FCONT: FCONT
+        };
+        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
+        mainPanel.items.items.at(-1).hide();
+        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.BandocsGrid', {
+            id: prototype.id + '-BandocsGrid-1',
+            searchParams: params,
+            backButton: () => {
+                mainPanel.items.items.at(-1).destroy();
+                mainPanel.items.items.at(-1).show();
+            }
+        });
+        mainPanel.add(newPanel);
+    },
+    onOpenLogger: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
+        const {IDCONT} = record.data;
+        let params = {
+            IN_IDCONT: IDCONT
+        };
+        const newWin = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.LoggerDataEntry', {
             id: prototype.id + '-LoggerDataEntry-1',
             searchParams: params
         });
         newWin.show();
     },
-    disableReverse: function(view, rowIndex, colIndex, item, record){
-        let reverseAction = ['2','3', '5','7'];
+    disableReverse: function (view, rowIndex, colIndex, item, record) {
+        let reverseAction = ['2', '3', '7' ];
         return !reverseAction.includes(record.get('STCONT'));
     },
-    disableDownload: function(view, rowIndex, colIndex, item, record){
-        let reverseAction = ['1','2', '3', '5','6'];
+    disableDownload: function (view, rowIndex, colIndex, item, record) {
+        let reverseAction = ['1', '2', '3', '5', '6'];
         return !reverseAction.includes(record.get('STCONT'));
     },
-    disableUpload: function(view, rowIndex, colIndex, item, record){
-        let reverseAction = ['2', '3', '5'];
+    disableUpload: function (view, rowIndex, colIndex, item, record) {
+        let reverseAction = ['2', '3'];
         return !reverseAction.includes(record.get('STCONT'));
     },
-    onReverseAccounting: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
-        const {CCUST,CODPRO,TIPOCON,IDCONT} = record.data;
+    onReverseAccounting: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
+        const {CCUST, CODPRO, TIPOCON, IDCONT} = record.data;
         let params = {
-            IN_CCUST:CCUST,
-            IN_CODPRO:CODPRO,
+            IN_CCUST: CCUST,
+            IN_CODPRO: CODPRO,
             IN_TIPOCON: TIPOCON,
-            IN_IDCONT:IDCONT
+            IN_IDCONT: IDCONT
         };
-        console.log('Reverse Params: ',params);
+        console.log('Reverse Params: ', params);
         Ext.Msg.show(
                 {
                     title: '.:PRAXIS:.',
@@ -230,88 +230,88 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridContr
                         }
                     }
                 });
-        
+
     },
-    reverseAccounting: async function(params){
+    reverseAccounting: async function (params) {
         const me = this;
         me.view.setLoading(true);
         me.notifier.async(
-            me.request.post('reverseAccounting',params)
-            .then(res=>{
-                //console.log(res);
-                me.view.setLoading(false);
-                if(res.status === 201){
-                    me.view.getStore().load();
-                }else{
-                    throw new Error();
-                }
-            }),
-        'Successfully Reversed',
-        'Error on Reverse');
+                me.request.post('reverseAccounting', params)
+                .then(res => {
+                    //console.log(res);
+                    me.view.setLoading(false);
+                    if (res.status === 201) {
+                        me.view.getStore().load();
+                    } else {
+                        throw new Error();
+                    }
+                }),
+                'Successfully Reversed',
+                'Error on Reverse');
     },
-    onDownloadAccounting: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
-        const {CCUST, CODPRO, FCONT, TIPOCON, IDCONT } = record.data;
+    onDownloadAccounting: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
+        const {CCUST, CODPRO, FCONT, TIPOCON, IDCONT} = record.data;
         const me = this;
         let params = {
             IN_CCUST: CCUST,
             IN_CODPRO: CODPRO,
             IN_FCONT: FCONT,
             IN_TIPOCON: TIPOCON,
-            IN_IDCONT:IDCONT
+            IN_IDCONT: IDCONT
         };
-        console.log('Download Params: ',params);
+        console.log('Download Params: ', params);
         Ext.Msg.show(
-            {
-                title: '.:PRAXIS:.',
-                msg: 'Download this Accounting?',
-                buttons: Ext.MessageBox.YESNO,
-                scope: this,
-                icon: Ext.MessageBox.QUESTION,
-                modal: true,
-                fn: function (btn) {
-                    if (btn === 'yes') {
-                        global.downloadFile(me.request, 'downloadAccounting',params,'zip') ;
+                {
+                    title: '.:PRAXIS:.',
+                    msg: 'Download this Accounting?',
+                    buttons: Ext.MessageBox.YESNO,
+                    scope: this,
+                    icon: Ext.MessageBox.QUESTION,
+                    modal: true,
+                    fn: function (btn) {
+                        if (btn === 'yes') {
+                            global.downloadFile(me.request, 'downloadAccounting', params, 'zip');
+                        }
                     }
-                }
-            });
-        
+                });
+
     },
-    onUploadAccounting: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
-        const {CCUST, CODPRO, FCONT, TIPOCON, IDCONT } = record.data;
+    onUploadAccounting: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
+        const {CCUST, CODPRO, FCONT, TIPOCON, IDCONT} = record.data;
         const me = this;
         let params = {
             IN_CCUST: CCUST,
             IN_CODPRO: CODPRO,
             IN_FCONT: FCONT,
             IN_TIPOCON: TIPOCON,
-            IN_IDCONT:IDCONT
+            IN_IDCONT: IDCONT
         };
-        console.log('Upload Params: ',params);
+        console.log('Upload Params: ', params);
         Ext.Msg.show(
-            {
-                title: '.:PRAXIS:.',
-                msg: 'Send this Accounting?',
-                buttons: Ext.MessageBox.YESNO,
-                scope: this,
-                icon: Ext.MessageBox.QUESTION,
-                modal: true,
-                fn: function (btn) {
-                    if (btn === 'yes') {
-                        me.sendAccountingToSFTP(params);
+                {
+                    title: '.:PRAXIS:.',
+                    msg: 'Send this Accounting?',
+                    buttons: Ext.MessageBox.YESNO,
+                    scope: this,
+                    icon: Ext.MessageBox.QUESTION,
+                    modal: true,
+                    fn: function (btn) {
+                        if (btn === 'yes') {
+                            me.sendAccountingToSFTP(params);
+                        }
                     }
-                }
-            });
-        
+                });
+
     },
-    sendAccountingToSFTP: async function(params){
+    sendAccountingToSFTP: async function (params) {
         const me = this;
         try {
-            let req = me.request.post('uploadAccounting',params);
+            let req = me.request.post('uploadAccounting', params);
             me.notifier.async(
-                req,
-                'Successfully sended To SFTP',
-                'Failed to send to SFTP'
-            );
+                    req,
+                    'Successfully sended To SFTP',
+                    'Failed to send to SFTP'
+                    );
         } catch (e) {
             console.error(e);
         }
@@ -321,19 +321,19 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridContr
         let params = me.view.searchParams;
         console.log('Download Params: ', params);
         Ext.Msg.show(
-            {
-                title: '.:PRAXIS:.',
-                msg: 'Download Excel?',
-                buttons: Ext.MessageBox.YESNO,
-                scope: this,
-                icon: Ext.MessageBox.QUESTION,
-                modal: true,
-                fn: function (btn) {
-                    if (btn === 'yes') {
-                        global.downloadFile(me.request,'downloadExcelMain',params,'xlsx');
+                {
+                    title: '.:PRAXIS:.',
+                    msg: 'Download Excel?',
+                    buttons: Ext.MessageBox.YESNO,
+                    scope: this,
+                    icon: Ext.MessageBox.QUESTION,
+                    modal: true,
+                    fn: function (btn) {
+                        if (btn === 'yes') {
+                            global.downloadFile(me.request, 'downloadExcelMain', params, 'xlsx');
+                        }
                     }
-                }
-            });
+                });
     },
     //<editor-fold defaultstate="collapsed" desc="Utilitarios">
     getCmp: function ( {id}){
