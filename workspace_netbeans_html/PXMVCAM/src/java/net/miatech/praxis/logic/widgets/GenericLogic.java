@@ -19,5 +19,4 @@ public interface GenericLogic {
     Map<String,Object> callStoreProcedureAsync(CallStoreFilter filter) throws Exception;
     
     CallStorePaggin callStoreProcedurePaggin(CallStorePaggin filter) throws Exception;
-    
 }

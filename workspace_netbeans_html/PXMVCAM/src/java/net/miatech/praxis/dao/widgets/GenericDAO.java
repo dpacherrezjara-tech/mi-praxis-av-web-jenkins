@@ -121,6 +121,4 @@ public class GenericDAO implements GenericLogic {
         res.put("lstRs", listaDeResultados);
         return res;
     }
-
-    
 }

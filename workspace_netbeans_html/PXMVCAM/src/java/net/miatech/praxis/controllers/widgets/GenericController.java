@@ -77,5 +77,4 @@ public class GenericController {
         System.out.println("Parameters: " + library + "." + procedure);
         return new ResponseEntity(logic.callStoreProcedurePaggin(filter),HttpStatus.OK) ;
     }
-    
 }

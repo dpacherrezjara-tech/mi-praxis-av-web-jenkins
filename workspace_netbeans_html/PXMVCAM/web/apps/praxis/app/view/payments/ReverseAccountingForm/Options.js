@@ -25,6 +25,7 @@ Ext.define('Ext.Praxis.view.payments.ReverseAccountingForm.Options', {
                         },
                         {
                             xtype: 'button',
+                            hidden:true,
                             id: prototype.id + '-btnProcess',
                             iconCls: 'prx-icon-image-process',
                             tooltip: 'Process',

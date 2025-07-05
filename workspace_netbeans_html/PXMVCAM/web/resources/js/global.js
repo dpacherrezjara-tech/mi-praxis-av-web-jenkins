@@ -1867,6 +1867,41 @@ var LarSyrExt = function () {
         }
     };
     
+    this.loadRecordsOnTable = async function (library, table, lst) {
+        let uuid = crypto.randomUUID().replace(/-/g, '');
+        let fuuid = new Date().toISOString().split('T')[0].replace(/-/g, '');
+        let lstTrama = [];
+        lst.forEach(obj => {
+            //let objTrama = Object.values(obj).map(valor => String(valor));
+            let objTrama = JSON.stringify(obj);
+            let newObj = {
+                CUUID: uuid,
+                FUUID: fuuid,
+                TRAMA: objTrama
+            };
+            lstTrama.push(newObj);
+        });
+        let request = axios.create({
+            baseURL: CONTEXTPATH + '/Generic',
+            timeout: 0
+        });
+        try {
+            const res = await request.post(`loadRecordsOnTable/${library}/${table}`, lstTrama);
+            if (res.status === 200) {
+                return {
+                    success: true,
+                    cuuid: uuid,
+                    fuuid: fuuid
+                };
+            } else {
+                throw new Error('Load failed');
+            }
+        } catch (e) {
+            return {
+                success: false
+            };
+        }
+    };
     this.readExcelFile = async function (file, callback) {
         const reader = new FileReader();
 
@@ -1884,8 +1919,21 @@ var LarSyrExt = function () {
 
         reader.readAsArrayBuffer(file);
     };
-    
-    
+    this.formatTimeStamp = function (value) {
+        if (value) {
+            const formatter = new Intl.DateTimeFormat('es-ES', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            return formatter.format(new Date(value));
+        } else {
+            return '';
+        }
+    };
 };
 
 var global = new LarSyrExt();
