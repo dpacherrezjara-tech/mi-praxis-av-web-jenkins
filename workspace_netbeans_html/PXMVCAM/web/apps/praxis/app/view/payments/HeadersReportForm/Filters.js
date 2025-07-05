@@ -155,8 +155,12 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Filters', {
                                         fields: ['code', 'name'],
                                         data: [
                                             ['', 'All'],
-                                            ['S', 'Sended to AV'],
-                                            ['L', 'Loaded to SAP']
+                                            ['5', 'SFTP'],
+                                            ['L', 'Loaded'],
+                                            ['R', 'Rejected'],
+                                            ['J', 'Justified'],
+                                            ['6', 'Partially Rejected'],
+                                            ['9', 'Partially Justified']
                                         ]
                                     }),
                                     labelWidth: 60,
