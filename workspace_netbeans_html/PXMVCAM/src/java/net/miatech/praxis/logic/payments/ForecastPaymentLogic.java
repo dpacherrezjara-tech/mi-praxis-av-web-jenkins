@@ -26,6 +26,12 @@ public class ForecastPaymentLogic {
     public List<A2295Filter> loadPX290MPS074(A2295Filter filter) throws SQLException, Exception {
         return ForecastPaymentDAO.loadPX290MPS074(filter);
     }
+    public List<A2295Filter> loadPX290MPS074TC(A2295Filter filter) throws SQLException, Exception {
+        return ForecastPaymentDAO.loadPX290MPS074TC(filter);
+    }
+    public List<A2295Filter> loadPX290MPS074CASH(A2295Filter filter) throws SQLException, Exception {
+        return ForecastPaymentDAO.loadPX290MPS074CASH(filter);
+    }
     
     public A2295Filter getTotalRecords() throws SQLException, Exception {
         return ForecastPaymentDAO.getTotalRecords();

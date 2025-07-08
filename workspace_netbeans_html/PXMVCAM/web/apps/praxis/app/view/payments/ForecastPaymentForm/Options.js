@@ -91,7 +91,7 @@ Ext.define('Ext.Praxis.view.payments.ForecastPaymentForm.Options', {
                             xtype: 'button',
                             id: prototype.id + '-btnExcel',
                             iconCls: 'prx-icon-excel',
-                            tooltip: 'Export to Excel'
+                            tooltip: 'Summary of Forecast'
                         },
                         {
                             xtype: 'button',
