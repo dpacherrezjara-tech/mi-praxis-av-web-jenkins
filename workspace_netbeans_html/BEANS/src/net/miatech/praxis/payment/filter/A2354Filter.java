@@ -135,8 +135,6 @@ public String IDFBENEF = "";
 public String DEFFEC = "";
 public String DFINAL = "";
 public String SEQ = "";
-public String IN_CODPRO_2 = "";
-public String CODPRO = "";
 
 
 public List<A4202> lstDetalle = new ArrayList<A4202>(0);
