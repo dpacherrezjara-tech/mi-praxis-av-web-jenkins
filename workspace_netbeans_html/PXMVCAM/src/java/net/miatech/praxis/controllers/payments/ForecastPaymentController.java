@@ -224,7 +224,7 @@ public class ForecastPaymentController extends BaseController {
     public @ResponseBody void getXLSX(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("Report : getXLSX");
 
-        String fileNameDownload = "Forecast Report - " + Functions.getFechaActual() + ".xlsx";
+        String fileNameDownload = "Summary of Forecast - " + Functions.getFechaActual() + ".xlsx";
         File file = null;
 
         try {

@@ -79,7 +79,13 @@ public class A2295Filter  extends A2295{
     
     public  double dblTotOPEAMOUNT = 0;
     public  double dblToIVA   = 0;
+    public  double SVFOPUSD   = 0;
+    public  double SVFOPC1   = 0;
+    public  String SPAYMENT   = "";
     public  int intToQTYTRNX  = 0;
+    public String MCLOS = "";
+    public String SCURREVEN = "";
+    public String FDESD = "";
     
                 
     public long lngDays = 0;
@@ -88,11 +94,4 @@ public class A2295Filter  extends A2295{
     public long RN = 0;
     public Pagination page = new Pagination();
     
-    // NEW REPORT
-    public String FDESD = "";
-    public String MCLOS = "";
-    public String SCURREVEN = "";
-    public String SPAYMENT = "";
-    public double SVFOPC1 = 0;
-    public double SVFOPUSD = 0;
 }

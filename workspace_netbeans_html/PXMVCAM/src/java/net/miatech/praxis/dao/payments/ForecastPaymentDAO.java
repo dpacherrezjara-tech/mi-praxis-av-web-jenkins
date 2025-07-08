@@ -199,7 +199,7 @@ public class ForecastPaymentDAO {
         CallableStatement cstmt = null;
         ResultSet rs01 = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".MPS074_V3(?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXIS.MPS074_V3(?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -228,7 +228,7 @@ public class ForecastPaymentDAO {
                 objRtn.IN_DATE_TO = filter.IN_DATE_TO;
 
                 objRtn.INVOICE1 = rs01.getString("INVOICE1").trim();
-                objRtn.SPAYMENT = rs01.getString("SPAYMENT").trim();
+                objRtn.SPAYMENT    = rs01.getString("SPAYMENT");
                 objRtn.SCOUNTRY = rs01.getString("SCOUNTRY").trim();
                 objRtn.SCARCOD1 = rs01.getString("SCARCOD1").trim();
                 objRtn.CCUST = rs01.getString("CCUST").trim();
@@ -265,7 +265,7 @@ public class ForecastPaymentDAO {
         CallableStatement cstmt = null;
         ResultSet rs01 = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".MPS074_V4(?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXIS.MPS074_V4(?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -292,7 +292,7 @@ public class ForecastPaymentDAO {
                 objRtn = new A2295Filter();
 
                 objRtn.INVOICE0    = rs01.getString("INVOICE0").trim();
-                objRtn.SPAYMENT    = rs01.getString("SPAYMENT").trim();
+                objRtn.SPAYMENT    = rs01.getString("SPAYMENT");
                 objRtn.SCOUNTRY    = rs01.getString("SCOUNTRY").trim();
                 objRtn.CCUST       = rs01.getString("CCUST").trim();
                 objRtn.CFUENTE     = rs01.getString("CFUENTE").trim();
