@@ -90,6 +90,8 @@ public String CODEBANK = "";
 public String CODEBANKA = "";
 public String COUNTRY = "";
 public String SUCMERCH = "";
+public String IN_CODPRO_2 = "";
+public String CODPRO = "";
 
 public String CORE = "";
 public String DREPORT = "";
