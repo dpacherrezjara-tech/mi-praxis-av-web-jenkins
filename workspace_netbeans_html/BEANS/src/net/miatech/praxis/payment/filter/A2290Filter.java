@@ -7,6 +7,8 @@ package net.miatech.praxis.payment.filter;
 import net.miatech.beans.Pagination;
 import net.miatech.praxis.payment.A2290;
 import net.miatech.utils.Functions;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 
 /**
  *
@@ -57,6 +59,7 @@ public class A2290Filter extends A2290 {
     public String TabMPF = "";
     public String IN_FUNDSTRGK = "";
     public String IN_LIQUIDACIO = "";
+    public String IN_TYPER = "";
 
     public String IN_FROMADATE = "";
     public String IN_TOADATE = "";
@@ -1075,4 +1078,8 @@ public class A2290Filter extends A2290 {
         //System.out.println(strValue.length());
         return strValue.toUpperCase();
     }
+//    private XSSFWorkbook excel;
+//    public XSSFWorkbook getExcel() { return excel; }
+//    public void setExcel(XSSFWorkbook excel) { this.excel = excel; }
+    
 }
