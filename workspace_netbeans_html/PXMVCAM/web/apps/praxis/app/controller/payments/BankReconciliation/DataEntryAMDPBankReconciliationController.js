@@ -29,6 +29,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
     },
     afterRender: function () {
         
+
+        
 //        Ext.Ajax.request({
 //            url: prototype.urlMaster + '/obtainData',
 //            method: 'POST',
@@ -856,28 +858,103 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             }
         });
     },
-    onUpdateClick: async function (btn) {
-        var deci = await this.preexecuteOption();
-        if (deci) {
-            Ext.Msg.show({
-                title: '.:Confirmation:.',
-                msg: 'Are you sure to Update?',
-                buttons: Ext.MessageBox.YESNO,
-                scope: this,
-                icon: Ext.MessageBox.QUESTION,
-                modal: true,
-                fn: function (btn) {
-                    if (btn === 'yes') {
-                        var beanTemp = {};
-                        beanTemp = this.llenarData();
-                        beanTemp.option = 'U';
-                        beanTemp.beanString = JSON.stringify(meDe.bean);
-                        this.executeOption(beanTemp);
-                    }
+    
+    
+    updateComent: function (){
+        
+        
+        let valorComent = Ext.getCmp(prototype.id + '-cmbCOMENT').getValue();
+         meDe.bean.CERROR = valorComent;
+        console.log("CERROR enviado:", meDe.bean.CERROR); 
+        
+        
+        
+        Ext.Ajax.request({
+            url: prototype.url + '/updateCERROR_BPO_revision',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: JSON.stringify(meDe.bean)},
+//            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+            success: function (response, opts) {
+                
+                
+                if (res.success) {
+                    
+                  var msj = res.mensaje;  
+                  global.Msg({
+                    msg: msj
+                   });
+//                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+//                    var beanCons = res.result;
+//                    console.log('beanCons');
+//                    console.log(beanCons);
+//                    if (beanCons !== null) {
+//                        me.winDataEntryDebits('U', beanCons);
+//                    } else {
+//                        global.Msg({
+//                            msg: 'An error has ocurred. Please contact our System Department'
+//                        });
+//                    }
+
+                } else {
+                    global.Msg({msg: res.Mensaje});
                 }
-            });
-        }
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+//                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+            }
+        });
+        
+        
+        
+        
+        
     },
+    onUpdateClick: async function (btn) {
+        
+// 
+        let valorComent = Ext.getCmp(prototype.id + '-cmbCOMENT').getValue();
+        console.log(valorComent,"visualkizar xxx");
+        
+        if (valorComent == "75" ||valorComent== "76" ||  valorComent==  "77" || valorComent==  "78"){
+            
+            this.updateComent();  
+//            console.log("recibe comentario codigo");
+            
+        }else{
+                  var deci = await this.preexecuteOption();
+            if (deci) {
+                Ext.Msg.show({
+                    title: '.:Confirmation:.',
+                    msg: 'Are you sure to Update?',
+                    buttons: Ext.MessageBox.YESNO,
+                    scope: this,
+                    icon: Ext.MessageBox.QUESTION,
+                    modal: true,
+                    fn: function (btn) {
+                        if (btn === 'yes') {
+                            var beanTemp = {};
+                            beanTemp = this.llenarData();
+                            beanTemp.option = 'U';
+                            beanTemp.beanString = JSON.stringify(meDe.bean);
+                            this.executeOption(beanTemp);
+                        }
+                    }
+                });
+            }
+            
+        }
+        
+
+        
+    },
+    
+    
+    
+    
+    
+    
     onDeleteClick: function (btn) {
         Ext.Msg.show({
             title: '.:PRAXIS:.',
