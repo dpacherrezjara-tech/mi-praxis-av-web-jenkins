@@ -296,6 +296,37 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.DataEntryReport', {
                                         },
                                     ]
                                 },
+                                {xtype: 'tbspacer', width: 20},
+
+                                {
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    border: false,
+                                    bodyStyle: 'background:white;',
+                                    margin: '10 0 0 10',
+                                    width: 1010,
+                                    defaults: {
+                                        anchor: '100%'
+                                    },
+                                    items: [
+                                        {
+                                            xtype: 'radiogroup',
+                                            id: prototype.id + '-rgTypeReport',
+                                            fieldLabel: '',
+                                            columns: 2,
+                                            vertical: false,
+                                            margin: '0 0 0 0',
+                                            items: [
+                                                {boxLabel: 'Detail', name: 'tipor', inputValue: 'D', margin: '0 10 0 0'},
+                                                {boxLabel: 'Summary', name: 'tipor', inputValue: 'S', margin: '0 10 0 0'}
+                                            ],
+                                            listeners: {
+                                                change: 'onChangeReport'
+                                            }
+                                        }
+                                    ]
+                                }
+
                             ]
                         },
                     ]

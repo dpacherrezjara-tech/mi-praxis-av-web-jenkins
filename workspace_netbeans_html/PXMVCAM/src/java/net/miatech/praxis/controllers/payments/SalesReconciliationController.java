@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -3218,6 +3219,144 @@ public class SalesReconciliationController extends BaseController {
         } catch (IOException e) {
             throw new SpringException(e);
         }
+    }
+    
+    @RequestMapping(value = "getReportSumary")
+    public @ResponseBody
+    void getReportSumary(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        System.out.println("Report : getReportSumary");
+        A2290Filter filter = new A2290Filter();
+        String fileNameDownload = String.format("Report Sales By Ticket - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
+
+        try {
+            Workbook workbook;
+            File file = File.createTempFile(fileNameDownload, ".xlsx");
+            LoadConciliationLogic logic = new LoadConciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
+            filter.page.PAGROW = -1;
+            filter.page.PAGNUM = 1;
+
+            Map<String, List<A2290Filter>> listas = logic.loadPX263MPS097SUMARY(filter);
+            List<A2290Filter> listaData1 = listas.get("LISTA1");
+            List<A2290Filter> listaData2 = listas.get("LISTA2");
+            List<A2290Filter> listaData3 = listas.get("LISTA3");
+            List<A2290Filter> listaData4 = listas.get("LISTA4");
+
+            workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Report");
+
+            // ====== Estilos =======
+            XSSFCellStyle headerStyle = (XSSFCellStyle) workbook.createCellStyle();
+            XSSFCellStyle totalStyle = (XSSFCellStyle) workbook.createCellStyle();
+            XSSFCellStyle bodyStyle = (XSSFCellStyle) workbook.createCellStyle();
+
+            Font headerFont = workbook.createFont();
+            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            headerFont.setColor(IndexedColors.BLACK.getIndex());
+            headerStyle.setFont(headerFont);
+            totalStyle.setFont(headerFont);
+
+            headerStyle.setBorderBottom(CellStyle.BORDER_THIN);
+            headerStyle.setBorderTop(CellStyle.BORDER_THIN);
+            headerStyle.setBorderLeft(CellStyle.BORDER_THIN);
+            headerStyle.setBorderRight(CellStyle.BORDER_THIN);
+            headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(127, 152, 168)));
+            headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            totalStyle.cloneStyleFrom(headerStyle);
+            totalStyle.setAlignment(CellStyle.ALIGN_RIGHT);
+
+            bodyStyle.setBorderBottom(CellStyle.BORDER_THIN);
+            bodyStyle.setBorderTop(CellStyle.BORDER_THIN);
+            bodyStyle.setBorderLeft(CellStyle.BORDER_THIN);
+            bodyStyle.setBorderRight(CellStyle.BORDER_THIN);
+
+            // ====== Escribir cada bloque uno al lado del otro =======
+            int startCol = 0;
+
+            startCol = generarBloqueListaHorizontal(sheet, "134", listaData1, startCol, headerStyle, bodyStyle, totalStyle);
+            startCol = generarBloqueListaHorizontal(sheet, "202", listaData2, startCol, headerStyle, bodyStyle, totalStyle);
+            startCol = generarBloqueListaHorizontal(sheet, "133", listaData3, startCol, headerStyle, bodyStyle, totalStyle);
+            startCol = generarBloqueListaHorizontal(sheet, "547", listaData4, startCol, headerStyle, bodyStyle, totalStyle);
+
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+
+            workbook.write(response.getOutputStream());
+            workbook.close();
+
+        } catch (IOException e) {
+            throw new SpringException(e);
+        }
+    }
+
+    private int generarBloqueListaHorizontal(Sheet sheet, String placa, List<A2290Filter> lista, int startCol,
+                                             CellStyle headerStyle, CellStyle bodyStyle, CellStyle totalStyle) {
+        int row = 0;
+        int col = startCol;
+
+        // Fila de PLACA
+        Row rowPlaca = sheet.getRow(row);
+        if (rowPlaca == null) rowPlaca = sheet.createRow(row);
+        Cell placaCell = rowPlaca.createCell(col);
+        placaCell.setCellValue(placa);
+        placaCell.setCellStyle(headerStyle);
+
+        // Fila de encabezados
+        row++;
+        Row headerRow = sheet.getRow(row);
+        if (headerRow == null) headerRow = sheet.createRow(row);
+
+        String[] headers = {"PLACA", "PAIS", "SUMA DE AMOUNT USD"};
+        for (int i = 0; i < headers.length; i++) {
+            Cell cell = headerRow.createCell(col + i);
+            cell.setCellValue(headers[i]);
+            cell.setCellStyle(headerStyle);
+        }
+
+        // Datos
+        double totalMonto = 0;
+        for (A2290Filter bean : lista) {
+            row++;
+            Row dataRow = sheet.getRow(row);
+            if (dataRow == null) dataRow = sheet.createRow(row);
+
+            Cell c1 = dataRow.createCell(col);
+            c1.setCellValue(bean.CCUST);
+            c1.setCellStyle(bodyStyle);
+
+            Cell c2 = dataRow.createCell(col + 1);
+            c2.setCellValue(bean.COUNTRY);
+            c2.setCellStyle(bodyStyle);
+
+            Cell c3 = dataRow.createCell(col + 2);
+            c3.setCellValue(bean.MONTOUSD);
+            c3.setCellStyle(bodyStyle);
+
+            totalMonto += bean.MONTOUSD;
+        }
+
+        // Total
+        row++;
+        Row totalRow = sheet.getRow(row);
+        if (totalRow == null) totalRow = sheet.createRow(row);
+
+        Cell totalLabel = totalRow.createCell(col);
+        totalLabel.setCellValue("TOTAL " + placa);
+        totalLabel.setCellStyle(totalStyle);
+
+        Cell totalValue = totalRow.createCell(col + 2);
+        totalValue.setCellValue(totalMonto);
+        totalValue.setCellStyle(totalStyle);
+
+        // Autosize
+        sheet.autoSizeColumn(col);
+        sheet.autoSizeColumn(col + 1);
+        sheet.autoSizeColumn(col + 2);
+
+        return startCol + 4; // Deja espacio de 1 columna entre bloques
     }
 
     @RequestMapping(value = "sendEmail")

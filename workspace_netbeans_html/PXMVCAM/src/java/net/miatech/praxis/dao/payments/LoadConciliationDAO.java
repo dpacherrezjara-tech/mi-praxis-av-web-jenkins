@@ -10,6 +10,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import static net.miatech.praxis.dao.payments.BankReconciliationDAO.pasarGarbageCollector;
 import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.A2370Filter;
@@ -5801,6 +5802,89 @@ public class LoadConciliationDAO {
         }
 
         return lstTkts;
+    }
+    
+    public Map<String, List<A2290Filter>> loadPX263MPS097SUMARY(A2290Filter filter) throws SQLException, Exception {
+
+        Map<String, List<A2290Filter>> listas = new HashMap<>();
+        List<A2290Filter> lista1 = new ArrayList<>();
+        List<A2290Filter> lista2 = new ArrayList<>();
+        List<A2290Filter> lista3 = new ArrayList<>();
+        List<A2290Filter> lista4 = new ArrayList<>();
+
+        A2290Filter beanTkt;
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".MPS097SUMARY(?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+            cstmt.setString(1, filter.IN_FECHA_FROM);  // Formato: YYYYMMDD
+
+            boolean hasResults = cstmt.execute();
+            int resultIndex = 1;
+
+            while (hasResults && resultIndex <= 4) {
+                rst = cstmt.getResultSet();
+
+                while (rst.next()) {
+                    beanTkt = new A2290Filter();
+
+                    beanTkt.CCUST = rst.getString("CCUST").trim();
+                    beanTkt.COUNTRY = rst.getString("COUNTRY_NAME").trim();
+                    beanTkt.MONTOUSD = rst.getDouble("MONTO_USD");
+
+                    switch (resultIndex) {
+                        case 1:
+                            lista1.add(beanTkt);
+                            break;
+                        case 2:
+                            lista2.add(beanTkt);
+                            break;
+                        case 3:
+                            lista3.add(beanTkt);
+                            break;
+                        case 4:
+                            lista4.add(beanTkt);
+                            break;
+                    }
+                }
+
+                rst.close();
+                resultIndex++;
+                hasResults = cstmt.getMoreResults();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        listas.put("LISTA1", lista1);
+        listas.put("LISTA2", lista2);
+        listas.put("LISTA3", lista3);
+        listas.put("LISTA4", lista4);
+
+        return listas;
     }
 
     public HashMap<String, List<A2290Filter>> loadPX263SQP00715_REFND(A2290Filter filter) throws SQLException, Exception {
