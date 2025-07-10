@@ -276,4 +276,12 @@ public class BankReconciliationLogic {
     public List<A2290Filter> loadPX269SQP00698Detalle2(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP00698Detalle2(filter);
     }
+    
+    
+
+//    FTG
+    
+    public String loadPX598update_cerror_conci(A2290Filter filter, UserView user) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX598update_cerror_conci(filter,user);
+    }
 }

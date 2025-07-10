@@ -2243,7 +2243,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     },
     onEditClick: function (grid, rowIndex, colIndex, item, e, record, actionItem) {
 
-        item.disable()
+        item.disable();
 
         var rec = grid.getStore().getAt(rowIndex);
         console.log('RECDATA');
@@ -2259,13 +2259,15 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
 
         if (rec.data.IN_ADYEN === 'Y' && (rec.data.IN_STVAL === '2' || rec.data.IN_STVAL === '3')) {
 
+                console.log('entra OPCION 1');
             this.searchBeanAdyen(rec);
         } else {
-            console.log('entra aquiiiiii')
             if (rec.data.TDOC == 'S' || rec.data.CERROR == '46') {
+                console.log('entra OPCION 2');
                 this.searchBean(rec);
             } else {
-                this.searchBeanDebits(rec)
+                console.log('entra OPCION 3');
+                this.searchBeanDebits(rec);
             }
 
 
@@ -2948,7 +2950,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         pag.movePrevious();
     },
     pagNext: function (obj, e) {
-        console.log(obj, e, 'nikaaaaa')
+        
         this.getPaggin();
         console.log(this.getPaggin(), 'this.getPaggin')
         var pag = Ext.getCmp(prototype.id + me.pagginActual);
