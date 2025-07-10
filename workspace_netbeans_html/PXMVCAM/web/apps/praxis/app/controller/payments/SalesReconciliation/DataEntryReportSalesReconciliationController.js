@@ -122,22 +122,48 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryReportSa
         Ext.getCmp(prototype.id + '-cmbSCURRENCY').setValue("COP");
 
     },
+    onChangeReport: function (radiogroup, newValue, oldValue){
+        console.log('waaaa',newValue)
+        if(newValue.tipor === "S"  ){
+            Ext.getCmp(prototype.id + '-cmbDateFromDayReport').setDisabled(true);
+            Ext.getCmp(prototype.id + '-cmbDateToDayReport').setDisabled(true);
+            Ext.getCmp(prototype.id + '-cmbDateFromDayReport').hide();
+            Ext.getCmp(prototype.id + '-cmbDateToDayReport').hide();
+            Ext.getCmp(prototype.id + '-cmbTDOCRe').setDisabled(true);
+            Ext.getCmp(prototype.id + '-cmbSTREP').setDisabled(true);
+            Ext.getCmp(prototype.id + '-cmbSCURRENCY').setDisabled(true);
+            Ext.getCmp(prototype.id + '-chkTPS').setDisabled(true);
+            Ext.getCmp(prototype.id + '-cmbSCOUNTRY').setDisabled(true);
+        
+        }else{
+            Ext.getCmp(prototype.id + '-cmbDateFromDayReport').setDisabled(false);
+            Ext.getCmp(prototype.id + '-cmbDateToDayReport').setDisabled(false);
+            Ext.getCmp(prototype.id + '-cmbDateFromDayReport').show();
+            Ext.getCmp(prototype.id + '-cmbDateToDayReport').show();
+            Ext.getCmp(prototype.id + '-cmbTDOCRe').setDisabled(false);
+            Ext.getCmp(prototype.id + '-cmbSTREP').setDisabled(false);
+            Ext.getCmp(prototype.id + '-cmbSCURRENCY').setDisabled(false);
+            Ext.getCmp(prototype.id + '-chkTPS').setDisabled(false);
+            Ext.getCmp(prototype.id + '-cmbSCOUNTRY').setDisabled(false);
+        }
+
+    },
     setFormatParameter: function () {
         me.bean = {};
 
+        
         me.bean.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYearReport').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonthReport').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromDayReport').getValue();
         me.bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateFromYearReport').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonthReport').getValue() + Ext.getCmp(prototype.id + '-cmbDateToDayReport').getValue();
         me.bean.IN_TDOC = Ext.getCmp(prototype.id + '-cmbTDOCRe').getValue();
         me.bean.IN_STAT = Ext.getCmp(prototype.id + '-cmbSTREP').getValue();
         me.bean.IN_SCURRENCY = Ext.getCmp(prototype.id + '-cmbSCURRENCY').getValue();
         me.bean.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbSCOUNTRY').getValue();
-
+        me.bean.IN_TYPER = Ext.getCmp(prototype.id + '-rgTypeReport').getValue().tipor;
         if (win.getValue('chkTPS')) {
             me.bean.IN_TP = 'Y';
         } else {
             me.bean.IN_TP = 'N';
         }
-
         var beanString = JSON.stringify(me.bean);
         searchParams = {
             beanString: beanString,
@@ -162,10 +188,15 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryReportSa
         });
     },
     exportExcel: function () {
-
+        let rgTypeR = Ext.getCmp(prototype.id + '-rgTypeReport').getValue().tipor;
         this.setFormatParameter();
-        console.log(JSON.stringify(this.bean));
-        global.getFile(prototype.url + '/getReport?beanString=' + encodeURI(JSON.stringify(me.bean)));
+        if (rgTypeR == "D"){
+            console.log(JSON.stringify(this.bean));
+            global.getFile(prototype.url + '/getReport?beanString=' + encodeURI(JSON.stringify(me.bean)));
+        }else{
+            global.getFile(prototype.url + '/getReportSumary?beanString=' + encodeURI(JSON.stringify(me.bean)));
+        }
+        
 
     },
     cbxDateFromYear_changeHandler: function () {

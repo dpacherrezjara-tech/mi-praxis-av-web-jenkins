@@ -207,7 +207,7 @@ public class ExchangeRateDAO {
                 objRtn.TCCOTDIR = rs01.getString("TCCOTDIR").trim();
                 objRtn.TCCOTDIR2 = rs01.getString("TCCOTDIR2").trim();
                 objRtn.TREG = rs01.getString("TREG").trim();
-                objRtn.SIGN = rs01.getString("SIGN").trim();
+                objRtn.SIGN = rs01.getString("FOPER").trim();
                 objRtn.USCR = rs01.getString("USCR").trim();
                 objRtn.USUP = rs01.getString("USUP").trim();
                 objRtn.FECR = rs01.getString("FECR").trim();

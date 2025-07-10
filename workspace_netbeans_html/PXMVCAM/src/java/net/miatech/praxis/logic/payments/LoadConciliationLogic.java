@@ -4,6 +4,7 @@ package net.miatech.praxis.logic.payments;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.praxis.dao.payments.LoadConciliationDAO;
 import net.miatech.praxis.payment.filter.A2290Filter;
@@ -169,6 +170,10 @@ public class LoadConciliationLogic {
     
     public List<A2290Filter> loadPX263MPS097(A2290Filter filter) throws SQLException, Exception {
         return loadConciliationDAO.loadPX263MPS097(filter);
+    }
+    
+    public Map<String, List<A2290Filter>> loadPX263MPS097SUMARY(A2290Filter filter) throws SQLException, Exception {
+        return loadConciliationDAO.loadPX263MPS097SUMARY(filter);
     }
     
     public HashMap<String, List<A2290Filter>> loadPX263SQP00715_REFND(A2290Filter filter) throws SQLException, Exception {
