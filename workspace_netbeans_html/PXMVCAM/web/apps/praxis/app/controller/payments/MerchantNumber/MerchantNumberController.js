@@ -217,6 +217,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.MerchantNumberControll
             });
             global.clear();
             Ext.getCmp(prototype.id + '-gridDataAirport').bindStore(storeGridDatas);
+            console.log(storeGridDatas,"MERCHANT");
             Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
 
         }
@@ -413,6 +414,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.MerchantNumberControll
     },
     onEditClick: function (grid, rowIndex, colIndex) {
         var rec = grid.getStore().getAt(rowIndex);
+        console.log(rec,"esto es lo que mando");
         this.winDataEntry('U', rec);
     },
     winDataEntry: function (action, rec) {

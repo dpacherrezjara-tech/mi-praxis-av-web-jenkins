@@ -514,9 +514,6 @@ public class MerchantNumberDAO {
             cstmt.setString(5, filter.IN_CTABANK.trim());
             cstmt.setString(6, filter.IN_COUNTRY.trim());
             cstmt.setString(7, filter.IN_COREP.trim());
-         
-            
-            
             cstmt.setInt(8, filter.page.PAGNUM);
             cstmt.setInt(9, filter.page.PAGROW);
             cstmt.setInt(10, filter.page.TOTPAG);
@@ -538,15 +535,10 @@ public class MerchantNumberDAO {
                 bean.CODE = rst.getString("CODE").trim();
                 bean.CORE = rst.getString("CORE").trim();
                 bean.DREPORT = rst.getString("DREPORT").trim();
-                bean.IN_CODPRO_2 = rst.getString("CODPRO").trim();
-                
                 bean.FRANC1 = rst.getString("FRANC1").trim();
                 bean.FRANC2 = rst.getString("FRANC2").trim();
                 bean.FRANC3 = rst.getString("FRANC3").trim();
                 bean.FRANC4 = rst.getString("FRANC4").trim();
-                
-                
-                
                 
                 bean.EQUIVA1 = rst.getString("EQUIVA1").trim();
                 bean.EQUIVA2 = rst.getString("EQUIVA2").trim();
@@ -557,7 +549,7 @@ public class MerchantNumberDAO {
                 bean.EQUIVA7 = rst.getString("EQUIVA7").trim();
                 bean.EQUIVA8 = rst.getString("EQUIVA8").trim();
                 bean.EQUIVA9 = rst.getString("EQUIVA9").trim();
-                
+                bean.CODPRO = rst.getString("CODPRO").trim();
 //                bean.CODEBANK  = rst.getString("CODEBANK").trim();
 //                bean.BANKNAM   = rst.getString("BANKNAM").trim();
 //                bean.BANKCM    = rst.getString("BANKCM").trim();
@@ -792,11 +784,16 @@ public class MerchantNumberDAO {
         CallableStatement cstmt = null;
         PreparedStatement pstmt = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00934_V3(?,?,?,?,?,?,?,?,?,?"
-                + "                                                          ,?,?,?,?,?,?,?,?,?,?"
-                + "                                                          ,?,?,?,?,?,?,?,?,?,?"
-                + "                                                          ,?,?,?,?,?,?,?,?,?,?"
-                + "                                                             ,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00934(?,?,?,?,?,?,"
+                + "?,?,?,?,?,"
+                + "?,?,?,?,?,"
+                + "?,?,?,?,?,"
+                + "?,?,?,?,?,"
+                + "?,?,?,?,?,"
+                + "?,?,?,?,?,"
+                + "?,?,?,?,?,"
+                + "?,?,?,?,?,"
+                + "?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -839,10 +836,9 @@ public class MerchantNumberDAO {
             cstmt.setString(33, filter.IN_SCURRENCY.trim());
             cstmt.setString(34, filter.IN_SBENCEN.trim());
             cstmt.setString(35, filter.IN_COSTCEN.trim());
-            cstmt.setString(36, filter.IN_CODPRO_2.trim());      
-            cstmt.setString(37, filter.IN_IDFBENEF.trim());
-//         
+            cstmt.setString(36, filter.IN_CODPRO.trim());
             
+            cstmt.setString(37, filter.IN_IDFBENEF.trim());
             
             cstmt.setString(38, filter.IN_EQUIVA1.trim());
             cstmt.setString(39, filter.IN_EQUIVA2.trim());
@@ -913,11 +909,16 @@ public class MerchantNumberDAO {
         CallableStatement cstmt = null;
         PreparedStatement pstmt = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00934_INSERT(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
-        
-//        CallableStatement cs = conn.prepareCall("{CALL PRAXIS.SQP00934_INSERT(" + "?,".repeat(43) + "?)}");
-//        
-//        " + "?,".repeat(43) + "?)}
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00934_INSERT(?,?,?,?,?,"
+                + "?,?,?,?,?,"
+                + "?,?,?,?,?,"
+                + "?,?,?,?,?,"
+                + "?,?,?,?,?,"
+                + "?,?,?,?,?,"
+                + "?,?,?,?,?,"
+                + "?,?,?,?,?,"
+                + "?,?,?,?)}";
+
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -955,8 +956,6 @@ public class MerchantNumberDAO {
             cstmt.setString(30, filter.COSTCEN.trim());
             cstmt.setString(31, filter.IDFBENEF.trim());
             cstmt.setString(32, filter.CODPRO.trim());
-            
-            
             
             cstmt.setString(33, filter.IN_EQUIVA1.trim());
             cstmt.setString(34, filter.IN_EQUIVA2.trim());
@@ -1172,6 +1171,7 @@ public class MerchantNumberDAO {
                 objRtn.SBENCEN = rs01.getString("SBENCEN").trim();
                 objRtn.COSTCEN = rs01.getString("COSTCEN").trim();
                 objRtn.IDFBENEF = rs01.getString("IDFBENEF").trim();
+                objRtn.CODPRO = rs01.getString("CODPRO").trim();
                 
                 objRtn.EQUIVA1 = rs01.getString("EQUIVA1").trim();
                 objRtn.EQUIVA2 = rs01.getString("EQUIVA2").trim();
@@ -1420,8 +1420,6 @@ public class MerchantNumberDAO {
     public String load_MPS114(A2354Filter filterNew, A2354Filter filterOld, String option) throws SQLException, Exception {
 
         //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA MPF109.
-        
-        
         String strMsj = "Operation was successful.";
         CallableStatement cstmt = null;
         PreparedStatement pstmt = null;

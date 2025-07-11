@@ -941,43 +941,29 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetail', {
                                         maxLength: 8,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
-                                        width: 110
+                                        width: 130
                                     },
                                     {xtype: 'tbspacer', width: 140},
-                                    
-                                    
-                                    
-                                    ///cod pro
-                                    
-                                    
-                                          {
+                                    {
                                         xtype: 'label',
-                                        text: 'Cod. Pro',
+                                        text: 'Cod. Processing',
                                         style: 'font-weight:bold;',
                                         width: 115
                                     },
-                                    {xtype: 'tbspacer', width: 15},
-                                    
-                                  
+                                    {xtype: 'tbspacer', width: 5},
                                     {
                                         xtype: 'textfield',
-                                        id: prototype.id + '-CODPRO_2',
+                                        id: prototype.id + '-codProccesing',
                                         fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
                                         editable: true,
-                                        enabled: true,
-                                        maxLength: 8,
+                                        enabled: false,
+                                        maxLength: 3,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
-                                        width: 90
+                                        width: 130
                                     },
-                                    
-                                    {xtype: 'tbspacer', width: 150},
-                                    
-                                    
-                                    /////
-                                    
-                                    
+                                    {xtype: 'tbspacer', width: 120},
                                     {
                                         xtype: 'label',
                                         text: 'ID B. Cen.',

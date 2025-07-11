@@ -69,6 +69,7 @@ public String IN_SCURRENCY = "";
 public String IN_SBENCEN = "";
 public String IN_COSTCEN = "";
 public String IN_IDFBENEF = "";
+public String IN_CODPRO = "";
 
 public String IN_EQUIVA1 = "";
 public String IN_EQUIVA2 = "";

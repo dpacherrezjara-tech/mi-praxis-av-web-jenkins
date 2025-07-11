@@ -22,7 +22,6 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         this.p = this.view.params;
         this.actionCode = this.p.action;
         this.bean = this.p.rec;
-        this.code = this.p.codpro;
         this.colIndex = this.p.rec.colIndex;
         this.merchantSelected = this.bean.data.CMERCHAN
         console.log(this.bean, 'THIS.BEAN')
@@ -125,7 +124,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                 Ext.getCmp(prototype.id + '-btn-save_D').show();
                 Ext.getCmp(prototype.id + '-btn-update_D').hide();
                 Ext.getCmp(prototype.id + '-btn-delete_D').hide();
-                Ext.getCmp(prototype.id + '-btn-cancel_D').hide();
+                Ext.getCmp(prototype.id + '-btn-cancel_D').show();
                 break;
             case 'U':
 //                this.getData();
@@ -161,7 +160,6 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                 Ext.getCmp(prototype.id + '-SBENCEN_D').setEditable(true);
                 Ext.getCmp(prototype.id + '-COSTCEN_D').setEditable(true);
                 Ext.getCmp(prototype.id + '-IDFBENEF_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-CODPRO_2').setEditable(true);
 //                Ext.getCmp(prototype.id + '-bankSection').hide();
 //                Ext.getCmp(prototype.id + '-iataSection').hide();
 //                Ext.getCmp(prototype.id + '-bSection_1').hide();
@@ -263,30 +261,27 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         
         
         //        this.setValue('de-txtFRANCH4_D', this.bean.data.FRANC4)
-        this.setValue('CODEBANK_D', this.bean.data.CODEBANK)
-        this.setValue('BANKNAM_D', this.bean.data.BANKNAM)
-        this.setValue('BANKCM_D', this.bean.data.BANKCM)
-        this.setValue('BANKCUR_D', this.bean.data.BANKCUR)
-        this.setValue('ACCNUMB_D', this.bean.data.ACCNUMB)
-        this.setValue('ACCNUMOLD_D', this.bean.data.ACCNUMOLD)
-        this.setValue('DDISCON_D', this.bean.data.DDISCON)
-        this.setValue('ACCNUMA_D', this.bean.data.ACCNUMA)
-        this.setValue('IDFISCAL_D', this.bean.data.IDFISCAL)
-        this.setValue('BENCEN_D', this.bean.data.BENCEN)
-        
-        
-        this.setValue('CODPRO_2', this.code);
-        
-        this.setValue('DEUSAP_D', this.bean.data.DEUSAP)
-        this.setValue('SAGENT_D', this.bean.data.SAGENT)
-        this.setValue('CANAL_D', this.bean.data.CANAL)
-        this.setValue('PROCES_D', this.bean.data.PROCES)
-        this.setValue('SCOUNTRY_D', this.bean.data.SCOUNTRY)
-        this.setValue('SOCIETY_D', this.bean.data.SOCIETY)
-        this.setValue('SCURRENCY_D', this.bean.data.SCURRENCY)
-        this.setValue('SBENCEN_D', this.bean.data.SBENCEN)
-        this.setValue('COSTCEN_D', this.bean.data.COSTCEN)
-        this.setValue('IDFBENEF_D', this.bean.data.IDFBENEF)
+        this.setValue('CODEBANK_D', this.bean.data.CODEBANK),
+        this.setValue('codProccesing', this.bean.data.CODPRO),
+        this.setValue('BANKNAM_D', this.bean.data.BANKNAM),
+        this.setValue('BANKCM_D', this.bean.data.BANKCM),
+        this.setValue('BANKCUR_D', this.bean.data.BANKCUR),
+        this.setValue('ACCNUMB_D', this.bean.data.ACCNUMB),
+        this.setValue('ACCNUMOLD_D', this.bean.data.ACCNUMOLD),
+        this.setValue('DDISCON_D', this.bean.data.DDISCON),
+        this.setValue('ACCNUMA_D', this.bean.data.ACCNUMA),
+        this.setValue('IDFISCAL_D', this.bean.data.IDFISCAL),
+        this.setValue('BENCEN_D', this.bean.data.BENCEN),
+        this.setValue('DEUSAP_D', this.bean.data.DEUSAP),
+        this.setValue('SAGENT_D', this.bean.data.SAGENT),
+        this.setValue('CANAL_D', this.bean.data.CANAL),
+        this.setValue('PROCES_D', this.bean.data.PROCES),
+        this.setValue('SCOUNTRY_D', this.bean.data.SCOUNTRY),
+        this.setValue('SOCIETY_D', this.bean.data.SOCIETY),
+        this.setValue('SCURRENCY_D', this.bean.data.SCURRENCY),
+        this.setValue('SBENCEN_D', this.bean.data.SBENCEN),
+        this.setValue('COSTCEN_D', this.bean.data.COSTCEN),
+        this.setValue('IDFBENEF_D', this.bean.data.IDFBENEF),
         
         this.setValue('de-txtDEFFEC', this.bean.data.DEFFEC)
         
@@ -321,9 +316,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         beanTemp.IN_FRANC2 = this.getValue("de-txtFRANCH2_D")
         beanTemp.IN_FRANC3 = this.getValue("de-txtFRANCH3_D")
         beanTemp.IN_FRANC4 = this.getValue("de-txtFRANCH4_D")
-        
-        beanTemp.IN_CODPRO_2 = this.getValue("CODPRO_2")
-//        
+        beanTemp.IN_CODPRO = this.getValue("codProccesing")
         
         beanTemp.IN_EQUIVA1 = this.getValue("de-txtEQUIVALENT_1")
         beanTemp.IN_EQUIVA2 = this.getValue("de-txtEQUIVALENT_2")
@@ -391,6 +384,8 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         this.beanTempMirror.IN_EQUIVA7 = this.getValue("de-txtEQUIVALENT_7")
         this.beanTempMirror.IN_EQUIVA8 = this.getValue("de-txtEQUIVALENT_8")
         this.beanTempMirror.IN_EQUIVA9 = this.getValue("de-txtEQUIVALENT_9")
+        this.beanTempMirror.IN_CODPRO = this.getValue("codProccesing")
+        
         
         this.beanTempMirror.IN_BANKCM = this.getValue("BANKCM_D")
         this.beanTempMirror.IN_BANKCUR = this.getValue("BANKCUR_D")
