@@ -1917,7 +1917,7 @@ public class MasterDAO {
             DriverManager.setLoginTimeout(60 * 10); // 10min
 
             //return DriverManager.getConnection(url, "RBTAVIANCA", "rbtavia"); //DESARROLLO
-            return DriverManager.getConnection(url, "USRWEBAV", "gt23yv90");//PRODUCCION
+            return DriverManager.getConnection(url, "USRWEBAV", "C7e4g9G3F");//PRODUCCION
         } catch (Exception ex) {
             return null;
         }
