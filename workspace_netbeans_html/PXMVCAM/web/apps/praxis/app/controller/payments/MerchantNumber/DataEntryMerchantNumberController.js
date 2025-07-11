@@ -21,6 +21,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         this.actionCode = this.p.action;
         this.bean = this.p.rec;
         this.lstCountry = this.p.lstCountry;
+        console.log(this.bean,"beanpreuba")
 
     },
     afterRender: function () {
@@ -312,6 +313,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         beanTemp.SBENCEN = this.getValue("SBENCEN")
         beanTemp.COSTCEN = this.getValue("COSTCEN")
         beanTemp.IDFBENEF = this.getValue("IDFBENEF")
+        beanTemp.CODPRO = this.getValue("CODPRO")
 
         beanTemp.USCR = this.getValue("txtUSCR").trim();
         beanTemp.FECR = this.getValue("txtFECR").trim();
