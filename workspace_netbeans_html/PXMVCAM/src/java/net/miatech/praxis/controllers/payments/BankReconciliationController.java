@@ -5176,4 +5176,38 @@ public class BankReconciliationController extends BaseController {
         }
     }
 
+    /*bpo REVISION*/
+    
+    
+    @RequestMapping(value = "updateCERROR_BPO_revision")
+    public @ResponseBody
+    String updateCERROR_BPO_revision(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankReconciliation : updateCERROR_BPO_revision-------------");
+        map.put("success", true);
+
+        A2290Filter objmpf101 = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "" , mensaje = "";
+
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            /*Capturo objeto enviado desde ajax*/
+            beanString = request.getParameter("beanString");
+            objmpf101 = gson.fromJson(beanString, A2290Filter.class);
+            
+            UserView user = this.serverSession.getServerSession().getUserView();
+            mensaje = logic.loadPX598update_cerror_conci(objmpf101,user);
+            
+            map.put("mensaje", mensaje);
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("mensaje", ex.getMessage());
+        }
+
+        return new Gson().toJson(map);
+    }
+    
+    
 }

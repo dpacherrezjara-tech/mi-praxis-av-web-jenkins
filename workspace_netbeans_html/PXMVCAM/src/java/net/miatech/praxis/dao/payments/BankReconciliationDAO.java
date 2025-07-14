@@ -1099,6 +1099,8 @@ public class BankReconciliationDAO {
                     beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
                     beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
                     beanTkt.SVFOP = rst.getDouble("SVFOP");
+                    beanTkt.SEQ = rst.getString("SEQ");
+                    
                     beanTkt.totSVFOP = totSVFOP;
                     beanTkt.lngQTYTKT = rst.getLong("QTYTKT");
                     beanTkt.lngQTYDOC = rst.getLong("QTYDOC");
@@ -1991,6 +1993,7 @@ public class BankReconciliationDAO {
                 objRtn.SPNR = rs01.getString("SPNR");
                 objRtn.SCARCOD = rs01.getString("SCARCOD");
                 objRtn.CODEBANK = rs01.getString("CODEBANK");
+                objRtn.SEQ = rs01.getString("SEQ");
                 objRtn.SCARDN = rs01.getString("SCARDN");
                 objRtn.SAUTHOC = rs01.getString("SAUTHOC");
                 objRtn.FREGLA = rs01.getString("FREGLA");
@@ -7898,4 +7901,69 @@ public class BankReconciliationDAO {
         return lstTkts;
     }
 
+    
+    
+    public String loadPX598update_cerror_conci(A2290Filter objmpf101, UserView user) throws SQLException, Exception {
+
+        //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
+        String strMsj = "Error ocurred";
+        CallableStatement cstmt = null;
+        
+        Connection cnx = null;
+
+        String SQLCLL01 = "{CALL PRAXISMP.update_cerror_conci(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+            
+            
+            cstmt.registerOutParameter(15, Types.VARCHAR);
+        
+
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, objmpf101.SDATE.trim());
+            cstmt.setString(3, objmpf101.SCOUNTRY.trim());
+            cstmt.setString(4, objmpf101.TDOC.trim());
+            cstmt.setString(5, objmpf101.CODEBANK.trim());
+            cstmt.setString(6, objmpf101.SCARCOD.trim());
+            cstmt.setString(7, objmpf101.SCARDN.trim());
+            cstmt.setString(8, objmpf101.SAUTHOC.trim());
+            cstmt.setString(9, objmpf101.SEQ);
+            cstmt.setDouble(10, objmpf101.SVFOP);
+            
+            cstmt.setString(11, objmpf101.DATEC.trim());
+            cstmt.setString(12, objmpf101.TRANC.trim());
+            cstmt.setString(13, session.getUserView().getCustomerInfo().USR);
+            cstmt.setString(14, objmpf101.CERROR.trim());
+            
+            cstmt.setString(15, "");
+            cstmt.execute();
+            
+            strMsj = cstmt.getString(15);
+            
+            cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
+           
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            strMsj = e.getMessage();
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                    
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return strMsj;
+    }
+    
+    
 }
