@@ -2260,6 +2260,7 @@ public class StatementReconciliationsDAO {
             cstmt.setDouble(8, filter.IN_NETO);
             cstmt.setString(9, filter.IN_DATECI.trim());
             cstmt.setString(10, filter.IN_TRANCI.trim());
+            
             cstmt.execute();
 
             rst = cstmt.getResultSet();
@@ -2319,6 +2320,10 @@ public class StatementReconciliationsDAO {
                     beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
                     beanTkt.NETO = rst.getDouble("NETO");
                     beanTkt.NETOC = rst.getDouble("NETOC");
+                    
+                    beanTkt.CERROR= rst.getString("CERROR");
+                    beanTkt.CERROR_DESC = rst.getString("CERROR_DESC");
+                    
 
                     beanTkt.ACCOUNT = rst.getString("ACCOUNT").trim();
                     beanTkt.CLAVE1 = rst.getString("CLAVE1").trim();
