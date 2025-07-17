@@ -112,16 +112,66 @@ public class SQP04091Filter extends A4022 {
     public double VAR_WP_UK_CO = 0;
     public double VAR_BANCARD_CO = 0;
     public double VAR_AMEX_CO = 0;
+    public double COMISION_AMEX_CO_SUM = 0;
+    public double OTHERS_AMEX_CO = 0;
     public double VAR_DISCOVER_CO = 0;
+    public double COMISION_DISCOVER_CO_SUM = 0;
+    public double OTHERS_DISCOVER_CO = 0;
+    public double COMISION_BANCARD_CO_SUM = 0;
+    public double OTHERS_BANCARD_CO = 0;
     
     public double VAR_WP_UK_SA = 0;
     public double VAR_BANCARD_SA = 0;
+    public double COMISION_BANCARD_SA_SUM = 0;
+    public double OTHERS_BANCARD_SA = 0;
     public double VAR_AMEX_SA = 0;
+    public double COMISION_AMEX_SA_SUM = 0;
+    public double OTHERS_AMEX_SA = 0;
     public double VAR_DISCOVER_SA = 0;
+    public double COMISION_DISCOVER_SA_SUM = 0;
+    public double OTHERS_DISCOVER_SA = 0;
     
     public double VAR_TOTAL_CO = 0;
     public double VAR_TOTAL_SA = 0;
     public double VAR_TOTAL_CO_SA = 0;
+    
+    public double STATEMENT_WP_UK_CO = 0;
+    public double SETTLEMENT_WP_UK_CO = 0;
+    public double SALE_WP_UK_CO = 0;
+    public double COMISION_WP_UK_CO_SUM = 0;
+    public double OTHERS_WP_UK_CO = 0;
+    public double VAR_WP_CO = 0;
+    public double VAR_WP_SA = 0;
+    public double COMISION_WP_UK_SA_SUM = 0;
+    public double OTHERS_WP_UK_SA = 0;
+    
+    public double STATEMENT_BANCARD_CO = 0;
+    public double SETTLEMENT_BANCARD_CO = 0;
+    public double SALE_BANCARD_CO = 0;
+    
+    public double STATEMENT_AMEX_CO = 0;
+    public double SETTLEMENT_AMEX_CO = 0;
+    public double SALE_AMEX_CO = 0;
+    
+    public double STATEMENT_DISCOVER_CO = 0;
+    public double SETTLEMENT_DISCOVER_CO = 0;
+    public double SALE_DISCOVER_CO = 0;
+    
+    public double STATEMENT_WP_UK_SA = 0;
+    public double SETTLEMENT_WP_UK_SA = 0;
+    public double SALE_WP_UK_SA = 0;
+    
+    public double STATEMENT_BANCARD_SA = 0;
+    public double SETTLEMENT_BANCARD_SA = 0;
+    public double SALE_BANCARD_SA = 0;
+    
+    public double STATEMENT_AMEX_SA = 0;
+    public double SETTLEMENT_AMEX_SA = 0;
+    public double SALE_AMEX_SA = 0;
+    
+    public double STATEMENT_DISCOVER_SA = 0;
+    public double SETTLEMENT_DISCOVER_SA = 0;
+    public double SALE_DISCOVER_SA = 0;
     
     
     
@@ -198,6 +248,55 @@ public class SQP04091Filter extends A4022 {
     public double VAR_TOTAL_TACA = 0;
     public double VAR_TOTAL_CRC = 0;
     public double VAR_TOTAL_TACA_CRC = 0;
+    
+    
+    public double TOTAL_STATEMENT_WP_UK_CO = 0;
+    public double TOTAL_SETTLEMENT_WP_UK_CO = 0;
+    public double TOTAL_SALE_WP_UK_CO = 0;
+    public double TOTAL_COMISION_WP_UK_CO = 0;
+    public double TOTAL_OTHERS_WP_UK_CO = 0;
+    
+    public double TOTAL_STATEMENT_BANCARD_CO = 0;
+    public double TOTAL_SETTLEMENT_BANCARD_CO = 0;
+    public double TOTAL_SALE_BANCARD_CO = 0;
+    public double TOTAL_COMISION_BANCARD_CO = 0;
+    public double TOTAL_OTHERS_BANCARD_CO = 0;
+    
+    public double TOTAL_STATEMENT_AMEX_CO = 0;
+    public double TOTAL_SETTLEMENT_AMEX_CO = 0;
+    public double TOTAL_SALE_AMEX_CO = 0;
+    public double TOTAL_COMISION_AMEX_CO = 0;
+    public double TOTAL_OTHERS_AMEX_CO = 0;
+    
+    public double TOTAL_STATEMENT_DISCOVER_CO = 0;
+    public double TOTAL_SETTLEMENT_DISCOVER_CO = 0;
+    public double TOTAL_SALE_DISCOVER_CO = 0;
+    public double TOTAL_COMISION_DISCOVER_CO = 0;
+    public double TOTAL_OTHERS_DISCOVER_CO = 0;
+    
+    public double TOTAL_STATEMENT_WP_UK_SA = 0;
+    public double TOTAL_SETTLEMENT_WP_UK_SA = 0;
+    public double TOTAL_SALE_WP_UK_SA = 0;
+    public double TOTAL_COMISION_WP_UK_SA = 0;
+    public double TOTAL_OTHERS_WP_UK_SA = 0;
+    
+    public double TOTAL_STATEMENT_BANCARD_SA = 0;
+    public double TOTAL_SETTLEMENT_BANCARD_SA = 0;
+    public double TOTAL_SALE_BANCARD_SA = 0;
+    public double TOTAL_COMISION_BANCARD_SA = 0;
+    public double TOTAL_OTHERS_BANCARD_SA = 0;
+    
+    public double TOTAL_STATEMENT_AMEX_SA = 0;
+    public double TOTAL_SETTLEMENT_AMEX_SA = 0;
+    public double TOTAL_SALE_AMEX_SA = 0;
+    public double TOTAL_COMISION_AMEX_SA = 0;
+    public double TOTAL_OTHERS_AMEX_SA = 0;
+    
+    public double TOTAL_STATEMENT_DISCOVER_SA = 0;
+    public double TOTAL_SETTLEMENT_DISCOVER_SA = 0;
+    public double TOTAL_SALE_DISCOVER_SA = 0;
+    public double TOTAL_COMISION_DISCOVER_SA = 0;
+    public double TOTAL_OTHERS_DISCOVER_SA = 0;
     
     
     

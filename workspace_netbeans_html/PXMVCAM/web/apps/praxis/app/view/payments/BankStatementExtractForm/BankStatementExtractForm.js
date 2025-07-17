@@ -57,7 +57,8 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.BankStatementExtra
                                     },
                                     items: [
                                         {
-                                            xtype:prototype.id + '-options'
+                                            xtype:prototype.id + '-options',
+                                            style:'margin-top:20px'
                                         },
                                         {
                                             xtype:prototype.id+ '-filters',
@@ -65,7 +66,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.BankStatementExtra
                                         },
                                         {
                                             xtype: 'panel',
-                                            height: 700,
+                                            height: 710,
                                             layout: 'fit',
                                             items: [
                                                 {

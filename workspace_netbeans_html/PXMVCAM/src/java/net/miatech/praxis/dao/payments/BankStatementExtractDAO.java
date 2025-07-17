@@ -23,6 +23,7 @@ import net.miatech.beans.SQP04091Filter;
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.librfnd.filter.CPF031Filter;
 import net.miatech.praxis.payment.filter.A2290Filter;
+import net.miatech.praxis.payment.filter.A2356Filter;
 import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
 
@@ -63,7 +64,7 @@ public class BankStatementExtractDAO {
         TOTAL_VAR_DISCOVER_CO = 0, TOTAL_VAR_WP_UK_SA = 0, TOTAL_VAR_BANCARD_SA = 0, TOTAL_VAR_AMEX_SA = 0,
         TOTAL_VAR_DISCOVER_SA = 0, TOTAL_VAR_TOTAL_CO = 0, TOTAL_VAR_TOTAL_SA = 0, TOTAL_VAR_TOTAL_CO_SA = 0;
 
-        String SQLCLL01 = "{CALL PRAXISMP.MPS122(?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.MPS122_V2(?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -156,7 +157,7 @@ public class BankStatementExtractDAO {
                     objRtn.HOLIDAY_AMEX = rs02.getString("HOLIDAY_AMEX");
                     objRtn.HOLIDAY_DISCOVER = rs02.getString("HOLIDAY_DISCOVER");
                     objRtn.DATE_FROM = rs02.getString("DATE_FROM");
-                    objRtn.NUMBER_WEAK = rs02.getString("NUMBER_WEAK");
+                    objRtn.NUMBER_WEAK = rs02.getString("NUMBER_WEEK");
                     objRtn.DAY_NUMBER_EKED = rs02.getString("DAY_NUMBER_EKED");
 
                     objRtn.AMOUNT_WP_UK_CO = rs02.getDouble("AMOUNT_WP_UK_CO");
@@ -278,6 +279,478 @@ public class BankStatementExtractDAO {
         }
 
         return lstRtn;
+    }
+    
+    public List<SQP04091Filter> searchUsaflowDiaryDetail(SQP04091Filter filter) throws SQLException, Exception {
+        List<SQP04091Filter> lstRtn = new ArrayList<>();
+        SQP04091Filter objRtn;
+
+        CallableStatement cstmt01 = null;
+        ResultSet rs01 = null;
+        ResultSet rs02 = null;
+
+        double 
+//        COLOMBIA
+        TOTAL_STATEMENT_WP_UK_CO = 0, TOTAL_SETTLEMENT_WP_UK_CO = 0, TOTAL_SALE_WP_UK_CO = 0, TOTAL_COMISION_WP_UK_CO = 0, TOTAL_OTHERS_WP_UK_CO = 0,
+        TOTAL_STATEMENT_BANCARD_CO = 0, TOTAL_SETTLEMENT_BANCARD_CO = 0, TOTAL_SALE_BANCARD_CO = 0, TOTAL_COMISION_BANCARD_CO = 0, TOTAL_OTHERS_BANCARD_CO = 0,
+        TOTAL_STATEMENT_AMEX_CO = 0, TOTAL_SETTLEMENT_AMEX_CO = 0, TOTAL_SALE_AMEX_CO = 0, TOTAL_COMISION_AMEX_CO = 0, TOTAL_OTHERS_AMEX_CO = 0,
+        TOTAL_STATEMENT_DISCOVER_CO = 0, TOTAL_SETTLEMENT_DISCOVER_CO = 0, TOTAL_SALE_DISCOVER_CO = 0, TOTAL_COMISION_DISCOVER_CO = 0, TOTAL_OTHERS_DISCOVER_CO = 0,
+//         SALVADOR
+        TOTAL_STATEMENT_WP_UK_SA = 0, TOTAL_SETTLEMENT_WP_UK_SA = 0, TOTAL_SALE_WP_UK_SA = 0, TOTAL_COMISION_WP_UK_SA = 0, TOTAL_OTHERS_WP_UK_SA = 0,
+        TOTAL_STATEMENT_BANCARD_SA = 0, TOTAL_SETTLEMENT_BANCARD_SA = 0, TOTAL_SALE_BANCARD_SA = 0, TOTAL_COMISION_BANCARD_SA = 0, TOTAL_OTHERS_BANCARD_SA = 0,
+        TOTAL_STATEMENT_AMEX_SA = 0, TOTAL_SETTLEMENT_AMEX_SA = 0, TOTAL_SALE_AMEX_SA = 0, TOTAL_COMISION_AMEX_SA = 0, TOTAL_OTHERS_AMEX_SA = 0,
+        TOTAL_STATEMENT_DISCOVER_SA = 0, TOTAL_SETTLEMENT_DISCOVER_SA = 0, TOTAL_SALE_DISCOVER_SA = 0, TOTAL_COMISION_DISCOVER_SA = 0, TOTAL_OTHERS_DISCOVER_SA = 0;
+
+        String SQLCLL01 = "{CALL PRAXISMP.MPS132(?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt01 = cnx.prepareCall(SQLCLL01);
+
+            // Registrar parámetros de salida
+            cstmt01.registerOutParameter(4, Types.INTEGER);
+            cstmt01.registerOutParameter(5, Types.INTEGER);
+            cstmt01.registerOutParameter(6, Types.INTEGER);
+            cstmt01.registerOutParameter(7, Types.INTEGER);
+
+            // Establecer parámetros de entrada
+            cstmt01.setString(1, filter.IN_CCUST);
+            cstmt01.setString(2, filter.IN_FECHA_FROM);
+            cstmt01.setString(3, filter.IN_FECHA_TO);
+            cstmt01.setInt(4, filter.page.PAGNUM);
+            cstmt01.setInt(5, filter.page.PAGROW);
+            cstmt01.setInt(6, filter.page.TOTPAG);
+            cstmt01.setInt(7, filter.page.TOTROW);
+
+            // Ejecutar el procedimiento almacenado
+            cstmt01.execute();
+
+            // Actualizar valores de paginación
+            filter.page.PAGNUM = cstmt01.getInt(4);
+            filter.page.PAGROW = cstmt01.getInt(5);
+            filter.page.TOTPAG = cstmt01.getInt(6);
+            filter.page.TOTROW = cstmt01.getInt(7);
+
+            // Obtener el primer ResultSet (totales)
+            rs01 = cstmt01.getResultSet();
+            if (rs01 != null && rs01.next()) {
+                TOTAL_STATEMENT_WP_UK_CO = rs01.getDouble("TOTAL_STATEMENT_WP_UK_CO");
+                TOTAL_COMISION_WP_UK_CO = rs01.getDouble("TOTAL_COMISION_WP_UK_CO");
+                TOTAL_OTHERS_WP_UK_CO = rs01.getDouble("TOTAL_OTHERS_WP_UK_CO");
+                TOTAL_SETTLEMENT_WP_UK_CO = rs01.getDouble("TOTAL_SETTLEMENT_WP_UK_CO");
+                TOTAL_SALE_WP_UK_CO = rs01.getDouble("TOTAL_SALE_WP_UK_CO");
+                
+                TOTAL_STATEMENT_BANCARD_CO = rs01.getDouble("TOTAL_STATEMENT_BANCARD_CO");
+                TOTAL_SETTLEMENT_BANCARD_CO = rs01.getDouble("TOTAL_SETTLEMENT_BANCARD_CO");
+                TOTAL_SALE_BANCARD_CO = rs01.getDouble("TOTAL_SALE_BANCARD_CO");
+                TOTAL_COMISION_BANCARD_CO = rs01.getDouble("TOTAL_COMISION_BANCARD_CO");
+                TOTAL_OTHERS_BANCARD_CO = rs01.getDouble("TOTAL_OTHERS_BANCARD_CO");
+                
+                TOTAL_STATEMENT_AMEX_CO = rs01.getDouble("TOTAL_STATEMENT_AMEX_CO");
+                TOTAL_SETTLEMENT_AMEX_CO = rs01.getDouble("TOTAL_SETTLEMENT_AMEX_CO");
+                TOTAL_SALE_AMEX_CO = rs01.getDouble("TOTAL_SALE_AMEX_CO");
+                TOTAL_COMISION_AMEX_CO = rs01.getDouble("TOTAL_COMISION_AMEX_CO");
+                TOTAL_OTHERS_AMEX_CO = rs01.getDouble("TOTAL_OTHERS_AMEX_CO");
+                
+                TOTAL_STATEMENT_DISCOVER_CO = rs01.getDouble("TOTAL_STATEMENT_DISCOVER_CO");
+                TOTAL_SETTLEMENT_DISCOVER_CO = rs01.getDouble("TOTAL_SETTLEMENT_DISCOVER_CO");
+                TOTAL_SALE_DISCOVER_CO = rs01.getDouble("TOTAL_SALE_DISCOVER_CO");
+                TOTAL_COMISION_DISCOVER_CO = rs01.getDouble("TOTAL_COMISION_DISCOVER_CO");
+                TOTAL_OTHERS_DISCOVER_CO = rs01.getDouble("TOTAL_OTHERS_DISCOVER_CO");
+                
+                TOTAL_STATEMENT_WP_UK_SA = rs01.getDouble("TOTAL_STATEMENT_WP_UK_SA");
+                TOTAL_SETTLEMENT_WP_UK_SA = rs01.getDouble("TOTAL_SETTLEMENT_WP_UK_SA");
+                TOTAL_SALE_WP_UK_SA = rs01.getDouble("TOTAL_SALE_WP_UK_SA");
+                TOTAL_COMISION_WP_UK_SA = rs01.getDouble("TOTAL_COMISION_WP_UK_SA");
+                TOTAL_OTHERS_WP_UK_SA = rs01.getDouble("TOTAL_OTHERS_WP_UK_SA");
+                
+                TOTAL_STATEMENT_BANCARD_SA = rs01.getDouble("TOTAL_STATEMENT_BANCARD_SA");
+                TOTAL_SETTLEMENT_BANCARD_SA = rs01.getDouble("TOTAL_SETTLEMENT_BANCARD_SA");
+                TOTAL_SALE_BANCARD_SA = rs01.getDouble("TOTAL_SALE_BANCARD_SA");
+                TOTAL_COMISION_BANCARD_SA = rs01.getDouble("TOTAL_COMISION_BANCARD_SA");
+                TOTAL_OTHERS_BANCARD_SA = rs01.getDouble("TOTAL_OTHERS_BANCARD_SA");
+                
+                TOTAL_STATEMENT_AMEX_SA = rs01.getDouble("TOTAL_STATEMENT_AMEX_SA");
+                TOTAL_SETTLEMENT_AMEX_SA = rs01.getDouble("TOTAL_SETTLEMENT_AMEX_SA");
+                TOTAL_SALE_AMEX_SA = rs01.getDouble("TOTAL_SALE_AMEX_SA");
+                TOTAL_COMISION_AMEX_SA = rs01.getDouble("TOTAL_COMISION_AMEX_SA");
+                TOTAL_OTHERS_AMEX_SA = rs01.getDouble("TOTAL_OTHERS_AMEX_SA");
+                
+                TOTAL_STATEMENT_DISCOVER_SA = rs01.getDouble("TOTAL_STATEMENT_DISCOVER_SA");
+                TOTAL_SETTLEMENT_DISCOVER_SA = rs01.getDouble("TOTAL_SETTLEMENT_DISCOVER_SA");
+                TOTAL_SALE_DISCOVER_SA = rs01.getDouble("TOTAL_SALE_DISCOVER_SA");
+                TOTAL_COMISION_DISCOVER_SA = rs01.getDouble("TOTAL_COMISION_DISCOVER_SA");
+                TOTAL_OTHERS_DISCOVER_SA = rs01.getDouble("TOTAL_OTHERS_DISCOVER_SA");
+                
+            }
+
+            // Mover al segundo ResultSet (datos detallados)
+            if (cstmt01.getMoreResults()) {
+                rs02 = cstmt01.getResultSet();
+
+                // Procesar registros del segundo ResultSet
+                while (rs02 != null && rs02.next()) {
+                    objRtn = new SQP04091Filter();
+
+                    objRtn.DATE_FROM = rs02.getString("VALDATE");
+                    objRtn.CURRENCY = "USD";
+                    
+                    objRtn.STATEMENT_WP_UK_CO = rs02.getDouble("STATEMENT_WP_UK_CO");
+                    objRtn.COMISION_WP_UK_CO_SUM = rs02.getDouble("COMISION_WP_UK_CO_SUM");
+                    objRtn.OTHERS_WP_UK_CO = rs02.getDouble("OTHERS_WP_UK_CO");
+                    objRtn.SETTLEMENT_WP_UK_CO = rs02.getDouble("SETTLEMENT_WP_UK_CO");
+                    objRtn.SALE_WP_UK_CO = rs02.getDouble("SALE_WP_UK_CO");
+                    objRtn.VAR_WP_CO = rs02.getDouble("VAR_WP_CO");
+                    
+                    
+                    objRtn.STATEMENT_BANCARD_CO = rs02.getDouble("STATEMENT_BANCARD_CO");
+                    objRtn.COMISION_BANCARD_CO_SUM = rs02.getDouble("COMISION_BANCARD_CO_SUM");
+                    objRtn.OTHERS_BANCARD_CO = rs02.getDouble("OTHERS_BANCARD_CO");
+                    objRtn.SETTLEMENT_BANCARD_CO = rs02.getDouble("SETTLEMENT_BANCARD_CO");
+                    objRtn.SALE_BANCARD_CO = rs02.getDouble("SALE_BANCARD_CO");
+                    objRtn.VAR_BANCARD_CO = rs02.getDouble("VAR_BANCARD_CO");
+                    
+                    
+                    objRtn.STATEMENT_AMEX_CO = rs02.getDouble("STATEMENT_AMEX_CO");
+                    objRtn.COMISION_AMEX_CO_SUM = rs02.getDouble("COMISION_AMEX_CO_SUM");
+                    objRtn.OTHERS_AMEX_CO = rs02.getDouble("OTHERS_AMEX_CO");
+                    objRtn.SETTLEMENT_AMEX_CO = rs02.getDouble("SETTLEMENT_AMEX_CO");
+                    objRtn.SALE_AMEX_CO = rs02.getDouble("SALE_AMEX_CO");
+                    objRtn.VAR_AMEX_CO = rs02.getDouble("VAR_AMEX_CO");
+                    
+                    
+                    objRtn.STATEMENT_DISCOVER_CO = rs02.getDouble("STATEMENT_DISCOVER_CO");
+                    objRtn.COMISION_DISCOVER_CO_SUM = rs02.getDouble("COMISION_DISCOVER_CO_SUM");
+                    objRtn.OTHERS_DISCOVER_CO = rs02.getDouble("OTHERS_DISCOVER_CO");
+                    objRtn.SETTLEMENT_DISCOVER_CO = rs02.getDouble("SETTLEMENT_DISCOVER_CO");
+                    objRtn.SALE_DISCOVER_CO = rs02.getDouble("SALE_DISCOVER_CO");
+                    objRtn.VAR_DISCOVER_CO = rs02.getDouble("VAR_DISCOVER_CO");
+                    
+                    
+                    objRtn.STATEMENT_WP_UK_SA = rs02.getDouble("STATEMENT_WP_UK_SA");
+                    objRtn.COMISION_WP_UK_SA_SUM = rs02.getDouble("COMISION_WP_UK_SA_SUM");
+                    objRtn.OTHERS_WP_UK_SA = rs02.getDouble("OTHERS_WP_UK_SA");
+                    objRtn.SETTLEMENT_WP_UK_SA = rs02.getDouble("SETTLEMENT_WP_UK_SA");
+                    objRtn.SALE_WP_UK_SA = rs02.getDouble("SALE_WP_UK_SA");
+                    objRtn.VAR_WP_SA = rs02.getDouble("VAR_WP_SA");
+                    
+                    
+                    objRtn.STATEMENT_BANCARD_SA = rs02.getDouble("STATEMENT_BANCARD_SA");
+                    objRtn.COMISION_BANCARD_SA_SUM = rs02.getDouble("COMISION_BANCARD_SA_SUM");
+                    objRtn.OTHERS_BANCARD_SA = rs02.getDouble("OTHERS_BANCARD_SA");
+                    objRtn.SETTLEMENT_BANCARD_SA = rs02.getDouble("SETTLEMENT_BANCARD_SA");
+                    objRtn.SALE_BANCARD_SA = rs02.getDouble("SALE_BANCARD_SA");
+                    objRtn.VAR_BANCARD_SA = rs02.getDouble("VAR_BANCARD_SA");
+                    
+                    
+                    objRtn.STATEMENT_AMEX_SA = rs02.getDouble("STATEMENT_AMEX_SA");
+                    objRtn.COMISION_AMEX_SA_SUM = rs02.getDouble("COMISION_AMEX_SA_SUM");
+                    objRtn.OTHERS_AMEX_SA = rs02.getDouble("OTHERS_AMEX_SA");
+                    objRtn.SETTLEMENT_AMEX_SA = rs02.getDouble("SETTLEMENT_AMEX_SA");
+                    objRtn.SALE_AMEX_SA = rs02.getDouble("SALE_AMEX_SA");
+                    objRtn.VAR_AMEX_SA = rs02.getDouble("VAR_AMEX_SA");
+                    
+                    
+                    objRtn.STATEMENT_DISCOVER_SA = rs02.getDouble("STATEMENT_DISCOVER_SA");
+                    objRtn.COMISION_DISCOVER_SA_SUM = rs02.getDouble("COMISION_DISCOVER_SA_SUM");
+                    objRtn.OTHERS_DISCOVER_SA = rs02.getDouble("OTHERS_DISCOVER_SA");
+                    objRtn.SETTLEMENT_DISCOVER_SA = rs02.getDouble("SETTLEMENT_DISCOVER_SA");
+                    objRtn.SALE_DISCOVER_SA = rs02.getDouble("SALE_DISCOVER_SA");
+                    objRtn.VAR_DISCOVER_SA = rs02.getDouble("VAR_DISCOVER_SA");
+                    
+                    
+                    // Asignar los totales al objeto de retorno
+                    objRtn.TOTAL_STATEMENT_WP_UK_CO = TOTAL_STATEMENT_WP_UK_CO;
+                    objRtn.TOTAL_COMISION_WP_UK_CO = TOTAL_COMISION_WP_UK_CO;
+                    objRtn.TOTAL_OTHERS_WP_UK_CO = TOTAL_OTHERS_WP_UK_CO;
+                    objRtn.TOTAL_SETTLEMENT_WP_UK_CO = TOTAL_SETTLEMENT_WP_UK_CO;
+                    objRtn.TOTAL_SALE_WP_UK_CO = TOTAL_SALE_WP_UK_CO;
+                    
+                    
+                    objRtn.TOTAL_STATEMENT_BANCARD_CO = TOTAL_STATEMENT_BANCARD_CO;
+                    objRtn.TOTAL_COMISION_BANCARD_CO = TOTAL_COMISION_BANCARD_CO;
+                    objRtn.TOTAL_OTHERS_BANCARD_CO = TOTAL_OTHERS_BANCARD_CO;
+                    objRtn.TOTAL_SETTLEMENT_BANCARD_CO = TOTAL_SETTLEMENT_BANCARD_CO;
+                    objRtn.TOTAL_SALE_BANCARD_CO = TOTAL_SALE_BANCARD_CO;
+                    
+                    
+                    objRtn.TOTAL_STATEMENT_AMEX_CO = TOTAL_STATEMENT_AMEX_CO;
+                    objRtn.TOTAL_COMISION_AMEX_CO = TOTAL_COMISION_AMEX_CO;
+                    objRtn.TOTAL_OTHERS_AMEX_CO = TOTAL_OTHERS_AMEX_CO;
+                    objRtn.TOTAL_SETTLEMENT_AMEX_CO = TOTAL_SETTLEMENT_AMEX_CO;
+                    objRtn.TOTAL_SALE_AMEX_CO = TOTAL_SALE_AMEX_CO;
+                    
+                    
+                    objRtn.TOTAL_STATEMENT_DISCOVER_CO = TOTAL_STATEMENT_DISCOVER_CO;
+                    objRtn.TOTAL_COMISION_DISCOVER_CO = TOTAL_COMISION_DISCOVER_CO;
+                    objRtn.TOTAL_OTHERS_DISCOVER_CO = TOTAL_OTHERS_DISCOVER_CO;
+                    objRtn.TOTAL_SETTLEMENT_DISCOVER_CO = TOTAL_SETTLEMENT_DISCOVER_CO;
+                    objRtn.TOTAL_SALE_DISCOVER_CO = TOTAL_SALE_DISCOVER_CO;
+                    
+                    
+                    objRtn.TOTAL_STATEMENT_WP_UK_SA = TOTAL_STATEMENT_WP_UK_SA;
+                    objRtn.TOTAL_COMISION_WP_UK_SA = TOTAL_COMISION_WP_UK_SA;
+                    objRtn.TOTAL_OTHERS_WP_UK_SA = TOTAL_OTHERS_WP_UK_SA;
+                    objRtn.TOTAL_SETTLEMENT_WP_UK_SA = TOTAL_SETTLEMENT_WP_UK_SA;
+                    objRtn.TOTAL_SALE_WP_UK_SA = TOTAL_SALE_WP_UK_SA;
+                    
+                    
+                    objRtn.TOTAL_STATEMENT_BANCARD_SA = TOTAL_STATEMENT_BANCARD_SA;
+                    objRtn.TOTAL_COMISION_BANCARD_SA = TOTAL_COMISION_BANCARD_SA;
+                    objRtn.TOTAL_OTHERS_BANCARD_SA = TOTAL_OTHERS_BANCARD_SA;
+                    objRtn.TOTAL_SETTLEMENT_BANCARD_SA = TOTAL_SETTLEMENT_BANCARD_SA;
+                    objRtn.TOTAL_SALE_BANCARD_SA = TOTAL_SALE_BANCARD_SA;
+                    
+                    
+                    objRtn.TOTAL_STATEMENT_AMEX_SA = TOTAL_STATEMENT_AMEX_SA;
+                    objRtn.TOTAL_COMISION_AMEX_SA = TOTAL_COMISION_AMEX_SA;
+                    objRtn.TOTAL_OTHERS_AMEX_SA = TOTAL_OTHERS_AMEX_SA;
+                    objRtn.TOTAL_SETTLEMENT_AMEX_SA = TOTAL_SETTLEMENT_AMEX_SA;
+                    objRtn.TOTAL_SALE_AMEX_SA = TOTAL_SALE_AMEX_SA;
+                    
+                    
+                    objRtn.TOTAL_STATEMENT_DISCOVER_SA = TOTAL_STATEMENT_DISCOVER_SA;
+                    objRtn.TOTAL_COMISION_DISCOVER_SA = TOTAL_COMISION_DISCOVER_SA;
+                    objRtn.TOTAL_OTHERS_DISCOVER_SA = TOTAL_OTHERS_DISCOVER_SA;
+                    objRtn.TOTAL_SETTLEMENT_DISCOVER_SA = TOTAL_SETTLEMENT_DISCOVER_SA;
+                    objRtn.TOTAL_SALE_DISCOVER_SA = TOTAL_SALE_DISCOVER_SA;
+                    
+                    
+
+                    objRtn.page.PAGNUM = filter.page.PAGNUM;
+                    objRtn.page.PAGROW = filter.page.PAGROW;
+                    objRtn.page.TOTPAG = filter.page.TOTPAG;
+                    objRtn.page.TOTROW = filter.page.TOTROW;
+
+                    lstRtn.add(objRtn);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            // Cerrar recursos en orden inverso
+            if (rs02 != null) {
+                try {
+                    rs02.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (rs01 != null) {
+                try {
+                    rs01.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (cstmt01 != null) {
+                try {
+                    cstmt01.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+            pasarGarbageCollector();
+        }
+
+        return lstRtn;
+    }
+    
+    public List<A2356Filter> getListTotalConciliation_Bard(A2356Filter filter) throws SQLException, Exception {
+
+        List<A2356Filter> lstData = new ArrayList<A2356Filter>(0);
+        A2356Filter objRtn;
+
+        double 
+//        COLOMBIA
+        TOTAL_STATEMENT_WP_UK_CO = 0, TOTAL_SETTLEMENT_WP_UK_CO = 0, TOTAL_SALE_WP_UK_CO = 0,
+        TOTAL_STATEMENT_BANCARD_CO = 0, TOTAL_SETTLEMENT_BANCARD_CO = 0, TOTAL_SALE_BANCARD_CO = 0,
+        TOTAL_STATEMENT_AMEX_CO = 0, TOTAL_SETTLEMENT_AMEX_CO = 0, TOTAL_SALE_AMEX_CO = 0,
+        TOTAL_STATEMENT_DISCOVER_CO = 0, TOTAL_SETTLEMENT_DISCOVER_CO = 0, TOTAL_SALE_DISCOVER_CO = 0,
+//            SALVADOR
+        TOTAL_STATEMENT_WP_UK_SA = 0, TOTAL_SETTLEMENT_WP_UK_SA = 0, TOTAL_SALE_WP_UK_SA = 0,
+        TOTAL_STATEMENT_BANCARD_SA = 0, TOTAL_SETTLEMENT_BANCARD_SA = 0, TOTAL_SALE_BANCARD_SA = 0,
+        TOTAL_STATEMENT_AMEX_SA = 0, TOTAL_SETTLEMENT_AMEX_SA = 0, TOTAL_SALE_AMEX_SA = 0, 
+        TOTAL_STATEMENT_DISCOVER_SA = 0, TOTAL_SETTLEMENT_DISCOVER_SA = 0, TOTAL_SALE_DISCOVER_SA = 0;
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPF151(?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, filter.IN_CCUST);
+            cstmt.setString(2, filter.IN_FECHA_FROM);
+            cstmt.setString(3, filter.IN_FECHA_TO);
+            cstmt.setString(4, filter.IN_SCOUNTRY);
+
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            if (rst != null && rst.next()) {
+                TOTAL_STATEMENT_WP_UK_CO = rst.getDouble("TOTAL_STATEMENT_WP_UK_CO");
+                TOTAL_SETTLEMENT_WP_UK_CO = rst.getDouble("TOTAL_SETTLEMENT_WP_UK_CO");
+                TOTAL_SALE_WP_UK_CO = rst.getDouble("TOTAL_SALE_WP_UK_CO");
+                
+                TOTAL_STATEMENT_BANCARD_CO = rst.getDouble("TOTAL_STATEMENT_BANCARD_CO");
+                TOTAL_SETTLEMENT_BANCARD_CO = rst.getDouble("TOTAL_SETTLEMENT_BANCARD_CO");
+                TOTAL_SALE_BANCARD_CO = rst.getDouble("TOTAL_SALE_BANCARD_CO");
+                
+                TOTAL_STATEMENT_AMEX_CO = rst.getDouble("TOTAL_STATEMENT_AMEX_CO");
+                TOTAL_SETTLEMENT_AMEX_CO = rst.getDouble("TOTAL_SETTLEMENT_AMEX_CO");
+                TOTAL_SALE_AMEX_CO = rst.getDouble("TOTAL_SALE_AMEX_CO");
+                
+                TOTAL_STATEMENT_DISCOVER_CO = rst.getDouble("TOTAL_STATEMENT_DISCOVER_CO");
+                TOTAL_SETTLEMENT_DISCOVER_CO = rst.getDouble("TOTAL_SETTLEMENT_DISCOVER_CO");
+                TOTAL_SALE_DISCOVER_CO = rst.getDouble("TOTAL_SALE_DISCOVER_CO");
+                
+                TOTAL_STATEMENT_WP_UK_SA = rst.getDouble("TOTAL_STATEMENT_WP_UK_SA");
+                TOTAL_SETTLEMENT_WP_UK_SA = rst.getDouble("TOTAL_SETTLEMENT_WP_UK_SA");
+                TOTAL_SALE_WP_UK_SA = rst.getDouble("TOTAL_SALE_WP_UK_SA");
+                
+                TOTAL_STATEMENT_BANCARD_SA = rst.getDouble("TOTAL_STATEMENT_BANCARD_SA");
+                TOTAL_SETTLEMENT_BANCARD_SA = rst.getDouble("TOTAL_SETTLEMENT_BANCARD_SA");
+                TOTAL_SALE_BANCARD_SA = rst.getDouble("TOTAL_SALE_BANCARD_SA");
+                
+                TOTAL_STATEMENT_AMEX_SA = rst.getDouble("TOTAL_STATEMENT_AMEX_SA");
+                TOTAL_SETTLEMENT_AMEX_SA = rst.getDouble("TOTAL_SETTLEMENT_AMEX_SA");
+                TOTAL_SALE_AMEX_SA = rst.getDouble("TOTAL_SALE_AMEX_SA");
+                
+                TOTAL_STATEMENT_DISCOVER_SA = rst.getDouble("TOTAL_STATEMENT_DISCOVER_SA");
+                TOTAL_SETTLEMENT_DISCOVER_SA = rst.getDouble("TOTAL_SETTLEMENT_DISCOVER_SA");
+                TOTAL_SALE_DISCOVER_SA = rst.getDouble("TOTAL_SALE_DISCOVER_SA");
+                
+            }
+            
+            rst.close();
+
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+                while (rst.next()) {
+
+                   objRtn = new A2356Filter();
+
+                    objRtn.DATE_FROM = rst.getString("VALDATE");
+                    objRtn.CURRENCY = "USD";
+                    
+                    objRtn.STATEMENT_WP_UK_CO = rst.getDouble("STATEMENT_WP_UK_CO");
+                    objRtn.SETTLEMENT_WP_UK_CO = rst.getDouble("SETTLEMENT_WP_UK_CO");
+                    objRtn.SALE_WP_UK_CO = rst.getDouble("SALE_WP_UK_CO");
+                    objRtn.VAR_WP_CO = rst.getDouble("VAR_WP_CO");
+                    
+                    objRtn.STATEMENT_BANCARD_CO = rst.getDouble("STATEMENT_BANCARD_CO");
+                    objRtn.SETTLEMENT_BANCARD_CO = rst.getDouble("SETTLEMENT_BANCARD_CO");
+                    objRtn.SALE_BANCARD_CO = rst.getDouble("SALE_BANCARD_CO");
+                    objRtn.VAR_BANCARD_CO = rst.getDouble("VAR_BANCARD_CO");
+                    
+                    objRtn.STATEMENT_AMEX_CO = rst.getDouble("STATEMENT_AMEX_CO");
+                    objRtn.SETTLEMENT_AMEX_CO = rst.getDouble("SETTLEMENT_AMEX_CO");
+                    objRtn.SALE_AMEX_CO = rst.getDouble("SALE_AMEX_CO");
+                    objRtn.VAR_AMEX_CO = rst.getDouble("VAR_AMEX_CO");
+                    
+                    objRtn.STATEMENT_DISCOVER_CO = rst.getDouble("STATEMENT_DISCOVER_CO");
+                    objRtn.SETTLEMENT_DISCOVER_CO = rst.getDouble("SETTLEMENT_DISCOVER_CO");
+                    objRtn.SALE_DISCOVER_CO = rst.getDouble("SALE_DISCOVER_CO");
+                    objRtn.VAR_DISCOVER_CO = rst.getDouble("VAR_DISCOVER_CO");
+                    
+                    objRtn.STATEMENT_WP_UK_SA = rst.getDouble("STATEMENT_WP_UK_SA");
+                    objRtn.SETTLEMENT_WP_UK_SA = rst.getDouble("SETTLEMENT_WP_UK_SA");
+                    objRtn.SALE_WP_UK_SA = rst.getDouble("SALE_WP_UK_SA");
+                    objRtn.VAR_WP_SA = rst.getDouble("VAR_WP_SA");
+                    
+                    objRtn.STATEMENT_BANCARD_SA = rst.getDouble("STATEMENT_BANCARD_SA");
+                    objRtn.SETTLEMENT_BANCARD_SA = rst.getDouble("SETTLEMENT_BANCARD_SA");
+                    objRtn.SALE_BANCARD_SA = rst.getDouble("SALE_BANCARD_SA");
+                    objRtn.VAR_BANCARD_SA = rst.getDouble("VAR_BANCARD_SA");
+                    
+                    objRtn.STATEMENT_AMEX_SA = rst.getDouble("STATEMENT_AMEX_SA");
+                    objRtn.SETTLEMENT_AMEX_SA = rst.getDouble("SETTLEMENT_AMEX_SA");
+                    objRtn.SALE_AMEX_SA = rst.getDouble("SALE_AMEX_SA");
+                    objRtn.VAR_AMEX_SA = rst.getDouble("VAR_AMEX_SA");
+                    
+                    objRtn.STATEMENT_DISCOVER_SA = rst.getDouble("STATEMENT_DISCOVER_SA");
+                    objRtn.SETTLEMENT_DISCOVER_SA = rst.getDouble("SETTLEMENT_DISCOVER_SA");
+                    objRtn.SALE_DISCOVER_SA = rst.getDouble("SALE_DISCOVER_SA");
+                    objRtn.VAR_DISCOVER_SA = rst.getDouble("VAR_DISCOVER_SA");
+                    
+
+                    // Asignar los totales al objeto de retorno
+                    objRtn.TOTAL_STATEMENT_WP_UK_CO = TOTAL_STATEMENT_WP_UK_CO;
+                    objRtn.TOTAL_SETTLEMENT_WP_UK_CO = TOTAL_SETTLEMENT_WP_UK_CO;
+                    objRtn.TOTAL_SALE_WP_UK_CO = TOTAL_SALE_WP_UK_CO;
+                    
+                    objRtn.TOTAL_STATEMENT_BANCARD_CO = TOTAL_STATEMENT_BANCARD_CO;
+                    objRtn.TOTAL_SETTLEMENT_BANCARD_CO = TOTAL_SETTLEMENT_BANCARD_CO;
+                    objRtn.TOTAL_SALE_BANCARD_CO = TOTAL_SALE_BANCARD_CO;
+                    
+                    objRtn.TOTAL_STATEMENT_AMEX_CO = TOTAL_STATEMENT_AMEX_CO;
+                    objRtn.TOTAL_SETTLEMENT_AMEX_CO = TOTAL_SETTLEMENT_AMEX_CO;
+                    objRtn.TOTAL_SALE_AMEX_CO = TOTAL_SALE_AMEX_CO;
+                    
+                    objRtn.TOTAL_STATEMENT_DISCOVER_CO = TOTAL_STATEMENT_DISCOVER_CO;
+                    objRtn.TOTAL_SETTLEMENT_DISCOVER_CO = TOTAL_SETTLEMENT_DISCOVER_CO;
+                    objRtn.TOTAL_SALE_DISCOVER_CO = TOTAL_SALE_DISCOVER_CO;
+                    
+                    objRtn.TOTAL_STATEMENT_WP_UK_SA = TOTAL_STATEMENT_WP_UK_SA;
+                    objRtn.TOTAL_SETTLEMENT_WP_UK_SA = TOTAL_SETTLEMENT_WP_UK_SA;
+                    objRtn.TOTAL_SALE_WP_UK_SA = TOTAL_SALE_WP_UK_SA;
+                    
+                    objRtn.TOTAL_STATEMENT_BANCARD_SA = TOTAL_STATEMENT_BANCARD_SA;
+                    objRtn.TOTAL_SETTLEMENT_BANCARD_SA = TOTAL_SETTLEMENT_BANCARD_SA;
+                    objRtn.TOTAL_SALE_BANCARD_SA = TOTAL_SALE_BANCARD_SA;
+                    
+                    objRtn.TOTAL_STATEMENT_AMEX_SA = TOTAL_STATEMENT_AMEX_SA;
+                    objRtn.TOTAL_SETTLEMENT_AMEX_SA = TOTAL_SETTLEMENT_AMEX_SA;
+                    objRtn.TOTAL_SALE_AMEX_SA = TOTAL_SALE_AMEX_SA;
+                    
+                    objRtn.TOTAL_STATEMENT_DISCOVER_SA = TOTAL_STATEMENT_DISCOVER_SA;
+                    objRtn.TOTAL_SETTLEMENT_DISCOVER_SA = TOTAL_SETTLEMENT_DISCOVER_SA;
+                    objRtn.TOTAL_SALE_DISCOVER_SA = TOTAL_SALE_DISCOVER_SA;
+                    
+
+                    objRtn.page.PAGNUM = filter.page.PAGNUM;
+                    objRtn.page.PAGROW = filter.page.PAGROW;
+                    objRtn.page.TOTPAG = filter.page.TOTPAG;
+                    objRtn.page.TOTROW = filter.page.TOTROW;
+
+                    lstData.add(objRtn);
+
+                }
+                rst.close();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstData;
     }
     
     public List<SQP04091Filter> searchUsaflowDiaryHistoric(SQP04091Filter filter) throws SQLException, Exception {

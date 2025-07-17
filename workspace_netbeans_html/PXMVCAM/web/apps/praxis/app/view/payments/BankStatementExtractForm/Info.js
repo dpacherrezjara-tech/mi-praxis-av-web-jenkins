@@ -1,3 +1,29 @@
+Ext.create('Ext.Component', {
+    renderTo: Ext.getBody(),
+    html: '<style type="text/css">' +
+            '.button-off {' +
+            '  background-color: #f44336;' + // Red color for OFF
+            '  color: white;' +
+            '  border-radius: 50%;' +
+            '  border: none;' +
+            '  font-size: 12px;' +
+            '  cursor: pointer;' +
+            '  text-align: center;' +
+            '  line-height: 50px;' + // Ensure text is vertically centered
+            '}' +
+            '.button-on {' +
+            '  background-color: #4CAF50;' + // Green color for ON
+            '  color: white;' +
+            '  border-radius: 50%;' +
+            '  border: none;' +
+            '  font-size: 12px;' +
+            '  cursor: pointer;' +
+            '  text-align: center;' +
+            '  line-height: 50px;' + // Ensure text is vertically centered
+            '}' +
+            '</style>'
+});
+
 Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
     extend: 'Ext.form.Panel',
     alias: 'widget.' + prototype.id + '-info',
@@ -31,7 +57,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                         type: 'vbox',
                         align: 'center'
                     },
-                    height: 635,
+                    height: 690,
                     items: [
                         {
                             xtype: 'panel',
@@ -58,7 +84,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                             dock: 'bottom',
                                             ftype: 'summary'
                                         }
-                                    ], 
+                                    ],
                                     columns: {
                                         defaults: {
                                             menuDisabled: true,
@@ -262,7 +288,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                     } else {
                                                                         metaData.style = "text-align:right;";
                                                                     }
-                                                                    
+
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                     value = Ext.util.Format.number(value, '0,000.00');
                                                                     return '<b>' + value + '</b>';
@@ -737,13 +763,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_WP_UK_CO;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -755,13 +781,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_BANCARD_CO;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -773,13 +799,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_AMEX_CO;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -791,13 +817,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_DISCOVER_CO;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -809,13 +835,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_TOTAL_CO;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             }
                                                         ]
@@ -834,13 +860,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_WP_UK_SA;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -852,13 +878,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_BANCARD_SA;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -870,13 +896,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_AMEX_SA;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -888,13 +914,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_DISCOVER_SA;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -906,13 +932,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_TOTAL_SA;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             }
                                                         ]
@@ -926,14 +952,1624 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                            return '<b>' + value + '%'+ '</b>';
+                                                            return '<b>' + value + '%' + '</b>';
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             metaData.style = "text-align:right;background: #3F5675;color:white";
                                                             var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
                                                             value = data.TOTAL_VAR_TOTAL_CO_SA;
-                                                            return '<b>' + value + '%'+ '</b>';
+                                                            return '<b>' + value + '%' + '</b>';
                                                         }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            id: prototype.id + '-panelUSAFLOWDiaryDetail',
+                            bodyStyle: 'background-color: #E3EAEF;',
+                            padding: '0 10 0 10',
+                            layout: {
+                                type: 'vbox',
+                                align: 'stretch'
+                            },
+                            defaults: {
+                                border: false,
+                                width: 1762,
+                            },
+                            border: false,
+                            items: [
+                                {
+                                    xtype: 'container',
+                                    layout: {
+                                        type: 'hbox',
+                                        align: 'middle'
+                                    },
+                                    padding: '10 10 10 10',
+                                    items: [
+                                        {
+                                            xtype: 'label',
+                                            text: 'Data Table',
+                                            margin: '0 5 0 0',
+                                            width: 60,
+                                            id: prototype.id + '-COL'
+                                        },
+                                        {
+                                            xtype: 'component',
+                                            id: prototype.id + '-btnToggleSwitch',
+                                            margin: '0 5 0 0',
+                                            html: `<style>
+                                                .toggle-container{display:inline-block;position:relative;width:30px;height:16px;vertical-align:middle;}
+                                                .toggle-input{opacity:0;width:0;height:0;}
+                                                .toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#72e34f;transition:.4s;border-radius:16px;}
+                                                .toggle-slider::before{position:absolute;content:"";height:12px;width:12px;border-radius:50%;left:2px;bottom:2px;background-color:white;transition:.4s;}
+                                                .toggle-input:checked+.toggle-slider{background-color:#4c7daf;}
+                                                .toggle-input:checked+.toggle-slider::before{transform:translateX(16px);}
+                                            </style>
+                                            <label class="toggle-container"><input type="checkbox" class="toggle-input"><span class="toggle-slider"></span></label>`,
+                                            tooltip: 'Export to Report',
+                                            listeners: {
+                                                change: 'chgBash',
+                                                click: 'chgBash'
+                                            }
+                                        },
+                                        {
+                                            xtype: 'label',
+                                            text: 'Chart View',
+                                            margin: '0 0 0 5',
+                                            width: 60,
+                                            id: prototype.id + '-EXT'
+                                        },
+                                    ]
+                                },
+                                {
+    xtype: 'panel',
+    id: prototype.id + '-panelDashboard',
+    hidden: true,
+    height: 575, // Puedes ajustar este valor
+    scrollable: 'y',
+    margin: '0 0 5 0',
+    border: false,
+    layout: {
+        type: 'vbox',
+        align: 'center',
+        pack: 'start'
+    },
+    bodyStyle: 'background-color: transparent;',
+    items: [
+        // --------- COLOMBIA ---------
+        {
+            xtype: 'panel',
+            width: 1560,
+            border: false,
+            layout: 'vbox',
+            bodyStyle: 'background-color: #E3EAEF;',
+            padding: 10,
+            items: [
+                {
+                    xtype: 'component',
+                    html: '<div style="text-align:center; font-size: 16px; font-weight: bold;">USAVflow II Colombian NY Pass Through (AV)</div>',
+                    margin: '0 0 10 0'
+                },
+                {
+                    xtype: 'panel',
+                    layout: 'hbox',
+                    width: 1560,
+                    border: false,
+                    items: [
+                        {
+                            xtype: 'cartesian',
+                            id: prototype.id + '-chartColombia-WP',
+                            width: 600,
+                            height: 400,
+                            margin: '0 20 0 0',
+                            background: '#E0F8F7',
+                            legend: { docked: 'bottom' },
+                            axes: [
+                                {
+                                    type: 'numeric3d',
+                                    position: 'left',
+                                    fields: ['statement', 'settlement', 'sale'],
+                                    grid: true,
+                                    title: '',
+                                    renderer: function (obj, value) {
+                                        return Ext.util.Format.number(value, '0.0');
+                                    }
+                                },
+                                {
+                                    type: 'category3d',
+                                    position: 'bottom',
+                                    fields: ['processor'],
+                                    title: {
+                                        text: 'Processor',
+                                        translationX: -30
+                                    }
+                                }
+                            ],
+                            series: [
+                                {
+                                    type: 'bar3d',
+                                    stacked: false,
+                                    title: ['Statement', 'Settlement', 'Sale'],
+                                    xField: 'processor',
+                                    yField: ['statement', 'settlement', 'sale'],
+                                    highlight: true,
+                                    style: {
+                                        inGroupGapWidth: -7,
+                                        minGapWidth: 2,
+                                        maxBarWidth: 300
+                                    },
+                                    subStyle: {
+                                        fill: ['#ff7f0e', '#1f77b4', '#2ca02c']
+                                    },
+                                    tooltip: {
+                                        trackMouse: true,
+                                        height: 28,
+                                        renderer: function (toolTip, record, ctx) {
+                                            var label = ctx.field === 'sale'
+                                                ? 'Sale'
+                                                : (ctx.field === 'settlement'
+                                                    ? 'Settlement'
+                                                    : 'Statement');
+                                            toolTip.setHtml(label + ' : <b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            xtype: 'cartesian',
+                            id: prototype.id + '-chartColombia-Others',
+                            width: 920,
+                            height: 400,
+                            background: '#E0F8F7',
+                            legend: { docked: 'bottom' },
+                            axes: [
+                                {
+                                    type: 'numeric3d',
+                                    position: 'left',
+                                    fields: ['statement', 'settlement', 'sale'],
+                                    grid: true,
+                                    title: '',
+                                    renderer: function (obj, value) {
+                                        return Ext.util.Format.number(value, '0.0');
+                                    }
+                                },
+                                {
+                                    type: 'category3d',
+                                    position: 'bottom',
+                                    fields: ['processor'],
+                                    title: {
+                                        text: 'Processor',
+                                        translationX: -30
+                                    }
+                                }
+                            ],
+                            series: [
+                                {
+                                    type: 'bar3d',
+                                    stacked: false,
+                                    title: ['Statement', 'Settlement', 'Sale'],
+                                    xField: 'processor',
+                                    yField: ['statement', 'settlement', 'sale'],
+                                    highlight: true,
+                                    style: {
+                                        inGroupGapWidth: -7,
+                                        minGapWidth: 2,
+                                        maxBarWidth: 500
+                                    },
+                                    subStyle: {
+                                        fill: ['#ff7f0e', '#1f77b4', '#2ca02c']
+                                    },
+                                    tooltip: {
+                                        trackMouse: true,
+                                        height: 28,
+                                        renderer: function (toolTip, record, ctx) {
+                                            var label = ctx.field === 'sale'
+                                                ? 'Sale'
+                                                : (ctx.field === 'settlement'
+                                                    ? 'Settlement'
+                                                    : 'Statement');
+                                            toolTip.setHtml(label + ' : <b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        // --------- SALVADOR ---------
+        {
+            xtype: 'panel',
+            width: 1560,
+            border: false,
+            layout: 'vbox',
+            bodyStyle: 'background-color: #E3EAEF;',
+            padding: 10,
+            items: [
+                {
+                    xtype: 'component',
+                    html: '<div style="text-align:center; font-size: 16px; font-weight: bold;">USAVflow II Salvadorian NY Pass Through (TA)</div>',
+                    margin: '20 0 10 0'
+                },
+                {
+                    xtype: 'panel',
+                    layout: 'hbox',
+                    width: 1560,
+                    border: false,
+                    items: [
+                        {
+                            xtype: 'cartesian',
+                            id: prototype.id + '-chartSalvador-WP',
+                            width: 600,
+                            height: 400,
+                            margin: '0 20 0 0',
+                            background: '#E0F8F7',
+                            legend: { docked: 'bottom' },
+                            axes: [
+                                {
+                                    type: 'numeric3d',
+                                    position: 'left',
+                                    fields: ['statement', 'settlement', 'sale'],
+                                    grid: true,
+                                    title: '',
+                                    renderer: function (obj, value) {
+                                        return Ext.util.Format.number(value, '0.0');
+                                    }
+                                },
+                                {
+                                    type: 'category3d',
+                                    position: 'bottom',
+                                    fields: ['processor'],
+                                    title: {
+                                        text: 'Processor',
+                                        translationX: -30
+                                    }
+                                }
+                            ],
+                            series: [
+                                {
+                                    type: 'bar3d',
+                                    stacked: false,
+                                    title: ['Statement', 'Settlement', 'Sale'],
+                                    xField: 'processor',
+                                    yField: ['statement', 'settlement', 'sale'],
+                                    highlight: true,
+                                    style: {
+                                        inGroupGapWidth: -7,
+                                        minGapWidth: 2,
+                                        maxBarWidth: 300
+                                    },
+                                    subStyle: {
+                                        fill: ['#ff7f0e', '#1f77b4', '#2ca02c']
+                                    },
+                                    tooltip: {
+                                        trackMouse: true,
+                                        height: 28,
+                                        renderer: function (toolTip, record, ctx) {
+                                            var label = ctx.field === 'sale'
+                                                ? 'Sale'
+                                                : (ctx.field === 'settlement'
+                                                    ? 'Settlement'
+                                                    : 'Statement');
+                                            toolTip.setHtml(label + ' : <b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            xtype: 'cartesian',
+                            id: prototype.id + '-chartSalvador-Others',
+                            width: 920,
+                            height: 400,
+                            background: '#E0F8F7',
+                            legend: { docked: 'bottom' },
+                            axes: [
+                                {
+                                    type: 'numeric3d',
+                                    position: 'left',
+                                    fields: ['statement', 'settlement', 'sale'],
+                                    grid: true,
+                                    title: '',
+                                    renderer: function (obj, value) {
+                                        return Ext.util.Format.number(value, '0.0');
+                                    }
+                                },
+                                {
+                                    type: 'category3d',
+                                    position: 'bottom',
+                                    fields: ['processor'],
+                                    title: {
+                                        text: 'Processor',
+                                        translationX: -30
+                                    }
+                                }
+                            ],
+                            series: [
+                                {
+                                    type: 'bar3d',
+                                    stacked: false,
+                                    title: ['Statement', 'Settlement', 'Sale'],
+                                    xField: 'processor',
+                                    yField: ['statement', 'settlement', 'sale'],
+                                    highlight: true,
+                                    style: {
+                                        inGroupGapWidth: -7,
+                                        minGapWidth: 2,
+                                        maxBarWidth: 500
+                                    },
+                                    subStyle: {
+                                        fill: ['#ff7f0e', '#1f77b4', '#2ca02c']
+                                    },
+                                    tooltip: {
+                                        trackMouse: true,
+                                        height: 28,
+                                        renderer: function (toolTip, record, ctx) {
+                                            var label = ctx.field === 'sale'
+                                                ? 'Sale'
+                                                : (ctx.field === 'settlement'
+                                                    ? 'Settlement'
+                                                    : 'Statement');
+                                            toolTip.setHtml(label + ' : <b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+},
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridUSAFLOWDiaryDetail',
+                                    height: 575,
+                                    width: 1762,
+                                    hidden: false,
+                                    columnLines: true,
+                                    features: [{
+                                            dock: 'bottom',
+                                            ftype: 'summary'
+                                        }
+                                    ],
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: true,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {
+                                                text: 'From',
+                                                width: 85,
+                                                dataIndex: 'DATE_FROM',
+                                                align: 'center',
+                                                style: 'padding: 6px; background: #A89C6C;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                },
+                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Curr',
+                                                width: 55,
+                                                dataIndex: 'CURRENCY',
+                                                align: 'center',
+                                                style: 'padding: 6px; background: #A89C6C;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                },
+                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'USAVflow II Colombian NY Pass Through (AV) - Amounts',
+                                                menuDisabled: true,
+                                                style: 'background: #C45C4D;',
+                                                columns: [
+                                                    {
+                                                        text: 'WP UK',
+                                                        menuDisabled: true,
+                                                        style: 'background: #6C87A8;',
+                                                        columns: [
+                                                            {
+                                                                text: 'Statement',
+                                                                width: 90,
+                                                                dataIndex: 'STATEMENT_WP_UK_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_STATEMENT_WP_UK_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Commission',
+                                                                width: 100,
+                                                                dataIndex: 'COMISION_WP_UK_CO_SUM',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_COMISION_WP_UK_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Others',
+                                                                width: 80,
+                                                                dataIndex: 'OTHERS_WP_UK_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_OTHERS_WP_UK_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Settlement',
+                                                                width: 90,
+                                                                dataIndex: 'SETTLEMENT_WP_UK_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_BANCARD.trim() !== '-' && record.data.HOLIDAY_WP_BANCARD.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SETTLEMENT_WP_UK_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Sales',
+                                                                width: 80,
+                                                                dataIndex: 'SALE_WP_UK_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_AMEX.trim() !== '-' && record.data.HOLIDAY_AMEX.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SALE_WP_UK_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Rate',
+                                                                width: 50,
+                                                                dataIndex: 'VAR_WP_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_DISCOVER.trim() !== '-' && record.data.HOLIDAY_DISCOVER.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + ' %</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+//                                                                            var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+//                                                                            value = Ext.util.Format.number(data.TOTAL_AMOUNT_DISCOVER_CO, '0,000.00');
+                                                                    return '<b>' + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'WP Bancard',
+                                                        menuDisabled: true,
+                                                        style: 'background: #7D9F7D;',
+                                                        columns: [
+                                                            {
+                                                                text: 'Statement',
+                                                                width: 90,
+                                                                dataIndex: 'STATEMENT_BANCARD_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #7D9F7D;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_STATEMENT_BANCARD_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Commission',
+                                                                width: 100,
+                                                                dataIndex: 'COMISION_BANCARD_CO_SUM',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #7D9F7D;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_BANCARD.trim() !== '-' && record.data.HOLIDAY_WP_BANCARD.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_COMISION_BANCARD_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Others',
+                                                                width: 80,
+                                                                dataIndex: 'OTHERS_BANCARD_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #7D9F7D;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_BANCARD.trim() !== '-' && record.data.HOLIDAY_WP_BANCARD.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_OTHERS_BANCARD_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Settlement',
+                                                                width: 90,
+                                                                dataIndex: 'SETTLEMENT_BANCARD_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #7D9F7D;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_BANCARD.trim() !== '-' && record.data.HOLIDAY_WP_BANCARD.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SETTLEMENT_BANCARD_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Sales',
+                                                                width: 80,
+                                                                dataIndex: 'SALE_BANCARD_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #7D9F7D;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_AMEX.trim() !== '-' && record.data.HOLIDAY_AMEX.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SALE_BANCARD_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Rate',
+                                                                width: 50,
+                                                                dataIndex: 'VAR_BANCARD_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #7D9F7D;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_DISCOVER.trim() !== '-' && record.data.HOLIDAY_DISCOVER.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + ' %</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+//                                                                            var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+//                                                                            value = Ext.util.Format.number(data.TOTAL_AMOUNT_DISCOVER_CO, '0,000.00');
+                                                                    return '<b>' + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Amex',
+                                                        menuDisabled: true,
+                                                        style: 'background: #D18F77;',
+                                                        columns: [
+                                                            {
+                                                                text: 'Statement',
+                                                                width: 90,
+                                                                dataIndex: 'STATEMENT_AMEX_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #D18F77;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_STATEMENT_AMEX_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Commission',
+                                                                width: 100,
+                                                                dataIndex: 'COMISION_AMEX_CO_SUM',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #D18F77;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_BANCARD.trim() !== '-' && record.data.HOLIDAY_WP_BANCARD.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_COMISION_AMEX_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Others',
+                                                                width: 80,
+                                                                dataIndex: 'OTHERS_AMEX_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #D18F77;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_BANCARD.trim() !== '-' && record.data.HOLIDAY_WP_BANCARD.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_OTHERS_AMEX_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Settlement',
+                                                                width: 90,
+                                                                dataIndex: 'SETTLEMENT_AMEX_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #D18F77;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_BANCARD.trim() !== '-' && record.data.HOLIDAY_WP_BANCARD.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SETTLEMENT_AMEX_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Sales',
+                                                                width: 80,
+                                                                dataIndex: 'SALE_AMEX_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #D18F77;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_AMEX.trim() !== '-' && record.data.HOLIDAY_AMEX.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SALE_AMEX_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Rate',
+                                                                width: 50,
+                                                                dataIndex: 'VAR_AMEX_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #D18F77;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_DISCOVER.trim() !== '-' && record.data.HOLIDAY_DISCOVER.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + ' %</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+//                                                                            var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+//                                                                            value = Ext.util.Format.number(data.TOTAL_AMOUNT_DISCOVER_CO, '0,000.00');
+                                                                    return '<b>' + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Discover',
+                                                        menuDisabled: true,
+                                                        style: 'background: #7A7A7A;',
+                                                        columns: [
+                                                            {
+                                                                text: 'Statement',
+                                                                width: 90,
+                                                                dataIndex: 'STATEMENT_DISCOVER_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #7A7A7A;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_STATEMENT_DISCOVER_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Commission',
+                                                                width: 100,
+                                                                dataIndex: 'COMISION_DISCOVER_CO_SUM',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #7A7A7A;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_COMISION_DISCOVER_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Others',
+                                                                width: 80,
+                                                                dataIndex: 'OTHERS_DISCOVER_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #7A7A7A;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_OTHERS_DISCOVER_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Settlement',
+                                                                width: 90,
+                                                                dataIndex: 'SETTLEMENT_DISCOVER_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #7A7A7A;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_BANCARD.trim() !== '-' && record.data.HOLIDAY_WP_BANCARD.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SETTLEMENT_DISCOVER_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Sales',
+                                                                width: 80,
+                                                                dataIndex: 'SALE_DISCOVER_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #7A7A7A;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_AMEX.trim() !== '-' && record.data.HOLIDAY_AMEX.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SALE_DISCOVER_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Rate',
+                                                                width: 50,
+                                                                dataIndex: 'VAR_DISCOVER_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #7A7A7A;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_DISCOVER.trim() !== '-' && record.data.HOLIDAY_DISCOVER.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + ' %</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+//                                                                            var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+//                                                                            value = Ext.util.Format.number(data.TOTAL_AMOUNT_DISCOVER_CO, '0,000.00');
+                                                                    return '<b>' + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: 'USAVflow II Salvadorian NY Pass Through (TA) - Amounts',
+                                                menuDisabled: true,
+                                                style: 'background: #3A1F1C;',
+                                                columns: [
+                                                    {
+                                                        text: 'WP UK',
+                                                        menuDisabled: true,
+                                                        style: 'background: #6C87A8;',
+                                                        columns: [
+                                                            {
+                                                                text: 'Statement',
+                                                                width: 90,
+                                                                dataIndex: 'STATEMENT_WP_UK_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_STATEMENT_WP_UK_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Commission',
+                                                                width: 100,
+                                                                dataIndex: 'COMISION_WP_UK_SA_SUM',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_COMISION_WP_UK_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Others',
+                                                                width: 80,
+                                                                dataIndex: 'OTHERS_WP_UK_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_OTHERS_WP_UK_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Settlement',
+                                                                width: 90,
+                                                                dataIndex: 'SETTLEMENT_WP_UK_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_BANCARD.trim() !== '-' && record.data.HOLIDAY_WP_BANCARD.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SETTLEMENT_WP_UK_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Sales',
+                                                                width: 80,
+                                                                dataIndex: 'SALE_WP_UK_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_AMEX.trim() !== '-' && record.data.HOLIDAY_AMEX.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SALE_WP_UK_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Rate',
+                                                                width: 50,
+                                                                dataIndex: 'VAR_WP_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_DISCOVER.trim() !== '-' && record.data.HOLIDAY_DISCOVER.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + ' %</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+//                                                                            var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+//                                                                            value = Ext.util.Format.number(data.TOTAL_AMOUNT_DISCOVER_CO, '0,000.00');
+                                                                    return '<b>' + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'WP Bancard',
+                                                        menuDisabled: true,
+                                                        style: 'background: #7D9F7D;',
+                                                        columns: [
+                                                            {
+                                                                text: 'Statement',
+                                                                width: 90,
+                                                                dataIndex: 'STATEMENT_BANCARD_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #7D9F7D;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_STATEMENT_BANCARD_SA, '0,000.00');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Commission',
+                                                                width: 100,
+                                                                dataIndex: 'COMISION_BANCARD_SA_SUM',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #7D9F7D;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_COMISION_BANCARD_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Others',
+                                                                width: 80,
+                                                                dataIndex: 'OTHERS_BANCARD_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #7D9F7D;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_OTHERS_BANCARD_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Settlement',
+                                                                width: 90,
+                                                                dataIndex: 'SETTLEMENT_BANCARD_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #7D9F7D;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_BANCARD.trim() !== '-' && record.data.HOLIDAY_WP_BANCARD.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SETTLEMENT_BANCARD_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Sales',
+                                                                width: 80,
+                                                                dataIndex: 'SALE_BANCARD_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #7D9F7D;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_AMEX.trim() !== '-' && record.data.HOLIDAY_AMEX.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SALE_BANCARD_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Rate',
+                                                                width: 50,
+                                                                dataIndex: 'VAR_BANCARD_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #7D9F7D;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_DISCOVER.trim() !== '-' && record.data.HOLIDAY_DISCOVER.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + ' %</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+//                                                                            var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+//                                                                            value = Ext.util.Format.number(data.TOTAL_AMOUNT_DISCOVER_CO, '0,000.00');
+                                                                    return '<b>' + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Amex',
+                                                        menuDisabled: true,
+                                                        style: 'background: #D18F77;',
+                                                        columns: [
+                                                            {
+                                                                text: 'Statement',
+                                                                width: 90,
+                                                                dataIndex: 'STATEMENT_AMEX_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #D18F77;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_STATEMENT_AMEX_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Commission',
+                                                                width: 100,
+                                                                dataIndex: 'COMISION_AMEX_SA_SUM',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #D18F77;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_COMISION_AMEX_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Others',
+                                                                width: 80,
+                                                                dataIndex: 'OTHERS_AMEX_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #D18F77;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_OTHERS_AMEX_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Settlement',
+                                                                width: 90,
+                                                                dataIndex: 'SETTLEMENT_AMEX_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #D18F77;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_BANCARD.trim() !== '-' && record.data.HOLIDAY_WP_BANCARD.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SETTLEMENT_AMEX_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Sales',
+                                                                width: 80,
+                                                                dataIndex: 'SALE_AMEX_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #D18F77;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_AMEX.trim() !== '-' && record.data.HOLIDAY_AMEX.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SALE_AMEX_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Rate',
+                                                                width: 50,
+                                                                dataIndex: 'VAR_AMEX_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #D18F77;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_DISCOVER.trim() !== '-' && record.data.HOLIDAY_DISCOVER.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + ' %</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+//                                                                            var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+//                                                                            value = Ext.util.Format.number(data.TOTAL_AMOUNT_DISCOVER_CO, '0,000.00');
+                                                                    return '<b>' + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Discover',
+                                                        menuDisabled: true,
+                                                        style: 'background: #7A7A7A;',
+                                                        columns: [
+                                                            {
+                                                                text: 'Statement',
+                                                                width: 90,
+                                                                dataIndex: 'STATEMENT_DISCOVER_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #7A7A7A;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_STATEMENT_DISCOVER_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Commission',
+                                                                width: 100,
+                                                                dataIndex: 'COMISION_DISCOVER_SA_SUM',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #7A7A7A;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_COMISION_DISCOVER_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Others',
+                                                                width: 80,
+                                                                dataIndex: 'OTHERS_DISCOVER_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #7A7A7A;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_OTHERS_DISCOVER_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Settlement',
+                                                                width: 90,
+                                                                dataIndex: 'SETTLEMENT_DISCOVER_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #7A7A7A;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_BANCARD.trim() !== '-' && record.data.HOLIDAY_WP_BANCARD.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SETTLEMENT_DISCOVER_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Sales',
+                                                                width: 80,
+                                                                dataIndex: 'SALE_DISCOVER_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #7A7A7A;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_AMEX.trim() !== '-' && record.data.HOLIDAY_AMEX.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SALE_DISCOVER_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Rate',
+                                                                width: 50,
+                                                                dataIndex: 'VAR_DISCOVER_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 6px; background: #7A7A7A;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_DISCOVER.trim() !== '-' && record.data.HOLIDAY_DISCOVER.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + ' %</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+//                                                                            var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+//                                                                            value = Ext.util.Format.number(data.TOTAL_AMOUNT_DISCOVER_CO, '0,000.00');
+                                                                    return '<b>' + '</b>';
+                                                                }
+                                                            }
+                                                        ]
                                                     }
                                                 ]
                                             }
@@ -967,7 +2603,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                             dock: 'bottom',
                                             ftype: 'summary'
                                         }
-                                    ], 
+                                    ],
                                     columns: {
                                         defaults: {
                                             menuDisabled: true,
@@ -1510,13 +3146,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_WP_UK_CO;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -1528,13 +3164,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_BANCARD_CO;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -1546,13 +3182,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_AMEX_CO;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -1564,13 +3200,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_DISCOVER_CO;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -1582,13 +3218,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_TOTAL_CO;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             }
                                                         ]
@@ -1607,13 +3243,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_WP_UK_SA;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -1625,13 +3261,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_BANCARD_SA;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -1643,13 +3279,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_AMEX_SA;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -1661,13 +3297,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_DISCOVER_SA;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -1679,13 +3315,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_TOTAL_SA;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             }
                                                         ]
@@ -1699,13 +3335,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                            return '<b>' + value + '%'+ '</b>';
+                                                            return '<b>' + value + '%' + '</b>';
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             metaData.style = "text-align:right;background: #3F5675;color:white";
                                                             var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
                                                             value = data.TOTAL_VAR_TOTAL_CO_SA;
-                                                            return '<b>' + value + '%'+ '</b>';
+                                                            return '<b>' + value + '%' + '</b>';
                                                         }
                                                     }
                                                 ]
@@ -1740,7 +3376,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                             dock: 'bottom',
                                             ftype: 'summary'
                                         }
-                                    ], 
+                                    ],
                                     columns: {
                                         defaults: {
                                             menuDisabled: true,
@@ -1963,7 +3599,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                     {
                                                         text: 'Grant Total',
                                                         width: 120,
-                                                        hidden:true,
+                                                        hidden: true,
                                                         dataIndex: 'TOTAL_TACA_CRC',
                                                         align: 'center',
                                                         hidden: true,
@@ -2122,13 +3758,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataTaca').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_TACA;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -2141,13 +3777,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_TACA;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             }
                                                         ]
@@ -2167,13 +3803,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_CRC;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -2185,13 +3821,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_TOTAL_CRC;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             }
                                                         ]
@@ -2206,13 +3842,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                            return '<b>' + value + '%'+ '</b>';
+                                                            return '<b>' + value + '%' + '</b>';
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             metaData.style = "text-align:right;background: #3F5675;color:white";
                                                             var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
                                                             value = data.TOTAL_VAR_TOTAL_TACA_CRC;
-                                                            return '<b>' + value + '%'+ '</b>';
+                                                            return '<b>' + value + '%' + '</b>';
                                                         }
                                                     }
                                                 ]
@@ -2246,7 +3882,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                     features: [{
                                             ftype: 'summary'
                                         }
-                                    ], 
+                                    ],
                                     columns: {
                                         defaults: {
                                             menuDisabled: true,
@@ -2435,13 +4071,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataTacaWeekly').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_TACA;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -2454,13 +4090,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataTacaWeekly').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_TACA;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             }
                                                         ]

@@ -95,6 +95,19 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
         me = this;
     },
     xpanel_afterrender: function (obj, e) {
+        $('#BankStatementExtractForm-btnToggleSwitch').on('change', function () {
+            var grid = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail');
+            var chart = Ext.getCmp(prototype.id + '-panelDashboard');
+            var pie = Ext.getCmp(prototype.id + '-pie');
+
+            if (grid && chart && pie) {
+                var mostrarGrid = !grid.isVisible(); // Si el grid NO es visible, debemos mostrarlo (y ocultar el chart)
+
+                grid.setVisible(mostrarGrid);
+                pie.setVisible(mostrarGrid);
+                chart.setVisible(!mostrarGrid);
+            }
+        });
         this.setStoreData();
         this.btnSearch_click();
     },
@@ -177,43 +190,60 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
     onChangeRadio: function () {
         const valueTypeVisualization = Ext.getCmp(prototype.id + '-typeVisualization').getValue();
         const valuetypeReport = Ext.getCmp(prototype.id + '-typeReport').getValue();
-
-        var rbValue = '';
+        let rbValue = '';
+        let rbDetail = '';
+        
+        
         var radioGroup = Ext.getCmp(prototype.id + '-rbChart_IA');
         if (radioGroup && radioGroup.getValue() && radioGroup.getValue().rb) {
             rbValue = radioGroup.getValue().rb;
         }
-
-        // NO CAMBIES NI LIMPIES COMBOS ACÁ
-
+        
+        var radioDetail = Ext.getCmp(prototype.id + '-rbtDetail');
+        if (radioDetail && radioDetail.getValue() && radioDetail.getValue().rbD) {
+            rbDetail = radioDetail.getValue().rbD;
+        }
+        
+        console.log(rbDetail,'rbDetail')
+        
         this.setFormatParameter();
+        
+        if (rbDetail == 'rbtDetail2') {
 
-        var actions = {};
+            var actions = {};
 
-        if (rbValue === 'rbc1_IA') { // Historic
-            actions = {
-                'USA_D': this.searchUsaflowDiaryHistoric,
-                'USA_W': this.searchUsaflowWeeklyHistoric,
-                'TACA_D': this.searchTacaDiaryHistoric,
-                'TACA_W': this.searchTacaWeeklyHistoric
-            };
-        } else { // Current
-            actions = {
-                'USA_D': this.searchUsaflowDiary,
-                'USA_W': this.searchUsaflowWeekly,
-                'TACA_D': this.searchTacaDiary,
-                'TACA_W': this.searchTacaWeekly
-            };
-        }
+            if (rbValue === 'rbc1_IA') { // Historic
+                actions = {
+                    'USA_D': this.searchUsaflowDiaryHistoric,
+                    'USA_W': this.searchUsaflowWeeklyHistoric,
+                    'TACA_D': this.searchTacaDiaryHistoric,
+                    'TACA_W': this.searchTacaWeeklyHistoric
+                };
+            } else { // Current
+                actions = {
+                    'USA_D': this.searchUsaflowDiary,
+                    'USA_W': this.searchUsaflowWeekly,
+                    'TACA_D': this.searchTacaDiary,
+                    'TACA_W': this.searchTacaWeekly
+                };
+            }
 
-        var key = valueTypeVisualization + '_' + valuetypeReport;
-        var action = actions[key];
+            var key = valueTypeVisualization + '_' + valuetypeReport;
+            var action = actions[key];
 
-        if (action) {
-            action.call(this);
+            if (action) {
+                action.call(this);
+            } else {
+                console.warn('No se encontró una acción para la combinación:', key);
+            }
+            
         } else {
-            console.warn('No se encontró una acción para la combinación:', key);
+            
+            this.searchUsaflowDiaryDetail()
+            
         }
+        
+        
     },
     setFormatParameter: function () {
         me.bean = {};
@@ -230,14 +260,9 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
         let getValueDateTo = getDateValue('-cmbDateToYear', '-cmbDateToMonth', '-cmbDateToDay');
         let getValueDateFrom = getDateValue('-cmbDateFromYear', '-cmbDateFromMonth', '-cmbDateFromDay');
 
-        let getNumberAccount = Ext.getCmp(prototype.id + '-numberAccount').getValue();
-        let getProcessor = Ext.getCmp(prototype.id + '-cmbCOREP').getValue().length == 0 ? '' : this.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbCOREP'));
-
         me.bean.IN_CCUST = getCustomer || '';
-        me.bean.IN_NUMBER_ACCOUNT = getNumberAccount || '';
         me.bean.IN_FECHA_FROM = getValueDateFrom;
         me.bean.IN_FECHA_TO = getValueDateTo;
-        me.bean.IN_PROCESSOR = getProcessor;
 
         console.log(me.bean, 'me.bean');
     },
@@ -316,6 +341,177 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
         Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').setStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-pie').setVisible(true);
+    },
+    
+    searchUsaflowDiaryDetail: function () {
+        me.getPaggin()
+        me.panelActual = '-panelUSAFLOWDiaryDetail';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        this.searchParams.beanString = JSON.stringify(me.bean);
+        let lstData = []
+        
+        var storeGridDatas = Ext.create('Ext.Praxis.store.flown.PassengerConciliation.GridData', {
+            proxy: {
+                url: prototype.url + '/searchUsaflowDiaryDetail'
+            }, listeners: {
+                beforeload: function(obj) {
+                    obj.proxy.extraParams = me.searchParams;
+                },
+                load: function(obj) {
+                    console.log(obj.data);
+                    if (obj.data.length === 0) {
+                        global.Msg({
+                            msg: 'Data not found.'
+                        });
+                    } else {
+                        var bean = obj.data.items[0].data;
+                        var pag = Ext.getCmp(prototype.id + '-paggin');
+                        var pagData = pag.getPageData();
+
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                    }
+                    
+                }
+            }
+        });
+        global.clear();
+        Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').setStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-pie').setVisible(true);
+        
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+    proxy: {
+        url: prototype.url + '/searchTotalUsaflowDiaryDetail'
+    },
+    listeners: {
+        beforeload: function (obj) {
+            obj.proxy.extraParams = me.searchParams;
+        },
+        load: function (store, records, success, operation) {
+            const res = Ext.JSON.decode(operation._response.responseText);
+
+            if (!res || !res.data2 || res.data2.length === 0) {
+                global.Msg({ msg: 'Data not found.' });
+
+                Ext.getCmp(prototype.id + '-chartColombia-WP').bindStore(
+                    Ext.create('Ext.data.Store', { fields: ['processor', 'statement', 'settlement', 'sale'], data: [] })
+                );
+                Ext.getCmp(prototype.id + '-chartColombia-Others').bindStore(
+                    Ext.create('Ext.data.Store', { fields: ['processor', 'statement', 'settlement', 'sale'], data: [] })
+                );
+                Ext.getCmp(prototype.id + '-chartSalvador-WP').bindStore(
+                    Ext.create('Ext.data.Store', { fields: ['processor', 'statement', 'settlement', 'sale'], data: [] })
+                );
+                Ext.getCmp(prototype.id + '-chartSalvador-Others').bindStore(
+                    Ext.create('Ext.data.Store', { fields: ['processor', 'statement', 'settlement', 'sale'], data: [] })
+                );
+                return;
+            }
+
+            const d = res.data2[0];
+
+            // Colombia WP
+            const chartDataColombiaWP = [
+                {
+                    processor: 'WP UK',
+                    statement: d.TOTAL_STATEMENT_WP_UK_CO,
+                    settlement: d.TOTAL_SETTLEMENT_WP_UK_CO,
+                    sale: d.TOTAL_SALE_WP_UK_CO
+                }
+            ];
+            // Colombia Otros
+            const chartDataColombiaOthers = [
+                {
+                    processor: 'BANCARD',
+                    statement: d.TOTAL_STATEMENT_BANCARD_CO,
+                    settlement: d.TOTAL_SETTLEMENT_BANCARD_CO,
+                    sale: d.TOTAL_SALE_BANCARD_CO
+                },
+                {
+                    processor: 'AMEX',
+                    statement: d.TOTAL_STATEMENT_AMEX_CO,
+                    settlement: d.TOTAL_SETTLEMENT_AMEX_CO,
+                    sale: d.TOTAL_SALE_AMEX_CO
+                },
+                {
+                    processor: 'DISCOVER',
+                    statement: d.TOTAL_STATEMENT_DISCOVER_CO,
+                    settlement: d.TOTAL_SETTLEMENT_DISCOVER_CO,
+                    sale: d.TOTAL_SALE_DISCOVER_CO
+                }
+            ];
+
+            // Salvador WP
+            const chartDataSalvadorWP = [
+                {
+                    processor: 'WP UK',
+                    statement: d.TOTAL_STATEMENT_WP_UK_SA,
+                    settlement: d.TOTAL_SETTLEMENT_WP_UK_SA,
+                    sale: d.TOTAL_SALE_WP_UK_SA
+                }
+            ];
+            // Salvador Otros
+            const chartDataSalvadorOthers = [
+                {
+                    processor: 'BANCARD',
+                    statement: d.TOTAL_STATEMENT_BANCARD_SA,
+                    settlement: d.TOTAL_SETTLEMENT_BANCARD_SA,
+                    sale: d.TOTAL_SALE_BANCARD_SA
+                },
+                {
+                    processor: 'AMEX',
+                    statement: d.TOTAL_STATEMENT_AMEX_SA,
+                    settlement: d.TOTAL_SETTLEMENT_AMEX_SA,
+                    sale: d.TOTAL_SALE_AMEX_SA
+                },
+                {
+                    processor: 'DISCOVER',
+                    statement: d.TOTAL_STATEMENT_DISCOVER_SA,
+                    settlement: d.TOTAL_SETTLEMENT_DISCOVER_SA,
+                    sale: d.TOTAL_SALE_DISCOVER_SA
+                }
+            ];
+
+            // Bind stores
+            Ext.getCmp(prototype.id + '-chartColombia-WP').bindStore(
+                Ext.create('Ext.data.Store', {
+                    fields: ['processor', 'statement', 'settlement', 'sale'],
+                    data: chartDataColombiaWP
+                })
+            );
+            Ext.getCmp(prototype.id + '-chartColombia-Others').bindStore(
+                Ext.create('Ext.data.Store', {
+                    fields: ['processor', 'statement', 'settlement', 'sale'],
+                    data: chartDataColombiaOthers
+                })
+            );
+            Ext.getCmp(prototype.id + '-chartSalvador-WP').bindStore(
+                Ext.create('Ext.data.Store', {
+                    fields: ['processor', 'statement', 'settlement', 'sale'],
+                    data: chartDataSalvadorWP
+                })
+            );
+            Ext.getCmp(prototype.id + '-chartSalvador-Others').bindStore(
+                Ext.create('Ext.data.Store', {
+                    fields: ['processor', 'statement', 'settlement', 'sale'],
+                    data: chartDataSalvadorOthers
+                })
+            );
+        }
+    }
+});
+
+
+    },
+    chgBash: function () {
+        var grid = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail');
+        if (grid.isVisible()) {
+            grid.hide();
+        } else {
+            grid.show();
+        }
     },
     searchUsaflowDiaryHistoric: function () {
         me.getPaggin()
@@ -565,7 +761,7 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
         }
     },
     btnExcel_click: function () {
-
+        console.log(me.panelActual, 'PANEL ACTUAL DE EXCEL')
         Ext.Msg.show({
             title: '.:PRAXISEX:.',
             msg: 'Download Excel ?',
@@ -620,6 +816,10 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
                 case '-panelGridDataTacaWeekly':
                     this.setFormatParameter();
                     global.getFile(prototype.url + '/getXLSXTacaWeekly?beanString=' + encodeURI(me.searchParams.beanString));
+                    break;
+                case '-panelUSAFLOWDiaryDetail':
+                    this.setFormatParameter();
+                    global.getFile(prototype.url + '/getXLSXUsaflowDiaryDetail?beanString=' + encodeURI(me.searchParams.beanString));
                     break;
             }
         }

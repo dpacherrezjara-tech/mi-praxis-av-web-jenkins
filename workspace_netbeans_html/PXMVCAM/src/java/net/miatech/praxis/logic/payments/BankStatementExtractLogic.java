@@ -12,6 +12,7 @@ import net.miatech.beans.SQP04091Filter;
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.praxis.dao.payments.BankStatementExtractDAO;
 import net.miatech.praxis.payment.filter.A2290Filter;
+import net.miatech.praxis.payment.filter.A2356Filter;
 
 /**
  *
@@ -26,6 +27,10 @@ public class BankStatementExtractLogic {
     
     public List<SQP04091Filter> searchUsaflowDiary(SQP04091Filter filter) throws SQLException, Exception {
         return objDAO.searchUsaflowDiary(filter);
+    }
+    
+    public List<SQP04091Filter> searchUsaflowDiaryDetail(SQP04091Filter filter) throws SQLException, Exception {
+        return objDAO.searchUsaflowDiaryDetail(filter);
     }
     
     public List<SQP04091Filter> searchUsaflowDiaryHistoric(SQP04091Filter filter) throws SQLException, Exception {
@@ -62,5 +67,9 @@ public class BankStatementExtractLogic {
     
     public List<A2290Filter> loadPX269SQP00698Detalle(A2290Filter filter) throws SQLException, Exception {
         return objDAO.loadPX269SQP00698Detalle(filter);
+    }
+    
+    public List<A2356Filter> getListTotalConciliation_Bard(A2356Filter filter) throws SQLException, Exception {
+        return objDAO.getListTotalConciliation_Bard(filter);
     }
 }
