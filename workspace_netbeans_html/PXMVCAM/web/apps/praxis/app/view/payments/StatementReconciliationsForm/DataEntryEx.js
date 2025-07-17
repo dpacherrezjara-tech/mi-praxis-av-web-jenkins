@@ -341,7 +341,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                     fieldStyle: 'text-align:center;',
                                                     width: 110
                                                 },
-                                                {xtype: 'tbspacer', width: 210},
+                                                {xtype: 'tbspacer', width: 60},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Value Date',
@@ -357,7 +357,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                     readOnly: true,
                                                     width: 90
                                                 },
-                                                {xtype: 'tbspacer', width: 210},
+                                                {xtype: 'tbspacer', width: 100},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Date Conci.',
@@ -375,7 +375,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                     readOnly: true,
                                                     width: 80
                                                 },
-                                                {xtype: 'tbspacer', width: 210},
+                                                {xtype: 'tbspacer', width: 100},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Tranc Numb.',
@@ -391,9 +391,9 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                     style: 'font-weight:bold;color:#0B333C;',
                                                     fieldStyle: 'text-align:center;',
                                                     readOnly: true,
-                                                    width: 80
+                                                    width: 90
                                                 },
-                                                {xtype: 'tbspacer', width: 210},
+                                                {xtype: 'tbspacer', width: 100},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Qty Sett.',
@@ -411,9 +411,11 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                     width: 100
                                                 },
 
-                                                {xtype: 'tbspacer', width: 10}
+                                                {xtype: 'tbspacer', width: 470}
                                             ]
                                         },
+                                        
+                                        ///2DO PANEL
                                         {
                                             xtype: 'panel',
                                             layout: 'hbox',
@@ -438,9 +440,9 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                     style: 'font-weight:bold;color:#d5f4d5',
                                                     fieldStyle: 'text-align:center',
                                                     readOnly: true,
-                                                    width: 110
+                                                    width: 70
                                                 },
-                                                {xtype: 'tbspacer', width: 210},
+                                                {xtype: 'tbspacer', width: 100},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Merchant',
@@ -456,7 +458,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                     readOnly: true,
                                                     width: 90
                                                 },
-                                                {xtype: 'tbspacer', width: 210},
+                                                {xtype: 'tbspacer', width: 100},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Id.Bank',
@@ -472,7 +474,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                     readOnly: true,
                                                     width: 80
                                                 },
-                                                {xtype: 'tbspacer', width: 210},
+                                                {xtype: 'tbspacer', width: 100},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Currency',
@@ -486,9 +488,9 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                     fieldStyle: 'text-align:center',
                                                     enforceMaxLength: true,
                                                     readOnly: true,
-                                                    width: 80
+                                                    width: 90
                                                 },
-                                                {xtype: 'tbspacer', width: 210},
+                                                {xtype: 'tbspacer', width: 100},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Neto',
@@ -504,7 +506,27 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                     readOnly: true,
                                                     width: 100
                                                 },
-                                                {xtype: 'tbspacer', width: 10}
+                                                {xtype: 'tbspacer', width: 80},
+                                                
+                                                ////AGREGANDO CERROR
+                                                
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Coment',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    width: 60
+                                                },
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtCERROR',
+                                                    fieldStyle: 'text-align:center',
+                                                    enforceMaxLength: true,
+                                                    readOnly: true,
+                                                    width: 280
+                                                },
+                                                {xtype: 'tbspacer', width: 40}
+                                                
                                             ]
                                         },
                                         //</editor-fold>
