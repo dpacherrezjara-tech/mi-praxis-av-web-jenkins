@@ -122,6 +122,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         }
 
     },
+    
     mostrarData: function () {
 
         if (this.beanResult.descSTVAL === 'Match' || this.beanResult.descSTVAL === 'Match Manual') {
@@ -137,6 +138,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             Ext.getCmp(prototype.id + '-panelScanHead').hide();
             Ext.getCmp(prototype.id + '-gridColumnDeleteHead').hide();
             this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETOC, '0,000.00'));
+
 
             this.setValue('de-txtCOREP', this.beanResult.COREP);
             if (!this.beanResult.COREP.includes("PM") && !this.beanResult.COREP.includes("LK") && !this.beanResult.COREP.includes("WP") && !this.beanResult.COREP.includes("IP") && !this.beanResult.COREP.includes("PB") && !this.beanResult.COREP.includes("BG") &&
@@ -255,7 +257,10 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.setValue('de-txtBANDOC', this.beanResult.BANDOC);
         this.setValue('de-txtSCURRENCY', this.beanResult.SCURRENCY);
         this.setValue('de-txtNETO', Ext.util.Format.number(this.beanResult.NETO, '0,000.00'));
-//        this.setValue('de-txtMONEDAPAGO', this.beanResult.MONEDAPAGO);
+        //AGREGANDO CERROR
+        this.setValue('de-txtCERROR',this.beanResult.CERROR_DESC);
+//        this.setValue('-de-txtCERROR', 'Comentario de prueba');
+
         this.setValue('de-txtVALDATEL', this.beanResult.VALDATEL);
         this.setValue('de-txtMERCHANDL', this.beanResult.MERCHANDL);
         this.setValue('de-txtBANDOCL', this.beanResult.BANDOCL);
@@ -274,7 +279,11 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.setValue('txtUSUP', this.beanResult.USUP);
         this.setValue('txtFEUP', this.beanResult.FEUP);
         this.setValue('txtHOUP', this.beanResult.HOUP);
+        
+        console.log('Existe CERRORssssss?', Ext.getCmp('de-txtCERROR'));
     },
+    
+    
     //<editor-fold defaultstate="collapsed" desc="llenarData">
     llenarData: function () {
         var bean = {};

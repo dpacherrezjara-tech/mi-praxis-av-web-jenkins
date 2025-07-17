@@ -216,6 +216,7 @@ public class A2290 {
     public String descCERRORADJ = "";
     public String descCERRORADJA = "";
     public String A4545DOCD = "";
+    public String CERROR_DESC = "";
     
     //TEF
     public String TDATE = "";
