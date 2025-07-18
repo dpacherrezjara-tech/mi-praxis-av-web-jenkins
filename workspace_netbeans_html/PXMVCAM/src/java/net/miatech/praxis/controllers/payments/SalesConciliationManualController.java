@@ -1297,12 +1297,13 @@ public class SalesConciliationManualController extends BaseController {
             CH1_3.setCellValue("Ticket");
             CH1_4.setCellValue("Sales Date");
             CH1_5.setCellValue("Agent");
-            CH1_6.setCellValue("Card Number");
-            CH1_7.setCellValue("Sauthoc");
-            CH1_8.setCellValue("Invoice");
-            CH1_9.setCellValue("Currency");
-            CH1_10.setCellValue("Amount");
-            CH1_11.setCellValue("Total");
+            CH1_6.setCellValue("PNR"); ///// se agrega pnr
+            CH1_7.setCellValue("Card Number");
+            CH1_8.setCellValue("Sauthoc");
+            CH1_9.setCellValue("Invoice");
+            CH1_10.setCellValue("Currency");
+            CH1_11.setCellValue("Amount");
+//            CH1_11.setCellValue("Total"); //// se retira total amount 
             CH1_12.setCellValue("Cuenta");
             CH1_13.setCellValue("Cost Cen.");
             CH1_14.setCellValue("Conci. Date");
@@ -1472,12 +1473,13 @@ public class SalesConciliationManualController extends BaseController {
                 rcell3.setCellValue(listaData.get(vi).TKT);
                 rcell4.setCellValue(listaData.get(vi).SDATE);
                 rcell5.setCellValue(listaData.get(vi).SAGENT);
-                rcell6.setCellValue(listaData.get(vi).SCARDN);
-                rcell7.setCellValue(listaData.get(vi).SAUTHOC);
-                rcell8.setCellValue(listaData.get(vi).INVOICE);
-                rcell9.setCellValue(listaData.get(vi).SCURRENCY);
-                rcell10.setCellValue(listaData.get(vi).SVFOP);
-                rcell11.setCellValue(listaData.get(vi).SVFOPACUM);
+                rcell6.setCellValue(listaData.get(vi).SPNR);
+                rcell7.setCellValue(listaData.get(vi).SCARDN);
+                rcell8.setCellValue(listaData.get(vi).SAUTHOC);
+                rcell9.setCellValue(listaData.get(vi).INVOICE);
+                rcell10.setCellValue(listaData.get(vi).SCURRENCY);
+                rcell11.setCellValue(listaData.get(vi).SVFOP);
+//                rcell11.setCellValue(listaData.get(vi).SVFOPACUM); ////retiramos total amount del excel/
                 rcell12.setCellValue(listaData.get(vi).ACCNUMA);
                 rcell13.setCellValue(listaData.get(vi).COSTCEN);
                 rcell14.setCellValue(listaData.get(vi).DATEC);
