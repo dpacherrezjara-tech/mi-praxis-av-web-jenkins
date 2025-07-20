@@ -180,7 +180,7 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.DataEntrys.ProcessDataEnt
                         hiddenLabel: false,
                         labelAlign: 'right',
                         hidden: false,
-                        margin: '3 3 3 3',
+                        margin: '3 3 3 3'
                     },
                     items: [
                         {

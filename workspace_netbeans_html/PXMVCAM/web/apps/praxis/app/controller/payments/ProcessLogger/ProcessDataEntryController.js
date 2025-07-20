@@ -3,14 +3,11 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessDataEntryControl
     alias: 'controller.ProcessDataEntryController',
     url: CONTEXTPATH + '/ProcessLog',
     request: axios.create({
-        baseURL: CONTEXTPATH + '/ProcessLog',
+        baseURL: CONTEXTPATH + '/AccountingReport',
         timeout: 0
     }),
     notifier: new AWN(),
     init: function (view) {
-
-//        me.setComboStore({cmp: cmbProcesadores, data: view.procesadores,
-//            valueField: 'CODE', displayField: 'NAME', value: ''});
     },
     afterRender: async function () {
         const me = this;
@@ -86,7 +83,46 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessDataEntryControl
         new AWN().info('Process Running');
     },
     processPRO: async function () {
-        alert('En construccion');
+        const me = this;
+        let notifier = new AWN();
+        const form = Ext.getCmp(prototype.idProcess + '-formPRO');
+        if (form.isValid()) {
+            form.setLoading(true);
+            const file = Ext.getCmp(prototype.idProcess + '-fileProvision').fileInputEl.dom.files[0];
+            let nameFile = file.name;
+            global.readExcelFile(file, async (json) => {
+                try {
+                    json = json.map(x => ({
+                            FILENAM: nameFile,
+                            ...x
+                        }));
+                    const tmp = await global.loadRecordsOnTable('PRAXISMP', 'XTEMPO', json);
+
+                    const res = await me.request.post('/executeProvision', {
+                        IN_CUUID: tmp.cuuid,
+                        IN_FUUID: tmp.fuuid
+                    });
+                    console.log("res: ", res);
+
+                    const data = res.data;
+                    console.log("data: ", data);
+
+                    if (data && data.STATUS === true) {
+                        notifier.success('Provision Started');
+                    } else {
+                        notifier.alert('Provision Failed');
+                    }
+                } catch (e) {
+                    console.error(e);
+                    notifier.alert('Error on process');
+                } finally {
+                    form.setLoading(false);
+                }
+
+            });
+        } else {
+            notifier.alert('Select file');
+        }
     },
 
     onClose: function () {
