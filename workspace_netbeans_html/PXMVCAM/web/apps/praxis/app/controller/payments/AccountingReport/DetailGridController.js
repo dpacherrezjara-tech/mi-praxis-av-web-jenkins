@@ -8,9 +8,9 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.DetailGridController
     }),
     notifier: new AWN(),
     init: function (view) {
-        if(view.backButton){
+        if (view.backButton) {
             Ext.getCmp(prototype.id + '-bandoc-btnBack').show();
-            Ext.getCmp(prototype.id + '-bandoc-btnBack').on('click',view.backButton);
+            Ext.getCmp(prototype.id + '-bandoc-btnBack').on('click', view.backButton);
         }
     },
     afterRender: async function (obj, e) {
@@ -23,14 +23,14 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.DetailGridController
         let store = global.callStorePaggin('PRAXISMP', 'SPACR014', view.searchParams);
         view.setStore(store);
     },
-    onLoadSettlements: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+    onLoadSettlements: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
         const me = this;
         let valorCelda = td.textContent || td.innerText;
         if (valorCelda === '0') {
             global.Msg({msg: 'No data'});
             return;
         }
-        const {BANDOC,DATECI,TRANCI} = record.data;
+        const {BANDOC, DATECI, TRANCI} = record.data;
         let params = {
             IN_BANDOC: BANDOC,
             IN_DATECI: DATECI,
@@ -38,24 +38,24 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.DetailGridController
         };
         const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
         mainPanel.items.items.at(-1).hide();
-        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.SettlementsGrid',{
+        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.SettlementsGrid', {
             id: prototype.id + '-SettlementsGrid-1',
             searchParams: params,
-            backButton: ()=> {
+            backButton: () => {
                 mainPanel.items.items.at(-1).destroy();
                 mainPanel.items.items.at(-1).show();
             }
         });
         mainPanel.add(newPanel);
     },
-    onLoadTaxes: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+    onLoadTaxes: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
         const me = this;
         let valorCelda = td.textContent || td.innerText;
         if (valorCelda === '0') {
             global.Msg({msg: 'No data'});
             return;
         }
-        const {BANDOC,DATECI,TRANCI} = record.data;
+        const {BANDOC, DATECI, TRANCI} = record.data;
         let params = {
             IN_BANDOC: BANDOC,
             IN_DATECI: DATECI,
@@ -63,23 +63,23 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.DetailGridController
         };
         const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
         mainPanel.items.items.at(-1).hide();
-        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.TaxesGrid',{
+        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.TaxesGrid', {
             id: prototype.id + '-TaxesGrid-1',
             searchParams: params,
-            backButton: ()=> {
+            backButton: () => {
                 mainPanel.items.items.at(-1).destroy();
                 mainPanel.items.items.at(-1).show();
             }
         });
         mainPanel.add(newPanel);
     },
-    onLoadRejections:function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+    onLoadRejections: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
         const me = this;
         let valorCelda = td.textContent || td.innerText;
         if (valorCelda === '0') {
             return;
         }
-        const {BANDOC,DATECI,TRANCI,TIPOCON} = record.data;
+        const {BANDOC, DATECI, TRANCI, TIPOCON} = record.data;
         let params = {
             IN_TIPOCON: TIPOCON || '',
             IN_BANDOC: BANDOC,
@@ -88,23 +88,23 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.DetailGridController
         };
         const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
         mainPanel.items.items.at(-1).hide();
-        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.RejectionsGrid',{
+        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.RejectionsGrid', {
             id: prototype.id + '-RejectionsGrid-1',
             searchParams: params,
-            backButton: ()=> {
+            backButton: () => {
                 mainPanel.items.items.at(-1).destroy();
                 mainPanel.items.items.at(-1).show();
             }
         });
         mainPanel.add(newPanel);
     },
-    onLoadAccountingReg: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+    onLoadAccountingReg: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
         const me = this;
         let valorCelda = td.textContent || td.innerText;
         if (valorCelda === '') {
             return;
         }
-        const {BANDOC,DATECI,TRANCI,IDCONT} = record.data;
+        const {BANDOC, DATECI, TRANCI, IDCONT} = record.data;
         let params = {
             IN_IDCONT: IDCONT,
             IN_BANDOC: BANDOC,
@@ -113,23 +113,23 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.DetailGridController
         };
         const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
         mainPanel.items.items.at(-1).hide();
-        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.AccountingGrid',{
+        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.AccountingGrid', {
             id: prototype.id + '-AccountingGrid-1',
             searchParams: params,
-            backButton: ()=> {
+            backButton: () => {
                 mainPanel.items.items.at(-1).destroy();
                 mainPanel.items.items.at(-1).show();
             }
         });
         mainPanel.add(newPanel);
     },
-    onLoadAccountingDeb: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+    onLoadAccountingDeb: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
         const me = this;
         let valorCelda = td.textContent || td.innerText;
         if (valorCelda === '') {
             return;
         }
-        const {BANDOC,DATECI,TRANCI,IDCDEB} = record.data;
+        const {BANDOC, DATECI, TRANCI, IDCDEB} = record.data;
         let params = {
             IN_IDCONT: IDCDEB,
             IN_BANDOC: BANDOC,
@@ -138,10 +138,10 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.DetailGridController
         };
         const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
         mainPanel.items.items.at(-1).hide();
-        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.AccountingGrid',{
+        const newPanel = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.AccountingGrid', {
             id: prototype.id + '-AccountingGrid-1',
             searchParams: params,
-            backButton: ()=> {
+            backButton: () => {
                 mainPanel.items.items.at(-1).destroy();
                 mainPanel.items.items.at(-1).show();
             }
@@ -168,10 +168,32 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.DetailGridController
                     }
                 });
     },
-    getXlsx: async function(params){
+    getXlsx: async function (params) {
         const me = this;
         me.view.setLoading(true);
+
+        const optsStatus = {
+            'N': 'Pending Accounting',
+            'P': 'Pending to Send',
+            'L': 'Loaded to SAP',
+            'S': 'Sended to AV'
+        };
+
+        const optsSubType = {
+            'P': 'PAX CO',
+            'A': 'CGO CO',
+            'C': 'COR CO',
+            'E': 'PAX EXT',
+            'G': 'CGO EXT',
+            'T': 'TAX EXT',
+            'D': 'DEB CO',
+            'B': 'DEB EXT',
+            'J': 'ADJ CO',
+            'K': 'ADJ EXT'
+        };
+
         let lst = await global.callStorePagginExcel('PRAXISMP', 'SPACR014', params);
+        console.log('Excel',lst);
         let lstJson = lst.map(x => {
             global.cleanPXobj(x);
             let obj = {
@@ -183,6 +205,8 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.DetailGridController
                 'Processor': x.DESC_PRO,
                 'Payment Date': x.ADATE,
                 'Account': x.ACCOUNT,
+                'Account Prov.': x.ACCPROV,
+                'Date Prov.': x.FECPROV,
                 'Profit Center': x.BENCENC,
                 'Society': x.SOCIETY,
                 'Reference': x.REFER,
@@ -193,21 +217,35 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.DetailGridController
                 'Amount': x.NETO,
                 'Rev Curr.': x.LOCRENCY2,
                 'Rev Amount': x.LOCAMOUNT2,
-                'Qty Settl F1':x.QTYLIQ1,
-                'Qty Settl F2':x.QTYLIQ2,
+                'Qty Settl F1': x.QTYLIQ1,
+                'Qty Settl F2': x.QTYLIQ2,
                 'Qty Tax': x.QTYGAS,
-                'Header REG': x.HEADER,
-                'Header DEB': x.HEADER2
+                'REG Period': x.PERIOD_REG,
+                'REG Type': x.TIPOCON,
+                'REG Sub-type': optsSubType[x.TIPOREG],
+                'REG ID': x.IDCONT,
+                'REG Corrl AV': x.HEADER,
+                'REG File Name': x.FILENAM,
+                'SAP Date': x.FECSAP,
+                'SAP Status': optsStatus[x.STSAP],
+                'DEB Period': x.PERIOD_DEB,
+                'DEB Sub-type': optsSubType[x.TIPOREG2],
+                'DEB ID': x.IDCDEB,
+                'DEB Corrl AV': x.HEADER2,
+                'DEB File Name': x.FILENAM2,
+                'DEB SAP Date': x.FECSAP2,
+                'DEB SAP Status': optsStatus[x.STSAP2],
+                'Qty Rejections': x.QTYREJ
             };
             return obj;
         });
-        await global.writeExcelFromJson(lstJson,'Accounting Report');
+        await global.writeExcelFromJson(lstJson, 'Accounting Report');
         me.view.setLoading(false);
     },
-    openBandocDetail: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
-        const {BANDOC,DATECI,TRANCI} =record.data;
-        const dataEntry = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.BandocDetailDataEntry',{
-            id:prototype.id + '-BandocDetailDataEntry-1',
+    openBandocDetail: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
+        const {BANDOC, DATECI, TRANCI} = record.data;
+        const dataEntry = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.BandocDetailDataEntry', {
+            id: prototype.id + '-BandocDetailDataEntry-1',
             searchParams: {
                 IN_BANDOC: BANDOC,
                 IN_DATECI: DATECI,
