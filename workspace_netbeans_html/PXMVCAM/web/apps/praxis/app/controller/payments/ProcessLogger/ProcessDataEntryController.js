@@ -5,115 +5,91 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessDataEntryControl
     request: axios.create({
         baseURL: CONTEXTPATH + '/ProcessLog',
         timeout: 0
-      }),
+    }),
     notifier: new AWN(),
     init: function (view) {
-        const me = this;
-        const cmbProcesadores = Ext.getCmp(prototype.idDE + '-cmbCODPRO');
-        me.setComboStore({cmp: cmbProcesadores, data: view.procesadores,
-            valueField: 'CODE', displayField: 'NAME', value: ''});
+
+//        me.setComboStore({cmp: cmbProcesadores, data: view.procesadores,
+//            valueField: 'CODE', displayField: 'NAME', value: ''});
     },
     afterRender: async function () {
+        const me = this;
+        console.log(me.view);
+        const cmbProcesadores = Ext.getCmp(prototype.idProcess + '-cmbCODPRO');
+        global.setComboStore(cmbProcesadores, me.view.procesadores, 'CODE', 'NAME', '');
+    },
+    onChangeProcess: function (btn) {
+        const f2Filters = Ext.getCmp(prototype.idProcess + '-formF2');
+        const dbFilters = Ext.getCmp(prototype.idProcess + '-formDB');
+        const proFilters = Ext.getCmp(prototype.idProcess + '-formPRO');
+        f2Filters.hide();
+        dbFilters.hide();
+        proFilters.hide();
+
+        switch (btn.value) {
+            case 'F2':
+                f2Filters.show();
+                break;
+            case 'DB':
+                dbFilters.show();
+                break;
+            case 'PRO':
+                proFilters.show();
+                break;
+        }
     },
     onProcessClick: async function () {
         const me = this;
-        let params = Ext.getCmp(prototype.idDE + '-formFilters')
-                .getForm()
-                .getValues();
+        const filter = Ext.getCmp(prototype.idProcess + '-processType');
+        let notifier = new AWN();
 
-        if (params.VP_PRDA.length !== 0 && params.VP_PRDA.length !== 8) {
-            global.Msg({msg: 'Invalid Date'});
-            return;
-        }
-        if (params.VP_CODPRO === '') {
-            global.Msg({msg: 'Select Processor before Run'});
-            return;
-        }
-        
-        try {
-            const res = await me.request.post('process',params);
-            const {code,msg} = res.data;
-            if(code===0){
-                me.notifier.success(msg);
-            }else{
-                me.notifier.alert(msg);
+        const onOk = () => {
+            switch (filter.value) {
+                case 'F2':
+                    me.processF2();
+                    break;
+                case 'DB':
+                    me.processDB();
+                    break;
+                case 'PRO':
+                    me.processPRO();
+                    break;
             }
-        } catch (e) {
-            me.notifier.alert('Process Failed...');
-        }
-        me.view.close();
+        };
+        notifier.confirm('Are you sure to Process', onOk, null);
     },
+    processF2: async function () {
+        let usuario = document.getElementById("menuUser").innerText;
+        let filters = Ext.getCmp(prototype.idProcess + '-formF2').getForm().getValues();
+
+        if (filters.IN_CODPRO === '') {
+            new AWN().alert('Select Processor before');
+            return;
+        }
+
+        let params = {
+            IN_USER: usuario,
+            ...filters
+        };
+
+        await global.callAPIPostAsync('ProcessLog', 'processPhase2', params);
+        new AWN().info('Process Running');
+    },
+    processDB: async function () {
+        let usuario = document.getElementById("menuUser").innerText;
+        let filters = Ext.getCmp(prototype.idProcess + '-formF2').getForm().getValues();
+        let params = {
+            IN_USER: usuario,
+            ...filters
+        };
+        await global.callAPIPostAsync('ProcessLog', 'processDebits', params);
+        new AWN().info('Process Running');
+    },
+    processPRO: async function () {
+        alert('En construccion');
+    },
+
     onClose: function () {
         this.view.close();
-    },
-    //<editor-fold defaultstate="collapsed" desc="Utilitarios">
-    getCmp: function ( {id}){
-        return Ext.getCmp(prototype.id + id);
-    },
-    setComboStore: function ( {cmp, data, valueField, displayField, value}){
-        const me = this;
-        cmp.suspendEvents(false);
-        cmp.bindStore(me.createComboStore({data: data
-            , valueField: valueField, displayField: displayField}));
-        cmp.setValue(value);
-        cmp.resumeEvents();
-    },
-    createComboStore: function ( {data, valueField, displayField}) {
-        //crea record vacio
-        let allRecord = {};
-        allRecord[displayField] = 'All';
-        allRecord[valueField] = '';
-        //limpia record de data
-        data.forEach(obj => {
-            for (let attr in obj) {
-                if (typeof obj[attr] === 'string') {
-                    obj[attr] = obj[attr].trimEnd();
-                }
-            }
-        });
-        //crea Store
-        let store = this.createStore({data: data});
-        //inserta record vacio
-        store.insert(0, allRecord);
-        //console.log('store creado',store);
-        return store;
-    },
-    createArrayStore: function ( {data}){
-        const store = new Ext.data.SimpleStore({
-            fields: ['code', 'name'],
-            data: data.map(x => {
-                return [x.code, x.name];
-            })
-        });
-        return store;
-    },
-    createStore: function ( {data}){
-        return Ext.create('Ext.data.Store', {
-            autoLoad: true,
-            data: data,
-            pageSize: 20
-        });
-    },
-    parseInt: function (number) {
-        if (number && number !== '') {
-            return parseInt(number);
-        }
-        ;
-        return number;
-    },
-    getDistinct: function (lst, key) {
-        let valoresVistos = {};
-        // Filtra el array para eliminar duplicados según la columna "nombre"
-        let resultado = lst.filter(function (item) {
-            if (valoresVistos[item[key]]) {
-                // Si el valor ya se ha visto, exclúyelo
-                return false;
-            }
-            // Si es la primera vez que se ve, márcalo como visto y manténlo en el resultado
-            valoresVistos[item[key]] = true;
-            return true;
-        });
-        return resultado;
     }
-    //</editor-fold>
 });
