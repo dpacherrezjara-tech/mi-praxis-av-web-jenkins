@@ -1725,6 +1725,18 @@ var LarSyrExt = function () {
             return 500;
         }
     };
+    this.callAPIPostAsync = async function (service,path, params) {
+        let request = axios.create({
+            baseURL: CONTEXTPATH + '/Generic',
+            timeout: 0
+        });
+        try {
+            const res = await request.post('CallAPIPost/'+ service + '/' + path, params);
+            return res.status;
+        } catch (e) {
+            throw new Error("Error on Request.");
+        }
+    };
     this.callStorePaggin = function (library, procedure, params) {
         let store = new Ext.data.Store({
             loadMask: true,

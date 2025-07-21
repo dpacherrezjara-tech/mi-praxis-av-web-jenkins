@@ -49,16 +49,44 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Filters', {
                             },
                             items: [
                                 {
+                                    xtype: 'datefield',
+                                    name: 'IN_FUUID',
+                                    fieldLabel: 'From',
+                                    format: 'Ymd',
+                                    editable: true, // Deshabilita la edición del campo
+                                    labelWidth: 50,
+                                    width: 150,
+                                    value: new Date()
+                                },
+                                {
+                                  xtype:'textfield',
+                                  name: 'IN_CUUID',
+                                  width: 280,
+                                  labelWidth: 100,
+                                  fieldLabel: 'ID',
+                                  maxLenght: 32,
+                                  enforceMaxLenght: true
+                                },
+                                {
+                                  xtype:'textfield',
+                                  name: 'IN_PROCESO',
+                                  width: 280,
+                                  labelWidth: 100,
+                                  fieldLabel: 'Process Name',
+                                  maxLenght: 60,
+                                  enforceMaxLenght: true
+                                },
+                                {
                                     xtype: 'combobox',
-                                    fieldLabel: 'Client',
-                                    name: 'IN_CCUST',
+                                    fieldLabel: 'Status',
+                                    name: 'IN_STPRO',
                                     store: Ext.create('Ext.data.SimpleStore', {
                                         fields: ['code', 'name'],
                                         data: [
-                                            ['134', 'AV - AVIANCA'],
-                                            ['202', 'TA - TACA'],
-                                            ['547', '2K - AEROGAL'],
-                                            ['133', 'LR - LACSA']
+                                            ['', 'All'],
+                                            ['P', 'Processing'],
+                                            ['C', 'Completed'],
+                                            ['X', 'Error']
                                         ]
                                     }),
                                     labelWidth: 80,
@@ -67,46 +95,6 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Filters', {
                                     valueField: 'code',
                                     queryMode: 'local',
                                     editable: false,
-                                    value: '134'
-                                },
-                                {
-                                    xtype: 'datefield',
-                                    name: 'IN_PRDAF',
-                                    fieldLabel: 'From',
-                                    format: 'Ymd',
-                                    editable: true, // Deshabilita la edición del campo
-                                    labelWidth: 50,
-                                    width: 150,
-                                    value: new Date(anioActual, mesActual, 1)
-                                },
-                                {
-                                    xtype: 'datefield',
-                                    name: 'IN_PRDAT',
-                                    fieldLabel: 'To',
-                                    format: 'Ymd',
-                                    editable: true, // Deshabilita la edición del campo
-                                    labelWidth: 50,
-                                    width: 150,
-                                    value: new Date(anioActual, mesActual, 31)
-                                },
-                                {
-                                    xtype: 'combo',
-                                    id: prototype.id + '-cmbCODPRO',
-                                    name: 'IN_CODPRO',
-                                    labelWidth: 70,
-                                    width: 250,
-                                    valueField: 'CODE',
-                                    displayField: 'NAME',
-                                    fieldLabel: 'Processor',
-                                    queryMode: 'local',
-                                    editable: false,
-                                    allowBlank: true,
-                                    caseSensitive: false,
-                                    autoSelect: true,
-                                    labelAlign: 'right',
-                                    typeAhead: true,
-                                    enableKeyEvents: true,
-                                    triggerAction: 'all',
                                     value: ''
                                 }
                             ]
