@@ -70,7 +70,6 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.DetailGrid', {
             {text: 'Account', dataIndex: 'ACCOUNT', width: 100},
             {text: 'Account<br>Prov.', dataIndex: 'ACCPROV', width: 100},
             {text: 'Date<br>Prov.', dataIndex: 'FECPROV', width: 100},
-            {text: 'Account', dataIndex: 'ACCOUNT', width: 100},
             {text: 'Profit<br>Center', dataIndex: 'BENCENC', width: 100},
             {text: 'Society', dataIndex: 'SOCIETY', width: 80},
             {text: 'Reference', dataIndex: 'REFER', width: 130},
