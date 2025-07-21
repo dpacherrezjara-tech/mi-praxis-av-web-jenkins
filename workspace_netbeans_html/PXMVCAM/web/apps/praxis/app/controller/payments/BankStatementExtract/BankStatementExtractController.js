@@ -840,6 +840,9 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
             case '-panelGridDataTaca':
                 me.pagginActual = '-paggin3';
                 break;
+            case '-panelGridDataLog':
+                me.pagginActual = '-paggin4';
+                break;
         }
     },
     pagFirst: function (obj, e) {
@@ -1034,5 +1037,251 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
             data: years,
             fields: ['code', 'name']
         });
+    },
+    
+    
+    
+    executeLog2: function () {
+        Ext.create('Ext.Praxis.view.payments.BankStatementExtractForm.DataEntryBankStatementExtract', {
+            id: prototype.id + '-windowDataEntry'
+        }).show();
+
+    },
+    
+    setFormatParameterlog: function () {
+        me.beanLog = {};
+
+        let getProcessor = Ext.getCmp(prototype.id + '-fieldProcessorLog').getValue();
+        let getState = Ext.getCmp(prototype.id + '-typeState').getValue();
+
+        const getDateValue = (yearCmp, monthCmp, dayCmp) => {
+            const year = Ext.getCmp(prototype.id + yearCmp).getValue() || '';
+            const month = Ext.getCmp(prototype.id + monthCmp).getValue() || '';
+            const day = Ext.getCmp(prototype.id + dayCmp).getValue() || '';
+            return year + month + day;
+        };
+
+        let getValueDateTo = getDateValue('-cmbDateToYear', '-cmbDateToMonth', '-cmbDateToDay');
+        let getValueDateFrom = getDateValue('-cmbDateFromYear', '-cmbDateFromMonth', '-cmbDateFromDay');
+
+        me.beanLog.IN_PROCESSOR = getProcessor;
+        me.beanLog.IN_STATE = getState;
+        me.beanLog.IN_FECHA_FROM = getValueDateFrom;
+        me.beanLog.IN_FECHA_TO = getValueDateTo;
+
+        console.log(me.beanLog, 'me.bean');
+    },
+    
+    executeLogSearch: function(){
+        this.setFormatParameterlog();
+        Ext.Ajax.request({
+            url: prototype.url + '/searchLog',
+            method: 'POST',
+            timeout: 600000,
+            params: {
+                beanString: Ext.encode(me.beanLog)
+            },
+            success: function (response) {
+                const res = Ext.decode(response.responseText);
+                const grid = Ext.getCmp(prototype.id + '-gridDataLogMain');
+                const panelMain = Ext.getCmp(prototype.id + '-panelMain');
+                const panelLog = Ext.getCmp(prototype.id + '-panelLog');
+
+                if (res.success && res.data && res.data.length > 0) {
+                    const store = Ext.create('Ext.data.Store', {
+                        fields: ['FECRFILE', 'CODEPROC', 'STATP', 'MENSA', 'HOSEND', 'USCR', 'FECR', 'HOCR', 'HOFIN','FERECV','HORECV'],
+                        data: res.data
+                    });
+
+                    grid.bindStore(store);
+
+
+                    if (panelMain && panelLog) {
+                        panelMain.setVisible(false);
+                        panelLog.setVisible(true);
+                    }
+
+                    if (res.data[0].page) {
+                        const pageData = res.data[0].page;
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(
+                            Ext.util.Format.number(pageData.PAGE, '0,000')
+                        );
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(
+                            Ext.util.Format.number(pageData.TOTPAG, '0,000')
+                        );
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(
+                            Ext.util.Format.number(pageData.TOTROW, '0,000')
+                        );
+                    }
+
+                } else {
+                    console.warn('No hay datos');
+                    if (grid.getStore()) {
+                        grid.getStore().removeAll();
+                    }
+                }
+            },
+            failure: function () {
+                console.error('Error al consultar /searchLog');
+                const grid = Ext.getCmp(prototype.id + '-gridDataLogMain');
+                if (grid && grid.getStore()) {
+                    grid.getStore().removeAll();
+                }
+            }
+        });
+        
+    },
+    
+    executeLog: function () {
+    const panelMain = Ext.getCmp(prototype.id + '-panelMain');
+    const panelLog = Ext.getCmp(prototype.id + '-panelLog');
+    const grid = Ext.getCmp(prototype.id + '-gridDataLogMain');
+    const combClient = Ext.getCmp(prototype.id + '-typeClient');
+    const combReport = Ext.getCmp(prototype.id + '-typeReport');
+    const chart_IA = Ext.getCmp(prototype.id + '-rbChart_IA');
+    const rbtDetail = Ext.getCmp(prototype.id + '-rbtDetail');
+    const fieldProcessorLog = Ext.getCmp(prototype.id + '-fieldProcessorLog');
+    const buttonLog = Ext.getCmp(prototype.id + '-buttonLog');
+    const typeState = Ext.getCmp(prototype.id + '-typeState');
+    const typeVisualization = Ext.getCmp(prototype.id + '-typeVisualization');
+    
+    const bean = {
+        CCUST: '134',
+        DATE_FROM: '',
+        DATE_TO: ''
+    };
+
+    
+    if (panelMain && panelLog && !panelLog.isVisible()) {
+        panelMain.hide();
+        panelLog.show();
+        combClient.hide();
+        combReport.hide();
+        chart_IA.hide();
+        rbtDetail.hide();
+        typeVisualization.hide();
+        fieldProcessorLog.show();
+        typeState.show();
+        buttonLog.show();
+        
+        Ext.Ajax.request({
+            url: prototype.url + '/searchLog',
+            method: 'POST',
+            timeout: 600000,
+            params: {
+                beanString: Ext.encode(bean)
+            },
+            success: function (response) {
+                const res = Ext.decode(response.responseText);
+                const grid = Ext.getCmp(prototype.id + '-gridDataLogMain');
+                const panelMain = Ext.getCmp(prototype.id + '-panelMain');
+                const panelLog = Ext.getCmp(prototype.id + '-panelLog');
+
+                if (res.success && res.data && res.data.length > 0) {
+                    const store = Ext.create('Ext.data.Store', {
+                        fields: ['FECRFILE', 'CODEPROC', 'STATP', 'MENSA', 'HOSEND', 'USCR', 'FECR', 'HOCR', 'HOFIN','FERECV','HORECV'],
+                        data: res.data
+                    });
+
+                    grid.bindStore(store);
+
+
+                    if (panelMain && panelLog) {
+                        panelMain.setVisible(false);
+                        panelLog.setVisible(true);
+                    }
+
+                    if (res.data[0].page) {
+                        const pageData = res.data[0].page;
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(
+                            Ext.util.Format.number(pageData.PAGE, '0,000')
+                        );
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(
+                            Ext.util.Format.number(pageData.TOTPAG, '0,000')
+                        );
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(
+                            Ext.util.Format.number(pageData.TOTROW, '0,000')
+                        );
+                    }
+
+                } else {
+                    console.warn('No hay datos');
+                    if (grid.getStore()) {
+                        grid.getStore().removeAll();
+                    }
+                }
+            },
+            failure: function () {
+                console.error('Error al consultar /searchLog');
+                const grid = Ext.getCmp(prototype.id + '-gridDataLogMain');
+                if (grid && grid.getStore()) {
+                    grid.getStore().removeAll();
+                }
+            }
+        });
+    } else {
+        panelMain.show();
+        panelLog.hide();
+        combClient.show();
+        combReport.show();
+        chart_IA.show();
+        rbtDetail.show();
+        typeVisualization.show();
+        fieldProcessorLog.hide();
+        typeState.hide();
+        buttonLog.hide();
+        console.log("paso");
     }
+
+    
+    
+
+    
+
+},
+
+    
+
+
+    
+   obtainLog2: function () {
+        console.log("searchTacaWeeklyHistoric")
+        me.getPaggin()
+        me.panelActual = '-panelGridDataLog';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        this.searchParams.beanString = JSON.stringify(me.bean);
+        let lstData = []
+
+        var storeGridDatasLog = Ext.create('Ext.Praxis.store.flown.PassengerConciliation.GridData', {
+            proxy: {
+                url: prototype.url + '/searchLog'
+            }, listeners: {
+                beforeload: function(obj) {
+                    obj.proxy.extraParams = me.searchParams;
+                },
+                load: function(obj) {
+                    console.log(obj.data,'DAAAA');
+                    if (obj.data.length === 0) {
+                        global.Msg({
+                            msg: 'Data not found.'
+                        });
+                    } else {
+                        var bean = obj.data.items[0].data;
+                        var pag = Ext.getCmp(prototype.id + '-paggin4');
+                        var pagData = pag.getPageData();
+
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                    }
+                    
+                }
+            }
+        });
+        global.clear();
+        Ext.getCmp(prototype.id + '-gridDataLog').bindStore(storeGridDatasLog);
+        Ext.getCmp(prototype.id + '-paggin4').bindStore(storeGridDatasLog);
+        Ext.getCmp(prototype.id + '-pie').setVisible(true);
+    },
+    
 });

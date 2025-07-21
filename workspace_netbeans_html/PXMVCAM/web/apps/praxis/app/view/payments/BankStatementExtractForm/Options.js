@@ -70,6 +70,14 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Options', {
                             displayInfo: false,
                             hidden: true
                         },
+                        {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id + '-paggin4',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
+                        },
                     ]
                 }
             ]
@@ -100,6 +108,12 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Options', {
                             id: prototype.id + '-btnExcel',
                             iconCls: 'prx-icon-excel',
                             tooltip: 'Export to Excel'
+                        },
+                        {
+                            xtype: 'button',
+                            id: prototype.id + '-btnLog',
+                            iconCls: 'prx-icon-add',
+                            tooltip: 'View Log'
                         },
 //                        {
 //                            xtype: 'button',

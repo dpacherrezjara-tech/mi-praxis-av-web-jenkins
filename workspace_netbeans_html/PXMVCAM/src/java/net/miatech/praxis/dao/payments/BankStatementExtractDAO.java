@@ -2134,7 +2134,11 @@ public class BankStatementExtractDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00698DETALLE_V_SEBAS(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00698DETALLE_V_SEBAS(?,?,?,?,?,"
+                + "?,?,?,?,?,"
+                + "?,?,?,?,?,"
+                + "?,?,?,?,?,"
+                + "?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -2344,5 +2348,69 @@ public class BankStatementExtractDAO {
 
         return listaProcessor;
     }
+    
+    
+    public List<SQP04091Filter> searchLog(SQP04091Filter filter) throws SQLException, Exception {
+    List<SQP04091Filter> resultList = new ArrayList<>();
+    String procedureCall = "{CALL PRAXIS.SQP00698LOGUSAFLOW_2(?,?,?,?,?,?,?)}";
+
+    try (
+        Connection cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+        CallableStatement cstmt = cnx.prepareCall(procedureCall)
+    ) {
+        // Input
+        cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+        cstmt.setString(2, filter.IN_FECHA_FROM);
+        cstmt.setString(3, filter.IN_FECHA_TO);
+
+        // Output
+        cstmt.setInt(4, filter.page.PAGNUM);
+        cstmt.setInt(5, filter.page.PAGROW);
+        cstmt.setInt(6, filter.page.TOTPAG);
+        cstmt.setInt(7, filter.page.TOTROW);
+
+        // Register OUT
+        cstmt.registerOutParameter(4, Types.INTEGER);
+        cstmt.registerOutParameter(5, Types.INTEGER);
+        cstmt.registerOutParameter(6, Types.INTEGER);
+        cstmt.registerOutParameter(7, Types.INTEGER);
+
+        boolean hasResults = cstmt.execute();
+
+        if (hasResults) {
+            try (ResultSet rst = cstmt.getResultSet()) {
+                while (rst.next()) {
+                    SQP04091Filter bean = new SQP04091Filter();
+                    bean.CCUST = rst.getString("CCUST").trim();
+                    bean.FECRFILE = rst.getString("FECRFILE").trim();
+                    bean.CODEPROC = rst.getString("NOMCOD").trim();
+                    bean.SEQ = rst.getString("SEQ").trim();
+                    bean.STATP = rst.getString("STATP").trim();
+                    bean.MENSA = rst.getString("MENSA").trim();
+                    bean.NAMEPROC = rst.getString("NAMEPROC").trim();
+                    bean.HOSEND = rst.getString("HOSEND").trim();
+                    bean.USCR = rst.getString("USCR").trim();
+                    bean.FECR = rst.getString("FECR").trim();
+                    bean.HOCR = rst.getString("HOCR").trim();
+                    bean.HOFIN = rst.getString("HOFIN").trim();
+
+                    bean.page.PAGNUM = cstmt.getInt(4);
+                    bean.page.PAGROW = cstmt.getInt(5);
+                    bean.page.TOTPAG = cstmt.getInt(6);
+                    bean.page.TOTROW = cstmt.getInt(7);
+
+                    resultList.add(bean);
+                }
+            }
+        }
+
+    } catch (SQLException e) {
+        logError.error("SQL Exception in searchLog: " + e.getMessage(), e);
+        throw e;
+    }
+
+    return resultList;
+}
+
     
 }

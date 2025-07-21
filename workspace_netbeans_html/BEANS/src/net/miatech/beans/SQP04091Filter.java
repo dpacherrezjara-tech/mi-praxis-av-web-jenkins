@@ -327,6 +327,20 @@ public class SQP04091Filter extends A4022 {
     public double TOTAL_LIQ_IMPORTE = 0;
     public double TOTAL_TAX_IMPORTE = 0;
     
+    //VARIABLES PARA EL LOG
+    public String CCUST = "";
+    public String FECRFILE = "";
+    public String CODEPROC = "";
+    public String SEQ = "";
+    public String STATP = "";
+    public String MENSA = "";
+    public String NAMEPROC = "";
+    public String HOSEND = "";
+    public String USCR = "";
+    public String FECR = "";
+    public String HOCR = "";
+    public String HOFIN = "";
+    
     
     
     

@@ -8,6 +8,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Filters', {
     items: [
         {
             xtype: 'container',
+            id: prototype.id + '-filterMain',
             layout: {
                 type: 'hbox',
                 align: 'middle'
@@ -88,6 +89,82 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Filters', {
                     },
                     listeners: {
                         change: 'btnSearch_click'
+                    }
+                },
+                {
+                    fieldLabel: 'STATE',
+                    xtype: 'combo',
+                    width: 220,
+                    labelWidth: 60,
+                    style: 'margin-right:10px;',
+                    hidden: true,
+                    labelStyle: 'text-align: left; font-size: 14px;',
+                    fieldStyle: 'text-align: left; font-size: 14px;',
+                    disabled: false,
+                    id: prototype.id + '-typeState',
+                    queryMode: 'local',
+                    allowBlank: false,
+                    forceSelection: true,
+                    selectOnFocus: true,
+                    caseSensitive: false,
+                    autoSelect: true,
+                    editable: true,
+                    listConfig: {maxHeight: 60},
+                    typeAhead: true,
+                    valueField: 'code',
+                    displayField: 'name',
+                    enableKeyEvents: true,
+                    triggerAction: 'all',
+                    value: '',
+                    store: {
+                        fields: ['code', 'name'],
+                        data: [
+                            {code: '', name: 'ALL'},
+                            {code: '0', name: 'OK'},
+                            {code: '1', name: 'ERROR'},
+                        ]
+                    },
+                    listeners: {
+                        change: ''
+                    }
+                },
+                {
+                    fieldLabel: 'Processor',
+                    xtype: 'combo',
+                    width: 200,
+                    labelWidth: 95,
+                    style: 'margin-right:10px;',
+                    hidden: false,
+                    labelStyle: 'text-align: left; font-size: 14px;',
+                    fieldStyle: 'text-align: left; font-size: 14px;',
+                    disabled: false,
+                    id: prototype.id + '-fieldProcessorLog',
+                    queryMode: 'local',
+                    allowBlank: false,
+                    forceSelection: true,
+                    selectOnFocus: true,
+                    caseSensitive: false,
+                    autoSelect: true,
+                    editable: true,
+                    listConfig: {maxHeight: 130},
+                    typeAhead: true,
+                    valueField: 'code',
+                    displayField: 'name',
+                    enableKeyEvents: true,
+                    triggerAction: 'all',
+                    value: '',
+                    store: {
+                        fields: ['code', 'name'],
+                        data: [
+                            {code: '', name: 'All'},
+                            {code: 'AX', name: 'AX'},
+                            {code: 'DS', name: 'DS'},
+                            {code: 'WP', name: 'WP'},
+                            {code: 'WQ', name: 'WQ'}
+                        ]
+                    },
+                    listeners: {
+                        change: ''
                     }
                 },
                 // Type Report
@@ -289,8 +366,30 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Filters', {
                     listeners: {
                         change: 'onChangeRadio'
                     }
+                },
+                    {
+                        xtype: 'checkbox',
+                        boxLabel: '<strong>Log</strong>',
+                        id: prototype.id + '-chkLog',
+                        inputValue: '1',
+                        uncheckedValue: '0',
+                        listeners: {
+                            change: 'executeLog',
+                        }
+},
+                {
+                    xtype: 'button',
+                    text: 'Buscar',
+                    id: prototype.id + '-buttonLog',
+                    style: 'margin-left:10px; font-size: 14px;',
+                    scale: 'medium',
+                    hidden: true,
+                    click: 'executeLogSearch',
+                    
                 }
             ]
-        }
+        },
+        
+        
     ]
 });

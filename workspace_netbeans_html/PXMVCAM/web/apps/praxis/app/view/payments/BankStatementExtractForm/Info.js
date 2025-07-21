@@ -52,6 +52,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                 {
                     xtype: 'panel',
                     id: prototype.id + '-panelMain',
+                    hidden: false,
                     bodyStyle: 'background-color: #E3EAEF;',
                     layout: {
                         type: 'vbox',
@@ -4176,6 +4177,85 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                         }
                         // </editor-fold>
                     ]
+                },
+                {
+                    xtype: 'panel',
+                    id: prototype.id + '-panelLog',
+                    hidden: true,
+                    bodyStyle: 'background-color: #E3EAEF;',
+                    layout: {
+                        type: 'vbox',
+                        align: 'center'
+                    },
+                    height: 690,
+                    items: [
+                        {
+                            xtype: 'panel',
+                            id: prototype.id + '-panelGridDataLogMain',
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            defaults: {
+                                border: false,
+                                height: 150
+                            },
+                            bodyStyle: 'background: transparent',
+                            border: false,
+                            items: [
+                                    {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridDataLogMain',
+                                    height: 600,
+                                    width: 1090,
+                                    columnLines: true,
+                                    cls: 'custom-grid',
+                                    viewConfig: {
+                                        stripeRows: true,
+                                        enableTextSelection: true,
+                                        deferEmptyText: false,
+                                        emptyText: '<div style="text-align:center; padding:20px; font-size:14px; color:#999;">No se encontraron registros</div>'
+                                    },
+                                    features: [{
+                                        ftype: 'summary',
+                                        dock: 'bottom'
+                                    }],
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: true,
+                                            align: 'center',
+                                            style: 'text-align:center; font-weight:bold;',
+                                            tdCls: 'custom-grid-cell'
+                                        },
+                                        items: [
+                                            { text: 'File Date', dataIndex: 'FECRFILE', width: 120 },
+                                            { text: 'Processor', dataIndex: 'CODEPROC', width: 100 },
+                                            { 
+                                                text: 'State', 
+                                                dataIndex: 'STATP', 
+                                                width: 80,
+                                                renderer: function (value) {
+                                                    if (value === '0' || value === 0) return 'OK';
+                                                    if (value === '1' || value === 1) return 'ERROR';
+                                                    return value;
+                                                }
+                                            },
+                                            { text: 'Message', dataIndex: 'MENSA', width: 200 },
+                                            { text: 'Host Shipping', dataIndex: 'HOSEND', width: 110 },
+                                            { text: 'DATE CREATE', dataIndex: 'FECR', width: 120 },
+                                            { text: 'CREATION TIME', dataIndex: 'HOCR', width: 120 },
+                                            { text: 'DATE <br> RECEIVED', dataIndex: 'FERECV', width: 120 },
+                                            { text: 'HOUR <br> RECEIVED', dataIndex: 'HORECV', width: 120 },
+                                        ]
+                                    }
+                                }
+                                
+                            ]
+                        }
+                        
+                    ]
+                    
                 }
             ]
         }
