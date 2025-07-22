@@ -1134,6 +1134,7 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
         
     },
     
+    
     executeLog: function () {
     const panelMain = Ext.getCmp(prototype.id + '-panelMain');
     const panelLog = Ext.getCmp(prototype.id + '-panelLog');
@@ -1147,11 +1148,8 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
     const typeState = Ext.getCmp(prototype.id + '-typeState');
     const typeVisualization = Ext.getCmp(prototype.id + '-typeVisualization');
     
-    const bean = {
-        CCUST: '134',
-        DATE_FROM: '',
-        DATE_TO: ''
-    };
+    
+    this.setFormatParameterlog();
 
     
     if (panelMain && panelLog && !panelLog.isVisible()) {
@@ -1171,7 +1169,7 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
             method: 'POST',
             timeout: 600000,
             params: {
-                beanString: Ext.encode(bean)
+                beanString: Ext.encode(this.beanLog)
             },
             success: function (response) {
                 const res = Ext.decode(response.responseText);
