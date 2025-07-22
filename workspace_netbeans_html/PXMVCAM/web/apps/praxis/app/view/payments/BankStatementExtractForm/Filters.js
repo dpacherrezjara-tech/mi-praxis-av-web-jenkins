@@ -384,7 +384,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Filters', {
                     style: 'margin-left:10px; font-size: 14px;',
                     scale: 'medium',
                     hidden: true,
-                    click: 'executeLogSearch',
+                    handler: 'executeLogSearch'
                     
                 }
             ]

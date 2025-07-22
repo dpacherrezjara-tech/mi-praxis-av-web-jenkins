@@ -2352,7 +2352,7 @@ public class BankStatementExtractDAO {
     
     public List<SQP04091Filter> searchLog(SQP04091Filter filter) throws SQLException, Exception {
     List<SQP04091Filter> resultList = new ArrayList<>();
-    String procedureCall = "{CALL PRAXIS.SQP00698LOGUSAFLOW_2(?,?,?,?,?,?,?)}";
+    String procedureCall = "{CALL PRAXIS.SQP00698LOGUSAFLOW_2(?,?,?,?,?,?,?,?,?)}";
 
     try (
         Connection cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -2360,20 +2360,22 @@ public class BankStatementExtractDAO {
     ) {
         // Input
         cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-        cstmt.setString(2, filter.IN_FECHA_FROM);
-        cstmt.setString(3, filter.IN_FECHA_TO);
+        cstmt.setString(2, filter.IN_PROCESSOR);
+        cstmt.setString(3, filter.IN_STATE);
+        cstmt.setString(4, filter.IN_FECHA_FROM);
+        cstmt.setString(5, filter.IN_FECHA_TO);
 
         // Output
-        cstmt.setInt(4, filter.page.PAGNUM);
-        cstmt.setInt(5, filter.page.PAGROW);
-        cstmt.setInt(6, filter.page.TOTPAG);
-        cstmt.setInt(7, filter.page.TOTROW);
+        cstmt.setInt(6, filter.page.PAGNUM);
+        cstmt.setInt(7, filter.page.PAGROW);
+        cstmt.setInt(8, filter.page.TOTPAG);
+        cstmt.setInt(9, filter.page.TOTROW);
 
         // Register OUT
-        cstmt.registerOutParameter(4, Types.INTEGER);
-        cstmt.registerOutParameter(5, Types.INTEGER);
         cstmt.registerOutParameter(6, Types.INTEGER);
         cstmt.registerOutParameter(7, Types.INTEGER);
+        cstmt.registerOutParameter(8, Types.INTEGER);
+        cstmt.registerOutParameter(9, Types.INTEGER);
 
         boolean hasResults = cstmt.execute();
 
@@ -2394,11 +2396,10 @@ public class BankStatementExtractDAO {
                     bean.HOCR = rst.getString("HOCR").trim();
                     bean.HOFIN = rst.getString("HOFIN").trim();
 
-                    bean.page.PAGNUM = cstmt.getInt(4);
-                    bean.page.PAGROW = cstmt.getInt(5);
-                    bean.page.TOTPAG = cstmt.getInt(6);
-                    bean.page.TOTROW = cstmt.getInt(7);
-
+                    bean.page.PAGNUM = cstmt.getInt(6);
+                    bean.page.PAGROW = cstmt.getInt(7);
+                    bean.page.TOTPAG = cstmt.getInt(8);
+                    bean.page.TOTROW = cstmt.getInt(9);
                     resultList.add(bean);
                 }
             }

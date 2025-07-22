@@ -4,6 +4,7 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
     fecha: new Date(),
     objA3096: {},
     bean: {},
+    beanLog: {},
     beanTicket: {},
     beanExcel: {},
     beanDetDay: {},
@@ -1074,12 +1075,13 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
     
     executeLogSearch: function(){
         this.setFormatParameterlog();
+        console.log("llegoaqui",this.beanLog)
         Ext.Ajax.request({
             url: prototype.url + '/searchLog',
             method: 'POST',
             timeout: 600000,
             params: {
-                beanString: Ext.encode(me.beanLog)
+                beanString: Ext.encode(this.beanLog)
             },
             success: function (response) {
                 const res = Ext.decode(response.responseText);

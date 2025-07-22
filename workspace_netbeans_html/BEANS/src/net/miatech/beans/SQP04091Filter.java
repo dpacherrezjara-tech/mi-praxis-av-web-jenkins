@@ -340,6 +340,7 @@ public class SQP04091Filter extends A4022 {
     public String FECR = "";
     public String HOCR = "";
     public String HOFIN = "";
+    public String IN_STATE = "";
     
     
     
