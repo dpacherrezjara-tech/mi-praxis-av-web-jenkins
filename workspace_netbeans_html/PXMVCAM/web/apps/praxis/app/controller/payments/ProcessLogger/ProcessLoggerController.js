@@ -22,6 +22,7 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessLoggerController
         try {
             const res = await global.callStoreGet('PRAXISMP','SPMC003',{});
             me.procesadores = res.lstRs.at(0);
+            me.admins = res.lstRs.at(1);
             console.log('Procesadores Activos: ',me.procesadores);
         } catch (e) {
             console.error(e);
@@ -71,7 +72,8 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessLoggerController
         const me = this;
         const procWin = Ext.create('Ext.Praxis.view.payments.ProcessLoggerForm.DataEntrys.ProcessDataEntry', {
             id: prototype.id + '-ProcessDataEntry-1',
-            procesadores: me.procesadores
+            procesadores: me.procesadores,
+            admins: me.admins
         });
         procWin.show();
     },
