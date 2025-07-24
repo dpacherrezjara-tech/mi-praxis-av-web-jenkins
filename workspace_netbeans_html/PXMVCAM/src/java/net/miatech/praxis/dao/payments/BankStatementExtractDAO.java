@@ -2442,7 +2442,7 @@ public class BankStatementExtractDAO {
     
     public List<SQP04091Filter> searchLog(SQP04091Filter filter) throws SQLException, Exception {
     List<SQP04091Filter> resultList = new ArrayList<>();
-    String procedureCall = "{CALL PRAXIS.SQP00698LOGUSAFLOW_2(?,?,?,?,?,?,?,?,?)}";
+    String procedureCall = "{CALL PRAXISMP.MPS231(?,?,?,?,?,?,?,?,?)}";
 
     try (
         Connection cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -2485,6 +2485,8 @@ public class BankStatementExtractDAO {
                     bean.FECR = rst.getString("FECR").trim();
                     bean.HOCR = rst.getString("HOCR").trim();
                     bean.HOFIN = rst.getString("HOFIN").trim();
+                    bean.FERECV = rst.getString("FERECV").trim();
+                    bean.HORECV = rst.getString("HORECV").trim();
 
                     bean.page.PAGNUM = cstmt.getInt(6);
                     bean.page.PAGROW = cstmt.getInt(7);

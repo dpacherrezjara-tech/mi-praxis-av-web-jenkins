@@ -4779,7 +4779,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                     {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataLogMain',
-                                    height: 600,
+                                    height: 550,
                                     width: 1090,
                                     columnLines: true,
                                     cls: 'custom-grid',
@@ -4787,12 +4787,8 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                         stripeRows: true,
                                         enableTextSelection: true,
                                         deferEmptyText: false,
-                                        emptyText: '<div style="text-align:center; padding:20px; font-size:14px; color:#999;">No se encontraron registros</div>'
+                                        emptyText: '<div style="text-align:center; padding:20px; font-size:14px; color:#999;">No records found</div>'
                                     },
-                                    features: [{
-                                        ftype: 'summary',
-                                        dock: 'bottom'
-                                    }],
                                     columns: {
                                         defaults: {
                                             menuDisabled: true,
@@ -4802,7 +4798,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                             tdCls: 'custom-grid-cell'
                                         },
                                         items: [
-                                            { text: 'File Date', dataIndex: 'FECRFILE', width: 120 },
+                                            { text: 'Value Date', dataIndex: 'FECRFILE', width: 120 },
                                             { text: 'Processor', dataIndex: 'CODEPROC', width: 100 },
                                             { 
                                                 text: 'State', 
@@ -4822,7 +4818,73 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                             { text: 'HOUR <br> RECEIVED', dataIndex: 'HORECV', width: 120 },
                                         ]
                                     }
+                                },
+                                // <editor-fold defaultstate="collapsed" desc="boxPagDetail">
+                        {
+                            xtype: 'panel',
+                            id: prototype.id + '-pie2',
+                            hidden: false,
+                            layout: {
+                                type: 'hbox',
+                                pack: 'center'
+                            },
+                            border: true,
+                            width: 550, // Aumenté el ancho para acomodar el texto más grande
+                            height: 35, // Aumenté el alto para que el texto no se vea apretado
+                            margin: '10 0 0 0', // Margen superior aumentado
+                            defaults: {
+                                border: false
+                            },
+                            style: 'border-radius: 10px;',
+                            items: [
+                                {
+                                    bodyStyle: 'background: #6C87A8; border-radius: 10px;', // Estilo mejorado
+                                    xtype: 'panel',
+                                    width: '100%',
+                                    height: '100%',
+                                    layout: {
+                                        type: 'hbox',
+                                        pack: 'center',
+                                        align: 'middle' // Alineación vertical al centro
+                                    },
+                                    defaults: {
+                                        xtype: 'label',
+                                        style: 'color: white; font-weight: bold; margin-top: 7px; font-size: 14px;' // Tamaño de letra aumentado a 14px
+                                    },
+                                    items: [
+                                        {
+                                            text: 'Page',
+                                            width: 60 // Aumenté el ancho para acomodar el texto más grande
+                                        },
+                                        {
+                                            id: prototype.id + '-lbl-currentPage2',
+                                            text: '1',
+                                            width: 60 // Aumenté el ancho para acomodar el texto más grande
+                                        },
+                                        {
+                                            text: 'OF',
+                                            width: 50 // Aumenté el ancho para acomodar el texto más grande
+                                        },
+                                        {
+                                            id: prototype.id + '-lbl-pageCount2',
+                                            text: '0',
+                                            width: 50 // Aumenté el ancho para acomodar el texto más grande
+                                        },
+                                        {xtype: 'tbspacer', width: 60}, // Aumenté el ancho del espaciador
+                                        {
+                                            text: 'Total Found',
+                                            width: 90 // Aumenté el ancho para acomodar el texto más grande
+                                        },
+                                        {
+                                            id: prototype.id + '-lbl-total2',
+                                            text: '0',
+                                            width: 60 // Aumenté ligeramente el ancho
+                                        }
+                                    ]
                                 }
+                            ]
+                        }
+                        // </editor-fold>
                                 
                             ]
                         }

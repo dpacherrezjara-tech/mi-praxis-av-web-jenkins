@@ -57,6 +57,8 @@ public class SQP04091Filter extends A4022 {
     public String SDATE100 = ""; 
     public String SAGENT100 = ""; 
     public String SCURRENCY100 = ""; 
+    public String FERECV = ""; 
+    public String HORECV = ""; 
     
     public double AXAV = 0;
     public double AXTA = 0;

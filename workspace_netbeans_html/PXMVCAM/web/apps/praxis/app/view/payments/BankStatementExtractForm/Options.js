@@ -109,12 +109,12 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Options', {
                             iconCls: 'prx-icon-excel',
                             tooltip: 'Export to Excel'
                         },
-                        {
-                            xtype: 'button',
-                            id: prototype.id + '-btnLog',
-                            iconCls: 'prx-icon-add',
-                            tooltip: 'View Log'
-                        },
+//                        {
+//                            xtype: 'button',
+//                            id: prototype.id + '-btnLog',
+//                            iconCls: 'prx-icon-add',
+//                            tooltip: 'View Log'
+//                        },
 //                        {
 //                            xtype: 'button',
 //                            id: prototype.id + '-btnClear',
