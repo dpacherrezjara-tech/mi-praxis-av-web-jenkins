@@ -26,8 +26,8 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.DataEntrys.ProcessDataEnt
                 type: 'vbox',
                 pack: 'center'
             },
-            defaults:{
-              margin:'3 3 3 3',  
+            defaults: {
+                margin: '3 3 3 3',
             },
             items: [
                 {
@@ -69,59 +69,131 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.DataEntrys.ProcessDataEnt
                 //<editor-fold defaultstate="collapsed" desc="Filtros">
                 {
                     xtype: 'form',
-                    layout: 'hbox',
+                    layout: 'vbox',
                     id: prototype.idProcess + '-formF2',
                     bodyStyle: 'background-color:#efe5e5',
                     border: true,
                     width: '100%',
                     defaults: {
-                        xtype: 'textfield',
-                        fieldStyle: 'text-align: center;',
-                        padding: '5 1 5 1',
-                        hiddenLabel: false,
-                        labelAlign: 'right',
-                        hidden: false
+                        xtype: 'panel',
+                        layout: 'hbox',
+                        border: false,
+                        bodyStyle: 'background-color:transparent;',
+                        defaults: {
+                            xtype: 'textfield',
+                            fieldStyle: 'text-align: center;',
+                            padding: '5 1 5 1',
+                            hiddenLabel: false,
+                            labelAlign: 'right',
+                            hidden: false
+                        }
+
                     },
                     items: [
                         {
-                            xtype: 'combobox',
-                            fieldLabel: 'Client',
-                            name: 'IN_CCUST',
-                            store: Ext.create('Ext.data.SimpleStore', {
-                                fields: ['code', 'name'],
-                                data: [
-                                    ['134', 'AV - AVIANCA'],
-                                    ['202', 'TA - TACA'],
-                                    ['547', '2K - AEROGAL'],
-                                    ['133', 'LR - LACSA']
-                                ]
-                            }),
-                            labelWidth: 80,
-                            width: 210,
-                            displayField: 'name',
-                            valueField: 'code',
-                            queryMode: 'local',
-                            editable: false,
-                            value: '134'
+                            items: [
+                                {
+                                    xtype: 'combobox',
+                                    fieldLabel: 'Type Process',
+                                    id: prototype.idProcess + '-typeProcessF2',
+                                    name: 'IN_TIPO',
+                                    store: Ext.create('Ext.data.SimpleStore', {
+                                        fields: ['code', 'name'],
+                                        data: [
+                                            ['1', 'Transfer'],
+                                            ['2', 'Value Date']
+                                        ]
+                                    }),
+                                    labelWidth: 100,
+                                    width: 210,
+                                    displayField: 'name',
+                                    valueField: 'code',
+                                    queryMode: 'local',
+                                    editable: false,
+                                    value: '1',
+                                    listeners: {
+                                        change: 'onChangeTypeProcessF2'
+                                    }
+                                }
+                            ]
                         },
                         {
-                            xtype: 'combo',
-                            id: prototype.idProcess + '-cmbCODPRO',
-                            name: 'IN_CODPRO',
-                            labelWidth: 70,
-                            width: 250,
-                            valueField: 'CODE',
-                            displayField: 'NAME',
-                            fieldLabel: 'Processor',
-                            queryMode: 'local',
-                            editable: false,
-                            allowBlank: true,
-                            caseSensitive: false,
-                            autoSelect: true,
-                            labelAlign: 'right',
-                            typeAhead: true,
-                            enableKeyEvents: true,
-                            triggerAction: 'all'
+                            items: [
+                                {
+                                    xtype: 'combobox',
+                                    fieldLabel: 'Client',
+                                    name: 'IN_CCUST',
+                                    store: Ext.create('Ext.data.SimpleStore', {
+                                        fields: ['code', 'name'],
+                                        data: [
+                                            ['ALL', 'All Clients'],
+                                            ['134', 'AV - AVIANCA '],
+                                            ['202', 'TA - TACA'],
+                                            ['547', '2K - AEROGAL'],
+                                            ['133', 'LR - LACSA']
+                                        ]
+                                    }),
+                                    labelWidth: 80,
+                                    width: 210,
+                                    displayField: 'name',
+                                    valueField: 'code',
+                                    queryMode: 'local',
+                                    editable: false,
+                                    value: '134'
+                                },
+                                {
+                                    xtype: 'combo',
+                                    id: prototype.idProcess + '-cmbCODPRO',
+                                    name: 'IN_CODPRO',
+                                    labelWidth: 70,
+                                    width: 250,
+                                    valueField: 'CODE',
+                                    displayField: 'NAME',
+                                    fieldLabel: 'Processor',
+                                    queryMode: 'local',
+                                    editable: false,
+                                    allowBlank: true,
+                                    caseSensitive: false,
+                                    autoSelect: true,
+                                    labelAlign: 'right',
+                                    typeAhead: true,
+                                    enableKeyEvents: true,
+                                    triggerAction: 'all'
+                                }
+                            ]
+                        },
+                        {
+                            id: prototype.idProcess + '-valueDatesF2',
+                            width:'100%',
+                            hidden:true,
+                            layout: {
+                                type: 'hbox',
+                                pack: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'datefield',
+                                    name: 'IN_VALDATEF',
+                                    id: prototype.idProcess + '-fromDateF2',
+                                    fieldLabel: 'From',
+                                    format: 'Ymd',
+                                    editable: true, // Deshabilita la edición del campo
+                                    labelWidth: 50,
+                                    width: 140,
+                                    value: new Date()
+                                },
+                                {
+                                    xtype: 'datefield',
+                                    name: 'IN_VALDATET',
+                                    id: prototype.idProcess + '-toDateF2',
+                                    fieldLabel: 'To',
+                                    format: 'Ymd',
+                                    editable: true, // Deshabilita la edición del campo
+                                    labelWidth: 30,
+                                    width: 120,
+                                    value: new Date()
+                                }
+                            ]
                         }
                     ]
                 },

@@ -39,10 +39,10 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessDataEntryControl
         const me = this;
         const filter = Ext.getCmp(prototype.idProcess + '-processType');
         let notifier = new AWN();
-
         const onOk = () => {
             switch (filter.value) {
                 case 'F2':
+
                     me.processF2();
                     break;
                 case 'DB':
@@ -56,12 +56,35 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessDataEntryControl
         notifier.confirm('Are you sure to Process', onOk, null);
     },
     processF2: async function () {
+        const me = this;
+        let notifier = new AWN();
         let usuario = document.getElementById("menuUser").innerText;
-        let filters = Ext.getCmp(prototype.idProcess + '-formF2').getForm().getValues();
+        let filters = Object.assign({}, Ext.getCmp(prototype.idProcess + '-formF2').getForm().getValues());
 
-        if (filters.IN_CODPRO === '') {
-            new AWN().alert('Select Processor before');
+        let permission = true;
+
+        if (!me.view.admins.some(x => x.USERNAME === usuario)) {
+
+            if (filters.IN_CCUST === 'ALL') {
+                permission = false;
+            }
+
+            if (filters.IN_CODPRO === '') {
+                permission = false;
+            }
+        }
+
+        if (!permission) {
+            notifier.alert('User not allowed');
             return;
+        }
+
+        filters.IN_CODPRO = filters.IN_CODPRO === '' ? 'ALL' : filters.IN_CODPRO;
+
+        if (filters.IN_TIPO === '1') {
+            filters.IN_FECR = Ext.Date.format(new Date(), 'Ymd');
+        } else {
+            filters.IN_FECR = '';
         }
 
         let params = {
@@ -74,7 +97,7 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessDataEntryControl
     },
     processDB: async function () {
         let usuario = document.getElementById("menuUser").innerText;
-        let filters = Ext.getCmp(prototype.idProcess + '-formF2').getForm().getValues();
+        let filters = Ext.getCmp(prototype.idProcess + '-formDB').getForm().getValues();
         let params = {
             IN_USER: usuario,
             ...filters
@@ -124,7 +147,13 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessDataEntryControl
             notifier.alert('Select file');
         }
     },
-
+    onChangeTypeProcessF2: function (btn) {
+        const valueDates = Ext.getCmp(prototype.idProcess + '-valueDatesF2');
+        valueDates.hide();
+        if (btn.value === '2') {
+            valueDates.show();
+        }
+    },
     onClose: function () {
         this.view.close();
     }
