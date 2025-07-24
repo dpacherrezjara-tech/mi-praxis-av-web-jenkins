@@ -1320,6 +1320,42 @@ public class BankStatementExtractController extends BaseController {
         return new Gson().toJson(map);
     }
     
+    @RequestMapping(value = "/searchTacaflowDiaryDetail")
+    public @ResponseBody
+    String searchTacaflowDiaryDetail(ModelMap map, HttpServletRequest request) {
+        List<SQP04091Filter> listaData;
+        Gson gson = new Gson();
+        SQP04091Filter filter;
+
+        String beanString = "";
+        System.out.println("-------------- BankStatementExtract : searchUsaflowDiaryDetail-------------");
+        try {
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, SQP04091Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
+            filter.page.PAGROW = 20;
+            start = (start != 0 ? start : 0);
+            filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            logic = new BankStatementExtractLogic();
+            logic.setSession((IServerSession) serverSession.getServerSession());
+            listaData = logic.searchTacaflowDiaryDetail(filter);
+
+            map.put("success", true);
+            map.put("total", listaData.size() > 0 ? listaData.get(0).page.TOTROW : 0);
+            map.put("data", listaData);
+        } catch (NumberFormatException ex) {
+            map.put("success", false);
+            map.put("sesion", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("sesion", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+    
     @RequestMapping(value = "searchTotalUsaflowDiaryDetail")
     public @ResponseBody
     String searchTotalConciliation(ModelMap map, HttpServletRequest request) {

@@ -252,6 +252,17 @@ public class SQP04091Filter extends A4022 {
     public double VAR_TOTAL_CRC = 0;
     public double VAR_TOTAL_TACA_CRC = 0;
     
+    public double STATEMENT_TACA = 0;
+    public double COMISION_TACA = 0;
+    public double OTHERS_TACA = 0;
+    public double SETTLEMENT_TACA = 0;
+    public double SALE_TACA = 0;
+    
+    public double TOTAL_STATEMENT_TACA = 0;
+    public double TOTAL_COMISION_TACA = 0;
+    public double TOTAL_OTHERS_TACA = 0;
+    public double TOTAL_SETTLEMENT_TACA = 0;
+    public double TOTAL_SALE_TACA = 0;
     
     public double TOTAL_STATEMENT_WP_UK_CO = 0;
     public double TOTAL_SETTLEMENT_WP_UK_CO = 0;

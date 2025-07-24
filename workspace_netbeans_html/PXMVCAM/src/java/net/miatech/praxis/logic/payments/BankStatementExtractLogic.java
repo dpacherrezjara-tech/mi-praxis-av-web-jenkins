@@ -33,6 +33,10 @@ public class BankStatementExtractLogic {
         return objDAO.searchUsaflowDiaryDetail(filter);
     }
     
+    public List<SQP04091Filter> searchTacaflowDiaryDetail(SQP04091Filter filter) throws SQLException, Exception {
+        return objDAO.searchTacaflowDiaryDetail(filter);
+    }
+    
     public List<SQP04091Filter> searchUsaflowDiaryHistoric(SQP04091Filter filter) throws SQLException, Exception {
         return objDAO.searchUsaflowDiaryHistoric(filter);
     }

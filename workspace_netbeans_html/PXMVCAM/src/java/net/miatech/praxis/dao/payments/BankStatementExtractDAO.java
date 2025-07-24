@@ -562,6 +562,126 @@ public class BankStatementExtractDAO {
         return lstRtn;
     }
     
+    public List<SQP04091Filter> searchTacaflowDiaryDetail(SQP04091Filter filter) throws SQLException, Exception {
+        List<SQP04091Filter> lstRtn = new ArrayList<>();
+        SQP04091Filter objRtn;
+
+        CallableStatement cstmt01 = null;
+        ResultSet rs01 = null;
+        ResultSet rs02 = null;
+
+        double TOTAL_STATEMENT_TACA = 0, TOTAL_COMISION_TACA = 0, TOTAL_OTHERS_TACA = 0,
+        TOTAL_SETTLEMENT_TACA = 0, TOTAL_SALE_TACA = 0;
+
+        String SQLCLL01 = "{CALL PRAXISMP.MPF186(?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt01 = cnx.prepareCall(SQLCLL01);
+
+            // Registrar parámetros de salida
+            cstmt01.registerOutParameter(4, Types.INTEGER);
+            cstmt01.registerOutParameter(5, Types.INTEGER);
+            cstmt01.registerOutParameter(6, Types.INTEGER);
+            cstmt01.registerOutParameter(7, Types.INTEGER);
+
+            // Establecer parámetros de entrada
+            cstmt01.setString(1, filter.IN_CCUST);
+            cstmt01.setString(2, filter.IN_FECHA_FROM);
+            cstmt01.setString(3, filter.IN_FECHA_TO);
+            cstmt01.setInt(4, filter.page.PAGNUM);
+            cstmt01.setInt(5, filter.page.PAGROW);
+            cstmt01.setInt(6, filter.page.TOTPAG);
+            cstmt01.setInt(7, filter.page.TOTROW);
+
+            // Ejecutar el procedimiento almacenado
+            cstmt01.execute();
+
+            // Actualizar valores de paginación
+            filter.page.PAGNUM = cstmt01.getInt(4);
+            filter.page.PAGROW = cstmt01.getInt(5);
+            filter.page.TOTPAG = cstmt01.getInt(6);
+            filter.page.TOTROW = cstmt01.getInt(7);
+
+            // Obtener el primer ResultSet (totales)
+            rs01 = cstmt01.getResultSet();
+            if (rs01 != null && rs01.next()) {
+                TOTAL_STATEMENT_TACA = rs01.getDouble("TOTAL_STATEMENT_TACA");
+                TOTAL_COMISION_TACA = rs01.getDouble("TOTAL_COMISION_TACA");
+                TOTAL_OTHERS_TACA = rs01.getDouble("TOTAL_OTHERS_TACA");
+                TOTAL_SETTLEMENT_TACA = rs01.getDouble("TOTAL_SETTLEMENT_TACA");
+                TOTAL_SALE_TACA = rs01.getDouble("TOTAL_SALE_TACA");
+            }
+
+            // Mover al segundo ResultSet (datos detallados)
+            if (cstmt01.getMoreResults()) {
+                rs02 = cstmt01.getResultSet();
+
+                // Procesar registros del segundo ResultSet
+                while (rs02 != null && rs02.next()) {
+                    objRtn = new SQP04091Filter();
+
+                    objRtn.DATE_FROM = rs02.getString("VALDATE");
+                    objRtn.CURRENCY = "USD";
+                    
+                    objRtn.STATEMENT_TACA = rs02.getDouble("STATEMENT_TACA");
+                    objRtn.COMISION_TACA = rs02.getDouble("COMISION_TACA");
+                    objRtn.OTHERS_TACA = rs02.getDouble("OTHERS_TACA");
+                    objRtn.SETTLEMENT_TACA = rs02.getDouble("SETTLEMENT_TACA");
+                    objRtn.SALE_TACA = rs02.getDouble("SALE_TACA");
+                    objRtn.VAR_TACA = rs02.getDouble("VAR_TACA");
+                    
+                    objRtn.TOTAL_STATEMENT_TACA = TOTAL_STATEMENT_TACA;
+                    objRtn.TOTAL_COMISION_TACA = TOTAL_COMISION_TACA;
+                    objRtn.TOTAL_OTHERS_TACA = TOTAL_OTHERS_TACA;
+                    objRtn.TOTAL_SETTLEMENT_TACA = TOTAL_SETTLEMENT_TACA;
+                    objRtn.TOTAL_SALE_TACA = TOTAL_SALE_TACA;
+                    
+                    objRtn.page.PAGNUM = filter.page.PAGNUM;
+                    objRtn.page.PAGROW = filter.page.PAGROW;
+                    objRtn.page.TOTPAG = filter.page.TOTPAG;
+                    objRtn.page.TOTROW = filter.page.TOTROW;
+
+                    lstRtn.add(objRtn);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            // Cerrar recursos en orden inverso
+            if (rs02 != null) {
+                try {
+                    rs02.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (rs01 != null) {
+                try {
+                    rs01.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (cstmt01 != null) {
+                try {
+                    cstmt01.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+            pasarGarbageCollector();
+        }
+
+        return lstRtn;
+    }
+    
     public List<A2356Filter> getListTotalConciliation_Bard(A2356Filter filter) throws SQLException, Exception {
 
         List<A2356Filter> lstData = new ArrayList<A2356Filter>(0);

@@ -240,10 +240,13 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
             
         } else {
             
-            this.searchUsaflowDiaryDetail()
+            if (valueTypeVisualization == 'USA') {
+                this.searchUsaflowDiaryDetail()
+            } else {
+                this.searchTacaflowDiaryDetail()
+            }
             
         }
-        
         
     },
     setFormatParameter: function () {
@@ -503,6 +506,168 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
         }
     }
 });
+
+
+    },
+    searchTacaflowDiaryDetail: function () {
+        me.getPaggin()
+        me.panelActual = '-panelTACAFLOWDiaryDetail';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        this.searchParams.beanString = JSON.stringify(me.bean);
+        let lstData = []
+        
+        var storeGridDatas = Ext.create('Ext.Praxis.store.flown.PassengerConciliation.GridData', {
+            proxy: {
+                url: prototype.url + '/searchTacaflowDiaryDetail'
+            }, listeners: {
+                beforeload: function(obj) {
+                    obj.proxy.extraParams = me.searchParams;
+                },
+                load: function(obj) {
+                    console.log(obj.data);
+                    if (obj.data.length === 0) {
+                        global.Msg({
+                            msg: 'Data not found.'
+                        });
+                    } else {
+                        var bean = obj.data.items[0].data;
+                        var pag = Ext.getCmp(prototype.id + '-paggin');
+                        var pagData = pag.getPageData();
+
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                    }
+                    
+                }
+            }
+        });
+        global.clear();
+        Ext.getCmp(prototype.id + '-gridTACAFLOWDiaryDetail').setStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-pie').setVisible(true);
+        
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+        proxy: {
+            url: prototype.url + '/searchTotalUsaflowDiaryDetail'
+        },
+        listeners: {
+            beforeload: function (obj) {
+                obj.proxy.extraParams = me.searchParams;
+            },
+            load: function (store, records, success, operation) {
+                const res = Ext.JSON.decode(operation._response.responseText);
+
+                if (!res || !res.data2 || res.data2.length === 0) {
+                    global.Msg({ msg: 'Data not found.' });
+
+                    Ext.getCmp(prototype.id + '-chartColombia-WP').bindStore(
+                        Ext.create('Ext.data.Store', { fields: ['processor', 'statement', 'settlement', 'sale'], data: [] })
+                    );
+                    Ext.getCmp(prototype.id + '-chartColombia-Others').bindStore(
+                        Ext.create('Ext.data.Store', { fields: ['processor', 'statement', 'settlement', 'sale'], data: [] })
+                    );
+                    Ext.getCmp(prototype.id + '-chartSalvador-WP').bindStore(
+                        Ext.create('Ext.data.Store', { fields: ['processor', 'statement', 'settlement', 'sale'], data: [] })
+                    );
+                    Ext.getCmp(prototype.id + '-chartSalvador-Others').bindStore(
+                        Ext.create('Ext.data.Store', { fields: ['processor', 'statement', 'settlement', 'sale'], data: [] })
+                    );
+                    return;
+                }
+
+                const d = res.data2[0];
+
+                // Colombia WP
+                const chartDataColombiaWP = [
+                    {
+                        processor: 'WP UK',
+                        statement: d.TOTAL_STATEMENT_WP_UK_CO,
+                        settlement: d.TOTAL_SETTLEMENT_WP_UK_CO,
+                        sale: d.TOTAL_SALE_WP_UK_CO
+                    }
+                ];
+                // Colombia Otros
+                const chartDataColombiaOthers = [
+                    {
+                        processor: 'BANCARD',
+                        statement: d.TOTAL_STATEMENT_BANCARD_CO,
+                        settlement: d.TOTAL_SETTLEMENT_BANCARD_CO,
+                        sale: d.TOTAL_SALE_BANCARD_CO
+                    },
+                    {
+                        processor: 'AMEX',
+                        statement: d.TOTAL_STATEMENT_AMEX_CO,
+                        settlement: d.TOTAL_SETTLEMENT_AMEX_CO,
+                        sale: d.TOTAL_SALE_AMEX_CO
+                    },
+                    {
+                        processor: 'DISCOVER',
+                        statement: d.TOTAL_STATEMENT_DISCOVER_CO,
+                        settlement: d.TOTAL_SETTLEMENT_DISCOVER_CO,
+                        sale: d.TOTAL_SALE_DISCOVER_CO
+                    }
+                ];
+
+                // Salvador WP
+                const chartDataSalvadorWP = [
+                    {
+                        processor: 'WP UK',
+                        statement: d.TOTAL_STATEMENT_WP_UK_SA,
+                        settlement: d.TOTAL_SETTLEMENT_WP_UK_SA,
+                        sale: d.TOTAL_SALE_WP_UK_SA
+                    }
+                ];
+                // Salvador Otros
+                const chartDataSalvadorOthers = [
+                    {
+                        processor: 'BANCARD',
+                        statement: d.TOTAL_STATEMENT_BANCARD_SA,
+                        settlement: d.TOTAL_SETTLEMENT_BANCARD_SA,
+                        sale: d.TOTAL_SALE_BANCARD_SA
+                    },
+                    {
+                        processor: 'AMEX',
+                        statement: d.TOTAL_STATEMENT_AMEX_SA,
+                        settlement: d.TOTAL_SETTLEMENT_AMEX_SA,
+                        sale: d.TOTAL_SALE_AMEX_SA
+                    },
+                    {
+                        processor: 'DISCOVER',
+                        statement: d.TOTAL_STATEMENT_DISCOVER_SA,
+                        settlement: d.TOTAL_SETTLEMENT_DISCOVER_SA,
+                        sale: d.TOTAL_SALE_DISCOVER_SA
+                    }
+                ];
+
+                // Bind stores
+                Ext.getCmp(prototype.id + '-chartColombia-WP').bindStore(
+                    Ext.create('Ext.data.Store', {
+                        fields: ['processor', 'statement', 'settlement', 'sale'],
+                        data: chartDataColombiaWP
+                    })
+                );
+                Ext.getCmp(prototype.id + '-chartColombia-Others').bindStore(
+                    Ext.create('Ext.data.Store', {
+                        fields: ['processor', 'statement', 'settlement', 'sale'],
+                        data: chartDataColombiaOthers
+                    })
+                );
+                Ext.getCmp(prototype.id + '-chartSalvador-WP').bindStore(
+                    Ext.create('Ext.data.Store', {
+                        fields: ['processor', 'statement', 'settlement', 'sale'],
+                        data: chartDataSalvadorWP
+                    })
+                );
+                Ext.getCmp(prototype.id + '-chartSalvador-Others').bindStore(
+                    Ext.create('Ext.data.Store', {
+                        fields: ['processor', 'statement', 'settlement', 'sale'],
+                        data: chartDataSalvadorOthers
+                    })
+                );
+            }
+        }
+    });
 
 
     },
