@@ -1,26 +1,18 @@
-Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Grids.MainGrid', {
+Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Grids.ProcessLoggerGrid', {
     extend: 'Ext.grid.Panel',
-    alias: 'widget.' + prototype.id + '-MainGrid',
+    alias: 'widget.' + prototype.id + '-ProcessLoggerGrid',
     requires: [
-        'Ext.Praxis.controller.payments.ProcessLogger.MainGridController'
+        'Ext.Praxis.controller.payments.ProcessLogger.ProcessLoggerGridController'
     ],
-    controller: 'MainGridController',
+    controller: 'ProcessLoggerGridController',
     maxHeight: prototype.height,
     minHeight: 200,
     height: 'auto',
-    width: 1100,
+    width: 1600,
     viewConfig: {
         stripeRows: true,
         enableTextSelection: true,
-        markDirty: false,
-        listeners: {
-            refresh: function (dataview) {
-                Ext.each(dataview.panel.columns, function (column) {
-                    if (column.autoSizeColumn === true)
-                        column.autoSize();
-                });
-            }
-        }
+        markDirty: false
     },
     columnLines: true,
     columns: {
@@ -31,24 +23,21 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Grids.MainGrid', {
         },
         items: [
             //<editor-fold defaultstate="collapsed" desc="Detail Cols">
-            {text: 'Client<br>Code', dataIndex: 'CCUST', width: 70},
-            {text: 'Processing<br>Date', dataIndex: 'FPRDA', width: 80},
-            {text: 'Processor', dataIndex: 'PROC_NAME', flex: 1},
-            {text: 'Process<br>Init', dataIndex: 'FINI', width: 180},
-            {text: 'Process<br>End', dataIndex: 'FFIN', width: 180},
-            {text: 'Seq', dataIndex: 'SEQ', width: 50},
-            {text: 'Status', dataIndex: 'STAT', width: 90,
+            {text: 'ID', dataIndex: 'CUUID', width: 230},
+            {text: 'Process<br>Date', dataIndex: 'FUUID', width: 80},
+            {text: 'Process', dataIndex: 'PROCESO', flex: 1},
+            {text: 'Status', dataIndex: 'STPRO', width: 90,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     const opts = {
-                        'X': () => {
-                            metaData.tdAttr = `data-qtip="${record.data.VRESULT}"`;
+                        'P': () => {
+                            metaData.tdAttr = `data-qtip="Processing"`;
                             return '<img src="resources/img/icon/16x16/loading_robot.png"/>';
                         },
-                        '1': () => {
-                            metaData.tdAttr = `data-qtip="${record.data.VRESULT}"`;
+                        'C': () => {
+                            metaData.tdAttr = `data-qtip="Completed"`;
                             return '<img src="resources/img/icon/16x16/check.png"/>';
                         },
-                        '':() => {
+                        'X':() => {
                             metaData.tdAttr = `data-qtip="Error"`;
                             return '<img src="resources/img/icon/delete.png"/>';
                         }
@@ -56,7 +45,13 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Grids.MainGrid', {
                     return opts[value.trim()]();
                 }
             },
-            {text: 'User', dataIndex: 'USCR', width: 90}
+            {text: 'Message', dataIndex: 'MSGPRO', width: 400},
+            {text: 'User<br>Create', dataIndex: 'USCR', width: 100},
+            {text: 'Date<br>Create', dataIndex: 'FECR', width: 80},
+            {text: 'Hour<br>Create', dataIndex: 'HOCR', width: 80},
+            {text: 'User<br>End', dataIndex: 'USTR', width: 100},
+            {text: 'Date<br>End', dataIndex: 'FETR', width: 80},
+            {text: 'Hour<br>End', dataIndex: 'HOTR', width: 80}
             //</editor-fold>
         ]
     },
