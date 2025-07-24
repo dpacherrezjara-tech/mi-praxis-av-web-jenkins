@@ -1006,7 +1006,7 @@ public class BankStatementExtractDAO {
         TOTAL_VAR_DISCOVER_CO = 0, TOTAL_VAR_WP_UK_SA = 0, TOTAL_VAR_BANCARD_SA = 0, TOTAL_VAR_AMEX_SA = 0,
         TOTAL_VAR_DISCOVER_SA = 0, TOTAL_VAR_TOTAL_CO = 0, TOTAL_VAR_TOTAL_SA = 0, TOTAL_VAR_TOTAL_CO_SA = 0;
 
-        String SQLCLL01 = "{CALL PRAXISMP.MPS127(?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.MPS127_v2(?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1093,10 +1093,8 @@ public class BankStatementExtractDAO {
 
                     objRtn.CURRENCY = "USD";
                     objRtn.NUMBERWEAK = rs02.getString("NUMBERWEAK");
-                    objRtn.NUMBER_WEAK = rs02.getString("NUMBER_WEAK");
                     objRtn.WEEK_START_DATE = rs02.getString("WEEK_START_DATE");
                     objRtn.WEEK_END_DATE = rs02.getString("WEEK_END_DATE");
-                    
                 
                     objRtn.AMOUNT_WP_UK_CO = rs02.getDouble("AMOUNT_WP_UK_CO");
                     objRtn.AMOUNT_BANCARD_CO = rs02.getDouble("AMOUNT_BANCARD_CO");
@@ -1458,16 +1456,11 @@ public class BankStatementExtractDAO {
         ResultSet rs01 = null;
         ResultSet rs02 = null;
 
-        double TOTAL_AMOUNT_TACA = 0, TOTAL_AMOUNT_CRC = 0,
-        TOTAL_TOTAL_TACA = 0, TOTAL_TOTAL_CRC = 0, TOTAL_TOTAL_TACA_CRC = 0, 
-                
-        TOTAL_AVG_TACA = 0, TOTAL_AVG_CRC = 0,
-        TOTAL_AVG_TOTAL_TACA = 0, TOTAL_AVG_TOTAL_CRC = 0, TOTAL_AVG_TOTAL_TACA_CRC = 0, 
-        
-        TOTAL_VAR_TACA = 0, TOTAL_VAR_CRC = 0,
-        TOTAL_VAR_TOTAL_TACA = 0, TOTAL_VAR_TOTAL_CRC = 0,TOTAL_VAR_TOTAL_TACA_CRC = 0;
+        double  TOTAL_AMOUNT_TACA = 0, TOTAL_AMOUNT_CRC = 0, TOTAL_AMOUNT_TACA_CRC = 0, 
+                TOTAL_AVG_TACA = 0, TOTAL_AVG_CRC = 0, TOTAL_AVG_TACA_CRC = 0, 
+                TOTAL_VAR_TACA = 0, TOTAL_VAR_CRC = 0, TOTAL_VAR_TACA_CRC = 0;
 
-        String SQLCLL01 = "{CALL PRAXISMP.MPS123(?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.MPS123_v2(?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1503,24 +1496,15 @@ public class BankStatementExtractDAO {
             if (rs01 != null && rs01.next()) {
                 TOTAL_AMOUNT_TACA = rs01.getDouble("TOTAL_AMOUNT_TACA");
                 TOTAL_AMOUNT_CRC = rs01.getDouble("TOTAL_AMOUNT_CRC");
-                
-                TOTAL_TOTAL_TACA = rs01.getDouble("TOTAL_TOTAL_TACA");
-                TOTAL_TOTAL_CRC = rs01.getDouble("TOTAL_TOTAL_CRC");
-                TOTAL_TOTAL_TACA_CRC = rs01.getDouble("TOTAL_TOTAL_TACA_CRC");
+                TOTAL_AMOUNT_TACA_CRC = rs01.getDouble("TOTAL_AMOUNT_TACA_CRC");
                 
                 TOTAL_AVG_TACA = rs01.getDouble("TOTAL_AVG_TACA");
                 TOTAL_AVG_CRC = rs01.getDouble("TOTAL_AVG_CRC");
-                
-                TOTAL_AVG_TOTAL_TACA = rs01.getDouble("TOTAL_AVG_TOTAL_TACA");
-                TOTAL_AVG_TOTAL_CRC = rs01.getDouble("TOTAL_AVG_TOTAL_CRC");
-                TOTAL_AVG_TOTAL_TACA_CRC = rs01.getDouble("TOTAL_AVG_TOTAL_TACA_CRC");
+                TOTAL_AVG_TACA_CRC = rs01.getDouble("TOTAL_AVG_TACA_CRC");
                 
                 TOTAL_VAR_TACA = rs01.getDouble("TOTAL_VAR_TACA");
                 TOTAL_VAR_CRC = rs01.getDouble("TOTAL_VAR_CRC");
-                
-                TOTAL_VAR_TOTAL_TACA = rs01.getDouble("TOTAL_VAR_TOTAL_TACA");
-                TOTAL_VAR_TOTAL_CRC = rs01.getDouble("TOTAL_VAR_TOTAL_CRC");
-                TOTAL_VAR_TOTAL_TACA_CRC = rs01.getDouble("TOTAL_VAR_TOTAL_TACA_CRC");
+                TOTAL_VAR_TACA_CRC = rs01.getDouble("TOTAL_VAR_TACA_CRC");
             }
 
             // Mover al segundo ResultSet (datos detallados)
@@ -1536,46 +1520,33 @@ public class BankStatementExtractDAO {
                     objRtn.HOLIDAY_TACA = rs02.getString("HOLIDAY_TACA");
                    
                     objRtn.DATE_FROM = rs02.getString("DATE_FROM");
-                    objRtn.NUMBER_WEAK = rs02.getString("NUMBER_WEAK");
+                    objRtn.NUMBER_WEAK = rs02.getString("NUMBER_WEEK");
                     objRtn.DAY_NUMBER_EKED = rs02.getString("DAY_NUMBER_EKED");
 
                     objRtn.AMOUNT_TACA = rs02.getDouble("AMOUNT_TACA");
                     objRtn.AMOUNT_CRC = rs02.getDouble("AMOUNT_CRC");
-                    objRtn.TOTAL_TACA = rs02.getDouble("TOTAL_TACA");
-                    objRtn.TOTAL_CRC = rs02.getDouble("TOTAL_CRC");
                     objRtn.TOTAL_TACA_CRC = rs02.getDouble("TOTAL_TACA_CRC");
-
 
                     objRtn.AVG_TACA = rs02.getDouble("AVG_TACA");
                     objRtn.AVG_CRC = rs02.getDouble("AVG_CRC");
-                    objRtn.AVG_TOTAL_TACA = rs02.getDouble("AVG_TOTAL_TACA");
-                    objRtn.AVG_TOTAL_CRC = rs02.getDouble("AVG_TOTAL_CRC");
-                    objRtn.AVG_TOTAL_TACA_CRC = rs02.getDouble("AVG_TOTAL_TACA_CRC");
+                    objRtn.AVG_TOTAL_TACA_CRC = rs02.getDouble("AVG_TOTAL");
 
                     objRtn.VAR_TACA = rs02.getDouble("VAR_TACA");
                     objRtn.VAR_CRC = rs02.getDouble("VAR_CRC");
-                    objRtn.VAR_TOTAL_TACA = rs02.getDouble("VAR_TOTAL_TACA");
-                    objRtn.VAR_TOTAL_CRC = rs02.getDouble("VAR_TOTAL_CRC");
-                    objRtn.VAR_TOTAL_TACA_CRC = rs02.getDouble("VAR_TOTAL_TACA_CRC");
+                    objRtn.VAR_TOTAL_TACA_CRC = rs02.getDouble("VAR_TOTAL");
 
                     // Asignar los totales al objeto de retorno
                     objRtn.TOTAL_AMOUNT_TACA = TOTAL_AMOUNT_TACA;
                     objRtn.TOTAL_AMOUNT_CRC = TOTAL_AMOUNT_CRC;
-                    objRtn.TOTAL_TOTAL_TACA = TOTAL_TOTAL_TACA;
-                    objRtn.TOTAL_TOTAL_CRC = TOTAL_TOTAL_CRC;
-                    objRtn.TOTAL_TOTAL_TACA_CRC = TOTAL_TOTAL_TACA_CRC;
+                    objRtn.TOTAL_AMOUNT_TACA_CRC = TOTAL_AMOUNT_TACA_CRC;
                     
                     objRtn.TOTAL_AVG_TACA = TOTAL_AVG_TACA;
                     objRtn.TOTAL_AVG_CRC = TOTAL_AVG_CRC;
-                    objRtn.TOTAL_AVG_TOTAL_TACA = TOTAL_AVG_TOTAL_TACA;
-                    objRtn.TOTAL_AVG_TOTAL_CRC = TOTAL_AVG_TOTAL_CRC;
-                    objRtn.TOTAL_AVG_TOTAL_TACA_CRC = TOTAL_AVG_TOTAL_TACA_CRC;
+                    objRtn.TOTAL_AVG_TACA_CRC = TOTAL_AVG_TACA_CRC;
                     
                     objRtn.TOTAL_VAR_TACA = TOTAL_VAR_TACA;
                     objRtn.TOTAL_VAR_CRC = TOTAL_VAR_CRC;
-                    objRtn.TOTAL_VAR_TOTAL_TACA = TOTAL_VAR_TOTAL_TACA;
-                    objRtn.TOTAL_VAR_TOTAL_CRC = TOTAL_VAR_TOTAL_CRC;
-                    objRtn.TOTAL_VAR_TOTAL_TACA_CRC = TOTAL_VAR_TOTAL_TACA_CRC;
+                    objRtn.TOTAL_VAR_TACA_CRC = TOTAL_VAR_TACA_CRC;
 
                     objRtn.page.PAGNUM = filter.page.PAGNUM;
                     objRtn.page.PAGROW = filter.page.PAGROW;
@@ -1759,7 +1730,7 @@ public class BankStatementExtractDAO {
         double TOTAL_AMOUNT_TACA = 0, TOTAL_AVG_TACA = 0,
         TOTAL_VAR_TACA = 0;
 
-        String SQLCLL01 = "{CALL PRAXISMP.MPS126(?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.MPS126_v2(?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1809,7 +1780,6 @@ public class BankStatementExtractDAO {
                     objRtn = new SQP04091Filter();
                     
                     objRtn.NUMBERWEAK = rs02.getString("NUMBERWEAK");
-                    objRtn.NUMBER_WEAK = rs02.getString("NUMBER_WEAK");
                     
                     objRtn.WEEK_START_DATE = rs02.getString("WEEK_START_DATE");
                     objRtn.WEEK_END_DATE = rs02.getString("WEEK_END_DATE");

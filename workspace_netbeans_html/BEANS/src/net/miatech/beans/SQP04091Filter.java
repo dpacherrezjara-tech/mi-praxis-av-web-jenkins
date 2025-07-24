@@ -219,6 +219,9 @@ public class SQP04091Filter extends A4022 {
     
     public double TOTAL_AMOUNT_TACA = 0;
     public double TOTAL_AMOUNT_CRC = 0;
+    public double TOTAL_AMOUNT_TACA_CRC = 0;
+    public double TOTAL_AVG_TACA_CRC = 0;
+    public double TOTAL_VAR_TACA_CRC = 0;
     public double TOTAL_TOTAL_TACA = 0;
     public double TOTAL_TOTAL_CRC = 0;
     public double TOTAL_TOTAL_TACA_CRC = 0;

@@ -3532,7 +3532,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 text: 'Total',
                                                                 width: 120,
                                                                 hidden: true,
-                                                                dataIndex: 'TOTAL_TACA',
+                                                                dataIndex: 'AMOUNT_TACA',
                                                                 align: 'center',
                                                                 style: 'padding: 6px; background: #C45C4D;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
@@ -3544,7 +3544,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataTaca').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_TOTAL_TACA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_TACA, '0,000.00');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             }
@@ -3579,7 +3579,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 text: 'Total',
                                                                 width: 120,
                                                                 hidden: true,
-                                                                dataIndex: 'TOTAL_CRC',
+                                                                dataIndex: 'AMOUNT_CRC',
                                                                 align: 'center',
                                                                 style: 'padding: 6px; background: #C45C4D;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
@@ -3591,7 +3591,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataTaca').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_TOTAL_CRC, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_CRC, '0,000.00');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             }
@@ -3614,7 +3614,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             metaData.style = "text-align:right;background: #3F5675;color:white";
                                                             var data = Ext.getCmp(prototype.id + '-gridDataTaca').getStore().getData().items[0].data;
-                                                            value = Ext.util.Format.number(data.TOTAL_TOTAL_TACA_CRC, '0,000.00');
+                                                            value = Ext.util.Format.number(data.TOTAL_AMOUNT_TACA_CRC, '0,000.00');
                                                             return '<b>' + value + '</b>';
                                                         }
                                                     }
@@ -3653,7 +3653,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                             {
                                                                 text: 'Total',
                                                                 width: 120,
-                                                                dataIndex: 'AVG_TOTAL_TACA',
+                                                                dataIndex: 'AVG_TACA',
                                                                 hidden: true,
                                                                 align: 'center',
                                                                 style: 'padding: 6px; background: #C45C4D;',
@@ -3666,7 +3666,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataTaca').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_TOTAL_TACA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_TACA, '0,000.00');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             }
@@ -3700,7 +3700,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                             {
                                                                 text: 'Total',
                                                                 width: 120,
-                                                                dataIndex: 'AVG_TOTAL_CRC',
+                                                                dataIndex: 'AVG_CRC',
                                                                 align: 'center',
                                                                 style: 'padding: 6px; background: #C45C4D;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
@@ -3712,7 +3712,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataTaca').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_TOTAL_CRC, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_CRC, '0,000.00');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             }
@@ -3734,7 +3734,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             metaData.style = "text-align:right;background: #3F5675;color:white";
                                                             var data = Ext.getCmp(prototype.id + '-gridDataTaca').getStore().getData().items[0].data;
-                                                            value = Ext.util.Format.number(data.TOTAL_AVG_TOTAL_TACA_CRC, '0,000.00');
+                                                            value = Ext.util.Format.number(data.TOTAL_AVG_TACA_CRC, '0,000.00');
                                                             return '<b>' + value + '</b>';
                                                         }
                                                     }
@@ -3772,7 +3772,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 text: 'Total',
                                                                 width: 120,
                                                                 hidden: true,
-                                                                dataIndex: 'VAR_TOTAL_TACA',
+                                                                dataIndex: 'VAR_TACA',
                                                                 align: 'center',
                                                                 style: 'padding: 6px; background: #C45C4D;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
@@ -3816,7 +3816,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                             {
                                                                 text: 'Total',
                                                                 width: 120,
-                                                                dataIndex: 'VAR_TOTAL_CRC',
+                                                                dataIndex: 'VAR_CRC',
                                                                 align: 'center',
                                                                 style: 'padding: 6px; background: #C45C4D;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
@@ -3827,7 +3827,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
-                                                                    value = data.TOTAL_VAR_TOTAL_CRC;
+                                                                    value = data.TOTAL_VAR_CRC;
                                                                     return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             }
@@ -3848,7 +3848,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             metaData.style = "text-align:right;background: #3F5675;color:white";
                                                             var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
-                                                            value = data.TOTAL_VAR_TOTAL_TACA_CRC;
+                                                            value = data.TOTAL_VAR_TACA_CRC;
                                                             return '<b>' + value + '%' + '</b>';
                                                         }
                                                     }

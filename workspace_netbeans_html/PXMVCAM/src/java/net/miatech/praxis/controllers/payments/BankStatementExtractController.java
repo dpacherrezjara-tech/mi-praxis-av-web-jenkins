@@ -95,64 +95,63 @@ public class BankStatementExtractController extends BaseController {
     }
     
     @RequestMapping(value = "/searchLog")
-public @ResponseBody
-String searchLog(ModelMap map, HttpServletRequest request) {
-    List<SQP04091Filter> listaData = new ArrayList<>();
-    Gson gson = new Gson();
-    SQP04091Filter filter;
-    String beanString = "";
+    public @ResponseBody
+    String searchLog(ModelMap map, HttpServletRequest request) {
+        List<SQP04091Filter> listaData = new ArrayList<>();
+        Gson gson = new Gson();
+        SQP04091Filter filter;
+        String beanString = "";
 
-    System.out.println("-------------- BankStatementExtract : searchLog -------------");
+        System.out.println("-------------- BankStatementExtract : searchLog -------------");
 
-    try {
-        beanString = request.getParameter("beanString");
-        System.out.println("beanString = " + beanString);
+        try {
+            beanString = request.getParameter("beanString");
+            System.out.println("beanString = " + beanString);
 
-        // Parseo seguro del filtro
-        filter = gson.fromJson(beanString, SQP04091Filter.class);
+            // Parseo seguro del filtro
+            filter = gson.fromJson(beanString, SQP04091Filter.class);
 
-        // Validación por si page es null
-        if (filter.page == null) {
-//            filter.page = new Page(); // Usa tu clase Page real aquí
+            // Validación por si page es null
+            if (filter.page == null) {
+    //            filter.page = new Page(); // Usa tu clase Page real aquí
+            }
+
+            // Lógica de paginación (se mantiene igual)
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int start = request.getParameter("start") == null
+                    ? 0
+                    : Integer.parseInt(request.getParameter("start"));
+
+            filter.page.PAGROW = 20;
+            start = (start != 0 ? start : 0);
+            filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+
+            // Lógica de negocio
+            logic = new BankStatementExtractLogic();
+            logic.setSession((IServerSession) serverSession.getServerSession());
+            listaData = logic.searchLog(filter);
+
+            // Respuesta
+            map.put("success", true);
+            map.put("total", listaData.size() > 0 ? listaData.get(0).page.TOTROW : 0);
+            map.put("data", listaData); 
+
+        } catch (NumberFormatException ex) {
+            ex.printStackTrace();
+            map.put("success", false);
+            map.put("sesion", ex.getMessage());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            map.put("success", false);
+            map.put("sesion", ex.getMessage());
         }
 
-        // Lógica de paginación (se mantiene igual)
-        filter.page.TOTROW = -1;
-        filter.page.START = 0;
-        filter.page.LIMIT = 0;
-
-        int start = request.getParameter("start") == null
-                ? 0
-                : Integer.parseInt(request.getParameter("start"));
-
-        filter.page.PAGROW = 20;
-        start = (start != 0 ? start : 0);
-        filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
-
-        // Lógica de negocio
-        logic = new BankStatementExtractLogic();
-        logic.setSession((IServerSession) serverSession.getServerSession());
-        listaData = logic.searchLog(filter);
-
-        // Respuesta
-        map.put("success", true);
-        map.put("total", listaData.size() > 0 ? listaData.get(0).page.TOTROW : 0);
-        map.put("data", listaData); 
-
-    } catch (NumberFormatException ex) {
-        ex.printStackTrace();
-        map.put("success", false);
-        map.put("sesion", ex.getMessage());
-    } catch (Exception ex) {
-        ex.printStackTrace();
-        map.put("success", false);
-        map.put("sesion", ex.getMessage());
+        return gson.toJson(map);
     }
 
-    return gson.toJson(map);
-}
-
-    
     @RequestMapping(value = "getXLSXMain")
     public @ResponseBody void getXLSXMain(HttpServletRequest request, HttpServletResponse response) throws Exception {
         System.out.println("Report : getXLSXMain");
@@ -3921,7 +3920,7 @@ String searchLog(ModelMap map, HttpServletRequest request) {
         SQP04091Filter filter;
 
         String beanString = "";
-        System.out.println("-------------- BankStatementExtract : searchTacaDiary-------------");
+        System.out.println("-------------- BankStatementExtract : searchTacaWeekly-------------");
         try {
             beanString = request.getParameter("beanString");
             filter = gson.fromJson(beanString, SQP04091Filter.class);
