@@ -1048,42 +1048,58 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.onSearchPendingDetail();
     },
     viewDetail: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
-
+        
         meDE.bean.data.IN_FROMADATE = rowData.data.FLIQUIDACI;
         meDE.bean.data.IN_MERCHAND = rowData.data.MERCHAND;
         meDE.bean.data.IN_LIQUIDACIO = rowData.data.LIQUIDACIO;
+        
+        console.log ("rowdata",rowData.data);
+        
+        console.log("prueba",meDE.bean.data.IN_STVAL);
+        
+        let gridDetail = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        
+        
+        if (meDE.bean.data.IN_STVAL === 'P') {
+            
+            Ext.Msg.alert('ALERT', 'It does not have data because it is pending');
+        } else {
+            var beanString = JSON.stringify(meDE.bean.data);
+            Ext.Ajax.request({
+                url: prototype.url + '/searchBean_PRE_DETAIL',
+                method: 'POST',
+                timeout: 60000000,
+                beforerequest: Ext.getCmp(prototype.id + '-dataEntryEx').mask('Loading...'),
+                params: {beanString: beanString},
+                success: function (response, options) {
+                    Ext.getCmp(prototype.id + '-dataEntryEx').unmask('Loading...');
+                    var res = Ext.JSON.decode(response.responseText);
 
-        var beanString = JSON.stringify(meDE.bean.data);
-        Ext.Ajax.request({
-            url: prototype.url + '/searchBean_PRE_DETAIL',
-            method: 'POST',
-            timeout: 60000000,
-            beforerequest: Ext.getCmp(prototype.id + '-dataEntryEx').mask('Loading...'),
-            params: {beanString: beanString},
-            success: function (response, options) {
-                Ext.getCmp(prototype.id + '-dataEntryEx').unmask('Loading...');
-                var res = Ext.JSON.decode(response.responseText);
+                    if (res.success) {
+                        var storeDataNormal = Ext.create('Ext.data.Store', {
+                            data: res.data,
+                            autoLoad: true
+                        });
+                        var storeDataFees = Ext.create('Ext.data.Store', {
+                            data: res.dataFees,
+                            autoLoad: true
+                        });
+                        Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeDataNormal);
+                        Ext.getCmp(prototype.id + '-gridDataInfoScanFees').bindStore(storeDataFees);
 
-                if (res.success) {
-                    var storeDataNormal = Ext.create('Ext.data.Store', {
-                        data: res.data,
-                        autoLoad: true
-                    });
-                    var storeDataFees = Ext.create('Ext.data.Store', {
-                        data: res.dataFees,
-                        autoLoad: true
-                    });
-                    Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeDataNormal);
-                    Ext.getCmp(prototype.id + '-gridDataInfoScanFees').bindStore(storeDataFees);
-
-                    meDE.calcularMontos();
-                } else {
-                    console.log('error DETAIL');
-                    global.Msg({msg: res.Mensaje});
+                        meDE.calcularMontos();
+                    } else {
+                        console.log('error DETAIL');
+                        global.Msg({msg: res.Mensaje});
+                    }
                 }
-            }
-        });
+            });
 
+            
+        }
+        
+
+        
     },
     cambiaParams: function (checkbox, newValue, oldValue, eOpts) {
         this.beanScanEX = {}
