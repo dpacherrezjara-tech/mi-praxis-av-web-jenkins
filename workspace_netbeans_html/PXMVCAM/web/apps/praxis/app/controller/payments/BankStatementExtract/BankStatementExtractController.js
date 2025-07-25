@@ -19,6 +19,8 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
     gridActual: '-boxMainData',
     boxActual: '-panelGridDataMain',
     pagginActual: '-paggin',
+    panelBack: '',
+    pagginActualBack: '', 
     user: '',
     columnCode: '',
     prevYearFrom: '',
@@ -1270,8 +1272,13 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
     const buttonLog = Ext.getCmp(prototype.id + '-buttonLog');
     const typeState = Ext.getCmp(prototype.id + '-typeState');
     const typeVisualization = Ext.getCmp(prototype.id + '-typeVisualization');
-    
-    
+    let panelBack = '';
+    let pagginActual = '';
+    if (me.panelActual !== '-panelLog') {
+        this.panelBack = me.panelActual;
+        this.pagginActualback = me.pagginActual;
+    }
+    console.log (panelBack,"panelBack",pagginActual,"paggin Actuall")
     this.setFormatParameterlog();
 
     
@@ -1289,6 +1296,9 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
         
         this.obtainLog2();
     } else {
+        me.panelActual = this.panelBack;
+        me.pagginActual = this.pagginActualback;
+        Ext.getCmp(prototype.id + '-chkLog').setValue(false);
         panelMain.show();
         panelLog.hide();
         combClient.show();
@@ -1300,6 +1310,11 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
         typeState.hide();
         buttonLog.hide();
         console.log("paso");
+        me.pagginActual = pagginActual;
+        me.getPaggin()
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        var pag = Ext.getCmp(prototype.id + me.pagginActual);
+        var pagData = pag.getPageData();
     }
 
     
