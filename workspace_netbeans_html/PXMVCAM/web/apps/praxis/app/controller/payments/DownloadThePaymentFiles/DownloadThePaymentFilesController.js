@@ -109,7 +109,7 @@ Ext.define('Ext.Praxis.controller.payments.DownloadThePaymentFiles.DownloadThePa
         var store01 = Ext.create('Ext.data.Store', {
             proxy: {
                 type: 'ajax',
-                url: prototype.url + '/SearchCalendar/',
+                url: prototype.url + '/DowloadFilesPayment/',
                 timeout: '300000',
                 reader: {
                     type: 'json',
