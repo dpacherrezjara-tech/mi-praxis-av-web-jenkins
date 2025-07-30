@@ -502,7 +502,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
                                             //actualiza data de rechazos
                                             me.dataRej = global.arrayAddUnique(me.dataRej, [obj], ['BANDOC', 'DATECI', 'TRANCI']).data;
                                             //elimina de contabilizados
-                                            me.dataAcc.splice(me.dataAcc.indexOf(obj), 1);
+                                            me.dataAcc = me.dataAcc.splice(me.dataAcc.indexOf(obj), 1);
                                             reject++;
                                         } else {
                                             error++;
@@ -527,7 +527,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
                                                 //actualiza data de rechazos
                                                 me.dataRej = global.arrayAddUnique(me.dataRej, [obj], ['BANDOC', 'DATECI', 'TRANCI']).data;
                                                 //elimina de contabilizados
-                                                me.dataAcc.splice(me.dataAcc.indexOf(obj), 1);
+                                                me.dataAcc = me.dataAcc.splice(me.dataAcc.indexOf(obj), 1);
                                                 reject++;
                                             } else {
                                                 error++;
@@ -541,6 +541,11 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
                                     error++;
                                 }
                             });
+                            
+                            if(me.dataAcc.length===0){
+                                Ext.getCmp(prototype.idDEheader + '-btn-rej-excel').setDisabled(true);
+                            }
+                            
                             //solo muestra cuando rechazo correctamente
                             if(reject>0){
                                 notifier.success(reject + ' documents rejected');
