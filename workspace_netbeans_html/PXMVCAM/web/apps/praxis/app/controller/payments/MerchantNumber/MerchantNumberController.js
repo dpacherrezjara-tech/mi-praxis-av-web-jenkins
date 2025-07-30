@@ -558,6 +558,9 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.MerchantNumberControll
             case  '-panelGridData':
                 me.pagginActual = '-paggin';
                 break;
+            case  '-panelGridDataHistoric':
+                me.pagginActual = '-paggin';
+                break;
         }
     },
     /*     

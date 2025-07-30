@@ -1718,4 +1718,55 @@ public class MerchantNumberDAO {
         return strMsj;
     }
     
+    public String load_MPS265(A2354Filter filterNew) throws SQLException, Exception {
+
+        //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA MPF109.
+        String strMsj = "Operation was successful.";
+        CallableStatement cstmt = null;
+        PreparedStatement pstmt = null;
+        String responseMPS = "";
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS265(?,?,?,?,?,?,?)}"; 
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+            
+            cstmt.registerOutParameter(7, Types.VARCHAR);
+            
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST.trim());
+            cstmt.setString(2, filterNew.CMERCHAN.trim());
+            cstmt.setString(3, filterNew.SUCMERCH.trim());
+            cstmt.setString(4, filterNew.CODEBANK.trim());
+            cstmt.setString(5, filterNew.ACCNUMB.trim());
+            cstmt.setString(6, filterNew.SAGENT.trim());
+            
+            cstmt.execute();
+            
+            responseMPS = cstmt.getString(7);
+            
+            cstmt.close();
+            
+        } catch (Exception e) {
+            // e.printStackTrace();
+            strMsj = e.getMessage();
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+        if (strMsj.toLowerCase().contains("duplicada")) {
+            strMsj = "Error: Duplicated record.";
+        }
+
+        return strMsj;
+    }
+    
 }
