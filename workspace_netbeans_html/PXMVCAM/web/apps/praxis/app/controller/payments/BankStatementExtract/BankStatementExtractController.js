@@ -1315,6 +1315,8 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
         global.selectedChild(me.childs, prototype.id + me.panelActual);
         var pag = Ext.getCmp(prototype.id + me.pagginActual);
         var pagData = pag.getPageData();
+        Ext.getCmp(prototype.id + '-pie').setVisible(true);
+        Ext.getCmp(prototype.id + '-pie2').setVisible(false);
     }
 
     
@@ -1365,7 +1367,7 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
         global.clear();
         Ext.getCmp(prototype.id + '-gridDataLogMain').bindStore(storeGridDatasLog);
         Ext.getCmp(prototype.id + '-paggin4').bindStore(storeGridDatasLog);
-        Ext.getCmp(prototype.id + '-pie').setVisible(true);
+        Ext.getCmp(prototype.id + '-pie2').setVisible(true);
     },
     
 });
