@@ -352,6 +352,17 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntr
                                                         xtype: 'button',
                                                         margin: '2 5 2 5',
                                                         scale: 'small',
+                                                        text: 'Reject XLSX',
+                                                        id: prototype.idDEheader + '-btn-rej-excel',
+                                                        iconCls: 'prx-icon-excel',
+                                                        listeners: {
+                                                            click: 'onRejectByExcel'
+                                                        }
+                                                    },
+                                                    {
+                                                        xtype: 'button',
+                                                        margin: '2 5 2 5',
+                                                        scale: 'small',
                                                         text: 'Reject All',
                                                         id: prototype.idDEheader + '-btn-rejectAll',
                                                         iconCls: 'prx-icon-incomplete',
