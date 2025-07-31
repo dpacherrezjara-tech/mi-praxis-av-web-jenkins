@@ -1328,7 +1328,7 @@ public class BankStatementExtractController extends BaseController {
         SQP04091Filter filter;
 
         String beanString = "";
-        System.out.println("-------------- BankStatementExtract : searchUsaflowDiaryDetail-------------");
+        System.out.println("-------------- BankStatementExtract : searchTacaflowDiaryDetail-------------");
         try {
             beanString = request.getParameter("beanString");
             filter = gson.fromJson(beanString, SQP04091Filter.class);
@@ -1396,6 +1396,52 @@ public class BankStatementExtractController extends BaseController {
             }
 
             lst = logic.getListTotalConciliation_Bard(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    
+    @RequestMapping(value = "searchTotalTacaflowDiaryDetail")
+    public @ResponseBody
+    String searchTotalTacaConciliation(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- Bank Statement : searchTotalTacaConciliation-------------");
+        map.put("success", true);
+        List<A2356Filter> lst2 = this.getListTotalConciliation_BardTaca(request, false);
+        map.put("data2", lst2);
+        return new Gson().toJson(map);
+    }
+    
+    public List<A2356Filter> getListTotalConciliation_BardTaca(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2356Filter> lst = new ArrayList<>(0);
+        A2356Filter filter = new A2356Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new BankStatementExtractLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2356Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.getListTotalConciliation_BardTaca(filter);
         } catch (Exception e) {
             throw new SpringException(e);
         }
@@ -2007,6 +2053,271 @@ public class BankStatementExtractController extends BaseController {
         }
     }
     
+    @RequestMapping(value = "getXLSXTacaflowDiaryDetail")
+    public @ResponseBody void getXLSXTacaflowDiaryDetail(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        System.out.println("Report : getXLSXTacaflowDiaryDetail");
+        String fileNameDownload = String.format("Fiduciary Alerts Tacaflow Diary Detail Report - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
+        try {
+            Gson gson = new Gson();
+            SQP04091Filter filter;
+
+            String beanString = "";
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, SQP04091Filter.class);
+            filter.page.PAGROW = -1;
+            filter.page.PAGNUM = 1;
+            logic = new BankStatementExtractLogic();
+            logic.setSession((IServerSession) serverSession.getServerSession());
+
+            Workbook workbook;
+            File file = File.createTempFile(fileNameDownload, ".xlsx");
+            List<SQP04091Filter> listaData = logic.searchTacaflowDiaryDetail(filter);
+            System.out.println("Tamaño de lista devuelta : " + listaData.size());
+            workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Report");
+            XSSFCellStyle headerStyle = (XSSFCellStyle) workbook.createCellStyle();
+            XSSFCellStyle headerStyle2 = (XSSFCellStyle) workbook.createCellStyle();
+            XSSFCellStyle headerStyle3 = (XSSFCellStyle) workbook.createCellStyle();
+            XSSFCellStyle headerStyle4 = (XSSFCellStyle) workbook.createCellStyle();
+            XSSFCellStyle headerStyle5 = (XSSFCellStyle) workbook.createCellStyle();
+            XSSFCellStyle headerStyle6 = (XSSFCellStyle) workbook.createCellStyle();
+            XSSFCellStyle headerStyle7 = (XSSFCellStyle) workbook.createCellStyle();
+            XSSFCellStyle headerStyle8 = (XSSFCellStyle) workbook.createCellStyle();
+            XSSFCellStyle headerStyle9 = (XSSFCellStyle) workbook.createCellStyle();
+            XSSFCellStyle headerStyle10 = (XSSFCellStyle) workbook.createCellStyle();
+            XSSFCellStyle headerStyle11 = (XSSFCellStyle) workbook.createCellStyle();
+            XSSFCellStyle headerStyle12 = (XSSFCellStyle) workbook.createCellStyle();
+            XSSFCellStyle headerStyle13 = (XSSFCellStyle) workbook.createCellStyle();
+            XSSFCellStyle headerStyle14 = (XSSFCellStyle) workbook.createCellStyle();
+            XSSFCellStyle bodyStyle_amt = (XSSFCellStyle) workbook.createCellStyle();
+            XSSFCellStyle totalStyle = (XSSFCellStyle) workbook.createCellStyle();
+            Font headerFont = workbook.createFont();
+            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            headerFont.setColor(IndexedColors.BLACK.getIndex());
+
+            // Configuración de estilos
+            headerStyle.setBorderRight(CellStyle.BORDER_THIN);
+            headerStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle.setBorderBottom(CellStyle.BORDER_THIN);
+            headerStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle.setBorderLeft(CellStyle.BORDER_THIN);
+            headerStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle.setBorderTop(CellStyle.BORDER_THIN);
+            headerStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(168, 156, 108)));
+            headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            headerStyle.setFont(headerFont);
+
+            headerStyle2.setBorderRight(CellStyle.BORDER_THIN);
+            headerStyle2.setRightBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle2.setBorderBottom(CellStyle.BORDER_THIN);
+            headerStyle2.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle2.setBorderLeft(CellStyle.BORDER_THIN);
+            headerStyle2.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle2.setBorderTop(CellStyle.BORDER_THIN);
+            headerStyle2.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle2.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle2.setFillForegroundColor(new XSSFColor(new java.awt.Color(196, 92, 77)));
+            headerStyle2.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            headerStyle2.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            headerStyle2.setFont(headerFont);
+
+            headerStyle3.setBorderRight(CellStyle.BORDER_THIN);
+            headerStyle3.setRightBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle3.setBorderBottom(CellStyle.BORDER_THIN);
+            headerStyle3.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle3.setBorderLeft(CellStyle.BORDER_THIN);
+            headerStyle3.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle3.setBorderTop(CellStyle.BORDER_THIN);
+            headerStyle3.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle3.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle3.setFillForegroundColor(new XSSFColor(new java.awt.Color(58, 31, 28)));
+            headerStyle3.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            headerStyle3.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            headerStyle3.setFont(headerFont);
+
+            headerStyle4.setBorderRight(CellStyle.BORDER_THIN);
+            headerStyle4.setRightBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle4.setBorderBottom(CellStyle.BORDER_THIN);
+            headerStyle4.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle4.setBorderLeft(CellStyle.BORDER_THIN);
+            headerStyle4.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle4.setBorderTop(CellStyle.BORDER_THIN);
+            headerStyle4.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle4.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle4.setFillForegroundColor(new XSSFColor(new java.awt.Color(108, 135, 168)));
+            headerStyle4.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            headerStyle4.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            headerStyle4.setFont(headerFont);
+
+            headerStyle5.setBorderRight(CellStyle.BORDER_THIN);
+            headerStyle5.setRightBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle5.setBorderBottom(CellStyle.BORDER_THIN);
+            headerStyle5.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle5.setBorderLeft(CellStyle.BORDER_THIN);
+            headerStyle5.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle5.setBorderTop(CellStyle.BORDER_THIN);
+            headerStyle5.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            headerStyle5.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle5.setFillForegroundColor(new XSSFColor(new java.awt.Color(125, 159, 125)));
+            headerStyle5.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            headerStyle5.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            headerStyle5.setFont(headerFont);
+
+            bodyStyle_amt.setDataFormat(workbook.createDataFormat().getFormat("#,##0.00"));
+
+            // Style for totals
+            Font totalFont = workbook.createFont();
+            totalFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            totalStyle.setFont(totalFont);
+            totalStyle.setDataFormat(workbook.createDataFormat().getFormat("#,##0.00"));
+            totalStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(168, 156, 108)));
+            totalStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            totalStyle.setBorderTop(CellStyle.BORDER_THIN);
+            totalStyle.setBorderBottom(CellStyle.BORDER_THIN);
+            totalStyle.setBorderLeft(CellStyle.BORDER_THIN);
+            totalStyle.setBorderRight(CellStyle.BORDER_THIN);
+
+            Integer vi = 0;
+            Integer vj = 0; // Almacena el numero de fila
+            Iterator iter = listaData.iterator();
+
+            // ====== CREANDO TITULOS ======================================
+
+            // ====== Nivel 1 (Cabeceras principales) ==========
+            Row row1 = sheet.createRow(vj);
+            for (int i = 0; i <= 49; i++) {
+                row1.createCell(i);
+            }
+
+            row1.getCell(0).setCellValue("Reference Dates");
+            row1.getCell(0).setCellStyle(headerStyle);
+            
+            row1.getCell(1).setCellValue("Curr");
+            row1.getCell(1).setCellStyle(headerStyle);
+            
+            row1.getCell(2).setCellValue("Amounts");
+            row1.getCell(2).setCellStyle(headerStyle);
+
+            // Combinar celdas de nivel 1
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0)); // Reference Dates
+            sheet.addMergedRegion(new CellRangeAddress(0, 3, 1, 1)); // Curr
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 7)); // Amounts
+            ++vj;
+
+            // ====== Nivel 2 (Subtítulos) ==========
+            Row row2 = sheet.createRow(vj);
+            for (int i = 0; i <= 49; i++) {
+                row2.createCell(i);
+            }
+
+            // Holidays - Columnas específicas
+            row2.getCell(0).setCellValue("From");
+            row2.getCell(0).setCellStyle(headerStyle);
+            
+            row2.getCell(2).setCellValue("Tacaflow");
+            row2.getCell(2).setCellStyle(headerStyle2);
+
+            // Combinar celdas de nivel 2
+            sheet.addMergedRegion(new CellRangeAddress(1, 3, 0, 0)); // From
+            sheet.addMergedRegion(new CellRangeAddress(1, 1, 2, 7)); // USAVflow II Colombian NY Pass Through (AV)
+
+            // ====== Nivel 3 (Subcolumnas) ==========
+            Row row3 = sheet.createRow(++vj);
+            for (int i = 0; i <= 49; i++) {
+                row3.createCell(i);
+            }
+
+            row3.getCell(2).setCellValue("Tacaflow");
+            row3.getCell(2).setCellStyle(headerStyle4);
+            
+            // Combinar celdas de nivel 3
+            sheet.addMergedRegion(new CellRangeAddress(2, 2, 2, 7)); 
+
+            // ====== Nivel 4 (Subcolumnas) ==========
+            Row row4 = sheet.createRow(++vj);
+            for (int i = 0; i <= 49; i++) {
+                row4.createCell(i);
+            }
+
+            row4.getCell(2).setCellValue("Statement");
+            row4.getCell(2).setCellStyle(headerStyle4);
+            
+            row4.getCell(3).setCellValue("Commission");
+            row4.getCell(3).setCellStyle(headerStyle4);
+            
+            row4.getCell(4).setCellValue("Others");
+            row4.getCell(4).setCellStyle(headerStyle4);
+            
+            row4.getCell(5).setCellValue("Settlement");
+            row4.getCell(5).setCellStyle(headerStyle4);
+            
+            row4.getCell(6).setCellValue("Sales");
+            row4.getCell(6).setCellStyle(headerStyle4);
+            
+            row4.getCell(7).setCellValue("Rate");
+            row4.getCell(7).setCellStyle(headerStyle4);
+            
+            // Combinar celdas de nivel 4
+            sheet.addMergedRegion(new CellRangeAddress(3, 3, 2, 2)); 
+            sheet.addMergedRegion(new CellRangeAddress(3, 3, 3, 3)); 
+            sheet.addMergedRegion(new CellRangeAddress(3, 3, 4, 4)); 
+            sheet.addMergedRegion(new CellRangeAddress(3, 3, 5, 5)); 
+            sheet.addMergedRegion(new CellRangeAddress(3, 3, 6, 6)); 
+            sheet.addMergedRegion(new CellRangeAddress(3, 3, 7, 7)); 
+            sheet.addMergedRegion(new CellRangeAddress(3, 3, 8, 8)); 
+            sheet.addMergedRegion(new CellRangeAddress(3, 3, 9, 9)); 
+            sheet.addMergedRegion(new CellRangeAddress(3, 3, 10, 10)); 
+            sheet.addMergedRegion(new CellRangeAddress(3, 3, 11, 11)); 
+            sheet.addMergedRegion(new CellRangeAddress(3, 3, 12, 12)); 
+
+            ++vj;
+
+            // ====== LLENANDO DATOS ======================================
+            while (iter.hasNext()) {
+                Row dataRow = sheet.createRow(vj);
+                SQP04091Filter data = listaData.get(vi);
+
+                dataRow.createCell(0).setCellValue(data.DATE_FROM);
+                dataRow.createCell(1).setCellValue(data.CURRENCY);
+
+                dataRow.createCell(2).setCellValue(data.STATEMENT_TACA);
+                dataRow.createCell(3).setCellValue(data.COMISION_TACA);
+                dataRow.createCell(4).setCellValue(data.OTHERS_TACA);
+                dataRow.createCell(5).setCellValue(data.SETTLEMENT_TACA);
+                dataRow.createCell(6).setCellValue(data.SALE_TACA);
+                dataRow.createCell(7).setCellValue(data.VAR_TACA);
+
+                // Aplicar estilo de formato numérico a las celdas de datos
+                for (int i = 2; i <= 7; i++) {
+                    dataRow.getCell(i).setCellStyle(bodyStyle_amt);
+                }
+
+                iter.next();
+                ++vi;
+                ++vj;
+            }
+
+            // Autoajustar columnas
+            for (int i = 0; i <= 49; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            // Escribir el archivo
+            response.setContentType("application/vnd.openxml");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+
+            FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
+            workbook.write(response.getOutputStream());
+            fos.close();
+
+        } catch (IOException e) {
+            throw new SpringException(e);
+        }
+    }
     
     @RequestMapping(value = "/searchUsaflowWeekly")
     public @ResponseBody
@@ -2563,7 +2874,7 @@ public class BankStatementExtractController extends BaseController {
         SQP04091Filter filter;
 
         String beanString = "";
-        System.out.println("-------------- BankStatementExtract : searchUsaflowWeekly-------------");
+        System.out.println("-------------- BankStatementExtract : searchUsaflowWeeklyHistoric-------------");
         try {
             beanString = request.getParameter("beanString");
             filter = gson.fromJson(beanString, SQP04091Filter.class);
@@ -3533,7 +3844,7 @@ public class BankStatementExtractController extends BaseController {
         SQP04091Filter filter;
 
         String beanString = "";
-        System.out.println("-------------- BankStatementExtract : searchTacaDiary-------------");
+        System.out.println("-------------- BankStatementExtract : searchTacaDiaryHistoric-------------");
         try {
             beanString = request.getParameter("beanString");
             filter = gson.fromJson(beanString, SQP04091Filter.class);
@@ -4353,7 +4664,7 @@ public class BankStatementExtractController extends BaseController {
         SQP04091Filter filter;
 
         String beanString = "";
-        System.out.println("-------------- BankStatementExtract : searchTacaDiary-------------");
+        System.out.println("-------------- BankStatementExtract : searchTacaWeeklyHistoric-------------");
         try {
             beanString = request.getParameter("beanString");
             filter = gson.fromJson(beanString, SQP04091Filter.class);

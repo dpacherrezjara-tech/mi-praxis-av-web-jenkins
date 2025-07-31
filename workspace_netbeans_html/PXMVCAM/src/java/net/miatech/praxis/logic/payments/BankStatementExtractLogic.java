@@ -77,6 +77,10 @@ public class BankStatementExtractLogic {
         return objDAO.getListTotalConciliation_Bard(filter);
     }
     
+    public List<A2356Filter> getListTotalConciliation_BardTaca(A2356Filter filter) throws SQLException, Exception {
+        return objDAO.getListTotalConciliation_BardTaca(filter);
+    }
+    
     public List<SQP04091Filter> searchLog(SQP04091Filter filter) throws SQLException, Exception {
         return objDAO.searchLog(filter);
     }

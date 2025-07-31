@@ -573,7 +573,7 @@ public class BankStatementExtractDAO {
         double TOTAL_STATEMENT_TACA = 0, TOTAL_COMISION_TACA = 0, TOTAL_OTHERS_TACA = 0,
         TOTAL_SETTLEMENT_TACA = 0, TOTAL_SALE_TACA = 0;
 
-        String SQLCLL01 = "{CALL PRAXISMP.MPF186(?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.MPS266(?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -701,7 +701,7 @@ public class BankStatementExtractDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPF151(?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS267(?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -838,6 +838,100 @@ public class BankStatementExtractDAO {
                     objRtn.TOTAL_SALE_DISCOVER_SA = TOTAL_SALE_DISCOVER_SA;
                     
 
+                    objRtn.page.PAGNUM = filter.page.PAGNUM;
+                    objRtn.page.PAGROW = filter.page.PAGROW;
+                    objRtn.page.TOTPAG = filter.page.TOTPAG;
+                    objRtn.page.TOTROW = filter.page.TOTROW;
+
+                    lstData.add(objRtn);
+
+                }
+                rst.close();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstData;
+    }
+    
+    public List<A2356Filter> getListTotalConciliation_BardTaca(A2356Filter filter) throws SQLException, Exception {
+
+        List<A2356Filter> lstData = new ArrayList<A2356Filter>(0);
+        A2356Filter objRtn;
+
+        double TOTAL_STATEMENT_TACA = 0, TOTAL_COMISION_TACA = 0, TOTAL_OTHERS_TACA = 0,
+        TOTAL_SETTLEMENT_TACA = 0, TOTAL_SALE_TACA = 0;
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS268(?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, filter.IN_CCUST);
+            cstmt.setString(2, filter.IN_FECHA_FROM);
+            cstmt.setString(3, filter.IN_FECHA_TO);
+            cstmt.setString(4, filter.IN_SCOUNTRY);
+
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            if (rst != null && rst.next()) {
+                TOTAL_STATEMENT_TACA = rst.getDouble("TOTAL_STATEMENT_TACA");
+                TOTAL_COMISION_TACA = rst.getDouble("TOTAL_COMISION_TACA");
+                TOTAL_OTHERS_TACA = rst.getDouble("TOTAL_OTHERS_TACA");
+                TOTAL_SETTLEMENT_TACA = rst.getDouble("TOTAL_SETTLEMENT_TACA");
+                TOTAL_SALE_TACA = rst.getDouble("TOTAL_SALE_TACA");
+                
+            }
+            
+            rst.close();
+
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+                while (rst.next()) {
+
+                   objRtn = new A2356Filter();
+
+                    objRtn.DATE_FROM = rst.getString("VALDATE");
+                    objRtn.CURRENCY = "USD";
+                    
+                    objRtn.STATEMENT_TACA = rst.getDouble("STATEMENT_TACA");
+                    objRtn.COMISION_TACA = rst.getDouble("COMISION_TACA");
+                    objRtn.OTHERS_TACA = rst.getDouble("OTHERS_TACA");
+                    objRtn.SETTLEMENT_TACA = rst.getDouble("SETTLEMENT_TACA");
+                    objRtn.SALE_TACA = rst.getDouble("SALE_TACA");
+                    objRtn.VAR_TACA = rst.getDouble("VAR_TACA");
+                    
+                    objRtn.TOTAL_STATEMENT_TACA = TOTAL_STATEMENT_TACA;
+                    objRtn.TOTAL_COMISION_TACA = TOTAL_COMISION_TACA;
+                    objRtn.TOTAL_OTHERS_TACA = TOTAL_OTHERS_TACA;
+                    objRtn.TOTAL_SETTLEMENT_TACA = TOTAL_SETTLEMENT_TACA;
+                    objRtn.TOTAL_SALE_TACA = TOTAL_SALE_TACA;
+                    
                     objRtn.page.PAGNUM = filter.page.PAGNUM;
                     objRtn.page.PAGROW = filter.page.PAGROW;
                     objRtn.page.TOTPAG = filter.page.TOTPAG;

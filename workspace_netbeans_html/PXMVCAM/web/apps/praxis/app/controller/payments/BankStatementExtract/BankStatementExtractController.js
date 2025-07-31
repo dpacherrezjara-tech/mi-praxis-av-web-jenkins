@@ -37,6 +37,9 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
             '#BankStatementExtractForm-rbChart_IA': {
                 change: this.rbChart_IA_change
             },
+            '#BankStatementExtractForm-rbtDetail': {
+                change: this.onChangeRadio
+            },
             '#BankStatementExtractForm-xpanel': {
                 afterrender: this.xpanel_afterrender
             },
@@ -111,6 +114,20 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
                 chart.setVisible(!mostrarGrid);
             }
         });
+        $('#BankStatementExtractForm-btnToggleSwitchTACA').on('change', function () {
+            var grid = Ext.getCmp(prototype.id + '-gridTACAFLOWDiaryDetail');
+            var chart = Ext.getCmp(prototype.id + '-panelDashboardTaca');
+            var pie = Ext.getCmp(prototype.id + '-pie');
+
+            if (grid && chart && pie) {
+                var mostrarGrid = !grid.isVisible(); 
+
+                grid.setVisible(mostrarGrid);
+                pie.setVisible(mostrarGrid);
+                chart.setVisible(!mostrarGrid);
+            }
+        });
+        
         this.setStoreData();
         this.btnSearch_click();
     },
@@ -157,6 +174,7 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
         let comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
         let comboFromDay = Ext.getCmp(prototype.id + '-cmbDateFromDay');
         let comboToDay = Ext.getCmp(prototype.id + '-cmbDateToDay');
+        let panelDetail = Ext.getCmp(prototype.id + '-panelRbtDetail');
 
         if (rbValue === 'rbc1_IA') { // Historic
             comboFromYear.setValue('2024');
@@ -171,21 +189,30 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
             comboToDay.setDisabled(true);
             comboFromYear.setDisabled(true);
             comboToYear.setDisabled(true);
+            panelDetail.hide();
         } else { // Current
-            var currentYear = new Date().getFullYear();
+            var today = new Date();
+            var currentYear = today.getFullYear();
+            var currentMonth = (today.getMonth() + 1).toString().padStart(2, '0'); 
+
             comboFromYear.setValue(currentYear);
             comboToYear.setValue(currentYear);
-            comboFromMonth.setValue('');
-            comboToMonth.setValue('');
+            comboFromMonth.setValue(currentMonth);
+            comboToMonth.setValue(currentMonth);
             comboFromDay.setValue('');
             comboToDay.setValue('');
+
             comboFromMonth.setDisabled(false);
-            comboFromDay.setDisabled(false);
             comboToMonth.setDisabled(false);
-            comboToDay.setDisabled(false);
             comboFromYear.setDisabled(false);
             comboToYear.setDisabled(false);
+            comboFromDay.setDisabled(true);  
+            comboToDay.setDisabled(true);
+            
+            panelDetail.show();
         }
+        
+        this.onChangeRadio();
     },
     btnSearch_click: function () {
         this.onChangeRadio();
@@ -195,7 +222,6 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
         const valuetypeReport = Ext.getCmp(prototype.id + '-typeReport').getValue();
         let rbValue = '';
         let rbDetail = '';
-        
         
         var radioGroup = Ext.getCmp(prototype.id + '-rbChart_IA');
         if (radioGroup && radioGroup.getValue() && radioGroup.getValue().rb) {
@@ -207,13 +233,9 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
             rbDetail = radioDetail.getValue().rbD;
         }
         
-        console.log(rbDetail,'rbDetail')
-        
         this.setFormatParameter();
         
-        if (rbDetail == 'rbtDetail2') {
-
-            var actions = {};
+        var actions = {};
 
             if (rbValue === 'rbc1_IA') { // Historic
                 actions = {
@@ -222,6 +244,7 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
                     'TACA_D': this.searchTacaDiaryHistoric,
                     'TACA_W': this.searchTacaWeeklyHistoric
                 };
+                rbDetail = 'rbtDetail2'
             } else { // Current
                 actions = {
                     'USA_D': this.searchUsaflowDiary,
@@ -240,15 +263,13 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
                 console.warn('No se encontró una acción para la combinación:', key);
             }
             
-        } else {
-            
-            if (valueTypeVisualization == 'USA') {
-                this.searchUsaflowDiaryDetail()
-            } else {
-                this.searchTacaflowDiaryDetail()
-            }
-            
-        }
+             if (rbDetail !== 'rbtDetail2') {
+                if (valueTypeVisualization == 'USA') {
+                    this.searchUsaflowDiaryDetail()
+                } else {
+                    this.searchTacaflowDiaryDetail()
+                }
+            } 
         
     },
     setFormatParameter: function () {
@@ -551,7 +572,7 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
         
         var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
         proxy: {
-            url: prototype.url + '/searchTotalUsaflowDiaryDetail'
+            url: prototype.url + '/searchTotalTacaflowDiaryDetail'
         },
         listeners: {
             beforeload: function (obj) {
@@ -563,16 +584,7 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
                 if (!res || !res.data2 || res.data2.length === 0) {
                     global.Msg({ msg: 'Data not found.' });
 
-                    Ext.getCmp(prototype.id + '-chartColombia-WP').bindStore(
-                        Ext.create('Ext.data.Store', { fields: ['processor', 'statement', 'settlement', 'sale'], data: [] })
-                    );
-                    Ext.getCmp(prototype.id + '-chartColombia-Others').bindStore(
-                        Ext.create('Ext.data.Store', { fields: ['processor', 'statement', 'settlement', 'sale'], data: [] })
-                    );
-                    Ext.getCmp(prototype.id + '-chartSalvador-WP').bindStore(
-                        Ext.create('Ext.data.Store', { fields: ['processor', 'statement', 'settlement', 'sale'], data: [] })
-                    );
-                    Ext.getCmp(prototype.id + '-chartSalvador-Others').bindStore(
+                    Ext.getCmp(prototype.id + '-chartTacaflow').bindStore(
                         Ext.create('Ext.data.Store', { fields: ['processor', 'statement', 'settlement', 'sale'], data: [] })
                     );
                     return;
@@ -581,90 +593,20 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
                 const d = res.data2[0];
 
                 // Colombia WP
-                const chartDataColombiaWP = [
+                const chartTacaflow = [
                     {
                         processor: 'WP UK',
-                        statement: d.TOTAL_STATEMENT_WP_UK_CO,
-                        settlement: d.TOTAL_SETTLEMENT_WP_UK_CO,
-                        sale: d.TOTAL_SALE_WP_UK_CO
-                    }
-                ];
-                // Colombia Otros
-                const chartDataColombiaOthers = [
-                    {
-                        processor: 'BANCARD',
-                        statement: d.TOTAL_STATEMENT_BANCARD_CO,
-                        settlement: d.TOTAL_SETTLEMENT_BANCARD_CO,
-                        sale: d.TOTAL_SALE_BANCARD_CO
-                    },
-                    {
-                        processor: 'AMEX',
-                        statement: d.TOTAL_STATEMENT_AMEX_CO,
-                        settlement: d.TOTAL_SETTLEMENT_AMEX_CO,
-                        sale: d.TOTAL_SALE_AMEX_CO
-                    },
-                    {
-                        processor: 'DISCOVER',
-                        statement: d.TOTAL_STATEMENT_DISCOVER_CO,
-                        settlement: d.TOTAL_SETTLEMENT_DISCOVER_CO,
-                        sale: d.TOTAL_SALE_DISCOVER_CO
-                    }
-                ];
-
-                // Salvador WP
-                const chartDataSalvadorWP = [
-                    {
-                        processor: 'WP UK',
-                        statement: d.TOTAL_STATEMENT_WP_UK_SA,
-                        settlement: d.TOTAL_SETTLEMENT_WP_UK_SA,
-                        sale: d.TOTAL_SALE_WP_UK_SA
-                    }
-                ];
-                // Salvador Otros
-                const chartDataSalvadorOthers = [
-                    {
-                        processor: 'BANCARD',
-                        statement: d.TOTAL_STATEMENT_BANCARD_SA,
-                        settlement: d.TOTAL_SETTLEMENT_BANCARD_SA,
-                        sale: d.TOTAL_SALE_BANCARD_SA
-                    },
-                    {
-                        processor: 'AMEX',
-                        statement: d.TOTAL_STATEMENT_AMEX_SA,
-                        settlement: d.TOTAL_SETTLEMENT_AMEX_SA,
-                        sale: d.TOTAL_SALE_AMEX_SA
-                    },
-                    {
-                        processor: 'DISCOVER',
-                        statement: d.TOTAL_STATEMENT_DISCOVER_SA,
-                        settlement: d.TOTAL_SETTLEMENT_DISCOVER_SA,
-                        sale: d.TOTAL_SALE_DISCOVER_SA
+                        statement: d.TOTAL_STATEMENT_TACA,
+                        settlement: d.TOTAL_SETTLEMENT_TACA,
+                        sale: d.TOTAL_SALE_TACA
                     }
                 ];
 
                 // Bind stores
-                Ext.getCmp(prototype.id + '-chartColombia-WP').bindStore(
+                Ext.getCmp(prototype.id + '-chartTacaflow').bindStore(
                     Ext.create('Ext.data.Store', {
                         fields: ['processor', 'statement', 'settlement', 'sale'],
-                        data: chartDataColombiaWP
-                    })
-                );
-                Ext.getCmp(prototype.id + '-chartColombia-Others').bindStore(
-                    Ext.create('Ext.data.Store', {
-                        fields: ['processor', 'statement', 'settlement', 'sale'],
-                        data: chartDataColombiaOthers
-                    })
-                );
-                Ext.getCmp(prototype.id + '-chartSalvador-WP').bindStore(
-                    Ext.create('Ext.data.Store', {
-                        fields: ['processor', 'statement', 'settlement', 'sale'],
-                        data: chartDataSalvadorWP
-                    })
-                );
-                Ext.getCmp(prototype.id + '-chartSalvador-Others').bindStore(
-                    Ext.create('Ext.data.Store', {
-                        fields: ['processor', 'statement', 'settlement', 'sale'],
-                        data: chartDataSalvadorOthers
+                        data: chartTacaflow
                     })
                 );
             }
@@ -989,6 +931,10 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
                     this.setFormatParameter();
                     global.getFile(prototype.url + '/getXLSXUsaflowDiaryDetail?beanString=' + encodeURI(me.searchParams.beanString));
                     break;
+                case '-panelTACAFLOWDiaryDetail':
+                    this.setFormatParameter();
+                    global.getFile(prototype.url + '/getXLSXTacaflowDiaryDetail?beanString=' + encodeURI(me.searchParams.beanString));
+                    break;
             }
         }
         
@@ -1242,10 +1188,8 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
     const ids = [
         '-cmbDateFromYear',
         '-cmbDateFromMonth',
-        '-cmbDateFromDay',
         '-cmbDateToYear',
         '-cmbDateToMonth',
-        '-cmbDateToDay'
     ];
 
     ids.forEach(suffix => {
@@ -1285,7 +1229,6 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
     if (panelMain && panelLog && !panelLog.isVisible()) {
         panelMain.hide();
         panelLog.show();
-        combClient.hide();
         combReport.hide();
         chart_IA.hide();
         rbtDetail.hide();
@@ -1301,7 +1244,6 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
         Ext.getCmp(prototype.id + '-chkLog').setValue(false);
         panelMain.show();
         panelLog.hide();
-        combClient.show();
         combReport.show();
         chart_IA.show();
         rbtDetail.show();

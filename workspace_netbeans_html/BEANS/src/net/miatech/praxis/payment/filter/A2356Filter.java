@@ -111,6 +111,20 @@ public class A2356Filter extends A2356 {
     public double TOTAL_STATEMENT_DISCOVER_SA = 0;
     public double TOTAL_SETTLEMENT_DISCOVER_SA = 0;
     public double TOTAL_SALE_DISCOVER_SA = 0;
+    
+    
+    
+    public double STATEMENT_TACA = 0;
+    public double COMISION_TACA = 0;
+    public double OTHERS_TACA = 0;
+    public double SETTLEMENT_TACA = 0;
+    public double SALE_TACA = 0;
+    public double VAR_TACA = 0;
+    public double TOTAL_STATEMENT_TACA = 0;
+    public double TOTAL_COMISION_TACA = 0;
+    public double TOTAL_OTHERS_TACA = 0;
+    public double TOTAL_SETTLEMENT_TACA = 0;
+    public double TOTAL_SALE_TACA = 0;
 
     public String Field1 = "";
     public String Field2 = "";

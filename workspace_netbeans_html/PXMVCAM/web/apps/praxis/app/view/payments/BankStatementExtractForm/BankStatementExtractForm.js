@@ -52,7 +52,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.BankStatementExtra
                                     border: false,
                                     autoScroll: true,
                                     defaults: {
-                                        width: 1800,
+                                        width: 1500,
                                         align: 'center'
                                     },
                                     items: [
@@ -66,7 +66,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.BankStatementExtra
                                         },
                                         {
                                             xtype: 'panel',
-                                            height: 710,
+                                            height: 660,
                                             layout: 'fit',
                                             items: [
                                                 {

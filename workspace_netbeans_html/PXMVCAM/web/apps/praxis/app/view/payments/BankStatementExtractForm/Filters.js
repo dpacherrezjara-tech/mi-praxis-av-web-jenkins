@@ -3,8 +3,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Filters', {
     alias: 'widget.' + prototype.id + '-filters',
     border: true,
     bodyStyle: 'background-color: #E3EAF9;',
-    layout: 'fit', // <--- el layout general puede ser fit o lo que desees
-
+    layout: 'fit', 
     items: [
         {
             xtype: 'container',
@@ -15,14 +14,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Filters', {
             },
             style: 'padding: 10px 0 10px 15px;',
             items: [
-                // Avianca Group
                 {
                     fieldLabel: 'Avianca Group',
                     xtype: 'combo',
                     width: 200,
                     labelWidth: 95,
                     style: 'margin-right:10px;',
-                    hidden: false,
+                    hidden: true,
                     labelStyle: 'text-align: left; font-size: 14px;',
                     fieldStyle: 'text-align: left; font-size: 14px;',
                     disabled: true,
@@ -54,12 +52,11 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Filters', {
                         change: 'btnSearch_click'
                     }
                 },
-                // Type Visualization
                 {
-                    fieldLabel: 'Type Visualization',
+                    fieldLabel: 'Report Type',
                     xtype: 'combo',
-                    width: 220,
-                    labelWidth: 115,
+                    width: 182,
+                    labelWidth: 80,
                     style: 'margin-right:10px;',
                     hidden: false,
                     labelStyle: 'text-align: left; font-size: 14px;',
@@ -92,87 +89,10 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Filters', {
                     }
                 },
                 {
-                    fieldLabel: 'STATE',
-                    xtype: 'combo',
-                    width: 220,
-                    labelWidth: 60,
-                    style: 'margin-right:10px;',
-                    hidden: true,
-                    labelStyle: 'text-align: left; font-size: 14px;',
-                    fieldStyle: 'text-align: left; font-size: 14px;',
-                    disabled: false,
-                    id: prototype.id + '-typeState',
-                    queryMode: 'local',
-                    allowBlank: false,
-                    forceSelection: true,
-                    selectOnFocus: true,
-                    caseSensitive: false,
-                    autoSelect: true,
-                    editable: true,
-                    listConfig: {maxHeight: 60},
-                    typeAhead: true,
-                    valueField: 'code',
-                    displayField: 'name',
-                    enableKeyEvents: true,
-                    triggerAction: 'all',
-                    value: '',
-                    store: {
-                        fields: ['code', 'name'],
-                        data: [
-                            {code: '', name: 'ALL'},
-                            {code: '0', name: 'OK'},
-                            {code: '1', name: 'ERROR'},
-                        ]
-                    },
-                    listeners: {
-                        change: ''
-                    }
-                },
-                {
-                    fieldLabel: 'Processor',
+                    fieldLabel: 'Report Frequency',
                     xtype: 'combo',
                     width: 200,
-                    labelWidth: 95,
-                    style: 'margin-right:10px;',
-                    hidden: false,
-                    labelStyle: 'text-align: left; font-size: 14px;',
-                    fieldStyle: 'text-align: left; font-size: 14px;',
-                    disabled: false,
-                    id: prototype.id + '-fieldProcessorLog',
-                    queryMode: 'local',
-                    allowBlank: false,
-                    forceSelection: true,
-                    selectOnFocus: true,
-                    caseSensitive: false,
-                    autoSelect: true,
-                    editable: true,
-                    listConfig: {maxHeight: 130},
-                    typeAhead: true,
-                    valueField: 'code',
-                    displayField: 'name',
-                    enableKeyEvents: true,
-                    triggerAction: 'all',
-                    value: '',
-                    store: {
-                        fields: ['code', 'name'],
-                        data: [
-                            {code: '', name: 'All'},
-                            {code: 'AX', name: 'AX'},
-                            {code: 'DS', name: 'DS'},
-                            {code: 'WP', name: 'WP'},
-                            {code: 'WQ', name: 'WQ'}
-                        ]
-                    },
-                    listeners: {
-                        change: ''
-                    }
-                },
-                // Type Report
-                {
-                    fieldLabel: 'Type Report',
-                    xtype: 'combo',
-                    width: 170,
-                    labelWidth: 80,
+                    labelWidth: 115,
                     style: 'margin-right:10px;',
                     hidden: false,
                     labelStyle: 'text-align: left; font-size: 14px;',
@@ -209,8 +129,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Filters', {
                     fieldLabel: 'From',
                     xtype: 'combo',
                     width: 105,
-                    labelWidth: 40,
-                    style: 'margin-right:3px;',
+                    labelWidth: 38,
                     labelAlign: 'right',
                     labelStyle: 'text-align: left; font-size: 14px;',
                     fieldStyle: 'text-align: left; font-size: 14px;',
@@ -226,11 +145,9 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Filters', {
                     emptyText: 'All',
                     anchor: '100%'
                 },
-                // From Month
                 {
                     xtype: 'combo',
                     width: 55,
-                    style: 'margin-right:3px;',
                     labelStyle: 'text-align: left; font-size: 14px;',
                     fieldStyle: 'text-align: left; font-size: 14px;',
                     labelAlign: 'right',
@@ -247,7 +164,6 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Filters', {
                     labelWidth: 0,
                     anchor: '100%'
                 },
-                // From Day
                 {
                     xtype: 'combo',
                     width: 50,
@@ -258,6 +174,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Filters', {
                     id: prototype.id + '-cmbDateFromDay',
                     queryMode: 'local',
                     triggerAction: 'all',
+                    disabled: true,
                     editable: false,
                     autoSelect: false,
                     enableKeyEvents: true,
@@ -275,7 +192,6 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Filters', {
                     xtype: 'combo',
                     width: 85,
                     labelWidth: 20,
-                    style: 'margin-right:3px;',
                     labelAlign: 'right',
                     labelStyle: 'text-align: left; font-size: 14px;',
                     fieldStyle: 'text-align: left; font-size: 14px;',
@@ -291,11 +207,9 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Filters', {
                     emptyText: 'All',
                     anchor: '100%'
                 },
-                // To Month
                 {
                     xtype: 'combo',
                     width: 55,
-                    style: 'margin-right:3px;',
                     labelStyle: 'text-align: left; font-size: 14px;',
                     fieldStyle: 'text-align: left; font-size: 14px;',
                     labelAlign: 'right',
@@ -312,7 +226,6 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Filters', {
                     labelWidth: 0,
                     anchor: '100%'
                 },
-                // To Day
                 {
                     xtype: 'combo',
                     width: 50,
@@ -324,6 +237,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Filters', {
                     queryMode: 'local',
                     triggerAction: 'all',
                     editable: false,
+                    disabled: true,
                     autoSelect: false,
                     enableKeyEvents: true,
                     caseSensitive: true,
@@ -336,47 +250,157 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Filters', {
                 },
                 // Historic / Current RadioGroup
                 {
-                    xtype: 'radiogroup',
-                    width: 170,
-                    style: 'margin-right:10px;',
-                    id: prototype.id + '-rbChart_IA',
-                    fieldLabel: '',
-                    horizontal: true,
-                    hidden: false,
+                    xtype: 'panel',
+                    layout: 'fit',
+                    border: false,
+                    background: '#E3EAF9',
+                    style: {
+                        backgroundColor: '#E3EAF9'
+                    },
+                    style: 'margin-right:5px;',
                     items: [
-                        {boxLabel: '<strong>Historic</strong>', name: 'rb', inputValue: 'rbc1_IA', width: 80},
-                        {boxLabel: '<strong>Current</strong>', name: 'rb', inputValue: 'rbc2_IA', width: 80, checked: true}
-                    ],
-                    listeners: {
-                        change: 'onChangeRadio'
-                    }
-                },
-                // Detail / Main RadioGroup
-                {
-                    xtype: 'radiogroup',
-                    width: 170,
-                    id: prototype.id + '-rbtDetail',
-                    fieldLabel: '',
-                    horizontal: true,
-                    hidden: false,
-                    items: [
-                        {boxLabel: '<strong>Detail</strong>', name: 'rbD', inputValue: 'rbtDetail1', width: 80},
-                        {boxLabel: '<strong>Main</strong>', name: 'rbD', inputValue: 'rbtDetail2', width: 80, checked: true}
-                    ],
-                    listeners: {
-                        change: 'onChangeRadio'
-                    }
-                },
-                    {
-                        xtype: 'checkbox',
-                        boxLabel: '<strong>Log</strong>',
-                        id: prototype.id + '-chkLog',
-                        inputValue: '1',
-                        uncheckedValue: '0',
-                        listeners: {
-                            change: 'executeLog',
+                        {
+                            xtype: 'radiogroup',
+                            id: prototype.id + '-rbChart_IA',
+                            fieldLabel: '',
+                            horizontal: true,
+                            hidden: false,
+                            items: [
+                                {boxLabel: '<strong>Historic</strong>', name: 'rb', inputValue: 'rbc1_IA', width: 70},
+                                {boxLabel: '<strong>Current</strong>', name: 'rb', inputValue: 'rbc2_IA', width: 70, checked: true}
+                            ],
+                            listeners: {
+//                                change: 'onChangeRadio'
+                            },
+                            style: {
+                                backgroundColor: '#e0f0ff',   // azul claro
+                                borderRadius: '5px',
+                                border: '1px solid #99ccff'
+                            }
                         }
-},
+                    ]
+                },
+                 // Detail / Main RadioGroup
+                 {
+                    xtype: 'panel',
+                    layout: 'fit',
+                    border: false,
+                     id: prototype.id + '-panelRbtDetail',
+                    background: '#E3EAF9',
+                    style: {
+                        backgroundColor: '#E3EAF9'
+                    },
+                    style: 'margin-right:5px;',
+                    items: [
+                        {
+                            xtype: 'radiogroup',
+                            id: prototype.id + '-rbtDetail',
+                            fieldLabel: '',
+                            horizontal: true,
+                            hidden: false,
+                            items: [
+                                {boxLabel: '<strong>Detail</strong>', name: 'rbD', inputValue: 'rbtDetail1', width: 60},
+                                {boxLabel: '<strong>Main</strong>', name: 'rbD', inputValue: 'rbtDetail2', width: 50, checked: true}
+                            ],
+                            listeners: {
+//                                change: 'onChangeRadio'
+                            },
+                            style: {
+                                backgroundColor: '#e0f0ff',   // azul claro
+                                borderRadius: '5px',
+                                border: '1px solid #99ccff'
+                            }
+                        }
+                    ]
+                },
+                // Filters Log
+                {
+                    fieldLabel: 'State',
+                    xtype: 'combo',
+                    width: 120,
+                    labelWidth: 40,
+                    style: 'margin-right:10px;',
+                    hidden: true,
+                    labelStyle: 'text-align: left; font-size: 14px;',
+                    fieldStyle: 'text-align: left; font-size: 14px;',
+                    disabled: false,
+                    id: prototype.id + '-typeState',
+                    queryMode: 'local',
+                    allowBlank: false,
+                    forceSelection: true,
+                    selectOnFocus: true,
+                    caseSensitive: false,
+                    autoSelect: true,
+                    editable: true,
+                    listConfig: {maxHeight: 60},
+                    typeAhead: true,
+                    valueField: 'code',
+                    displayField: 'name',
+                    enableKeyEvents: true,
+                    triggerAction: 'all',
+                    value: '',
+                    store: {
+                        fields: ['code', 'name'],
+                        data: [
+                            {code: '', name: 'ALL'},
+                            {code: '0', name: 'OK'},
+                            {code: '1', name: 'ERROR'},
+                        ]
+                    },
+                    listeners: {
+                        change: ''
+                    }
+                },
+                {
+                    fieldLabel: 'Processor',
+                    xtype: 'combo',
+                    width: 130,
+                    labelWidth: 65,
+                    style: 'margin-right:10px;',
+                    hidden: true,
+                    labelStyle: 'text-align: left; font-size: 14px;',
+                    fieldStyle: 'text-align: left; font-size: 14px;',
+                    disabled: false,
+                    id: prototype.id + '-fieldProcessorLog',
+                    queryMode: 'local',
+                    allowBlank: false,
+                    forceSelection: true,
+                    selectOnFocus: true,
+                    caseSensitive: false,
+                    autoSelect: true,
+                    editable: true,
+                    listConfig: {maxHeight: 130},
+                    typeAhead: true,
+                    valueField: 'code',
+                    displayField: 'name',
+                    enableKeyEvents: true,
+                    triggerAction: 'all',
+                    value: '',
+                    store: {
+                        fields: ['code', 'name'],
+                        data: [
+                            {code: '', name: 'All'},
+                            {code: 'AX', name: 'AX'},
+                            {code: 'DS', name: 'DS'},
+                            {code: 'WP', name: 'WP'},
+                            {code: 'WQ', name: 'WQ'}
+                        ]
+                    },
+                    listeners: {
+                        change: ''
+                    }
+                },
+                // Type Report
+                {
+                    xtype: 'checkbox',
+                    boxLabel: '<strong>View Log</strong>',
+                    id: prototype.id + '-chkLog',
+                    inputValue: '1',
+                    uncheckedValue: '0',
+                    listeners: {
+                        change: 'executeLog',
+                    }
+                },
                 {
                     xtype: 'button',
                     text: 'Buscar',
