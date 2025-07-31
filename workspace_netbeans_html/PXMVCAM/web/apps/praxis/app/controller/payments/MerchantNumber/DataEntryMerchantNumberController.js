@@ -661,6 +661,9 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         if (this.getValue("de-txtAFBRANCH") === '') {
             msjResult = "You must enter the required field.";
         }
+        if (this.getValue("CODPRO") === '') {
+            msjResult = "You must enter the required field.";
+        }
         return msjResult;
     },
     validacionUpdate: function (beanTemp) {
@@ -670,6 +673,9 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         }
         if (this.getValue("de-txtAFBRANCH").trim() === '') {
             msjResult = "The field Merchant Payment cannot be left empty";
+        }
+        if (this.getValue("CODPRO") === '') {
+            msjResult = "You must enter the required field COD.";
         }
         return msjResult;
     },

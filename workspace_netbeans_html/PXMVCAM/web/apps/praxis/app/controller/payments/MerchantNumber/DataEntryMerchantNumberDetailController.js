@@ -813,6 +813,9 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         if (this.getValue("SAGENT_D").trim() === '') {
             msjResult = "The field IATA cannot be left empty";
         }
+        if (this.getValue("CODPRO") === '') {
+            msjResult = "You must enter the required field COD.";
+        }
         return msjResult;
         
     },
