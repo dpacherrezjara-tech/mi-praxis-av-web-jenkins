@@ -488,6 +488,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
                                         let obj = me.dataAcc.find(y => y.REFER.trim() === x.REFER);
                                         let codrec = me.view.filters.ERRORES.filter(y => y.TIPO === 'C').find(z => z.CODREC === x.CODREC);
                                         if (obj && codrec) {
+                                            let index = me.dataAcc.indexOf(obj);
                                             obj = {
                                                 STREJ: 'R',
                                                 BANDOC: obj.BANDOC,
@@ -502,7 +503,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
                                             //actualiza data de rechazos
                                             me.dataRej = global.arrayAddUnique(me.dataRej, [obj], ['BANDOC', 'DATECI', 'TRANCI']).data;
                                             //elimina de contabilizados
-                                            me.dataAcc = me.dataAcc.splice(me.dataAcc.indexOf(obj), 1);
+                                            me.dataAcc.splice(index, 1);
                                             reject++;
                                         } else {
                                             error++;
@@ -513,6 +514,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
                                             //valida si existe objeto
                                             let obj = me.dataAcc.find(y => y.REFER.trim() === x.REFER);
                                             if (obj) {
+                                                let index = me.dataAcc.indexOf(obj);
                                                 obj = {
                                                     STREJ: 'R',
                                                     BANDOC: obj.BANDOC,
@@ -527,7 +529,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
                                                 //actualiza data de rechazos
                                                 me.dataRej = global.arrayAddUnique(me.dataRej, [obj], ['BANDOC', 'DATECI', 'TRANCI']).data;
                                                 //elimina de contabilizados
-                                                me.dataAcc = me.dataAcc.splice(me.dataAcc.indexOf(obj), 1);
+                                                me.dataAcc.splice(index, 1);
                                                 reject++;
                                             } else {
                                                 error++;
