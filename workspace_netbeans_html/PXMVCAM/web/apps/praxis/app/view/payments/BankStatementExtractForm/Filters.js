@@ -248,6 +248,136 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Filters', {
                     anchor: '100%',
                     listConfig: {maxHeight: 111, minWidth: 60}
                 },
+                // From Year
+                {
+                    fieldLabel: 'From',
+                    hidden: true,
+                    xtype: 'combo',
+                    width: 105,
+                    labelWidth: 38,
+                    labelAlign: 'right',
+                    labelStyle: 'text-align: left; font-size: 14px;',
+                    fieldStyle: 'text-align: left; font-size: 14px;',
+                    id: prototype.id + '-cmbDateFromYearLog',
+                    queryMode: 'local',
+                    editable: false,
+                    triggerAction: 'all',
+                    autoSelect: false,
+                    enableKeyEvents: true,
+                    caseSensitive: true,
+                    valueField: 'code',
+                    displayField: 'name',
+                    emptyText: 'All',
+                    anchor: '100%'
+                },
+                {
+                    xtype: 'combo',
+                    hidden: true,
+                    width: 55,
+                    labelStyle: 'text-align: left; font-size: 14px;',
+                    fieldStyle: 'text-align: left; font-size: 14px;',
+                    labelAlign: 'right',
+                    id: prototype.id + '-cmbDateFromMonthLog',
+                    queryMode: 'local',
+                    triggerAction: 'all',
+                    editable: false,
+                    autoSelect: false,
+                    enableKeyEvents: true,
+                    caseSensitive: true,
+                    valueField: 'code',
+                    displayField: 'name',
+                    emptyText: 'All',
+                    labelWidth: 0,
+                    anchor: '100%'
+                },
+                {
+                    xtype: 'combo',
+                    hidden: true,
+                    width: 50,
+                    style: 'margin-right:10px;',
+                    labelStyle: 'text-align: left; font-size: 14px;',
+                    fieldStyle: 'text-align: left; font-size: 14px;',
+                    labelAlign: 'right',
+                    id: prototype.id + '-cmbDateFromDayLog',
+                    queryMode: 'local',
+                    triggerAction: 'all',
+                    disabled: false,
+                    editable: false,
+                    autoSelect: false,
+                    enableKeyEvents: true,
+                    caseSensitive: true,
+                    valueField: 'code',
+                    displayField: 'name',
+                    emptyText: 'All',
+                    labelWidth: 0,
+                    anchor: '100%',
+                    listConfig: {maxHeight: 111, minWidth: 60}
+                },
+                // To Year
+                {
+                    fieldLabel: 'To',
+                    hidden: true,
+                    xtype: 'combo',
+                    width: 85,
+                    labelWidth: 20,
+                    labelAlign: 'right',
+                    labelStyle: 'text-align: left; font-size: 14px;',
+                    fieldStyle: 'text-align: left; font-size: 14px;',
+                    id: prototype.id + '-cmbDateToYearLog',
+                    queryMode: 'local',
+                    editable: false,
+                    triggerAction: 'all',
+                    autoSelect: false,
+                    enableKeyEvents: true,
+                    caseSensitive: true,
+                    valueField: 'code',
+                    displayField: 'name',
+                    emptyText: 'All',
+                    anchor: '100%'
+                },
+                {
+                    xtype: 'combo',
+                    hidden: true,
+                    width: 55,
+                    labelStyle: 'text-align: left; font-size: 14px;',
+                    fieldStyle: 'text-align: left; font-size: 14px;',
+                    labelAlign: 'right',
+                    id: prototype.id + '-cmbDateToMonthLog',
+                    queryMode: 'local',
+                    triggerAction: 'all',
+                    editable: false,
+                    autoSelect: false,
+                    enableKeyEvents: true,
+                    caseSensitive: true,
+                    valueField: 'code',
+                    displayField: 'name',
+                    emptyText: 'All',
+                    labelWidth: 0,
+                    anchor: '100%'
+                },
+                {
+                    xtype: 'combo',
+                    hidden: true,
+                    width: 50,
+                    style: 'margin-right:10px;',
+                    labelStyle: 'text-align: left; font-size: 14px;',
+                    fieldStyle: 'text-align: left; font-size: 14px;',
+                    labelAlign: 'right',
+                    id: prototype.id + '-cmbDateToDayLog',
+                    queryMode: 'local',
+                    triggerAction: 'all',
+                    editable: false,
+                    disabled: false,
+                    autoSelect: false,
+                    enableKeyEvents: true,
+                    caseSensitive: true,
+                    valueField: 'code',
+                    displayField: 'name',
+                    emptyText: 'All',
+                    labelWidth: 0,
+                    anchor: '100%',
+                    listConfig: {maxHeight: 111, minWidth: 60}
+                },
                 // Historic / Current RadioGroup
                 {
                     xtype: 'panel',
@@ -332,7 +462,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Filters', {
                     caseSensitive: false,
                     autoSelect: true,
                     editable: true,
-                    listConfig: {maxHeight: 60},
+                    listConfig: {maxHeight: 80},
                     typeAhead: true,
                     valueField: 'code',
                     displayField: 'name',
@@ -348,7 +478,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Filters', {
                         ]
                     },
                     listeners: {
-                        change: ''
+                        change: 'executeLogSearch'
                     }
                 },
                 {
@@ -387,7 +517,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Filters', {
                         ]
                     },
                     listeners: {
-                        change: ''
+                        change: 'executeLogSearch'
                     }
                 },
                 // Type Report
@@ -400,16 +530,6 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Filters', {
                     listeners: {
                         change: 'executeLog',
                     }
-                },
-                {
-                    xtype: 'button',
-                    text: 'Buscar',
-                    id: prototype.id + '-buttonLog',
-                    style: 'margin-left:10px; font-size: 14px;',
-                    scale: 'medium',
-                    hidden: true,
-                    handler: 'executeLogSearch'
-                    
                 }
             ]
         },

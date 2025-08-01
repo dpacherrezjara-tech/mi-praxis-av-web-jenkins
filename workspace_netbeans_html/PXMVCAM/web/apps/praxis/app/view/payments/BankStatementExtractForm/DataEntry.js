@@ -6,74 +6,61 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.DataEntry', {
     ],
     controller: 'DataEntryBankStatementExtractController',
     title: 'Log - Data Entry Form',
-    width: 895,
+    width: 950,
     resizable: false,
     layout: 'fit',
     modal: true,
     border: false,
-    defaults: {
-        border: false
-    },
     items: [
         {
             xtype: 'form',
+            padding: 15,
+            layout: {
+                type: 'vbox',
+                align: 'stretch'
+            },
             defaults: {
-                style: 'margin: 3px;',
-                border: false
+                layout: {
+                    type: 'hbox',
+                    align: 'middle'
+                },
+                margin: '5 0',
+                defaults: {
+                    xtype: 'textfield',
+                    labelAlign: 'right',
+                    labelStyle: 'font-size: 13px; font-weight: bold;',
+                    fieldStyle: 'text-align: center;',
+                    readOnly: true,
+                    flex: 1,
+                    margin: '0 5',
+                    maxLength: 30,
+                    enforceMaxLength: true
+                }
             },
             items: [
                 {
-                    xtype: 'panel',
-                    bodyStyle: 'background: transparent;',
-                    layout: {
-                        type: 'vbox',
-                        align: 'stretch'
-                    },
-                    width: 870,
-                    defaults: {
-                        layout: 'hbox',
-                        margin: '5 0 0 0',
-                        defaults: {
-                            margin: '0 5 0 0',
-                            labelWidth: 109,
-                            width: 400,
-                            readOnly: true,
-                            xtype: 'textfield',
-                            fieldStyle: 'text-align:center',
-                            enforceMaxLength: true,
-                            maxLength: 30
-                        }
-                    },
                     items: [
+                        { fieldLabel: 'Value Date', id: prototype.id + '-valueDate' },
+                        { fieldLabel: 'Host Shipping', id: prototype.id + '-hostShipping' },
+                        { fieldLabel: 'Hour Received', id: prototype.id + '-hourReceived' }
+                    ]
+                },
+                {
+                    items: [
+                        { fieldLabel: 'Processor', id: prototype.id + '-processor' },
+                        { fieldLabel: 'Date Create', id: prototype.id + '-dateCreate' },
+                        { fieldLabel: 'State', id: prototype.id + '-state'}
+                       
+                    ]
+                },
+                {
+                    items: [
+                        { fieldLabel: 'Creation Time', id: prototype.id + '-creationTime' },
+                        { fieldLabel: 'Date Received', id: prototype.id + '-dateReceived' },
                         {
-                            items: [
-                                { fieldLabel: 'Value Date', id: prototype.id + '-valueDate' },
-                                { fieldLabel: 'Processor', id: prototype.id + '-processor' }
-                            ]
-                        },
-                        {
-                            items: [
-                                { fieldLabel: 'State', id: prototype.id + '-state' },
-                                { fieldLabel: 'Message', id: prototype.id + '-message' ,readOnly: false}
-                            ]
-                        },
-                        {
-                            items: [
-                                { fieldLabel: 'Host Shipping', id: prototype.id + '-hostShipping' },
-                                { fieldLabel: 'Date Create', id: prototype.id + '-dateCreate' }
-                            ]
-                        },
-                        {
-                            items: [
-                                { fieldLabel: 'Creation Time', id: prototype.id + '-creationTime' },
-                                { fieldLabel: 'Date Received', id: prototype.id + '-dateReceived' }
-                            ]
-                        },
-                        {
-                            items: [
-                                { fieldLabel: 'Hour Received', id: prototype.id + '-hourReceived' },
-                                { xtype: 'displayfield', width: 400 } // espacio vacío para emparejar filas
-                            ]
+                            fieldLabel: 'Message',
+                            id: prototype.id + '-message',
+                            readOnly: false
                         }
                     ]
                 }
@@ -85,12 +72,11 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.DataEntry', {
             xtype: 'toolbar',
             dock: 'bottom',
             ui: 'footer',
-            margin: '3 0 20 0',
+            margin: '10 0 10 0',
             layout: {
-            type: 'hbox',
-            pack: 'center' 
-        },
-            
+                type: 'hbox',
+                pack: 'center'
+            },
             defaults: {
                 scale: 'medium'
             },
@@ -99,35 +85,26 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.DataEntry', {
                     text: 'Save',
                     id: prototype.id + '-btn-save',
                     iconCls: 'prx-icon-save',
-                    listeners: {
-                        click: 'onSaveClick'
-                    }
+                    listeners: { click: 'onSaveClick' }
                 },
                 {
                     text: 'Update',
                     id: prototype.id + '-btn-update',
                     iconCls: 'prx-icon-update',
-                    listeners: {
-                        click: 'onUpdateClick'
-                    }
+                    listeners: { click: 'onUpdateClick' }
                 },
                 {
                     text: 'Delete',
                     id: prototype.id + '-btn-delete',
                     iconCls: 'prx-icon-delete',
-                    listeners: {
-                        click: 'onDeleteClick'
-                    }
+                    listeners: { click: 'onDeleteClick' }
                 },
                 {
                     text: 'Cancel',
                     id: prototype.id + '-btn-cancel',
                     iconCls: 'prx-icon-cancel',
-                    listeners: {
-                        click: 'onCancelClick'
-                    }   
-                },
-                { xtype: 'tbspacer', width: 30 }
+                    listeners: { click: 'onCancelClick' }
+                }
             ]
         }
     ]

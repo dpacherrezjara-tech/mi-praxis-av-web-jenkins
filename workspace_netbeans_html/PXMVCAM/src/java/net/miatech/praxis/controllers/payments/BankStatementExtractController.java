@@ -31,12 +31,16 @@ import net.miatech.praxis.logic.payments.BankStatementExtractLogic;
 import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.A2356Filter;
 import net.miatech.utils.Functions;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
@@ -5509,6 +5513,95 @@ public class BankStatementExtractController extends BaseController {
             map.put("Mensaje", ex.getMessage());
         }
         return new Gson().toJson(map);
+    }
+    
+    @RequestMapping(value = "getXLSXLog")
+    public @ResponseBody
+    void getXLSXLog(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        System.out.println("Report : getXLSX");
+        String fileNameDownload = String.format("Log Report - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
+        try {
+            Gson gson = new Gson();
+            SQP04091Filter filter;
+
+            String beanString = "";
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, SQP04091Filter.class);
+            filter.page.PAGROW = -1;
+            filter.page.PAGNUM = 1;
+            logic = new BankStatementExtractLogic();
+            logic.setSession((IServerSession) serverSession.getServerSession());
+
+            Workbook workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Log Report");
+            List<SQP04091Filter> listaData = logic.searchLog(filter);
+            File file = File.createTempFile(fileNameDownload, ".xlsx");
+
+            XSSFCellStyle headerStyle = (XSSFCellStyle) workbook.createCellStyle();
+            Font headerFont = workbook.createFont();
+            headerFont.setBold(true);
+            headerFont.setColor(IndexedColors.BLACK.getIndex());
+
+            headerStyle.setBorderBottom(BorderStyle.THIN);
+            headerStyle.setBorderTop(BorderStyle.THIN);
+            headerStyle.setBorderLeft(BorderStyle.THIN);
+            headerStyle.setBorderRight(BorderStyle.THIN);
+            headerStyle.setAlignment(HorizontalAlignment.CENTER);
+            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            headerStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(108, 135, 168)));
+            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle.setFont(headerFont);
+
+            XSSFCellStyle bodyStyle = (XSSFCellStyle) workbook.createCellStyle();
+            bodyStyle.setDataFormat(workbook.createDataFormat().getFormat("#,##0"));
+
+            int rowIndex = 0;
+
+            // Encabezado (único nivel)
+            Row headerRow = sheet.createRow(rowIndex++);
+            String[] headers = {
+                "Value Date", "Processor", "State", "Message",
+                "Host Shipping", "Date Create", "Creation Time",
+                "Date Received", "Hour Received"
+            };
+
+            for (int i = 0; i < headers.length; i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(headers[i]);
+                cell.setCellStyle(headerStyle);
+            }
+
+            // Datos
+            for (SQP04091Filter item : listaData) {
+                Row row = sheet.createRow(rowIndex++);
+
+                row.createCell(0).setCellValue(item.FECRFILE); // reemplaza con nombre correcto
+                row.createCell(1).setCellValue(item.CODEPROC);  // idem
+                row.createCell(2).setCellValue(item.STATP);
+                row.createCell(3).setCellValue(item.MENSA);
+                row.createCell(4).setCellValue(item.HOSEND);
+                row.createCell(5).setCellValue(item.FECR);
+                row.createCell(6).setCellValue(item.HOCR);
+                row.createCell(7).setCellValue(item.FERECV);
+                row.createCell(8).setCellValue(item.HORECV);
+            }
+
+            // Autoajustar ancho columnas
+            for (int i = 0; i < headers.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            response.setContentType("application/vnd.openxml");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+
+            FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
+            workbook.write(response.getOutputStream());
+            fos.close();
+
+        } catch (IOException e) {
+            throw new SpringException(e);
+        }
     }
 
 }

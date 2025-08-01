@@ -33,7 +33,15 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.DataEntryBankSta
 //        console.log(this.beanResult);
         this.setValue('valueDate', this.bean.FECRFILE);
         this.setValue('processor', this.bean.CODEPROC);
-        this.setValue('state', this.bean.STATP);
+        let stateLog = "";
+        if (this.bean.STATP === '0'){
+            stateLog = "OK";
+        } else {
+            stateLog = "ERROR";
+        }
+        
+        
+        this.setValue('state', stateLog);
         
         this.setValue('message', this.bean.MENSA);
         this.setValue('hostShipping', this.bean.HOSEND);

@@ -166,6 +166,21 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
 
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(year);
         Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue(month);
+        
+        //Date Log 
+        Ext.getCmp(prototype.id + '-cmbDateFromYearLog').bindStore(storeComboDataYear);
+        Ext.getCmp(prototype.id + '-cmbDateFromMonthLog').bindStore(storeComboDataMonth);
+        Ext.getCmp(prototype.id + '-cmbDateFromDayLog').bindStore(storeComboDataDay);
+
+        Ext.getCmp(prototype.id + '-cmbDateFromYearLog').setValue(year);
+        Ext.getCmp(prototype.id + '-cmbDateFromMonthLog').setValue(month);
+        
+        Ext.getCmp(prototype.id + '-cmbDateToYearLog').bindStore(storeComboDataYear);
+        Ext.getCmp(prototype.id + '-cmbDateToMonthLog').bindStore(storeComboDataMonth);
+        Ext.getCmp(prototype.id + '-cmbDateToDayLog').bindStore(storeComboDataDay);
+
+        Ext.getCmp(prototype.id + '-cmbDateToYearLog').setValue(year);
+        Ext.getCmp(prototype.id + '-cmbDateToMonthLog').setValue(month);
     },
     rbChart_IA_change: function(radioGroup, newValue, oldValue) {
         let rbValue = newValue.rb;
@@ -216,7 +231,16 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
         this.onChangeRadio();
     },
     btnSearch_click: function () {
-        this.onChangeRadio();
+        
+        const panelMain = Ext.getCmp(prototype.id + '-panelMain');
+        const panelLog = Ext.getCmp(prototype.id + '-panelLog');
+        if (panelMain && panelLog && panelLog.isVisible()){
+            this.executeLogSearch();
+        } else {
+            this.onChangeRadio();
+        }
+        
+        
     },
     onChangeRadio: function () {
         const valueTypeVisualization = Ext.getCmp(prototype.id + '-typeVisualization').getValue();
@@ -936,6 +960,10 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
                     this.setFormatParameter();
                     global.getFile(prototype.url + '/getXLSXTacaflowDiaryDetail?beanString=' + encodeURI(me.searchParams.beanString));
                     break;
+                case '-panelLog':
+                    this.setFormatParameter();
+                    global.getFile(prototype.url + '/getXLSXLog?beanString=' + encodeURI(me.searchParams.beanString));
+                    break;
             }
         }
         
@@ -1167,8 +1195,8 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
             return year + month + day;
         };
 
-        let getValueDateTo = getDateValue('-cmbDateToYear', '-cmbDateToMonth', '-cmbDateToDay');
-        let getValueDateFrom = getDateValue('-cmbDateFromYear', '-cmbDateFromMonth', '-cmbDateFromDay');
+        let getValueDateTo = getDateValue('-cmbDateToYearLog', '-cmbDateToMonthLog', '-cmbDateToDayLog');
+        let getValueDateFrom = getDateValue('-cmbDateFromYearLog', '-cmbDateFromMonthLog', '-cmbDateFromDayLog');
 
         me.beanLog.IN_PROCESSOR = getProcessor;
         me.beanLog.IN_STATE = getState;
@@ -1214,9 +1242,9 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
     const chart_IA = Ext.getCmp(prototype.id + '-rbChart_IA');
     const rbtDetail = Ext.getCmp(prototype.id + '-rbtDetail');
     const fieldProcessorLog = Ext.getCmp(prototype.id + '-fieldProcessorLog');
-    const buttonLog = Ext.getCmp(prototype.id + '-buttonLog');
     const typeState = Ext.getCmp(prototype.id + '-typeState');
     const typeVisualization = Ext.getCmp(prototype.id + '-typeVisualization');
+    
     let panelBack = '';
     let pagginActual = '';
     if (me.panelActual !== '-panelLog') {
@@ -1236,7 +1264,8 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
         typeVisualization.hide();
         fieldProcessorLog.show();
         typeState.show();
-        buttonLog.show();
+        this.viewDateLog('LOG');
+        
         
         this.obtainLog2();
     } else {
@@ -1251,13 +1280,12 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
         typeVisualization.show();
         fieldProcessorLog.hide();
         typeState.hide();
-        buttonLog.hide();
+        this.viewDateLog('');
         console.log("paso");
         me.pagginActual = pagginActual;
         me.getPaggin()
         global.selectedChild(me.childs, prototype.id + me.panelActual);
         var pag = Ext.getCmp(prototype.id + me.pagginActual);
-        var pagData = pag.getPageData();
         Ext.getCmp(prototype.id + '-pie').setVisible(true);
         Ext.getCmp(prototype.id + '-pie2').setVisible(false);
     }
@@ -1268,6 +1296,51 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
     
 
 },
+viewDateLog: function (option){ 
+        let cmbDateFromYearLog = Ext.getCmp(prototype.id + '-cmbDateFromYearLog');
+        let cmbDateFromMonthLog = Ext.getCmp(prototype.id + '-cmbDateFromMonthLog');
+        let cmbDateFromDayLog = Ext.getCmp(prototype.id + '-cmbDateFromDayLog');
+        let cmbDateToYearLog = Ext.getCmp(prototype.id + '-cmbDateToYearLog');
+        let cmbDateToMonthLog = Ext.getCmp(prototype.id + '-cmbDateToMonthLog');
+        let cmbDateToDayLog = Ext.getCmp(prototype.id + '-cmbDateToDayLog');
+        let cmbDateFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYear');
+        let cmbDateFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonth');
+        let cmbDateFromDay = Ext.getCmp(prototype.id + '-cmbDateFromDay');
+        let cmbDateToYear = Ext.getCmp(prototype.id + '-cmbDateToYear');
+        let cmbDateToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
+        let cmbDateToDay = Ext.getCmp(prototype.id + '-cmbDateToDay');
+        
+        if (option === 'LOG') {
+            cmbDateFromYearLog.show();
+            cmbDateFromMonthLog.show();
+            cmbDateFromDayLog.show();
+            cmbDateToYearLog.show();
+            cmbDateToMonthLog.show();
+            cmbDateToDayLog.show();
+            cmbDateFromYear.hide();
+            cmbDateFromMonth.hide();
+            cmbDateFromDay.hide();
+            cmbDateToYear.hide();
+            cmbDateToMonth.hide();
+            cmbDateToDay.hide();
+        } else {
+            cmbDateFromYearLog.hide();
+            cmbDateFromMonthLog.hide();
+            cmbDateFromDayLog.hide();
+            cmbDateToYearLog.hide();
+            cmbDateToMonthLog.hide();
+            cmbDateToDayLog.hide();
+            cmbDateFromYear.show();
+            cmbDateFromMonth.show();
+            cmbDateFromDay.show();
+            cmbDateToYear.show();
+            cmbDateToMonth.show();
+            cmbDateToDay.show();
+        }
+        
+        
+        
+    },
 
 viewDataEntry_clickHandler: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
          
