@@ -12,12 +12,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.miatech.beans.SQP04091Filter;
+import net.miatech.beans.spring.UserView;
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.librfnd.filter.CPF031Filter;
 import net.miatech.praxis.A005;
@@ -5470,4 +5472,43 @@ public class BankStatementExtractController extends BaseController {
         }
         return new Gson().toJson(map);
     }
+     @RequestMapping(value = "executeOption")
+    public @ResponseBody
+    String executeOption(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankStatementExtractController : executeOptionTkt-------------");
+        String option;
+        A2290Filter filters = new A2290Filter();
+        String msj = "";
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+
+            option = "U";
+            beanString = request.getParameter("beanString");
+            System.out.println("JSON recibido en el servidor: " + beanString);
+            // Parsear directamente a JsonArray
+            // Deserializar directamente a una lista de A2290Filter
+            
+            filters = gson.fromJson(beanString, A2290Filter.class);
+            List<A2290Filter> filterList = Arrays.asList(filters);
+
+            UserView user = this.serverSession.getServerSession().getUserView();
+            logic = new BankStatementExtractLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            msj = logic.updateLOG(filterList, user);
+            // ... (código existente)
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+
 }

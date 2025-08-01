@@ -4622,10 +4622,22 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                 }
                                             },
                                             { text: 'Host Shipping', dataIndex: 'HOSEND', width: 110,style: 'padding: 5px; background: #6C87A8;',  },
-                                            { text: 'Date Create', dataIndex: 'FECR', width: 120,style: 'padding: 5px; background: #6C87A8;',  },
-                                            { text: 'Creation Time', dataIndex: 'HOCR', width: 120,style: 'padding: 5px; background: #6C87A8;',  },
+                                            { text: 'Date Create', dataIndex: 'FECR', width: 100,style: 'padding: 5px; background: #6C87A8;',  },
+                                            { text: 'Creation Time', dataIndex: 'HOCR', width: 100,style: 'padding: 5px; background: #6C87A8;',  },
                                             { text: 'Date Received', dataIndex: 'FERECV', width: 120,style: 'padding: 5px; background: #6C87A8;',  },
                                             { text: 'Hour Received', dataIndex: 'HORECV', width: 120 ,style: 'padding: 5px; background: #6C87A8;',  },
+                                            {
+                                                                text: 'View', dataIndex: '', width: 40,
+                                                                listeners: {
+                                                                    click: 'viewDataEntry_clickHandler'
+                                                                },
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    var data = record.data;
+                                                                    metaData.tdAttr = 'data-qtip="' + (Number(data.lngQOBS) > 1 ? 'View' : 'View') + '"';
+                                                                    var src = Number(data.lngQOBS) > 1 ? 'resources/img/botones/16x16/1326498593_018.png' : 'resources/img/botones/16x16/1326498593_018.png';
+                                                                    return '<a href="#payments-bank-statement-extract-form"><img src="' + src + '"></a>';
+                                                                }
+                                                            }
                                         ]
                                     }
                                 },

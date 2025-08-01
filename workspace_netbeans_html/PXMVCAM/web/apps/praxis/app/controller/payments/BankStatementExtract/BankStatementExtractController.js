@@ -9,6 +9,7 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
     beanExcel: {},
     beanDetDay: {},
     beanDebits: {},
+    beanLog: {},
     loadDate: '',
     searchParams: {},
     paramsObtainData: {},
@@ -1267,6 +1268,36 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
     
 
 },
+
+viewDataEntry_clickHandler: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
+         
+        let beanLog = {}
+        beanLog.MENSA = rowData.data.MENSA,
+        beanLog.FECRFILE = rowData.data.FECRFILE,
+        beanLog.CODEPROC  = rowData.data.CODEPROC,
+        beanLog.STATP  = rowData.data.STATP,
+        beanLog.HOSEND  = rowData.data.HOSEND,
+        beanLog.FECR   = rowData.data.FECR,
+        beanLog.HOCR   = rowData.data.HOCR,
+        beanLog.FERECV   = rowData.data.FERECV,
+        beanLog.HORECV     = rowData.data.HORECV,
+        console.log(beanLog, 'beanTicket')
+        this.winDataEntry('U', beanLog);
+    },
+    winDataEntry: function (action, rec) {
+        action = action === null || action === undefined ? 'U' : action;
+        rec = rec === null || rec === undefined ? {} : rec;
+        console.log(rec, 'recccccccccccc')
+        console.log(me.panelActual, 'me.panelActual')
+        Ext.create('Ext.Praxis.view.payments.BankStatementExtractForm.DataEntry', {
+            id: prototype.id + '-dataEntry',
+            params: {
+                action: action,
+                rec: rec,
+                instancia: me,
+            }
+        }).show();
+    },
 
     
 

@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Locale;
 import net.miatech.beans.AccountingInterfacesResult;
 import net.miatech.beans.SQP04091Filter;
+import net.miatech.beans.spring.UserView;
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.librfnd.filter.CPF031Filter;
 import net.miatech.praxis.payment.filter.A2290Filter;
@@ -2598,6 +2599,63 @@ public class BankStatementExtractDAO {
 
     return resultList;
 }
+     public String updateLOG(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
+
+        //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA MPF131.
+        String strMsj = "SUCCESSFUL. Information Updated.", strCardn = "";
+        CallableStatement cstmt = null;
+        CallableStatement cstmt2 = null;
+        CallableStatement cstmt3 = null;
+        Connection cnx = null;
+        Connection cnx2 = null;
+        Connection cnx3 = null;
+
+        try {
+            A2290Filter filter = filters.get(0);
+            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPUPDLOG(?,?,?,?,?,?,?,?,?,?,?)}";
+            cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
+
+            for (int i = 0; i < filters.size(); i++) {
+
+                cstmt2 = cnx2.prepareCall(SQLCLL02);
+                A2290Filter filterC = filters.get(i);
+
+                cstmt2.setString(1, "U");
+                cstmt2.setString(2, session.getUserView().getCustomerInfo().CCUST);
+                cstmt2.setString(3, filterC.MENSA.trim());
+                cstmt2.setString(4, filterC.FECRFILE.trim());
+                cstmt2.setString(5, filterC.CODEPROCESS .trim());
+                cstmt2.setString(6, filterC.STATP .trim());
+                cstmt2.setString(7, filterC.HOSEND .trim());
+                cstmt2.setString(8, filterC.FECR  .trim());
+                cstmt2.setString(9, filterC.HOCR  .trim());
+                cstmt2.setString(10, filterC.FERECV  .trim());
+                cstmt2.setString(11, filterC.HORECV  .trim());
+
+                cstmt2.execute();
+                cstmt2.close(); // Cerrar el CallableStatement después de cada ejecución
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            strMsj = e.getMessage();
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                    cstmt2.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return strMsj;
+    }    
+
+    
 
     
 }

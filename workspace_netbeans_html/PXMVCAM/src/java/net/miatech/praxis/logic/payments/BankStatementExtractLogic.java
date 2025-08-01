@@ -9,6 +9,7 @@ import net.miatech.praxis.logic.payments.*;
 import java.sql.SQLException;
 import java.util.List;
 import net.miatech.beans.SQP04091Filter;
+import net.miatech.beans.spring.UserView;
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.praxis.dao.payments.BankStatementExtractDAO;
 import net.miatech.praxis.payment.filter.A2290Filter;
@@ -83,6 +84,10 @@ public class BankStatementExtractLogic {
     
     public List<SQP04091Filter> searchLog(SQP04091Filter filter) throws SQLException, Exception {
         return objDAO.searchLog(filter);
+    }
+    
+    public String updateLOG(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
+        return objDAO.updateLOG(filters, user);
     }
     
     
