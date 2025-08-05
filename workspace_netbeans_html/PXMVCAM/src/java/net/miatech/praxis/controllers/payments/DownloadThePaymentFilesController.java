@@ -215,16 +215,14 @@ public class DownloadThePaymentFilesController extends BaseController {
         Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
         filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
 
-        String v1_urlREST = "/download-files-report/file";
+        String v1_urlREST = "/medios-pago/get-directory";
 
         try {
                 
             Map<String, Object> queryParams = new HashMap<>();
-            queryParams.put("date_from", filter.IN_DATETO);
+            queryParams.put("fecha", filter.IN_DATETO);
             queryParams.put("anio", filter.IN_DATETO.substring(0, 4)); 
             queryParams.put("procesador", filter.IN_PROCESADOR);
-            queryParams.put("CCUST", "134");
-            queryParams.put("client", "av");
             queryParams.put("PREFIX", "MEDIOSPAGO");
 
             ResponseEntity<byte[]> res = pws.downloadFilesFromPython(v1_urlREST, queryParams);
