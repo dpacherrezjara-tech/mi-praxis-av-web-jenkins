@@ -1106,7 +1106,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                         maxBarWidth: 300
                                                                     },
                                                                     subStyle: {
-                                                                        fill: ['#ff7f0e', '#1f77b4', '#2ca02c']
+                                                                        fill: ['C9C9C9', '#E51C23', '#00B0F0']
                                                                     },
                                                                     tooltip: {
                                                                         trackMouse: true,
@@ -1165,7 +1165,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                         maxBarWidth: 500
                                                                     },
                                                                     subStyle: {
-                                                                        fill: ['#ff7f0e', '#1f77b4', '#2ca02c']
+                                                                        fill: ['C9C9C9', '#E51C23', '#00B0F0']
                                                                     },
                                                                     tooltip: {
                                                                         trackMouse: true,
@@ -1249,7 +1249,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                         maxBarWidth: 300
                                                                     },
                                                                     subStyle: {
-                                                                        fill: ['#ff7f0e', '#1f77b4', '#2ca02c']
+                                                                        fill: ['C9C9C9', '#E51C23', '#00B0F0']
                                                                     },
                                                                     tooltip: {
                                                                         trackMouse: true,
@@ -1308,7 +1308,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                         maxBarWidth: 500
                                                                     },
                                                                     subStyle: {
-                                                                        fill: ['#ff7f0e', '#1f77b4', '#2ca02c']
+                                                                        fill: ['C9C9C9', '#E51C23', '#00B0F0']
                                                                     },
                                                                     tooltip: {
                                                                         trackMouse: true,
@@ -2711,7 +2711,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                         maxBarWidth: 300
                                                                     },
                                                                     subStyle: {
-                                                                        fill: ['#ff7f0e', '#1f77b4', '#2ca02c']
+                                                                       fill: ['C9C9C9', '#E51C23', '#00B0F0']
                                                                     },
                                                                     tooltip: {
                                                                         trackMouse: true,
@@ -2738,7 +2738,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridTACAFLOWDiaryDetail',
                                     height: 575,
-                                    width: 636,
+                                    width: 645,
                                     hidden: false,
                                     columnLines: true,
                                     features: [{
