@@ -1,3 +1,29 @@
+Ext.create('Ext.Component', {
+    renderTo: Ext.getBody(),
+    html: '<style type="text/css">' +
+            '.button-off {' +
+            '  background-color: #f44336;' + // Red color for OFF
+            '  color: white;' +
+            '  border-radius: 50%;' +
+            '  border: none;' +
+            '  font-size: 12px;' +
+            '  cursor: pointer;' +
+            '  text-align: center;' +
+            '  line-height: 50px;' + // Ensure text is vertically centered
+            '}' +
+            '.button-on {' +
+            '  background-color: #4CAF50;' + // Green color for ON
+            '  color: white;' +
+            '  border-radius: 50%;' +
+            '  border: none;' +
+            '  font-size: 12px;' +
+            '  cursor: pointer;' +
+            '  text-align: center;' +
+            '  line-height: 50px;' + // Ensure text is vertically centered
+            '}' +
+            '</style>'
+});
+
 Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
     extend: 'Ext.form.Panel',
     alias: 'widget.' + prototype.id + '-info',
@@ -26,12 +52,12 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                 {
                     xtype: 'panel',
                     id: prototype.id + '-panelMain',
-                    bodyStyle: 'background-color: #E3EAEF;',
+                    hidden: false,
+                    bodyStyle: 'background-color: transparent;',
                     layout: {
                         type: 'vbox',
                         align: 'center'
                     },
-                    height: 635,
                     items: [
                         {
                             xtype: 'panel',
@@ -51,14 +77,14 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataMain',
                                     height: 575,
-                                    width: 1762,
+                                    width: 1400,
                                     hidden: false,
                                     columnLines: true,
                                     features: [{
                                             dock: 'bottom',
                                             ftype: 'summary'
                                         }
-                                    ], 
+                                    ],
                                     columns: {
                                         defaults: {
                                             menuDisabled: true,
@@ -68,13 +94,16 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                         items: [
                                             {
                                                 text: 'Day',
-                                                width: 70,
+                                                width: 60,
                                                 dataIndex: 'DAY_NAME',
                                                 align: 'center',
-                                                style: 'padding: 6px; background: #6C87A8;',
+                                                style: 'padding: 5px; background: #6C87A8;',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:center;";
+                                                    metaData.style = "text-align:left;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    if (value) {
+                                                        return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+                                                    }
                                                     return value;
                                                 },
                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
@@ -83,14 +112,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'Monthly',
-                                                width: 80,
+                                                text: 'Month',
+                                                width: 60,
                                                 dataIndex: 'MONTH_NAME',
                                                 align: 'center',
-                                                style: 'padding: 6px; background: #6C87A8;',
+                                                style: 'padding: 5px; background: #6C87A8;',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:center;";
+                                                    metaData.style = "text-align:left;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    if (value) {
+                                                        return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+                                                    }
                                                     return value;
                                                 },
                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
@@ -105,12 +137,12 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                 columns: [
                                                     {
                                                         text: 'WP UK',
-                                                        width: 110,
+                                                        width: 80,
                                                         dataIndex: 'HOLIDAY_WP_UK',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #A89C6C;',
+                                                        style: 'padding: 5px; background: #A89C6C;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
+                                                            metaData.style = "text-align:left;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         },
@@ -121,12 +153,12 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                     },
                                                     {
                                                         text: 'WP Bancard',
-                                                        width: 110,
+                                                        width: 80,
                                                         dataIndex: 'HOLIDAY_WP_BANCARD',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #A89C6C;',
+                                                        style: 'padding: 5px; background: #A89C6C;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
+                                                            metaData.style = "text-align:left;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         },
@@ -137,12 +169,12 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                     },
                                                     {
                                                         text: 'Amex',
-                                                        width: 110,
+                                                        width: 80,
                                                         dataIndex: 'HOLIDAY_AMEX',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #A89C6C;',
+                                                        style: 'padding: 5px; background: #A89C6C;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
+                                                            metaData.style = "text-align:left;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         },
@@ -153,12 +185,12 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                     },
                                                     {
                                                         text: 'Discover',
-                                                        width: 110,
+                                                        width: 80,
                                                         dataIndex: 'HOLIDAY_DISCOVER',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #A89C6C;',
+                                                        style: 'padding: 5px; background: #A89C6C;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
+                                                            metaData.style = "text-align:left;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                             return value;
                                                         },
@@ -179,7 +211,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         width: 80,
                                                         dataIndex: 'DATE_FROM',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #D18F77;',
+                                                        style: 'padding: 5px; background: #D18F77;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -195,7 +227,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         width: 85,
                                                         dataIndex: 'NUMBER_WEAK',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #D18F77;',
+                                                        style: 'padding: 5px; background: #D18F77;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -211,7 +243,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         width: 55,
                                                         dataIndex: 'DAY_NUMBER_EKED',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #D18F77;',
+                                                        style: 'padding: 5px; background: #D18F77;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -226,10 +258,10 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                             },
                                             {
                                                 text: 'Curr',
-                                                width: 70,
+                                                width: 50,
                                                 dataIndex: 'CURRENCY',
                                                 align: 'center',
-                                                style: 'padding: 6px; background: #6C87A8;',
+                                                style: 'padding: 5px; background: #6C87A8;',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -252,25 +284,25 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         columns: [
                                                             {
                                                                 text: 'WP UK',
-                                                                width: 100,
+                                                                width: 80,
                                                                 dataIndex: 'AMOUNT_WP_UK_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #7A88A2;',
+                                                                style: 'padding: 5px; background: #7A88A2;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
                                                                         metaData.style = "text-align:right;background:yellow";
                                                                     } else {
                                                                         metaData.style = "text-align:right;";
                                                                     }
-                                                                    
+
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_WP_UK_CO, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_WP_UK_CO, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
@@ -279,7 +311,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 100,
                                                                 dataIndex: 'AMOUNT_BANCARD_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #7A88A2;',
+                                                                style: 'padding: 5px; background: #7A88A2;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     if (record.data.HOLIDAY_WP_BANCARD.trim() !== '-' && record.data.HOLIDAY_WP_BANCARD.trim() !== '') {
                                                                         metaData.style = "text-align:right;background:yellow";
@@ -287,22 +319,22 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                         metaData.style = "text-align:right;";
                                                                     }
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_BANCARD_CO, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_BANCARD_CO, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
                                                             {
                                                                 text: 'Amex',
-                                                                width: 100,
+                                                                width: 80,
                                                                 dataIndex: 'AMOUNT_AMEX_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #7A88A2;',
+                                                                style: 'padding: 5px; background: #7A88A2;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     if (record.data.HOLIDAY_AMEX.trim() !== '-' && record.data.HOLIDAY_AMEX.trim() !== '') {
                                                                         metaData.style = "text-align:right;background:yellow";
@@ -310,22 +342,22 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                         metaData.style = "text-align:right;";
                                                                     }
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_AMEX_CO, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_AMEX_CO, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
                                                             {
                                                                 text: 'Discover',
-                                                                width: 100,
+                                                                width: 80,
                                                                 dataIndex: 'AMOUNT_DISCOVER_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #7A88A2;',
+                                                                style: 'padding: 5px; background: #7A88A2;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     if (record.data.HOLIDAY_DISCOVER.trim() !== '-' && record.data.HOLIDAY_DISCOVER.trim() !== '') {
                                                                         metaData.style = "text-align:right;background:yellow";
@@ -333,32 +365,32 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                         metaData.style = "text-align:right;";
                                                                     }
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_DISCOVER_CO, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_DISCOVER_CO, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
                                                             {
                                                                 text: 'Total',
-                                                                width: 100,
+                                                                width: 75,
                                                                 dataIndex: 'TOTAL_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #C45C4D;',
+                                                                style: 'padding: 5px; background: #C45C4D;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_TOTAL_CO, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_TOTAL_CO, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             }
@@ -371,20 +403,20 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         columns: [
                                                             {
                                                                 text: 'WP UK',
-                                                                width: 100,
+                                                                width: 80,
                                                                 dataIndex: 'AMOUNT_WP_UK_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #95A3B7;',
+                                                                style: 'padding: 5px; background: #95A3B7;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_WP_UK_SA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_WP_UK_SA, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
@@ -393,74 +425,74 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 100,
                                                                 dataIndex: 'AMOUNT_BANCARD_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #95A3B7;',
+                                                                style: 'padding: 5px; background: #95A3B7;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_BANCARD_SA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_BANCARD_SA, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
                                                             {
                                                                 text: 'Amex',
-                                                                width: 100,
+                                                                width: 80,
                                                                 dataIndex: 'AMOUNT_AMEX_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #95A3B7;',
+                                                                style: 'padding: 5px; background: #95A3B7;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_AMEX_SA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_AMEX_SA, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
                                                             {
                                                                 text: 'Discover',
-                                                                width: 100,
+                                                                width: 80,
                                                                 dataIndex: 'AMOUNT_DISCOVER_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #95A3B7;',
+                                                                style: 'padding: 5px; background: #95A3B7;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_DISCOVER_SA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_DISCOVER_SA, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
                                                             {
                                                                 text: 'Total',
-                                                                width: 100,
+                                                                width: 75,
                                                                 dataIndex: 'TOTAL_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #C45C4D;',
+                                                                style: 'padding: 5px; background: #C45C4D;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_TOTAL_SA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_TOTAL_SA, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             }
@@ -468,20 +500,20 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                     },
                                                     {
                                                         text: 'Grant Total',
-                                                        width: 110,
+                                                        width: 85,
                                                         dataIndex: 'TOTAL_CO_AND_SA',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #C45C4D;',
+                                                        style: 'padding: 5px; background: #C45C4D;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            value = Ext.util.Format.number(value, '0,000');
                                                             return '<b>' + value + '</b>';
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             metaData.style = "text-align:right;background: #3F5675;color:white";
                                                             var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
-                                                            value = Ext.util.Format.number(data.TOTAL_TOTAL_CO_AND_SA, '0,000.00');
+                                                            value = Ext.util.Format.number(data.TOTAL_TOTAL_CO_AND_SA, '0,000');
                                                             return '<b>' + value + '</b>';
                                                         }
                                                     }
@@ -499,21 +531,21 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         columns: [
                                                             {
                                                                 text: 'WP UK',
-                                                                width: 100,
+                                                                width: 80,
                                                                 dataIndex: 'AVG_WP_UK_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #5F7A6F;',
+                                                                style: 'padding: 5px; background: #5F7A6F;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                     metaData.tdAttr = 'data-qtip="Dividor por : ' + '' + '"';
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_WP_UK_CO, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_WP_UK_CO, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
@@ -522,74 +554,74 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 100,
                                                                 dataIndex: 'AVG_BANCARD_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #5F7A6F;',
+                                                                style: 'padding: 5px; background: #5F7A6F;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_BANCARD_CO, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_BANCARD_CO, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
                                                             {
                                                                 text: 'Amex',
-                                                                width: 100,
+                                                                width: 80,
                                                                 dataIndex: 'AVG_AMEX_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #5F7A6F;',
+                                                                style: 'padding: 5px; background: #5F7A6F;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_AMEX_CO, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_AMEX_CO, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
                                                             {
                                                                 text: 'Discover',
-                                                                width: 100,
+                                                                width: 80,
                                                                 dataIndex: 'AVG_DISCOVER_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #5F7A6F;',
+                                                                style: 'padding: 5px; background: #5F7A6F;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_DISCOVER_CO, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_DISCOVER_CO, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
                                                             {
                                                                 text: 'Total',
-                                                                width: 100,
+                                                                width: 75,
                                                                 dataIndex: 'AVG_TOTAL_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #C45C4D;',
+                                                                style: 'padding: 5px; background: #C45C4D;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_TOTAL_CO, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_TOTAL_CO, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             }
@@ -602,20 +634,20 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         columns: [
                                                             {
                                                                 text: 'WP UK',
-                                                                width: 100,
+                                                                width: 80,
                                                                 dataIndex: 'AVG_WP_UK_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #92AC9E;',
+                                                                style: 'padding: 5px; background: #92AC9E;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_WP_UK_SA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_WP_UK_SA, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
@@ -624,74 +656,74 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 100,
                                                                 dataIndex: 'AVG_BANCARD_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #92AC9E;',
+                                                                style: 'padding: 5px; background: #92AC9E;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_BANCARD_SA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_BANCARD_SA, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
                                                             {
                                                                 text: 'Amex',
-                                                                width: 100,
+                                                                width: 80,
                                                                 dataIndex: 'AVG_AMEX_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #92AC9E;',
+                                                                style: 'padding: 5px; background: #92AC9E;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_AMEX_SA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_AMEX_SA, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
                                                             {
                                                                 text: 'Discover',
-                                                                width: 100,
+                                                                width: 80,
                                                                 dataIndex: 'AVG_DISCOVER_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #92AC9E;',
+                                                                style: 'padding: 5px; background: #92AC9E;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_DISCOVER_SA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_DISCOVER_SA, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
                                                             {
                                                                 text: 'Total',
-                                                                width: 100,
+                                                                width: 75,
                                                                 dataIndex: 'AVG_TOTAL_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #C45C4D;',
+                                                                style: 'padding: 5px; background: #C45C4D;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_TOTAL_SA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_TOTAL_SA, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             }
@@ -699,20 +731,20 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                     },
                                                     {
                                                         text: 'Grant Total',
-                                                        width: 110,
+                                                        width: 85,
                                                         dataIndex: 'AVG_TOTAL_CO_SA',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #C45C4D;',
+                                                        style: 'padding: 5px; background: #C45C4D;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            value = Ext.util.Format.number(value, '0,000');
                                                             return '<b>' + value + '</b>';
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             metaData.style = "text-align:right;background: #3F5675;color:white";
                                                             var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
-                                                            value = Ext.util.Format.number(data.TOTAL_AVG_TOTAL_CO_SA, '0,000.00');
+                                                            value = Ext.util.Format.number(data.TOTAL_AVG_TOTAL_CO_SA, '0,000');
                                                             return '<b>' + value + '</b>';
                                                         }
                                                     }
@@ -733,17 +765,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 80,
                                                                 dataIndex: 'VAR_WP_UK_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #5F6A7A;',
+                                                                style: 'padding: 5px; background: #5F6A7A;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_WP_UK_CO;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -751,17 +783,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 100,
                                                                 dataIndex: 'VAR_BANCARD_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #5F6A7A;',
+                                                                style: 'padding: 5px; background: #5F6A7A;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_BANCARD_CO;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -769,17 +801,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 80,
                                                                 dataIndex: 'VAR_AMEX_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #5F6A7A;',
+                                                                style: 'padding: 5px; background: #5F6A7A;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_AMEX_CO;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -787,17 +819,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 80,
                                                                 dataIndex: 'VAR_DISCOVER_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #5F6A7A;',
+                                                                style: 'padding: 5px; background: #5F6A7A;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_DISCOVER_CO;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -805,17 +837,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 80,
                                                                 dataIndex: 'VAR_TOTAL_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #C45C4D;',
+                                                                style: 'padding: 5px; background: #C45C4D;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_TOTAL_CO;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             }
                                                         ]
@@ -830,17 +862,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 80,
                                                                 dataIndex: 'VAR_WP_UK_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #909EAD;',
+                                                                style: 'padding: 5px; background: #909EAD;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_WP_UK_SA;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -848,17 +880,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 100,
                                                                 dataIndex: 'VAR_BANCARD_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #909EAD;',
+                                                                style: 'padding: 5px; background: #909EAD;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_BANCARD_SA;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -866,17 +898,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 80,
                                                                 dataIndex: 'VAR_AMEX_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #909EAD;',
+                                                                style: 'padding: 5px; background: #909EAD;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_AMEX_SA;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -884,17 +916,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 80,
                                                                 dataIndex: 'VAR_DISCOVER_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #909EAD;',
+                                                                style: 'padding: 5px; background: #909EAD;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_DISCOVER_SA;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -902,17 +934,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 80,
                                                                 dataIndex: 'VAR_TOTAL_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #C45C4D;',
+                                                                style: 'padding: 5px; background: #C45C4D;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_TOTAL_SA;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             }
                                                         ]
@@ -922,18 +954,1989 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         width: 90,
                                                         dataIndex: 'VAR_TOTAL_CO_SA',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #C45C4D;',
+                                                        style: 'padding: 5px; background: #C45C4D;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                            return '<b>' + value + '%'+ '</b>';
+                                                            return '<b>' + value + '%' + '</b>';
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             metaData.style = "text-align:right;background: #3F5675;color:white";
                                                             var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
                                                             value = data.TOTAL_VAR_TOTAL_CO_SA;
-                                                            return '<b>' + value + '%'+ '</b>';
+                                                            return '<b>' + value + '%' + '</b>';
                                                         }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            id: prototype.id + '-panelUSAFLOWDiaryDetail',
+                            bodyStyle: 'background-color: transparent;',
+                            padding: '0 10 0 10',
+                            layout: {
+                                type: 'vbox',
+                                align: 'stretch'
+                            },
+                            border: false,
+                            items: [
+                                {
+                                    xtype: 'container',
+                                    layout: {
+                                        type: 'hbox',
+                                        align: 'middle'
+                                    },
+                                    padding: '0 10 5 10',
+                                    items: [
+                                        {
+                                            xtype: 'label',
+                                            text: 'Data Table',
+                                            margin: '0 5 0 0',
+                                            width: 60,
+                                            id: prototype.id + '-COL'
+                                        },
+                                        {
+                                            xtype: 'component',
+                                            id: prototype.id + '-btnToggleSwitch',
+                                            margin: '0 5 0 0',
+                                            html: `<style>
+                                                .toggle-container{display:inline-block;position:relative;width:30px;height:16px;vertical-align:middle;}
+                                                .toggle-input{opacity:0;width:0;height:0;}
+                                                .toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#72e34f;transition:.4s;border-radius:16px;}
+                                                .toggle-slider::before{position:absolute;content:"";height:12px;width:12px;border-radius:50%;left:2px;bottom:2px;background-color:white;transition:.4s;}
+                                                .toggle-input:checked+.toggle-slider{background-color:#4c7daf;}
+                                                .toggle-input:checked+.toggle-slider::before{transform:translateX(16px);}
+                                            </style>
+                                            <label class="toggle-container"><input type="checkbox" class="toggle-input"><span class="toggle-slider"></span></label>`,
+                                            tooltip: 'Export to Report',
+                                            listeners: {
+                                                change: 'chgBash',
+                                                click: 'chgBash'
+                                            }
+                                        },
+                                        {
+                                            xtype: 'label',
+                                            text: 'Chart View',
+                                            margin: '0 0 0 5',
+                                            width: 60,
+                                            id: prototype.id + '-EXT'
+                                        },
+                                    ]
+                                },
+                                {
+                                    xtype: 'panel',
+                                    id: prototype.id + '-panelDashboard',
+                                    hidden: true,
+                                    height: 575, // Puedes ajustar este valor
+                                    scrollable: 'y',
+                                    margin: '0 0 5 0',
+                                    border: false,
+                                    layout: {
+                                        type: 'vbox',
+                                        align: 'center',
+                                        pack: 'start'
+                                    },
+                                    bodyStyle: 'background-color: transparent;',
+                                    items: [
+                                        // --------- COLOMBIA ---------
+                                        {
+                                            xtype: 'panel',
+                                            width: 1400,
+                                            border: false,
+                                            layout: 'vbox',
+                                            bodyStyle: 'background-color: transparent;',
+                                            padding: 10,
+                                            items: [
+                                                {
+                                                    xtype: 'component',
+                                                    html: '<div style="text-align:center; font-size: 16px; font-weight: bold;">USAVflow II Colombian NY Pass Through (AV)</div>',
+                                                    margin: '0 0 10 0'
+                                                },
+                                                {
+                                                    xtype: 'panel',
+                                                    layout: 'hbox',
+                                                    width: 1400,
+                                                    border: false,
+                                                    items: [
+                                                        {
+                                                            xtype: 'cartesian',
+                                                            id: prototype.id + '-chartColombia-WP',
+                                                            width: 600,
+                                                            height: 400,
+                                                            margin: '0 20 0 0',
+                                                            background: '#E0F8F7',
+                                                            legend: { docked: 'bottom' },
+                                                            axes: [
+                                                                {
+                                                                    type: 'numeric3d',
+                                                                    position: 'left',
+                                                                    fields: ['statement', 'settlement', 'sale'],
+                                                                    grid: true,
+                                                                    title: '',
+                                                                    renderer: function (obj, value) {
+                                                                        return Ext.util.Format.number(value, '0.0');
+                                                                    }
+                                                                },
+                                                                {
+                                                                    type: 'category3d',
+                                                                    position: 'bottom',
+                                                                    fields: ['processor'],
+                                                                    title: {
+                                                                        text: 'Processor',
+                                                                        translationX: -30
+                                                                    }
+                                                                }
+                                                            ],
+                                                            series: [
+                                                                {
+                                                                    type: 'bar3d',
+                                                                    stacked: false,
+                                                                    title: ['Statement', 'Settlement', 'Sale'],
+                                                                    xField: 'processor',
+                                                                    yField: ['statement', 'settlement', 'sale'],
+                                                                    highlight: true,
+                                                                    style: {
+                                                                        inGroupGapWidth: -7,
+                                                                        minGapWidth: 2,
+                                                                        maxBarWidth: 300
+                                                                    },
+                                                                    subStyle: {
+                                                                        fill: ['C9C9C9', '#E51C23', '#00B0F0']
+                                                                    },
+                                                                    tooltip: {
+                                                                        trackMouse: true,
+                                                                        height: 28,
+                                                                        renderer: function (toolTip, record, ctx) {
+                                                                            var label = ctx.field === 'sale'
+                                                                                ? 'Sale'
+                                                                                : (ctx.field === 'settlement'
+                                                                                    ? 'Settlement'
+                                                                                    : 'Statement');
+                                                                            toolTip.setHtml(label + ' : <b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+                                                                        }
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            xtype: 'cartesian',
+                                                            id: prototype.id + '-chartColombia-Others',
+                                                            width: 770,
+                                                            height: 400,
+                                                            background: '#E0F8F7',
+                                                            legend: { docked: 'bottom' },
+                                                            axes: [
+                                                                {
+                                                                    type: 'numeric3d',
+                                                                    position: 'left',
+                                                                    fields: ['statement', 'settlement', 'sale'],
+                                                                    grid: true,
+                                                                    title: '',
+                                                                    renderer: function (obj, value) {
+                                                                        return Ext.util.Format.number(value, '0.0');
+                                                                    }
+                                                                },
+                                                                {
+                                                                    type: 'category3d',
+                                                                    position: 'bottom',
+                                                                    fields: ['processor'],
+                                                                    title: {
+                                                                        text: 'Processor',
+                                                                        translationX: -30
+                                                                    }
+                                                                }
+                                                            ],
+                                                            series: [
+                                                                {
+                                                                    type: 'bar3d',
+                                                                    stacked: false,
+                                                                    title: ['Statement', 'Settlement', 'Sale'],
+                                                                    xField: 'processor',
+                                                                    yField: ['statement', 'settlement', 'sale'],
+                                                                    highlight: true,
+                                                                    style: {
+                                                                        inGroupGapWidth: -7,
+                                                                        minGapWidth: 2,
+                                                                        maxBarWidth: 500
+                                                                    },
+                                                                    subStyle: {
+                                                                        fill: ['C9C9C9', '#E51C23', '#00B0F0']
+                                                                    },
+                                                                    tooltip: {
+                                                                        trackMouse: true,
+                                                                        height: 28,
+                                                                        renderer: function (toolTip, record, ctx) {
+                                                                            var label = ctx.field === 'sale'
+                                                                                ? 'Sale'
+                                                                                : (ctx.field === 'settlement'
+                                                                                    ? 'Settlement'
+                                                                                    : 'Statement');
+                                                                            toolTip.setHtml(label + ' : <b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+                                                                        }
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        // --------- SALVADOR ---------
+                                        {
+                                            xtype: 'panel',
+                                            width: 1400,
+                                            border: false,
+                                            layout: 'vbox',
+                                            bodyStyle: 'background-color: transparent;',
+                                            padding: 10,
+                                            items: [
+                                                {
+                                                    xtype: 'component',
+                                                    html: '<div style="text-align:center; font-size: 16px; font-weight: bold;">USAVflow II Salvadorian NY Pass Through (TA)</div>',
+                                                    margin: '20 0 10 0'
+                                                },
+                                                {
+                                                    xtype: 'panel',
+                                                    layout: 'hbox',
+                                                    width: 1400,
+                                                    border: false,
+                                                    items: [
+                                                        {
+                                                            xtype: 'cartesian',
+                                                            id: prototype.id + '-chartSalvador-WP',
+                                                            width: 600,
+                                                            height: 400,
+                                                            margin: '0 20 0 0',
+                                                            background: '#E0F8F7',
+                                                            legend: { docked: 'bottom' },
+                                                            axes: [
+                                                                {
+                                                                    type: 'numeric3d',
+                                                                    position: 'left',
+                                                                    fields: ['statement', 'settlement', 'sale'],
+                                                                    grid: true,
+                                                                    title: '',
+                                                                    renderer: function (obj, value) {
+                                                                        return Ext.util.Format.number(value, '0.0');
+                                                                    }
+                                                                },
+                                                                {
+                                                                    type: 'category3d',
+                                                                    position: 'bottom',
+                                                                    fields: ['processor'],
+                                                                    title: {
+                                                                        text: 'Processor',
+                                                                        translationX: -30
+                                                                    }
+                                                                }
+                                                            ],
+                                                            series: [
+                                                                {
+                                                                    type: 'bar3d',
+                                                                    stacked: false,
+                                                                    title: ['Statement', 'Settlement', 'Sale'],
+                                                                    xField: 'processor',
+                                                                    yField: ['statement', 'settlement', 'sale'],
+                                                                    highlight: true,
+                                                                    style: {
+                                                                        inGroupGapWidth: -7,
+                                                                        minGapWidth: 2,
+                                                                        maxBarWidth: 300
+                                                                    },
+                                                                    subStyle: {
+                                                                        fill: ['C9C9C9', '#E51C23', '#00B0F0']
+                                                                    },
+                                                                    tooltip: {
+                                                                        trackMouse: true,
+                                                                        height: 28,
+                                                                        renderer: function (toolTip, record, ctx) {
+                                                                            var label = ctx.field === 'sale'
+                                                                                ? 'Sale'
+                                                                                : (ctx.field === 'settlement'
+                                                                                    ? 'Settlement'
+                                                                                    : 'Statement');
+                                                                            toolTip.setHtml(label + ' : <b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+                                                                        }
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            xtype: 'cartesian',
+                                                            id: prototype.id + '-chartSalvador-Others',
+                                                            width: 770,
+                                                            height: 400,
+                                                            background: '#E0F8F7',
+                                                            legend: { docked: 'bottom' },
+                                                            axes: [
+                                                                {
+                                                                    type: 'numeric3d',
+                                                                    position: 'left',
+                                                                    fields: ['statement', 'settlement', 'sale'],
+                                                                    grid: true,
+                                                                    title: '',
+                                                                    renderer: function (obj, value) {
+                                                                        return Ext.util.Format.number(value, '0.0');
+                                                                    }
+                                                                },
+                                                                {
+                                                                    type: 'category3d',
+                                                                    position: 'bottom',
+                                                                    fields: ['processor'],
+                                                                    title: {
+                                                                        text: 'Processor',
+                                                                        translationX: -30
+                                                                    }
+                                                                }
+                                                            ],
+                                                            series: [
+                                                                {
+                                                                    type: 'bar3d',
+                                                                    stacked: false,
+                                                                    title: ['Statement', 'Settlement', 'Sale'],
+                                                                    xField: 'processor',
+                                                                    yField: ['statement', 'settlement', 'sale'],
+                                                                    highlight: true,
+                                                                    style: {
+                                                                        inGroupGapWidth: -7,
+                                                                        minGapWidth: 2,
+                                                                        maxBarWidth: 500
+                                                                    },
+                                                                    subStyle: {
+                                                                        fill: ['C9C9C9', '#E51C23', '#00B0F0']
+                                                                    },
+                                                                    tooltip: {
+                                                                        trackMouse: true,
+                                                                        height: 28,
+                                                                        renderer: function (toolTip, record, ctx) {
+                                                                            var label = ctx.field === 'sale'
+                                                                                ? 'Sale'
+                                                                                : (ctx.field === 'settlement'
+                                                                                    ? 'Settlement'
+                                                                                    : 'Statement');
+                                                                            toolTip.setHtml(label + ' : <b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+                                                                        }
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridUSAFLOWDiaryDetail',
+                                    height: 575,
+                                    width: 1400,
+                                    hidden: false,
+                                    columnLines: true,
+                                    features: [{
+                                            dock: 'bottom',
+                                            ftype: 'summary'
+                                        }
+                                    ],
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: true,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {
+                                                text: 'From',
+                                                width: 85,
+                                                dataIndex: 'DATE_FROM',
+                                                align: 'center',
+                                                style: 'padding: 5px; background: #A89C6C;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                },
+                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Curr',
+                                                width: 55,
+                                                dataIndex: 'CURRENCY',
+                                                align: 'center',
+                                                style: 'padding: 5px; background: #A89C6C;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                },
+                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'USAVflow II Colombian NY Pass Through (AV) - Amounts',
+                                                menuDisabled: true,
+                                                style: 'background: #C45C4D;',
+                                                columns: [
+                                                    {
+                                                        text: 'WP UK',
+                                                        menuDisabled: true,
+                                                        style: 'background: #6C87A8;',
+                                                        columns: [
+                                                            {
+                                                                text: 'Statement',
+                                                                width: 90,
+                                                                dataIndex: 'STATEMENT_WP_UK_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_STATEMENT_WP_UK_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Commission',
+                                                                width: 100,
+                                                                dataIndex: 'COMISION_WP_UK_CO_SUM',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_COMISION_WP_UK_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Others',
+                                                                width: 80,
+                                                                dataIndex: 'OTHERS_WP_UK_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_OTHERS_WP_UK_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Settlement',
+                                                                width: 90,
+                                                                dataIndex: 'SETTLEMENT_WP_UK_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_BANCARD.trim() !== '-' && record.data.HOLIDAY_WP_BANCARD.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SETTLEMENT_WP_UK_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Sales',
+                                                                width: 80,
+                                                                dataIndex: 'SALE_WP_UK_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_AMEX.trim() !== '-' && record.data.HOLIDAY_AMEX.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SALE_WP_UK_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Rate',
+                                                                width: 60,
+                                                                dataIndex: 'VAR_WP_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_DISCOVER.trim() !== '-' && record.data.HOLIDAY_DISCOVER.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+//                                                                    value = Ext.util.Format.number(value, '0,000,00');
+                                                                    return '<b>' + value + ' %</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+//                                                                            var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+//                                                                            value = Ext.util.Format.number(data.TOTAL_AMOUNT_DISCOVER_CO, '0,000');
+                                                                    return '<b>' + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'WP Bancard',
+                                                        menuDisabled: true,
+                                                        style: 'background: #7D9F7D;',
+                                                        columns: [
+                                                            {
+                                                                text: 'Statement',
+                                                                width: 90,
+                                                                dataIndex: 'STATEMENT_BANCARD_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #7D9F7D;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_STATEMENT_BANCARD_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Commission',
+                                                                width: 100,
+                                                                dataIndex: 'COMISION_BANCARD_CO_SUM',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #7D9F7D;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_BANCARD.trim() !== '-' && record.data.HOLIDAY_WP_BANCARD.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_COMISION_BANCARD_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Others',
+                                                                width: 80,
+                                                                dataIndex: 'OTHERS_BANCARD_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #7D9F7D;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_BANCARD.trim() !== '-' && record.data.HOLIDAY_WP_BANCARD.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_OTHERS_BANCARD_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Settlement',
+                                                                width: 90,
+                                                                dataIndex: 'SETTLEMENT_BANCARD_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #7D9F7D;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_BANCARD.trim() !== '-' && record.data.HOLIDAY_WP_BANCARD.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SETTLEMENT_BANCARD_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Sales',
+                                                                width: 80,
+                                                                dataIndex: 'SALE_BANCARD_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #7D9F7D;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_AMEX.trim() !== '-' && record.data.HOLIDAY_AMEX.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SALE_BANCARD_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Rate',
+                                                                width: 60,
+                                                                dataIndex: 'VAR_BANCARD_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #7D9F7D;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_DISCOVER.trim() !== '-' && record.data.HOLIDAY_DISCOVER.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+//                                                                    value = Ext.util.Format.number(value, '0,000,00');
+                                                                    return '<b>' + value + ' %</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+//                                                                            var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+//                                                                            value = Ext.util.Format.number(data.TOTAL_AMOUNT_DISCOVER_CO, '0,000');
+                                                                    return '<b>' + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Amex',
+                                                        menuDisabled: true,
+                                                        style: 'background: #D18F77;',
+                                                        columns: [
+                                                            {
+                                                                text: 'Statement',
+                                                                width: 90,
+                                                                dataIndex: 'STATEMENT_AMEX_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #D18F77;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_STATEMENT_AMEX_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Commission',
+                                                                width: 100,
+                                                                dataIndex: 'COMISION_AMEX_CO_SUM',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #D18F77;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_BANCARD.trim() !== '-' && record.data.HOLIDAY_WP_BANCARD.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_COMISION_AMEX_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Others',
+                                                                width: 80,
+                                                                dataIndex: 'OTHERS_AMEX_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #D18F77;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_BANCARD.trim() !== '-' && record.data.HOLIDAY_WP_BANCARD.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_OTHERS_AMEX_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Settlement',
+                                                                width: 90,
+                                                                dataIndex: 'SETTLEMENT_AMEX_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #D18F77;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_BANCARD.trim() !== '-' && record.data.HOLIDAY_WP_BANCARD.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SETTLEMENT_AMEX_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Sales',
+                                                                width: 80,
+                                                                dataIndex: 'SALE_AMEX_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #D18F77;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_AMEX.trim() !== '-' && record.data.HOLIDAY_AMEX.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SALE_AMEX_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Rate',
+                                                                width: 60,
+                                                                dataIndex: 'VAR_AMEX_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #D18F77;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_DISCOVER.trim() !== '-' && record.data.HOLIDAY_DISCOVER.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+//                                                                    value = Ext.util.Format.number(value, '0,000,00');
+                                                                    return '<b>' + value + ' %</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+//                                                                            var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+//                                                                            value = Ext.util.Format.number(data.TOTAL_AMOUNT_DISCOVER_CO, '0,000');
+                                                                    return '<b>' + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Discover',
+                                                        menuDisabled: true,
+                                                        style: 'background: #7A7A7A;',
+                                                        columns: [
+                                                            {
+                                                                text: 'Statement',
+                                                                width: 90,
+                                                                dataIndex: 'STATEMENT_DISCOVER_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #7A7A7A;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_STATEMENT_DISCOVER_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Commission',
+                                                                width: 100,
+                                                                dataIndex: 'COMISION_DISCOVER_CO_SUM',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #7A7A7A;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_COMISION_DISCOVER_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Others',
+                                                                width: 80,
+                                                                dataIndex: 'OTHERS_DISCOVER_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #7A7A7A;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_OTHERS_DISCOVER_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Settlement',
+                                                                width: 90,
+                                                                dataIndex: 'SETTLEMENT_DISCOVER_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #7A7A7A;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_BANCARD.trim() !== '-' && record.data.HOLIDAY_WP_BANCARD.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SETTLEMENT_DISCOVER_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Sales',
+                                                                width: 80,
+                                                                dataIndex: 'SALE_DISCOVER_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #7A7A7A;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_AMEX.trim() !== '-' && record.data.HOLIDAY_AMEX.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SALE_DISCOVER_CO, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Rate',
+                                                                width: 60,
+                                                                dataIndex: 'VAR_DISCOVER_CO',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #7A7A7A;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_DISCOVER.trim() !== '-' && record.data.HOLIDAY_DISCOVER.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+//                                                                    value = Ext.util.Format.number(value, '0,000,00');
+                                                                    return '<b>' + value + ' %</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+//                                                                            var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+//                                                                            value = Ext.util.Format.number(data.TOTAL_AMOUNT_DISCOVER_CO, '0,000');
+                                                                    return '<b>' + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: 'USAVflow II Salvadorian NY Pass Through (TA) - Amounts',
+                                                menuDisabled: true,
+                                                style: 'background: #3A1F1C;',
+                                                columns: [
+                                                    {
+                                                        text: 'WP UK',
+                                                        menuDisabled: true,
+                                                        style: 'background: #6C87A8;',
+                                                        columns: [
+                                                            {
+                                                                text: 'Statement',
+                                                                width: 90,
+                                                                dataIndex: 'STATEMENT_WP_UK_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_STATEMENT_WP_UK_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Commission',
+                                                                width: 100,
+                                                                dataIndex: 'COMISION_WP_UK_SA_SUM',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_COMISION_WP_UK_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Others',
+                                                                width: 80,
+                                                                dataIndex: 'OTHERS_WP_UK_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_OTHERS_WP_UK_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Settlement',
+                                                                width: 90,
+                                                                dataIndex: 'SETTLEMENT_WP_UK_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_BANCARD.trim() !== '-' && record.data.HOLIDAY_WP_BANCARD.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SETTLEMENT_WP_UK_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Sales',
+                                                                width: 80,
+                                                                dataIndex: 'SALE_WP_UK_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_AMEX.trim() !== '-' && record.data.HOLIDAY_AMEX.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SALE_WP_UK_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Rate',
+                                                                width: 60,
+                                                                dataIndex: 'VAR_WP_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_DISCOVER.trim() !== '-' && record.data.HOLIDAY_DISCOVER.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+//                                                                    value = Ext.util.Format.number(value, '0,000,00');
+                                                                    return '<b>' + value + ' %</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+//                                                                            var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+//                                                                            value = Ext.util.Format.number(data.TOTAL_AMOUNT_DISCOVER_CO, '0,000');
+                                                                    return '<b>' + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'WP Bancard',
+                                                        menuDisabled: true,
+                                                        style: 'background: #7D9F7D;',
+                                                        columns: [
+                                                            {
+                                                                text: 'Statement',
+                                                                width: 90,
+                                                                dataIndex: 'STATEMENT_BANCARD_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #7D9F7D;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_STATEMENT_BANCARD_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Commission',
+                                                                width: 100,
+                                                                dataIndex: 'COMISION_BANCARD_SA_SUM',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #7D9F7D;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_COMISION_BANCARD_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Others',
+                                                                width: 80,
+                                                                dataIndex: 'OTHERS_BANCARD_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #7D9F7D;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_OTHERS_BANCARD_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Settlement',
+                                                                width: 90,
+                                                                dataIndex: 'SETTLEMENT_BANCARD_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #7D9F7D;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_BANCARD.trim() !== '-' && record.data.HOLIDAY_WP_BANCARD.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SETTLEMENT_BANCARD_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Sales',
+                                                                width: 80,
+                                                                dataIndex: 'SALE_BANCARD_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #7D9F7D;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_AMEX.trim() !== '-' && record.data.HOLIDAY_AMEX.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SALE_BANCARD_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Rate',
+                                                                width: 60,
+                                                                dataIndex: 'VAR_BANCARD_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #7D9F7D;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_DISCOVER.trim() !== '-' && record.data.HOLIDAY_DISCOVER.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+//                                                                    value = Ext.util.Format.number(value, '0,000,00');
+                                                                    return '<b>' + value + ' %</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+//                                                                            var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+//                                                                            value = Ext.util.Format.number(data.TOTAL_AMOUNT_DISCOVER_CO, '0,000');
+                                                                    return '<b>' + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Amex',
+                                                        menuDisabled: true,
+                                                        style: 'background: #D18F77;',
+                                                        columns: [
+                                                            {
+                                                                text: 'Statement',
+                                                                width: 90,
+                                                                dataIndex: 'STATEMENT_AMEX_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #D18F77;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_STATEMENT_AMEX_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Commission',
+                                                                width: 100,
+                                                                dataIndex: 'COMISION_AMEX_SA_SUM',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #D18F77;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_COMISION_AMEX_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Others',
+                                                                width: 80,
+                                                                dataIndex: 'OTHERS_AMEX_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #D18F77;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_OTHERS_AMEX_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Settlement',
+                                                                width: 90,
+                                                                dataIndex: 'SETTLEMENT_AMEX_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #D18F77;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_BANCARD.trim() !== '-' && record.data.HOLIDAY_WP_BANCARD.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SETTLEMENT_AMEX_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Sales',
+                                                                width: 80,
+                                                                dataIndex: 'SALE_AMEX_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #D18F77;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_AMEX.trim() !== '-' && record.data.HOLIDAY_AMEX.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SALE_AMEX_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Rate',
+                                                                width: 60,
+                                                                dataIndex: 'VAR_AMEX_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #D18F77;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_DISCOVER.trim() !== '-' && record.data.HOLIDAY_DISCOVER.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+//                                                                    value = Ext.util.Format.number(value, '0,000,00');
+                                                                    return '<b>' + value + ' %</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+//                                                                            var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+//                                                                            value = Ext.util.Format.number(data.TOTAL_AMOUNT_DISCOVER_CO, '0,000');
+                                                                    return '<b>' + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: 'Discover',
+                                                        menuDisabled: true,
+                                                        style: 'background: #7A7A7A;',
+                                                        columns: [
+                                                            {
+                                                                text: 'Statement',
+                                                                width: 90,
+                                                                dataIndex: 'STATEMENT_DISCOVER_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #7A7A7A;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_STATEMENT_DISCOVER_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Commission',
+                                                                width: 100,
+                                                                dataIndex: 'COMISION_DISCOVER_SA_SUM',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #7A7A7A;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_COMISION_DISCOVER_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Others',
+                                                                width: 80,
+                                                                dataIndex: 'OTHERS_DISCOVER_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #7A7A7A;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_OTHERS_DISCOVER_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Settlement',
+                                                                width: 90,
+                                                                dataIndex: 'SETTLEMENT_DISCOVER_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #7A7A7A;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_BANCARD.trim() !== '-' && record.data.HOLIDAY_WP_BANCARD.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SETTLEMENT_DISCOVER_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Sales',
+                                                                width: 80,
+                                                                dataIndex: 'SALE_DISCOVER_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #7A7A7A;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_AMEX.trim() !== '-' && record.data.HOLIDAY_AMEX.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SALE_DISCOVER_SA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Rate',
+                                                                width: 60,
+                                                                dataIndex: 'VAR_DISCOVER_SA',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #7A7A7A;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_DISCOVER.trim() !== '-' && record.data.HOLIDAY_DISCOVER.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+//                                                                    value = Ext.util.Format.number(value, '0,000,00');
+                                                                    return '<b>' + value + ' %</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+//                                                                            var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+//                                                                            value = Ext.util.Format.number(data.TOTAL_AMOUNT_DISCOVER_CO, '0,000');
+                                                                    return '<b>' + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            id: prototype.id + '-panelTACAFLOWDiaryDetail',
+                            bodyStyle: 'background-color: transparent;',
+                            padding: '0 10 0 10',
+                            layout: {
+                                type: 'vbox',
+                                align: 'stretch'
+                            },
+                            border: false,
+                            items: [
+                                {
+                                    xtype: 'container',
+                                    layout: {
+                                        type: 'hbox',
+                                        align: 'middle'
+                                    },
+                                    padding: '0 10 5 10',
+                                    items: [
+                                        {
+                                            xtype: 'label',
+                                            text: 'Data Table',
+                                            margin: '0 5 0 0',
+                                            width: 60,
+                                            id: prototype.id + '-COLTACA'
+                                        },
+                                        {
+                                            xtype: 'component',
+                                            id: prototype.id + '-btnToggleSwitchTACA',
+                                            margin: '0 5 0 0',
+                                            html: `<style>
+                                                .toggle-container{display:inline-block;position:relative;width:30px;height:16px;vertical-align:middle;}
+                                                .toggle-input{opacity:0;width:0;height:0;}
+                                                .toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#72e34f;transition:.4s;border-radius:16px;}
+                                                .toggle-slider::before{position:absolute;content:"";height:12px;width:12px;border-radius:50%;left:2px;bottom:2px;background-color:white;transition:.4s;}
+                                                .toggle-input:checked+.toggle-slider{background-color:#4c7daf;}
+                                                .toggle-input:checked+.toggle-slider::before{transform:translateX(16px);}
+                                            </style>
+                                            <label class="toggle-container"><input type="checkbox" class="toggle-input"><span class="toggle-slider"></span></label>`,
+                                            tooltip: 'Export to Report',
+                                            listeners: {
+                                                change: 'chgBashTACA',
+                                                click: 'chgBashTACA'
+                                            }
+                                        },
+                                        {
+                                            xtype: 'label',
+                                            text: 'Chart View',
+                                            margin: '0 0 0 5',
+                                            width: 60,
+                                            id: prototype.id + '-EXTACA'
+                                        },
+                                    ]
+                                },
+                                {
+                                    xtype: 'panel',
+                                    id: prototype.id + '-panelDashboardTaca',
+                                    hidden: true,
+                                    height: 560, 
+                                    scrollable: 'y',
+                                    margin: '50 0 5 0',
+                                    border: false,
+                                    layout: {
+                                        type: 'vbox',
+                                        align: 'center',
+                                        pack: 'start'
+                                    },
+                                    bodyStyle: 'background-color: transparent;',
+                                    items: [
+                                        // --------- COLOMBIA ---------
+                                        {
+                                            xtype: 'panel',
+                                            width: 1300,
+                                            border: false,
+                                            layout: 'vbox',
+                                            bodyStyle: 'background-color: transparent;',
+                                            padding: 2,
+                                            items: [
+                                                {
+                                                    xtype: 'component',
+                                                    html: '<div style="text-align:center; font-size: 16px; font-weight: bold;">TACAFLOW (AV)</div>',
+                                                    margin: '0 0 10 0'
+                                                },
+                                                {
+                                                    xtype: 'panel',
+                                                    layout: 'hbox',
+                                                    width: 1300,
+                                                    border: false,
+                                                    items: [
+                                                       {
+                                                            xtype: 'cartesian',
+                                                            id: prototype.id + '-chartTacaflow',
+                                                            width: 1300,
+                                                            height: 400,
+                                                            background: '#E0F8F7',
+                                                            legend: { docked: 'bottom' },
+                                                            axes: [
+                                                                {
+                                                                    type: 'numeric3d',
+                                                                    position: 'left',
+                                                                    fields: ['statement', 'settlement', 'sale'],
+                                                                    grid: true,
+                                                                    title: '',
+                                                                    renderer: function (obj, value) {
+                                                                        return Ext.util.Format.number(value, '0.0');
+                                                                    }
+                                                                },
+                                                                {
+                                                                    type: 'category3d',
+                                                                    position: 'bottom',
+                                                                    fields: ['processor'],
+                                                                    title: {
+                                                                        text: 'Processor',
+                                                                        translationX: -30
+                                                                    }
+                                                                }
+                                                            ],
+                                                            series: [
+                                                                {
+                                                                    type: 'bar3d',
+                                                                    stacked: false,
+                                                                    title: ['Statement', 'Settlement', 'Sale'],
+                                                                    xField: 'processor',
+                                                                    yField: ['statement', 'settlement', 'sale'],
+                                                                    highlight: true,
+                                                                    style: {
+                                                                        inGroupGapWidth: -7,
+                                                                        minGapWidth: 2,
+                                                                        maxBarWidth: 300
+                                                                    },
+                                                                    subStyle: {
+                                                                       fill: ['C9C9C9', '#E51C23', '#00B0F0']
+                                                                    },
+                                                                    tooltip: {
+                                                                        trackMouse: true,
+                                                                        height: 28,
+                                                                        renderer: function (toolTip, record, ctx) {
+                                                                            var label = ctx.field === 'sale'
+                                                                                ? 'Sale'
+                                                                                : (ctx.field === 'settlement'
+                                                                                    ? 'Settlement'
+                                                                                    : 'Statement');
+                                                                            toolTip.setHtml(label + ' : <b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+                                                                        }
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridTACAFLOWDiaryDetail',
+                                    height: 575,
+                                    width: 645,
+                                    hidden: false,
+                                    columnLines: true,
+                                    features: [{
+                                            dock: 'bottom',
+                                            ftype: 'summary'
+                                        }
+                                    ],
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: true,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {
+                                                text: 'From',
+                                                width: 85,
+                                                dataIndex: 'DATE_FROM',
+                                                align: 'center',
+                                                style: 'padding: 5px; background: #A89C6C;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                },
+                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Curr',
+                                                width: 55,
+                                                dataIndex: 'CURRENCY',
+                                                align: 'center',
+                                                style: 'padding: 5px; background: #A89C6C;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                },
+                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Amounts',
+                                                menuDisabled: true,
+                                                style: 'background: #C45C4D;',
+                                                columns: [
+                                                    {
+                                                        text: 'Tacaflow',
+                                                        menuDisabled: true,
+                                                        style: 'background: #6C87A8;',
+                                                        columns: [
+                                                            {
+                                                                text: 'Statement',
+                                                                width: 90,
+                                                                dataIndex: 'STATEMENT_TACA',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridTACAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_STATEMENT_TACA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Commission',
+                                                                width: 100,
+                                                                dataIndex: 'COMISION_TACA',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridTACAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_COMISION_TACA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Others',
+                                                                width: 80,
+                                                                dataIndex: 'OTHERS_TACA',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_UK.trim() !== '-' && record.data.HOLIDAY_WP_UK.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridTACAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_OTHERS_TACA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Settlement',
+                                                                width: 90,
+                                                                dataIndex: 'SETTLEMENT_TACA',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_WP_BANCARD.trim() !== '-' && record.data.HOLIDAY_WP_BANCARD.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridTACAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SETTLEMENT_TACA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Sales',
+                                                                width: 80,
+                                                                dataIndex: 'SALE_TACA',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_AMEX.trim() !== '-' && record.data.HOLIDAY_AMEX.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    value = Ext.util.Format.number(value, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                                    var data = Ext.getCmp(prototype.id + '-gridTACAFLOWDiaryDetail').getStore().getData().items[0].data;
+                                                                    value = Ext.util.Format.number(data.TOTAL_SALE_TACA, '0,000');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Rate',
+                                                                width: 60,
+                                                                dataIndex: 'VAR_TACA',
+                                                                align: 'center',
+                                                                style: 'padding: 5px; background: #6C87A8;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (record.data.HOLIDAY_DISCOVER.trim() !== '-' && record.data.HOLIDAY_DISCOVER.trim() !== '') {
+                                                                        metaData.style = "text-align:right;background:yellow";
+                                                                    } else {
+                                                                        metaData.style = "text-align:right;";
+                                                                    }
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+//                                                                    value = Ext.util.Format.number(value, '0,000,00');
+                                                                    return '<b>' + value + ' %</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+//                                                                            var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
+//                                                                            value = Ext.util.Format.number(data.TOTAL_AMOUNT_DISCOVER_CO, '0,000');
+                                                                    return '<b>' + '</b>';
+                                                                }
+                                                            }
+                                                        ]
                                                     }
                                                 ]
                                             }
@@ -960,14 +2963,14 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataUsaflowWeekly',
                                     height: 575,
-                                    width: 1762,
+                                    width: 1400,
                                     hidden: false,
                                     columnLines: true,
                                     features: [{
                                             dock: 'bottom',
                                             ftype: 'summary'
                                         }
-                                    ], 
+                                    ],
                                     columns: {
                                         defaults: {
                                             menuDisabled: true,
@@ -985,7 +2988,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         width: 80,
                                                         dataIndex: 'WEEK_START_DATE',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #D18F77;',
+                                                        style: 'padding: 5px; background: #D18F77;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -1001,7 +3004,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         width: 80,
                                                         dataIndex: 'WEEK_END_DATE',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #D18F77;',
+                                                        style: 'padding: 5px; background: #D18F77;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -1017,7 +3020,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         width: 85,
                                                         dataIndex: 'NUMBERWEAK',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #D18F77;',
+                                                        style: 'padding: 5px; background: #D18F77;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -1042,20 +3045,20 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         columns: [
                                                             {
                                                                 text: 'WP UK',
-                                                                width: 100,
+                                                                width: 80,
                                                                 dataIndex: 'AMOUNT_WP_UK_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #7A88A2;',
+                                                                style: 'padding: 5px; background: #7A88A2;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_WP_UK_CO, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_WP_UK_CO, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
@@ -1064,74 +3067,74 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 100,
                                                                 dataIndex: 'AMOUNT_BANCARD_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #7A88A2;',
+                                                                style: 'padding: 5px; background: #7A88A2;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_BANCARD_CO, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_BANCARD_CO, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
                                                             {
                                                                 text: 'Amex',
-                                                                width: 100,
+                                                                width: 80,
                                                                 dataIndex: 'AMOUNT_AMEX_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #7A88A2;',
+                                                                style: 'padding: 5px; background: #7A88A2;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_AMEX_CO, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_AMEX_CO, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
                                                             {
                                                                 text: 'Discover',
-                                                                width: 100,
+                                                                width: 80,
                                                                 dataIndex: 'AMOUNT_DISCOVER_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #7A88A2;',
+                                                                style: 'padding: 5px; background: #7A88A2;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_DISCOVER_CO, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_DISCOVER_CO, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
                                                             {
                                                                 text: 'Total',
-                                                                width: 100,
+                                                                width: 80,
                                                                 dataIndex: 'TOTAL_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #C45C4D;',
+                                                                style: 'padding: 5px; background: #C45C4D;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_TOTAL_CO, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_TOTAL_CO, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             }
@@ -1144,20 +3147,20 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         columns: [
                                                             {
                                                                 text: 'WP UK',
-                                                                width: 100,
+                                                                width: 80,
                                                                 dataIndex: 'AMOUNT_WP_UK_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #95A3B7;',
+                                                                style: 'padding: 5px; background: #95A3B7;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_WP_UK_SA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_WP_UK_SA, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
@@ -1166,74 +3169,74 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 100,
                                                                 dataIndex: 'AMOUNT_BANCARD_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #95A3B7;',
+                                                                style: 'padding: 5px; background: #95A3B7;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_BANCARD_SA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_BANCARD_SA, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
                                                             {
                                                                 text: 'Amex',
-                                                                width: 100,
+                                                                width: 80,
                                                                 dataIndex: 'AMOUNT_AMEX_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #95A3B7;',
+                                                                style: 'padding: 5px; background: #95A3B7;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_AMEX_SA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_AMEX_SA, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
                                                             {
                                                                 text: 'Discover',
-                                                                width: 100,
+                                                                width: 80,
                                                                 dataIndex: 'AMOUNT_DISCOVER_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #95A3B7;',
+                                                                style: 'padding: 5px; background: #95A3B7;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_DISCOVER_SA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_DISCOVER_SA, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
                                                             {
                                                                 text: 'Total',
-                                                                width: 100,
+                                                                width: 80,
                                                                 dataIndex: 'TOTAL_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #C45C4D;',
+                                                                style: 'padding: 5px; background: #C45C4D;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_TOTAL_SA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_TOTAL_SA, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             }
@@ -1241,20 +3244,20 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                     },
                                                     {
                                                         text: 'Grant Total',
-                                                        width: 110,
+                                                        width: 85,
                                                         dataIndex: 'TOTAL_CO_AND_SA',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #C45C4D;',
+                                                        style: 'padding: 5px; background: #C45C4D;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            value = Ext.util.Format.number(value, '0,000');
                                                             return '<b>' + value + '</b>';
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             metaData.style = "text-align:right;background: #3F5675;color:white";
                                                             var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
-                                                            value = Ext.util.Format.number(data.TOTAL_TOTAL_CO_AND_SA, '0,000.00');
+                                                            value = Ext.util.Format.number(data.TOTAL_TOTAL_CO_AND_SA, '0,000');
                                                             return '<b>' + value + '</b>';
                                                         }
                                                     }
@@ -1275,18 +3278,18 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 100,
                                                                 dataIndex: 'AVG_WP_UK_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #5F7A6F;',
+                                                                style: 'padding: 5px; background: #5F7A6F;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                     metaData.tdAttr = 'data-qtip="Dividor por : ' + '' + '"';
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_WP_UK_CO, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_WP_UK_CO, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
@@ -1295,17 +3298,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 100,
                                                                 dataIndex: 'AVG_BANCARD_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #5F7A6F;',
+                                                                style: 'padding: 5px; background: #5F7A6F;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_BANCARD_CO, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_BANCARD_CO, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
@@ -1314,17 +3317,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 100,
                                                                 dataIndex: 'AVG_AMEX_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #5F7A6F;',
+                                                                style: 'padding: 5px; background: #5F7A6F;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_AMEX_CO, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_AMEX_CO, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
@@ -1333,17 +3336,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 100,
                                                                 dataIndex: 'AVG_DISCOVER_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #5F7A6F;',
+                                                                style: 'padding: 5px; background: #5F7A6F;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_DISCOVER_CO, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_DISCOVER_CO, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
@@ -1352,17 +3355,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 100,
                                                                 dataIndex: 'AVG_TOTAL_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #C45C4D;',
+                                                                style: 'padding: 5px; background: #C45C4D;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_TOTAL_CO, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_TOTAL_CO, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             }
@@ -1378,17 +3381,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 100,
                                                                 dataIndex: 'AVG_WP_UK_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #92AC9E;',
+                                                                style: 'padding: 5px; background: #92AC9E;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_WP_UK_SA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_WP_UK_SA, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
@@ -1397,17 +3400,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 100,
                                                                 dataIndex: 'AVG_BANCARD_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #92AC9E;',
+                                                                style: 'padding: 5px; background: #92AC9E;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_BANCARD_SA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_BANCARD_SA, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
@@ -1416,17 +3419,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 100,
                                                                 dataIndex: 'AVG_AMEX_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #92AC9E;',
+                                                                style: 'padding: 5px; background: #92AC9E;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_AMEX_SA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_AMEX_SA, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
@@ -1435,17 +3438,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 100,
                                                                 dataIndex: 'AVG_DISCOVER_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #92AC9E;',
+                                                                style: 'padding: 5px; background: #92AC9E;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_DISCOVER_SA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_DISCOVER_SA, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
@@ -1454,17 +3457,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 100,
                                                                 dataIndex: 'AVG_TOTAL_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #C45C4D;',
+                                                                style: 'padding: 5px; background: #C45C4D;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_TOTAL_SA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_TOTAL_SA, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             }
@@ -1475,17 +3478,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         width: 110,
                                                         dataIndex: 'AVG_TOTAL_CO_SA',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #C45C4D;',
+                                                        style: 'padding: 5px; background: #C45C4D;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            value = Ext.util.Format.number(value, '0,000');
                                                             return '<b>' + value + '</b>';
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             metaData.style = "text-align:right;background: #3F5675;color:white";
                                                             var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
-                                                            value = Ext.util.Format.number(data.TOTAL_AVG_TOTAL_CO_SA, '0,000.00');
+                                                            value = Ext.util.Format.number(data.TOTAL_AVG_TOTAL_CO_SA, '0,000');
                                                             return '<b>' + value + '</b>';
                                                         }
                                                     }
@@ -1506,17 +3509,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 80,
                                                                 dataIndex: 'VAR_WP_UK_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #5F6A7A;',
+                                                                style: 'padding: 5px; background: #5F6A7A;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_WP_UK_CO;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -1524,17 +3527,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 100,
                                                                 dataIndex: 'VAR_BANCARD_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #5F6A7A;',
+                                                                style: 'padding: 5px; background: #5F6A7A;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_BANCARD_CO;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -1542,17 +3545,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 80,
                                                                 dataIndex: 'VAR_AMEX_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #5F6A7A;',
+                                                                style: 'padding: 5px; background: #5F6A7A;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_AMEX_CO;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -1560,17 +3563,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 80,
                                                                 dataIndex: 'VAR_DISCOVER_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #5F6A7A;',
+                                                                style: 'padding: 5px; background: #5F6A7A;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_DISCOVER_CO;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -1578,17 +3581,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 80,
                                                                 dataIndex: 'VAR_TOTAL_CO',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #C45C4D;',
+                                                                style: 'padding: 5px; background: #C45C4D;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_TOTAL_CO;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             }
                                                         ]
@@ -1603,17 +3606,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 80,
                                                                 dataIndex: 'VAR_WP_UK_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #909EAD;',
+                                                                style: 'padding: 5px; background: #909EAD;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_WP_UK_SA;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -1621,17 +3624,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 100,
                                                                 dataIndex: 'VAR_BANCARD_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #909EAD;',
+                                                                style: 'padding: 5px; background: #909EAD;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_BANCARD_SA;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -1639,17 +3642,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 80,
                                                                 dataIndex: 'VAR_AMEX_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #909EAD;',
+                                                                style: 'padding: 5px; background: #909EAD;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_AMEX_SA;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -1657,17 +3660,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 80,
                                                                 dataIndex: 'VAR_DISCOVER_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #909EAD;',
+                                                                style: 'padding: 5px; background: #909EAD;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_DISCOVER_SA;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -1675,17 +3678,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 80,
                                                                 dataIndex: 'VAR_TOTAL_SA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #C45C4D;',
+                                                                style: 'padding: 5px; background: #C45C4D;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_TOTAL_SA;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             }
                                                         ]
@@ -1695,17 +3698,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         width: 90,
                                                         dataIndex: 'VAR_TOTAL_CO_SA',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #C45C4D;',
+                                                        style: 'padding: 5px; background: #C45C4D;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                            return '<b>' + value + '%'+ '</b>';
+                                                            return '<b>' + value + '%' + '</b>';
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             metaData.style = "text-align:right;background: #3F5675;color:white";
                                                             var data = Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').getStore().getData().items[0].data;
                                                             value = data.TOTAL_VAR_TOTAL_CO_SA;
-                                                            return '<b>' + value + '%'+ '</b>';
+                                                            return '<b>' + value + '%' + '</b>';
                                                         }
                                                     }
                                                 ]
@@ -1733,14 +3736,14 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataTaca',
                                     height: 575,
-                                    width: 840,
+                                    width: 828,
                                     hidden: false,
                                     columnLines: true,
                                     features: [{
                                             dock: 'bottom',
                                             ftype: 'summary'
                                         }
-                                    ], 
+                                    ],
                                     columns: {
                                         defaults: {
                                             menuDisabled: true,
@@ -1758,7 +3761,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         width: 110,
                                                         dataIndex: 'HOLIDAY_TACA',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #A89C6C;',
+                                                        style: 'padding: 5px; background: #A89C6C;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -1776,10 +3779,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                 width: 70,
                                                 dataIndex: 'DAY_NAME',
                                                 align: 'center',
-                                                style: 'padding: 6px; background: #6C87A8;',
+                                                style: 'padding: 5px; background: #6C87A8;',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:center;";
+                                                    metaData.style = "text-align:left;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    if (value) {
+                                                        return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+                                                    }
                                                     return value;
                                                 },
                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
@@ -1788,14 +3794,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'Monthly',
-                                                width: 80,
+                                                text: 'Month',
+                                                width: 65,
                                                 dataIndex: 'MONTH_NAME',
                                                 align: 'center',
-                                                style: 'padding: 6px; background: #6C87A8;',
+                                                style: 'padding: 5px; background: #6C87A8;',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "text-align:center;";
+                                                    metaData.style = "text-align:left;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    if (value) {
+                                                        return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+                                                    }
                                                     return value;
                                                 },
                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
@@ -1813,7 +3822,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         width: 80,
                                                         dataIndex: 'DATE_FROM',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #D18F77;',
+                                                        style: 'padding: 5px; background: #D18F77;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -1829,7 +3838,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         width: 85,
                                                         dataIndex: 'NUMBER_WEAK',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #D18F77;',
+                                                        style: 'padding: 5px; background: #D18F77;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -1845,7 +3854,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         width: 55,
                                                         dataIndex: 'DAY_NUMBER_EKED',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #D18F77;',
+                                                        style: 'padding: 5px; background: #D18F77;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -1873,7 +3882,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 120,
                                                                 dataIndex: 'AMOUNT_TACA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #7A88A2;',
+                                                                style: 'padding: 5px; background: #7A88A2;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     if (record.data.HOLIDAY_TACA !== '-') {
                                                                         metaData.style = "text-align:right;background:yellow";
@@ -1881,13 +3890,13 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                         metaData.style = "text-align:right;";
                                                                     }
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataTaca').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_TACA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_TACA, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
@@ -1895,19 +3904,19 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 text: 'Total',
                                                                 width: 120,
                                                                 hidden: true,
-                                                                dataIndex: 'TOTAL_TACA',
+                                                                dataIndex: 'AMOUNT_TACA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #C45C4D;',
+                                                                style: 'padding: 5px; background: #C45C4D;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataTaca').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_TOTAL_TACA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_TACA, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             }
@@ -1924,17 +3933,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 120,
                                                                 dataIndex: 'AMOUNT_CRC',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #95A3B7;',
+                                                                style: 'padding: 5px; background: #95A3B7;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataTaca').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_CRC, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_CRC, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
@@ -1942,19 +3951,19 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 text: 'Total',
                                                                 width: 120,
                                                                 hidden: true,
-                                                                dataIndex: 'TOTAL_CRC',
+                                                                dataIndex: 'AMOUNT_CRC',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #C45C4D;',
+                                                                style: 'padding: 5px; background: #C45C4D;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataTaca').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_TOTAL_CRC, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_CRC, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             }
@@ -1963,21 +3972,21 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                     {
                                                         text: 'Grant Total',
                                                         width: 120,
-                                                        hidden:true,
+                                                        hidden: true,
                                                         dataIndex: 'TOTAL_TACA_CRC',
                                                         align: 'center',
                                                         hidden: true,
-                                                        style: 'padding: 6px; background: #C45C4D;',
+                                                        style: 'padding: 5px; background: #C45C4D;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            value = Ext.util.Format.number(value, '0,000');
                                                             return '<b>' + value + '</b>';
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             metaData.style = "text-align:right;background: #3F5675;color:white";
                                                             var data = Ext.getCmp(prototype.id + '-gridDataTaca').getStore().getData().items[0].data;
-                                                            value = Ext.util.Format.number(data.TOTAL_TOTAL_TACA_CRC, '0,000.00');
+                                                            value = Ext.util.Format.number(data.TOTAL_AMOUNT_TACA_CRC, '0,000');
                                                             return '<b>' + value + '</b>';
                                                         }
                                                     }
@@ -1998,38 +4007,38 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 120,
                                                                 dataIndex: 'AVG_TACA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #5F7A6F;',
+                                                                style: 'padding: 5px; background: #5F7A6F;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                     metaData.tdAttr = 'data-qtip="Dividor por : ' + '' + '"';
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataTaca').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_TACA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_TACA, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
                                                             {
                                                                 text: 'Total',
                                                                 width: 120,
-                                                                dataIndex: 'AVG_TOTAL_TACA',
+                                                                dataIndex: 'AVG_TACA',
                                                                 hidden: true,
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #C45C4D;',
+                                                                style: 'padding: 5px; background: #C45C4D;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataTaca').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_TOTAL_TACA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_TACA, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             }
@@ -2046,36 +4055,36 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 120,
                                                                 dataIndex: 'AVG_CRC',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #92AC9E;',
+                                                                style: 'padding: 5px; background: #92AC9E;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataTaca').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_CRC, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_CRC, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
                                                             {
                                                                 text: 'Total',
                                                                 width: 120,
-                                                                dataIndex: 'AVG_TOTAL_CRC',
+                                                                dataIndex: 'AVG_CRC',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #C45C4D;',
+                                                                style: 'padding: 5px; background: #C45C4D;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataTaca').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_TOTAL_CRC, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_CRC, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             }
@@ -2087,17 +4096,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         hidden: true,
                                                         dataIndex: 'AVG_TOTAL_TACA_CRC',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #C45C4D;',
+                                                        style: 'padding: 5px; background: #C45C4D;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            value = Ext.util.Format.number(value, '0,000');
                                                             return '<b>' + value + '</b>';
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             metaData.style = "text-align:right;background: #3F5675;color:white";
                                                             var data = Ext.getCmp(prototype.id + '-gridDataTaca').getStore().getData().items[0].data;
-                                                            value = Ext.util.Format.number(data.TOTAL_AVG_TOTAL_TACA_CRC, '0,000.00');
+                                                            value = Ext.util.Format.number(data.TOTAL_AVG_TACA_CRC, '0,000');
                                                             return '<b>' + value + '</b>';
                                                         }
                                                     }
@@ -2118,36 +4127,36 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 120,
                                                                 dataIndex: 'VAR_TACA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #5F6A7A;',
+                                                                style: 'padding: 5px; background: #5F6A7A;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataTaca').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_TACA;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
                                                                 text: 'Total',
                                                                 width: 120,
                                                                 hidden: true,
-                                                                dataIndex: 'VAR_TOTAL_TACA',
+                                                                dataIndex: 'VAR_TACA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #C45C4D;',
+                                                                style: 'padding: 5px; background: #C45C4D;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_TACA;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             }
                                                         ]
@@ -2163,35 +4172,35 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 120,
                                                                 dataIndex: 'VAR_CRC',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #909EAD;',
+                                                                style: 'padding: 5px; background: #909EAD;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_CRC;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
                                                                 text: 'Total',
                                                                 width: 120,
-                                                                dataIndex: 'VAR_TOTAL_CRC',
+                                                                dataIndex: 'VAR_CRC',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #C45C4D;',
+                                                                style: 'padding: 5px; background: #C45C4D;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
-                                                                    value = data.TOTAL_VAR_TOTAL_CRC;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    value = data.TOTAL_VAR_CRC;
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             }
                                                         ]
@@ -2202,17 +4211,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         hidden: true,
                                                         dataIndex: 'VAR_TOTAL_TACA_CRC',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #C45C4D;',
+                                                        style: 'padding: 5px; background: #C45C4D;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                            return '<b>' + value + '%'+ '</b>';
+                                                            return '<b>' + value + '%' + '</b>';
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             metaData.style = "text-align:right;background: #3F5675;color:white";
                                                             var data = Ext.getCmp(prototype.id + '-gridDataMain').getStore().getData().items[0].data;
-                                                            value = data.TOTAL_VAR_TOTAL_TACA_CRC;
-                                                            return '<b>' + value + '%'+ '</b>';
+                                                            value = data.TOTAL_VAR_TACA_CRC;
+                                                            return '<b>' + value + '%' + '</b>';
                                                         }
                                                     }
                                                 ]
@@ -2246,7 +4255,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                     features: [{
                                             ftype: 'summary'
                                         }
-                                    ], 
+                                    ],
                                     columns: {
                                         defaults: {
                                             menuDisabled: true,
@@ -2264,7 +4273,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         width: 80,
                                                         dataIndex: 'WEEK_START_DATE',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #D18F77;',
+                                                        style: 'padding: 5px; background: #D18F77;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -2280,7 +4289,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         width: 80,
                                                         dataIndex: 'WEEK_END_DATE',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #D18F77;',
+                                                        style: 'padding: 5px; background: #D18F77;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -2296,7 +4305,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                         width: 85,
                                                         dataIndex: 'NUMBERWEAK',
                                                         align: 'center',
-                                                        style: 'padding: 6px; background: #D18F77;',
+                                                        style: 'padding: 5px; background: #D18F77;',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -2324,17 +4333,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 130,
                                                                 dataIndex: 'AMOUNT_TACA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #7A88A2;',
+                                                                style: 'padding: 5px; background: #7A88A2;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataTacaWeekly').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_TACA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_TACA, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
@@ -2344,17 +4353,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 hidden: true,
                                                                 dataIndex: 'AMOUNT_TACA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #C45C4D;',
+                                                                style: 'padding: 5px; background: #C45C4D;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataTacaWeekly').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_TACA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AMOUNT_TACA, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             }
@@ -2377,18 +4386,18 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 130,
                                                                 dataIndex: 'AVG_TACA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #5F7A6F;',
+                                                                style: 'padding: 5px; background: #5F7A6F;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                     metaData.tdAttr = 'data-qtip="Dividor por : ' + '' + '"';
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataTacaWeekly').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_TACA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_TACA, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             },
@@ -2398,17 +4407,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 hidden: true,
                                                                 dataIndex: 'AVG_TACA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #C45C4D;',
+                                                                style: 'padding: 5px; background: #C45C4D;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    value = Ext.util.Format.number(value, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataTacaWeekly').getStore().getData().items[0].data;
-                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_TACA, '0,000.00');
+                                                                    value = Ext.util.Format.number(data.TOTAL_AVG_TACA, '0,000');
                                                                     return '<b>' + value + '</b>';
                                                                 }
                                                             }
@@ -2431,17 +4440,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 width: 130,
                                                                 dataIndex: 'VAR_TACA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #5F6A7A;',
+                                                                style: 'padding: 5px; background: #5F6A7A;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataTacaWeekly').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_TACA;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             },
                                                             {
@@ -2450,17 +4459,17 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                                                                 hidden: true,
                                                                 dataIndex: 'VAR_TACA',
                                                                 align: 'center',
-                                                                style: 'padding: 6px; background: #C45C4D;',
+                                                                style: 'padding: 5px; background: #C45C4D;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;";
                                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataTacaWeekly').getStore().getData().items[0].data;
                                                                     value = data.TOTAL_VAR_TACA;
-                                                                    return '<b>' + value + '%'+ '</b>';
+                                                                    return '<b>' + value + '%' + '</b>';
                                                                 }
                                                             }
                                                         ]
@@ -2473,7 +4482,7 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                             ]
                         },
                         // <editor-fold defaultstate="collapsed" desc="boxPagDetail">
-                        {
+                       {
                             xtype: 'panel',
                             id: prototype.id + '-pie',
                             hidden: false,
@@ -2483,56 +4492,56 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                             },
                             border: true,
                             hidden: true,
-                            width: 550, // Aumenté el ancho para acomodar el texto más grande
-                            height: 35, // Aumenté el alto para que el texto no se vea apretado
-                            margin: '10 0 0 0', // Margen superior aumentado
+                            width: 400, // Reducido
+                            height: 30, // Reducido
+                            margin: '10 0 0 0',
                             defaults: {
                                 border: false
                             },
-                            style: 'border-radius: 10px;',
+                            style: 'border-radius: 8px;',
                             items: [
                                 {
-                                    bodyStyle: 'background: #6C87A8; border-radius: 10px;', // Estilo mejorado
+                                    bodyStyle: 'background: #6C87A8; border-radius: 8px;',
                                     xtype: 'panel',
                                     width: '100%',
                                     height: '100%',
                                     layout: {
                                         type: 'hbox',
                                         pack: 'center',
-                                        align: 'middle' // Alineación vertical al centro
+                                        align: 'middle'
                                     },
                                     defaults: {
                                         xtype: 'label',
-                                        style: 'color: white; font-weight: bold; margin-top: 7px; font-size: 14px;' // Tamaño de letra aumentado a 14px
+                                        style: 'color: white; font-weight: bold; font-size: 12px; margin-top: 6px;'
                                     },
                                     items: [
                                         {
-                                            text: 'Page',
-                                            width: 60 // Aumenté el ancho para acomodar el texto más grande
+                                            text: 'Pag',
+                                            width: 40
                                         },
                                         {
                                             id: prototype.id + '-lbl-currentPage',
                                             text: '1',
-                                            width: 60 // Aumenté el ancho para acomodar el texto más grande
+                                            width: 40
                                         },
                                         {
-                                            text: 'OF',
-                                            width: 50 // Aumenté el ancho para acomodar el texto más grande
+                                            text: 'of',
+                                            width: 30
                                         },
                                         {
                                             id: prototype.id + '-lbl-pageCount',
                                             text: '0',
-                                            width: 50 // Aumenté el ancho para acomodar el texto más grande
+                                            width: 30
                                         },
-                                        {xtype: 'tbspacer', width: 60}, // Aumenté el ancho del espaciador
+                                        {xtype: 'tbspacer', width: 30},
                                         {
-                                            text: 'Total Found',
-                                            width: 90 // Aumenté el ancho para acomodar el texto más grande
+                                            text: 'Found',
+                                            width: 50
                                         },
                                         {
                                             id: prototype.id + '-lbl-total',
                                             text: '0',
-                                            width: 60 // Aumenté ligeramente el ancho
+                                            width: 40
                                         }
                                     ]
                                 }
@@ -2540,6 +4549,168 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Info', {
                         }
                         // </editor-fold>
                     ]
+                },
+                {
+                    xtype: 'panel',
+                    id: prototype.id + '-panelLog',
+                    hidden: true,
+                    bodyStyle: 'background-color: transparent;',
+                    layout: {
+                        type: 'vbox',
+                        align: 'center'
+                    },
+                    items: [
+                        {
+                            xtype: 'panel',
+                            id: prototype.id + '-panelGridDataLogMain',
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            defaults: {
+                                border: false,
+                                height: 150
+                            },
+                            bodyStyle: 'background: transparent',
+                            border: false,
+                            items: [
+                                 {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridDataLogMain',
+                                    height: 575,
+                                    width: 1053,
+                                    columnLines: true,
+                                    cls: 'custom-grid',
+                                    viewConfig: {
+                                        stripeRows: true,
+                                        enableTextSelection: true,
+                                        deferEmptyText: false,
+                                        emptyText: '<div style="text-align:center; padding:20px; font-size:14px; color:#999;">No records found</div>'
+                                    },
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: true,
+                                            align: 'center',
+                                            style: 'text-align:center; font-weight:bold;',
+                                            tdCls: 'custom-grid-cell'
+                                        },
+                                        items: [
+                                            { text: 'Value Date', dataIndex: 'FECRFILE', width: 90,style: 'padding: 5px; background: #6C87A8;', },
+                                            { text: 'Processor', dataIndex: 'CODEPROC', width: 100,style: 'padding: 5px; background: #6C87A8;', 
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:left;";
+                                                    return value;
+                                                },
+                                            },
+                                            { 
+                                                text: 'State', 
+                                                dataIndex: 'STATP', 
+                                                width: 70,
+                                                style: 'padding: 5px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    if (value === '0' || value === 0) return 'OK';
+                                                    if (value === '1' || value === 1) return 'ERROR';
+                                                    return value;
+                                                }
+                                            },
+                                            { text: 'Message', dataIndex: 'MENSA', width: 200,style: 'padding: 5px; background: #6C87A8;', 
+                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:left;";
+                                                    return value;
+                                                }
+                                            },
+                                            { text: 'Host Shipping', dataIndex: 'HOSEND', width: 110,style: 'padding: 5px; background: #6C87A8;',  },
+                                            { text: 'Date Create', dataIndex: 'FECR', width: 100,style: 'padding: 5px; background: #6C87A8;',  },
+                                            { text: 'Creation Time', dataIndex: 'HOCR', width: 100,style: 'padding: 5px; background: #6C87A8;',  },
+                                            { text: 'Date Received', dataIndex: 'FERECV', width: 120,style: 'padding: 5px; background: #6C87A8;',  },
+                                            { text: 'Hour Received', dataIndex: 'HORECV', width: 120 ,style: 'padding: 5px; background: #6C87A8;',  },
+                                            {
+                                                                text: 'View', dataIndex: '', width: 40,
+                                                                listeners: {
+                                                                    click: 'viewDataEntry_clickHandler'
+                                                                },
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    var data = record.data;
+                                                                    metaData.tdAttr = 'data-qtip="' + (Number(data.lngQOBS) > 1 ? 'View' : 'View') + '"';
+                                                                    var src = Number(data.lngQOBS) > 1 ? 'resources/img/botones/16x16/1326498593_018.png' : 'resources/img/botones/16x16/1326498593_018.png';
+                                                                    return '<a href="#payments-bank-statement-extract-form"><img src="' + src + '"></a>';
+                                                                }
+                                                            }
+                                        ]
+                                    }
+                                },
+                                // <editor-fold defaultstate="collapsed" desc="boxPagDetail">
+                                {
+                                    xtype: 'panel',
+                                    id: prototype.id + '-pie2',
+                                    hidden: false,
+                                    layout: {
+                                        type: 'hbox',
+                                        pack: 'center'
+                                    },
+                                    border: true,
+                                    width: 400,
+                                    height: 30,
+                                    margin: '10 0 0 0',
+                                    defaults: {
+                                        border: false
+                                    },
+                                    style: 'border-radius: 8px;',
+                                    items: [
+                                        {
+                                            bodyStyle: 'background: #6C87A8; border-radius: 8px;',
+                                            xtype: 'panel',
+                                            width: '100%',
+                                            height: '100%',
+                                            layout: {
+                                                type: 'hbox',
+                                                pack: 'center',
+                                                align: 'middle'
+                                            },
+                                            defaults: {
+                                                xtype: 'label',
+                                                style: 'color: white; font-weight: bold; font-size: 12px; margin-top: 6px;'
+                                            },
+                                            items: [
+                                                {
+                                                    text: 'Pg',
+                                                    width: 40
+                                                },
+                                                {
+                                                    id: prototype.id + '-lbl-currentPage2',
+                                                    text: '1',
+                                                    width: 40
+                                                },
+                                                {
+                                                    text: 'of',
+                                                    width: 30
+                                                },
+                                                {
+                                                    id: prototype.id + '-lbl-pageCount2',
+                                                    text: '0',
+                                                    width: 30
+                                                },
+                                                {xtype: 'tbspacer', width: 30},
+                                                {
+                                                    text: 'Found',
+                                                    width: 50
+                                                },
+                                                {
+                                                    id: prototype.id + '-lbl-total2',
+                                                    text: '0',
+                                                    width: 40
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                                // </editor-fold>
+                            ]
+                        }
+                    ]
+                    
                 }
             ]
         }

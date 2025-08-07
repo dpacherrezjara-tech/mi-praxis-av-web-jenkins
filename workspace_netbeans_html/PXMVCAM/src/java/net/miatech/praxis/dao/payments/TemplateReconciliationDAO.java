@@ -376,7 +376,7 @@ public class TemplateReconciliationDAO {
         double TOTAL_NETO = 0;
         double TOTAL_IMPORTEPAG = 0;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS113(?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS113_V2(?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {

@@ -479,7 +479,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                     fieldStyle: 'text-align: center; font-size: 12px;',
                                     id: prototype.id + '-txtMerchant',
                                     enforceMaxLength: true,
-                                    disabled: true,
+                                    disabled: false,
                                     maxLength: 15,
                                     width: 180,
                                     labelWidth: 57,

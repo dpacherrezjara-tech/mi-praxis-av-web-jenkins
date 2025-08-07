@@ -4,10 +4,12 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
     fecha: new Date(),
     objA3096: {},
     bean: {},
+    beanLog: {},
     beanTicket: {},
     beanExcel: {},
     beanDetDay: {},
     beanDebits: {},
+    beanLog: {},
     loadDate: '',
     searchParams: {},
     paramsObtainData: {},
@@ -18,6 +20,8 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
     gridActual: '-boxMainData',
     boxActual: '-panelGridDataMain',
     pagginActual: '-paggin',
+    panelBack: '',
+    pagginActualBack: '', 
     user: '',
     columnCode: '',
     prevYearFrom: '',
@@ -33,6 +37,9 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
             // -------------------Eventos Genericos --------------------
             '#BankStatementExtractForm-rbChart_IA': {
                 change: this.rbChart_IA_change
+            },
+            '#BankStatementExtractForm-rbtDetail': {
+                change: this.onChangeRadio
             },
             '#BankStatementExtractForm-xpanel': {
                 afterrender: this.xpanel_afterrender
@@ -95,6 +102,33 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
         me = this;
     },
     xpanel_afterrender: function (obj, e) {
+        $('#BankStatementExtractForm-btnToggleSwitch').on('change', function () {
+            var grid = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail');
+            var chart = Ext.getCmp(prototype.id + '-panelDashboard');
+            var pie = Ext.getCmp(prototype.id + '-pie');
+
+            if (grid && chart && pie) {
+                var mostrarGrid = !grid.isVisible(); // Si el grid NO es visible, debemos mostrarlo (y ocultar el chart)
+
+                grid.setVisible(mostrarGrid);
+                pie.setVisible(mostrarGrid);
+                chart.setVisible(!mostrarGrid);
+            }
+        });
+        $('#BankStatementExtractForm-btnToggleSwitchTACA').on('change', function () {
+            var grid = Ext.getCmp(prototype.id + '-gridTACAFLOWDiaryDetail');
+            var chart = Ext.getCmp(prototype.id + '-panelDashboardTaca');
+            var pie = Ext.getCmp(prototype.id + '-pie');
+
+            if (grid && chart && pie) {
+                var mostrarGrid = !grid.isVisible(); 
+
+                grid.setVisible(mostrarGrid);
+                pie.setVisible(mostrarGrid);
+                chart.setVisible(!mostrarGrid);
+            }
+        });
+        
         this.setStoreData();
         this.btnSearch_click();
     },
@@ -132,6 +166,21 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
 
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(year);
         Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue(month);
+        
+        //Date Log 
+        Ext.getCmp(prototype.id + '-cmbDateFromYearLog').bindStore(storeComboDataYear);
+        Ext.getCmp(prototype.id + '-cmbDateFromMonthLog').bindStore(storeComboDataMonth);
+        Ext.getCmp(prototype.id + '-cmbDateFromDayLog').bindStore(storeComboDataDay);
+
+        Ext.getCmp(prototype.id + '-cmbDateFromYearLog').setValue(year);
+        Ext.getCmp(prototype.id + '-cmbDateFromMonthLog').setValue(month);
+        
+        Ext.getCmp(prototype.id + '-cmbDateToYearLog').bindStore(storeComboDataYear);
+        Ext.getCmp(prototype.id + '-cmbDateToMonthLog').bindStore(storeComboDataMonth);
+        Ext.getCmp(prototype.id + '-cmbDateToDayLog').bindStore(storeComboDataDay);
+
+        Ext.getCmp(prototype.id + '-cmbDateToYearLog').setValue(year);
+        Ext.getCmp(prototype.id + '-cmbDateToMonthLog').setValue(month);
     },
     rbChart_IA_change: function(radioGroup, newValue, oldValue) {
         let rbValue = newValue.rb;
@@ -141,6 +190,7 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
         let comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
         let comboFromDay = Ext.getCmp(prototype.id + '-cmbDateFromDay');
         let comboToDay = Ext.getCmp(prototype.id + '-cmbDateToDay');
+        let panelDetail = Ext.getCmp(prototype.id + '-panelRbtDetail');
 
         if (rbValue === 'rbc1_IA') { // Historic
             comboFromYear.setValue('2024');
@@ -155,65 +205,97 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
             comboToDay.setDisabled(true);
             comboFromYear.setDisabled(true);
             comboToYear.setDisabled(true);
+            panelDetail.hide();
         } else { // Current
-            var currentYear = new Date().getFullYear();
+            var today = new Date();
+            var currentYear = today.getFullYear();
+            var currentMonth = (today.getMonth() + 1).toString().padStart(2, '0'); 
+
             comboFromYear.setValue(currentYear);
             comboToYear.setValue(currentYear);
-            comboFromMonth.setValue('');
-            comboToMonth.setValue('');
+            comboFromMonth.setValue(currentMonth);
+            comboToMonth.setValue(currentMonth);
             comboFromDay.setValue('');
             comboToDay.setValue('');
+
             comboFromMonth.setDisabled(false);
-            comboFromDay.setDisabled(false);
             comboToMonth.setDisabled(false);
-            comboToDay.setDisabled(false);
             comboFromYear.setDisabled(false);
             comboToYear.setDisabled(false);
+            comboFromDay.setDisabled(true);  
+            comboToDay.setDisabled(true);
+            
+            panelDetail.show();
         }
+        
+        this.onChangeRadio();
     },
     btnSearch_click: function () {
-        this.onChangeRadio();
+        
+        const panelMain = Ext.getCmp(prototype.id + '-panelMain');
+        const panelLog = Ext.getCmp(prototype.id + '-panelLog');
+        if (panelMain && panelLog && panelLog.isVisible()){
+            this.executeLogSearch();
+        } else {
+            this.onChangeRadio();
+        }
+        
+        
     },
     onChangeRadio: function () {
         const valueTypeVisualization = Ext.getCmp(prototype.id + '-typeVisualization').getValue();
         const valuetypeReport = Ext.getCmp(prototype.id + '-typeReport').getValue();
-
-        var rbValue = '';
+        let rbValue = '';
+        let rbDetail = '';
+        
         var radioGroup = Ext.getCmp(prototype.id + '-rbChart_IA');
         if (radioGroup && radioGroup.getValue() && radioGroup.getValue().rb) {
             rbValue = radioGroup.getValue().rb;
         }
-
-        // NO CAMBIES NI LIMPIES COMBOS ACÁ
-
+        
+        var radioDetail = Ext.getCmp(prototype.id + '-rbtDetail');
+        if (radioDetail && radioDetail.getValue() && radioDetail.getValue().rbD) {
+            rbDetail = radioDetail.getValue().rbD;
+        }
+        
         this.setFormatParameter();
-
+        
         var actions = {};
 
-        if (rbValue === 'rbc1_IA') { // Historic
-            actions = {
-                'USA_D': this.searchUsaflowDiaryHistoric,
-                'USA_W': this.searchUsaflowWeeklyHistoric,
-                'TACA_D': this.searchTacaDiaryHistoric,
-                'TACA_W': this.searchTacaWeeklyHistoric
-            };
-        } else { // Current
-            actions = {
-                'USA_D': this.searchUsaflowDiary,
-                'USA_W': this.searchUsaflowWeekly,
-                'TACA_D': this.searchTacaDiary,
-                'TACA_W': this.searchTacaWeekly
-            };
-        }
+            if (rbValue === 'rbc1_IA') { // Historic
+                actions = {
+                    'USA_D': this.searchUsaflowDiaryHistoric,
+                    'USA_W': this.searchUsaflowWeeklyHistoric,
+                    'TACA_D': this.searchTacaDiaryHistoric,
+                    'TACA_W': this.searchTacaWeeklyHistoric
+                };
+                rbDetail = 'rbtDetail2'
+            } else { // Current
+                actions = {
+                    'USA_D': this.searchUsaflowDiary,
+                    'USA_W': this.searchUsaflowWeekly,
+                    'TACA_D': this.searchTacaDiary,
+                    'TACA_W': this.searchTacaWeekly
+                };
+            }
 
-        var key = valueTypeVisualization + '_' + valuetypeReport;
-        var action = actions[key];
+            var key = valueTypeVisualization + '_' + valuetypeReport;
+            var action = actions[key];
 
-        if (action) {
-            action.call(this);
-        } else {
-            console.warn('No se encontró una acción para la combinación:', key);
-        }
+            if (action) {
+                action.call(this);
+            } else {
+                console.warn('No se encontró una acción para la combinación:', key);
+            }
+            
+             if (rbDetail !== 'rbtDetail2') {
+                if (valueTypeVisualization == 'USA') {
+                    this.searchUsaflowDiaryDetail()
+                } else {
+                    this.searchTacaflowDiaryDetail()
+                }
+            } 
+        
     },
     setFormatParameter: function () {
         me.bean = {};
@@ -230,14 +312,9 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
         let getValueDateTo = getDateValue('-cmbDateToYear', '-cmbDateToMonth', '-cmbDateToDay');
         let getValueDateFrom = getDateValue('-cmbDateFromYear', '-cmbDateFromMonth', '-cmbDateFromDay');
 
-        let getNumberAccount = Ext.getCmp(prototype.id + '-numberAccount').getValue();
-        let getProcessor = Ext.getCmp(prototype.id + '-cmbCOREP').getValue().length == 0 ? '' : this.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbCOREP'));
-
         me.bean.IN_CCUST = getCustomer || '';
-        me.bean.IN_NUMBER_ACCOUNT = getNumberAccount || '';
         me.bean.IN_FECHA_FROM = getValueDateFrom;
         me.bean.IN_FECHA_TO = getValueDateTo;
-        me.bean.IN_PROCESSOR = getProcessor;
 
         console.log(me.bean, 'me.bean');
     },
@@ -316,6 +393,260 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
         Ext.getCmp(prototype.id + '-gridDataUsaflowWeekly').setStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-pie').setVisible(true);
+    },
+    
+    searchUsaflowDiaryDetail: function () {
+        me.getPaggin()
+        me.panelActual = '-panelUSAFLOWDiaryDetail';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        this.searchParams.beanString = JSON.stringify(me.bean);
+        let lstData = []
+        
+        var storeGridDatas = Ext.create('Ext.Praxis.store.flown.PassengerConciliation.GridData', {
+            proxy: {
+                url: prototype.url + '/searchUsaflowDiaryDetail'
+            }, listeners: {
+                beforeload: function(obj) {
+                    obj.proxy.extraParams = me.searchParams;
+                },
+                load: function(obj) {
+                    console.log(obj.data);
+                    if (obj.data.length === 0) {
+                        global.Msg({
+                            msg: 'Data not found.'
+                        });
+                    } else {
+                        var bean = obj.data.items[0].data;
+                        var pag = Ext.getCmp(prototype.id + '-paggin');
+                        var pagData = pag.getPageData();
+
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                    }
+                    
+                }
+            }
+        });
+        global.clear();
+        Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail').setStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-pie').setVisible(true);
+        
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+    proxy: {
+        url: prototype.url + '/searchTotalUsaflowDiaryDetail'
+    },
+    listeners: {
+        beforeload: function (obj) {
+            obj.proxy.extraParams = me.searchParams;
+        },
+        load: function (store, records, success, operation) {
+            const res = Ext.JSON.decode(operation._response.responseText);
+
+            if (!res || !res.data2 || res.data2.length === 0) {
+                global.Msg({ msg: 'Data not found.' });
+
+                Ext.getCmp(prototype.id + '-chartColombia-WP').bindStore(
+                    Ext.create('Ext.data.Store', { fields: ['processor', 'statement', 'settlement', 'sale'], data: [] })
+                );
+                Ext.getCmp(prototype.id + '-chartColombia-Others').bindStore(
+                    Ext.create('Ext.data.Store', { fields: ['processor', 'statement', 'settlement', 'sale'], data: [] })
+                );
+                Ext.getCmp(prototype.id + '-chartSalvador-WP').bindStore(
+                    Ext.create('Ext.data.Store', { fields: ['processor', 'statement', 'settlement', 'sale'], data: [] })
+                );
+                Ext.getCmp(prototype.id + '-chartSalvador-Others').bindStore(
+                    Ext.create('Ext.data.Store', { fields: ['processor', 'statement', 'settlement', 'sale'], data: [] })
+                );
+                return;
+            }
+
+            const d = res.data2[0];
+
+            // Colombia WP
+            const chartDataColombiaWP = [
+                {
+                    processor: 'WP UK',
+                    statement: d.TOTAL_STATEMENT_WP_UK_CO,
+                    settlement: d.TOTAL_SETTLEMENT_WP_UK_CO,
+                    sale: d.TOTAL_SALE_WP_UK_CO
+                }
+            ];
+            // Colombia Otros
+            const chartDataColombiaOthers = [
+                {
+                    processor: 'BANCARD',
+                    statement: d.TOTAL_STATEMENT_BANCARD_CO,
+                    settlement: d.TOTAL_SETTLEMENT_BANCARD_CO,
+                    sale: d.TOTAL_SALE_BANCARD_CO
+                },
+                {
+                    processor: 'AMEX',
+                    statement: d.TOTAL_STATEMENT_AMEX_CO,
+                    settlement: d.TOTAL_SETTLEMENT_AMEX_CO,
+                    sale: d.TOTAL_SALE_AMEX_CO
+                },
+                {
+                    processor: 'DISCOVER',
+                    statement: d.TOTAL_STATEMENT_DISCOVER_CO,
+                    settlement: d.TOTAL_SETTLEMENT_DISCOVER_CO,
+                    sale: d.TOTAL_SALE_DISCOVER_CO
+                }
+            ];
+
+            // Salvador WP
+            const chartDataSalvadorWP = [
+                {
+                    processor: 'WP UK',
+                    statement: d.TOTAL_STATEMENT_WP_UK_SA,
+                    settlement: d.TOTAL_SETTLEMENT_WP_UK_SA,
+                    sale: d.TOTAL_SALE_WP_UK_SA
+                }
+            ];
+            // Salvador Otros
+            const chartDataSalvadorOthers = [
+                {
+                    processor: 'BANCARD',
+                    statement: d.TOTAL_STATEMENT_BANCARD_SA,
+                    settlement: d.TOTAL_SETTLEMENT_BANCARD_SA,
+                    sale: d.TOTAL_SALE_BANCARD_SA
+                },
+                {
+                    processor: 'AMEX',
+                    statement: d.TOTAL_STATEMENT_AMEX_SA,
+                    settlement: d.TOTAL_SETTLEMENT_AMEX_SA,
+                    sale: d.TOTAL_SALE_AMEX_SA
+                },
+                {
+                    processor: 'DISCOVER',
+                    statement: d.TOTAL_STATEMENT_DISCOVER_SA,
+                    settlement: d.TOTAL_SETTLEMENT_DISCOVER_SA,
+                    sale: d.TOTAL_SALE_DISCOVER_SA
+                }
+            ];
+
+            // Bind stores
+            Ext.getCmp(prototype.id + '-chartColombia-WP').bindStore(
+                Ext.create('Ext.data.Store', {
+                    fields: ['processor', 'statement', 'settlement', 'sale'],
+                    data: chartDataColombiaWP
+                })
+            );
+            Ext.getCmp(prototype.id + '-chartColombia-Others').bindStore(
+                Ext.create('Ext.data.Store', {
+                    fields: ['processor', 'statement', 'settlement', 'sale'],
+                    data: chartDataColombiaOthers
+                })
+            );
+            Ext.getCmp(prototype.id + '-chartSalvador-WP').bindStore(
+                Ext.create('Ext.data.Store', {
+                    fields: ['processor', 'statement', 'settlement', 'sale'],
+                    data: chartDataSalvadorWP
+                })
+            );
+            Ext.getCmp(prototype.id + '-chartSalvador-Others').bindStore(
+                Ext.create('Ext.data.Store', {
+                    fields: ['processor', 'statement', 'settlement', 'sale'],
+                    data: chartDataSalvadorOthers
+                })
+            );
+        }
+    }
+});
+
+
+    },
+    searchTacaflowDiaryDetail: function () {
+        me.getPaggin()
+        me.panelActual = '-panelTACAFLOWDiaryDetail';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        this.searchParams.beanString = JSON.stringify(me.bean);
+        let lstData = []
+        
+        var storeGridDatas = Ext.create('Ext.Praxis.store.flown.PassengerConciliation.GridData', {
+            proxy: {
+                url: prototype.url + '/searchTacaflowDiaryDetail'
+            }, listeners: {
+                beforeload: function(obj) {
+                    obj.proxy.extraParams = me.searchParams;
+                },
+                load: function(obj) {
+                    console.log(obj.data);
+                    if (obj.data.length === 0) {
+                        global.Msg({
+                            msg: 'Data not found.'
+                        });
+                    } else {
+                        var bean = obj.data.items[0].data;
+                        var pag = Ext.getCmp(prototype.id + '-paggin');
+                        var pagData = pag.getPageData();
+
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                    }
+                    
+                }
+            }
+        });
+        global.clear();
+        Ext.getCmp(prototype.id + '-gridTACAFLOWDiaryDetail').setStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-pie').setVisible(true);
+        
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+        proxy: {
+            url: prototype.url + '/searchTotalTacaflowDiaryDetail'
+        },
+        listeners: {
+            beforeload: function (obj) {
+                obj.proxy.extraParams = me.searchParams;
+            },
+            load: function (store, records, success, operation) {
+                const res = Ext.JSON.decode(operation._response.responseText);
+
+                if (!res || !res.data2 || res.data2.length === 0) {
+                    global.Msg({ msg: 'Data not found.' });
+
+                    Ext.getCmp(prototype.id + '-chartTacaflow').bindStore(
+                        Ext.create('Ext.data.Store', { fields: ['processor', 'statement', 'settlement', 'sale'], data: [] })
+                    );
+                    return;
+                }
+
+                const d = res.data2[0];
+
+                // Colombia WP
+                const chartTacaflow = [
+                    {
+                        processor: 'WP UK',
+                        statement: d.TOTAL_STATEMENT_TACA,
+                        settlement: d.TOTAL_SETTLEMENT_TACA,
+                        sale: d.TOTAL_SALE_TACA
+                    }
+                ];
+
+                // Bind stores
+                Ext.getCmp(prototype.id + '-chartTacaflow').bindStore(
+                    Ext.create('Ext.data.Store', {
+                        fields: ['processor', 'statement', 'settlement', 'sale'],
+                        data: chartTacaflow
+                    })
+                );
+            }
+        }
+    });
+
+
+    },
+    chgBash: function () {
+        var grid = Ext.getCmp(prototype.id + '-gridUSAFLOWDiaryDetail');
+        if (grid.isVisible()) {
+            grid.hide();
+        } else {
+            grid.show();
+        }
     },
     searchUsaflowDiaryHistoric: function () {
         me.getPaggin()
@@ -565,7 +896,7 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
         }
     },
     btnExcel_click: function () {
-
+        console.log(me.panelActual, 'PANEL ACTUAL DE EXCEL')
         Ext.Msg.show({
             title: '.:PRAXISEX:.',
             msg: 'Download Excel ?',
@@ -621,6 +952,18 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
                     this.setFormatParameter();
                     global.getFile(prototype.url + '/getXLSXTacaWeekly?beanString=' + encodeURI(me.searchParams.beanString));
                     break;
+                case '-panelUSAFLOWDiaryDetail':
+                    this.setFormatParameter();
+                    global.getFile(prototype.url + '/getXLSXUsaflowDiaryDetail?beanString=' + encodeURI(me.searchParams.beanString));
+                    break;
+                case '-panelTACAFLOWDiaryDetail':
+                    this.setFormatParameter();
+                    global.getFile(prototype.url + '/getXLSXTacaflowDiaryDetail?beanString=' + encodeURI(me.searchParams.beanString));
+                    break;
+                case '-panelLog':
+                    this.setFormatParameter();
+                    global.getFile(prototype.url + '/getXLSXLog?beanString=' + encodeURI(me.searchParams.beanString));
+                    break;
             }
         }
         
@@ -639,6 +982,9 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
                 break;
             case '-panelGridDataTaca':
                 me.pagginActual = '-paggin3';
+                break;
+            case '-panelLog':
+                me.pagginActual = '-paggin4';
                 break;
         }
     },
@@ -834,5 +1180,240 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.BankStatementExt
             data: years,
             fields: ['code', 'name']
         });
+    },
+    
+    setFormatParameterlog: function () {
+        me.beanLog = {};
+
+        let getProcessor = Ext.getCmp(prototype.id + '-fieldProcessorLog').getValue();
+        let getState = Ext.getCmp(prototype.id + '-typeState').getValue();
+
+        const getDateValue = (yearCmp, monthCmp, dayCmp) => {
+            const year = Ext.getCmp(prototype.id + yearCmp).getValue() || '';
+            const month = Ext.getCmp(prototype.id + monthCmp).getValue() || '';
+            const day = Ext.getCmp(prototype.id + dayCmp).getValue() || '';
+            return year + month + day;
+        };
+
+        let getValueDateTo = getDateValue('-cmbDateToYearLog', '-cmbDateToMonthLog', '-cmbDateToDayLog');
+        let getValueDateFrom = getDateValue('-cmbDateFromYearLog', '-cmbDateFromMonthLog', '-cmbDateFromDayLog');
+
+        me.beanLog.IN_PROCESSOR = getProcessor;
+        me.beanLog.IN_STATE = getState;
+        me.beanLog.IN_FECHA_FROM = getValueDateFrom;
+        me.beanLog.IN_FECHA_TO = getValueDateTo;
+
+        console.log(me.beanLog, 'me.bean');
+    },
+    
+    executeLogSearch: function(){
+        this.setFormatParameterlog();
+        console.log("llegoaqui",this.beanLog),
+        this.obtainLog2();
+        
+    },
+    
+    enableDateCombos: function() {
+    const ids = [
+        '-cmbDateFromYear',
+        '-cmbDateFromMonth',
+        '-cmbDateToYear',
+        '-cmbDateToMonth',
+    ];
+
+    ids.forEach(suffix => {
+        const cmp = Ext.getCmp(prototype.id + suffix);
+        if (cmp) {
+            cmp.setDisabled(false); // o cmp.enable();
+        } else {
+            console.warn('Componente no encontrado:', prototype.id  + suffix);
+        }
+    });
+},
+
+    
+    
+    executeLog: function () {
+    const panelMain = Ext.getCmp(prototype.id + '-panelMain');
+    const panelLog = Ext.getCmp(prototype.id + '-panelLog');
+    const grid = Ext.getCmp(prototype.id + '-gridDataLogMain');
+    const combClient = Ext.getCmp(prototype.id + '-typeClient');
+    const combReport = Ext.getCmp(prototype.id + '-typeReport');
+    const chart_IA = Ext.getCmp(prototype.id + '-rbChart_IA');
+    const rbtDetail = Ext.getCmp(prototype.id + '-rbtDetail');
+    const fieldProcessorLog = Ext.getCmp(prototype.id + '-fieldProcessorLog');
+    const typeState = Ext.getCmp(prototype.id + '-typeState');
+    const typeVisualization = Ext.getCmp(prototype.id + '-typeVisualization');
+    
+    let panelBack = '';
+    let pagginActual = '';
+    if (me.panelActual !== '-panelLog') {
+        this.panelBack = me.panelActual;
+        this.pagginActualback = me.pagginActual;
     }
+    console.log (panelBack,"panelBack",pagginActual,"paggin Actuall")
+    this.setFormatParameterlog();
+
+    
+    if (panelMain && panelLog && !panelLog.isVisible()) {
+        panelMain.hide();
+        panelLog.show();
+        combReport.hide();
+        chart_IA.hide();
+        rbtDetail.hide();
+        typeVisualization.hide();
+        fieldProcessorLog.show();
+        typeState.show();
+        this.viewDateLog('LOG');
+        
+        
+        this.obtainLog2();
+    } else {
+        me.panelActual = this.panelBack;
+        me.pagginActual = this.pagginActualback;
+        Ext.getCmp(prototype.id + '-chkLog').setValue(false);
+        panelMain.show();
+        panelLog.hide();
+        combReport.show();
+        chart_IA.show();
+        rbtDetail.show();
+        typeVisualization.show();
+        fieldProcessorLog.hide();
+        typeState.hide();
+        this.viewDateLog('');
+        console.log("paso");
+        me.pagginActual = pagginActual;
+        me.getPaggin()
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        var pag = Ext.getCmp(prototype.id + me.pagginActual);
+        Ext.getCmp(prototype.id + '-pie').setVisible(true);
+        Ext.getCmp(prototype.id + '-pie2').setVisible(false);
+    }
+
+    
+    
+
+    
+
+},
+viewDateLog: function (option){ 
+        let cmbDateFromYearLog = Ext.getCmp(prototype.id + '-cmbDateFromYearLog');
+        let cmbDateFromMonthLog = Ext.getCmp(prototype.id + '-cmbDateFromMonthLog');
+        let cmbDateFromDayLog = Ext.getCmp(prototype.id + '-cmbDateFromDayLog');
+        let cmbDateToYearLog = Ext.getCmp(prototype.id + '-cmbDateToYearLog');
+        let cmbDateToMonthLog = Ext.getCmp(prototype.id + '-cmbDateToMonthLog');
+        let cmbDateToDayLog = Ext.getCmp(prototype.id + '-cmbDateToDayLog');
+        let cmbDateFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYear');
+        let cmbDateFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonth');
+        let cmbDateFromDay = Ext.getCmp(prototype.id + '-cmbDateFromDay');
+        let cmbDateToYear = Ext.getCmp(prototype.id + '-cmbDateToYear');
+        let cmbDateToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
+        let cmbDateToDay = Ext.getCmp(prototype.id + '-cmbDateToDay');
+        
+        if (option === 'LOG') {
+            cmbDateFromYearLog.show();
+            cmbDateFromMonthLog.show();
+            cmbDateFromDayLog.show();
+            cmbDateToYearLog.show();
+            cmbDateToMonthLog.show();
+            cmbDateToDayLog.show();
+            cmbDateFromYear.hide();
+            cmbDateFromMonth.hide();
+            cmbDateFromDay.hide();
+            cmbDateToYear.hide();
+            cmbDateToMonth.hide();
+            cmbDateToDay.hide();
+        } else {
+            cmbDateFromYearLog.hide();
+            cmbDateFromMonthLog.hide();
+            cmbDateFromDayLog.hide();
+            cmbDateToYearLog.hide();
+            cmbDateToMonthLog.hide();
+            cmbDateToDayLog.hide();
+            cmbDateFromYear.show();
+            cmbDateFromMonth.show();
+            cmbDateFromDay.show();
+            cmbDateToYear.show();
+            cmbDateToMonth.show();
+            cmbDateToDay.show();
+        }
+        
+        
+        
+    },
+
+viewDataEntry_clickHandler: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
+         
+        let beanLog = {}
+        beanLog.MENSA = rowData.data.MENSA,
+        beanLog.FECRFILE = rowData.data.FECRFILE,
+        beanLog.CODEPROC  = rowData.data.CODEPROC,
+        beanLog.STATP  = rowData.data.STATP,
+        beanLog.HOSEND  = rowData.data.HOSEND,
+        beanLog.FECR   = rowData.data.FECR,
+        beanLog.HOCR   = rowData.data.HOCR,
+        beanLog.FERECV   = rowData.data.FERECV,
+        beanLog.HORECV     = rowData.data.HORECV,
+        console.log(beanLog, 'beanTicket')
+        this.winDataEntry('U', beanLog);
+    },
+    winDataEntry: function (action, rec) {
+        action = action === null || action === undefined ? 'U' : action;
+        rec = rec === null || rec === undefined ? {} : rec;
+        console.log(rec, 'recccccccccccc')
+        console.log(me.panelActual, 'me.panelActual')
+        Ext.create('Ext.Praxis.view.payments.BankStatementExtractForm.DataEntry', {
+            id: prototype.id + '-dataEntry',
+            params: {
+                action: action,
+                rec: rec,
+                instancia: me,
+            }
+        }).show();
+    },
+
+    
+
+
+    
+   obtainLog2: function () {
+        console.log("searchTacaWeeklyHistoric")
+        me.getPaggin()
+        me.panelActual = '-panelLog';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        this.searchParams.beanString = JSON.stringify(me.beanLog);
+        let lstData = []
+
+        var storeGridDatasLog = Ext.create('Ext.Praxis.store.flown.PassengerConciliation.GridData', {
+            proxy: {
+                url: prototype.url + '/searchLog'
+            }, listeners: {
+                beforeload: function(obj) {
+                    obj.proxy.extraParams = me.searchParams;
+                },
+                load: function(obj) {
+                    console.log(obj.data,'DAAAA');
+                    if (obj.data.length === 0) {
+                        global.Msg({
+                            msg: 'Data not found.'
+                        });
+                    } else {
+                        var bean = obj.data.items[0].data;
+                        var pag = Ext.getCmp(prototype.id + '-paggin4');
+                        var pagData = pag.getPageData();
+
+                        Ext.getCmp(prototype.id + '-lbl-currentPage2').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount2').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total2').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                    }
+                    
+                }
+            }
+        });
+        global.clear();
+        Ext.getCmp(prototype.id + '-gridDataLogMain').bindStore(storeGridDatasLog);
+        Ext.getCmp(prototype.id + '-paggin4').bindStore(storeGridDatasLog);
+        Ext.getCmp(prototype.id + '-pie2').setVisible(true);
+    },
+    
 });

@@ -56,7 +56,7 @@ public class CodesAncillariesDAO {
         CallableStatement cstmt01 = null;
         ResultSet rs01 = null;
 
-        String SQLCLL01 = "{CALL SQP03262(?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.SQP03262(?,?,?,?,?,?)}";
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
