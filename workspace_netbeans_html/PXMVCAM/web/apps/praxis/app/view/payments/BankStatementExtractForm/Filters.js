@@ -3,24 +3,26 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Filters', {
     alias: 'widget.' + prototype.id + '-filters',
     border: true,
     bodyStyle: 'background-color: #E3EAF9;',
-    layout: 'vbox',
-    defaults: {
-        width: '100%'
-    },
+    layout: 'fit', 
     items: [
         {
             xtype: 'container',
-            layout: 'hbox', // Primera fila de filtros
-            padding: '10px 15px',
+            id: prototype.id + '-filterMain',
+            layout: {
+                type: 'hbox',
+                align: 'middle'
+            },
+            style: 'padding: 10px 0 10px 15px;',
             items: [
                 {
                     fieldLabel: 'Avianca Group',
-                    hidden: false,
-                    labelStyle: 'text-align: left; font-size: 14px;',
-                    fieldStyle: 'text-align: left; font-size: 14px;',
+                    xtype: 'combo',
                     width: 200,
                     labelWidth: 95,
-                    xtype: 'combo',
+                    style: 'margin-right:10px;',
+                    hidden: true,
+                    labelStyle: 'text-align: left; font-size: 14px;',
+                    fieldStyle: 'text-align: left; font-size: 14px;',
                     disabled: true,
                     id: prototype.id + '-typeClient',
                     queryMode: 'local',
@@ -50,15 +52,15 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Filters', {
                         change: 'btnSearch_click'
                     }
                 },
-                {xtype: 'tbspacer', width: 10, height: 20},
                 {
-                    fieldLabel: 'Type Visualization',
+                    fieldLabel: 'Report Type',
+                    xtype: 'combo',
+                    width: 182,
+                    labelWidth: 80,
+                    style: 'margin-right:10px;',
                     hidden: false,
                     labelStyle: 'text-align: left; font-size: 14px;',
                     fieldStyle: 'text-align: left; font-size: 14px;',
-                    width: 220,
-                    labelWidth: 115,
-                    xtype: 'combo',
                     disabled: false,
                     id: prototype.id + '-typeVisualization',
                     queryMode: 'local',
@@ -86,15 +88,15 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Filters', {
                         change: 'btnSearch_click'
                     }
                 },
-                {xtype: 'tbspacer', width: 10, height: 20},
                 {
-                    fieldLabel: 'Type Report',
+                    fieldLabel: 'Report Frequency',
+                    xtype: 'combo',
+                    width: 200,
+                    labelWidth: 115,
+                    style: 'margin-right:10px;',
                     hidden: false,
                     labelStyle: 'text-align: left; font-size: 14px;',
                     fieldStyle: 'text-align: left; font-size: 14px;',
-                    width: 170,
-                    labelWidth: 80,
-                    xtype: 'combo',
                     disabled: false,
                     id: prototype.id + '-typeReport',
                     queryMode: 'local',
@@ -122,33 +124,34 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Filters', {
                         change: 'btnSearch_click'
                     }
                 },
-                {xtype: 'tbspacer', width: 10, height: 20},
+                // From Year
                 {
-                    xtype: 'combo',
-                    id: prototype.id + '-cmbDateFromYear',
-                    labelStyle: 'text-align: left; font-size: 14px;',
-                    fieldStyle: 'text-align: left; font-size: 14px;',
                     fieldLabel: 'From',
-                    labelAlign: 'right',
-                    queryMode: 'local',
-                    editable: false,
-                    triggerAction: 'all',
-                    autoSelect: false,
-                    enableKeyEvents: true,
-                    caseSensitive: true,
-                    valueField: 'code',
-                    displayField: 'name',
-                    emptyText: 'All',
-                    labelWidth: 40,
+                    xtype: 'combo',
                     width: 105,
+                    labelWidth: 38,
+                    labelAlign: 'right',
+                    labelStyle: 'text-align: left; font-size: 14px;',
+                    fieldStyle: 'text-align: left; font-size: 14px;',
+                    id: prototype.id + '-cmbDateFromYear',
+                    queryMode: 'local',
+                    editable: false,
+                    triggerAction: 'all',
+                    autoSelect: false,
+                    enableKeyEvents: true,
+                    caseSensitive: true,
+                    valueField: 'code',
+                    displayField: 'name',
+                    emptyText: 'All',
                     anchor: '100%'
                 },
                 {
                     xtype: 'combo',
+                    width: 55,
+                    labelStyle: 'text-align: left; font-size: 14px;',
+                    fieldStyle: 'text-align: left; font-size: 14px;',
+                    labelAlign: 'right',
                     id: prototype.id + '-cmbDateFromMonth',
-                    labelStyle: 'text-align: left; font-size: 14px;',
-                    fieldStyle: 'text-align: left; font-size: 14px;',
-                    labelAlign: 'right',
                     queryMode: 'local',
                     triggerAction: 'all',
                     editable: false,
@@ -159,56 +162,58 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Filters', {
                     displayField: 'name',
                     emptyText: 'All',
                     labelWidth: 0,
-                    width: 55,
                     anchor: '100%'
                 },
                 {
                     xtype: 'combo',
+                    width: 50,
+                    style: 'margin-right:10px;',
+                    labelStyle: 'text-align: left; font-size: 14px;',
+                    fieldStyle: 'text-align: left; font-size: 14px;',
+                    labelAlign: 'right',
                     id: prototype.id + '-cmbDateFromDay',
-                    fieldStyle: 'text-align: left;',
-                    labelStyle: 'text-align: left; font-size: 14px;',
-                    fieldStyle: 'text-align: left; font-size: 14px;',
-                    labelAlign: 'right',
                     queryMode: 'local',
                     triggerAction: 'all',
+                    disabled: true,
                     editable: false,
                     autoSelect: false,
                     enableKeyEvents: true,
                     caseSensitive: true,
-                    valueField: 'code', displayField: 'name',
+                    valueField: 'code',
+                    displayField: 'name',
                     emptyText: 'All',
                     labelWidth: 0,
-                    width: 50,
                     anchor: '100%',
                     listConfig: {maxHeight: 111, minWidth: 60}
                 },
-                {xtype: 'tbspacer', width: 10, height: 20},
+                // To Year
                 {
-                    xtype: 'combo',
-                    id: prototype.id + '-cmbDateToYear',
-                    labelStyle: 'text-align: left; font-size: 14px;',
-                    fieldStyle: 'text-align: left; font-size: 14px;',
                     fieldLabel: 'To',
-                    labelAlign: 'right',
-                    queryMode: 'local',
-                    editable: false,
-                    triggerAction: 'all',
-                    autoSelect: false,
-                    enableKeyEvents: true,
-                    caseSensitive: true,
-                    valueField: 'code',
-                    displayField: 'name',
-                    emptyText: 'All',
-                    labelWidth: 20,
+                    xtype: 'combo',
                     width: 85,
+                    labelWidth: 20,
+                    labelAlign: 'right',
+                    labelStyle: 'text-align: left; font-size: 14px;',
+                    fieldStyle: 'text-align: left; font-size: 14px;',
+                    id: prototype.id + '-cmbDateToYear',
+                    queryMode: 'local',
+                    editable: false,
+                    triggerAction: 'all',
+                    autoSelect: false,
+                    enableKeyEvents: true,
+                    caseSensitive: true,
+                    valueField: 'code',
+                    displayField: 'name',
+                    emptyText: 'All',
                     anchor: '100%'
                 },
                 {
                     xtype: 'combo',
-                    id: prototype.id + '-cmbDateToMonth',
+                    width: 55,
                     labelStyle: 'text-align: left; font-size: 14px;',
                     fieldStyle: 'text-align: left; font-size: 14px;',
                     labelAlign: 'right',
+                    id: prototype.id + '-cmbDateToMonth',
                     queryMode: 'local',
                     triggerAction: 'all',
                     editable: false,
@@ -219,59 +224,277 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Filters', {
                     displayField: 'name',
                     emptyText: 'All',
                     labelWidth: 0,
-                    width: 55,
                     anchor: '100%'
                 },
                 {
                     xtype: 'combo',
-                    id: prototype.id + '-cmbDateToDay',
-                    fieldStyle: 'text-align: left;',
+                    width: 50,
+                    style: 'margin-right:10px;',
                     labelStyle: 'text-align: left; font-size: 14px;',
                     fieldStyle: 'text-align: left; font-size: 14px;',
                     labelAlign: 'right',
+                    id: prototype.id + '-cmbDateToDay',
                     queryMode: 'local',
                     triggerAction: 'all',
                     editable: false,
+                    disabled: true,
                     autoSelect: false,
                     enableKeyEvents: true,
                     caseSensitive: true,
-                    valueField: 'code', displayField: 'name',
+                    valueField: 'code',
+                    displayField: 'name',
                     emptyText: 'All',
                     labelWidth: 0,
-                    width: 50,
                     anchor: '100%',
                     listConfig: {maxHeight: 111, minWidth: 60}
                 },
+                // From Year
                 {
+                    fieldLabel: 'From',
+                    hidden: true,
                     xtype: 'combo',
-                    id: prototype.id + '-cmbCOREP',
-                    fieldLabel: 'Processor',
+                    width: 105,
+                    labelWidth: 38,
+                    labelAlign: 'right',
                     labelStyle: 'text-align: left; font-size: 14px;',
                     fieldStyle: 'text-align: left; font-size: 14px;',
-                    width: 220,
-                    labelWidth: 68,
-                    emptyText: 'All',
-                    value: [],
-                    hidden: true,
-                    displayField: 'NAME',
-                    valueField: 'VALUE',
+                    id: prototype.id + '-cmbDateFromYearLog',
                     queryMode: 'local',
-                    filterPickList: true,
-                    editable: true,
-                    multiSelect: true,
-                    forceSelection: true
+                    editable: false,
+                    triggerAction: 'all',
+                    autoSelect: false,
+                    enableKeyEvents: true,
+                    caseSensitive: true,
+                    valueField: 'code',
+                    displayField: 'name',
+                    emptyText: 'All',
+                    anchor: '100%'
                 },
                 {
-                    fieldLabel: 'Number Account',
+                    xtype: 'combo',
+                    hidden: true,
+                    width: 55,
+                    labelStyle: 'text-align: left; font-size: 14px;',
+                    fieldStyle: 'text-align: left; font-size: 14px;',
+                    labelAlign: 'right',
+                    id: prototype.id + '-cmbDateFromMonthLog',
+                    queryMode: 'local',
+                    triggerAction: 'all',
+                    editable: false,
+                    autoSelect: false,
+                    enableKeyEvents: true,
+                    caseSensitive: true,
+                    valueField: 'code',
+                    displayField: 'name',
+                    emptyText: 'All',
+                    labelWidth: 0,
+                    anchor: '100%'
+                },
+                {
+                    xtype: 'combo',
+                    hidden: true,
+                    width: 50,
+                    style: 'margin-right:10px;',
+                    labelStyle: 'text-align: left; font-size: 14px;',
+                    fieldStyle: 'text-align: left; font-size: 14px;',
+                    labelAlign: 'right',
+                    id: prototype.id + '-cmbDateFromDayLog',
+                    queryMode: 'local',
+                    triggerAction: 'all',
+                    disabled: false,
+                    editable: false,
+                    autoSelect: false,
+                    enableKeyEvents: true,
+                    caseSensitive: true,
+                    valueField: 'code',
+                    displayField: 'name',
+                    emptyText: 'All',
+                    labelWidth: 0,
+                    anchor: '100%',
+                    listConfig: {maxHeight: 111, minWidth: 60}
+                },
+                // To Year
+                {
+                    fieldLabel: 'To',
+                    hidden: true,
+                    xtype: 'combo',
+                    width: 85,
+                    labelWidth: 20,
+                    labelAlign: 'right',
+                    labelStyle: 'text-align: left; font-size: 14px;',
+                    fieldStyle: 'text-align: left; font-size: 14px;',
+                    id: prototype.id + '-cmbDateToYearLog',
+                    queryMode: 'local',
+                    editable: false,
+                    triggerAction: 'all',
+                    autoSelect: false,
+                    enableKeyEvents: true,
+                    caseSensitive: true,
+                    valueField: 'code',
+                    displayField: 'name',
+                    emptyText: 'All',
+                    anchor: '100%'
+                },
+                {
+                    xtype: 'combo',
+                    hidden: true,
+                    width: 55,
+                    labelStyle: 'text-align: left; font-size: 14px;',
+                    fieldStyle: 'text-align: left; font-size: 14px;',
+                    labelAlign: 'right',
+                    id: prototype.id + '-cmbDateToMonthLog',
+                    queryMode: 'local',
+                    triggerAction: 'all',
+                    editable: false,
+                    autoSelect: false,
+                    enableKeyEvents: true,
+                    caseSensitive: true,
+                    valueField: 'code',
+                    displayField: 'name',
+                    emptyText: 'All',
+                    labelWidth: 0,
+                    anchor: '100%'
+                },
+                {
+                    xtype: 'combo',
+                    hidden: true,
+                    width: 50,
+                    style: 'margin-right:10px;',
+                    labelStyle: 'text-align: left; font-size: 14px;',
+                    fieldStyle: 'text-align: left; font-size: 14px;',
+                    labelAlign: 'right',
+                    id: prototype.id + '-cmbDateToDayLog',
+                    queryMode: 'local',
+                    triggerAction: 'all',
+                    editable: false,
+                    disabled: false,
+                    autoSelect: false,
+                    enableKeyEvents: true,
+                    caseSensitive: true,
+                    valueField: 'code',
+                    displayField: 'name',
+                    emptyText: 'All',
+                    labelWidth: 0,
+                    anchor: '100%',
+                    listConfig: {maxHeight: 111, minWidth: 60}
+                },
+                // Historic / Current RadioGroup
+                {
+                    xtype: 'panel',
+                    layout: 'fit',
+                    border: false,
+                    background: '#E3EAF9',
+                    style: {
+                        backgroundColor: '#E3EAF9'
+                    },
+                    style: 'margin-right:5px;',
+                    items: [
+                        {
+                            xtype: 'radiogroup',
+                            id: prototype.id + '-rbChart_IA',
+                            fieldLabel: '',
+                            horizontal: true,
+                            hidden: false,
+                            items: [
+                                {boxLabel: '<strong>Historic</strong>', name: 'rb', inputValue: 'rbc1_IA', width: 70},
+                                {boxLabel: '<strong>Current</strong>', name: 'rb', inputValue: 'rbc2_IA', width: 70, checked: true}
+                            ],
+                            listeners: {
+//                                change: 'onChangeRadio'
+                            },
+                            style: {
+                                backgroundColor: '#e0f0ff',   // azul claro
+                                borderRadius: '5px',
+                                border: '1px solid #99ccff'
+                            }
+                        }
+                    ]
+                },
+                 // Detail / Main RadioGroup
+                 {
+                    xtype: 'panel',
+                    layout: 'fit',
+                    border: false,
+                     id: prototype.id + '-panelRbtDetail',
+                    background: '#E3EAF9',
+                    style: {
+                        backgroundColor: '#E3EAF9'
+                    },
+                    style: 'margin-right:5px;',
+                    items: [
+                        {
+                            xtype: 'radiogroup',
+                            id: prototype.id + '-rbtDetail',
+                            fieldLabel: '',
+                            horizontal: true,
+                            hidden: false,
+                            items: [
+                                {boxLabel: '<strong>Detail</strong>', name: 'rbD', inputValue: 'rbtDetail1', width: 60},
+                                {boxLabel: '<strong>Main</strong>', name: 'rbD', inputValue: 'rbtDetail2', width: 50, checked: true}
+                            ],
+                            listeners: {
+//                                change: 'onChangeRadio'
+                            },
+                            style: {
+                                backgroundColor: '#e0f0ff',   // azul claro
+                                borderRadius: '5px',
+                                border: '1px solid #99ccff'
+                            }
+                        }
+                    ]
+                },
+                // Filters Log
+                {
+                    fieldLabel: 'State',
+                    xtype: 'combo',
+                    width: 120,
+                    labelWidth: 40,
+                    style: 'margin-right:10px;',
                     hidden: true,
                     labelStyle: 'text-align: left; font-size: 14px;',
                     fieldStyle: 'text-align: left; font-size: 14px;',
-                    width: 200,
-                    labelWidth: 110,
-                    xtype: 'combo',
-                    id: prototype.id + '-numberAccount',
+                    disabled: false,
+                    id: prototype.id + '-typeState',
                     queryMode: 'local',
                     allowBlank: false,
+                    forceSelection: true,
+                    selectOnFocus: true,
+                    caseSensitive: false,
+                    autoSelect: true,
+                    editable: true,
+                    listConfig: {maxHeight: 80},
+                    typeAhead: true,
+                    valueField: 'code',
+                    displayField: 'name',
+                    enableKeyEvents: true,
+                    triggerAction: 'all',
+                    value: '',
+                    store: {
+                        fields: ['code', 'name'],
+                        data: [
+                            {code: '', name: 'ALL'},
+                            {code: '0', name: 'OK'},
+                            {code: '1', name: 'ERROR'},
+                        ]
+                    },
+                    listeners: {
+                        change: 'executeLogSearch'
+                    }
+                },
+                {
+                    fieldLabel: 'Processor',
+                    xtype: 'combo',
+                    width: 130,
+                    labelWidth: 65,
+                    style: 'margin-right:10px;',
+                    hidden: true,
+                    labelStyle: 'text-align: left; font-size: 14px;',
+                    fieldStyle: 'text-align: left; font-size: 14px;',
+                    disabled: false,
+                    id: prototype.id + '-fieldProcessorLog',
+                    queryMode: 'local',
+                    allowBlank: false,
+                    forceSelection: true,
                     selectOnFocus: true,
                     caseSensitive: false,
                     autoSelect: true,
@@ -282,72 +505,35 @@ Ext.define('Ext.Praxis.view.payments.BankStatementExtractForm.Filters', {
                     displayField: 'name',
                     enableKeyEvents: true,
                     triggerAction: 'all',
-                    value: '109003',
+                    value: '',
                     store: {
                         fields: ['code', 'name'],
                         data: [
                             {code: '', name: 'All'},
-                            {code: '109003', name: '109003'},
-                            {code: '109004', name: '109004'},
-                            {code: '109002', name: '109002'}
+                            {code: 'AX', name: 'AX'},
+                            {code: 'DS', name: 'DS'},
+                            {code: 'WP', name: 'WP'},
+                            {code: 'WQ', name: 'WQ'}
                         ]
                     },
                     listeners: {
-                        change: 'btnSearch_click'
+                        change: 'executeLogSearch'
                     }
                 },
+                // Type Report
                 {
-                    fieldLabel: 'Type Document',
-                    hidden: true,
-                    labelStyle: 'text-align: left; font-size: 14px;',
-                    fieldStyle: 'text-align: left; font-size: 14px;',
-                    width: 200,
-                    labelWidth: 106,
-                    xtype: 'combo',
-                    id: prototype.id + '-typeDocument',
-                    queryMode: 'local',
-                    allowBlank: false,
-                    selectOnFocus: true,
-                    caseSensitive: false,
-                    autoSelect: true,
-                    editable: true,
-                    listConfig: {maxHeight: 130},
-                    typeAhead: true,
-                    valueField: 'code',
-                    displayField: 'name',
-                    enableKeyEvents: true,
-                    triggerAction: 'all',
-                    value: 'S',
-                    store: {
-                        fields: ['code', 'name'],
-                        data: [
-                            {code: 'D', name: 'Debits'},
-                            {code: 'R', name: 'Refund'},
-                            {code: 'S', name: 'Sale'},
-                            {code: 'V', name: '-'}
-                        ]
-                    },
+                    xtype: 'checkbox',
+                    boxLabel: '<strong>View Log</strong>',
+                    id: prototype.id + '-chkLog',
+                    inputValue: '1',
+                    uncheckedValue: '0',
                     listeners: {
-                        change: 'btnSearch_click'
-                    }
-                },
-                {xtype: 'tbspacer', width: 10, height: 10},
-                {
-                    xtype: 'radiogroup',
-                    id: prototype.id + '-rbChart_IA',
-                    fieldLabel: '',
-                    horizontal: true,
-                    hidden: false,
-                    items: [
-                        {boxLabel: '<strong>Historic</strong>', name: 'rb', inputValue: 'rbc1_IA', width: 80},
-                        {boxLabel: '<strong>Current</strong>', name: 'rb', inputValue: 'rbc2_IA', width: 80, checked: true}
-                    ],
-                    listeners: {
-                        change: 'onChangeRadio'
+                        change: 'executeLog',
                     }
                 }
-                //</editor-fold>
             ]
-        }
+        },
+        
+        
     ]
 });
