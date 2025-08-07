@@ -65,7 +65,7 @@ public class BankStatementExtractDAO {
         TOTAL_VAR_DISCOVER_CO = 0, TOTAL_VAR_WP_UK_SA = 0, TOTAL_VAR_BANCARD_SA = 0, TOTAL_VAR_AMEX_SA = 0,
         TOTAL_VAR_DISCOVER_SA = 0, TOTAL_VAR_TOTAL_CO = 0, TOTAL_VAR_TOTAL_SA = 0, TOTAL_VAR_TOTAL_CO_SA = 0;
 
-        String SQLCLL01 = "{CALL PRAXISMP.MPS122_V2(?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.MPS122(?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1221,7 +1221,7 @@ public class BankStatementExtractDAO {
         TOTAL_VAR_DISCOVER_CO = 0, TOTAL_VAR_WP_UK_SA = 0, TOTAL_VAR_BANCARD_SA = 0, TOTAL_VAR_AMEX_SA = 0,
         TOTAL_VAR_DISCOVER_SA = 0, TOTAL_VAR_TOTAL_CO = 0, TOTAL_VAR_TOTAL_SA = 0, TOTAL_VAR_TOTAL_CO_SA = 0;
 
-        String SQLCLL01 = "{CALL PRAXISMP.MPS127_v2(?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.MPS127(?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1675,7 +1675,7 @@ public class BankStatementExtractDAO {
                 TOTAL_AVG_TACA = 0, TOTAL_AVG_CRC = 0, TOTAL_AVG_TACA_CRC = 0, 
                 TOTAL_VAR_TACA = 0, TOTAL_VAR_CRC = 0, TOTAL_VAR_TACA_CRC = 0;
 
-        String SQLCLL01 = "{CALL PRAXISMP.MPS123_v2(?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.MPS123(?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1945,7 +1945,7 @@ public class BankStatementExtractDAO {
         double TOTAL_AMOUNT_TACA = 0, TOTAL_AVG_TACA = 0,
         TOTAL_VAR_TACA = 0;
 
-        String SQLCLL01 = "{CALL PRAXISMP.MPS126_v2(?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.MPS126(?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -2612,7 +2612,7 @@ public class BankStatementExtractDAO {
 
         try {
             A2290Filter filter = filters.get(0);
-            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPUPDLOG(?,?,?,?,?,?,?,?,?,?,?)}";
+            String SQLCLL02 = "{CALL " + session.getMainLibrary() + "MP.MPS269(?,?,?,?,?,?,?,?,?,?,?)}";
             cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
 
             for (int i = 0; i < filters.size(); i++) {
