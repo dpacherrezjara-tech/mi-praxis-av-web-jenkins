@@ -30,6 +30,7 @@ public class SQP04091Filter extends A4022 {
     public String IN_SALES_DATE = ""; 
     public String IN_VALUE_DATE = ""; 
     public String IN_PROCESSOR = ""; 
+    public String CODEPROCESS = ""; 
     
     
     public String CODPRO = ""; 

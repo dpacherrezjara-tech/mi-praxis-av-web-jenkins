@@ -2571,6 +2571,7 @@ public class BankStatementExtractDAO {
                     bean.CCUST = rst.getString("CCUST").trim();
                     bean.FECRFILE = rst.getString("FECRFILE").trim();
                     bean.CODEPROC = rst.getString("NOMCOD").trim();
+                    bean.CODEPROCESS = rst.getString("CODEPROC").trim();
                     bean.SEQ = rst.getString("SEQ").trim();
                     bean.STATP = rst.getString("STATP").trim();
                     bean.MENSA = rst.getString("MENSA").trim();
