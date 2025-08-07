@@ -67,6 +67,7 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.DataEntryBankSta
         beanTemp.FERECV = this.bean.FERECV;
         beanTemp.HORECV = this.bean.HORECV;
         beanTemp.CODEPROCESS = this.bean.CODEPROCESS;
+        console.log(beanTemp.CODEPROCESS,"esto es el codigoPROCESS")
         
     },
     toUpperCase: function(obj, value, opts) {
@@ -173,7 +174,7 @@ Ext.define('Ext.Praxis.controller.payments.BankStatementExtract.DataEntryBankSta
                     global.Msg({msg: res.Mensaje});
                     Ext.getCmp(prototype.id + '-dataEntry').unmask();
                     Ext.getCmp(prototype.id + '-dataEntry').close();
-                    Ext.getCmp(prototype.id + '-buttonLog').fireEvent('click', {});
+                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
                 } else
                     global.Msg({msg: ''});
             }
