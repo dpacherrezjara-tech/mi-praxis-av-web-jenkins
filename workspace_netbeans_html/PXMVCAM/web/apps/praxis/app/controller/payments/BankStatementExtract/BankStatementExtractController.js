@@ -1348,6 +1348,7 @@ viewDataEntry_clickHandler: function (obj, metaData, rowNum, columnNum, obj2, ro
         beanLog.MENSA = rowData.data.MENSA,
         beanLog.FECRFILE = rowData.data.FECRFILE,
         beanLog.CODEPROC  = rowData.data.CODEPROC,
+        beanLog.CODEPROCESS  = rowData.data.CODEPROCESS,
         beanLog.STATP  = rowData.data.STATP,
         beanLog.HOSEND  = rowData.data.HOSEND,
         beanLog.FECR   = rowData.data.FECR,
