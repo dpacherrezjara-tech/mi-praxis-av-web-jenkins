@@ -946,6 +946,17 @@ public class A2290Filter extends A2290 {
     public String SAUTHOC_100 = "";
     public String SPNR_100 = "";
     public String SAUTHOC_101 = "";
+    
+    //Update
+    public String MENSA = "";       
+    public String FECRFILE = "";
+    public String CODEPROCESS = "";
+    public String STATP = "";
+    public String HOSEND = "";
+    public String FECR = "";
+    public String HOCR = "";
+    public String FERECV = "";
+    public String HORECV = "";
 
     public String getVariable() {
         return BANDOC;
