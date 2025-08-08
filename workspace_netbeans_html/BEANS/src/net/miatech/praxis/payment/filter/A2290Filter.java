@@ -953,8 +953,6 @@ public class A2290Filter extends A2290 {
     public String CODEPROCESS = "";
     public String STATP = "";
     public String HOSEND = "";
-    public String FECR = "";
-    public String HOCR = "";
     public String FERECV = "";
     public String HORECV = "";
 
