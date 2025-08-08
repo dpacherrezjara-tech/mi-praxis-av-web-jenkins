@@ -30,12 +30,12 @@ public class ManualConciliationLogic {
         return manualConciliationDAO.loadPX269SQPXXX(filter);
     }
     
-    public String loadPX269SQP00834GRILL(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
-        return manualConciliationDAO.loadPX269SQP00834GRILL(filters, user);
+    public String loadPX269SQP00834GRILL(List<A2290Filter> filters, UserView user, String beanIntercompany) throws SQLException, Exception {
+        return manualConciliationDAO.loadPX269SQP00834GRILL(filters, user,beanIntercompany);
     }
     
-    public String loadPX269SQP00834ALL(A2290Filter filters, UserView user) throws SQLException, Exception {
-        return manualConciliationDAO.loadPX269SQP00834ALL(filters, user);
+    public String loadPX269SQP00834ALL(A2290Filter filters, UserView user, String beanIntercompany) throws SQLException, Exception {
+        return manualConciliationDAO.loadPX269SQP00834ALL(filters, user, beanIntercompany);
     }
     
     public String loadPX269SQP00834(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
