@@ -181,13 +181,13 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceContro
         var CmbTypeprocesa = Ext.getCmp(prototype.id + '-CmbTypeprocesa').getValue();
         var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue();
 
-        if (Ext.String.trim(Ext.getCmp(prototype.id + '-txtFilterDateFrom').getRawValue()) !== '' &&
+       /* if (Ext.String.trim(Ext.getCmp(prototype.id + '-txtFilterDateFrom').getRawValue()) !== '' &&
                 Ext.String.trim(Ext.getCmp(prototype.id + '-txtFilterDateTo').getRawValue()) !== '') {
             if (this.compareDate(Ext.getCmp(prototype.id + '-txtFilterDateFrom').getRawValue(), Ext.getCmp(prototype.id + '-txtFilterDateTo').getRawValue())) {
                 Ext.Msg.alert('.: PRAXIS :.', 'the starting date must be less than the end date');
                 return;
             }
-        }
+        }*/
         me.beanEXCEL.IN_OPTION = cmbFecFiltro;
         me.beanEXCEL.IN_TYPEPROCES = CmbTypeprocesa;
         me.beanEXCEL.IN_USER = txtUser;
