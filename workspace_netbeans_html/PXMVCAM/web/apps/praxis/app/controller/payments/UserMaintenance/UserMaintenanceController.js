@@ -148,8 +148,8 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceContro
         var me = this;
         var grid01 = Ext.getCmp(prototype.id + '-gridDataMain');
         var store01 = grid01.getStore();
-        var txtFilterDateFrom = Ext.getCmp(prototype.id + '-txtFilterDateFrom').getValue();
-        var txtFilterDateTo = Ext.getCmp(prototype.id + '-txtFilterDateTo').getValue();
+        var txtFilterDateFrom = Ext.getCmp(prototype.id + '-txtFilterDateFrom').getRawValue();
+        var txtFilterDateTo = Ext.getCmp(prototype.id + '-txtFilterDateTo').getRawValue();
         var txtUser = Ext.getCmp(prototype.id + '-txtUser').getValue();
         var CmbTypeprocesa = Ext.getCmp(prototype.id + '-CmbTypeprocesa').getValue();
         var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue();
@@ -175,8 +175,8 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceContro
     },
     btnExcel_click: function (obj, e) {
         var me = this;
-        var txtFilterDateFrom = Ext.getCmp(prototype.id + '-txtFilterDateFrom').getValue();
-        var txtFilterDateTo = Ext.getCmp(prototype.id + '-txtFilterDateTo').getValue();
+        var txtFilterDateFrom = Ext.getCmp(prototype.id + '-txtFilterDateFrom').getRawValue();
+        var txtFilterDateTo = Ext.getCmp(prototype.id + '-txtFilterDateTo').getRawValue();
         var txtUser = Ext.getCmp(prototype.id + '-txtUser').getValue();
         var CmbTypeprocesa = Ext.getCmp(prototype.id + '-CmbTypeprocesa').getValue();
         var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue();
