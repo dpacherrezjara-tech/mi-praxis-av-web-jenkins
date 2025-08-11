@@ -142,6 +142,7 @@ public class UserMaintenanceController extends BaseController {
             CH_06 = row.createCell(6);
             CH_07 = row.createCell(7);
             CH_08 = row.createCell(8);
+            CH_09 = row.createCell(9);
 
             CH_00.setCellValue("User");
             CH_01.setCellValue("Password");
@@ -152,6 +153,7 @@ public class UserMaintenanceController extends BaseController {
             CH_06.setCellValue("User Modified");
             CH_07.setCellValue("Date Modified");
             CH_08.setCellValue("Time Modified");
+            CH_09.setCellValue("Status");
 
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, 1));
@@ -162,6 +164,7 @@ public class UserMaintenanceController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 6, 6));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 7, 7));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 8, 8));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 9, 9));
 
             CH_00.setCellStyle(headerStyle);
             CH_01.setCellStyle(headerStyle);
@@ -172,6 +175,7 @@ public class UserMaintenanceController extends BaseController {
             CH_06.setCellStyle(headerStyle);
             CH_07.setCellStyle(headerStyle);
             CH_08.setCellStyle(headerStyle);
+            CH_09.setCellStyle(headerStyle);
 
             ++vj;
             //</editor-fold>
@@ -188,6 +192,7 @@ public class UserMaintenanceController extends BaseController {
                 CH_06 = row.createCell(6);
                 CH_07 = row.createCell(7);
                 CH_08 = row.createCell(8);
+                CH_09 = row.createCell(9);
 
                 CH_00.setCellValue(listaData.get(vi).A4717USER);
                 CH_01.setCellValue(listaData.get(vi).A4717PASS);
@@ -198,6 +203,14 @@ public class UserMaintenanceController extends BaseController {
                 CH_06.setCellValue(listaData.get(vi).A4717USRAC);
                 CH_07.setCellValue(listaData.get(vi).A4717FECAC);
                 CH_08.setCellValue(listaData.get(vi).A4717HORAC);
+                String Status = "";
+                if (listaData.get(vi).A4717ESTAT.equals("A")) {
+                    Status = "Enabled";
+                } else if (listaData.get(vi).A4717ESTAT.equals("R")) {
+                    Status = "Disabled";
+                }
+
+                CH_09.setCellValue(Status);
 
                 CH_00.setCellStyle(bodyStyle);
                 CH_01.setCellStyle(bodyStyle);
@@ -208,6 +221,7 @@ public class UserMaintenanceController extends BaseController {
                 CH_06.setCellStyle(bodyStyle);
                 CH_07.setCellStyle(bodyStyle);
                 CH_08.setCellStyle(bodyStyle);
+                CH_09.setCellStyle(bodyStyle);
 
                 // </editor-fold>
                 iter.next();
@@ -223,6 +237,7 @@ public class UserMaintenanceController extends BaseController {
             sheet.autoSizeColumn(6, true);
             sheet.autoSizeColumn(7, true);
             sheet.autoSizeColumn(8, true);
+            sheet.autoSizeColumn(9, true);
 
             String fileNameDownload = String.format("User maintenance Report - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
             response.setContentType("application/vnd.openxml");
