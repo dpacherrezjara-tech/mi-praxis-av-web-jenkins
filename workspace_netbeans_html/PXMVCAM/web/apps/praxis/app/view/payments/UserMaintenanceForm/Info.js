@@ -19,7 +19,7 @@ Ext.define('Ext.Praxis.view.payments.UserMaintenanceForm.Info', {
             defaults: {
                 bodyStyle: 'background: transparent;',
                 border: false,
-                width: 1200,
+                width: 1250,
                 height: 'auto',
                 align: 'center'
             },
@@ -40,7 +40,7 @@ Ext.define('Ext.Praxis.view.payments.UserMaintenanceForm.Info', {
                             padding: '1',
                             border: true,
                             height: 560,
-                            width: 1040,
+                            width: 1100,
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -50,7 +50,7 @@ Ext.define('Ext.Praxis.view.payments.UserMaintenanceForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataMain',
                                     height: 520,
-                                    width: 1040,
+                                    width: 1100,
                                     columnLines: true,
                                     columns: {
                                         defaults: {
@@ -63,6 +63,7 @@ Ext.define('Ext.Praxis.view.payments.UserMaintenanceForm.Info', {
                                                     {text: 'User', dataIndex: 'A4717USER', width: 200},
                                                     {text: 'Pass', dataIndex: 'A4717PSCO', width: 100},
                                                     {text: 'Processor </br> type', dataIndex: 'A4717TYPEDES', width: 200},
+                                                    {text: 'Status', dataIndex: 'A4717ESTAT', width: 60, sortable: false, align: 'right',renderer: 'onRendererColumnStatus'},
                                                     {text: 'User Created',
                                                         defaults: {
                                                             menuDisabled: true,

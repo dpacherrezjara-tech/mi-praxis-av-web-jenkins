@@ -35,7 +35,7 @@ Ext.define('Ext.Praxis.view.payments.UserMaintenanceForm.UserMaintenanceForm', {
                         {
                             xtype: 'panel',
                             region: 'center',
-                            width: 980,
+                            width: 1300,
                             layout: 'border',
 
                             items: [
@@ -49,7 +49,7 @@ Ext.define('Ext.Praxis.view.payments.UserMaintenanceForm.UserMaintenanceForm', {
                                     border: true,
                                     autoScroll: true,
                                     defaults: {
-                                        width: 1200,
+                                        width: 1250,
                                         align: 'center'
                                     },
                                     items: [
@@ -63,13 +63,13 @@ Ext.define('Ext.Praxis.view.payments.UserMaintenanceForm.UserMaintenanceForm', {
                                         {
                                             xtype: 'panel',
                                             height: 600,
-                                            width: 1200,
+                                            width: 1250,
                                             layout: 'fit',
                                             items: [
                                                 {
                                                     xtype: 'panel',
                                                     id: prototype.id + '-centerC-panel01',
-                                                    width: 1200,
+                                                    width: 1250,
                                                     layout: 'border',
                                                     align: 'center',
                                                     border: true,

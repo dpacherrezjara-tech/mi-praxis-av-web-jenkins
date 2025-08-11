@@ -208,6 +208,23 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceContro
             }
         });
     },
+    onRendererColumnStatus: function (value, metaData, record, rowIndex, colIndex, store, view) {
+        var color = '#FFFFFF';
+        switch (String(record.get('A4717ESTAT'))) {
+            case 'A':
+                color = '#F5A9F2';
+                value = 'Enabled';
+                break;            
+            case 'I':
+                color = '#F2A60D';
+                value = 'Disabled';
+                break;
+        }
+
+        metaData.tdAttr = 'data-qtip="' + value + '"';
+        metaData.style = "font-weight:bold !important; background:" + color + " !important";
+        return value;
+    },
 
     setFormatParameter: function () {
         me.bean = {};
@@ -820,7 +837,7 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceContro
         }
     },
     btnClear_click: function (obj, e) {
-        Ext.getCmp( prototype.id + '-txtUser').setValue('');
+        Ext.getCmp(prototype.id + '-txtUser').setValue('');
         Ext.getCmp(prototype.id + '-CmbTypeprocesa').setValue('');
         Ext.getCmp(prototype.id + '-txtFilterDateTo').setValue('');
         Ext.getCmp(prototype.id + '-txtFilterDateFrom').setValue('');
