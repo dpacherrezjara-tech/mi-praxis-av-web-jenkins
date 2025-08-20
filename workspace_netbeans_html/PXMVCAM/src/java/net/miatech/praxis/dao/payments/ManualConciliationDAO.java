@@ -371,7 +371,7 @@ public class ManualConciliationDAO {
 
         //REALIZA UN SELECT 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
-        lstTkts = this.loadPX269SQP00834SELECT(filter);
+        lstTkts = this.loadPX269SQP00834SELECT(filter,beanIntercompany);
 
         //REALIZA UN INSERT 
         String proces = this.loadPX269SQP00834INSERT(lstTkts);
@@ -385,7 +385,7 @@ public class ManualConciliationDAO {
             CallableStatement cstmt = null;
             Connection cnx = null;
 
-            String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCF2ALL_V2(?,?,?,?,?,?,?,?,?,?)}";
+            String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCF2ALL_V2(?,?,?,?,?,?,?,?,?,?,?)}";
 
             try {
                 cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -400,6 +400,7 @@ public class ManualConciliationDAO {
                 cstmt.setString(8, user.getUserInfo().USR);
                 cstmt.setString(9, Functions.getFechaActual());
                 cstmt.setString(10, Functions.getHoraActual());
+                cstmt.setString(11, beanIntercompany.trim());
                 cstmt.execute();
                 cstmt.close();
                 count++;
@@ -427,14 +428,14 @@ public class ManualConciliationDAO {
 
     }
 
-    public List<A2290Filter> loadPX269SQP00834SELECT(A2290Filter filter) throws SQLException, Exception {
+    public List<A2290Filter> loadPX269SQP00834SELECT(A2290Filter filter, String Intercompany) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
         A2290Filter row;
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".REPF2SELEC_V2(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".REPF2SELEC_V2(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -457,6 +458,7 @@ public class ManualConciliationDAO {
             cstmt.setString(14, filter.RQUERY.trim());
             cstmt.setString(15, filter.TQUERY.trim());
             cstmt.setString(16, filter.TTABLE.trim());
+            cstmt.setString(17, Intercompany.trim());
 
             cstmt.execute();
 
@@ -1252,7 +1254,7 @@ public class ManualConciliationDAO {
         ResultSet rst = null;
         ResultSet rst2 = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF101_F2_V2(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+            String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF101_F2_V2(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {

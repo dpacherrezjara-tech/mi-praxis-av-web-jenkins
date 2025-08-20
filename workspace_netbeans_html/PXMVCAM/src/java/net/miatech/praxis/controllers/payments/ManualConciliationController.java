@@ -318,7 +318,7 @@ public class ManualConciliationController extends BaseController {
         try {
 
             beanString = request.getParameter("beanString");
-            beanString = request.getParameter("beanIntercompany");
+            beanIntercompany = request.getParameter("beanIntercompany");
             System.out.println("JSON recibido en el servidor: " + beanString);
             filter = gson.fromJson(beanString, A2290Filter.class);
 
