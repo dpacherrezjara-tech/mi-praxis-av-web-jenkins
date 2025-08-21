@@ -79,4 +79,21 @@ public class A2282Filter extends A2282 {
      
      
      public Pagination page = new Pagination();
+
+    public String IN_COUNTRYS = "";
+    public String IN_RBSP = "";
+    public String IN_DATEFROM = "";
+    public String IN_DATETO = "";
+    public String CCIA = "";
+    public String CIAAL = "";
+    public String COUNTRYS = "";
+    public String dscSCOUNTRY = "";
+    public String RBSP = "";
+    public String LANGU = "";
+    public String LANGUC = "";
+    public String USERCR = "";
+    public String PASSCR = "";
+    public String AIDOFIC = "";
+    public String USERCRB = "";
+    public String PASSCRB = "";
 }
