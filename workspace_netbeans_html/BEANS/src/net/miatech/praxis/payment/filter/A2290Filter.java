@@ -60,6 +60,8 @@ public class A2290Filter extends A2290 {
     public String IN_FUNDSTRGK = "";
     public String IN_LIQUIDACIO = "";
     public String IN_TYPER = "";
+    public String INTERCOMPANY = "";
+    public String IN_INTERCOMPANY = "";
 
     public String IN_FROMADATE = "";
     public String IN_TOADATE = "";

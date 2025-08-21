@@ -302,7 +302,7 @@ public class ManualConciliationDAO {
         return objRtn;
     }
 
-    public String loadPX269SQP00834GRILL(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
+    public String loadPX269SQP00834GRILL(List<A2290Filter> filters, UserView user,String beanIntercompany) throws SQLException, Exception {
 
         //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
         String strMsj = "";
@@ -310,7 +310,7 @@ public class ManualConciliationDAO {
         CallableStatement cstmt = null;
         Connection cnx = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCF2_V2(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCF2_V2(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -339,9 +339,10 @@ public class ManualConciliationDAO {
                 cstmt.setString(18, filter.SPNR.trim());
                 cstmt.setString(19, filter.RQUERY.trim());
                 cstmt.setString(20, filter.TQUERY.trim());
-                cstmt.setString(21, user.getUserInfo().USR);
-                cstmt.setString(22, Functions.getFechaActual());
-                cstmt.setString(23, Functions.getHoraActual());
+                cstmt.setString(21, beanIntercompany.trim());
+                cstmt.setString(22, user.getUserInfo().USR);
+                cstmt.setString(23, Functions.getFechaActual());
+                cstmt.setString(24, Functions.getHoraActual());
                 cstmt.execute();
                 cstmt.close();
                 count++;
@@ -366,11 +367,11 @@ public class ManualConciliationDAO {
         return strMsj;
     }
 
-    public String loadPX269SQP00834ALL(A2290Filter filter, UserView user) throws SQLException, Exception {
+    public String loadPX269SQP00834ALL(A2290Filter filter, UserView user,String beanIntercompany) throws SQLException, Exception {
 
         //REALIZA UN SELECT 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
-        lstTkts = this.loadPX269SQP00834SELECT(filter);
+        lstTkts = this.loadPX269SQP00834SELECT(filter,beanIntercompany);
 
         //REALIZA UN INSERT 
         String proces = this.loadPX269SQP00834INSERT(lstTkts);
@@ -384,7 +385,7 @@ public class ManualConciliationDAO {
             CallableStatement cstmt = null;
             Connection cnx = null;
 
-            String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCF2ALL_V2(?,?,?,?,?,?,?,?,?,?)}";
+            String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCF2ALL_V2(?,?,?,?,?,?,?,?,?,?,?)}";
 
             try {
                 cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -399,6 +400,7 @@ public class ManualConciliationDAO {
                 cstmt.setString(8, user.getUserInfo().USR);
                 cstmt.setString(9, Functions.getFechaActual());
                 cstmt.setString(10, Functions.getHoraActual());
+                cstmt.setString(11, beanIntercompany.trim());
                 cstmt.execute();
                 cstmt.close();
                 count++;
@@ -426,14 +428,14 @@ public class ManualConciliationDAO {
 
     }
 
-    public List<A2290Filter> loadPX269SQP00834SELECT(A2290Filter filter) throws SQLException, Exception {
+    public List<A2290Filter> loadPX269SQP00834SELECT(A2290Filter filter, String Intercompany) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
         A2290Filter row;
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".REPF2SELEC_V2(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".REPF2SELEC_V2(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -456,6 +458,7 @@ public class ManualConciliationDAO {
             cstmt.setString(14, filter.RQUERY.trim());
             cstmt.setString(15, filter.TQUERY.trim());
             cstmt.setString(16, filter.TTABLE.trim());
+            cstmt.setString(17, Intercompany.trim());
 
             cstmt.execute();
 
@@ -1251,7 +1254,7 @@ public class ManualConciliationDAO {
         ResultSet rst = null;
         ResultSet rst2 = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF101_F2_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+            String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF101_F2_V2(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1262,6 +1265,7 @@ public class ManualConciliationDAO {
             cstmt.registerOutParameter(14, Types.INTEGER);
             cstmt.registerOutParameter(15, Types.INTEGER);
             cstmt.registerOutParameter(16, Types.INTEGER);
+            cstmt.registerOutParameter(17, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.strFecFiltro);
@@ -1274,23 +1278,24 @@ public class ManualConciliationDAO {
             cstmt.setString(9, filter.RQUERY);
             cstmt.setString(10, filter.TQUERY);
             cstmt.setString(11, filter.TTABLE);
-            cstmt.registerOutParameter(12, Types.INTEGER);
-            cstmt.setInt(13, filter.page.PAGNUM);
-            cstmt.setInt(14, filter.page.PAGROW);
-            cstmt.setInt(15, filter.page.TOTPAG);
-            cstmt.setInt(16, filter.page.TOTROW);
+            cstmt.setString(12, filter.INTERCOMPANY);
+            cstmt.registerOutParameter(13, Types.INTEGER);
+            cstmt.setInt(14, filter.page.PAGNUM);
+            cstmt.setInt(15, filter.page.PAGROW);
+            cstmt.setInt(16, filter.page.TOTPAG);
+            cstmt.setInt(17, filter.page.TOTROW);
             cstmt.execute();
 
             rst = cstmt.getResultSet();
-            lngQTYTKT = cstmt.getInt(12);
-            filter.page.PAGNUM = cstmt.getInt(13);
-            filter.page.PAGROW = cstmt.getInt(14);
-            filter.page.TOTPAG = cstmt.getInt(15);
-            filter.page.TOTROW = cstmt.getInt(16);
+            lngQTYTKT = cstmt.getInt(13);
+            filter.page.PAGNUM = cstmt.getInt(14);
+            filter.page.PAGROW = cstmt.getInt(15);
+            filter.page.TOTPAG = cstmt.getInt(16);
+            filter.page.TOTROW = cstmt.getInt(17);
 
             while (rst.next()) {
 
-                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100_F2_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100_F2_V2(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
                 Connection cnx2 = null;
                 try {
@@ -1311,6 +1316,7 @@ public class ManualConciliationDAO {
                     cstmt2.setString(12, filter.RQUERY.trim());
                     cstmt2.setString(13, filter.TQUERY.trim());
                     cstmt2.setString(14, filter.TTABLE.trim());
+                    cstmt2.setString(15, filter.INTERCOMPANY.trim());
 
                     cstmt2.execute();
 
@@ -1435,7 +1441,7 @@ public class ManualConciliationDAO {
 
             while (rst.next()) {
 
-                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100_F2_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100_F2_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
                 Connection cnx2 = null;
                 try {
@@ -1456,6 +1462,7 @@ public class ManualConciliationDAO {
                     cstmt2.setString(12, filter.RQUERY.trim());
                     cstmt2.setString(13, filter.TQUERY.trim());
                     cstmt2.setString(14, filter.TTABLE.trim());
+                    cstmt2.setString(15, filter.INTERCOMPANY.trim());
 
                     cstmt2.execute();
 

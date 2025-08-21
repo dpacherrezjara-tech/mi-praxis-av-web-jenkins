@@ -1996,6 +1996,15 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Filters', {
                                                     hidden: false,
                                                     width: 50,
                                                 },
+                                                {
+                                                    xtype: 'checkboxfield',
+                                                    margin: '5 0 0 5',
+                                                        id: prototype.id + '-chkIntercompany',
+                                                    boxLabel: '<b>Intercompany</b>',
+                                                    checked: false,
+                                                    hidden: false,
+                                                    width: 50,
+                                                },
                                             ]
                                         },
                                     ]
