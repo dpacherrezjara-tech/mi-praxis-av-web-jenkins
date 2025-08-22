@@ -790,7 +790,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         me.beanBandoc.IN_BANDOC   = getBandoc;
         me.beanBandoc.IN_DATEFROM = '';
         me.beanBandoc.IN_DATETO   = '';
-        me.beanBandoc.IN_CODPRO   = '';
+        me.beanBandoc.IN_CODPRO   =getProcess;
 
         let searchParamsBandoc = {
             beanString: JSON.stringify(me.beanBandoc)
