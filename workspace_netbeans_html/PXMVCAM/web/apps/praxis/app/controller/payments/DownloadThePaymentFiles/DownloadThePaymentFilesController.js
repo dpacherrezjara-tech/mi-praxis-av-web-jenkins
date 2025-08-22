@@ -6,7 +6,7 @@ Ext.define('Ext.Praxis.controller.payments.DownloadThePaymentFiles.DownloadThePa
     bean: '',
     paginActual: '',
     gridActual: '',
-    panelActual: '',
+    panelActual: '', 
     reg99: 0,
     me: '',
 
@@ -109,7 +109,7 @@ Ext.define('Ext.Praxis.controller.payments.DownloadThePaymentFiles.DownloadThePa
         var store01 = Ext.create('Ext.data.Store', {
             proxy: {
                 type: 'ajax',
-                url: prototype.url + '/DowloadFilesPayment/',
+                url: prototype.url + '/DowloadFilesPayment/', 
                 timeout: '300000',
                 reader: {
                     type: 'json',
@@ -280,7 +280,7 @@ Ext.define('Ext.Praxis.controller.payments.DownloadThePaymentFiles.DownloadThePa
                             var data = obj.data.items[0].data;
 
                         }
-                        me.setWidthPie();
+                        me.setWidthPie();    
                     }
                 }
             });
