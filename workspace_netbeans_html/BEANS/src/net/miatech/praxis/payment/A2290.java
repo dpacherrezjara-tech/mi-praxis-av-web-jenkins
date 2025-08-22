@@ -136,6 +136,7 @@ public class A2290 {
     public String COREPL = "";
     public String SCARDNM = "";
     public String SCARDN = "";
+    public String SCURREVEN = "";
     public String SDATEXP = "";
     public String SAUTHOC = "";
     public String SAUTHOCM = "";
