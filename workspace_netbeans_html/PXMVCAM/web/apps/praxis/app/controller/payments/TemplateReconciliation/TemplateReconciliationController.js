@@ -421,12 +421,15 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         me.updateGridTotalSale();
     },
     updateGridSale: function (column, rowIndex, checked, record) {
-        let recordSale = me.getGridRecords(prototype.id + '-gridDataVentas');
-        let totalSale = 0;
+
+        let recordBandocSale = me.getGridRecords(prototype.id + '-gridDataVentas');
+        let totalBandocSale = 0;
         
-        for (let row of recordSale) {
-            totalSale += row.SVFOP || 0;
+        for (let row of recordBandocSale) {
+            totalBandocSale += row.SVFOP || 0;
         }
+        
+        console.log(totalBandocSale,'totalBandocSale')
         
         var grid = Ext.getCmp(prototype.id + '-gridDataVentas');
         var store = grid.getStore();
@@ -434,7 +437,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         
         if (tam > 0) {
             var lastRecord = store.getAt(0);
-            lastRecord.set('TOTAL_SVFOP', totalSale);
+            lastRecord.set('TOTAL_SVFOP', totalBandocSale);
         }
 
         grid.getView().refresh();

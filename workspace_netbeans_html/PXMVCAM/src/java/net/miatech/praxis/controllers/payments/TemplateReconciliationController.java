@@ -794,37 +794,44 @@ public class TemplateReconciliationController extends BaseController {
                 }
             } else {
                 
-            for (A2290Filter sale : salesList) {
-               
-                salesGroup += "|" 
-                    + sale.CCUST.trim() + ";" + sale.CCIA.trim() + ";" + sale.FORMA.trim() + ";" 
-                    + sale.SERIE.trim() + ";" + sale.TDOC.trim() + ";" + sale.SCARDNCOR.trim() + ";" 
-                    + sale.SAUTHOC.trim() + ";" + sale.SEQ.trim() + ";" + sale.CORRL.trim() + ";" 
-                    + sale.SVFOP + ";" + sale.TOTAL ;
-            }
-            
-            for (A2290Filter bandoc : bandocList) {
-               
-                bandocGroup += "|" 
-                    + bandoc.CCUST.trim() + ";" + bandoc.ADATE.trim() + ";" + bandoc.SOCIETY.trim() + ";" 
-                    + bandoc.CODEBANK.trim() + ";" + bandoc.BANDOC.trim() ;
-            }
-            
-            System.out.print("sucesssssssssssssssssss");
-            
-            obj.liq = salesGroup;
-            obj.ec = bandocGroup;
-            regs = "";
-            regsEC = "";
-            lstData.add(obj);
+                    List<String> salesParts = new ArrayList<>();
+                    for (A2290Filter sale : salesList) {
+                        salesParts.add(
+                            sale.CCUST.trim() + ";" + sale.CCIA.trim() + ";" + sale.FORMA.trim() + ";" 
+                            + sale.SERIE.trim() + ";" + sale.TDOC.trim() + ";" + sale.SCARDNCOR.trim() + ";" 
+                            + sale.SAUTHOC.trim() + ";" + sale.SEQ.trim() + ";" + sale.CORRL.trim() + ";" 
+                            + sale.SVFOP + ";" + sale.TOTAL
+                        );
+                    }
+                    salesGroup = String.join("|", salesParts);
 
-            if (message.equals("")) {
-                System.out.print("sucesssssssssssssssssss");
-                StatementReconciliationsLogic logicStatement = new StatementReconciliationsLogic();
-                logicStatement.setSession(this.serverSession.getServerSession());
-                    message = logicStatement.loadPX287MPS106(lstData);
 
-            }
+                   List<String> bandocParts = new ArrayList<>();
+                    for (A2290Filter bandoc : bandocList) {
+                        bandocParts.add(
+                            bandoc.CCUST.trim() + ";" + bandoc.ADATE.trim() + ";" + bandoc.SOCIETY.trim() + ";" 
+                            + bandoc.CODEBANK.trim() + ";" + bandoc.BANDOC.trim()
+                        );
+                    }
+
+                    bandocGroup = String.join("|", bandocParts);
+
+
+                    System.out.print("sucesssssssssssssssssss");
+
+                    obj.liq = salesGroup;
+                    obj.ec = bandocGroup;
+                    regs = "";
+                    regsEC = "";
+                    lstData.add(obj);
+
+                    if (message.equals("")) {
+                        System.out.print("sucesssssssssssssssssss");
+                        StatementReconciliationsLogic logicStatement = new StatementReconciliationsLogic();
+                        logicStatement.setSession(this.serverSession.getServerSession());
+                            message = logicStatement.loadPX287MPS106(lstData);
+
+                    }
             }
             
 //            lst = logic.searchPendingHeads(filter);

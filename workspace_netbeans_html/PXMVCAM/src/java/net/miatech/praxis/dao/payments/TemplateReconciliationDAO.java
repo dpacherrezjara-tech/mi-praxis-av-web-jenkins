@@ -813,13 +813,14 @@ public class TemplateReconciliationDAO {
                     record.ACCOUNT = rst.getString("ACCOUNT");
                     record.SOCIETY = rst.getString("SOCIETY");
                     record.CODEBANK_EC = rst.getString("CODEBANK");
+                    record.checkActive = false;
 
                     record.page.PAGNUM = filter.page.PAGNUM;
                     record.page.PAGROW = filter.page.PAGROW;
                     record.page.TOTPAG = filter.page.TOTPAG;
                     record.page.TOTROW = filter.page.TOTROW;
                     
-                    record.TOTAL_NETO = TOTAL_NETO;
+                    record.TOTAL_NETO = 0;
 
                     lstTkts.add(record);
                 }
@@ -916,6 +917,7 @@ public class TemplateReconciliationDAO {
                     record.SAGENT = rst.getString("SAGENT");
                     record.SVFOP = rst.getDouble("SVFOP");
                     record.TOTAL = rst.getDouble("TOTAL");
+                    record.checkActive = false;
 //                    record.BANDOC = rst.getString("BANDOC");
 //                    record.VALDATE = rst.getString("VALDATE");
 //                    record.ADATE = rst.getString("ADATE");
@@ -929,7 +931,7 @@ public class TemplateReconciliationDAO {
                     record.page.TOTPAG = filter.page.TOTPAG;
                     record.page.TOTROW = filter.page.TOTROW;
                     
-                    record.TOTAL_SVFOP = TOTAL_SVFOP;
+                    record.TOTAL_SVFOP = 0;
 
                     lstTkts.add(record);
                 }
