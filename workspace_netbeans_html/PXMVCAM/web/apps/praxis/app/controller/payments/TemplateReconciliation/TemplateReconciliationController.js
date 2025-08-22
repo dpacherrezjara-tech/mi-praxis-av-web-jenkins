@@ -1462,7 +1462,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                 let el = cmp.getEl();
                 if (el) {
                     el.setStyle({
-                        'background-color': colorFondo,
+                        'background-color': colorFondo2,
                         'color': colorTexto,
                         'font-weight': 'bold',
                         'border-radius': '0px'
