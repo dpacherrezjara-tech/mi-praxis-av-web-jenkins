@@ -3596,7 +3596,7 @@ public class StatementReconciliationsDAO {
                 cstmt.registerOutParameter(5, Types.VARCHAR);
 
                 cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-                cstmt.setString(2, obj.liq.trim());
+                cstmt.setString(2, obj.processR.trim());
                 cstmt.setString(3, session.getUserView().getCustomerInfo().USR);
                 cstmt.setString(4, obj.liq.trim());
                 cstmt.setString(5, obj.ec.trim());
