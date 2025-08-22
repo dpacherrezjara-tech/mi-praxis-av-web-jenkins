@@ -567,7 +567,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             return
         }
         
-        if (getProcess !== "VN" && getProcess !== "BM" && getProcess !== "CO") {
+        if (getProcess !== "VN" && getProcess !== "BM" ) {
             if (!recordSettlements.length) {
                 global.Msg({
                     msg: 'No ha seleccionado liquidaciones.'
@@ -1319,7 +1319,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                 });
                 
                 Ext.getCmp(prototype.id + '-cmbCOREP').bindStore(storeDataProcessor);
-                Ext.getCmp(prototype.id + '-cmbCOREP').setValue('CO');
+                Ext.getCmp(prototype.id + '-cmbCOREP').setValue('BM');
                 
                 Ext.getCmp(prototype.id + '-txtCountrySale').bindStore(storeDataCountrys);
             }
@@ -1499,7 +1499,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         Ext.getCmp(prototype.id + '-gridData21').getStore().removeAll();
         Ext.getCmp(prototype.id + '-gridData21').getView().refresh();
         
-        if (getProcess !== "VN" && getProcess !== "BM" && getProcess !== "CO") {
+        if (getProcess !== "VN" && getProcess !== "BM") {
             me.searchSettlements();
             me.updateGridTotal();
         } else {
@@ -1509,7 +1509,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
     },
     changeViewTemplate: function(getProcess) {
         
-        if (getProcess !== "VN" && getProcess !== "BM" && getProcess !== "CO") {
+        if (getProcess !== "VN" && getProcess !== "BM") {
             console.log(1)
             Ext.getCmp(prototype.id + "-boxConsultas2").hide();
             Ext.getCmp(prototype.id + "-boxConsultas").show();
