@@ -26,6 +26,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
     pagginActual: '-paggin',
     user: '',
     esIgual: 0,
+    esPercent: 0,
     columnCode: '',
     init: function (view) {
         me = this;
@@ -1434,20 +1435,26 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         let formattedBandoc = Ext.util.Format.number(totalBandoc, '0,000.00');
         let formattedSale = Ext.util.Format.number(totalSales, '0,000.00');
 
-        let calculo = Math.abs(totalBandoc - totalSales);
+        let calculo = totalSales - totalBandoc;
+        let porcentaje = totalSales > 0 ? (totalSales / calculo) * 100 : 0;
         let formattedDiff = Ext.util.Format.number(calculo, '0,000.00');
+        let formattedPorcentaje = Ext.util.Format.number(porcentaje, '0.00') + '%';
         
         let cmpDeposito = Ext.getCmp(prototype.id + '-txtTotalDeposito');
         let cmpVenta = Ext.getCmp(prototype.id + '-txtVentas');
         let cmpDiferencia = Ext.getCmp(prototype.id + '-txtTotalDiffVenta');
+        let cmpPorcentaje = Ext.getCmp(prototype.id + '-txtPercentVenta');
 
         cmpDeposito.setValue(formattedBandoc);
         cmpVenta.setValue(formattedSale);
         cmpDiferencia.setValue(formattedDiff);
+        cmpPorcentaje.setValue(formattedPorcentaje);
 
         this.esIgual = calculo === 0;
+        this.esPercent = porcentaje <= 10;
 
         let colorFondo = this.esIgual ? '#4CAF50' : '#F44336';
+        let colorFondo2 = this.esPercent ? '#4CAF50' : '#F44336';
         let colorTexto = 'white';
 
         Ext.defer(function () {
@@ -1456,6 +1463,20 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                 if (el) {
                     el.setStyle({
                         'background-color': colorFondo,
+                        'color': colorTexto,
+                        'font-weight': 'bold',
+                        'border-radius': '0px'
+                    });
+                }
+            });
+        }, 10);
+        
+        Ext.defer(function () {
+            [cmpPorcentaje].forEach(cmp => {
+                let el = cmp.getEl();
+                if (el) {
+                    el.setStyle({
+                        'background-color': colorFondo2,
                         'color': colorTexto,
                         'font-weight': 'bold',
                         'border-radius': '0px'

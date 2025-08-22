@@ -821,6 +821,7 @@ public class TemplateReconciliationController extends BaseController {
 
                     obj.liq = salesGroup;
                     obj.ec = bandocGroup;
+                    obj.processR = filter.IN_CODPRO;
                     regs = "";
                     regsEC = "";
                     lstData.add(obj);

@@ -765,7 +765,7 @@ public class TemplateReconciliationDAO {
         List<A2290Filter> lista = new ArrayList<A2290Filter>();
         double TOTAL_NETO = 0;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS111_V4(?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS108(?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -862,7 +862,7 @@ public class TemplateReconciliationDAO {
         List<A2290Filter> lista = new ArrayList<A2290Filter>();
         double TOTAL_SVFOP = 0;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS111_V3(?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS107(?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {

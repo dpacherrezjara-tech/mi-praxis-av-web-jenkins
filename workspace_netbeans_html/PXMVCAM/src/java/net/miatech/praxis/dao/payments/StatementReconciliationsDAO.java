@@ -3583,7 +3583,7 @@ public class StatementReconciliationsDAO {
 
         try {
 
-            String SQLCLL02 = "{CALL PRAXISMP.MPS106(?,?,?,?,?)}";
+            String SQLCLL02 = "{CALL PRAXISMP.MPS106(?,?,?,?,?,?)}";
 
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL02);
@@ -3596,10 +3596,11 @@ public class StatementReconciliationsDAO {
                 cstmt.registerOutParameter(5, Types.VARCHAR);
 
                 cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-                cstmt.setString(2, session.getUserView().getCustomerInfo().USR);
-                cstmt.setString(3, obj.liq.trim());
-                cstmt.setString(4, obj.ec.trim());
-                cstmt.setString(5, "");
+                cstmt.setString(2, obj.liq.trim());
+                cstmt.setString(3, session.getUserView().getCustomerInfo().USR);
+                cstmt.setString(4, obj.liq.trim());
+                cstmt.setString(5, obj.ec.trim());
+                cstmt.setString(6, "");
 
                 cstmt.execute();
 

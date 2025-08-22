@@ -1317,11 +1317,13 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                     width: 120,
                                     labelWidth: 40,
                                     enableKeyEvents: true,
+                                    hidden:true,
                                     listeners: { keypress: 'searchSales' }
                                 },
                                 {
                                     xtype: 'combo',
                                     fieldLabel: 'Country',
+                                    hidden:true,
                                     id: prototype.id + '-txtCountrySale',
                                     width: 180,
                                     labelWidth: 50,
@@ -1336,21 +1338,21 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                 
                                 {
                                     xtype: 'datefield',
-                                    fieldLabel: 'From',
+                                    fieldLabel: 'Sale Date From',
                                     id: prototype.id + '-txtFromSale',
                                     format: 'Y/m/d',
                                     value: new Date(),
-                                    width: 140,
-                                    labelWidth: 35
+                                    width: 200,
+                                    labelWidth: 100
                                 },
                                 {
                                     xtype: 'datefield',
-                                    fieldLabel: 'To',
+                                    fieldLabel: 'Sale Date To',
                                     id: prototype.id + '-txtToSale',
                                     format: 'Y/m/d',
                                     value: new Date(),
-                                    width: 120,
-                                    labelWidth: 20,
+                                    width: 190,
+                                    labelWidth: 85,
                                     listeners: { change: 'searchSales' }
                                 }
                             ]
@@ -1656,6 +1658,27 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                         {
                                             xtype: 'displayfield',
                                             id: prototype.id + '-txtTotalDiffVenta',
+                                            width:'157px',
+                                            value: Ext.util.Format.number(0, '0,000.00'),
+                                            style: 'font-size:14px; font-weight: bold; width: 106px; text-align: right; padding: 4px 10px;'
+                                        }
+                                    ]
+                                },
+                                // Panel Porcentaje  Permitido
+                                {
+                                    xtype: 'panel',
+                                    itemId: prototype.id + '-panelPercent',
+                                    layout: 'hbox',
+                                    border: false,
+                                    items: [
+                                        {
+                                            xtype: 'displayfield',
+                                            value: 'Porcentaje',
+                                            style: 'font-size:14px; font-weight: bold; color:#333; width: 150px; border-right: 1px solid #d1d1d1; padding: 4px 10px;'
+                                        },
+                                        {
+                                            xtype: 'displayfield',
+                                            id: prototype.id + '-txtPercentVenta',
                                             width:'157px',
                                             value: Ext.util.Format.number(0, '0,000.00'),
                                             style: 'font-size:14px; font-weight: bold; width: 106px; text-align: right; padding: 4px 10px;'
