@@ -3573,6 +3573,57 @@ public class StatementReconciliationsDAO {
 
         return strMsj;
     }
+    
+    public String loadPX287MPS106(List<MPF101> lstLIQ) throws SQLException, Exception {
+
+        //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
+        String strMsj = "Execute...";
+        CallableStatement cstmt = null;
+        Connection cnx = null;
+
+        try {
+
+            String SQLCLL02 = "{CALL PRAXISMP.MPS106(?,?,?,?,?)}";
+
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL02);
+
+            for (int i = 0; i < lstLIQ.size(); i++) {
+
+                MPF101 obj = lstLIQ.get(i);
+//                cstmt = cnx.prepareCall(SQLCLL02);
+
+                cstmt.registerOutParameter(5, Types.VARCHAR);
+
+                cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+                cstmt.setString(2, session.getUserView().getCustomerInfo().USR);
+                cstmt.setString(3, obj.liq.trim());
+                cstmt.setString(4, obj.ec.trim());
+                cstmt.setString(5, "");
+
+                cstmt.execute();
+
+                strMsj = strMsj + "**" + cstmt.getString(5);
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            strMsj = e.getMessage();
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return strMsj;
+    }
 
     public List<MPF101> CONFIEC(String BANDOC) throws SQLException, Exception {
 
