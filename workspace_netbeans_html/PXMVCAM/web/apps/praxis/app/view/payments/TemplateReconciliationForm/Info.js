@@ -1352,8 +1352,13 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                     format: 'Y/m/d',
                                     value: new Date(),
                                     width: 190,
-                                    labelWidth: 85,
-                                    listeners: { change: 'searchSales' }
+                                    labelWidth: 85
+                                },
+                               {
+                                    xtype: 'button',
+                                    id: prototype.id + '-btnSearchSales',
+                                    iconCls: 'prx-icon-search',
+                                    tooltip: 'Search'
                                 }
                             ]
                         },
@@ -1492,15 +1497,15 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                         },
                                         {
                                             text: 'SAUTHOC',
-                                            width: 105,
+                                            width: 80,
                                             menuDisabled: true,
                                             dataIndex: 'SAUTHOC',
                                             align: 'center',
                                             style: 'padding:2px; background: #3F5675;border-color:white',
                                             summaryType: 'sum',
                                             renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-                                                metaData.style = "text-align:right;";
-                                                value = Ext.util.Format.number(value, '0,000.00');
+                                                metaData.style = "text-align:center;";
+//                                                value = Ext.util.Format.number(value, '0,000.00');
                                                 return '<b>' + value + '</b>';
                                             },
                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
@@ -1510,7 +1515,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                         },
                                         {
                                             text: 'SCARDN',
-                                            width: 120,
+                                            width: 155,
                                             menuDisabled: true,
                                             dataIndex: 'SCARDN',
                                             align: 'center',
@@ -1527,7 +1532,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                         },
                                         {
                                             text: 'CURR',
-                                            width: 70,
+                                            width: 60,
                                             menuDisabled: true,
                                             dataIndex: 'SCURREVEN',
                                             align: 'center',
