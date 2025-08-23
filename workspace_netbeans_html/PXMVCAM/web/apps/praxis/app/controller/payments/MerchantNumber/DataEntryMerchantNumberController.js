@@ -5,6 +5,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
     meDE: '',
     actionCode: '',
     bean: {},
+    beanDelete:  {},
     beanResult: {},
     lstCountry: [],
     searchParams: {},
@@ -461,7 +462,33 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
     onViewMerchClick: function (grid, rowIndex, colIndex, item, e, record) {
         var rec = grid.getStore().getAt(rowIndex);
         rec.colIndex = colIndex;
+        
+        meDE.beanDelete.CMERCHAN = rec.data.CMERCHAN;
+        meDE.beanDelete.SUCMERCH = rec.data.SUCMERCH;
+        meDE.beanDelete.CODEBANK = rec.data.CODEBANK;
+        meDE.beanDelete.ACCNUMB = rec.data.ACCNUMB;
+        meDE.beanDelete.SAGENT = rec.data.SAGENT;
+        
         console.log(rec, 'INFO REC')
+        console.log(meDE.beanDelete, 'meDELETE')
+        
+        if (colIndex == "11") {
+            Ext.Msg.show({
+                title: '.:PRAXIS:.',
+                msg: 'Are you sure to Delete ?',
+                buttons: Ext.MessageBox.YESNO,
+                //scope: this,
+                //animateTarget: btn,
+                icon: Ext.MessageBox.QUESTION,
+                modal: true,
+                fn: function (btn) {
+                    if (btn === 'yes') {
+                        meDE.deleteMerchantAndSendHistoric(meDE.beanDelete);
+                    }
+                }
+            });
+            return;
+        }
         this.winDataEntry('U', rec);
     },
     winDataEntry: function (action, rec) {
@@ -476,7 +503,29 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
             }
         }).show();
     },
-    //</editor-fold>
+    deleteMerchantAndSendHistoric(beanDelete) {
+        var beanString = JSON.stringify(beanDelete);
+                console.log(beanString,'beanString');
+        Ext.Ajax.request({
+            url: prototype.url + '/deleteMerchantAndSendHistoric',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: beanString},
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+            success: function (response, opts) {
+                Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
+                var res = Ext.JSON.decode(response.responseText);
+                console.log(res);
+                if (res.success) {
+                    global.Msg({msg: "Registro eliminado"});
+                    Ext.getCmp(prototype.id + '-dataEntry').unmask();
+                    Ext.getCmp(prototype.id + '-dataEntry').close();
+//                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+                } else
+                    global.Msg({msg: ''});
+            }
+        });
+    },
 
     //<editor-fold defaultstate="collapsed" desc="limpiarData">
     limpiarData: function () {

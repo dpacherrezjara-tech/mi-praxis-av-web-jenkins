@@ -513,7 +513,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                                             items: [
                                                                 
                                                                 {
-                                                                    text: 'Merchant', dataIndex: 'CMERCHAN', width: 200,
+                                                                    text: 'Merchant', dataIndex: 'CMERCHAN', width: 180,
                                                                     editor: {
                                                                         xtype: 'textfield',
                                                                         editable: true,
@@ -524,7 +524,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                                                     },
                                                                 },
                                                                 {
-                                                                    text: 'Merchant Branch', dataIndex: 'SUCMERCH', width: 145,
+                                                                    text: 'Merchant Branch', dataIndex: 'SUCMERCH', width: 130,
                                                                     editor: {
                                                                         xtype: 'textfield',
                                                                         editable: true,
@@ -535,7 +535,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                                                     },
                                                                 },
                                                                 {
-                                                                    text: 'Code Proces', dataIndex: 'CODE', width: 126,
+                                                                    text: 'Code <br> Proces', dataIndex: 'CODE', width: 90,
                                                                     editor: {
                                                                         xtype: 'textfield',
                                                                         editable: true,
@@ -586,7 +586,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                                                     
                                                                 },
                                                                 {
-                                                                    text: 'Bank Company', dataIndex: 'BANKCM', width: 110,
+                                                                    text: 'Bank <br> Company', dataIndex: 'BANKCM', width: 80,
                                                                     editor: {
                                                                         xtype: 'textfield',
                                                                         editable: true,
@@ -634,7 +634,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                                                     },
                                                                     items: [{
                                                                         icon: 'resources/img/botones/icon-for-update-28-removebg-preview.png',
-                                                                        tooltip: 'Edit',
+                                                                        tooltip: 'Manda el registro actual al historico y crea un nuevo registro en Merchant',
                                                                         handler: 'onViewMerchClick'
                                                                     }]
                                                                 },
@@ -654,7 +654,29 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                                                                     items: [
                                                                         {
                                                                             icon: 'resources/img/botones/add.png', // Ruta a tu imagen
-                                                                            tooltip: 'Edit',
+                                                                            tooltip: 'Manda todos los registros al historico y solo se crea 1 nuevo Merchant',
+                                                                            handler: 'onViewMerchClick',
+                                                                            style: 'background-color: #fff3cd;',
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                 {
+                                                                    sortable: false,
+                                                                    xtype: 'actioncolumn',
+                                                                    id: prototype.id + '-gridDeleteMerch',
+                                                                    width: 60,
+                                                                    text: 'Delete',
+                                                                    align: 'center',
+                                                                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                        var data = record.data;
+//                                                                        metaData.style = "background-color: #003366 !important;";
+
+                                                                        return  value;
+                                                                    },
+                                                                    items: [
+                                                                        {
+                                                                            icon: 'resources/img/botones/1337983423_Cancel__Red.png', // Ruta a tu imagen
+                                                                            tooltip: 'Manda el registro actual al historico y no crea Merchant',
                                                                             handler: 'onViewMerchClick',
                                                                             style: 'background-color: #fff3cd;',
                                                                         }
