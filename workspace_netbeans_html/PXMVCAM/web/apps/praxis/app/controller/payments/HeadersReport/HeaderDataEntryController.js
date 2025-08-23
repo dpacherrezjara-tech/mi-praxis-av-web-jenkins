@@ -54,11 +54,12 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
             Ext.getCmp(prototype.idDEheader + '-btn-save').hide();
             Ext.getCmp(prototype.idDEheader + '-btnRejectRec').hide();
             Ext.getCmp(prototype.idDEheader + '-btn-rejectAll').hide();
-            if(info.STCONT!=='L'){
+            Ext.getCmp(prototype.idDEheader + '-btn-rej-excel').hide();
+            if (info.STCONT !== 'L') {
                 Ext.getCmp(prototype.idDEheader + '-tabAccounted').tab.hide();
                 Ext.getCmp(prototype.idDEheader + '-tabRejected').tab.show();
                 tab2.setActiveTab(1);
-            }else{
+            } else {
                 Ext.getCmp(prototype.idDEheader + '-tabAccounted').tab.show();
                 Ext.getCmp(prototype.idDEheader + '-tabRejected').tab.hide();
                 tab2.setActiveTab(0);
@@ -67,6 +68,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
             Ext.getCmp(prototype.idDEheader + '-btn-save').show();
             Ext.getCmp(prototype.idDEheader + '-btnRejectRec').show();
             Ext.getCmp(prototype.idDEheader + '-btn-rejectAll').show();
+            Ext.getCmp(prototype.idDEheader + '-btn-rej-excel').show();
         }
         me.dataFiles = files;
         me.dataAcc = bandocs;
@@ -104,7 +106,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
         filesGrid.setStore(storeFiles);
         accountedGrid.setStore(storeAcc);
         rejectionsGrid.setStore(storeRej);
-        
+
 
         if (me.supports.length > 0) {
             let storeSupports = new Ext.data.Store({
@@ -112,7 +114,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
             });
             supportsGrid.setStore(storeSupports);
             supportsTab.tab.show();
-        }else{
+        } else {
             supportsTab.tab.hide();
         }
 
@@ -125,7 +127,8 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
         const me = this;
         const {BANDOC, DATECI, TRANCI, REFER} = record.data;
 
-        const lstErrores = me.view.filters.ERRORES.filter(x => x.TIPO === 'C');
+        const lstErrores = me.view.filters.ERRORES.filter(x => x.TIPO === 'C')
+                .map(x => ({CODREC: x.CODREC, DESCR: `${x.CODREC}-${x.DESCR}`}));
         lstErrores.push({
             CODREC: "RC00000",
             DESCR: "Comentario Libre",
@@ -291,29 +294,29 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
         }).show();
     },
     onChangeReference: function (field, newValue) {
+        const me = this;
         let upperValue = newValue.toUpperCase();
         field.setValue(upperValue);
-        const store = Ext.getCmp(prototype.idDEheader + '-gridAccounted').getStore();
-        //store.clearFilter();
-        store.filterBy(function (record) {
-            let refer = record.get('REFER').trim();
-            return refer.indexOf(upperValue) !== -1;
-        });
-        if (newValue === '') {
-            store.clearFilter();
+        const gridAcc = Ext.getCmp(prototype.idDEheader + '-gridAccounted');
+
+        if (upperValue === '') {
+            gridAcc.setStore(new Ext.data.Store({data: me.dataAcc}));
+        } else {
+            let newData = me.dataAcc.filter(x => x.REFER.trim() === upperValue);
+            gridAcc.setStore(new Ext.data.Store({data: newData}));
         }
     },
     onChangeBandoc: function (field, newValue) {
+        const me = this;
         let upperValue = newValue.toUpperCase();
         field.setValue(upperValue);
-        const store = Ext.getCmp(prototype.idDEheader + '-gridAccounted').getStore();
-        //store.clearFilter();
-        store.filterBy(function (record) {
-            let bandoc = record.get('BANDOC').trim();
-            return bandoc.indexOf(upperValue) !== -1;
-        });
-        if (newValue === '') {
-            store.clearFilter();
+        const gridAcc = Ext.getCmp(prototype.idDEheader + '-gridAccounted');
+
+        if (upperValue === '') {
+            gridAcc.setStore(new Ext.data.Store({data: me.dataAcc}));
+        } else {
+            let newData = me.dataAcc.filter(x => x.BANDOC.trim() === upperValue);
+            gridAcc.setStore(new Ext.data.Store({data: newData}));
         }
     },
     maintenanceAccounting: async function (params) {
@@ -414,5 +417,165 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
         me.dataAcc = [];
         me.loadStores();
         btn.setDisabled(true);
+    },
+    onRejectByExcel: function () {
+        const me = this;
+        const newWin = Ext.create('Ext.window.Window', {
+            title: 'Massive Reject by Excel',
+            id: prototype.idDEheader + '-modalExcelReject',
+            width: 550,
+            modal: true, // Hace que la ventana sea modal
+            layout: 'fit',
+            items: {
+                xtype: 'form',
+                layout: {
+                    type: 'vbox',
+                    align: 'center'
+                },
+                bodyPadding: 5,
+                items: [
+                    {
+                        xtype: 'filefield',
+                        id: prototype.idDEheader + '-fileRejections',
+                        name: 'file',
+                        width: '90%',
+                        labelWidth: 50,
+                        fieldLabel: 'File',
+                        buttonText: 'Select File...',
+                        allowBlank: false,
+                        accept: '.xlsx',
+                        multiple: false
+                    },
+                    {
+                        xtype: 'label',
+                        width: '100%',
+                        html: '<b style="color:#c82d2d;font-size:9px;text-align:right;display:block">Required Layout (*): REFER-CODREC-COMMENT</b>'
+                    }
+                ]
+
+            },
+            buttons: [
+                {
+                    text: 'Reject',
+                    style: {
+                        backgroundColor: 'white', // Fondo blanco
+                        border: '2px solid red', // Marco rojo
+                        color: 'red', // Letras rojas
+                        fontWeight: 'bold', // Texto en negrita
+                        marginTop: '3px',
+                        marginBottom: '3px'
+                    },
+                    handler: function (btn) {
+                        let notifier = new AWN();
+                        const modal = Ext.getCmp(prototype.idDEheader + '-modalExcelReject');
+                        modal.setLoading(true);
+                        const fileField = Ext.getCmp(prototype.idDEheader + '-fileRejections');
+                        const file = fileField.fileInputEl.dom.files[0];
+                        if (!file) {
+                            notifier.alert('Error on load File');
+                            modal.setLoading(false);
+                            return;
+                        }
+
+                        global.readExcelFile(file, async (jsonData) => {
+                            let reject = 0, error = 0;
+                            jsonData.forEach(x => {
+                                //valida referencia
+                                if (x.REFER && x.REFER !== '') {
+                                    //valida codigo de rechazo
+                                    if (x.CODREC && x.CODREC !== '') {
+                                        //valida si existe objeto
+                                        let obj = me.dataAcc.find(y => y.REFER.trim() === x.REFER);
+                                        let codrec = me.view.filters.ERRORES.filter(y => y.TIPO === 'C').find(z => z.CODREC === x.CODREC);
+                                        if (obj && codrec) {
+                                            let index = me.dataAcc.indexOf(obj);
+                                            obj = {
+                                                STREJ: 'R',
+                                                BANDOC: obj.BANDOC,
+                                                DATECI: obj.DATECI,
+                                                TRANCI: obj.TRANCI,
+                                                REFER: obj.REFER.trimEnd(),
+                                                VALDATE: obj.VALDATE,
+                                                CODPRO: obj.CODPRO.trimEnd(),
+                                                CODREC: x.CODREC,
+                                                OBSERV: codrec.DESCR
+                                            };
+                                            //actualiza data de rechazos
+                                            me.dataRej = global.arrayAddUnique(me.dataRej, [obj], ['BANDOC', 'DATECI', 'TRANCI']).data;
+                                            //elimina de contabilizados
+                                            me.dataAcc.splice(index, 1);
+                                            reject++;
+                                        } else {
+                                            error++;
+                                        }
+                                    } else {
+                                        //valida si es comentario libre
+                                        if (x.COMMENT && x.COMMENT !== '') {
+                                            //valida si existe objeto
+                                            let obj = me.dataAcc.find(y => y.REFER.trim() === x.REFER);
+                                            if (obj) {
+                                                let index = me.dataAcc.indexOf(obj);
+                                                obj = {
+                                                    STREJ: 'R',
+                                                    BANDOC: obj.BANDOC,
+                                                    DATECI: obj.DATECI,
+                                                    TRANCI: obj.TRANCI,
+                                                    REFER: obj.REFER.trimEnd(),
+                                                    VALDATE: obj.VALDATE,
+                                                    CODPRO: obj.CODPRO.trimEnd(),
+                                                    CODREC: 'RC00000',
+                                                    OBSERV: x.COMMENT
+                                                };
+                                                //actualiza data de rechazos
+                                                me.dataRej = global.arrayAddUnique(me.dataRej, [obj], ['BANDOC', 'DATECI', 'TRANCI']).data;
+                                                //elimina de contabilizados
+                                                me.dataAcc.splice(index, 1);
+                                                reject++;
+                                            } else {
+                                                error++;
+                                            }
+                                            reject++;
+                                        } else {
+                                            error++;
+                                        }
+                                    }
+                                } else {
+                                    error++;
+                                }
+                            });
+                            
+                            if(me.dataAcc.length===0){
+                                Ext.getCmp(prototype.idDEheader + '-btn-rej-excel').setDisabled(true);
+                            }
+                            
+                            //solo muestra cuando rechazo correctamente
+                            if(reject>0){
+                                notifier.success(reject + ' documents rejected');
+                            }
+                            
+                            //muestra cuandos rechazos salieron con error
+                            if (error > 0) {
+                                notifier.warning(error + ' documents not found');
+                            }
+                            //refresca grillas
+                            me.loadStores();
+                            modal.setLoading(false);
+                            modal.close();
+                        });
+                    }
+                },
+                {
+                    text: 'Close',
+                    style: {
+                        marginTop: '3px',
+                        marginBottom: '3px'
+                    },
+                    handler: function (btn) {
+                        btn.up('window').close();
+                    }
+                }
+            ]
+        });
+        newWin.show();
     }
 });

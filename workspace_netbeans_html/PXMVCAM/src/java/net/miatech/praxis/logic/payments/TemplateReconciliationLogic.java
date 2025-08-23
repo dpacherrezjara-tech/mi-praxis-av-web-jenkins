@@ -44,6 +44,14 @@ public class TemplateReconciliationLogic {
         return objDAO.searchPendingDeposits(filter);
     }
     
+    public List<A2290Filter> searchPendingDepositsSales(A2290Filter filter) throws SQLException, Exception {
+        return objDAO.searchPendingDepositsSales(filter);
+    }
+    
+    public List<A2290Filter> searchPendingSales(A2290Filter filter) throws SQLException, Exception {
+        return objDAO.searchPendingSales(filter);
+    }
+    
     public List<A2290Filter> searchPendingHeads(A2290Filter filter) throws SQLException, Exception {
         return objDAO.searchPendingHeads(filter);
     }

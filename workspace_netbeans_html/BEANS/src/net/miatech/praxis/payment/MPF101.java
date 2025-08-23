@@ -131,4 +131,5 @@ public class MPF101 {
     
     public String liq  =""; 
     public String ec  =""; 
+    public String processR  =""; 
 }

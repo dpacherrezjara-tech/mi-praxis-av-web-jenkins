@@ -112,16 +112,16 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                             xtype: 'grid',
                                                             id: prototype.id + '-gridData21',
                                                             height: 108,
-                                                            width: 663,
+                                                            width: 665,
                                                             hidden: false,
                                                             columnLines: true,
+                                                            features: [{
+                                                                    dock: 'bottom',
+                                                                    ftype: 'summary'
+                                                                }
+                                                            ], 
                                                             margin: '0 10 0 0', // Margen a la derecha para separar de la grilla
                                                             columns: {
-                                                                defaults: {
-                                                                    menuDisabled: true,
-                                                                    sortable: true,
-                                                                    align: 'center'
-                                                                },
                                                                 items: [
                                                                     {
                                                                         xtype: 'checkcolumn', // Columna de checkbox
@@ -133,6 +133,10 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                         menuDisabled: true,
                                                                         listeners: {
                                                                             checkchange: 'updateGridBandoc' // Cambiado de 'change' a 'checkchange'
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            metaData.style = "text-align:right;background: #B8A189;color:white";
+                                                                            return '';
                                                                         }
                                                                     },
                                                                     {
@@ -145,6 +149,10 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                             return value;
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            metaData.style = "text-align:right;background: #B8A189;color:white";
+                                                                            return '';
                                                                         }
                                                                     },
                                                                     {
@@ -157,6 +165,10 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                             return value;
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            metaData.style = "text-align:right;background: #B8A189;color:white";
+                                                                            return '';
                                                                         }
                                                                     },
                                                                     {
@@ -169,6 +181,10 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                             return value;
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            metaData.style = "text-align:right;background: #B8A189;color:white";
+                                                                            return '';
                                                                         }
                                                                     },
                                                                     {
@@ -181,6 +197,10 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                             return value;
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            metaData.style = "text-align:right;background: #B8A189;color:white";
+                                                                            return '';
                                                                         }
                                                                     },
                                                                     {
@@ -193,6 +213,10 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                         renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                             return value;
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            metaData.style = "text-align:right;background: #B8A189;color:white";
+                                                                            return '';
                                                                         }
                                                                     },
                                                                     {
@@ -206,9 +230,22 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                             metaData.style = "text-align:right;";
                                                                             value = Ext.util.Format.number(value, '0,000.00');
                                                                             return '<b>' + value + '</b>';
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            var tam = Ext.getCmp(prototype.id + '-gridData21').getStore().getData().items.length;
+                                                                            var data = Ext.getCmp(prototype.id + '-gridData21').getStore().getData().items[tam-1].data;
+                                                                            console.log(data,'data')
+                                                                            metaData.style = "text-align:right;background: #B8A189;color:white";
+                                                                            value = Ext.util.Format.number(data.TOTAL_NETO, '0,000.00');
+                                                                            return '<b>' + value + '</b>';
                                                                         }
-                                                                    },
+                                                                    }
                                                                 ]
+                                                            },
+                                                             defaults: {
+                                                                sortable: true,
+                                                                menuDisabled: false,
+                                                                align: 'center'
                                                             }
                                                         },
                                                         {
@@ -254,6 +291,26 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                         {
                                                                             xtype: 'displayfield',
                                                                             id: prototype.id + '-txtComisionSettGrid',
+                                                                            value: Ext.util.Format.number(0, '0,000.00'),
+                                                                            style: 'font-size:14px; color:#4CAF50; font-weight: bold; width: 106px; text-align: right; padding: 4px 10px;'
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                 // Panel para la Total de Ventas
+                                                                {
+                                                                    xtype: 'panel',
+                                                                    layout: 'hbox',
+                                                                    border: false,
+                                                                    style: 'border-bottom: 1px solid #d1d1d1;',
+                                                                    items: [
+                                                                        {
+                                                                            xtype: 'displayfield',
+                                                                            value: 'Ventas',
+                                                                            style: 'font-size:14px; font-weight: bold; color:#333; width: 150px; border-right: 1px solid #d1d1d1; padding: 4px 10px;'
+                                                                        },
+                                                                        {
+                                                                            xtype: 'displayfield',
+                                                                            id: prototype.id + '-txtVentasSettGrid',
                                                                             value: Ext.util.Format.number(0, '0,000.00'),
                                                                             style: 'font-size:14px; color:#4CAF50; font-weight: bold; width: 106px; text-align: right; padding: 4px 10px;'
                                                                         }
@@ -767,6 +824,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                             xtype: 'panel',
                                             height: 550,
                                             layout: 'fit',
+                                            id: prototype.id + '-centerC-panel02',
                                             items: [
                                                 {
                                                     xtype: 'panel',
@@ -782,7 +840,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                         {
                                                             region: 'center',
                                                             xtype: prototype.id + '-info',
-                                                            id: prototype.id + '-contentInfo'
+                                                            id: prototype.id + '-contentInfo',
                                                         }
                                                     ]
                                                 }
