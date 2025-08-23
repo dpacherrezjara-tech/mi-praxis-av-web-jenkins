@@ -3593,7 +3593,7 @@ public class StatementReconciliationsDAO {
                 MPF101 obj = lstLIQ.get(i);
 //                cstmt = cnx.prepareCall(SQLCLL02);
 
-                cstmt.registerOutParameter(5, Types.VARCHAR);
+                cstmt.registerOutParameter(6, Types.VARCHAR);
 
                 cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
                 cstmt.setString(2, obj.processR.trim());
@@ -3604,7 +3604,7 @@ public class StatementReconciliationsDAO {
 
                 cstmt.execute();
 
-                strMsj = strMsj + "**" + cstmt.getString(5);
+                strMsj = strMsj + "**" + cstmt.getString(6);
 
             }
 
