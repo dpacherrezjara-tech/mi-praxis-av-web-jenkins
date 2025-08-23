@@ -139,6 +139,10 @@ public class StatementReconciliationsLogic {
         return StatementReconciliationsDAO.loadPX287MPS100(lst);
     }
     
+    public String loadPX287MPS106(List<MPF101> lst) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadPX287MPS106(lst);
+    }
+    
     public List<MPF101> CONFIEC(String BANDOC) throws SQLException, Exception {
         return StatementReconciliationsDAO.CONFIEC(BANDOC);
     }
