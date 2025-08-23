@@ -466,7 +466,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         store.resumeEvents();
         
         me.updateGridTotalSale();
-    },
+    },  
     updateGridDiscount: function (column, rowIndex, checked, record) {
         console.log(record.data.blockChange,'record')
         
@@ -1719,8 +1719,6 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                     Ext.getCmp(prototype.id + '-gridDataVentas').getStore().removeAll();
                     Ext.getCmp(prototype.id + '-gridDataVentas').getView().refresh();
                     
-                    me.searchSettlements();
-                    me.updateGridTotal();
                     me.updateGridTotalSale();
                     
                 } else {
