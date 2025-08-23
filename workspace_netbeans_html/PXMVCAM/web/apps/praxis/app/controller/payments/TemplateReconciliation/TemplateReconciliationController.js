@@ -425,46 +425,36 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         me.updateGridTotalSale();
     },
     updateGridSale: function (column, rowIndex, checked, record) {
-
         let recordBandocSale = me.getGridRecords(prototype.id + '-gridDataVentas');
         let totalBandocSale = 0;
-        
+
         for (let row of recordBandocSale) {
             totalBandocSale += row.SVFOP || 0;
         }
-        
-        console.log(totalBandocSale,'totalBandocSale')
-        
+
+        console.log(totalBandocSale, 'totalBandocSale');
+
         var grid = Ext.getCmp(prototype.id + '-gridDataVentas');
         var store = grid.getStore();
         var tam = store.getCount();
-        
+
         if (tam > 0) {
-            var lastRecord = store.getAt(0);
-            lastRecord.set('TOTAL_SVFOP', totalBandocSale);
+            var firstRecord = store.getAt(0);
+            firstRecord.set('TOTAL_SVFOP', totalBandocSale);
         }
 
-        grid.getView().refresh();
+        // 🔹 En lugar de refrescar toda la vista
+        // grid.getView().refresh();
 
+        // ✅ Refrescar SOLO la fila editada
+        grid.getView().refreshNode(rowIndex);
+
+        // Actualizar campo "select"
         store.suspendEvents();
-        store.each(function (record) {
-            record.set('select', record.get('checkActive') === true);
-            record.commit();
-        });
+        record.set('select', record.get('checkActive') === true);
+        record.commit();
         store.resumeEvents();
-        
-        var grid = Ext.getCmp(prototype.id + '-gridDataVentas');
-        var store = grid.getStore();
 
-        grid.getView().refresh();
-
-        store.suspendEvents();
-        store.each(function (record) {
-            record.set('select', record.get('checkActive') === true);
-            record.commit();
-        });
-        store.resumeEvents();
-        
         me.updateGridTotalSale();
     },  
     updateGridDiscount: function (column, rowIndex, checked, record) {
