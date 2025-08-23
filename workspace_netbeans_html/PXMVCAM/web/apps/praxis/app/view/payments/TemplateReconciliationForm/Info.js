@@ -1153,8 +1153,24 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                         }
                                     },
                                     {
+                                        text: 'RN',
+                                        width: 45,
+                                        dataIndex: 'RN',
+                                        align: 'center',
+                                        menuDisabled: true,
+                                        style: 'padding: 2px; background: #8A7155 ;border-color:white',
+                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                            return value;
+                                        },
+                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                            metaData.style = "text-align:right;background: #8A7155;color:white";
+                                            return '';
+                                        }
+                                    },
+                                    {
                                         text: 'BANDOC',
-                                        width: 90,
+                                        width: 88,
                                         dataIndex: 'BANDOC',
                                         align: 'center',
                                         menuDisabled: true,
@@ -1203,7 +1219,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                     {
                                         text: 'ACCOUNT',
                                         menuDisabled: true,
-                                        width: 83,
+                                        width: 82,
                                         dataIndex: 'ACCOUNT',
                                         align: 'center',
                                         style: 'padding: 2px; background: #8A7155 ;border-color:white',
@@ -1218,7 +1234,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                     },
                                     {
                                         text: 'SOCIETY',
-                                        width: 80,
+                                        width: 75,
                                         menuDisabled: true,
                                         dataIndex: 'SOCIETY',
                                         align: 'center',
@@ -1233,8 +1249,8 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                         }
                                     },
                                     {
-                                        text: 'SCURRENCY',
-                                        width: 90,
+                                        text: 'CURR',
+                                        width: 70,
                                         menuDisabled: true,
                                         dataIndex: 'SCURRENCY',
                                         align: 'center',
@@ -1251,7 +1267,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                     {
                                         text: 'NETO',
                                         menuDisabled: true,
-                                        width: 120,
+                                        width: 100,
                                         dataIndex: 'NETO',
                                         align: 'center',
                                         style: 'padding: 2px; background: #8A7155 ;border-color:white',
@@ -1396,6 +1412,22 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                             }
                                         },
                                         {
+                                            text: 'RN',
+                                            width: 45,
+                                            menuDisabled: true,
+                                            dataIndex: 'RN',
+                                            align: 'center',
+                                            style: 'padding:2px; background: #3F5675;border-color:white',
+                                            renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                                metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                return value;
+                                            },
+                                            summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                return '';
+                                            }
+                                        },
+                                        {
                                             text: 'Ccust',
                                             width: 90,
                                             menuDisabled: true,
@@ -1479,8 +1511,8 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                             }
                                         },
                                         {
-                                            text: 'SCOUNTRY',
-                                            width: 90,
+                                            text: 'COUNTRY',
+                                            width: 80,
                                             menuDisabled: true,
                                             dataIndex: 'SCOUNTRY',
                                             align: 'center',
@@ -1515,7 +1547,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                         },
                                         {
                                             text: 'SCARDN',
-                                            width: 155,
+                                            width: 130,
                                             menuDisabled: true,
                                             dataIndex: 'SCARDN',
                                             align: 'center',
@@ -1549,7 +1581,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                         },
                                         {
                                             text: 'SVFOP',
-                                            width: 90,
+                                            width: 80,
                                             menuDisabled: true,
                                             dataIndex: 'SVFOP',
                                             align: 'center',

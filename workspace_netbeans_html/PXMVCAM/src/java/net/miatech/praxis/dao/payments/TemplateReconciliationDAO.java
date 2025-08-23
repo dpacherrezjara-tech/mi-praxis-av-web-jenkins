@@ -805,6 +805,7 @@ public class TemplateReconciliationDAO {
                 rst = cstmt.getResultSet();
                 while (rst.next()) {
                     record = new A2290Filter();
+                    record.RN = rst.getLong("RN");
                     record.CCUST = rst.getString("CCUST");
                     record.BANDOC = rst.getString("BANDOC");
                     record.VALDATE = rst.getString("VALDATE");
@@ -903,6 +904,7 @@ public class TemplateReconciliationDAO {
                 rst = cstmt.getResultSet();
                 while (rst.next()) {
                     record = new A2290Filter();
+                    record.RN = rst.getLong("RN");
                     record.CCUST = rst.getString("CCUST");
                     record.DATEC = rst.getString("DATEC");
                     record.TRANC = rst.getString("TRANC");

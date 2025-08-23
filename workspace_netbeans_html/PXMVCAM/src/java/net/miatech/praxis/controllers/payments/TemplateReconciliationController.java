@@ -844,9 +844,9 @@ public class TemplateReconciliationController extends BaseController {
             m.put("result", message);
         }
         
-        if (message != null && message.contains("Operation Succefull")) {
+        if (message != null) {
             m.put("success", true);
-            m.put("result", "Operation Successful");
+            m.put("result", message);
         } else {
             m.put("success", false);
             m.put("result", message);

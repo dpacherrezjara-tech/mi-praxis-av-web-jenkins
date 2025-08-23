@@ -384,44 +384,29 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         me.updateGridTotal();
     },
     updateGridBandocSale: function (column, rowIndex, checked, record) {
-
         let recordBandocSale = me.getGridRecords(prototype.id + '-gridData212');
         let totalBandocSale = 0;
-        
+
         for (let row of recordBandocSale) {
             totalBandocSale += row.NETO || 0;
         }
-        
+
         var grid = Ext.getCmp(prototype.id + '-gridData212');
         var store = grid.getStore();
         var tam = store.getCount();
-        
+
         if (tam > 0) {
-            var lastRecord = store.getAt(0);
-            lastRecord.set('TOTAL_NETO', totalBandocSale);
+            var firstRecord = store.getAt(0);
+            firstRecord.set('TOTAL_NETO', totalBandocSale);
         }
 
-        grid.getView().refresh();
+        grid.getView().refreshNode(rowIndex);
 
         store.suspendEvents();
-        store.each(function (record) {
-            record.set('select', record.get('checkActive') === true);
-            record.commit();
-        });
+        record.set('select', record.get('checkActive') === true);
+        record.commit();
         store.resumeEvents();
-        
-        var grid = Ext.getCmp(prototype.id + '-gridData212');
-        var store = grid.getStore();
 
-        grid.getView().refresh();
-
-        store.suspendEvents();
-        store.each(function (record) {
-            record.set('select', record.get('checkActive') === true);
-            record.commit();
-        });
-        store.resumeEvents();
-        
         me.updateGridTotalSale();
     },
     updateGridSale: function (column, rowIndex, checked, record) {
@@ -432,8 +417,6 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             totalBandocSale += row.SVFOP || 0;
         }
 
-        console.log(totalBandocSale, 'totalBandocSale');
-
         var grid = Ext.getCmp(prototype.id + '-gridDataVentas');
         var store = grid.getStore();
         var tam = store.getCount();
@@ -443,13 +426,8 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             firstRecord.set('TOTAL_SVFOP', totalBandocSale);
         }
 
-        // 🔹 En lugar de refrescar toda la vista
-        // grid.getView().refresh();
-
-        // ✅ Refrescar SOLO la fila editada
         grid.getView().refreshNode(rowIndex);
 
-        // Actualizar campo "select"
         store.suspendEvents();
         record.set('select', record.get('checkActive') === true);
         record.commit();
@@ -1031,15 +1009,6 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Llenar Grilla Ventas">
     searchSales: function () {
-        let recordBandoc = me.getGridRecords(prototype.id + '-gridData212');
-        
-        if (!recordBandoc.length) {
-            global.Msg({
-                msg: 'Seleccione los bandoc primero.'
-            });
-            return;
-        }
-        
         this.fetchSales();
     },
     fetchSales: function () {
