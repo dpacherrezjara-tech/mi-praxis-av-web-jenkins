@@ -12,6 +12,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.MerchantNumberForm', {
     ],
     controller: 'MerchantNumberController',
     layout: {type: 'fit'},
+    padding: '0 0 0 0',
     border: false,
     defaults: {
         border: false
@@ -49,12 +50,13 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.MerchantNumberForm', {
                                     border: true,
                                     autoScroll: true,
                                     defaults: {
-                                        width: 1800,
+                                        width: 1500,
                                         align: 'center'
                                     },
                                     items: [
                                         {
-                                            xtype: prototype.id + '-options'
+                                            xtype: prototype.id + '-options',
+                                            style:'margin-top:20px'
                                         }
                                         ,{
                                             xtype: prototype.id + '-filters',
@@ -63,7 +65,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.MerchantNumberForm', {
                                         },
                                         {
                                             xtype: 'panel',
-                                            height: 580,
+                                            height: 590,
                                             layout: 'fit',
                                             items: [
                                                 {
