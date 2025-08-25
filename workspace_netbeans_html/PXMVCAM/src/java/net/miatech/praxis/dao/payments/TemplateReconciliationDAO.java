@@ -920,6 +920,8 @@ public class TemplateReconciliationDAO {
                     record.SAGENT = rst.getString("SAGENT");
                     record.SVFOP = rst.getDouble("SVFOP");
                     record.TOTAL = rst.getDouble("TOTAL");
+                    record.SVFOPCON = rst.getDouble("SVFOPCON");
+                    record.SDATE = rst.getString("SDATE");
                     
                     record.SCOUNTRY = rst.getString("SCOUNTRY");
                     record.SAUTHOC = rst.getString("SAUTHOC");

@@ -47,6 +47,9 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             '#TemplateReconciliationForm-btnSearchSales': {
                 click: this.searchSales
             },
+            '#TemplateReconciliationForm-btnMarkSales': {
+                click: this.markAllGridSale
+            },
             '#TemplateReconciliationForm-btnClear': {
                 click: this.btnClear_click
             },
@@ -434,7 +437,41 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         store.resumeEvents();
 
         me.updateGridTotalSale();
-    },  
+    }, 
+    markAllGridSale: function () {
+        var grid  = Ext.getCmp(prototype.id + '-gridDataVentas');
+        var store = grid.getStore();
+        var tam   = store.getCount();
+        if (tam === 0) return;
+
+        // 1) Marcar TODOS primero (evitar checkchange del checkcolumn)
+        var checkCol = grid.down('checkcolumn[dataIndex=checkActive]');
+        if (checkCol && checkCol.suspendEvents) checkCol.suspendEvents();
+
+        store.suspendEvents();
+        for (var i = 0; i < tam; i++) {
+            var rec = store.getAt(i);
+            rec.set('checkActive', true);
+            rec.set('select', true);
+            rec.commit();
+        }
+        store.resumeEvents();
+        if (checkCol && checkCol.resumeEvents) checkCol.resumeEvents();
+
+        // 2) Ahora sí, calcular el total para TODOS (sin depender de getGridRecords)
+        var totalBandocSale = 0;
+        for (var j = 0; j < tam; j++) {
+            totalBandocSale += (store.getAt(j).get('SVFOP') || 0);
+        }
+
+        // 3) Actualizar el primer registro y refrescar
+        var firstRecord = store.getAt(0);
+        firstRecord.set('TOTAL_SVFOP', totalBandocSale);
+        firstRecord.commit();
+
+        grid.getView().refresh();
+        me.updateGridTotalSale();
+    },
     updateGridDiscount: function (column, rowIndex, checked, record) {
         console.log(record.data.blockChange,'record')
         
@@ -538,7 +575,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             return
         }
         
-        if (getProcess !== "VN" && getProcess !== "BM" ) {
+        if (getProcess !== "VN" && getProcess !== "BM"  && getProcess !== "AB") {
             if (!recordSettlements.length) {
                 global.Msg({
                     msg: 'No ha seleccionado liquidaciones.'
@@ -756,11 +793,13 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         let getProcess  = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
         let getBandoc   = Ext.getCmp(prototype.id + '-txtBandocSale').getValue();
         let getCustomer = Ext.getCmp(prototype.id + '-typeClient').getValue();
+        let getBandocFrom = Ext.Date.format(Ext.getCmp(prototype.id + '-txtFromBandoc').getValue(), 'Ymd');
+        let getBandocTo = Ext.Date.format(Ext.getCmp(prototype.id + '-txtToBandoc').getValue(), 'Ymd');
 
         me.beanBandoc.IN_CCUST    = getCustomer;
         me.beanBandoc.IN_BANDOC   = getBandoc;
-        me.beanBandoc.IN_DATEFROM = '';
-        me.beanBandoc.IN_DATETO   = '';
+        me.beanBandoc.IN_DATEFROM = getBandocFrom;
+        me.beanBandoc.IN_DATETO   = getBandocTo;
         me.beanBandoc.IN_CODPRO   =getProcess;
 
         let searchParamsBandoc = {
@@ -1461,7 +1500,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         Ext.getCmp(prototype.id + '-gridData21').getStore().removeAll();
         Ext.getCmp(prototype.id + '-gridData21').getView().refresh();
         
-        if (getProcess !== "VN" && getProcess !== "BM") {
+        if (getProcess !== "VN" && getProcess !== "BM" && getProcess !== "AB" ) {
             me.searchSettlements();
             me.updateGridTotal();
         } else {
@@ -1471,7 +1510,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
     },
     changeViewTemplate: function(getProcess) {
         
-        if (getProcess !== "VN" && getProcess !== "BM") {
+        if (getProcess !== "VN" && getProcess !== "BM"  && getProcess !== "AB") {
             console.log(1)
             Ext.getCmp(prototype.id + "-boxConsultas2").hide();
             Ext.getCmp(prototype.id + "-boxConsultas").show();

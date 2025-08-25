@@ -121,6 +121,7 @@ public class A2290 {
     public double AIVA = 0;
     public double ATAX = 0;
     public double TOTAL = 0;
+    public double SVFOPCON = 0;
     
     public double TOTAL_LIQ = 0;
     public double TOTAL_COMISION = 0;

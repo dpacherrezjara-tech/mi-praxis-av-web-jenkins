@@ -1079,7 +1079,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                 // --- Caja BANDOC ---
                 {
                     xtype: 'panel',
-                    width: 700,
+                    width: 660,
                     border: false,
                     margin: '8 0 8 8',
                     layout: {
@@ -1098,7 +1098,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                 align: 'middle'
                             },
                             style: 'background:#EFE6DC; border:1px solid #D6C4A0; padding:8px; border-radius:4px;',
-                            width: 678,
+                            width: 650,
                             defaults: {
                                 margin: '0 10 0 0',
                                 labelAlign: 'left',
@@ -1107,14 +1107,32 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                             },
                             items: [
                                 {
+                                    xtype: 'datefield',
+                                    fieldLabel: 'Valdate From',
+                                    id: prototype.id + '-txtFromBandoc',
+                                    format: 'Y/m/d',
+                                    value: new Date(),
+                                    width: 190,
+                                    labelWidth: 85
+                                },
+                                {
+                                    xtype: 'datefield',
+                                    fieldLabel: 'Valdate To',
+                                    id: prototype.id + '-txtToBandoc',
+                                    format: 'Y/m/d',
+                                    value: new Date(),
+                                    width: 180,
+                                    labelWidth: 70
+                                },
+                                {
                                     xtype: 'textfield',
                                     fieldLabel: 'Bandoc',
                                     id: prototype.id + '-txtBandocSale',
                                     enforceMaxLength: true,
                                     maskRe: /[0-9]/,
                                     maxLength: 10,
-                                    width: 180,
-                                    labelWidth: 60,
+                                    width: 150,
+                                    labelWidth: 50,
                                     enableKeyEvents: true,
                                     listeners: { keypress: 'searchBandocSales' }
                                 },
@@ -1125,7 +1143,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                             xtype: 'grid',
                             id: prototype.id + '-gridData212',
                             height: 460,
-                            width: 678,
+                            width: 650,
                             hidden: false,
                             margin: '10px 5px 0 0',
                             columnLines: true,
@@ -1137,6 +1155,10 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                             columns: {
                                 items: [
                                     {
+                                        text: 'DETAILS', 
+                                        style: 'background: #8A7155;border-color:white',
+                                        columns: [
+                                                {
                                         xtype: 'checkcolumn', // Columna de checkbox
                                         text: 'SEL', // Título de la columna
                                         width: 50, // Ancho de la columna
@@ -1152,103 +1174,109 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                             return '';
                                         }
                                     },
-                                    {
-                                        text: 'RN',
-                                        width: 45,
-                                        dataIndex: 'RN',
-                                        align: 'center',
-                                        menuDisabled: true,
-                                        style: 'padding: 2px; background: #8A7155 ;border-color:white',
-                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                            return value;
-                                        },
-                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                            metaData.style = "text-align:right;background: #8A7155;color:white";
-                                            return '';
-                                        }
+                                                {
+                                                    text: 'RN',
+                                                    width: 45,
+                                                    dataIndex: 'RN',
+                                                    align: 'center',
+                                                    menuDisabled: true,
+                                                    style: 'padding: 2px; background: #8A7155 ;border-color:white',
+                                                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                        metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                        return value;
+                                                    },
+                                                    summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                        metaData.style = "text-align:right;background: #8A7155;color:white";
+                                                        return '';
+                                                    }
+                                                },
+                                                {
+                                                    text: 'BANDOC',
+                                                    width: 88,
+                                                    dataIndex: 'BANDOC',
+                                                    align: 'center',
+                                                    menuDisabled: true,
+                                                    style: 'padding: 2px; background: #8A7155 ;border-color:white',
+                                                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                        metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                        return value;
+                                                    },
+                                                    summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                        metaData.style = "text-align:right;background: #8A7155;color:white";
+                                                        return '';
+                                                    }
+                                                },
+                                                {
+                                                    text: 'VALDATE',
+                                                    width: 75,
+                                                    dataIndex: 'VALDATE',
+                                                    menuDisabled: true,
+                                                    align: 'center',
+                                                    style: 'padding: 2px; background: #8A7155 ;border-color:white',
+                                                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                        metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                        return value;
+                                                    },
+                                                    summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                        metaData.style = "text-align:right;background: #8A7155;color:white";
+                                                        return '';
+                                                    }
+                                                },
+                                                {
+                                                    text: 'DATE',
+                                                    width: 75,
+                                                    menuDisabled: true,
+                                                    dataIndex: 'ADATE',
+                                                    align: 'center',
+                                                    style: 'padding: 2px; background: #8A7155 ;border-color:white',
+                                                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                        metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                        return value;
+                                                    },
+                                                    summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                        metaData.style = "text-align:right;background: #8A7155;color:white";
+                                                        return '';
+                                                    }
+                                                },
+                                                {
+                                                    text: 'ACCOUNT',
+                                                    menuDisabled: true,
+                                                    width: 82,
+                                                    dataIndex: 'ACCOUNT',
+                                                    align: 'center',
+                                                    style: 'padding: 2px; background: #8A7155 ;border-color:white',
+                                                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                        metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                        return value;
+                                                    },
+                                                    summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                        metaData.style = "text-align:right;background: #8A7155;color:white";
+                                                        return '';
+                                                    }
+                                                },
+                                                {
+                                                    text: 'SOCIETY',
+                                                    width: 75,
+                                                    menuDisabled: true,
+                                                    dataIndex: 'SOCIETY',
+                                                    align: 'center',
+                                                    style: 'padding: 2px; background: #8A7155 ;border-color:white',
+                                                    renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                                        metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                        return value;
+                                                    },
+                                                    summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                        metaData.style = "text-align:right;background: #8A7155;color:white";
+                                                        return '';
+                                                    }
+                                                },
+                                        ]
                                     },
                                     {
-                                        text: 'BANDOC',
-                                        width: 88,
-                                        dataIndex: 'BANDOC',
-                                        align: 'center',
-                                        menuDisabled: true,
-                                        style: 'padding: 2px; background: #8A7155 ;border-color:white',
-                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                            return value;
-                                        },
-                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                            metaData.style = "text-align:right;background: #8A7155;color:white";
-                                            return '';
-                                        }
-                                    },
-                                    {
-                                        text: 'VALDATE',
-                                        width: 75,
-                                        dataIndex: 'VALDATE',
-                                        menuDisabled: true,
-                                        align: 'center',
-                                        style: 'padding: 2px; background: #8A7155 ;border-color:white',
-                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                            return value;
-                                        },
-                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                            metaData.style = "text-align:right;background: #8A7155;color:white";
-                                            return '';
-                                        }
-                                    },
-                                    {
-                                        text: 'DATE',
-                                        width: 75,
-                                        menuDisabled: true,
-                                        dataIndex: 'ADATE',
-                                        align: 'center',
-                                        style: 'padding: 2px; background: #8A7155 ;border-color:white',
-                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                            return value;
-                                        },
-                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                            metaData.style = "text-align:right;background: #8A7155;color:white";
-                                            return '';
-                                        }
-                                    },
-                                    {
-                                        text: 'ACCOUNT',
-                                        menuDisabled: true,
-                                        width: 82,
-                                        dataIndex: 'ACCOUNT',
-                                        align: 'center',
-                                        style: 'padding: 2px; background: #8A7155 ;border-color:white',
-                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                            return value;
-                                        },
-                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                            metaData.style = "text-align:right;background: #8A7155;color:white";
-                                            return '';
-                                        }
-                                    },
-                                    {
-                                        text: 'SOCIETY',
-                                        width: 75,
-                                        menuDisabled: true,
-                                        dataIndex: 'SOCIETY',
-                                        align: 'center',
-                                        style: 'padding: 2px; background: #8A7155 ;border-color:white',
-                                        renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                            return value;
-                                        },
-                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                            metaData.style = "text-align:right;background: #8A7155;color:white";
-                                            return '';
-                                        }
-                                    },
-                                    {
+                                        text: 'AMOUNT', 
+                                        style: 'background: #8A7155;border-color:white',
+                                        columns: [
+                                             {
                                         text: 'CURR',
                                         width: 70,
                                         menuDisabled: true,
@@ -1267,7 +1295,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                     {
                                         text: 'NETO',
                                         menuDisabled: true,
-                                        width: 100,
+                                        width: 75,
                                         dataIndex: 'NETO',
                                         align: 'center',
                                         style: 'padding: 2px; background: #8A7155 ;border-color:white',
@@ -1285,6 +1313,9 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                             return '<b>' + value + '</b>';
                                         }
                                     }
+                                        ]
+                                    },
+                                   
                                 ]
                             },
                              defaults: {
@@ -1299,7 +1330,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                 // --- Caja VENTAS ---
                 {
                     xtype: 'panel',
-                    width: 740,
+                    width: 860,
                     border: false,
                     margin: '8 8 8 0',
                     layout: {
@@ -1318,7 +1349,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                 align: 'middle'
                             },
                             style: 'background:#E6ECF5; border:1px solid #99A9C4; padding:8px; border-radius:4px;',
-                            width: 730, 
+                            width: 850, 
                             defaults: {
                                 margin: '0 10 0 0',
                                 labelAlign: 'left',
@@ -1375,16 +1406,21 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                     id: prototype.id + '-btnSearchSales',
                                     iconCls: 'prx-icon-search',
                                     tooltip: 'Search'
+                                },
+                                {
+                                    xtype: 'button',
+                                    id: prototype.id + '-btnMarkSales',
+                                    iconCls: 'prx-icon-image-log',
+                                    tooltip: 'Mark All Sales'
                                 }
                             ]
                         },
-
                         // Grid Ventas
                        {
                                 xtype: 'grid',
                                 id: prototype.id + '-gridDataVentas',
                                 height: 460,
-                                width: 730,
+                                width: 850,
                                 hidden: false,
                                 margin: '10px 5px 0 0',
                                 columnLines: true,
@@ -1396,6 +1432,10 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                 columns: {
                                     items: [
                                         {
+                                                text: 'DETAILS', 
+                                                style: 'background: #3F5675;border-color:white',
+                                                columns: [
+                                                    {
                                             xtype: 'checkcolumn', 
                                             text: 'SEL', 
                                             width: 50, 
@@ -1411,160 +1451,183 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                                 return '';
                                             }
                                         },
-                                        {
-                                            text: 'RN',
-                                            width: 45,
-                                            menuDisabled: true,
-                                            dataIndex: 'RN',
-                                            align: 'center',
-                                            style: 'padding:2px; background: #3F5675;border-color:white',
-                                            renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-                                                metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                return value;
-                                            },
-                                            summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                metaData.style = "text-align:right;background: #3F5675;color:white";
-                                                return '';
-                                            }
+                                                    {
+                                                        text: 'RN',
+                                                        width: 45,
+                                                        menuDisabled: true,
+                                                        dataIndex: 'RN',
+                                                        align: 'center',
+                                                        style: 'padding:2px; background: #3F5675;border-color:white',
+                                                        renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                            return '';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Ccust',
+                                                        width: 90,
+                                                        menuDisabled: true,
+                                                        hidden: true,
+                                                        dataIndex: 'CCUST',
+                                                        align: 'center',
+                                                        style: 'padding:2px; background: #3F5675;border-color:white',
+                                                        renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                            return '';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Datec',
+                                                        width: 90,
+                                                        menuDisabled: true,
+                                                        hidden: true,
+                                                        dataIndex: 'DATEC',
+                                                        align: 'center',
+                                                        style: 'padding:2px; background: #3F5675;border-color:white',
+                                                        renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                            return '';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Tranc',
+                                                        width: 105,
+                                                        menuDisabled: true,
+                                                        hidden: true,
+                                                        dataIndex: 'TRANC',
+                                                        align: 'center',
+                                                        style: 'padding:2px; background: #3F5675;border-color:white',
+                                                        renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                            return '';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'TICKET',
+                                                        width: 105,
+                                                        menuDisabled: true,
+                                                        dataIndex: 'TKT',
+                                                        align: 'center',
+                                                        style: 'padding:2px; background: #3F5675;border-color:white',
+                                                        renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                            return '';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'AGENT',
+                                                        width: 75,
+                                                        menuDisabled: true,
+                                                        dataIndex: 'SAGENT',
+                                                        align: 'center',
+                                                        style: 'padding:2px; background: #3F5675;border-color:white',
+                                                        renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                            return '';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'COUNTRY',
+                                                        width: 75,
+                                                        menuDisabled: true,
+                                                        dataIndex: 'SCOUNTRY',
+                                                        align: 'center',
+                                                        style: 'padding:2px; background: #3F5675;border-color:white',
+                                                        summaryType: 'sum',
+                                                        renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                            return '';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'SAUTHOC',
+                                                        width: 75,
+                                                        menuDisabled: true,
+                                                        dataIndex: 'SAUTHOC',
+                                                        align: 'center',
+                                                        style: 'padding:2px; background: #3F5675;border-color:white',
+                                                        summaryType: 'sum',
+                                                        renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:center;";
+            //                                                value = Ext.util.Format.number(value, '0,000.00');
+                                                            return '<b>' + value + '</b>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                            return '';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'SCARDN',
+                                                        width: 80,
+                                                        menuDisabled: true,
+                                                        dataIndex: 'SCARDN',
+                                                        align: 'center',
+                                                        style: 'padding:2px; background: #3F5675;border-color:white',
+                                                        summaryType: 'sum',
+                                                        renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                            return '';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'SDATE',
+                                                        width: 80,
+                                                        menuDisabled: true,
+                                                        dataIndex: 'SDATE',
+                                                        align: 'center',
+                                                        style: 'padding:2px; background: #3F5675;border-color:white',
+                                                        summaryType: 'sum',
+                                                        renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                            return '';
+                                                        }
+                                                    },
+                                                ]
                                         },
                                         {
-                                            text: 'Ccust',
-                                            width: 90,
-                                            menuDisabled: true,
-                                            hidden: true,
-                                            dataIndex: 'CCUST',
-                                            align: 'center',
-                                            style: 'padding:2px; background: #3F5675;border-color:white',
-                                            renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-                                                metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                return value;
-                                            },
-                                            summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                metaData.style = "text-align:right;background: #3F5675;color:white";
-                                                return '';
-                                            }
-                                        },
-                                        {
-                                            text: 'Datec',
-                                            width: 90,
-                                            menuDisabled: true,
-                                            hidden: true,
-                                            dataIndex: 'DATEC',
-                                            align: 'center',
-                                            style: 'padding:2px; background: #3F5675;border-color:white',
-                                            renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-                                                metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                return value;
-                                            },
-                                            summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                metaData.style = "text-align:right;background: #3F5675;color:white";
-                                                return '';
-                                            }
-                                        },
-                                        {
-                                            text: 'Tranc',
-                                            width: 105,
-                                            menuDisabled: true,
-                                            hidden: true,
-                                            dataIndex: 'TRANC',
-                                            align: 'center',
-                                            style: 'padding:2px; background: #3F5675;border-color:white',
-                                            renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-                                                metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                return value;
-                                            },
-                                            summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                metaData.style = "text-align:right;background: #3F5675;color:white";
-                                                return '';
-                                            }
-                                        },
-                                        {
-                                            text: 'TICKET',
-                                            width: 110,
-                                            menuDisabled: true,
-                                            dataIndex: 'TKT',
-                                            align: 'center',
-                                            style: 'padding:2px; background: #3F5675;border-color:white',
-                                            renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-                                                metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                return value;
-                                            },
-                                            summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                metaData.style = "text-align:right;background: #3F5675;color:white";
-                                                return '';
-                                            }
-                                        },
-                                        {
-                                            text: 'AGENT',
-                                            width: 80,
-                                            menuDisabled: true,
-                                            dataIndex: 'SAGENT',
-                                            align: 'center',
-                                            style: 'padding:2px; background: #3F5675;border-color:white',
-                                            renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-                                                metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                return value;
-                                            },
-                                            summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                metaData.style = "text-align:right;background: #3F5675;color:white";
-                                                return '';
-                                            }
-                                        },
-                                        {
-                                            text: 'COUNTRY',
-                                            width: 80,
-                                            menuDisabled: true,
-                                            dataIndex: 'SCOUNTRY',
-                                            align: 'center',
-                                            style: 'padding:2px; background: #3F5675;border-color:white',
-                                            summaryType: 'sum',
-                                            renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-                                                metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                return value;
-                                            },
-                                            summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                metaData.style = "text-align:right;background: #3F5675;color:white";
-                                                return '';
-                                            }
-                                        },
-                                        {
-                                            text: 'SAUTHOC',
-                                            width: 80,
-                                            menuDisabled: true,
-                                            dataIndex: 'SAUTHOC',
-                                            align: 'center',
-                                            style: 'padding:2px; background: #3F5675;border-color:white',
-                                            summaryType: 'sum',
-                                            renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-                                                metaData.style = "text-align:center;";
-//                                                value = Ext.util.Format.number(value, '0,000.00');
-                                                return '<b>' + value + '</b>';
-                                            },
-                                            summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                metaData.style = "text-align:right;background: #3F5675;color:white";
-                                                return '';
-                                            }
-                                        },
-                                        {
-                                            text: 'SCARDN',
-                                            width: 130,
-                                            menuDisabled: true,
-                                            dataIndex: 'SCARDN',
-                                            align: 'center',
-                                            style: 'padding:2px; background: #3F5675;border-color:white',
-                                            summaryType: 'sum',
-                                            renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-                                                metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                return value;
-                                            },
-                                            summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                metaData.style = "text-align:right;background: #3F5675;color:white";
-                                                return '';
-                                            }
-                                        },
-                                        {
+                                            text: 'LOCAL', 
+                                             style: 'background: #3F5675;border-color:white',
+                                            columns: [
+                                                {
                                             text: 'CURR',
-                                            width: 60,
+                                            width: 54,
                                             menuDisabled: true,
                                             dataIndex: 'SCURREVEN',
                                             align: 'center',
@@ -1579,9 +1642,9 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                                 return '';
                                             }
                                         },
-                                        {
+                                                {
                                             text: 'SVFOP',
-                                            width: 80,
+                                            width: 70,
                                             menuDisabled: true,
                                             dataIndex: 'SVFOP',
                                             align: 'center',
@@ -1600,6 +1663,52 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                                 return '<b>' + value + '</b>';
                                             }
                                         },
+                                            ]
+                                        },
+                                        {
+                                            text: 'CONVERTED', 
+                                             style: 'background: #3F5675;border-color:white',
+                                            columns: [
+                                                {
+                                                text: 'CURR',
+                                                width: 54,
+                                                menuDisabled: true,
+                                                dataIndex: 'SCURREVEN',
+                                                align: 'center',
+                                                style: 'padding:2px; background: #3F5675;border-color:white',
+                                                summaryType: 'sum',
+                                                renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return value;
+                                                },
+                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                    return '';
+                                                }
+                                            },
+                                                {
+                                                text: 'SVFOP',
+                                                width: 70,
+                                                menuDisabled: true,
+                                                dataIndex: 'SVFOPCON',
+                                                align: 'center',
+                                                style: 'padding:2px; background: #3F5675;border-color:white',
+                                                summaryType: 'sum',
+                                                renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:right;";
+                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                    return '<b>' + value + '</b>';
+                                                },
+                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                    var tam = Ext.getCmp(prototype.id + '-gridDataVentas').getStore().getData().items.length;
+                                                    var data = Ext.getCmp(prototype.id + '-gridDataVentas').getStore().getData().items[0].data;
+                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                    value = Ext.util.Format.number(data.TOTAL_SVFOP, '0,000.00');
+                                                    return '<b>' + value + '</b>';
+                                                }
+                                            },
+                                            ]
+                                        }
                                     ],
                                     defaults: {
                                         sortable: true,
@@ -1614,7 +1723,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                 // --- Match ---
                 {
                     xtype: 'panel',
-                    width: 330,
+                    width: 240,
                     border: false,
                     margin: '8 8 8 0',
                     layout: {
@@ -1632,7 +1741,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                 align: 'stretch'
                             },
                             style: 'background:#E6ECF5; border:1px solid #99A9C4; padding:8px; border-radius:6px;',
-                            width: 325,
+                            width: 235,
                             defaults: {
                                 margin: '4 0 4 0',
                                 labelAlign: 'left',
@@ -1649,12 +1758,12 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                         {
                                             xtype: 'displayfield',
                                             value: 'Total Deposito',
-                                            style: 'font-size:14px; font-weight: bold; color:#333; width: 150px; border-right: 1px solid #d1d1d1; padding: 4px 10px;'
+                                            style: 'font-size:14px; font-weight: bold; color:#333; width: 110px; border-right: 1px solid #d1d1d1; padding: 4px 10px;'
                                         },
                                         {
                                             xtype: 'displayfield',
                                             id: prototype.id + '-txtTotalDeposito',
-                                            width:'157px',
+                                            width:'110px',
                                             value: Ext.util.Format.number(0, '0,000.00'),
                                             style: 'font-size:14px; color:#4CAF50; font-weight: bold; width: 106px; text-align: right; padding: 4px 10px;'
                                         }
@@ -1669,12 +1778,12 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                         {
                                             xtype: 'displayfield',
                                             value: 'Total Ventas',
-                                            style: 'font-size:14px; font-weight: bold; color:#333; width: 150px; border-right: 1px solid #d1d1d1; padding: 4px 10px;'
+                                            style: 'font-size:14px; font-weight: bold; color:#333; width: 110px; border-right: 1px solid #d1d1d1; padding: 4px 10px;'
                                         },
                                         {
                                             xtype: 'displayfield',
                                             id: prototype.id + '-txtVentas',
-                                            width:'157px',
+                                            width:'110px',
                                             value: Ext.util.Format.number(0, '0,000.00'),
                                             style: 'font-size:14px; color:#4CAF50; font-weight: bold; width: 106px; text-align: right; padding: 4px 10px;'
                                         }
@@ -1690,12 +1799,12 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                         {
                                             xtype: 'displayfield',
                                             value: 'Diferencia',
-                                            style: 'font-size:14px; font-weight: bold; color:#333; width: 150px; border-right: 1px solid #d1d1d1; padding: 4px 10px;'
+                                            style: 'font-size:14px; font-weight: bold; color:#333; width: 110px; border-right: 1px solid #d1d1d1; padding: 4px 10px;'
                                         },
                                         {
                                             xtype: 'displayfield',
                                             id: prototype.id + '-txtTotalDiffVenta',
-                                            width:'157px',
+                                            width:'110px',
                                             value: Ext.util.Format.number(0, '0,000.00'),
                                             style: 'font-size:14px; font-weight: bold; width: 106px; text-align: right; padding: 4px 10px;'
                                         }
@@ -1711,12 +1820,12 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                         {
                                             xtype: 'displayfield',
                                             value: 'Porcentaje',
-                                            style: 'font-size:14px; font-weight: bold; color:#333; width: 150px; border-right: 1px solid #d1d1d1; padding: 4px 10px;'
+                                            style: 'font-size:14px; font-weight: bold; color:#333; width: 110px; border-right: 1px solid #d1d1d1; padding: 4px 10px;'
                                         },
                                         {
                                             xtype: 'displayfield',
                                             id: prototype.id + '-txtPercentVenta',
-                                            width:'157px',
+                                            width:'110px',
                                             value: Ext.util.Format.number(0, '0,000.00'),
                                             style: 'font-size:14px; font-weight: bold; width: 106px; text-align: right; padding: 4px 10px;'
                                         }
@@ -1733,7 +1842,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                         {
                                             xtype: 'button',
                                             id: prototype.id + '-btnExecuteSale',
-                                            width: 100,
+                                            width: 110,
                                             html: '<span style="color:white;font-size:12px;font-weight:bold">Execute</span>',
                                             style: 'background:#3F5675; border-radius:4px; padding:4px 8px;',
                                             border: false,
