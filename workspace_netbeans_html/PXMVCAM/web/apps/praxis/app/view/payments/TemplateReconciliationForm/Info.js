@@ -1120,6 +1120,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                     fieldLabel: 'Valdate To',
                                     id: prototype.id + '-txtToBandoc',
                                     format: 'Y/m/d',
+                                    hidden: true,
                                     value: new Date(),
                                     width: 180,
                                     labelWidth: 70
@@ -1135,6 +1136,16 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                     labelWidth: 50,
                                     enableKeyEvents: true,
                                     listeners: { keypress: 'searchBandocSales' }
+                                },
+                                {
+                                    xtype: 'checkboxfield',
+                                    id: prototype.id + '-chkMarkBandocs',
+                                    fieldLabel: 'Mark All', 
+                                    labelWidth: 60,   
+                                    boxLabel: '',  
+                                    checked: false,
+                                    labelStyle: 'font-weight:bold;',
+                                    listeners: { change: 'markAllGridBandoc' }
                                 },
                             ]
                         },
@@ -1382,7 +1393,6 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                     forceSelection: true,
                                     listeners: { keypress: 'searchSales' }
                                 },
-                                
                                 {
                                     xtype: 'datefield',
                                     fieldLabel: 'Sale Date From',
@@ -1402,17 +1412,22 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                     labelWidth: 85
                                 },
                                {
+                                    xtype: 'checkboxfield',
+                                    id: prototype.id + '-chkMarkSales',
+                                    fieldLabel: 'Mark All', 
+                                    labelWidth: 60,   
+                                    boxLabel: '',  
+                                    checked: false,
+                                    labelStyle: 'font-weight:bold;',
+                                    listeners: { change: 'markAllGridSale' }
+                                },
+                               {
                                     xtype: 'button',
                                     id: prototype.id + '-btnSearchSales',
                                     iconCls: 'prx-icon-search',
                                     tooltip: 'Search'
                                 },
-                                {
-                                    xtype: 'button',
-                                    id: prototype.id + '-btnMarkSales',
-                                    iconCls: 'prx-icon-image-log',
-                                    tooltip: 'Mark All Sales'
-                                }
+
                             ]
                         },
                         // Grid Ventas

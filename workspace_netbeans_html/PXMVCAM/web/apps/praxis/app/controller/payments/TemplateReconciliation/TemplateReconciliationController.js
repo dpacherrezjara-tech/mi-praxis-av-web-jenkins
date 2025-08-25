@@ -47,7 +47,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             '#TemplateReconciliationForm-btnSearchSales': {
                 click: this.searchSales
             },
-            '#TemplateReconciliationForm-btnMarkSales': {
+            '#TemplateReconciliationForm-chkMarkSales': {
                 click: this.markAllGridSale
             },
             '#TemplateReconciliationForm-btnClear': {
@@ -438,36 +438,84 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
 
         me.updateGridTotalSale();
     }, 
-    markAllGridSale: function () {
+    markAllGridSale: function (checkbox, newValue) {
         var grid  = Ext.getCmp(prototype.id + '-gridDataVentas');
         var store = grid.getStore();
         var tam   = store.getCount();
         if (tam === 0) return;
 
-        // 1) Marcar TODOS primero (evitar checkchange del checkcolumn)
         var checkCol = grid.down('checkcolumn[dataIndex=checkActive]');
         if (checkCol && checkCol.suspendEvents) checkCol.suspendEvents();
-
         store.suspendEvents();
+
+
         for (var i = 0; i < tam; i++) {
             var rec = store.getAt(i);
-            rec.set('checkActive', true);
-            rec.set('select', true);
+            rec.set('checkActive', newValue);
+            rec.set('select', newValue);
             rec.commit();
         }
+
         store.resumeEvents();
         if (checkCol && checkCol.resumeEvents) checkCol.resumeEvents();
 
-        // 2) Ahora sí, calcular el total para TODOS (sin depender de getGridRecords)
-        var totalBandocSale = 0;
-        for (var j = 0; j < tam; j++) {
-            totalBandocSale += (store.getAt(j).get('SVFOP') || 0);
+        // ✅ solo recalcular total si se marcó
+        if (newValue) {
+            var totalBandocSale = 0;
+            for (var j = 0; j < tam; j++) {
+                totalBandocSale += (store.getAt(j).get('SVFOP') || 0);
+            }
+
+            var firstRecord = store.getAt(0);
+            firstRecord.set('TOTAL_SVFOP', totalBandocSale);
+            firstRecord.commit();
+        } else {
+            // opcional: limpiar el total si desmarcan
+            var firstRecord = store.getAt(0);
+            firstRecord.set('TOTAL_SVFOP', 0);
+            firstRecord.commit();
         }
 
-        // 3) Actualizar el primer registro y refrescar
-        var firstRecord = store.getAt(0);
-        firstRecord.set('TOTAL_SVFOP', totalBandocSale);
-        firstRecord.commit();
+        grid.getView().refresh();
+        me.updateGridTotalSale();
+    },
+    markAllGridBandoc: function (checkbox, newValue) {
+        var grid  = Ext.getCmp(prototype.id + '-gridData212');
+        var store = grid.getStore();
+        var tam   = store.getCount();
+        if (tam === 0) return;
+
+        var checkCol = grid.down('checkcolumn[dataIndex=checkActive]');
+        if (checkCol && checkCol.suspendEvents) checkCol.suspendEvents();
+        store.suspendEvents();
+
+
+        for (var i = 0; i < tam; i++) {
+            var rec = store.getAt(i);
+            rec.set('checkActive', newValue);
+            rec.set('select', newValue);
+            rec.commit();
+        }
+
+        store.resumeEvents();
+        if (checkCol && checkCol.resumeEvents) checkCol.resumeEvents();
+
+        // ✅ solo recalcular total si se marcó
+        if (newValue) {
+            var totalBandocSale = 0;
+            for (var j = 0; j < tam; j++) {
+                totalBandocSale += (store.getAt(j).get('NETO') || 0);
+            }
+
+            var firstRecord = store.getAt(0);
+            firstRecord.set('TOTAL_NETO', totalBandocSale);
+            firstRecord.commit();
+        } else {
+            // opcional: limpiar el total si desmarcan
+            var firstRecord = store.getAt(0);
+            firstRecord.set('TOTAL_NETO', 0);
+            firstRecord.commit();
+        }
 
         grid.getView().refresh();
         me.updateGridTotalSale();
