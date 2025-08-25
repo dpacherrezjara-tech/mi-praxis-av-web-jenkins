@@ -145,6 +145,11 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         $('#BankReconciliationForm-btnToggleSwitchFTGraf').change(function () {
             me.procesador();
         });
+        
+        $('#BankReconciliationForm-btnToggleSwitchFT').change(function () {
+            me.btnSearch_click();
+        });
+        
         if(window.location.href.includes("params")){
             let paramsSauthoc = window.location.href.split("AVIANCA/")[1].split("#")[0].replace("?params=","").split("/")[0]
             let paramsScardncor = window.location.href.split("AVIANCA/")[1].split("#")[0].replace("?params=","").split("/")[1]
@@ -867,8 +872,24 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 
             } else {
                 console.log('4')
+                var cmp = Ext.getCmp(prototype.id + '-btnToggleSwitchFT');
+                var checkbox = cmp.getEl().down('input.toggle-input').dom;
+                var isChecked = checkbox.checked;
+
+                console.log("Toggle:", isChecked ? "ON" : "OFF");
+                
                 this.setFormatParameter();
-                this.setGridDataMain(obj, e);
+                
+                if (isChecked) {
+                    
+                    this.setGridDataMain(obj, e);
+                    
+                } else {
+                    
+                    this.setGridDataMainCASH(obj, e);
+                    
+                }
+                
             }
 
         }
@@ -1316,6 +1337,50 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             });
             global.clear();
             Ext.getCmp(prototype.id + '-gridDataMain').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
+        }
+    },
+     setGridDataMainCASH: function (obj, val) {
+        win.lblUser_toolTip("Estructura: MPF107");
+        if (me.panelActual !== '-panelGridDataMainCASH') {
+            me.panelActual = '-panelGridDataMainCASH';
+            Ext.getCmp(prototype.id + '-gridDataMainCASH').setVisible(true);
+        }
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        this.setFormatParameter();
+        var msj = this.validateFields();
+        if (msj !== '') {
+            global.Msg({msg: msj
+            });
+        } else {
+
+            var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchMain'
+                }, listeners: {
+                    beforeload: function (obj) {
+                        obj.proxy.extraParams = searchParams;
+                        Ext.getCmp(prototype.id + '-panelGridDataMainCASH').mask('Loading...');
+                    },
+                    load: function (obj) {
+                        Ext.getCmp(prototype.id + '-panelGridDataMainCASH').unmask();
+                        var pag = Ext.getCmp(prototype.id + '-paggin');
+                        var pagData = pag.getPageData();
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        } else {
+                            var obj = obj.data.items[0].data;
+                        }
+                    }
+                }
+            });
+            global.clear();
+            Ext.getCmp(prototype.id + '-gridDataMainCASH').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
         }
     },

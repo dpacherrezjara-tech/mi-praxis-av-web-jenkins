@@ -23,63 +23,56 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                     width: '100%',
                     layout: 'hbox',
                     bodyStyle: 'background: transparent;"',
-                    defaults: {
-                        margin: '5 0 0 0'
-                    },
                     items: [
                         {xtype: 'tbspacer', width: 30},
                         {
-                            xtype: 'label',
-                            text: 'Search By:',
-                            padding: '3 0',
-                            width: 65
-                        },
-                        {
-                            xtype: 'combo',
+                            fieldLabel: 'Search By',
+                            hidden: false,
+                            labelStyle: 'text-align: left;',
+                            fieldStyle: 'text-align: center;',
+                            width: 170,
+                            labelWidth: 60,
+                            xtype: 'combo', 
                             id: prototype.id + '-cmbFecFiltro',
                             queryMode: 'local',
                             allowBlank: false,
-                            forceSelection: true,
                             selectOnFocus: true,
                             caseSensitive: false,
                             autoSelect: true,
                             editable: true,
-                            width: 100,
-//                            value: "ADATE",
+                            listConfig: {maxHeight: 130},
                             typeAhead: true,
                             valueField: 'code',
                             displayField: 'name',
-                            listConfig: {minWidth: 130},
                             enableKeyEvents: true,
                             triggerAction: 'all',
-                            listeners: {
-                            }
+                            value: '',
+                            margin: '10 10 0 0'
                         },
-                        {xtype: 'tbspacer', width: 10},
                         //<editor-fold defaultstate="collapsed" desc="cmbDate">
                         {
                             xtype: 'combo',
                             id: prototype.id + '-cmbDateFromYear',
                             fieldStyle: 'text-align: left;',
+                            labelStyle: 'text-align: left;',
                             disabled: false,
                             editable: false,
                             fieldLabel: 'From',
-                            width: 120,
-                            labelWidth: 45,
+                            width: 90,
+                            labelWidth: 30,
                             labelAlign: 'right',
                             queryMode: 'local',
                             triggerAction: 'all',
                             valueField: 'code',
                             displayField: 'name',
-//                            listConfig: {maxHeight: 111, minWidth: 70},
                             maxLength: 4,
                             enforceMaxLength: true,
                             maskRe: /[0-9]/,
+                            margin: '10 0 0 0',
                             listeners: {
                                 change: 'cbxDateFromYear_changeHandler'
                             }
                         },
-                        {xtype: 'tbspacer', width: 10},
                         {
                             xtype: 'combo',
                             id: prototype.id + '-cmbDateFromMonth',
@@ -87,7 +80,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             disabled: false,
                             editable: false,
                             fieldLabel: '',
-                            width: 65,
+                            width: 50,
                             labelWidth: 0,
                             labelAlign: 'right',
                             queryMode: 'local',
@@ -96,11 +89,11 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             listConfig: {minWidth: 60},
                             maxLength: 3,
                             enforceMaxLength: true,
+                            margin: '10 0 0 0',
                             listeners: {
                                 change: 'cbxDateFromMonth_changeHandler'
                             }
                         },
-                        {xtype: 'tbspacer', width: 10},
                         {
                             xtype: 'combo',
                             id: prototype.id + '-cmbDateDay',
@@ -112,29 +105,28 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             autoSelect: false,
                             enableKeyEvents: true,
                             caseSensitive: true,
-//                            hidden: true,
                             valueField: 'code',
                             displayField: 'name',
                             emptyText: 'All',
-                            width: 70,
+                            width: 40,
                             anchor: '100%',
+                            margin: '10 10 0 0',
                             listener: {
                                 change: 'onDateFromDaySelect',
                                 expand: 'eventSelectFromDay'
 
                             }
                         },
-                        {xtype: 'tbspacer', width: 15},
-
                         {
                             xtype: 'combo',
                             id: prototype.id + '-cmbDateToYear',
                             fieldStyle: 'text-align: left;',
+                            labelStyle: 'text-align: left;',
                             disabled: false,
                             editable: false,
                             fieldLabel: 'To',
-                            width: 106,
-                            labelWidth: 31,
+                            width: 80,
+                            labelWidth: 18,
                             labelAlign: 'left',
                             queryMode: 'local',
                             triggerAction: 'all',
@@ -142,9 +134,9 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             listConfig: {maxHeight: 111, minWidth: 70},
                             maxLength: 4,
                             enforceMaxLength: true,
-                            maskRe: /[0-9]/
+                            maskRe: /[0-9]/,
+                            margin: '10 0 0 0',
                         },
-                        {xtype: 'tbspacer', width: 10},
                         {
                             xtype: 'combo',
                             id: prototype.id + '-cmbDateToMonth',
@@ -152,17 +144,16 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             disabled: false,
                             editable: false,
                             fieldLabel: '',
-                            width: 65,
-//                            labelWidth: 0,
+                            width: 50,
                             labelAlign: 'right',
                             queryMode: 'local',
                             triggerAction: 'all',
                             valueField: 'code', displayField: 'name',
                             listConfig: {minWidth: 60},
                             maxLength: 3,
-                            enforceMaxLength: true
+                            enforceMaxLength: true,
+                             margin: '10 0 0 0',
                         },
-                        {xtype: 'tbspacer', width: 10},
                         {
                             xtype: 'combo',
                             id: prototype.id + '-cmbDateToDay',
@@ -174,44 +165,42 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             enableKeyEvents: true,
                             caseSensitive: true,
                             disabled: true,
-//                            hidden: true,
                             valueField: 'code',
                             displayField: 'name',
                             emptyText: 'All',
-                            width: 70,
+                            width: 40,
                             anchor: '100%',
+                            margin: '10 10 0 0',
                             listener: {
                                 change: 'onDateToDaySelect',
                                 expand: 'eventSelectToDay'
                             }
                         },
                         //</editor-fold>
-                        {xtype: 'tbspacer', width: 30},
                         {
-                            xtype: 'label',
-                            text: 'Country:',
-                            padding: '3 0',
-                            width: 60
-                        },
-                        {
-                            xtype: 'combo',
+                            fieldLabel: 'Country',
+                            hidden: false,
+                            labelStyle: 'text-align: left;',
+                            fieldStyle: 'text-align: center;',
+                            width: 200,
+                            labelWidth: 45,
+                            xtype: 'combo', 
                             id: prototype.id + '-cmbCountry',
                             queryMode: 'local',
                             allowBlank: false,
-                            forceSelection: true,
                             selectOnFocus: true,
                             caseSensitive: false,
                             autoSelect: true,
                             editable: true,
-                            width: 219,
+                            listConfig: {maxHeight: 130},
                             typeAhead: true,
                             valueField: 'A006PAIS',
                             displayField: 'A006NOMBRE',
-                            listConfig: {maxHeight: 111},
                             enableKeyEvents: true,
                             triggerAction: 'all',
+                            value: '',
+                            margin: '10 10 0 0'
                         },
-                        {xtype: 'tbspacer', width: 30, hidden: true},
                         {
                             xtype: 'label',
                             text: 'Code Bank:',
@@ -238,117 +227,112 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             enableKeyEvents: true,
                             triggerAction: 'all',
                         },
-                        {xtype: 'tbspacer', width: 20},
-                        {
-                            xtype: 'label',
-                            text: 'Card Number:',
-                            padding: '3 0',
-                            width: 80,
-                            autoEl: {
-                                tag: 'label',
-                                'data-qtip': 'Credit Card Number'
-                            }
-                        },
                         {
                             xtype: 'textfield',
+                            fieldLabel: 'Card Number',
                             id: prototype.id + '-txtCard1',
-                            fieldStyle: 'text-align:center',
+                            labelStyle: 'text-align: left;',
+                            fieldStyle: 'text-align: center;',
                             enforceMaxLength: true,
                             maskRe: /[0-9]/,
                             maxLength: 6,
-                            width: 85,
+                            width: 130,
+                            labelWidth: 75,
                             enableKeyEvents: true,
+                            margin: '10 10 0 0',
                             listeners: {
                                 keyup: 'tarjeta_keyDownHandler',
                                 keypress: 'eventKey'
                             }
                         },
-                        {xtype: 'tbspacer', width: 8},
                         {
-                            xtype: 'label',
-                            text: '*****(*)',
-                            padding: '3 0',
-                            width: 65,
+                            xtype: 'textfield',
+                            fieldLabel: '*****(*)',
+                            id: prototype.id + '-txtCard2',
+                            labelStyle: 'text-align: left;',
+                            fieldStyle: 'text-align: center;',
                             autoEl: {
                                 tag: 'label',
                                 'data-qtip': '5 encrypted characters for AMEX and 6 characters for the rest.'
-                            }
-                        },
-                        {
-                            xtype: 'textfield',
-                            id: prototype.id + '-txtCard2',
-                            fieldStyle: 'text-align:center',
+                            },
                             enforceMaxLength: true,
                             maskRe: /[0-9]/,
                             maxLength: 4,
                             width: 100,
+                            labelWidth: 55,
                             enableKeyEvents: true,
+                            margin: '10 10 0 0',
                             listeners: {
                                 keypress: 'eventKey'
                             }
-                        },
-                        {xtype: 'tbspacer', width: 20},
-                        {
-                            xtype: 'label',
-                            text: 'Author. Cod : ',
-                            padding: '3 0',
-                            width: 100
                         },
                         {
                             xtype: 'textfield',
+                            fieldLabel: 'Author. Cod',
                             id: prototype.id + '-txtAUTHOC',
-                            fieldStyle: 'text-align:center',
+                            labelStyle: 'text-align: left;',
+                            fieldStyle: 'text-align: center;',
                             enforceMaxLength: true,
                             maskRe: /[0-9a-zA-Z]/,
                             maxLength: 8,
-                            width: 100,
+                            width: 140,
+                            labelWidth: 68,
                             enableKeyEvents: true,
+                            margin: '10 10 0 0',
                             listeners: {
                                 keypress: 'eventKey'
                             }
                         },
-                        {xtype: 'tbspacer', width: 20},
                         {
-                            xtype: 'label',
-                            text: 'Business:',
-                            padding: '3 0',
-//                            hidden:true,
-                            width: 65
-                        },
-//                        {
-//                            xtype: 'combo',
-//                            id: prototype.id + '-cmbNEGOC',
-//                            queryMode: 'local',
-//                            allowBlank: false,
-//                            forceSelection: true,
-//                            selectOnFocus: true,
-//                            caseSensitive: false,
-//                            autoSelect: true,
-//                            editable: true,
-//                            listConfig: {maxHeight: 130},
-//                            width: 66,
-//                            typeAhead: true,
-////                            hidden:true,
-//                            valueField: 'code',
-//                            displayField: 'name',
-//                            enableKeyEvents: true,
-//                            triggerAction: 'all',
-//                        },
-                        {
-                            xtype: 'combo',
+                            fieldLabel: 'Business',
+                            hidden: false,
+                            labelStyle: 'text-align: left;',
+                            fieldStyle: 'text-align: center;',
+                            width: 150,
+                            labelWidth: 50,
+                            xtype: 'combo', 
                             id: prototype.id + '-cmbNEGOC',
-//                            fieldLabel: 'Doc',
-                            width: 66,
-                            emptyText: 'All',
-                            value: '',
+                            queryMode: 'local',
+                            editable: true,
+                            listConfig: {maxHeight: 130},
+                            typeAhead: true,
                             displayField: 'name',
                             valueField: 'code',
-                            queryMode: 'local',
-                            filterPickList: true,
-                            editable: true,
+                            triggerAction: 'all',
                             multiSelect: true,
-                            forceSelection: true,
-
+                            value: '',
+                            emptyText: 'All',
+                            margin: '10 10 0 0'
+                        },
+                        {
+                            xtype: 'label',
+                            text: 'Credit Card',
+                            margin: '12 10 0 0',
+                            id: prototype.id + '-COL',
+                            width: 60
+                        },
+                        {
+                            xtype: 'component',
+                            id: prototype.id + '-btnToggleSwitchFT',
+                            margin: '12 10 0 0',
+                            html: '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">\n\
+                            <title>Modo Alternancia</title><style>.toggle-container{display:inline-block;position:relative;width:30px;height:16px;}.toggle-input{opacity:0;width:0;height:0;}.\n\
+                            toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#72e34f;transition:.4s;border-radius:16px;}.toggle-slider::before{position:absolute;content:\n\
+                            "";height:12px;width:12px;border-radius:50%;left:2px;bottom:2px;background-color:white;transition:.4s;}.toggle-input:checked+.toggle-slider{background-color:#4c7daf;}.toggle-input:checked+.\n\
+                            toggle-slider::before{transform:translateX(16px);}</style></head><body><label class="toggle-container"><input type="checkbox" class="toggle-input"><span class="toggle-slider"></span></label>\n\
+                            </body></html>',
+                            tooltip: 'Export to Report',
+                            listeners: {
+                                change: 'chgBash',
+                                click: 'clickToggleSwitch'
+                            }
+                        },
+                        {
+                            xtype: 'label',
+                            text: 'Cash',
+                            margin: '12 10 0 0',
+                            id: prototype.id + '-EXT',
+                            width: 60
                         },
                     ]
                 },
