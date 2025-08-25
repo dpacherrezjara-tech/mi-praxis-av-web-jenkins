@@ -1718,7 +1718,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                                     var tam = Ext.getCmp(prototype.id + '-gridDataVentas').getStore().getData().items.length;
                                                     var data = Ext.getCmp(prototype.id + '-gridDataVentas').getStore().getData().items[0].data;
                                                     metaData.style = "text-align:right;background: #3F5675;color:white";
-                                                    value = Ext.util.Format.number(data.TOTAL_SVFOP, '0,000.00');
+                                                    value = Ext.util.Format.number(data.TOTAL_SVFOP_CONVERTED, '0,000.00');
                                                     return '<b>' + value + '</b>';
                                                 }
                                             },
