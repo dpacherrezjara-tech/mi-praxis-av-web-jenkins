@@ -117,6 +117,8 @@ public class AgentsCatalogDAO {
                 bean.NACCBANK = rst.getString("NACCBANK").trim();
                 bean.FRECPAYM = rst.getString("FRECPAYM").trim();
                 bean.DESCRIPTION_PAYMENT = rst.getString("DESCRIPTION_PAYMENT").trim();
+                bean.T_DATEF = rst.getString("DATEF").trim();
+                bean.T_DATET = rst.getString("DATET").trim();
 
                 bean.page.PAGNUM = filter.page.PAGNUM;
                 bean.page.PAGROW = filter.page.PAGROW;

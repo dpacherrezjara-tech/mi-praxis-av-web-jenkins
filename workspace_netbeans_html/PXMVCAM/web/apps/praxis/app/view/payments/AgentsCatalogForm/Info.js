@@ -106,6 +106,15 @@
                                                         }
                                                         
                                                     }},
+                                                   {
+                                                        text: 'Period', 
+                                                        style: 'background: #3F5675;border-color:white',
+                                                        columns: [
+                                                            {text: 'From ', dataIndex: 'T_DATEF', width: 70, align: 'center',style: ' background: #3F5675;border-color:white'},
+                                                            {text: 'To', dataIndex: 'T_DATET', width: 70, align: 'center,',style: 'background: #3F5675;border-color:white'}
+                                                    
+                                                        ]
+                                                    }
                                                 ]
                                             },
                                             {text: 'Email-1', dataIndex: 'EMAILS', width: 120, align: 'center',style: 'padding:2px; background: #3F5675;border-color:white',},
