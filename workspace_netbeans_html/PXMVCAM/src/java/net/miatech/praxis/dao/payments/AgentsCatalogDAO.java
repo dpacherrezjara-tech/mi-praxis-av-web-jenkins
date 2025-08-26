@@ -51,7 +51,7 @@ public class AgentsCatalogDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP04941(?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP04941_V85(?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -111,6 +111,12 @@ public class AgentsCatalogDAO {
                 bean.SBENCEN = rst.getString("SBENCEN").trim();
                 bean.SOCIETY = rst.getString("SOCIETY").trim();
                 bean.CIACOME = rst.getString("CIACOME").trim();
+                
+                // CAMPOS DE CASH
+                bean.FORMPAYM = rst.getString("FORMPAYM").trim();
+                bean.NACCBANK = rst.getString("NACCBANK").trim();
+                bean.FRECPAYM = rst.getString("FRECPAYM").trim();
+                bean.DESCRIPTION_PAYMENT = rst.getString("DESCRIPTION_PAYMENT").trim();
 
                 bean.page.PAGNUM = filter.page.PAGNUM;
                 bean.page.PAGROW = filter.page.PAGROW;
