@@ -531,7 +531,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.setValue('de-txtDES_CERROIN', this.bean.DES_CERROIN);
         this.setValue('de-txtFLAG', this.bean.FLAG);
         this.setValue('de-txtCERROR', this.bean.CERROR);
-        this.setValue('de-txtDES_CERROR', this.bean.DES_CERROR);
+        this.setValue('de-txtDES_CERROR',this.bean.CERROR +' - '+ this.bean.DES_CERROR);
         this.setValue('de-txtBSUMDATE', this.bean.SDATE);
         this.setValue('de-txtTDOC', this.bean.strPEM);
         this.setValue('de-txtSPNR', this.bean.SPNR);
@@ -874,27 +874,23 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             method: 'POST',
             timeout: 60000000,
             params: {beanString: JSON.stringify(meDe.bean)},
-//            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDP').mask('Loading...'),
             success: function (response, opts) {
                 
-                
+                var res = Ext.JSON.decode(response.responseText);
                 if (res.success) {
                     
                   var msj = res.mensaje;  
                   global.Msg({
                     msg: msj
                    });
-//                Ext.getCmp(prototype.id + '-dataEntry').unmask();
-//                    var beanCons = res.result;
-//                    console.log('beanCons');
-//                    console.log(beanCons);
-//                    if (beanCons !== null) {
-//                        me.winDataEntryDebits('U', beanCons);
-//                    } else {
-//                        global.Msg({
-//                            msg: 'An error has ocurred. Please contact our System Department'
-//                        });
-//                    }
+                Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+                Ext.getCmp(prototype.id + '-dataEntryAMDP').close();
+                  Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+
+
+                  
+
 
                 } else {
                     global.Msg({msg: res.Mensaje});
@@ -913,13 +909,34 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
     },
     onUpdateClick: async function (btn) {
         
-// 
+      
+        
+
         let valorComent = Ext.getCmp(prototype.id + '-cmbCOMENT').getValue();
         console.log(valorComent,"visualkizar xxx");
         
-        if (valorComent == "75" ||valorComent== "76" ||  valorComent==  "77" || valorComent==  "78"){
+        if (valorComent == "58" || valorComent == "59" || valorComent == "75" ||valorComent== "76" ||  valorComent==  "77" || valorComent==  "78"){
             
-            this.updateComent();  
+            
+            
+               Ext.Msg.show({
+                    title: '.:Confirmation:.',
+                    msg: 'Are you sure to Update?',
+                    buttons: Ext.MessageBox.YESNO,
+                    scope: this,
+                    icon: Ext.MessageBox.QUESTION,
+                    modal: true,
+                    fn: function (btn) {
+                        if (btn === 'yes') {
+                           
+                            this.updateComent();
+                        }
+                    }
+                });
+            
+            
+            
+            
 //            console.log("recibe comentario codigo");
             
         }else{
