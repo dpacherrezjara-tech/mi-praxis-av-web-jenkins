@@ -949,6 +949,32 @@ public class A2290Filter extends A2290 {
     public String SPNR_100 = "";
     public String SAUTHOC_101 = "";
     
+    
+    public long lngARC = 0; 
+    public long lngBSP = 0; 
+    public long lngVentaDirecta = 0; 
+    public long lngArcConc = 0; 
+    public long lngBspConc = 0; 
+    public long lngVentaDirectaConc = 0; 
+    public long lngTotQARC = 0; 
+    public long lngTotQBSP = 0; 
+    public long lngTotQVentaDirecta = 0; 
+    public long lngTotQARCConc = 0; 
+    public long lngTotQBSPConc = 0; 
+    public long lngTotQVentaDirectaConc = 0; 
+    public long lngTot0_10 = 0; 
+    public long lngTot11_20 = 0; 
+    public long lngTot21_30 = 0; 
+    public long lngTot31_40 = 0; 
+    public long lngTot41_mas = 0; 
+    public long lng0_10 = 0; 
+    public long lng11_20 = 0; 
+    public long lng21_30 = 0; 
+    public long lng31_40 = 0; 
+    public long lng41_MAS = 0; 
+
+
+    
     //Update
     public String MENSA = "";       
     public String FECRFILE = "";
