@@ -5690,6 +5690,8 @@ public class LoadConciliationDAO {
         return hmResultado;
     }
     
+    /// STORE MODIFICADO
+    
     public List<A2290Filter> loadPX263MPS097(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
@@ -5711,13 +5713,13 @@ public class LoadConciliationDAO {
         hmDescReglas.put("V", "By IATA/SDATE");
         hmDescReglas.put("T", "By WEB-OPER");
         
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS097(?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS097_V3(?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
-
+                               
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_FECHA_FROM);
             cstmt.setString(3, filter.IN_FECHA_TO);
@@ -5725,25 +5727,16 @@ public class LoadConciliationDAO {
             cstmt.setString(5, filter.IN_SCURRENCY);
             cstmt.setString(6, filter.IN_SCOUNTRY);
             cstmt.setString(7, filter.IN_TP);
-            cstmt.setString(8, filter.IN_STAT);
+            cstmt.setString(8, filter.IN_STAT);           
             cstmt.execute();
-
+            
             rst = cstmt.getResultSet();
 
-            while (rst.next()) {
-                lngTotMONTO = rst.getDouble("AMOUNT");
-                lngTotRATE = rst.getDouble("RATE");
-            }
-            rst.close();
-
-            if (cstmt.getMoreResults()) {
-                rst = cstmt.getResultSet();
 
                 while (rst.next()) {
 
                     beanTkt = new A2290Filter();
                     
-//                    PLACA,TKT,FUENTE,AGENT,COUNTRY,DATE,CONSOL,PNR,CARDN,AUTHOC,CARCOD,STATE,INVOICE,CURRENCY,AMOUNT
                     
                     beanTkt.PLACA = rst.getString("PLACA").trim();
                     beanTkt.TKT = rst.getString("TKT").trim();
@@ -5778,10 +5771,10 @@ public class LoadConciliationDAO {
                     lstTkts.add(beanTkt);
                 }
                 rst.close();
-            }
+//            }
 
         } catch (Exception e) {
-            e.printStackTrace();
+                e.printStackTrace();
         } finally {
             if (rst != null) {
                 try {
@@ -5803,6 +5796,74 @@ public class LoadConciliationDAO {
 
         return lstTkts;
     }
+    
+    
+    
+     ///AGREGAMOS METODO PARA CONTADOR
+    
+    
+    
+    public String loadContador(A2290Filter filter) throws SQLException, Exception {
+
+       
+        
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        String contador = "";
+       
+        
+        String SQLCLL01 = "{CALL PRAXISMP.DETAIL_COUNT(?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+                               
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.IN_FECHA_FROM);
+            cstmt.setString(3, filter.IN_FECHA_TO);
+            cstmt.setString(4, filter.IN_TDOC);
+            cstmt.setString(5, filter.IN_SCURRENCY);
+            cstmt.setString(6, filter.IN_SCOUNTRY);
+            cstmt.setString(7, filter.IN_TP);
+            cstmt.setString(8, filter.IN_STAT);           
+            cstmt.execute();
+            
+            rst = cstmt.getResultSet();
+
+            if (rst.next()) {
+                contador = rst.getString("QTY");
+                
+            }
+
+ 
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (rst != null) try {
+                    rst.close();
+                } catch (SQLException e) {
+                }
+                if (cstmt != null) try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                }
+                if (cnx != null) {
+                    session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+                }
+            }
+
+            return contador;
+
+        
+    }
+    
+    
+    /////
+    
+    
+    
+    
     
     public Map<String, List<A2290Filter>> loadPX263MPS097SUMARY(A2290Filter filter) throws SQLException, Exception {
 

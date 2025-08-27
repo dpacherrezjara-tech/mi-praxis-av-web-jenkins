@@ -4,6 +4,7 @@
  */
 package net.miatech.praxis.payment.filter;
 
+import lombok.Data;
 import net.miatech.beans.Pagination;
 import net.miatech.praxis.payment.A2290;
 import net.miatech.utils.Functions;
@@ -14,6 +15,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  *
  * @author claudia
  */
+@Data
 public class A2290Filter extends A2290 {
 
     //Campos clave originales =======
