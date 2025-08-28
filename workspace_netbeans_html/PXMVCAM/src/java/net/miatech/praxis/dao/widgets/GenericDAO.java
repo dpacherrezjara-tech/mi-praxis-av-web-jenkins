@@ -34,6 +34,7 @@ public class GenericDAO implements GenericLogic {
     public Map<String, Object> callStoreProcedure(CallStoreFilter filter) throws Exception {
         Map<String, Object> res = new HashMap<>();
         Map<String, Object> obj = new HashMap<>();
+        Map<String, Object> outVals = new HashMap<>();
         if (filter.getParams().isEmpty()) {
             obj = jdbcUtils.executeSQP(filter.getLibrary(), filter.getProcedure());
         } else {
@@ -49,6 +50,13 @@ public class GenericDAO implements GenericLogic {
                 listaDeResultados.add((List<Map<String, Object>>) value);
             }
         }*/
+        
+        for (Map.Entry<String, Object> entry: obj.entrySet()) {
+            if (!(entry.getValue() instanceof List)) {
+                outVals.put(entry.getKey(), entry.getValue());
+            }
+        }
+        
         if (!obj.isEmpty()) {
             Map<Integer, List<Map<String, Object>>> sortedResults = new TreeMap<>();
             // Expresión regular para extraer el número del result-set
@@ -70,6 +78,7 @@ public class GenericDAO implements GenericLogic {
             // Añadir resultados ordenados
             listaDeResultados.addAll(sortedResults.values());
         }
+        res.put("lstVals", outVals);
         res.put("lstRs", listaDeResultados);
         return res;
     }

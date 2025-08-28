@@ -41,12 +41,6 @@ Ext.define('Ext.Praxis.controller.payments.ReverseAccounting.ProcessDataEntryCon
                     const tmp = await global.loadRecordsOnTable('PRAXISMP', 'XTEMPO', json);
                     console.log('tmp', tmp);
 
-//                    const res = await me.request.post('/executeProvision', {
-//                        IN_CUUID: tmp.cuuid,
-//                        IN_FUUID: tmp.fuuid
-//                    });
-//                    console.log("res: ", res);
-
                     let params = {
                         IN_CUUID: tmp.cuuid,
                         IN_FUUID: tmp.fuuid,
@@ -54,10 +48,10 @@ Ext.define('Ext.Praxis.controller.payments.ReverseAccounting.ProcessDataEntryCon
                     };
 //
                     const res = await global.callStoreGet('PRAXISMP', 'MPS254', params);
-                    console.log('res',res);
+//                    console.log('res',res);
 //
                     const data = res.lstVals;
-                    console.log("data: ", data);
+//                    console.log("data: ", data);
 //
                     if (data && data.OUT_RES === 1) {
                         notifier.success('Processed successfully');
