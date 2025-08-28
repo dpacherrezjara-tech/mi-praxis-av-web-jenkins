@@ -102,7 +102,7 @@ Ext.define('Ext.Praxis.view.payments.ReverseAccountingForm.DataEntrys.ProcessDat
                         {
                             xtype: 'label',
                             width: '100%',
-                            html: '<b style="color:#c82d2d;font-size:9px;text-align:right;display:block">Required Layout (*): HEADER,REFER,COMMENT</b>'
+                            html: '<b style="color:#c82d2d;font-size:9px;text-align:right;display:block">Required Layout (*): HEADER,REFER,BPOCOMM</b>'
                         }
                     ]
                 }
