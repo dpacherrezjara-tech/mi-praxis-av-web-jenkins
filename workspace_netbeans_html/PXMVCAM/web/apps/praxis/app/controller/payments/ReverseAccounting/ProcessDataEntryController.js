@@ -33,13 +33,20 @@ Ext.define('Ext.Praxis.controller.payments.ReverseAccounting.ProcessDataEntryCon
             const file = Ext.getCmp(prototype.idProcess + '-fileProvision').fileInputEl.dom.files[0];
             let nameFile = file.name;
             global.readExcelFile(file, async (json) => {
+                
+                // OBTENER USUARIO DE SESION
+                const userSession = document.getElementById('menuUser').innerText;
+                    
                 try {
                     json = json.map(x => ({
 //                            FILENAM: nameFile,
+                            USER: userSession,
                             ...x
                         }));
                     const tmp = await global.loadRecordsOnTable('PRAXISMP', 'XTEMPO', json);
                     console.log('tmp', tmp);
+                    
+                    
 
                     let params = {
                         IN_CUUID: tmp.cuuid,
