@@ -223,10 +223,4 @@ public class LoadConciliationLogic {
     public List<A2290Filter> loadPX269SQP00698DetalleSettl(A2290Filter filter) throws SQLException, Exception {
         return loadConciliationDAO.loadPX269SQP00698DetalleSettl(filter);
     }
-    
-    //Agregamos contador
-    public String loadContador(A2290Filter filter) throws SQLException, Exception {
-        return loadConciliationDAO.loadContador(filter);
-    }
-    
 }
