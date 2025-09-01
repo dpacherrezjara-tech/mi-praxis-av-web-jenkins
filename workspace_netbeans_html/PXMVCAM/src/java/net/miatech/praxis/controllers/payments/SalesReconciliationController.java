@@ -20,16 +20,19 @@ import java.util.Map;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.miatech.praxis.classes.CurrentSession;
 import net.miatech.praxis.classes.ExportUtil;
 import net.miatech.praxis.classes.ProMail;
 import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.exceptions.SpringException;
 import net.miatech.praxis.logic.payments.BankReconciliationLogic;
 import net.miatech.praxis.logic.payments.LoadConciliationLogic;
+import net.miatech.praxis.logic.payments.StatementReconciliationsLogic;
 import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.A2370Filter;
 import net.miatech.praxis.payment.filter.MPF100Filter;
 import net.miatech.praxis.payment.filter.MPF106Filter;
+import net.miatech.praxis.utils.SpringWS;
 import net.miatech.utils.Functions;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -46,14 +49,20 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.MediaType;
 
 // </editor-fold>
 /**
@@ -64,8 +73,18 @@ import org.springframework.web.multipart.MultipartFile;
 @Scope("request")
 @RequestMapping("/SalesReconciliation")
 public class SalesReconciliationController extends BaseController {
+    
 
     private static final Logger logError = Logger.getLogger("errorLog");
+    
+    private StatementReconciliationsLogic logic;
+
+    @Autowired
+    private SpringWS ws;
+
+    @Autowired
+    private CurrentSession cs;
+    
 
     @RequestMapping(value = "/search")
     public @ResponseBody
@@ -4286,6 +4305,67 @@ public class SalesReconciliationController extends BaseController {
         }
         return lst;
     }
+    
+    
+    
+     ///////////////////////////////////////////////////////////////////////
+    ////////////EXCEL DESCARGA API///////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    
+
+    @RequestMapping(value = "downloadTicketsDetail", method = RequestMethod.POST)
+    public ResponseEntity<?> downloadTicketsDetail(@RequestBody A2290Filter filter) throws Exception {
+        System.out.println("***** DowloadTicketsDetail  - Detail Tickets *****");
+        String zipName = "TicketDetailFile_" + Functions.getFechaActual() + Functions.getHoraActual();
+        Gson gson = new Gson();
+        Map<String, Object> map = new HashMap();
+        map.put("IN_CCUST", cs.getServerSession().getUserView().getCustomerInfo().CCUST.trim());
+        map.put("IN_DATEF", filter.IN_FECHA_FROM.trim());
+        map.put("IN_DATET", filter.IN_FECHA_TO.trim());
+        map.put("IN_TDOC", filter.IN_TDOC.trim());
+        map.put("IN_SCURRENCY", filter.IN_SCURRENCY.trim());
+        map.put("IN_SCOUNTRY", filter.IN_SCOUNTRY.trim());
+        map.put("IN_TP", filter.IN_TP.trim());
+        map.put("IN_STAT", filter.IN_STAT.trim());
+    
+
+        byte[] file = ws.getFile(gson.toJson(map), "SalesTicketDetail/downloadDetailExcel");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", zipName + ".zip");
+        return new ResponseEntity<>(file, headers, HttpStatus.OK);
+
+    }
+
+ ////////////CONTADOR///////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    
+    @RequestMapping(value = "getContador")
+    @ResponseBody
+    public String getContador(ModelMap map,HttpServletRequest request) {
+        
+        System.out.println("-------------- Sales Conci : getContador -------------");
+        try {
+            // Crear instancia de la lógica
+            LoadConciliationLogic logic = new LoadConciliationLogic();
+            logic.setSession(this.serverSession.getServerSession()); // si necesitas pasar sesión
+
+            A2290Filter filter = new A2290Filter();
+            filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
+            // Llamar método para obtener cont  ador
+            String contador = logic.loadContador(filter);
+
+            map.put("success", true);
+            map.put("cantidad", contador);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("success", false);
+            map.put("mensaje", "Error al obtener el contador");
+        }
+        return new Gson().toJson(map);
+    }
+    
+    
 
     
 }
