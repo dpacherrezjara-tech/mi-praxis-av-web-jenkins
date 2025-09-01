@@ -12,11 +12,11 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
     request: axios.create({
         baseURL: CONTEXTPATH + '/BankReconciliationExt',
         timeout: 0
-      }),
+    }),
     miscRequest: axios.create({
         baseURL: CONTEXTPATH + '/MiscellaneousCatalog',
         timeout: 0
-      }),
+    }),
     notifier: new AWN(),
     init: function (view) {
         Ext.util.CSS.createStyleSheet(`
@@ -56,7 +56,7 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
         const me = this;
         let params = me.formatParameters(me.view.obj);
         try {
-            const res = await me.request('/loadStatementInfo',{
+            const res = await me.request('/loadStatementInfo', {
                 params: params
             });
             const data = res.data;
@@ -64,12 +64,16 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
             console.log(data);
             const form = Ext.getCmp(prototype.idDE + '-mainForm').getForm();
             //me.limpiaObjetoPX(data.response);
-            
+
             me.bean = data.response;
             me.clearData();
             form.reset();
             form.setValues(me.bean);
-            if (me.bean.STVAL !== '3') {
+
+            const corep = (me.bean.COREP || '').trim();
+            if (me.bean.STVAL !== '3' && ['AB', 'BM', 'VN'].includes(corep)) {
+                await me.setMatchGridsNew();
+            } else if (me.bean.STVAL !== '3') {
                 me.headers = data.headers;
                 me.settlements = data.settlements;
                 me.taxes = data.taxes;
@@ -78,15 +82,72 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
                 me.setPendingGrids();
             }
             me.view.center();
+
+
+
+//            if (me.bean.STVAL !== '3') {
+//                me.headers = data.headers;
+//                me.settlements = data.settlements;
+//                me.taxes = data.taxes;
+//
+//                const corep = (me.bean.COREP || '').trim();
+//
+//                if (['AB', 'BM', 'VN'].includes(corep)) {
+//                    await me.setMatchGrids();
+//                } else {
+//                    me.setMatchGrids();
+//                }
+//
+//            } else {
+//                me.setPendingGrids();
+//            }
+//            me.view.center();
         } catch (e) {
             console.error(e);
             me.notifier.alert('Error on load Bank Info');
             me.view.close();
         }
     },
+    //<editor-fold defaultstate="collapsed" desc="ARUBABANK, MANCO MADURO, VISANET">
+    setMatchGridsNew: async function () {
+        const me = this;
+        let parameters = {
+            "IN_FAJUST": me.bean.FAJUST.trim(),
+            "IN_IDCADJ": me.bean.IDCADJ.trim(),
+        };
+        console.log('params', parameters);
+
+        const panelAMV = Ext.getCmp(prototype.idDE + '-panelAMV');
+        const gridHeader = Ext.getCmp(prototype.idDE + '-panelHeaderAMV');
+        const gridStatement = Ext.getCmp(prototype.idDE + '-panelStatementAMV');
+        const gridSale = Ext.getCmp(prototype.idDE + '-panelSaleAMV');
+        const gridTaxes = Ext.getCmp(prototype.idDE + '-panelTaxesAMV');
+
+        let store = await global.callStoreGet('PRAXISMP', 'MPS253', parameters);
+        console.log('store', store.lstRs);
+        if (store.lstRs.length > 0) {
+            let dataHeader = store.lstRs[0];
+            let dataStatement = store.lstRs[1];
+            let dataSale = store.lstRs[2];
+            let dataTaxes = store.lstRs[3];
+
+            gridHeader.setStore(dataHeader);
+            gridStatement.setStore(dataStatement);
+            gridSale.setStore(dataSale);
+            gridTaxes.setStore(dataTaxes);
+
+            panelAMV.show();
+        } else {
+            panelAMV.hide();
+        }
+
+
+    },
+    //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Match">
     setMatchGrids: function () {
         const me = this;
+        Ext.getCmp(prototype.idDE + '-panelAMV').hide();
         Ext.getCmp(prototype.idDE + '-btn-update').hide();
         Ext.getCmp(prototype.idDE + '-btn-reverse').show();
         Ext.getCmp(prototype.idDE + '-btn-excel').show();
@@ -191,9 +252,11 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
     //<editor-fold defaultstate="collapsed" desc="Pending">
     setPendingGrids: function () {
         const panelMatch = Ext.getCmp(prototype.idDE + '-panelPending');
+        const panelAMV = Ext.getCmp(prototype.idDE + '-panelAMV');
         Ext.getCmp(prototype.idDE + '-btn-update').show();
         Ext.getCmp(prototype.idDE + '-btn-reverse').hide();
         Ext.getCmp(prototype.idDE + '-btn-excel').hide();
+        panelAMV.hide();
         panelMatch.show();
     },
     onAddSettlements: async function () {
@@ -203,7 +266,7 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
         const formFilters = Ext.getCmp(prototype.idDE + '-pendingFilters').getForm();
         let params = formFilters.getValues();
         try {
-            const res = await me.request.get('loadSettlementScanner',{
+            const res = await me.request.get('loadSettlementScanner', {
                 params: params
             });
             const data = res.data;
@@ -454,13 +517,13 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
     onDownloadConciliation: async function () {
         const panelPending = Ext.getCmp(prototype.idDE + '-panelPending');
         const me = this;
-        let params  = {
+        let params = {
             bankInfo: me.bean,
             headers: me.headers,
             settlements: me.settlements,
             taxes: me.taxes
         };
-        global.downloadFile(me.request,'/downloadExcelEECC',params);
+        global.downloadFile(me.request, '/downloadExcelEECC', params);
     },
     onUpdateConciliation: function (btn) {
         let params = this.formatUpdateParams();
@@ -484,8 +547,8 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
         const me = this;
         me.view.mask('Loading...');
         try {
-            const res = await me.request.post('loadConciliationF1',params);
-                //console.log(res);
+            const res = await me.request.post('loadConciliationF1', params);
+            //console.log(res);
             const{SQLRES, SQLMSG} = res.data;
             if (SQLRES === 0) {
                 me.notifier.warning(`Error on Update:<br><b style="color:#fc9b63;">${SQLMSG}</b>`

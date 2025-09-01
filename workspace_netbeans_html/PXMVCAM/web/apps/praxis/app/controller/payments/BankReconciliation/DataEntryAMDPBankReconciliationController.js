@@ -830,9 +830,6 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.lstAdjustment = [];
         Ext.getCmp(prototype.id + '-gridDataAdjustment').hide();
         Ext.getCmp(prototype.id + '-panelADJ').hide();
-        
-        this.calcularSumAmount();
-        this.calcularMontos();
     },
 
 //</editor-fold>
@@ -881,7 +878,6 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             success: function (response, opts) {
                 
                 var res = Ext.JSON.decode(response.responseText);
-                
                 if (res.success) {
                     
                   var msj = res.mensaje;  
