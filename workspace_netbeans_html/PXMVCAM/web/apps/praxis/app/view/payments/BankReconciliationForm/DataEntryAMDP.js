@@ -1806,12 +1806,13 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                     filterPickList: true,
                                                     width: 100,
                                                     editable: false,
-                                                    value: '134',
+                                                    value: '',
                                                     forceSelection: true,
                                                     // multiSelect eliminado
                                                     store: Ext.create('Ext.data.Store', {
                                                         fields: ['CODE', 'NAME'],
                                                         data: [
+                                                            { CODE: '', NAME: 'All' },
                                                             { CODE: '134', NAME: 'AVIANCA' },
                                                             { CODE: '202', NAME: 'TACA' },
                                                             { CODE: '133', NAME: 'LACSA' },
