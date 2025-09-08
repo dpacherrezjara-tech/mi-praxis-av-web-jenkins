@@ -4866,6 +4866,17 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                     }
                                                 ]
                                             },
+                                                    {
+                                                        text: 'BPO  <br> Comment', dataIndex: 'CERROR', width: 70, align: 'center',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:center;";
+                                                            var data = record.data;
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            metaData.tdAttr = 'data-qtip="' + Ext.String.htmlEncode(data.strCERROR) + '"';
+                                                            return value;
+                                                        }
+                                                    }
+                                            ,
                                             {
                                                 sortable: false,
                                                 xtype: 'actioncolumn',
