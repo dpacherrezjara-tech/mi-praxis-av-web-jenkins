@@ -73,18 +73,17 @@ import org.springframework.http.MediaType;
 @Scope("request")
 @RequestMapping("/SalesReconciliation")
 public class SalesReconciliationController extends BaseController {
+    
 
     private static final Logger logError = Logger.getLogger("errorLog");
     
-        
     private StatementReconciliationsLogic logic;
-    
+
     @Autowired
     private SpringWS ws;
 
     @Autowired
     private CurrentSession cs;
-    
     
 
     @RequestMapping(value = "/search")
@@ -4307,10 +4306,13 @@ public class SalesReconciliationController extends BaseController {
         return lst;
     }
     
-    /////////////////////////////////////////////////////////////////
-    ////////////   EXCEL DESCARGA API   ///////////////////////////////////
-    /////////////////////////////////////////////////////////////////
     
+    
+     ///////////////////////////////////////////////////////////////////////
+    ////////////EXCEL DESCARGA API///////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    
+
     @RequestMapping(value = "downloadTicketsDetail", method = RequestMethod.POST)
     public ResponseEntity<?> downloadTicketsDetail(@RequestBody A2290Filter filter) throws Exception {
         System.out.println("***** DowloadTicketsDetail  - Detail Tickets *****");
@@ -4318,13 +4320,13 @@ public class SalesReconciliationController extends BaseController {
         Gson gson = new Gson();
         Map<String, Object> map = new HashMap();
         map.put("IN_CCUST", cs.getServerSession().getUserView().getCustomerInfo().CCUST.trim());
-        map.put("IN_DATEF", filter.getIN_FECHA_FROM().trim());
-        map.put("IN_DATET", filter.getIN_FECHA_TO().trim());
-        map.put("IN_TDOC", filter.getIN_TDOC().trim());
-        map.put("IN_SCURRENCY", filter.getIN_SCURRENCY().trim());
-        map.put("IN_SCOUNTRY", filter.getIN_SCOUNTRY().trim());
-        map.put("IN_TP", filter.getIN_TP().trim());
-        map.put("IN_STAT", filter.getIN_STAT().trim());
+        map.put("IN_DATEF", filter.IN_FECHA_FROM.trim());
+        map.put("IN_DATET", filter.IN_FECHA_TO.trim());
+        map.put("IN_TDOC", filter.IN_TDOC.trim());
+        map.put("IN_SCURRENCY", filter.IN_SCURRENCY.trim());
+        map.put("IN_SCOUNTRY", filter.IN_SCOUNTRY.trim());
+        map.put("IN_TP", filter.IN_TP.trim());
+        map.put("IN_STAT", filter.IN_STAT.trim());
     
 
         byte[] file = ws.getFile(gson.toJson(map), "SalesTicketDetail/downloadDetailExcel");
@@ -4334,11 +4336,10 @@ public class SalesReconciliationController extends BaseController {
         return new ResponseEntity<>(file, headers, HttpStatus.OK);
 
     }
+
+ ////////////CONTADOR///////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
     
-    ////////////////////////////////////////////////////////////
-    ////////////    CONTADOR   ///////////////////////////////////
-    ////////////////////////////////////////////////////////////
-   
     @RequestMapping(value = "getContador")
     @ResponseBody
     public String getContador(ModelMap map,HttpServletRequest request) {
@@ -4363,6 +4364,7 @@ public class SalesReconciliationController extends BaseController {
         }
         return new Gson().toJson(map);
     }
+    
     
 
     

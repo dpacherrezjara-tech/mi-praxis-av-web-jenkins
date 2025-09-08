@@ -271,7 +271,7 @@ Ext.define('Ext.Praxis.view.payments.UserMaintenanceForm.DataEntryUserMaintenanc
                     id: prototype.id01 + '-btn-delete',
                     iconCls: 'prx-icon-delete',
                     listeners: {
-                        click: 'onSaveClick'
+                        click: 'onDeleClick'
                     }
                 },
                 {

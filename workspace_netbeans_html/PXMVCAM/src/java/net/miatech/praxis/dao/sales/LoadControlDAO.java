@@ -54,6 +54,7 @@ public class LoadControlDAO {
             cstmt01.registerOutParameter(10, Types.INTEGER);
             cstmt01.registerOutParameter(11, Types.INTEGER);
             cstmt01.registerOutParameter(12, Types.INTEGER);
+            
 //          cstmt01.setString(1, filter.IN_A1698CCUST);
             cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.IN_A1698SOURC);
@@ -416,8 +417,7 @@ public class LoadControlDAO {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();  cstmt01 = cnx.prepareCall(SQLCLL01);
             cstmt01.registerOutParameter(2, Types.INTEGER);
             cstmt01.registerOutParameter(3, Types.CHAR);            
-            //cstmt01.setString(1, filter.VP_CCUST);
-            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt01.setString(1, filter.VP_CCUST);
             cstmt01.execute();
             filter.dbException.SQLCODE = cstmt01.getString(2);
             filter.dbException.MESSAGE = cstmt01.getString(3);
@@ -439,8 +439,7 @@ public class LoadControlDAO {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();  cstmt01 = cnx.prepareCall(SQLCLL01);
             cstmt01.registerOutParameter(3, Types.INTEGER);
             cstmt01.registerOutParameter(4, Types.CHAR);            
-            //cstmt01.setString(1, filter.VP_CCUST);
-            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt01.setString(1, filter.VP_CCUST);
             cstmt01.setString(2, filter.VP_NROID);
             cstmt01.execute();
             filter.dbException.SQLCODE = cstmt01.getString(3);

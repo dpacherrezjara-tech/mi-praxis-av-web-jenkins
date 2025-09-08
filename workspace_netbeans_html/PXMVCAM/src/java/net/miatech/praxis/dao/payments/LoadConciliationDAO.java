@@ -5690,7 +5690,7 @@ public class LoadConciliationDAO {
         return hmResultado;
     }
     
-    /// STORE MODIFICADO
+    ///MODIFICAMOS
     
     public List<A2290Filter> loadPX263MPS097(A2290Filter filter) throws SQLException, Exception {
 
@@ -5771,7 +5771,6 @@ public class LoadConciliationDAO {
                     lstTkts.add(beanTkt);
                 }
                 rst.close();
-//            }
 
         } catch (Exception e) {
                 e.printStackTrace();
@@ -5796,8 +5795,6 @@ public class LoadConciliationDAO {
 
         return lstTkts;
     }
-    
-    
     
      ///AGREGAMOS METODO PARA CONTADOR
     
@@ -5859,11 +5856,8 @@ public class LoadConciliationDAO {
     }
     
     
-    /////
     
-    
-    
-    
+    /// AQUI TERMINA
     
     public Map<String, List<A2290Filter>> loadPX263MPS097SUMARY(A2290Filter filter) throws SQLException, Exception {
 

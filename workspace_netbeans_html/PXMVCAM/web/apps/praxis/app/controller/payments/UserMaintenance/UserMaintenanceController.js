@@ -148,19 +148,19 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceContro
         var me = this;
         var grid01 = Ext.getCmp(prototype.id + '-gridDataMain');
         var store01 = grid01.getStore();
-        var txtFilterDateFrom = Ext.getCmp(prototype.id + '-txtFilterDateFrom').getValue();
-        var txtFilterDateTo = Ext.getCmp(prototype.id + '-txtFilterDateTo').getValue();
+        var txtFilterDateFrom = Ext.getCmp(prototype.id + '-txtFilterDateFrom').getRawValue();
+        var txtFilterDateTo = Ext.getCmp(prototype.id + '-txtFilterDateTo').getRawValue();
         var txtUser = Ext.getCmp(prototype.id + '-txtUser').getValue();
         var CmbTypeprocesa = Ext.getCmp(prototype.id + '-CmbTypeprocesa').getValue();
         var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue();
-
-        if (Ext.String.trim(Ext.getCmp(prototype.id + '-txtFilterDateFrom').getRawValue()) !== '' &&
-                Ext.String.trim(Ext.getCmp(prototype.id + '-txtFilterDateTo').getRawValue()) !== '') {
-            if (this.compareDate(Ext.getCmp(prototype.id + '-txtFilterDateFrom').getRawValue(), Ext.getCmp(prototype.id + '-txtFilterDateTo').getRawValue())) {
-                Ext.Msg.alert('.: PRAXIS :.', 'the starting date must be less than the end date');
-                return;
-            }
-        }
+        /*
+         if (Ext.String.trim(Ext.getCmp(prototype.id + '-txtFilterDateFrom').getRawValue()) !== '' &&
+         Ext.String.trim(Ext.getCmp(prototype.id + '-txtFilterDateTo').getRawValue()) !== '') {
+         if (this.compareDate(Ext.getCmp(prototype.id + '-txtFilterDateFrom').getRawValue(), Ext.getCmp(prototype.id + '-txtFilterDateTo').getRawValue())) {
+         Ext.Msg.alert('.: PRAXIS :.', 'the starting date must be less than the end date');
+         return;
+         }
+         }*/
         me.beanTMP.IN_OPTION = cmbFecFiltro;
         me.beanTMP.IN_TYPEPROCES = CmbTypeprocesa;
         me.beanTMP.IN_USER = txtUser;
@@ -175,19 +175,19 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceContro
     },
     btnExcel_click: function (obj, e) {
         var me = this;
-        var txtFilterDateFrom = Ext.getCmp(prototype.id + '-txtFilterDateFrom').getValue();
-        var txtFilterDateTo = Ext.getCmp(prototype.id + '-txtFilterDateTo').getValue();
+        var txtFilterDateFrom = Ext.getCmp(prototype.id + '-txtFilterDateFrom').getRawValue();
+        var txtFilterDateTo = Ext.getCmp(prototype.id + '-txtFilterDateTo').getRawValue();
         var txtUser = Ext.getCmp(prototype.id + '-txtUser').getValue();
         var CmbTypeprocesa = Ext.getCmp(prototype.id + '-CmbTypeprocesa').getValue();
         var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue();
 
-        if (Ext.String.trim(Ext.getCmp(prototype.id + '-txtFilterDateFrom').getRawValue()) !== '' &&
-                Ext.String.trim(Ext.getCmp(prototype.id + '-txtFilterDateTo').getRawValue()) !== '') {
-            if (this.compareDate(Ext.getCmp(prototype.id + '-txtFilterDateFrom').getRawValue(), Ext.getCmp(prototype.id + '-txtFilterDateTo').getRawValue())) {
-                Ext.Msg.alert('.: PRAXIS :.', 'the starting date must be less than the end date');
-                return;
-            }
-        }
+        /* if (Ext.String.trim(Ext.getCmp(prototype.id + '-txtFilterDateFrom').getRawValue()) !== '' &&
+         Ext.String.trim(Ext.getCmp(prototype.id + '-txtFilterDateTo').getRawValue()) !== '') {
+         if (this.compareDate(Ext.getCmp(prototype.id + '-txtFilterDateFrom').getRawValue(), Ext.getCmp(prototype.id + '-txtFilterDateTo').getRawValue())) {
+         Ext.Msg.alert('.: PRAXIS :.', 'the starting date must be less than the end date');
+         return;
+         }
+         }*/
         me.beanEXCEL.IN_OPTION = cmbFecFiltro;
         me.beanEXCEL.IN_TYPEPROCES = CmbTypeprocesa;
         me.beanEXCEL.IN_USER = txtUser;
@@ -207,6 +207,23 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceContro
                 }
             }
         });
+    },
+    onRendererColumnStatus: function (value, metaData, record, rowIndex, colIndex, store, view) {
+        var color = '#FFFFFF';
+        switch (String(record.get('A4717ESTAT'))) {
+            case 'A':
+                color = '#F5A9F2';
+                value = 'Enabled';
+                break;
+            case 'I':
+                color = '#F2A60D';
+                value = 'Disabled';
+                break;
+        }
+
+        metaData.tdAttr = 'data-qtip="' + value + '"';
+        metaData.style = "font-weight:bold !important; background:" + color + " !important";
+        return value;
     },
 
     setFormatParameter: function () {
@@ -820,7 +837,7 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.UserMaintenanceContro
         }
     },
     btnClear_click: function (obj, e) {
-        Ext.getCmp( prototype.id + '-txtUser').setValue('');
+        Ext.getCmp(prototype.id + '-txtUser').setValue('');
         Ext.getCmp(prototype.id + '-CmbTypeprocesa').setValue('');
         Ext.getCmp(prototype.id + '-txtFilterDateTo').setValue('');
         Ext.getCmp(prototype.id + '-txtFilterDateFrom').setValue('');

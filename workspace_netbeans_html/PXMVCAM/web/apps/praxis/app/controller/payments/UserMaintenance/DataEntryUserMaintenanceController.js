@@ -29,7 +29,7 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.DataEntryUserMaintena
 
                 Ext.getCmp(prototype.id01 + '-txtA2665DESCR').setValue(Ext.String.trim(rec.get('A4717DECRI')));
                 Ext.getCmp(prototype.id01 + '-txtuser').setValue(Ext.String.trim(rec.get('A4717USER')));
-               // Ext.getCmp(prototype.id01 + '-txtpass').setValue(Ext.String.trim(rec.get('A4717PASS')));
+                // Ext.getCmp(prototype.id01 + '-txtpass').setValue(Ext.String.trim(rec.get('A4717PASS')));
                 Ext.getCmp(prototype.id01 + '-CmbProceType').setValue(Ext.String.trim(rec.get('A4717TYPE')));
                 Ext.getCmp(prototype.id01 + '-CmbStatus').setValue(Ext.String.trim(rec.get('A4717ESTAT')));
                 Ext.getCmp(prototype.id01 + '-CmbProcessso').setValue(Ext.String.trim(rec.get('A4717PROCE')));
@@ -134,6 +134,85 @@ Ext.define('Ext.Praxis.controller.payments.UserMaintenance.DataEntryUserMaintena
         }));
 
         cmbArea.setValue(Ext.String.trim(id));
+    },
+    onDeleClick: function (obj) {
+        var me = this;
+        me.beanTMP.IN_OPTION = "D";
+        me.beanTMP.A4717USER = Ext.getCmp(prototype.id01 + '-txtuser').getValue();
+        me.beanTMP.A4717PASS = Ext.getCmp(prototype.id01 + '-txtpass').getValue();
+        me.beanTMP.A4717TYPE = Ext.getCmp(prototype.id01 + '-CmbProceType').getValue();
+        me.beanTMP.A4717ESTAT = Ext.getCmp(prototype.id01 + '-CmbStatus').getValue();
+        me.beanTMP.A4717PROCE = Ext.getCmp(prototype.id01 + '-CmbProcessso').getValue();
+        me.beanTMP.A4717VERIF = Ext.getCmp(prototype.id01 + '-CmbVerifica').getValue();
+        me.beanTMP.A4717DECRI = Ext.getCmp(prototype.id01 + '-txtA2665DESCR').getValue();
+        me.beanTMP.A4717CORR = Ext.getCmp(prototype.id01 + '-txtcorreo').getValue();
+        me.beanTMP.A4717LIK = '';
+
+        if (me.beanTMP.A4717USER === '') {
+            Ext.Msg.alert('.: PRAXIS :.', 'Required Field, User');
+            return;
+        }
+        if (me.beanTMP.A4717TYPE === '') {
+            Ext.Msg.alert('.: PRAXIS :.', 'Required Field, Processor Type');
+            return;
+        }
+        if (me.beanTMP.A4717ESTAT === '') {
+            Ext.Msg.alert('.: PRAXIS :.', 'Required Field, Status');
+            return;
+        }
+        if (me.beanTMP.A4717PROCE === '') {
+            Ext.Msg.alert('.: PRAXIS :.', 'Required Field, Process');
+            return;
+        }
+        if (me.beanTMP.A4717VERIF === '') {
+            Ext.Msg.alert('.: PRAXIS :.', 'Required Field, Verification');
+            return;
+        }
+        if (me.beanTMP.txtcorreo === '' && ['D', 'E', 'C'].includes(me.beanTMP.A4717VERIF)) {
+            Ext.Msg.alert('.: PRAXIS :.', 'Required Field, Email Robot');
+            return;
+        }
+
+        Ext.Msg.show({
+            title: '.: PRAXIS :.',
+            message: 'UPDATE RECORD?',
+            buttons: Ext.Msg.YESNO,
+            icon: Ext.Msg.QUESTION,
+            fn: function (btn) {
+                if (btn === 'yes') {
+                    var mask = new Ext.LoadMask(Ext.getCmp(prototype.id01 + '-win'), {
+                        msg: 'Please Wait....'
+                    });
+                    mask.show();
+
+                    Ext.Ajax.request({
+                        url: me.urlWin01 + '/mantenimientoUser/',
+                        timeout: 60000000,
+                        method: 'POST',
+                        params: {beanString: JSON.stringify(me.beanTMP)},
+                        success: function (response, options) {
+                            mask.hide();
+                            var res = Ext.JSON.decode(response.responseText);
+                            var vp_icon = 0;
+                            if (res.data === 'RECORD INSERTED' || res.data === 'RECORD UPDATE' || res.data === 'RECORD DISABLED') {
+                                vp_icon = 1;
+                            }
+                            global.Msg({msg: res.data, icon: vp_icon, fn: function () {
+                                    if (vp_icon === 1) {
+                                        Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+                                        Ext.getCmp(prototype.id01 + '-win').close();
+
+                                    }
+
+
+                                }});
+                        }
+                    });
+
+                }
+            }
+        });
+
     },
 
     onSaveClick: function (obj) {

@@ -14,7 +14,6 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryReportSa
         baseURL: CONTEXTPATH + '/SalesReconciliation',
         timeout: 0
     }),
-    
     lstAdjustment: [],
     sumAmount: 0,
     sumAmountBlocked: 0,
@@ -179,11 +178,11 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryReportSa
     imgExcel: function (obj, e) {
         
         meDe.obtenerCantidad();
-        
+
     },
     
-    // AGREAMOS CONTADOR
     
+//////////////////////
 
 
     obtenerCantidad: function () {
@@ -197,9 +196,24 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryReportSa
             params: {beanString: JSON.stringify(me.bean)},
             success: function (response, options) {
                 var res = Ext.JSON.decode(response.responseText);
+                var cantidad = parseInt(res.cantidad, 10);
+                
+                    if (cantidad === 0) {
+                        
+                // Mensaje cuando no hay registros
                 Ext.Msg.show({
                     title: '.:PRAXIS:.',
-                    msg: 'Records to export: ' + res.cantidad + ' - ' + 'Download File?',
+                    msg: 'No records found to export.',
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.INFO,
+                    modal: true
+                });
+                return;
+            }
+                
+                Ext.Msg.show({
+                    title: '.:PRAXIS:.',
+                    msg: 'Records to export: ' + cantidad + ' - ' + 'Download File?',
                     buttons: Ext.MessageBox.OKCANCEL,
                     scope: me,
                     icon: Ext.MessageBox.QUESTION,
@@ -213,6 +227,9 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryReportSa
             }
         });
     },
+
+    
+    
     exportExcel: function () {
         let rgTypeR = Ext.getCmp(prototype.id + '-rgTypeReport').getValue().tipor;
         this.setFormatParameter();
@@ -226,6 +243,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryReportSa
         
 
     },
+    
     
     
     ///////////////EXCEL API///////////////////////////////////////
@@ -250,6 +268,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryReportSa
             global.downloadFile(meDe.request, 'downloadTicketsDetail', params, 'zip');
       
     },
+    
     
     
     

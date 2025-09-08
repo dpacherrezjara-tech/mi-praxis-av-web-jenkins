@@ -109,7 +109,7 @@ Ext.define('Ext.Praxis.controller.payments.DownloadThePaymentFiles.DownloadThePa
         var store01 = Ext.create('Ext.data.Store', {
             proxy: {
                 type: 'ajax',
-                url: prototype.url + '/SearchCalendar/',
+                url: prototype.url + '/DowloadFilesPayment/',
                 timeout: '300000',
                 reader: {
                     type: 'json',
@@ -160,7 +160,7 @@ Ext.define('Ext.Praxis.controller.payments.DownloadThePaymentFiles.DownloadThePa
         var txtFilterDateTo = Ext.getCmp(prototype.id + '-txtFilterDateTo').getRawValue();
         var CmbTypeprocesa = Ext.getCmp(prototype.id + '-CmbTypeprocesa').getValue();
         var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue();
-        
+
         me.beanTMP.IN_OPTION = cmbFecFiltro;
         me.beanTMP.IN_TYPEPROCES = CmbTypeprocesa;
         me.beanTMP.IN_DATETO = txtFilterDateTo;
@@ -779,19 +779,27 @@ Ext.define('Ext.Praxis.controller.payments.DownloadThePaymentFiles.DownloadThePa
     viewDataEntry_clickHandler: function (grid, rowIndex, colIndex) {
         var me = this;
         var rec = grid.getStore().getAt(rowIndex);
-        if (rec.data.A4719ESTAT === 'A') {
+        if (Ext.String.trim(rec.data.A4719ESTAT) === 'A') {
             var type = '';
-            if (rec.data.A4719TYPE === 'PBPV') {
+            if (Ext.String.trim(rec.data.A4719TYPE) === 'PBPV') {
                 type = 'PRODUBANCO/ECUADOR/PVA';
-            } else if (rec.data.A4719TYPE === 'PSE') {
+            } else if (Ext.String.trim(rec.data.A4719TYPE) === 'PSE') {
                 type = 'PSE';
-            } else if (rec.data.A4719TYPE === 'CRDO') {
+            } else if (Ext.String.trim(rec.data.A4719TYPE) === 'CRDO') {
                 type = 'CREDOMATIC';
-            } else if (rec.data.A4719TYPE === 'PBDI') {
+            } else if (Ext.String.trim(rec.data.A4719TYPE) === 'PBDI') {
                 type = 'PRODUBANCO/ECUADOR/Diners';
-            } else if (rec.data.A4719TYPE === 'WOIQ') {
+            } else if (Ext.String.trim(rec.data.A4719TYPE) === 'WOIQ') {
                 type = 'WPIQ';
+            } else if (Ext.String.trim(rec.data.A4719TYPE) === 'CODE') {
+                type = 'CODE';
+            } else if (Ext.String.trim(rec.data.A4719TYPE) === 'SAFE') {
+                type = 'SAFE';
+            }else{
+                type=Ext.String.trim(rec.data.A4719TYPE);
             }
+
+
 
 
             me.beanDownload.IN_DATETO = rec.data.A4719FCARG;

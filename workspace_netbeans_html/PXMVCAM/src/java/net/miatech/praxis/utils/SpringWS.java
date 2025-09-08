@@ -84,7 +84,8 @@ public class SpringWS {
     }
 
     public byte[] getFile(String body, String endpoint) throws Exception {
-        String url = cs.getPropertySession().get("RUTA_REST_SPRING").toString();
+        //String url = cs.getPropertySession().get("RUTA_REST_SPRING").toString();
+        String url = "http://10.0.0.138:8099/api/v1/" ;
         Unirest.setTimeouts(600000, 300000);
         HttpResponse<InputStream> response = Unirest.post(url + endpoint)
                 .header("Content-Type", "application/json") // Header indicando JSON
