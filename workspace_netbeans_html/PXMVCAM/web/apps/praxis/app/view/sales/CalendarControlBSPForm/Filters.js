@@ -38,7 +38,44 @@ Ext.define('Ext.Praxis.view.sales.CalendarControlBSPForm.Filters', {
                                 anchor: '100%'
                             },
                             items: [
-                                {xtype: 'tbspacer', width: 7},
+                                 {xtype: 'tbspacer', width: 10},
+                                {
+                                    fieldLabel: 'Type Calendar',
+                                    xtype: 'combo',
+                                    width: 200,
+                                    labelWidth: 95,
+                                    style: 'margin-right:10px;',
+                                    hidden: false,
+                                    labelStyle: 'text-align: left; font-size: 12px;',
+                                    fieldStyle: 'text-align: left; font-size: 12px;',
+                                    disabled: false,
+                                    id: prototype.id + '-typeCalendar',
+                                    queryMode: 'local',
+                                    allowBlank: false,
+                                    forceSelection: true,
+                                    selectOnFocus: true,
+                                    caseSensitive: false,
+                                    autoSelect: true,
+                                    editable: true,
+                                    listConfig: {maxHeight: 130},
+                                    typeAhead: true,
+                                    valueField: 'code',
+                                    displayField: 'name',
+                                    enableKeyEvents: true,
+                                    triggerAction: 'all',
+                                    value: 'BLOCL',
+                                    store: {
+                                        fields: ['code', 'name'],
+                                        data: [
+                                            {code: 'BICCS', name: 'ICCS BSP'},
+                                            {code: 'BLOCL', name: 'BSP LOCAL'}
+                                        ]
+                                    },
+                                    listeners: {
+                                        change: 'btnSearch_click'
+                                    }
+                                },
+                                 {xtype: 'tbspacer', width: 10},
                                 {
                                     xtype: 'label',
                                     text: 'Country:',

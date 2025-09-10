@@ -26,6 +26,7 @@ Ext.define('Ext.Praxis.controller.sales.CalendarControlBSP.CalendarControlBSPCon
     btnSearch_click: function(obj, e) {
         this.bean.IN_A1529ISOC = this.getValue("txtFilterCountry");
         this.bean.IN_A1529BAED = this.getValue("txtFilterDate");
+        this.bean.IN_A1529CUTO = Ext.getCmp(prototype.id + '-typeCalendar').getValue();
         this.beanExcel.IN_A1529ISOC = this.bean.IN_A1529ISOC;
         this.beanExcel.IN_A1529BAED = this.bean.IN_A1529BAED;
         this._path = prototype.url+'/getXLSX?' +
