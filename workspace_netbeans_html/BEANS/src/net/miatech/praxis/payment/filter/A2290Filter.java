@@ -976,8 +976,12 @@ public class A2290Filter extends A2290 {
     public String TINPUT = "";
     public String STRDATE = "";
     public String ENDDATE = "";
-    
-
+    public double PAYAMOU = 0;
+    public double SETADJ = 0;
+    public double BILADJ = 0;
+    public String CONCEPT = "";
+    public String REFERENCE = "";
+    public String COMMENTS = "";
 
     
     //Update

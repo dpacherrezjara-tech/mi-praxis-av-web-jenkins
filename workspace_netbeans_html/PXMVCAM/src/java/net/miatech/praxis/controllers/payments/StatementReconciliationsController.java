@@ -666,9 +666,7 @@ public class StatementReconciliationsController extends BaseController {
         System.out.println("-------------- StatementReconciliations : searchDetLiquid+Cash-------------");
         try {
             Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
-
             List<A2290Filter> lst = this.getListDetLiquidCash(request, false);
-
             map.put("success", true);
             map.put("data", lst);
             map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
@@ -3609,6 +3607,40 @@ public class StatementReconciliationsController extends BaseController {
         return new Gson().toJson(map);
 
     }
+    @RequestMapping(value = "/searchBeanCash")
+    public @ResponseBody
+    String searchBeanCash(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankStatementReconciliation : searchBean-------------");
+        try {
+            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+
+            A2290Filter lst;
+            A2290Filter filter;
+            Gson gson = new Gson();
+            String beanString;
+
+            logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+
+            lst = logic.loadPXSQP005CASH(filter);
+
+            map.put("success", true);
+            map.put("data", lst);
+        } catch (SQLException e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        }
+        return new Gson().toJson(map);
+
+    }
+    
+    
 
     @RequestMapping(value = "/searchBeanMPF060")
     public @ResponseBody
@@ -3782,6 +3814,40 @@ public class StatementReconciliationsController extends BaseController {
             filter = gson.fromJson(beanString, A2290Filter.class);
 
             lst = logic.loadPX269SQP05114Detail(filter);
+
+            map.put("success", true);
+            map.put("data", lst);
+            map.put("dataFees", lstFees);
+        } catch (SQLException e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        }
+        return new Gson().toJson(map);
+
+    }
+    @RequestMapping(value = "/searchBean_LiquiCash")
+    public @ResponseBody
+    String searchBean_LiquiCash(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankStatementReconciliation : searchBean_DETAIL_CO-------------");
+        try {
+            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+
+            List<A2290Filter> lst = new ArrayList<>(0);
+            List<A2290Filter> lstFees = new ArrayList<>(0);
+            A2290Filter filter;
+            Gson gson = new Gson();
+            String beanString;
+
+            logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+
+            lst = logic.loadPXDetailCASHLIQUID(filter);
 
             map.put("success", true);
             map.put("data", lst);

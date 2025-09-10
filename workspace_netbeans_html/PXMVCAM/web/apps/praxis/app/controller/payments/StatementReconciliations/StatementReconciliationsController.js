@@ -1064,6 +1064,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
                         Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
                         Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        console.log(obj.data,"Esto es lo que recibo");
                         if (obj.data.length === 0) {
                             global.Msg({
                                 msg: 'Data not found.'
@@ -1628,7 +1629,16 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             this.winDataEntry('U', rec);
         } else {
             this.winDataEntryEx('U', rec);
-        }
+        } 
+
+    },
+    onEditClickCash: function (grid, rowIndex, colIndex) {
+        var rec = grid.getStore().getAt(rowIndex);
+        
+        me.recGlobal = grid.getStore().getAt(rowIndex);
+        console.log(rec,"esta es la informacion que voy a enviar")
+        this.winDataEntryCash('U', rec);
+        
 
     },
     winDataEntry: function (action, rec) {
@@ -1660,6 +1670,23 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             }
         }).show();
     },
+    winDataEntryCash: function (action, rec) {
+        action = action === null || action === undefined ? 'U' : action;
+        rec = rec === null || rec === undefined ? {} : rec;
+
+        Ext.create('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash', {
+            id: prototype.id + '-dataEntryCash',
+            params: {
+                action: action,
+                rec: rec,
+                lstCountry: me.lstCountry,
+                controllerParent: me,
+                panelActual : me.panelActual,
+                paramsGrid : me.paramsDetail
+            }
+        }).show();
+    },
+    
     onCallSummaryMPF132: function (){
         Ext.Ajax.request({
             url: prototype.url + '/onCallProgramBySummary',

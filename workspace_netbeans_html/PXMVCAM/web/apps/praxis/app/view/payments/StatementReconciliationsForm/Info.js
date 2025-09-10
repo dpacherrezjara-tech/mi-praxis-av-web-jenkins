@@ -123,6 +123,7 @@
                                                                 text: '%', dataIndex: 'lngQMATCHPercent', width: 70, align: 'center',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;background-color:#c0e0fc";
+                                                                    var newValue = value / 100;
                                                                     value = '<b>' + Ext.util.Format.number(value, '0,000') + '%</b>';
                                                                     return value;
                                                                 },
@@ -548,7 +549,7 @@
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataCash').getStore().getData().items[0].data;
                                                                     metaData.style = 'text-align:right; margin-right:3px ';
-                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQTMATCHPercent, '0,000') + '%<b>';
+                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQTMATCHPercent/100, '0,000') + '%<b>';
                                                                 }
                                                             },
                                                             {
@@ -1682,6 +1683,21 @@
                                                     return value;
                                                 }
                                             },
+                                            {
+                                                sortable: false,
+                                                xtype: 'actioncolumn',
+                                                width: 40,
+                                                text: 'Edit',
+                                                align: 'center',
+                                                items: [
+                                                    {
+                                                        iconCls: 'prx-icon-edit',
+                                                        tooltip: 'Edit',
+                                                        handler: 'onEditClickCash'
+                                                    }
+                                                ]
+                                            }
+                                            
                                             
 
                                         ]
