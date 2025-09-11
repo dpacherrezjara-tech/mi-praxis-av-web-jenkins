@@ -52,17 +52,12 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Grids.HeaderIntegratorGri
                             return 'ERROR';
                         }
                     };
-                    return opts[value]();
+                    const key = (value || '').trim();
+                    return opts[key] ? opts[key]() : key;
                 }
             },
             {text: 'Process Status', dataIndex: 'STCAR', width: 100,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                    //metaData.style = "background-color:#838187";
-                    console.log('value', value);
-                    console.log('record', record);
-//                    metaData.style = "background-color:#B2DAFA";
-                    metaData.style = "background-color:#638be1;color:#ffffff;font-weight:bold";
-                    
                     const opts = {
                         '': () => {
 //                            metaData.style = "background-color:#638be1;color:#ffffff;font-weight:bold";
@@ -77,7 +72,8 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Grids.HeaderIntegratorGri
                             return 'PARTIAL';
                         }
                     };
-                    return opts[value]();
+                    const key = (value || '').trim();
+                    return opts[key] ? opts[key]() : key;
                 }},
             {text: 'Corrl', dataIndex: 'CORRL', width: 50},
             {text: 'File Type', dataIndex: 'FILETYPE', width: 100},
