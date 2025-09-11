@@ -50,7 +50,7 @@ Ext.define('Ext.Praxis.view.payments.DownloadThePaymentFilesForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataMain',
                                     height: 520,
-                                    width: 700,
+                                    width: 800,
                                     columnLines: true,
                                     columns: {
                                         defaults: {
@@ -64,6 +64,7 @@ Ext.define('Ext.Praxis.view.payments.DownloadThePaymentFilesForm.Info', {
                                                     {text: 'Execution </br>date', dataIndex: 'A4719FCARG', width: 75},
                                                     {text: 'Processor </br> type', dataIndex: 'A4719TYPEDES', width: 200},
                                                     {text: 'Status', dataIndex: 'A4719ESTATDES', width: 200, sortable: false, align: 'right'},
+                                                    {text: 'Report </br> code', dataIndex: 'A4719CODEF', width: 80},
                                                     {text: '', dataIndex: '', width: 60, renderer: 'onRendererColumnOnStatus'},
                                                     {
                                                         sortable: false,

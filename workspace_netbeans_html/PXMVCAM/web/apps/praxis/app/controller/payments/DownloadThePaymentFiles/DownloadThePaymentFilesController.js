@@ -147,6 +147,9 @@ Ext.define('Ext.Praxis.controller.payments.DownloadThePaymentFiles.DownloadThePa
             case 'A':
                 value = 'green';
                 break;
+              case 'C':
+                value = 'orange';
+                break;    
             default:
                 value = 'red';
         }
