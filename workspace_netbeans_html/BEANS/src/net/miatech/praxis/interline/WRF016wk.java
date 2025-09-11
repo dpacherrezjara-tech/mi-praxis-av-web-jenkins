@@ -14,6 +14,8 @@ public class WRF016wk {
     public String TUSO = "";
     public String TDOC = "";
     public String AIRLINE = "";
+    public String STATUS_E = "";
+    public String RISKSTATUS_E = "";
     public String CAMARA = "";
     public String INDTAC = "";
     public String CURRENC = "";
