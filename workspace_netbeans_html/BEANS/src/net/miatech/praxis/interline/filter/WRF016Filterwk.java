@@ -52,6 +52,17 @@ public class WRF016Filterwk extends WRF016wk {
     public double Avg = 0;
     public double totAvg = 0;
     //Fechas
+    public double Rate2_CC = 0;
+    public double Rate2_CA = 0;
+    public double Diff_CC = 0;
+    public double Diff_CA = 0;
+    public double Var_CC = 0;
+    public double Var_CA = 0;
+    public double DesvStd_CC = 0;
+    public double DesvStd_CA = 0;
+    public double Alerta_CC = 0;
+    public double Alerta_CA = 0;
+
     public double Aud1 = 0;
     public int Rej1 = 0;
     public int Sup1 = 0;
@@ -68,11 +79,15 @@ public class WRF016Filterwk extends WRF016wk {
     public int Rej5 = 0;
     public int Sup5 = 0;
     public double Aud6 = 0;
+    public double Monto6CC = 0;
+    public double Monto6CA = 0;
     public int Rej6 = 0;
     public int Sup6 = 0;
     public double Rate1 = 0;
     public double Rate2 = 0;
     public double Rate3 = 0;
+    public double DESV_STD = 0;
+    public double ALERTA = 0;
     public double Rate4 = 0;
     public double Rate5 = 0;
     public double Rate6 = 0;
