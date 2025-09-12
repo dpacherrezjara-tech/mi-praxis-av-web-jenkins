@@ -16,6 +16,7 @@ public class A2290 {
     public String FORMA = "";
     public String SERIE = "";
     public String TKT = "";
+    public String CORRL = "";
     
     public String PLACA = "";
     public String AGENT = "";
@@ -125,6 +126,7 @@ public class A2290 {
     public double TOTAL_COMISION = 0;
     public double TOTAL_COMISTOTA = 0;
     public double TOTAL_NETO = 0;
+    public double TOTAL_SVFOP = 0;
     public double TOTAL_IMPORTEPAG = 0;
     public double TOTAL_IMPORTE = 0;
     
@@ -134,6 +136,7 @@ public class A2290 {
     public String COREPL = "";
     public String SCARDNM = "";
     public String SCARDN = "";
+    public String SCURREVEN = "";
     public String SDATEXP = "";
     public String SAUTHOC = "";
     public String SAUTHOCM = "";
