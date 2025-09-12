@@ -1,6 +1,6 @@
 Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Filters', {
     extend: 'Ext.form.Panel',
-    alias: 'widget.' + prototype.id + '-filters',
+    alias: 'widget.' + prototype.id + '-filtersReport',
     border: false,
     requires: [
         'Ext.Praxis.view.widgets.MonthField2'
