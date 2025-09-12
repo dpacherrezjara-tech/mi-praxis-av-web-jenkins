@@ -75,11 +75,21 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Options', {
                 {
                     xtype: 'toolbar',
                     items: [
-                        {
+//                        {
+//                            xtype: 'button',
+//                            id: prototype.id + '-btnSearch',
+//                            iconCls: 'prx-icon-search',
+//                            tooltip: 'Search'
+//                        },
+                        
+                                                {
                             xtype: 'button',
                             id: prototype.id + '-btnSearch',
                             iconCls: 'prx-icon-search',
-                            tooltip: 'Search'
+                            tooltip: 'Search',
+                            listeners: {
+                                click: 'searchDetAllFilter_clickHandler'
+                            }
                         },
                         {
                             xtype: 'button',

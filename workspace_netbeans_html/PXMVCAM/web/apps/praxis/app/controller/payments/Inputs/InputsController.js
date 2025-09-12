@@ -701,6 +701,8 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
         global.clear();
         Ext.getCmp(prototype.id + '-gridDataLOG').bindStore(storeGridDatas);
     },
+    
+    
 //    searchDetAll_clickHandler: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
 //        var beanDetAll = rowData.data;
 //        me.drillDown.push(me.panelActual);
@@ -1062,13 +1064,13 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
     },
     btnClear_click: function (obj, e) {
         Ext.getCmp(prototype.id + '-cmbDateFromYear').setValue(this.fecha.getFullYear());
-        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue('01');
+        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue('ALL');
         Ext.getCmp(prototype.id + '-cmbDateFromDay').setValue('');
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(this.fecha.getFullYear());
-        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('01');
+        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('ALL');
         Ext.getCmp(prototype.id + '-cmbDateToDay').setValue('');
         Ext.getCmp(prototype.id + '-cmbVISTA').setValue('D');
-        Ext.getCmp(prototype.id + '-cmbFUENTE').setValue('ACCB');
+        Ext.getCmp(prototype.id + '-cmbFUENTE').setValue('ALL');
         Ext.getCmp(prototype.id + '-cmbCountry').setValue('');
 
     },
