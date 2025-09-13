@@ -6,7 +6,7 @@ Ext.define('Ext.Praxis.controller.payments.DownloadThePaymentFiles.DownloadThePa
     bean: '',
     paginActual: '',
     gridActual: '',
-    panelActual: '', 
+    panelActual: '',
     reg99: 0,
     me: '',
 
@@ -37,30 +37,13 @@ Ext.define('Ext.Praxis.controller.payments.DownloadThePaymentFiles.DownloadThePa
             },
             '#DownloadThePaymentFilesForm-btnExcel': {
                 click: this.btnExcel_click
-            },
-            '#UserMaintenanceForm-btnFilter': {
-                click: this.btnFilter_click
-            },
-            '#UserMaintenanceForm-btnAdd': {
-                click: this.btnAdd_click
-            },
-            '#UserMaintenanceForm-btn-pag-first': {
-                click: this.pagFirst
-            },
-            '#UserMaintenanceForm-btn-pag-previous': {
-                click: this.pagPrevious
-            },
-            '#UserMaintenanceForm-btn-pag-next': {
-                click: this.pagNext
-            },
-            '#UserMaintenanceForm-btn-pag-last': {
-                click: this.pagLast
             }
         });
     },
 
     xpanel_afterrender: function (obj, e) {
         this.obtainData();
+        Ext.getCmp(prototype.id + '-pagginator-01').getCmpPaginator().on('beforechange', me.onPagingBeforeChange01, this);
     },
     eventKey: function (e, eOpts) {
         if (eOpts.getKey() === 13) {
@@ -109,7 +92,7 @@ Ext.define('Ext.Praxis.controller.payments.DownloadThePaymentFiles.DownloadThePa
         var store01 = Ext.create('Ext.data.Store', {
             proxy: {
                 type: 'ajax',
-                url: prototype.url + '/DowloadFilesPayment/', 
+                url: prototype.url + '/DowloadFilesPayment/',
                 timeout: '300000',
                 reader: {
                     type: 'json',
@@ -121,7 +104,7 @@ Ext.define('Ext.Praxis.controller.payments.DownloadThePaymentFiles.DownloadThePa
             pageSize: 25
         });
         grid01.setStore(store01);
-        //Ext.getCmp(prototype.id + '-pagginator-01').setStore(store01);        
+        Ext.getCmp(prototype.id + '-pagginator-01').setStore(store01);     
 
     },
     onCmbSearchChange: function (obj, records, eOpts) {
@@ -147,9 +130,12 @@ Ext.define('Ext.Praxis.controller.payments.DownloadThePaymentFiles.DownloadThePa
             case 'A':
                 value = 'green';
                 break;
-              case 'C':
+            case 'C':
                 value = 'orange';
-                break;    
+                break;
+            case 'F':
+                value = 'mediumpurple';
+                break;
             default:
                 value = 'red';
         }
@@ -283,7 +269,7 @@ Ext.define('Ext.Praxis.controller.payments.DownloadThePaymentFiles.DownloadThePa
                             var data = obj.data.items[0].data;
 
                         }
-                        me.setWidthPie();    
+                        me.setWidthPie();
                     }
                 }
             });
@@ -340,444 +326,15 @@ Ext.define('Ext.Praxis.controller.payments.DownloadThePaymentFiles.DownloadThePa
         }
     },
 
-    onGridCountryByF: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
-        let cantidad = 0
-
-        console.log(columnNum, 'columnNum')
-        switch (columnNum) {
-            case 1:
-                this.beanDetCountry.IN_TDOC = ''
-                this.beanDetCountry.IN_FSEND = 'Y'
-                this.beanDetCountry.IN_FRCV = ''
-                this.beanDetCountry.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Sent Agency'
-                cantidad = rowData.data.lngQSENT;
-                break;
-            case 2:
-                this.beanDetCountry.IN_TDOC = ''
-                this.beanDetCountry.IN_FSEND = ''
-                this.beanDetCountry.IN_FRCV = 'P'
-                this.beanDetCountry.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Not Answered'
-                cantidad = rowData.data.lngQSENTPEND;
-                break;
-            case 4:
-                this.beanDetCountry.IN_TDOC = ''
-                this.beanDetCountry.IN_FSEND = ''
-                this.beanDetCountry.IN_FRCV = 'A'
-                this.beanDetCountry.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Answered'
-                cantidad = rowData.data.lngQSENTANS;
-                break;
-            case 5:
-                this.beanDetCountry.IN_TDOC = ''
-                this.beanDetCountry.IN_FSEND = ''
-                this.beanDetCountry.IN_FRCV = '1'
-                this.beanDetCountry.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Accepted'
-                cantidad = rowData.data.lngQSENTACCEP;
-                break;
-            case 6:
-                this.beanDetCountry.IN_TDOC = ''
-                this.beanDetCountry.IN_FSEND = ''
-                this.beanDetCountry.IN_FRCV = '2'
-                this.beanDetCountry.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Rejected'
-                cantidad = rowData.data.lngQSENTREJ;
-                break;
-            case 7:
-                this.beanDetCountry.IN_TDOC = 'A'
-                this.beanDetCountry.IN_FSEND = ''
-                this.beanDetCountry.IN_FRCV = ''
-                this.beanDetCountry.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Adjustment'
-                cantidad = rowData.data.lngQADJ;
-                break;
-        }
-        console.log(cantidad, 'cantidad')
-        if (cantidad == 0) {
-            global.Msg({msg: 'Data not found.'})
-            return false
-        }
-        //CAMBIO DE GRILLA A OTRA AL BAJAR
-        me.drillDown.push(me.panelActual);
-        me.panelActual = '-panelGridDataCountryByF'
-        me.flag = 'all';
-        global.selectedChild(me.childs, prototype.id + me.panelActual);
-        this.beanDetCountry.IN_SDATE = rowData.data.SDATE;
-        console.log(this.beanDetCountry, ' this.beanDetDay')
-        me.paramsDetail.beanString = JSON.stringify(this.beanDetCountry);
-        this.setGridDataDetCountry();
-
-
-    },
-    setGridDataDetCountry: function () {
-        win.lblUser_toolTip("Estructura: MPF100");
-        me.setWidthPie();
-//        Ext.getCmp(prototype.id + '-pie').setWidth(602);
-        var msj = this.validateFields();
-        if (msj !== '') {
-            global.Msg({msg: msj
-            });
-        } else {
-            var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
-                proxy: {
-                    url: prototype.url + '/searchDetCountryByF'
-                }, listeners: {
-                    beforeload: function (obj) {
-                        obj.proxy.extraParams = me.paramsDetail;
-                        Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
-                    },
-                    load: function (obj) {
-                        Ext.getCmp(prototype.id + '-contentInfo').unmask();
-                        var pag = Ext.getCmp(prototype.id + '-paggin2');
-                        var pagData = pag.getPageData();
-                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
-                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
-                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
-                        if (obj.data.length === 0) {
-                            global.Msg({
-                                msg: 'Data not found.'
-                            });
-                        } else {
-                            var data = obj.data.items[0].data;
-                            Ext.getCmp(prototype.id + '-gridDataCountryByF').setTitle('<center style="font-size:11px;">' + data.strTitulo + '</center>');
-//                            win.setText('lblTittleByDayS', data.strTitulo);
-                        }
-                    }
-                }
-            });
-            global.clear();
-            Ext.getCmp(prototype.id + '-gridDataCountryByF').bindStore(storeGridDatas);
-            Ext.getCmp(prototype.id + '-paggin2').bindStore(storeGridDatas);
-        }
-    },
-    onGridCardByF: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
-        let cantidad = 0
-
-        console.log(columnNum, 'columnNum')
-
-        console.log(cantidad, 'cantidad')
-
-        //CAMBIO DE GRILLA A OTRA AL BAJAR
-        me.drillDown.push(me.panelActual);
-        me.panelActual = '-panelGridDataCardByF'
-        me.flag = 'all';
-        global.selectedChild(me.childs, prototype.id + me.panelActual);
-        this.beanDetCard.IN_SDATE = rowData.data.IN_SDATE;
-        this.beanDetCard.IN_FSEND = rowData.data.IN_FSEND;
-        this.beanDetCard.IN_FRCV = rowData.data.IN_FRCV;
-        this.beanDetCard.IN_TDOC = rowData.data.IN_TDOC;
-        this.beanDetCard.IN_SCURRENCY = rowData.data.SCURRENCY;
-        this.beanDetCard.IN_SCOUNTRY = rowData.data.SCOUNTRY;
-        this.beanDetCard.IN_TITLE = rowData.data.strTitulo;
-        console.log(this.beanDetCard.IN_TITLE, 'this.beanDetCard.IN_TITLE')
-        console.log(this.beanDetCard, ' this.beanDetDay')
-        me.paramsDetail.beanString = JSON.stringify(this.beanDetCard);
-        this.setGridDataDetCardByF();
-
-
-    },
-    setGridDataDetCardByF: function () {
-        win.lblUser_toolTip("Estructura: MPF100");
-        me.setWidthPie();
-//        Ext.getCmp(prototype.id + '-pie').setWidth(452);
-        var msj = this.validateFields();
-        if (msj !== '') {
-            global.Msg({msg: msj
-            });
-        } else {
-            var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
-                proxy: {
-                    url: prototype.url + '/searchDetCardByF'
-                }, listeners: {
-                    beforeload: function (obj) {
-                        obj.proxy.extraParams = me.paramsDetail;
-                        Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
-                    },
-                    load: function (obj) {
-                        Ext.getCmp(prototype.id + '-contentInfo').unmask();
-                        var pag = Ext.getCmp(prototype.id + '-paggin3');
-                        var pagData = pag.getPageData();
-                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
-                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
-                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
-                        if (obj.data.length === 0) {
-                            global.Msg({
-                                msg: 'Data not found.'
-                            });
-                        } else {
-                            var data = obj.data.items[0].data;
-                            Ext.getCmp(prototype.id + '-gridDataCardByF').setTitle('<center style="font-size:11px;">' + data.strTitulo + '</center>');
-//                            win.setText('lblTittleByDayS', data.strTitulo);
-                        }
-                    }
-                }
-            });
-            global.clear();
-            Ext.getCmp(prototype.id + '-gridDataCardByF').bindStore(storeGridDatas);
-            Ext.getCmp(prototype.id + '-paggin3').bindStore(storeGridDatas);
-        }
-    },
-    onGridDetDetailByF: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
-        let cantidad = 0
-
-        console.log(columnNum, 'columnNum')
-
-        console.log(cantidad, 'cantidad')
-
-        //CAMBIO DE GRILLA A OTRA AL BAJAR
-        me.drillDown.push(me.panelActual);
-        me.panelActual = '-panelGridDataDetDetailByF'
-        me.flag = 'all';
-        global.selectedChild(me.childs, prototype.id + me.panelActual);
-        this.beanDetDetailByF.IN_SDATE = rowData.data.IN_SDATE;
-        this.beanDetDetailByF.IN_FSEND = rowData.data.IN_FSEND;
-        this.beanDetDetailByF.IN_FRCV = rowData.data.IN_FRCV;
-        this.beanDetDetailByF.IN_TDOC = rowData.data.IN_TDOC;
-        this.beanDetDetailByF.IN_SCURRENCY = rowData.data.IN_SCURRENCY;
-        this.beanDetDetailByF.IN_SCOUNTRY = rowData.data.IN_SCOUNTRY;
-        this.beanDetDetailByF.IN_SAGENT = rowData.data.SAGENT;
-        this.beanDetDetailByF.IN_TITLE = rowData.data.strTitulo;
-        console.log(this.beanDetDetailByF.IN_TITLE, 'this.beanDetDetailByF.IN_TITLE')
-        console.log(this.beanDetDetailByF, ' this.beanDetDetailByF')
-        me.paramsDetail.beanString = JSON.stringify(this.beanDetDetailByF);
-        this.setGridDataDetDetailByF();
-    },
-    setGridDataDetDetailByF: function () {
-        win.lblUser_toolTip("Estructura: MPF100");
-        me.setWidthPie();
-//        Ext.getCmp(prototype.id + '-pie').setWidth(1102);
-        var msj = this.validateFields();
-        if (msj !== '') {
-            global.Msg({msg: msj
-            });
-        } else {
-            var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
-                proxy: {
-                    url: prototype.url + '/searchDetDetailByF'
-                }, listeners: {
-                    beforeload: function (obj) {
-                        obj.proxy.extraParams = me.paramsDetail;
-                        Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
-                    },
-                    load: function (obj) {
-                        Ext.getCmp(prototype.id + '-contentInfo').unmask();
-                        var pag = Ext.getCmp(prototype.id + '-paggin4');
-                        var pagData = pag.getPageData();
-                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
-                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
-                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
-                        if (obj.data.length === 0) {
-                            global.Msg({
-                                msg: 'Data not found.'
-                            });
-                        } else {
-                            var data = obj.data.items[0].data;
-                            Ext.getCmp(prototype.id + '-gridDetDetailByF').setTitle('<center style="font-size:11px;">' + data.strTitulo + '</center>');
-//                            win.setText('lblTittleByDayS', data.strTitulo);
-                        }
-                    }
-                }
-            });
-            global.clear();
-            Ext.getCmp(prototype.id + '-gridDetDetailByF').bindStore(storeGridDatas);
-            Ext.getCmp(prototype.id + '-paggin4').bindStore(storeGridDatas);
-        }
-    },
-    onViewClickTotal: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
-
-        this.beanDetDetailByEyes.IN_FSEND = ''
-        this.beanDetDetailByEyes.IN_FRCV = ''
-        this.beanDetDetailByEyes.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Total ADM'
-        me.drillDown.push(me.panelActual);
-        me.panelActual = '-panelGridDataDetDetailByEyes'
-        me.flag = 'all';
-        global.selectedChild(me.childs, prototype.id + me.panelActual);
-        this.beanDetDetailByEyes.IN_SDATE = rowData.data.SDATE;
-        console.log(this.beanDetDetailByEyes, ' this.beanDetDetailByEyes')
-        me.paramsDetail.beanString = JSON.stringify(this.beanDetDetailByEyes);
-        this.setGridDataDetailByEyes();
-    },
-    onViewClickSent: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
-
-        this.beanDetDetailByEyes.IN_FSEND = 'Y'
-        this.beanDetDetailByEyes.IN_FRCV = ''
-        this.beanDetDetailByEyes.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Sent Agency'
-        me.drillDown.push(me.panelActual);
-        me.panelActual = '-panelGridDataDetDetailByEyes'
-        me.flag = 'all';
-        global.selectedChild(me.childs, prototype.id + me.panelActual);
-        this.beanDetDetailByEyes.IN_SDATE = rowData.data.SDATE;
-        console.log(this.beanDetDetailByEyes, ' this.beanDetDetailByEyes')
-        me.paramsDetail.beanString = JSON.stringify(this.beanDetDetailByEyes);
-        this.setGridDataDetailByEyes();
-    },
-    onViewClickPend: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
-
-        this.beanDetDetailByEyes.IN_FSEND = 'P'
-        this.beanDetDetailByEyes.IN_FRCV = ''
-        this.beanDetDetailByEyes.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Pendings'
-        me.drillDown.push(me.panelActual);
-        me.panelActual = '-panelGridDataDetDetailByEyes'
-        me.flag = 'all';
-        global.selectedChild(me.childs, prototype.id + me.panelActual);
-        this.beanDetDetailByEyes.IN_SDATE = rowData.data.SDATE;
-        console.log(this.beanDetDetailByEyes, ' this.beanDetDetailByEyes')
-        me.paramsDetail.beanString = JSON.stringify(this.beanDetDetailByEyes);
-        this.setGridDataDetailByEyes();
-    },
-    onViewClickAns: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
-        this.beanDetDetailByEyes.IN_FSEND = ''
-        this.beanDetDetailByEyes.IN_FRCV = 'A'
-        this.beanDetDetailByEyes.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Answered'
-        me.drillDown.push(me.panelActual);
-        me.panelActual = '-panelGridDataDetDetailByEyes'
-        me.flag = 'all';
-        global.selectedChild(me.childs, prototype.id + me.panelActual);
-        this.beanDetDetailByEyes.IN_SDATE = rowData.data.SDATE;
-        console.log(this.beanDetDetailByEyes, ' this.beanDetDetailByEyes')
-        me.paramsDetail.beanString = JSON.stringify(this.beanDetDetailByEyes);
-        this.setGridDataDetailByEyes();
-    },
-    onViewClickSentPend: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
-        this.beanDetDetailByEyes.IN_FSEND = ''
-        this.beanDetDetailByEyes.IN_FRCV = 'P'
-        this.beanDetDetailByEyes.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Sent Pendings'
-        me.drillDown.push(me.panelActual);
-        me.panelActual = '-panelGridDataDetDetailByEyes'
-        me.flag = 'all';
-        global.selectedChild(me.childs, prototype.id + me.panelActual);
-        this.beanDetDetailByEyes.IN_SDATE = rowData.data.SDATE;
-        console.log(this.beanDetDetailByEyes, ' this.beanDetDetailByEyes')
-        me.paramsDetail.beanString = JSON.stringify(this.beanDetDetailByEyes);
-        this.setGridDataDetailByEyes();
-    },
-    onViewClickAccep: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
-        this.beanDetDetailByEyes.IN_FSEND = ''
-        this.beanDetDetailByEyes.IN_FRCV = '1'
-        this.beanDetDetailByEyes.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Accepted'
-        me.drillDown.push(me.panelActual);
-        me.panelActual = '-panelGridDataDetDetailByEyes'
-        me.flag = 'all';
-        global.selectedChild(me.childs, prototype.id + me.panelActual);
-        this.beanDetDetailByEyes.IN_SDATE = rowData.data.SDATE;
-        console.log(this.beanDetDetailByEyes, ' this.beanDetDetailByEyes')
-        me.paramsDetail.beanString = JSON.stringify(this.beanDetDetailByEyes);
-        this.setGridDataDetailByEyes();
-    },
-    onViewClickSentRejec: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
-        this.beanDetDetailByEyes.IN_FSEND = ''
-        this.beanDetDetailByEyes.IN_FRCV = '2'
-        this.beanDetDetailByEyes.IN_TITLE = '' + rowData.data.strFormatDate + ' - ' + 'Rejected'
-        me.drillDown.push(me.panelActual);
-        me.panelActual = '-panelGridDataDetDetailByEyes'
-        me.flag = 'all';
-        global.selectedChild(me.childs, prototype.id + me.panelActual);
-        this.beanDetDetailByEyes.IN_SDATE = rowData.data.SDATE;
-        console.log(this.beanDetDetailByEyes, ' this.beanDetDetailByEyes')
-        me.paramsDetail.beanString = JSON.stringify(this.beanDetDetailByEyes);
-        this.setGridDataDetailByEyes();
-    },
-    setGridDataDetailByEyes: function () {
-        win.lblUser_toolTip("Estructura: MPF100");
-        me.setWidthPie();
-
-        var msj = this.validateFields();
-        if (msj !== '') {
-            global.Msg({msg: msj
-            });
-        } else {
-            var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
-                proxy: {
-                    url: prototype.url + '/searchDetailByEyes'
-                }, listeners: {
-                    beforeload: function (obj) {
-                        obj.proxy.extraParams = me.paramsDetail;
-                        Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
-                    },
-                    load: function (obj) {
-                        Ext.getCmp(prototype.id + '-contentInfo').unmask();
-                        var pag = Ext.getCmp(prototype.id + '-paggin6');
-                        var pagData = pag.getPageData();
-                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
-                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
-                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
-                        if (obj.data.length === 0) {
-                            global.Msg({
-                                msg: 'Data not found.'
-                            });
-                        } else {
-                            var data = obj.data.items[0].data;
-                            Ext.getCmp(prototype.id + '-gridDetDetailByEyes').setTitle('<center style="font-size:11px;">' + data.strTitulo + '</center>');
-//                            win.setText('lblTittleByDayS', data.strTitulo);
-                        }
-                    }
-                }
-            });
-            global.clear();
-            Ext.getCmp(prototype.id + '-gridDetDetailByEyes').bindStore(storeGridDatas);
-            Ext.getCmp(prototype.id + '-paggin6').bindStore(storeGridDatas);
-        }
-    },
-    onViewClickCountry: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
-
-        this.beanDetDetailByEyesCountry.IN_SDATE = rowData.data.IN_SDATE;
-        this.beanDetDetailByEyesCountry.IN_FSEND = rowData.data.IN_FSEND;
-        this.beanDetDetailByEyesCountry.IN_FRCV = rowData.data.IN_FRCV;
-        this.beanDetDetailByEyesCountry.IN_TDOC = rowData.data.IN_TDOC;
-        this.beanDetDetailByEyesCountry.IN_SCURRENCY = rowData.data.SCURRENCY;
-        this.beanDetDetailByEyesCountry.IN_SCOUNTRY = rowData.data.SCOUNTRY;
-        this.beanDetDetailByEyesCountry.IN_TITLE = rowData.data.strTitulo;
-        me.drillDown.push(me.panelActual);
-        me.panelActual = '-panelGridDataDetDetailByEyesCountry'
-        me.flag = 'all';
-        global.selectedChild(me.childs, prototype.id + me.panelActual);
-        console.log(this.beanDetDetailByEyesCountry, ' this.beanDetDetailByEyesCountry')
-        me.paramsDetail.beanString = JSON.stringify(this.beanDetDetailByEyesCountry);
-        this.setGridDataDetailByEyesCountry();
-    },
-    setGridDataDetailByEyesCountry: function () {
-        win.lblUser_toolTip("Estructura: MPF100");
-        me.setWidthPie();
-
-        var msj = this.validateFields();
-        if (msj !== '') {
-            global.Msg({msg: msj
-            });
-        } else {
-            var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
-                proxy: {
-                    url: prototype.url + '/searchDetailByEyesCountry'
-                }, listeners: {
-                    beforeload: function (obj) {
-                        obj.proxy.extraParams = me.paramsDetail;
-                        Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
-                    },
-                    load: function (obj) {
-                        Ext.getCmp(prototype.id + '-contentInfo').unmask();
-                        var pag = Ext.getCmp(prototype.id + '-paggin7');
-                        var pagData = pag.getPageData();
-                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
-                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
-                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
-                        if (obj.data.length === 0) {
-                            global.Msg({
-                                msg: 'Data not found.'
-                            });
-                        } else {
-                            var data = obj.data.items[0].data;
-                            Ext.getCmp(prototype.id + '-gridDetDetailByEyesCountry').setTitle('<center style="font-size:11px;">' + data.strTitulo + '</center>');
-//                            win.setText('lblTittleByDayS', data.strTitulo);
-                        }
-                    }
-                }
-            });
-            global.clear();
-            Ext.getCmp(prototype.id + '-gridDetDetailByEyesCountry').bindStore(storeGridDatas);
-            Ext.getCmp(prototype.id + '-paggin7').bindStore(storeGridDatas);
-        }
-    },
-
     validateFields: function () {
         var msj = '';
         var bean = searchParams.bean;
 
         return msj;
+    },
+    onPagingBeforeChange01: function (obj, page, opts) {
+        var me = this;
+        obj.store.proxy.extraParams =  me.beanTM;
     },
     viewDataEntry_clickHandler: function (grid, rowIndex, colIndex) {
         var me = this;
@@ -798,8 +355,8 @@ Ext.define('Ext.Praxis.controller.payments.DownloadThePaymentFiles.DownloadThePa
                 type = 'CODE';
             } else if (Ext.String.trim(rec.data.A4719TYPE) === 'SAFE') {
                 type = 'SAFE';
-            }else{
-                type=Ext.String.trim(rec.data.A4719TYPE);
+            } else {
+                type = Ext.String.trim(rec.data.A4719TYPE);
             }
 
 
@@ -876,24 +433,6 @@ Ext.define('Ext.Praxis.controller.payments.DownloadThePaymentFiles.DownloadThePa
         switch (me.panelActual) {
             case  '-panelGridDataMain':
                 me.pagginActual = '-paggin';
-                break;
-            case  '-panelGridDataCountryByF':
-                me.pagginActual = '-paggin2';
-                break;
-            case  '-panelGridDataCardByF':
-                me.pagginActual = '-paggin3';
-                break;
-            case  '-panelGridDataDetDetailByF':
-                me.pagginActual = '-paggin4';
-                break
-            case  '-panelGridDataDet':
-                me.pagginActual = '-paggin5';
-                break;
-            case  '-panelGridDataDetDetailByEyes':
-                me.pagginActual = '-paggin6';
-                break;
-            case  '-panelGridDataDetDetailByEyesCountry':
-                me.pagginActual = '-paggin7';
                 break;
         }
     },

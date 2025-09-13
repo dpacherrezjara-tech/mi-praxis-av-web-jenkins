@@ -26,7 +26,8 @@ Ext.define('Ext.Praxis.controller.payments.ExecutionSchedule.DataEntryExecutionS
                 Ext.getCmp(prototype.id01 + '-btn-save').hide();
                 Ext.getCmp(prototype.id01 + '-btn-update').show();
                 Ext.getCmp(prototype.id01 + '-btn-delete').show();
-                Ext.getCmp(prototype.id01 + '-txtExecdate').setValue(rec.get('A4718FDCAR').substring(0, 4) + "/" + rec.get('A4718FDCAR').substring(4, 6) + "/" + rec.get('A4718FDCAR').substring(6, 8));//Ext.String.trim(rec.get('A4718FDCAR')));
+                Ext.getCmp(prototype.id01 + '-txtStartdate').setValue(rec.get('A4718FINI').substring(0, 4) + "/" + rec.get('A4718FINI').substring(4, 6) + "/" + rec.get('A4718FINI').substring(6, 8));//Ext.String.trim(rec.get('A4718FDCAR')));
+                Ext.getCmp(prototype.id01 + '-txtEnddate').setValue(rec.get('A4718FFIN').substring(0, 4) + "/" + rec.get('A4718FFIN').substring(4, 6) + "/" + rec.get('A4718FFIN').substring(6, 8));//Ext.String.trim(rec.get('A4718FDCAR')));
                 Ext.getCmp(prototype.id01 + '-CmbProceType').setValue(Ext.String.trim(rec.get('A4718TYPE')));
                 Ext.getCmp(prototype.id01 + '-CmbStatus').setValue(Ext.String.trim(rec.get('A4718ESTAT')));
 
@@ -52,7 +53,8 @@ Ext.define('Ext.Praxis.controller.payments.ExecutionSchedule.DataEntryExecutionS
                 Ext.getCmp(prototype.id01 + '-btn-update').hide();
                 Ext.getCmp(prototype.id01 + '-btn-delete').hide();
 
-                Ext.getCmp(prototype.id01 + '-txtExecdate').setValue('');
+                Ext.getCmp(prototype.id01 + '-txtStartdate').setValue('');
+                Ext.getCmp(prototype.id01 + '-txtEnddate').setValue('');
                 Ext.getCmp(prototype.id01 + '-CmbProceType').setValue('');
                 Ext.getCmp(prototype.id01 + '-txtA3406REGIS').setValue('');
                 Ext.getCmp(prototype.id01 + '-txtA3406FREGI').setValue('');
@@ -104,13 +106,18 @@ Ext.define('Ext.Praxis.controller.payments.ExecutionSchedule.DataEntryExecutionS
     onDeleteClick: function (obj) {
         var me = this;
         me.beanTMP.IN_OPTION = 'D';
-        me.beanTMP.A4718FDCAR = Ext.getCmp(prototype.id01 + '-txtExecdate').getRawValue();
+        me.beanTMP.A4718FINI = Ext.getCmp(prototype.id01 + '-txtStartdate').getRawValue();
+        me.beanTMP.A4718FFIN = Ext.getCmp(prototype.id01 + '-txtEnddate').getRawValue();
         me.beanTMP.A4718TYPE = Ext.getCmp(prototype.id01 + '-CmbProceType').getValue();
         me.beanTMP.A4718FECIN = Ext.getCmp(prototype.id01 + '-txtA3406FREGI').getValue();
         me.beanTMP.A4718ESTAT = Ext.getCmp(prototype.id01 + '-CmbStatus').getValue();
 
 
-        if (me.beanTMP.A4718FDCAR === '') {
+        if (me.beanTMP.A4718FINI === '') {
+            Ext.Msg.alert('.: PRAXIS :.', 'Required Field, Execution date');
+            return;
+        }
+        if (me.beanTMP.A4718FFIN === '') {
             Ext.Msg.alert('.: PRAXIS :.', 'Required Field, Execution date');
             return;
         }
@@ -169,13 +176,18 @@ Ext.define('Ext.Praxis.controller.payments.ExecutionSchedule.DataEntryExecutionS
 
         if (action === 'I') {
             me.beanTMP.IN_OPTION = action;
-            me.beanTMP.A4718FDCAR = Ext.getCmp(prototype.id01 + '-txtExecdate').getRawValue();
+            me.beanTMP.A4718FINI = Ext.getCmp(prototype.id01 + '-txtStartdate').getRawValue();
+            me.beanTMP.A4718FFIN = Ext.getCmp(prototype.id01 + '-txtEnddate').getRawValue();
             me.beanTMP.A4718TYPE = Ext.getCmp(prototype.id01 + '-CmbProceType').getValue();
             me.beanTMP.A4718FECIN = Ext.getCmp(prototype.id01 + '-txtA3406FREGI').getValue();
             me.beanTMP.A4718ESTAT = Ext.getCmp(prototype.id01 + '-CmbStatus').getValue();
 
 
-            if (me.beanTMP.A4718FDCAR === '') {
+            if (me.beanTMP.A4718FINI === '') {
+                Ext.Msg.alert('.: PRAXIS :.', 'Required Field, Execution date');
+                return;
+            }
+            if (me.beanTMP.A4718FFIN === '') {
                 Ext.Msg.alert('.: PRAXIS :.', 'Required Field, Execution date');
                 return;
             }
@@ -229,13 +241,18 @@ Ext.define('Ext.Praxis.controller.payments.ExecutionSchedule.DataEntryExecutionS
             });
         } else if (action === 'U' || action === 'D') {
             me.beanTMP.IN_OPTION = action;
-            me.beanTMP.A4718FDCAR = Ext.getCmp(prototype.id01 + '-txtExecdate').getRawValue();
+            me.beanTMP.A4718FINI = Ext.getCmp(prototype.id01 + '-txtStartdate').getRawValue();
+            me.beanTMP.A4718FFIN = Ext.getCmp(prototype.id01 + '-txtEnddate').getRawValue();
             me.beanTMP.A4718TYPE = Ext.getCmp(prototype.id01 + '-CmbProceType').getValue();
             me.beanTMP.A4718FECIN = Ext.getCmp(prototype.id01 + '-txtA3406FREGI').getValue();
             me.beanTMP.A4718ESTAT = Ext.getCmp(prototype.id01 + '-CmbStatus').getValue();
 
 
-            if (me.beanTMP.A4718FDCAR === '') {
+            if (me.beanTMP.A4718FINI === '') {
+                Ext.Msg.alert('.: PRAXIS :.', 'Required Field, Execution date');
+                return;
+            }
+            if (me.beanTMP.A4718FFIN === '') {
                 Ext.Msg.alert('.: PRAXIS :.', 'Required Field, Execution date');
                 return;
             }
