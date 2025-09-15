@@ -972,7 +972,18 @@ public class A2290Filter extends A2290 {
     public long lng21_30 = 0; 
     public long lng31_40 = 0; 
     public long lng41_MAS = 0; 
-
+    
+    
+    //CASH
+    public String TINPUT = "";
+    public String STRDATE = "";
+    public String ENDDATE = "";
+    public double PAYAMOU = 0;
+    public double SETADJ = 0;
+    public double BILADJ = 0;
+    public String CONCEPT = "";
+    public String REFERENCE = "";
+    public String COMMENTS = "";
 
     
     //Update

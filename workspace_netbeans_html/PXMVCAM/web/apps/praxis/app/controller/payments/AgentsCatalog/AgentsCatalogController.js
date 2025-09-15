@@ -443,7 +443,7 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.AgentsCatalogController
     },
     setWidthPie: function () {
         var ancho = Ext.getCmp(prototype.id + me.panelActual).getWidth();
-        Ext.getCmp(prototype.id + '-pie').setWidth(ancho);
+//        Ext.getCmp(prototype.id + '-pie').setWidth(ancho);
     },
     getPaggin: function () {
         me.pagginActual = '';
