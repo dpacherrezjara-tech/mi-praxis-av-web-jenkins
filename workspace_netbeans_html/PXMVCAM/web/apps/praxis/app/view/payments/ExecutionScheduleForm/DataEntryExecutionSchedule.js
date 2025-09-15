@@ -40,29 +40,24 @@ Ext.define('Ext.Praxis.view.payments.ExecutionScheduleForm.DataEntryExecutionSch
 
                         {
                             xtype: 'datefield',
-                            id: prototype.id01 + '-txtExecdate',
-                            fieldLabel: 'Execution date',
+                            id: prototype.id01 + '-txtStartdate',
+                            fieldLabel: 'Start date',
                             afterLabelTextTpl: '<b style="color: #BF6868;"> (*)</b>',
                             enforceMaxLength: true,
                             format: 'Y/m/d',
-                            labelWidth: 110,
+                            labelWidth: 85,
                             width: 200
                         },
+                        {xtype: 'tbspacer', width: 10},
                         {
-                            xtype: 'combo',
-                            id: prototype.id01 + '-CmbProceType',
-                            fieldLabel: 'Processor Type',
+                            xtype: 'datefield',
+                            id: prototype.id01 + '-txtEnddate',
+                            fieldLabel: 'End date',
                             afterLabelTextTpl: '<b style="color: #BF6868;"> (*)</b>',
-                            valueField: 'code',
-                            displayField: 'name',
-                            emptyText: '[SELECTED]',
-                            labelWidth: 130,
-                            width: 250,
-                            labelAlign: 'right',
-                            listConfig: {
-                                minWidth: 300
-                            },
-                            queryMode: 'local'
+                            enforceMaxLength: true,
+                            format: 'Y/m/d',
+                            labelWidth: 85,
+                            width: 200
                         }
 
                     ]
@@ -71,7 +66,22 @@ Ext.define('Ext.Praxis.view.payments.ExecutionScheduleForm.DataEntryExecutionSch
                     xtype: 'panel',
                     layout: 'hbox',
                     items: [
-
+                        {
+                            xtype: 'combo',
+                            id: prototype.id01 + '-CmbProceType',
+                            fieldLabel: 'Processor Type',
+                            afterLabelTextTpl: '<b style="color: #BF6868;"> (*)</b>',
+                            valueField: 'code',
+                            displayField: 'name',
+                            emptyText: '[SELECTED]',
+                            labelWidth: 110,
+                            width: 250,
+                            listConfig: {
+                                minWidth: 300
+                            },
+                            queryMode: 'local'
+                        },
+                        {xtype: 'tbspacer', width: 10},
                         {
                             xtype: 'combo',
                             id: prototype.id01 + '-CmbStatus',
@@ -80,7 +90,7 @@ Ext.define('Ext.Praxis.view.payments.ExecutionScheduleForm.DataEntryExecutionSch
                             valueField: 'code',
                             displayField: 'name',
                             emptyText: '[SELECTED]',
-                            labelWidth: 110,
+                            labelWidth: 65,
                             width: 200,
                             queryMode: 'local'
                         }

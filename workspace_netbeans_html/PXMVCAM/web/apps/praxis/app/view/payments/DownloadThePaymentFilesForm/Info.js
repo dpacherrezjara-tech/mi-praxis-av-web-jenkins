@@ -50,7 +50,7 @@ Ext.define('Ext.Praxis.view.payments.DownloadThePaymentFilesForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataMain',
                                     height: 520,
-                                    width: 800,
+                                    width: 850,
                                     columnLines: true,
                                     columns: {
                                         defaults: {
@@ -61,7 +61,9 @@ Ext.define('Ext.Praxis.view.payments.DownloadThePaymentFilesForm.Info', {
                                         items:
                                                 [
                                                     {text: 'System </br>date', dataIndex: 'A4719FECIN', width: 75},
-                                                    {text: 'Execution </br>date', dataIndex: 'A4719FCARG', width: 75},
+                                                    {text: 'Start </br>date', dataIndex: 'A4719FCARG', width: 75},
+                                                    {text: 'End </br>date', dataIndex: 'A4719FFIN', width: 75},
+                                                    //{text: 'Execution </br>date', dataIndex: 'A4719FCARG', width: 75},
                                                     {text: 'Processor </br> type', dataIndex: 'A4719TYPEDES', width: 200},
                                                     {text: 'Status', dataIndex: 'A4719ESTATDES', width: 200, sortable: false, align: 'right'},
                                                     {text: 'Report </br> code', dataIndex: 'A4719CODEF', width: 80},
@@ -89,20 +91,22 @@ Ext.define('Ext.Praxis.view.payments.DownloadThePaymentFilesForm.Info', {
                         },
                         {
                             xtype: 'panel',
-                            id: prototype.id + '-pie',
+                            id: prototype.id + '-pagginator-legend',
                             layout: {
                                 type: 'hbox',
                                 pack: 'center'
                             },
-                            border: false,
-                            width: 1040,
-                            margin: '10 0 0 0 ',
-                            height: 25,
-                            bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
+                            border: true,
+                            bodyStyle: 'background-color: transparent;',
+                            defaults: {
+                                border: false,
+                                padding: '0px 5px 0px 5px'
+                            },
+                            padding: '1px 5px 1px 5px',
                             items: [
                                 {
                                     xtype: 'panel',
-                                    width: 1040,
+                                    width: prototype.widthContenedor,
                                     height: 25,
                                     layout: {
                                         type: 'hbox',
@@ -110,6 +114,7 @@ Ext.define('Ext.Praxis.view.payments.DownloadThePaymentFilesForm.Info', {
                                     },
                                     defaults: {
                                         xtype: 'label',
+                                        margin: '3px 0px 0px 5px'
                                     },
                                     items: [
                                         {
@@ -137,6 +142,16 @@ Ext.define('Ext.Praxis.view.payments.DownloadThePaymentFilesForm.Info', {
                                         },
                                         {
                                             id: prototype.id + '-lbl-total',
+                                            text: '0',
+                                            width: 50
+                                        },
+                                        {xtype: 'tbspacer', width: 20},
+                                        {
+                                            text: 'Total ADMs',
+                                            width: 80
+                                        },
+                                        {
+                                            id: prototype.id + '-lblRowsTotalADM',
                                             text: '0',
                                             width: 50
                                         }

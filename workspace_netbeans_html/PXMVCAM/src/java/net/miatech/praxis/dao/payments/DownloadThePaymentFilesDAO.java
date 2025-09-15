@@ -72,6 +72,7 @@ public class DownloadThePaymentFilesDAO {
                 objRtn = new A4719Filter();
                 objRtn.A4719CCUST = rs01.getString("A4719CCUST");
                 objRtn.A4719FCARG = rs01.getString("A4719FCARG");
+                 objRtn.A4719FFIN = rs01.getString("A4719FFIN");
                 objRtn.A4719TYPE = rs01.getString("A4719TYPE");
                 objRtn.A4719TYPEDES = rs01.getString("A4719TYPEDES");
                 objRtn.A4719ESTAT = rs01.getString("A4719ESTAT");

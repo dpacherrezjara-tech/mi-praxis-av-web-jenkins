@@ -72,7 +72,8 @@ public class ExecutionScheduleDAO {
             while (rs01.next()) {
                 objRtn = new A4718Filter();
                 objRtn.A4718CCUST = rs01.getString("A4718CCUST");
-                objRtn.A4718FDCAR = rs01.getString("A4718FDCAR");
+                objRtn.A4718FINI = rs01.getString("A4718FINI");
+                objRtn.A4718FFIN = rs01.getString("A4718FFIN");
                 objRtn.A4718TYPE = rs01.getString("A4718TYPE");
                 objRtn.A4718TYPEDES = rs01.getString("A4718TYPEDES");
                 objRtn.A4718ESTAT = rs01.getString("A4718ESTAT");
@@ -118,7 +119,7 @@ public class ExecutionScheduleDAO {
         String strRtn = "";
         CallableStatement cstmt01 = null;
         ResultSet rs01 = null;
-        String SQLCLL01 = "{CALL PRAXISAV.SQP05571(?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISAV.SQP05571(?,?,?,?,?,?,?,?,?,?)}";
         Connection cnx = null;
         String strUsuario, strFecha, strHora;
         try {
@@ -132,13 +133,14 @@ public class ExecutionScheduleDAO {
             cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.IN_OPTION);
             cstmt01.setString(3, filter.A4718TYPE);
-            cstmt01.setString(4, filter.A4718FDCAR);
-            cstmt01.setString(5, filter.A4718FECIN);
-            cstmt01.setString(6, filter.A4718ESTAT);
+            cstmt01.setString(4, filter.A4718FINI);
+            cstmt01.setString(5, filter.A4718FFIN);
+            cstmt01.setString(6, filter.A4718FECIN);
+            cstmt01.setString(7, filter.A4718ESTAT);
 
-            cstmt01.setString(7, strUsuario);
-            cstmt01.setString(8, strFecha);
-            cstmt01.setString(9, strHora);
+            cstmt01.setString(8, strUsuario);
+            cstmt01.setString(9, strFecha);
+            cstmt01.setString(10, strHora);
             cstmt01.execute();
             rs01 = cstmt01.getResultSet();
             while (rs01.next()) {
