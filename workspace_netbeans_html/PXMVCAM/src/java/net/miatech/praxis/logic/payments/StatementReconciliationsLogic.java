@@ -30,6 +30,9 @@ public class StatementReconciliationsLogic {
     public List<A2290Filter> loadPX287SQP00838(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00838(filter);
     }
+    public List<A2290Filter> loadPX001CASH(A2290Filter filter) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadPX001CASH(filter);
+    }
     
     public List<A2290Filter> loadPX287SQP00838PEND(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00838PEND(filter);
@@ -66,6 +69,9 @@ public class StatementReconciliationsLogic {
     public List<A2290Filter> loadPX287SQP00841(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00841(filter);
     }
+    public List<A2290Filter> loadPX002CASH(A2290Filter filter) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadPX002CASH(filter);
+    }
     
     public List<A2290Filter> loadPX287SQP00841DetailProceByS(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00841DetailProceByS(filter);
@@ -90,6 +96,9 @@ public class StatementReconciliationsLogic {
     public A2290Filter loadPX287SQP00844(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00844(filter);
     }
+    public A2290Filter loadPXSQP005CASH(A2290Filter filter) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadPXSQP005CASH(filter);
+    }
     
     public A2290Filter loadPX287SQP00844MPF060_DE(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00844MPF060_DE(filter);
@@ -113,6 +122,9 @@ public class StatementReconciliationsLogic {
     
     public List<A2290Filter> loadPX269SQP05114Detail(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX269SQP05114Detail(filter);
+    }
+    public List<A2290Filter> loadPXDetailCASHLIQUID(A2290Filter filter) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadPXDetailCASHLIQUID(filter);
     }
 
     public String loadPX269SQP05115(List<A2290Filter> filter, UserView user) throws SQLException, Exception {

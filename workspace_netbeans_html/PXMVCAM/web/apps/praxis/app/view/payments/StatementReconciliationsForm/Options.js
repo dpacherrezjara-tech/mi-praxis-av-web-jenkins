@@ -189,6 +189,23 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Options', {
                             border: false,
                             displayInfo: false,
                             hidden: true
+                        },
+                        // Esto es para cash
+                        {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id + '-paggin19',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
+                        },
+                        {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id + '-paggin20',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
                         }
 
                     ]

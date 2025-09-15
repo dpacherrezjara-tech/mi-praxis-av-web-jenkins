@@ -71,6 +71,7 @@ public class CalendarControlBSPController extends BaseController {
         try {
             filter.IN_A1529ISOC = request.getParameter("IN_A1529ISOC").trim();
             filter.IN_A1529BAED = request.getParameter("IN_A1529BAED").trim();
+            filter.IN_A1529CUTO = request.getParameter("IN_A1529CUTO").trim();
             
             logic = new CalendarControlBSPLogic();
             logic.setSession((IServerSession) serverSession.getServerSession());
