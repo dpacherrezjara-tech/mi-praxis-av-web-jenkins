@@ -284,4 +284,20 @@ public class BankReconciliationLogic {
     public String loadPX598update_cerror_conci(A2290Filter filter, UserView user) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX598update_cerror_conci(filter,user);
     }
+    
+    public List<A2290Filter> loadPX269SQP00698MainCash(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP00698MainCash(filter);
+    }
+    
+    public List<A2290Filter> loadPX269SQP00698CountryCash(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP00698CountryCash(filter);
+    }
+    
+    public List<A2290Filter> loadPX269SQP00698DayCash(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP00698DayCash(filter);
+    }
+    
+    public List<A2290Filter> loadPX269SQP00698DetalleCash(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269SQP00698DetalleCash(filter);
+    }
 }
