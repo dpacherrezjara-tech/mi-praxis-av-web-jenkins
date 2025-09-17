@@ -255,16 +255,15 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.DataEntrys.ProcessDataEnt
                         hidden: false
                     },
                     items: [
-                        {
+                         {
                             xtype: 'combobox',
                             fieldLabel: 'Client',
                             name: 'IN_CCUST',
                             store: Ext.create('Ext.data.SimpleStore', {
                                 fields: ['code', 'name'],
                                 data: [
-                                    ['134', 'AB - ARUBA '],
-                                    ['202', 'BM - MADURO'],
-                                    ['547', 'VS - VISANET'],
+                                    ['134', 'AV - AVIANCA'],
+                                    ['202', 'TA - TACA']
                                 ]
                             }),
                             labelWidth: 80,
@@ -274,6 +273,26 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.DataEntrys.ProcessDataEnt
                             queryMode: 'local',
                             editable: false,
                             value: '134'
+                        },
+                        {
+                            xtype: 'combobox',
+                            fieldLabel: 'Processor',
+                            name: 'IN_CODPRO',
+                            store: Ext.create('Ext.data.SimpleStore', {
+                                fields: ['code', 'name'],
+                                data: [
+                                    ['AB', 'AB - ARUBA '],
+                                    ['BM', 'BM - MADURO'],
+                                    ['VN', 'VS - VISANET']
+                                ]
+                            }),
+                            labelWidth: 80,
+                            width: 210,
+                            displayField: 'name',
+                            valueField: 'code',
+                            queryMode: 'local',
+                            editable: false,
+                            value: 'AB'
                         }
                     ]
                 },

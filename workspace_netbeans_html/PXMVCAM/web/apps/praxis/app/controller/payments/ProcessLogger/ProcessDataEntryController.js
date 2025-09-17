@@ -156,16 +156,16 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessDataEntryControl
         }
     },
     processPO: async function () {
-        console.log('processPO')
+        console.log('processPO');
         let usuario = document.getElementById("menuUser").innerText;
         let filters = Ext.getCmp(prototype.idProcess + '-formPO').getForm().getValues();
         let params = {
             IN_USER: usuario,
             ...filters
         };
-        console.log('user',user);
-//        await global.callAPIPostAsync('ProcessLog', 'processPOConciliations', params);
-//        new AWN().info('Process Running');
+        console.log('Parameters',params);
+        await global.callAPIPostAsync('ProcessLog', 'processPhaseOpe', params);
+        new AWN().info('Process Running');
     },
     onChangeTypeProcessF2: function (btn) {
         const valueDates = Ext.getCmp(prototype.idProcess + '-valueDatesF2');
