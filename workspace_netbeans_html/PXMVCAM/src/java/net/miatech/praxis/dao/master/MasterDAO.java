@@ -1910,7 +1910,7 @@ public class MasterDAO {
     public Connection getIBMDB2Connection() {
 
         //String url = "jdbc:as400://10.0.0.25/PRAXIS;libraries=PRAXIS"; //PRODUCCION
-        String url = "jdbc:as400://10.0.0.47/PRAXIS;libraries=PRAXISMP"; //DESARROLLO
+        String url = "jdbc:as400://10.0.0.217/PRAXIS;libraries=PRAXISMP"; //DESARROLLO
 
         try {
             Class.forName("com.ibm.as400.access.AS400JDBCDriver");
