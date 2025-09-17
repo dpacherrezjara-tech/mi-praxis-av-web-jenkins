@@ -1916,7 +1916,7 @@ public class MasterDAO {
             Class.forName("com.ibm.as400.access.AS400JDBCDriver");
             DriverManager.setLoginTimeout(60 * 10); // 10min
 
-            return DriverManager.getConnection(url, "RBTAVIANCA", "rbtavia"); //DESARROLLO
+            return DriverManager.getConnection(url, "RBTAVIANCA", "IMAGENES8"); //DESARROLLO
             //return DriverManager.getConnection(url, "USRWEBAV", "gt23yv90");//PRODUCCION
         } catch (Exception ex) {
             return null;
