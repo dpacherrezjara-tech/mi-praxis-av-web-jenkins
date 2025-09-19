@@ -1595,7 +1595,7 @@ public class AbnormalValueDAO {
 
     }
     
-    public List<WRF016Filterwk> loadPX109SQP01231_AGENTBK(DashboardFilter filter) throws SQLException, Exception {
+    public List<WRF016Filterwk> loadPX109SQP01231_AGENT(DashboardFilter filter) throws SQLException, Exception {
         List<WRF016Filterwk> lista = new ArrayList<WRF016Filterwk>(0);
         WRF016Filterwk objRtn;
         int CP1 = 0, CP2 = 0, CP3 = 0, CP4 = 0, CP5 = 0, CP6 = 0, TKT1 = 0, TKT2 = 0, TKT3 = 0, TKT4 = 0, TKT5 = 0, TKT6 = 0;
@@ -1604,7 +1604,7 @@ public class AbnormalValueDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.SQP01231_V12(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.SQP_PROBANDO_v12(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1659,27 +1659,27 @@ public class AbnormalValueDAO {
             rst = cstmt.getResultSet();
 
             while (rst.next()) {
-//                AMT1 = rst.getDouble("M1");
-//                CP1 = rst.getInt("C1");
-//                TKT1 = rst.getInt("T1");
-//                AMT2 = rst.getDouble("M2");
-//                CP2 = rst.getInt("C2");
-//                TKT2 = rst.getInt("T2");
-//                AMT3 = rst.getDouble("M3");
-//                CP3 = rst.getInt("C3");
-//                TKT3 = rst.getInt("T3");
-//                AMT4 = rst.getDouble("M4");
-//                CP4 = rst.getInt("C4");
-//                TKT4 = rst.getInt("T4");
-//                AMT5 = rst.getDouble("M5");
-//                CP5 = rst.getInt("C5");
-//                TKT5 = rst.getInt("T5");
-//                AMT6 = rst.getDouble("M6");
-//                CP6 = rst.getInt("C6");
-//                TKT6 = rst.getInt("T6");
-//                //TOTDIFF = rst.getDouble("TOTDIFF");
-//                PROMEDIO = rst.getDouble("PROMEDIO");
-//                TOTVAR = rst.getDouble("TOTVAR");
+                AMT1 = rst.getDouble("M1_CC");
+                CP1 = rst.getInt("C1_CC");
+                TKT1 = rst.getInt("T1_CC");
+                AMT2 = rst.getDouble("M2_CC");
+                CP2 = rst.getInt("C2_CC");
+                TKT2 = rst.getInt("T2_CC");
+                AMT3 = rst.getDouble("M3_CC");
+                CP3 = rst.getInt("C3_CC");
+                TKT3 = rst.getInt("T3_CC");
+                AMT4 = rst.getDouble("M4_CC");
+                CP4 = rst.getInt("M4_CC");
+                TKT4 = rst.getInt("T4_CC");
+                AMT5 = rst.getDouble("M5_CC");
+                CP5 = rst.getInt("C5_CC");
+                TKT5 = rst.getInt("T5_CC");
+                AMT6 = rst.getDouble("M6_CC");
+                CP6 = rst.getInt("C6_CC");
+                TKT6 = rst.getInt("T6_CC");
+                //TOTDIFF = rst.getDouble("TOTDIFF");
+                PROMEDIO = rst.getDouble("PROMEDIO_CC");
+                TOTVAR = rst.getDouble("TOTVAR_CC");
 
             }
             rst.close();
@@ -1695,30 +1695,31 @@ public class AbnormalValueDAO {
                     objRtn.strFormatDate1 = rst.getString("CANAV");
                     objRtn.COMENT1 = rst.getString("CANAL");//TYPE
 
-//                    objRtn.Aud1 = rst.getDouble("M1");
-//                    objRtn.Rej1 = rst.getInt("C1");
-//                    objRtn.Sup1 = rst.getInt("T1");
-//                    //objRtn.Rate1 = rst.getDouble("TOTGEN");
-//
-//                    objRtn.Aud2 = rst.getDouble("M2");
-//                    objRtn.Rej2 = rst.getInt("C2");
-//                    objRtn.Sup2 = rst.getInt("T2");
-//
-//                    objRtn.Aud3 = rst.getDouble("M3");
-//                    objRtn.Rej3 = rst.getInt("C3");
-//                    objRtn.Sup3 = rst.getInt("T3");
-//
-//                    objRtn.Aud4 = rst.getDouble("M4");
-//                    objRtn.Rej4 = rst.getInt("C4");
-//                    objRtn.Sup4 = rst.getInt("T4");
-//
-//                    objRtn.Aud5 = rst.getDouble("M5");
-//                    objRtn.Rej5 = rst.getInt("C5");
-//                    objRtn.Sup5 = rst.getInt("T5");
-//
-//                    objRtn.Aud6 = rst.getDouble("M6");
-//                    objRtn.Rej6 = rst.getInt("C6");
-//                    objRtn.Sup6 = rst.getInt("T6");
+                    objRtn.Aud1 = rst.getDouble("M1_CC");
+                    objRtn.Rej1 = rst.getInt("C1_CC");
+                    objRtn.Sup1 = rst.getInt("T1_CC");
+                    //objRtn.Rate1 = rst.getDouble("TOTGEN");
+
+                    objRtn.Aud2 = rst.getDouble("M2_CC");
+                    objRtn.Rej2 = rst.getInt("C2_CC");
+                    objRtn.Sup2 = rst.getInt("T2_CC");
+
+                    objRtn.Aud3 = rst.getDouble("M3_CC");
+                    objRtn.Rej3 = rst.getInt("C3_CC");
+                    objRtn.Sup3 = rst.getInt("T3_CC");
+
+                    objRtn.Aud4 = rst.getDouble("M4_CC");
+                    objRtn.Rej4 = rst.getInt("C4_CC");
+                    objRtn.Sup4 = rst.getInt("T4_CC");
+
+                    objRtn.Aud5 = rst.getDouble("M5_CC");
+                    objRtn.Rej5 = rst.getInt("C5_CC");
+                    objRtn.Sup5 = rst.getInt("T5_CC");
+
+                    objRtn.Aud6 = rst.getDouble("M6_CC");
+                    objRtn.Aud6CA = rst.getDouble("M6_CA");
+                    objRtn.Rej6 = rst.getInt("C6_CC");
+                    objRtn.Sup6 = rst.getInt("T6_CC");
 
                     objRtn.Rate2_CC = rst.getDouble("PROMEDIO_CC");
                     objRtn.Rate2_CA = rst.getDouble("PROMEDIO_CA");
@@ -1738,30 +1739,33 @@ public class AbnormalValueDAO {
                     
                     objRtn.STATUS_E = rst.getString("STATUS_E");
                     objRtn.RISKSTATUS_E = rst.getString("RISKSTATUS_E");
+                    
+                    objRtn.CANT_MESES_CC = rst.getDouble("CANT_MESES_CC");
+                    objRtn.CANT_MESES_CA = rst.getDouble("CANT_MESES_CA");
 
-                    //objRtn.Rate4 = TOTGEN;
-//                    objRtn.Rate4 = TOTDIFF;
-//                    objRtn.Rate5 = PROMEDIO;
-//                    objRtn.Rate6 = TOTVAR;
-//
-//                    objRtn.totNet1 = AMT1;
-//                    objRtn.totRej1 = CP1;
-//                    objRtn.totSup1 = TKT1;
-//                    objRtn.totNet2 = AMT2;
-//                    objRtn.totRej2 = CP2;
-//                    objRtn.totSup2 = TKT2;
-//                    objRtn.totNet3 = AMT3;
-//                    objRtn.totRej3 = CP3;
-//                    objRtn.totSup3 = TKT3;
-//                    objRtn.totNet4 = AMT4;
-//                    objRtn.totRej4 = CP4;
-//                    objRtn.totSup4 = TKT4;
-//                    objRtn.totNet5 = AMT5;
-//                    objRtn.totRej5 = CP5;
-//                    objRtn.totSup5 = TKT5;
-//                    objRtn.totNet6 = AMT6;
-//                    objRtn.totRej6 = CP6;
-//                    objRtn.totSup6 = TKT6;
+//                    objRtn.Rate4 = TOTGEN;
+                    objRtn.Rate4 = TOTDIFF;
+                    objRtn.Rate5 = PROMEDIO;
+                    objRtn.Rate6 = TOTVAR;
+
+                    objRtn.totNet1 = AMT1;
+                    objRtn.totRej1 = CP1;
+                    objRtn.totSup1 = TKT1;
+                    objRtn.totNet2 = AMT2;
+                    objRtn.totRej2 = CP2;
+                    objRtn.totSup2 = TKT2;
+                    objRtn.totNet3 = AMT3;
+                    objRtn.totRej3 = CP3;
+                    objRtn.totSup3 = TKT3;
+                    objRtn.totNet4 = AMT4;
+                    objRtn.totRej4 = CP4;
+                    objRtn.totSup4 = TKT4;
+                    objRtn.totNet5 = AMT5;
+                    objRtn.totRej5 = CP5;
+                    objRtn.totSup5 = TKT5;
+                    objRtn.totNet6 = AMT6;
+                    objRtn.totRej6 = CP6;
+                    objRtn.totSup6 = TKT6;
 
                     objRtn.strFormatDate4 = Functions.getMonthConvert(mes1);
                     objRtn.strDescripcion = Functions.getMonthConvert(mes2);
@@ -1806,7 +1810,7 @@ public class AbnormalValueDAO {
 
     }
     
-    public List<WRF016Filterwk> loadPX109SQP01231_AGENT(DashboardFilter filter) throws SQLException, Exception {
+    public List<WRF016Filterwk> loadPX109SQP01231_AGENTBK(DashboardFilter filter) throws SQLException, Exception {
         List<WRF016Filterwk> lista = new ArrayList<WRF016Filterwk>(0);
         WRF016Filterwk objRtn;
         int CP1 = 0, CP2 = 0, CP3 = 0, CP4 = 0, CP5 = 0, CP6 = 0, TKT1 = 0, TKT2 = 0, TKT3 = 0, TKT4 = 0, TKT5 = 0, TKT6 = 0;
@@ -1815,7 +1819,7 @@ public class AbnormalValueDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.SQP01231_V12(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01231(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1934,10 +1938,6 @@ public class AbnormalValueDAO {
                     objRtn.Rate2 = rst.getDouble("PROMEDIO");
                     objRtn.Diff1 = rst.getDouble("DIFF");
                     objRtn.Rate3 = rst.getDouble("VAR");
-                    objRtn.DESV_STD = rst.getDouble("DESVIACION_ESTANDAR");
-                    objRtn.STATUS_E = rst.getString("STATUS_E");
-                    objRtn.RISKSTATUS_E = rst.getString("RISKSTATUS_E");
-                    objRtn.ALERTA = rst.getDouble("ALERTA");
 
                     //objRtn.Rate4 = TOTGEN;
                     objRtn.Rate4 = TOTDIFF;
