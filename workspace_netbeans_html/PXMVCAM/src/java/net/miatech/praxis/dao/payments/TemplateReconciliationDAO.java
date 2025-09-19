@@ -862,6 +862,7 @@ public class TemplateReconciliationDAO {
         A2290Filter record = null;
         List<A2290Filter> lista = new ArrayList<A2290Filter>();
         double TOTAL_SVFOP = 0;
+        double TOTAL_SVFOP_CONVERTED = 0;
 
         String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS107(?,?,?,?,?,?,?,?,?,?)}";
 
@@ -897,6 +898,7 @@ public class TemplateReconciliationDAO {
             
             if (rst.next()) {
                 TOTAL_SVFOP = rst.getDouble("SUM_SVFOP");
+                TOTAL_SVFOP_CONVERTED = rst.getDouble("SUM_SVFOP");
             }
             
             // Segunda lista
@@ -920,6 +922,8 @@ public class TemplateReconciliationDAO {
                     record.SAGENT = rst.getString("SAGENT");
                     record.SVFOP = rst.getDouble("SVFOP");
                     record.TOTAL = rst.getDouble("TOTAL");
+                    record.SVFOPCON = rst.getDouble("SVFOPCON");
+                    record.SDATE = rst.getString("SDATE");
                     
                     record.SCOUNTRY = rst.getString("SCOUNTRY");
                     record.SAUTHOC = rst.getString("SAUTHOC");
@@ -940,6 +944,7 @@ public class TemplateReconciliationDAO {
                     record.page.TOTROW = filter.page.TOTROW;
                     
                     record.TOTAL_SVFOP = 0;
+                    record.TOTAL_SVFOP_CONVERTED = 0;
 
                     lstTkts.add(record);
                 }

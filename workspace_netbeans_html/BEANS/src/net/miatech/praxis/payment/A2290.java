@@ -121,12 +121,14 @@ public class A2290 {
     public double AIVA = 0;
     public double ATAX = 0;
     public double TOTAL = 0;
+    public double SVFOPCON = 0;
     
     public double TOTAL_LIQ = 0;
     public double TOTAL_COMISION = 0;
     public double TOTAL_COMISTOTA = 0;
     public double TOTAL_NETO = 0;
     public double TOTAL_SVFOP = 0;
+    public double TOTAL_SVFOP_CONVERTED = 0;
     public double TOTAL_IMPORTEPAG = 0;
     public double TOTAL_IMPORTE = 0;
     
