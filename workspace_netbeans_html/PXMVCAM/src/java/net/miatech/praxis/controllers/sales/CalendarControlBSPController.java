@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -686,15 +687,28 @@ public class CalendarControlBSPController extends BaseController {
                     .field("calendarType", calendarType)
                     .field("calendarDate", calendarDate)
                     .asString();
+            
+            String responseBody = response.getBody();
+            Map<String, Object> map = new HashMap<>();
+
+            map.put("message", "Respuesta desde API Python");
+            map.put("response", responseBody);
+
+            return ResponseEntity.ok(map);
+
 
             
-            if (response.getStatus() == 200) {
-                System.out.println("✅ Respuesta exitosa: " + response.getBody());
-                return ResponseEntity.ok(response.getBody());
-            } else {
-                System.err.println("❌ Error desde API Python: " + response.getStatus() + " - " + response.getBody());
-                return ResponseEntity.status(response.getStatus()).body(response.getBody());
-            }
+            
+            
+
+            
+//            if (response.getStatus() == 200) {
+//                System.out.println("✅ Respuesta exitosa: " + response.getBody());
+//                return ResponseEntity.ok(response.getBody());
+//            } else {
+//                System.err.println("❌ Error desde API Python: " + response.getStatus() + " - " + response.getBody());
+//                return ResponseEntity.status(response.getStatus()).body(response.getBody());
+//            }   
 
 
         } catch (Exception e) {
