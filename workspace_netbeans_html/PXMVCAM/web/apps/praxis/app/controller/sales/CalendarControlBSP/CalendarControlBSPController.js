@@ -151,30 +151,41 @@ Ext.define('Ext.Praxis.controller.sales.CalendarControlBSP.CalendarControlBSPCon
                 },
                 timeout: 120000,
                 success: function (response) {
-                    var data = Ext.decode(response.responseText);
-                    Ext.Msg.alert('Success', 
-                    'File Succesfully processed : '+ 'Contry: ' + data.COUNTRY + '  -  ' +'Type :' + data.TYPE + '  -  '  + ' Year : '+ data.DATE );
-//                    
+                    var wrapper = Ext.decode(response.responseText);
+
+                    try {
+                        var data = Ext.decode(wrapper.response); // si es JSON válido
+                        Ext.Msg.alert(wrapper.message,
+                                'Country: ' + data.COUNTRY + ' - ' +
+                                'Type: ' + data.TYPE + ' - ' +
+                                'Year: ' + data.DATE
+                                );
+                    } catch (e) {
+                        // si no es JSON válido, mostramos tal cual el error
+                        Ext.Msg.alert(wrapper.message, wrapper.response);
+                    }
+
                     Ext.getCmp(prototype.id + '-contenedor-calendario').unmask();
                 },
+
                 //captura error desde el api
                 failure: function (response) {
                     Ext.getCmp(prototype.id + '-contenedor-calendario').unmask();
 
-                    let msg = 'Upload failed (' + response.status + ')';
+                    let msg = 'Error en la carga';
                     try {
                         let data = Ext.decode(response.responseText);
                         if (data.message) {
-                            msg = data.message;   
-                        } else if (data.detalle) {
-                            msg = data.detalle;   
+                            msg = data.message;
+                        } else if (data.response) {
+                            msg = data.response;
                         }
                     } catch (e) {
-                        
                     }
 
                     Ext.Msg.alert('Error', msg);
                 }
+
 
 
             });
