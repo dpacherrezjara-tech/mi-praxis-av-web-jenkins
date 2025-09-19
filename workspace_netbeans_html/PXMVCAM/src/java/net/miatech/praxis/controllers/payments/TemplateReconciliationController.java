@@ -709,7 +709,8 @@ public class TemplateReconciliationController extends BaseController {
             obj = new MPF101();
 
             if (!filter.IN_CODPRO.equals("VN") && 
-                !filter.IN_CODPRO.equals("BM")) {
+                !filter.IN_CODPRO.equals("BM") &&
+                    !filter.IN_CODPRO.equals("AB")) {
                 boolean firstSettlement = true;
                 boolean firstConcat = true;
 
