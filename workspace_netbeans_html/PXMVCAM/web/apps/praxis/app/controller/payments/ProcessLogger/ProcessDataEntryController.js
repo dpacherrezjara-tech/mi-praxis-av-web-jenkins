@@ -19,9 +19,11 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessDataEntryControl
         const f2Filters = Ext.getCmp(prototype.idProcess + '-formF2');
         const dbFilters = Ext.getCmp(prototype.idProcess + '-formDB');
         const proFilters = Ext.getCmp(prototype.idProcess + '-formPRO');
+        const poFilters = Ext.getCmp(prototype.idProcess + '-formPO');
         f2Filters.hide();
         dbFilters.hide();
         proFilters.hide();
+        poFilters.hide();
 
         switch (btn.value) {
             case 'F2':
@@ -32,6 +34,9 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessDataEntryControl
                 break;
             case 'PRO':
                 proFilters.show();
+                break;
+            case 'OP':
+                poFilters.show();
                 break;
         }
     },
@@ -50,6 +55,9 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessDataEntryControl
                     break;
                 case 'PRO':
                     me.processPRO();
+                    break;
+                case 'OP':
+                    me.processPO();
                     break;
             }
         };
@@ -146,6 +154,18 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessDataEntryControl
         } else {
             notifier.alert('Select file');
         }
+    },
+    processPO: async function () {
+        console.log('processPO');
+        let usuario = document.getElementById("menuUser").innerText;
+        let filters = Ext.getCmp(prototype.idProcess + '-formPO').getForm().getValues();
+        let params = {
+            IN_USER: usuario,
+            ...filters
+        };
+        console.log('Parameters',params);
+        await global.callAPIPostAsync('ProcessLog', 'processPhaseOpe', params);
+        new AWN().info('Process Running');
     },
     onChangeTypeProcessF2: function (btn) {
         const valueDates = Ext.getCmp(prototype.idProcess + '-valueDatesF2');
