@@ -127,7 +127,7 @@ public class ExecutionScheduleController extends BaseController {
             Iterator iter = lst.iterator();
 
             Row row;
-            Cell CH_00, CH_01, CH_02, CH_03;
+            Cell CH_00, CH_01, CH_02, CH_03,CH_04;
 
             row = sheet.createRow(vj);
 
@@ -135,20 +135,24 @@ public class ExecutionScheduleController extends BaseController {
             CH_01 = row.createCell(1);
             CH_02 = row.createCell(2);
             CH_03 = row.createCell(3);
+            CH_04 = row.createCell(4);
 
             CH_00.setCellValue("System date");
-            CH_01.setCellValue("Execution date");
-            CH_02.setCellValue("Processor type");
-            CH_03.setCellValue("Status");
+            CH_01.setCellValue("start date");
+            CH_02.setCellValue("End  date");
+            CH_03.setCellValue("Processor type");
+            CH_04.setCellValue("Status");
 
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, 1));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 2));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 3, 3));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, 4));
             CH_00.setCellStyle(headerStyle);
             CH_01.setCellStyle(headerStyle);
             CH_02.setCellStyle(headerStyle);
             CH_03.setCellStyle(headerStyle);
+            CH_04.setCellStyle(headerStyle);
 
             ++vj;
 
@@ -159,16 +163,19 @@ public class ExecutionScheduleController extends BaseController {
                 CH_01 = row.createCell(1);
                 CH_02 = row.createCell(2);
                 CH_03 = row.createCell(3);
+                CH_04 = row.createCell(4);
 
                 CH_00.setCellValue(lst.get(vi).A4718FECIN);
-                CH_01.setCellValue(lst.get(vi).A4718FDCAR);
-                CH_02.setCellValue(lst.get(vi).A4718TYPEDES);
+                CH_01.setCellValue(lst.get(vi).A4718FINI);
+                CH_02.setCellValue(lst.get(vi).A4718FFIN);
+                CH_03.setCellValue(lst.get(vi).A4718TYPEDES);
                 CH_03.setCellValue(lst.get(vi).A4718ESTATDES);
 
                 CH_00.setCellStyle(bodyStyle);
                 CH_01.setCellStyle(bodyStyle);
                 CH_02.setCellStyle(bodyStyle);
                 CH_03.setCellStyle(bodyStyle);
+                CH_04.setCellStyle(bodyStyle);
 
                 iter.next();
                 ++vi;

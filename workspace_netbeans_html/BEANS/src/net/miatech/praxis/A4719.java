@@ -9,23 +9,33 @@ package net.miatech.praxis;
  * @author zperez
  */
 public class A4719 {
+
     public String A4719CCUST;
     public String A4719FCARG;
+    public String A4719FFIN;
     public String A4719TYPE;
     public int A4719CORRE;
     public String A4719ESTAT;
     public Double A4719TOTAL;
-    public Double A4719DIFE ;
+    public Double A4719DIFE;
     public String A4719CODEF;
     public String A4719IQTIP;
     public String A4719USRIN;
-    public String A4719FECIN; 
-    public String A4719HORIN;             
-    public String A4719USRAC; 
-    public String A4719FECAC; 
-    public String A4719HORAC; 
+    public String A4719FECIN;
+    public String A4719HORIN;
+    public String A4719USRAC;
+    public String A4719FECAC;
+    public String A4719HORAC;
     public String A4719TYPEDES;
     public String A4719ESTATDES;
+
+    public String getA4719FFIN() {
+        return A4719FFIN;
+    }
+
+    public void setA4719FFIN(String A4719FFIN) {
+        this.A4719FFIN = A4719FFIN;
+    }
 
     public String getA4719ESTATDES() {
         return A4719ESTATDES;
@@ -34,6 +44,7 @@ public class A4719 {
     public void setA4719ESTATDES(String A4719ESTATDES) {
         this.A4719ESTATDES = A4719ESTATDES;
     }
+
     public String getA4719TYPEDES() {
         return A4719TYPEDES;
     }
@@ -41,7 +52,7 @@ public class A4719 {
     public void setA4719TYPEDES(String A4719TYPEDES) {
         this.A4719TYPEDES = A4719TYPEDES;
     }
-    
+
     public String getA4719CCUST() {
         return A4719CCUST;
     }
@@ -161,6 +172,5 @@ public class A4719 {
     public void setA4719HORAC(String A4719HORAC) {
         this.A4719HORAC = A4719HORAC;
     }
-    
-    
+
 }

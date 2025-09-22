@@ -139,7 +139,7 @@ public class DownloadThePaymentFilesController extends BaseController {
             Iterator iter = lst.iterator();
 
             Row row;
-            Cell CH_00, CH_01, CH_02, CH_03;
+            Cell CH_00, CH_01, CH_02, CH_03,CH_04;
 
             row = sheet.createRow(vj);
 
@@ -147,20 +147,24 @@ public class DownloadThePaymentFilesController extends BaseController {
             CH_01 = row.createCell(1);
             CH_02 = row.createCell(2);
             CH_03 = row.createCell(3);
+            CH_04 = row.createCell(4);
 
             CH_00.setCellValue("System date");
             CH_01.setCellValue("Execution date");
             CH_02.setCellValue("Processor type");
-            CH_03.setCellValue("Status");
+            CH_03.setCellValue("Report Code");
+            CH_04.setCellValue("Status");
 
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, 1));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 2));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 3, 3));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, 4));
             CH_00.setCellStyle(headerStyle);
             CH_01.setCellStyle(headerStyle);
             CH_02.setCellStyle(headerStyle);
             CH_03.setCellStyle(headerStyle);
+            CH_04.setCellStyle(headerStyle);
 
             ++vj;
 
@@ -171,16 +175,20 @@ public class DownloadThePaymentFilesController extends BaseController {
                 CH_01 = row.createCell(1);
                 CH_02 = row.createCell(2);
                 CH_03 = row.createCell(3);
+                CH_04 = row.createCell(4);
 
                 CH_00.setCellValue(lst.get(vi).A4719FECIN);
                 CH_01.setCellValue(lst.get(vi).A4719FCARG);
                 CH_02.setCellValue(lst.get(vi).A4719TYPEDES);
-                CH_03.setCellValue(lst.get(vi).A4719ESTATDES);
+                CH_03.setCellValue(lst.get(vi).A4719CODEF);
+                CH_04.setCellValue(lst.get(vi).A4719ESTATDES);
+                
 
                 CH_00.setCellStyle(bodyStyle);
                 CH_01.setCellStyle(bodyStyle);
                 CH_02.setCellStyle(bodyStyle);
                 CH_03.setCellStyle(bodyStyle);
+                CH_04.setCellStyle(bodyStyle);
 
                 iter.next();
                 ++vi;
@@ -191,6 +199,7 @@ public class DownloadThePaymentFilesController extends BaseController {
             sheet.autoSizeColumn(1, true);
             sheet.autoSizeColumn(2, true);
             sheet.autoSizeColumn(3, true);
+            sheet.autoSizeColumn(4, true);
 
             String fileNameDownload = String.format("DownloadThePaymentFiles - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
             response.setContentType("application/vnd.openxml");

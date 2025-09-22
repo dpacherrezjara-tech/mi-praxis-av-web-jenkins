@@ -40,7 +40,7 @@ Ext.define('Ext.Praxis.view.payments.ExecutionScheduleForm.Info', {
                             padding: '1',
                             border: true,
                             height: 560,
-                            width: 700,
+                            width: 750,
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -50,7 +50,7 @@ Ext.define('Ext.Praxis.view.payments.ExecutionScheduleForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataMain',
                                     height: 520,
-                                    width: 700,
+                                    width: 480,
                                     columnLines: true,
                                     columns: {
                                         defaults: {
@@ -60,7 +60,8 @@ Ext.define('Ext.Praxis.view.payments.ExecutionScheduleForm.Info', {
                                         },
                                         items:
                                                 [   {text: 'System </br>date', dataIndex: 'A4718FECIN', width: 75},
-                                                    {text: 'Execution </br>date', dataIndex: 'A4718FDCAR', width: 75},
+                                                    {text: 'Start </br>date', dataIndex: 'A4718FINI', width: 75},
+                                                    {text: 'End </br>date', dataIndex: 'A4718FFIN', width: 75},
                                                     {text: 'Processor </br> type', dataIndex: 'A4718TYPEDES', width: 200},
                                                     {text: 'Status', dataIndex: 'A4718ESTATDES', width: 200, sortable: false, align: 'right'},
                                                     {text: '', dataIndex: '', width: 60, renderer: 'onRendererColumnOnStatus'},
@@ -91,14 +92,14 @@ Ext.define('Ext.Praxis.view.payments.ExecutionScheduleForm.Info', {
                                 pack: 'center'
                             },
                             border: false,
-                            width: 700,
+                            width: prototype.widthContenedor,
                             margin: '10 0 0 0 ',
                             height: 25,
                             bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
                             items: [
                                 {
                                     xtype: 'panel',
-                                    width: 700,
+                                    width: prototype.widthContenedor,
                                     height: 25,
                                     layout: {
                                         type: 'hbox',

@@ -83,25 +83,6 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
             }
             me.view.center();
 
-
-
-//            if (me.bean.STVAL !== '3') {
-//                me.headers = data.headers;
-//                me.settlements = data.settlements;
-//                me.taxes = data.taxes;
-//
-//                const corep = (me.bean.COREP || '').trim();
-//
-//                if (['AB', 'BM', 'VN'].includes(corep)) {
-//                    await me.setMatchGrids();
-//                } else {
-//                    me.setMatchGrids();
-//                }
-//
-//            } else {
-//                me.setPendingGrids();
-//            }
-//            me.view.center();
         } catch (e) {
             console.error(e);
             me.notifier.alert('Error on load Bank Info');
@@ -116,7 +97,8 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
             "IN_IDCADJ": me.bean.IDCADJ.trim(),
         };
         console.log('params', parameters);
-
+        
+        Ext.getCmp(prototype.idDE + '-btn-reverse').show();
         const panelAMV = Ext.getCmp(prototype.idDE + '-panelAMV');
         const gridHeader = Ext.getCmp(prototype.idDE + '-panelHeaderAMV');
         const gridStatement = Ext.getCmp(prototype.idDE + '-panelStatementAMV');
