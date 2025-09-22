@@ -13,6 +13,7 @@ import net.miatech.praxis.A1529;
 public class PX036S01A1529Filter extends A1529 {
     public String IN_A1529ISOC = "";      
     public String IN_A1529ANIO = "";
+    public String IN_A1529CUTO = "";
     public String QUARTER = "";
     public String PCYC="";
     public Pagination page = new Pagination();
