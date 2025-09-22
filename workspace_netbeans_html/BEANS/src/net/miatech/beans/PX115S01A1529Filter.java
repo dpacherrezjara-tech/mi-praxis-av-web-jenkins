@@ -14,6 +14,7 @@ public class PX115S01A1529Filter extends A1529 {
     public String IN_CCUST = "";
     public String IN_A1529ISOC = "";
     public String IN_A1529BAED = "";
+    public String IN_A1529CUTO = "";
     
     public int A1698_TAPES = 0;
     public int A1698_ERRORS = 0;

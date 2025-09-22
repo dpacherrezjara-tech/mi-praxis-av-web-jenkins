@@ -7,11 +7,11 @@ Ext.define('Ext.Praxis.controller.sales.CalendarControlBSP.CalendarControlBSPCon
     bean: {},
     beanExcel: {},
     // </editor-fold>
-    init: function(view) {
+    init: function (view) {
         me = this;
         // <editor-fold defaultstate="collapsed" desc="prototype">
         prototype.id = 'CalendarControlBSPForm';
-        prototype.url = CONTEXTPATH+'/CalendarControlBSP';
+        prototype.url = CONTEXTPATH + '/CalendarControlBSP';
         prototype.widthContenedor = 1100;
         // </editor-fold>
     },
@@ -21,67 +21,74 @@ Ext.define('Ext.Praxis.controller.sales.CalendarControlBSP.CalendarControlBSPCon
         this.focus('txtFilterCountry');
         this.btnSearch_click();
     },
-    
+
     // <editor-fold defaultstate="collapsed" desc="Options">
-    btnSearch_click: function(obj, e) {
+    btnSearch_click: function (obj, e) {
         this.bean.IN_A1529ISOC = this.getValue("txtFilterCountry");
         this.bean.IN_A1529BAED = this.getValue("txtFilterDate");
+        this.bean.IN_A1529CUTO = Ext.getCmp(prototype.id + '-typeCalendar').getValue();
         this.beanExcel.IN_A1529ISOC = this.bean.IN_A1529ISOC;
         this.beanExcel.IN_A1529BAED = this.bean.IN_A1529BAED;
-        this._path = prototype.url+'/getXLSX?' +
-            'IN_A1529ISOC='+this.beanExcel.IN_A1529ISOC+'&' +
-            'IN_A1529BAED='+this.beanExcel.IN_A1529BAED;
+        this._path = prototype.url + '/getXLSX?' + 'IN_A1529ISOC=' + this.beanExcel.IN_A1529ISOC + '&' +
+                'IN_A1529BAED=' + this.beanExcel.IN_A1529BAED;
         this.search(this.bean);
     },
-    btnFilter_click: function() {
-        var option = Ext.getCmp(prototype.id+'-contentFilter');
-        if (option.isVisible()) option.hide();
-        else option.show();
+    btnFilter_click: function () {
+        var option = Ext.getCmp(prototype.id + '-contentFilter');
+        if (option.isVisible())
+            option.hide();
+        else
+            option.show();
     },
-    btnExcel_click: function(obj, e) {
-        
-        var param ={
-            IN_A1529ISOC: Ext.getCmp(prototype.id+'-txtFilterCountry').getValue(),
-            IN_A1529ANIO: Ext.getCmp(prototype.id+'-txtFilterDate').getValue()
+    btnExcel_click: function (obj, e) {
+
+        var param = {
+            IN_A1529ISOC: Ext.getCmp(prototype.id + '-txtFilterCountry').getValue(),
+            IN_A1529ANIO: Ext.getCmp(prototype.id + '-txtFilterDate').getValue()
         };
-        if ( param.IN_A1529ISOC === '' ){
+        if (param.IN_A1529ISOC === '') {
             alert('Enter Country Iso Code');
             return;
         }
-        if ( param.IN_A1529ANIO === '' ){
+        if (param.IN_A1529ANIO === '') {
             alert('Enter Year');
             return;
-        }        
-        this.exportExcel('/getXLSX?beanString=' + encodeURI(JSON.stringify(param)));        
+        }
+        this.exportExcel('/getXLSX?beanString=' + encodeURI(JSON.stringify(param)));
     },
-    btnClear_click: function(obj, e) {
+    btnClear_click: function (obj, e) {
         this.setValue('txtFilterCountry', '');
         this.setValue('txtFilterDate', '');
-        if(Ext.getCmp(prototype.id + '-txtFilterCountry').isVisible()) this.focus('txtFilterCountry');
+        if (Ext.getCmp(prototype.id + '-txtFilterCountry').isVisible())
+            this.focus('txtFilterCountry');
+            var fileField = Ext.getCmp(prototype.id + '-file');
+        if (fileField) {
+            fileField.reset(); // limpia el valor del filefield
+        }
     },
-    btnBack_click: function() {
+    btnBack_click: function () {
         global.showMenu();
     },
     // </editor-fold>
-    
-    search: function(bean) {
+
+    search: function (bean) {
         Ext.Ajax.request({
             url: prototype.url + '/search',
             params: bean,
             beforerequest: Ext.getCmp(prototype.id + '-contenedor-calendario').mask('Loading...'),
-            success: function(response, options) {
+            success: function (response, options) {
                 win.lblUser_toolTip("Estructura: A1529");
                 var res = Ext.JSON.decode(response.responseText);
 //                console.log(res.oList);
                 var data = res.data;
                 var panel = Ext.getCmp(prototype.id + '-contenedor-calendario');
-                var calendar = Ext.create('MtCalendar',{
-                    fuente:'BSP',
-                    year:bean.IN_A1529BAED,
-                    country:res.oList===undefined?'':res.oList[0].A006NOMBRE,
+                var calendar = Ext.create('MtCalendar', {
+                    fuente: 'BSP',
+                    year: bean.IN_A1529BAED,
+                    country: res.oList === undefined ? '' : res.oList[0].A006NOMBRE,
                     items: data,
-                    listeners:{
-                        onItemCalendarClick: function(qtr, month, week, op, comm, cant, error, cantsale, text){
+                    listeners: {
+                        onItemCalendarClick: function (qtr, month, week, op, comm, cant, error, cantsale, text) {
                             window.alert("Hi");
 //                            if(parseInt(text) <= parseInt(Ext.Date.format(new Date(), 'Ymd')) && cant == 0){
 //                                me.getRegularization(bean.IN_A1529BAED,week,text);
@@ -93,13 +100,13 @@ Ext.define('Ext.Praxis.controller.sales.CalendarControlBSP.CalendarControlBSPCon
                 panel.add(calendar);
                 Ext.getCmp(prototype.id + '-contenedor-calendario').unmask();
             },
-            failure: function(response, opts) {
+            failure: function (response, opts) {
                 //console.log('server-side failure with status code '+response.status);
                 Ext.getCmp(prototype.id + '-contenedor-calendario').unmask();
             }
         });
     },
-    exportExcel: function(_path) {
+    exportExcel: function (_path) {
 //        if(this._path.length > 0)
 //        global.getFile(this._path);
         Ext.Msg.show({
@@ -109,30 +116,105 @@ Ext.define('Ext.Praxis.controller.sales.CalendarControlBSP.CalendarControlBSPCon
             scope: this,
             icon: Ext.MessageBox.QUESTION,
             modal: true,
-            fn: function(btn) {
+            fn: function (btn) {
                 if (btn === 'ok') {
                     global.getFile(prototype.url + _path);
                 }
             }
         });
-    
+
     },
-    
+
+        ////hacemos subida y formateo desde api en py
+        
+        
+        onFileLoad: function () {
+            
+        var me = this;
+        var form = Ext.getCmp(prototype.id + '-form-01').getForm();
+        var fileField = Ext.getCmp(prototype.id + '-file');
+        if (form.isValid() && fileField.getValue()) {
+            var file = fileField.fileInputEl.dom.files[0];
+            // enviamos parametros
+            var formData = new FormData();
+            formData.append("excelfile", file); 
+            formData.append("country", Ext.getCmp(prototype.id + '-txtFilterCountry').getValue());
+            formData.append("calendarType", Ext.getCmp(prototype.id + '-typeCalendar').getValue());
+            formData.append("calendarDate", Ext.getCmp(prototype.id + '-txtFilterDate').getValue());
+            
+            Ext.Ajax.request({
+                url: prototype.url + '/uploadExcel', 
+                rawData: formData,
+                beforerequest: Ext.getCmp(prototype.id + '-contenedor-calendario').mask('Loading...'),
+                headers: {
+                    'Content-Type': null 
+                },
+                timeout: 120000,
+                success: function (response) {
+                    var wrapper = Ext.decode(response.responseText);
+
+                    try {
+                        var data = Ext.decode(wrapper.response); // si es JSON válido
+                        Ext.Msg.alert(wrapper.message,
+                                'Country: ' + data.COUNTRY + ' - ' +
+                                'Type: ' + data.TYPE + ' - ' +
+                                'Year: ' + data.DATE
+                                );
+                    } catch (e) {
+                        // si no es JSON válido, mostramos tal cual el error
+                        Ext.Msg.alert(wrapper.message, wrapper.response);
+                    }
+
+                    Ext.getCmp(prototype.id + '-contenedor-calendario').unmask();
+                },
+
+                //captura error desde el api
+                failure: function (response) {
+                    Ext.getCmp(prototype.id + '-contenedor-calendario').unmask();
+
+                    let msg = 'Error en la carga';
+                    try {
+                        let data = Ext.decode(response.responseText);
+                        if (data.message) {
+                            msg = data.message;
+                        } else if (data.response) {
+                            msg = data.response;
+                        }
+                    } catch (e) {
+                    }
+
+                    Ext.Msg.alert('Error', msg);
+                }
+
+
+
+            });
+        } else {
+            Ext.Msg.alert('Error', 'Please select a valid Excel file.');
+        }
+        this.btnClear_click();
+        
+    },
+
+
+
+    /////////////////
+
     // <editor-fold defaultstate="collapsed" desc="Utilitarios">
-    getValue: function(id) {
-        return Ext.getCmp(prototype.id+'-'+id).getValue();
+    getValue: function (id) {
+        return Ext.getCmp(prototype.id + '-' + id).getValue();
     },
-    focus: function(id) {
-        Ext.getCmp(prototype.id+'-'+id).focus();
+    focus: function (id) {
+        Ext.getCmp(prototype.id + '-' + id).focus();
     },
-    setValue: function(id, txt) {
-        return Ext.getCmp(prototype.id+'-'+id).setValue(txt);
+    setValue: function (id, txt) {
+        return Ext.getCmp(prototype.id + '-' + id).setValue(txt);
     },
-    onUpperValue: function(field, newValue, oldValue){
+    onUpperValue: function (field, newValue, oldValue) {
         field.setValue(newValue.toUpperCase());
     },
-    onTextKeypress: function( obj , e , eOpts){
-        if ( e.getKey() === e.ENTER ){
+    onTextKeypress: function (obj, e, eOpts) {
+        if (e.getKey() === e.ENTER) {
             this.btnSearch_click();
         }
     }
