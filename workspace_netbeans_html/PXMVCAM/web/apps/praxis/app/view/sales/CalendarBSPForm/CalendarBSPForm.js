@@ -1,6 +1,6 @@
 prototype.id = 'CalendarBSPForm';
 prototype.url = CONTEXTPATH + '/CalendarBSP';
-prototype.widthContenedor = 1040;
+prototype.widthContenedor = 1240;
 prototype.widthGrid = 934;
 
 Ext.define('Ext.Praxis.view.sales.CalendarBSPForm.CalendarBSPForm', {

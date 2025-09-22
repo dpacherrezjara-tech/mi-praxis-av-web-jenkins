@@ -2,6 +2,8 @@ package net.miatech.praxis.controllers.sales;
 
 // <editor-fold defaultstate="collapsed" desc="Imports">
 import com.google.gson.Gson;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.sql.SQLException;
@@ -36,10 +38,15 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 // </editor-fold>
 
@@ -71,6 +78,7 @@ public class CalendarBSPController extends BaseController {
         try {
             filter.IN_A1529ISOC = request.getParameter("IN_A1529ISOC").trim();
             filter.IN_A1529ANIO = request.getParameter("IN_A1529ANIO").trim();
+            filter.IN_A1529CUTO = request.getParameter("IN_A1529CUTO").trim();
             
             int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit"));
             int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
@@ -370,4 +378,55 @@ public class CalendarBSPController extends BaseController {
         
         return new Gson().toJson(map);
     }
+    
+    
+    
+    
+    ///carga y forqamteo de excel
+    
+    
+    @RequestMapping(value = "uploadExcel", method = RequestMethod.POST)
+    public ResponseEntity<?> uploadExcel(
+            @RequestParam("excelfile") MultipartFile file,
+            @RequestParam("country") String country,
+            @RequestParam("calendarType") String calendarType,
+            @RequestParam("calendarDate") String calendarDate) {
+
+        try {
+            // Guardar archivo temporal
+            File tempFile = new File(System.getProperty("java.io.tmpdir"), file.getOriginalFilename());
+            file.transferTo(tempFile);
+
+            // URL API Python
+            String url = serverSession.getServerSession()
+                    .getPropertySession()
+                    .get("RUTA_REST_DJANGO") + "/api/calendar/uploadExcel/";
+
+            // Llamada al API Django
+            HttpResponse<String> response = Unirest.post(url)
+                    .field("excelfile", tempFile)
+                    .field("country", country)
+                    .field("calendarType", calendarType)
+                    .field("calendarDate", calendarDate)
+                    .asString();
+
+            // Si hay error, devolvemos igual
+            if (response.getStatus() == 200) {
+                System.out.println(" Respuesta exitosa: " + response.getBody());
+                return new ResponseEntity<>(response.getBody(), HttpStatus.OK);
+            } else {
+                System.err.println(" Error desde API Python: " + response.getStatus() + " -> " + response.getBody());
+                return new ResponseEntity<>(response.getBody(), HttpStatus.valueOf(response.getStatus()));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Error al procesar el archivo: " + e.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    
+    
 }

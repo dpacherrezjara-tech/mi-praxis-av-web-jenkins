@@ -657,49 +657,5 @@ public class CalendarControlBSPController extends BaseController {
         }
     }
 
-    ///carga y forqamteo de excel
-    
-    
-    @RequestMapping(value = "uploadExcel", method = RequestMethod.POST)
-    public ResponseEntity<?> uploadExcel(
-            @RequestParam("excelfile") MultipartFile file,
-            @RequestParam("country") String country,
-            @RequestParam("calendarType") String calendarType,
-            @RequestParam("calendarDate") String calendarDate) {
-
-        try {
-            // Guardar archivo temporal
-            File tempFile = new File(System.getProperty("java.io.tmpdir"), file.getOriginalFilename());
-            file.transferTo(tempFile);
-
-            // URL API Python
-            String url = serverSession.getServerSession()
-                    .getPropertySession()
-                    .get("RUTA_REST_DJANGO") + "/api/calendar/uploadExcel/";
-
-            // Llamada al API Django
-            HttpResponse<String> response = Unirest.post(url)
-                    .field("excelfile", tempFile)
-                    .field("country", country)
-                    .field("calendarType", calendarType)
-                    .field("calendarDate", calendarDate)
-                    .asString();
-
-            // Si hay error, devolvemos igual
-            if (response.getStatus() == 200) {
-                System.out.println(" Respuesta exitosa: " + response.getBody());
-                return new ResponseEntity<>(response.getBody(), HttpStatus.OK);
-            } else {
-                System.err.println(" Error desde API Python: " + response.getStatus() + " -> " + response.getBody());
-                return new ResponseEntity<>(response.getBody(), HttpStatus.valueOf(response.getStatus()));
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>("Error al procesar el archivo: " + e.getMessage(),
-                    HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
 
 }

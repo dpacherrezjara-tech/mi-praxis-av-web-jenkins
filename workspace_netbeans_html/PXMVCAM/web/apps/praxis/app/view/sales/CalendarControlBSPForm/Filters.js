@@ -123,52 +123,6 @@ Ext.define('Ext.Praxis.view.sales.CalendarControlBSPForm.Filters', {
 
                                 ///AGREGAMOS BOTON PARA CARGA DE ARCHIVO Y SUBIDA
 
-                                {xtype: 'tbspacer', width: 40},
-                                {
-                                    xtype: 'form',
-                                    id: prototype.id + '-form-01',
-                                    border: false,
-                                    bodyStyle: 'background-color: #E3EAF9;',
-                                    items: [{
-                                            xtype: 'filefield',
-                                            id: prototype.id + '-file',
-                                            name: 'excelfile',
-                                            allowBlank: true,
-                                            accept: '.xlsx, .xls, .xlsb',
-                                            labelWidth: 85,
-                                            width: 400,
-                                            style: 'font-weight:bold;',
-                                            buttonAlign: 'left',
-                                            buttonText: 'Select excel...',
-                                            regex: /(.)+((\.xlsx)|(\.xls)|(\.xlsb)|(\.csv)(\w)?)$/i,
-                                            regexText: 'Only XLS and XLSX formats are accepted',
-                                            buttonConfig: {
-                                                text: '<strong>Select</strong>',
-                                                width: 80,
-                                                style: 'margin-right: 10px;' // Agregamos un margen derecho al botón
-                                            },
-                                            listeners: {
-                                                change: function (filefield, value) {
-                                                    let fileName = value.replace(/^.*[\\\/]/, ''); // quita fakepath o cualquier ruta
-                                                    Ext.Msg.alert('Archivo seleccionado', 'Archivo: ' + fileName);
-                                                }
-                                            }
-                                        }]
-                                },
-
-                                {xtype: 'tbspacer', width: 27},
-                                {
-                                    xtype: 'button',
-                                    id: prototype.id + '-btn-upload',
-                                    padding: '4 0 5 0',
-                                    width: 70,
-                                    html: '<strong style="color:black;">Load</strong>',
-                                    style: 'background:#70E3EC;color:white;font-weight:bold;',
-                                    border: true,
-                                    listeners: {
-                                        click: 'onFileLoad'
-                                    }
-                                }
 
                                 ///AQUI TERMINA
 

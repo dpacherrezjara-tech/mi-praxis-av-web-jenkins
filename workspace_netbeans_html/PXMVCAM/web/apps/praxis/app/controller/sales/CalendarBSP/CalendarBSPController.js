@@ -58,10 +58,12 @@ Ext.define('Ext.Praxis.controller.sales.CalendarBSP.CalendarBSPController', {
     setFormatParameter: function() {
         var cbxDateYear = Ext.getCmp(prototype.id + '-cbxDateYear').getValue();
         var IN_A1529ISOC = Ext.getCmp(prototype.id + '-IN_A1529ISOC').getValue();
+        var IN_A1529CUTO = Ext.getCmp(prototype.id + '-typeCalendar').getValue();
         
         searchParams = {
             IN_A1529ISOC: IN_A1529ISOC,
-            IN_A1529ANIO: cbxDateYear
+            IN_A1529ANIO: cbxDateYear,
+            IN_A1529CUTO: IN_A1529CUTO
         };
     },
 ////    btnDisplay_click: function() {
@@ -69,6 +71,12 @@ Ext.define('Ext.Praxis.controller.sales.CalendarBSP.CalendarBSPController', {
 ////            msg: 'Option not available.'
 ////        });
 ////    },
+
+
+
+
+
+
     btnSearch_click: function(obj, e) {
         this.setFormatParameter();
         this.setGridData();
@@ -142,6 +150,80 @@ Ext.define('Ext.Praxis.controller.sales.CalendarBSP.CalendarBSPController', {
         global.getFile(prototype.url + '/getXLSX?IN_A1529ISOC=' + searchParams.IN_A1529ISOC +
                 '&IN_A1529ANIO=' + searchParams.IN_A1529ANIO);
     },
+    
+    
+    
+        ////hacemos subida y formateo desde api en py
+        
+        
+        onFileLoad: function () {
+            
+        var me = this;
+        var form = Ext.getCmp(prototype.id + '-form-01').getForm();
+        var fileField = Ext.getCmp(prototype.id + '-file');
+        if (form.isValid() && fileField.getValue()) {
+            var file = fileField.fileInputEl.dom.files[0];
+            // enviamos parametros
+            var formData = new FormData();
+            formData.append("excelfile", file); // nombre clave que espera el backend
+            formData.append("country", Ext.getCmp(prototype.id + '-IN_A1529ISOC').getValue());
+            formData.append("calendarType", Ext.getCmp(prototype.id + '-typeCalendar').getValue());
+            formData.append("calendarDate", Ext.getCmp(prototype.id + '-cbxDateYear').getValue());
+            
+            Ext.Ajax.request({
+                url: prototype.url + '/uploadExcel', 
+                rawData: formData,
+                beforerequest: Ext.getCmp(prototype.id + '-boxMainData').mask('Loading...'),
+                headers: {
+                    'Content-Type': null 
+                },
+                timeout: 120000,
+                
+                success: function (response) {
+                   var inner = Ext.decode(response.responseText);
+
+                    Ext.Msg.alert('Success',
+                            'File Succesfully processed : ' +
+                            'Country: ' + inner.COUNTRY +
+                            ' - Type: ' + inner.TYPE +
+                            ' - Year: ' + inner.DATE
+                            );
+
+                    Ext.getCmp(prototype.id + '-boxMainData').unmask();
+                },
+
+                
+                failure: function (response) {
+                    Ext.getCmp(prototype.id + '-boxMainData').unmask();
+
+                    let msg = 'Error al procesar el archivo.';
+                    try {
+                        let data = Ext.decode(response.responseText);
+                        if (data.message) {
+                            msg = data.message;   // usamos el mensaje exacto del API
+                        }
+                    } catch (e) {
+                        // si no es JSON válido, dejamos el mensaje genérico
+                    }
+
+                    Ext.Msg.alert('Error', msg);
+                }
+
+            });
+        } else {
+            Ext.Msg.alert('Error', 'Please select a valid Excel file.');
+        }
+        this.btnClear_click();
+        
+    },
+
+    
+    
+    
+    
+    
+    
+    
     btnFilter_click: function(obj) {
         var option = Ext.getCmp(prototype.id + '-contentFilter');
         if (option.isVisible()) option.setVisible(false);
