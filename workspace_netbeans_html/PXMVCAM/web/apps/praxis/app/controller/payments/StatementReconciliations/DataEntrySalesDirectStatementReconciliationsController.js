@@ -1,6 +1,6 @@
-Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCashStatementReconciliationsController', {
+Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySalesDirectStatementReconciliationsController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.DataEntryCashStatementReconciliationsController',
+    alias: 'controller.DataEntrySalesDirectStatementReconciliationsController',
     // <editor-fold defaultstate="collapsed" desc="Variables Globales">
     meDE: '',
     controllerParent: '',
@@ -95,7 +95,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
         if (this.bean.data.TINPUT === 'B'){
             cfuente = 'BSP';
         } else {
-            cfuente = 'ISC';
+            cfuente = 'Sales Direct';
         }
         this.setValue('de-txtVALDATEL', this.beanResult.VALDATE);
         this.setValue('de-txtInput', cfuente);
@@ -188,13 +188,13 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
         }
         var beanString = JSON.stringify(meDE.bean.data);
         Ext.Ajax.request({
-            url: prototype.url + '/searchBeanCash',
+            url: prototype.url + '/searchBeanSalesDirectExtracto',
             method: 'POST',
             timeout: 60000000,
-            beforerequest: Ext.getCmp(prototype.id + '-dataEntryCash').mask('Loading...'),
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntrySalesDirect').mask('Loading...'),
             params: {beanString: beanString},
             success: function (response, options) {
-                Ext.getCmp(prototype.id + '-dataEntryCash').unmask('Loading...');
+                Ext.getCmp(prototype.id + '-dataEntrySalesDirect').unmask('Loading...');
                 var res = Ext.JSON.decode(response.responseText);
                 meDE.beanResult = res.data;
                 meDE.onSearchCompleteDetail();
@@ -228,13 +228,13 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
         console.log(this.beanScan, 'this.beanScan')
         var beanString = JSON.stringify(this.beanScan);
         Ext.Ajax.request({
-            url: prototype.url + '/searchBean_LiquiCash',
+            url: prototype.url + '/searchBean_SalesDirect',
             method: 'POST',
             timeout: 60000000,
-            beforerequest: Ext.getCmp(prototype.id + '-dataEntryCash').mask('Loading...'),
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntrySalesDirect').mask('Loading...'),
             params: {beanString: beanString},
             success: function (response, options) {
-                Ext.getCmp(prototype.id + '-dataEntryCash').unmask('Loading...');
+                Ext.getCmp(prototype.id + '-dataEntrySalesDirect').unmask('Loading...');
                 var res = Ext.JSON.decode(response.responseText);
                 if (res.success) {
 
@@ -275,7 +275,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
             this.lstSendManual.push(dataRow1.data);
 
             if (dataRow1.data.STMANUAL !== 'Blocked') {
-                var neto = parseFloat(dataRow1.data.NETO) || 0;
+                var neto = parseFloat(dataRow1.data.SVFOPNETR) || 0;
                 var comistota = parseFloat(dataRow1.data.COMISTOTA) || 0;
 
                 if (comistota !== 0) {

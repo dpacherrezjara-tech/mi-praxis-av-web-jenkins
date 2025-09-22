@@ -1,10 +1,10 @@
-Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash', {
+Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntrySalesDirect', {
     extend: 'Ext.window.Window',
-    alias: 'widget.DataEntryCashStatementReconciliationsForm',
+    alias: 'widget.DataEntrySalesDirectStatementReconciliationsForm',
     requires: [
-        'Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCashStatementReconciliationsController'
+        'Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySalesDirectStatementReconciliationsController'
     ],
-    controller: 'DataEntryCashStatementReconciliationsController',
+    controller: 'DataEntrySalesDirectStatementReconciliationsController',
     title: 'Statement Reconciliation - Data Entry Form',
     header: true,
     height: 780,
@@ -1029,19 +1029,36 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                                             return value;
                                                                         }
                                                                     },
-                                                                    {text: 'Abono <br> Date', dataIndex: 'ADATE', width: 65,
+                                                                    {text: 'Sales <br> Date', dataIndex: 'SDATE', width: 65,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
                                                                             return value;
                                                                         }
                                                                     },
-                                                                    {text: 'Value <br> Date', dataIndex: 'VALDATE', width: 65,
+                                                                    {text: 'MCLOS', dataIndex: 'MCLOS', width: 65,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
                                                                             return value;
                                                                         }
                                                                     },
 
+                                                                    {
+                                                                        text: 'Ticket',
+                                                                        dataIndex: 'CCIA', // puede ser cualquiera de los tres, no importa porque usamos el renderer
+                                                                        width: 120,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            metaData.unselectableAttr = "unselectable='off'";
+
+                                                                            // Concatenamos los tres valores
+                                                                            var ccia = record.get('CCIA') || '';
+                                                                            var forma = record.get('FORMA') || '';
+                                                                            var serie = record.get('SERIE') || '';
+
+                                                                            return ccia  + forma + serie;
+                                                                        }
+                                                                    },
                                                                     {text: 'Agent', dataIndex: 'SAGENT', width: 75,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
@@ -1060,7 +1077,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                                     },
                                                                     {
                                                                         text: 'Neto',
-                                                                        dataIndex: 'NETO',
+                                                                        dataIndex: 'SVFOPNETR',
                                                                         width: 80,
                                                                         xtype: 'gridcolumn',
                                                                         cls: 'detalle-neto', // Agrega una clase personalizada a las celdas de detalle NETO
@@ -1081,97 +1098,15 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                                             }
                                                                         }
                                                                     },
-                                                                    {
-                                                                        text: 'Payment <br> Amount',
-                                                                        dataIndex: 'PAYAMOU',
-                                                                        width: 80,
-                                                                        xtype: 'gridcolumn',
-                                                                        cls: 'detalle-neto', // Agrega una clase personalizada a las celdas de detalle NETO
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            var data = record.data;
-                                                                            metaData.style = "text-align:right;";
-                                                                            if (data.COMISTOTA !== 0 && data.COMISTOTA !== undefined) {
-                                                                                metaData.style = "background-color: #A2F4FE;text-align:right;";
-                                                                                metaData.tdAttr = 'data-qtip="' + "Commission: " + data.COMISTOTA + '"';
-                                                                            }
-                                                                            if (record.get('isInValidCombination') && data.STVAL === '3') {
-                                                                                metaData.style += "background-color: yellow;"; // Aplicar estilo si el registro está en una combinación válida
-                                                                            }
-                                                                            return Ext.util.Format.number(value, '0,000.00');
-                                                                        },
-                                                                        editor: {
-                                                                            xtype: 'textfield',
-                                                                            editable: true,
-                                                                            allowBlank: false,
-                                                                            enableKeyEvents: true,
-                                                                            maskRe: /[0-9\.-]/,
-                                                                            selectOnFocus: true,
-                                                                            listeners: {
-                                                                                specialkey: 'eventKeyAdjustment'
-                                                                            }
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'Settlement <br> Adjustment',
-                                                                        dataIndex: 'SETADJ',
-                                                                        width: 80,
-                                                                        xtype: 'gridcolumn',
-                                                                        cls: 'detalle-neto', // Agrega una clase personalizada a las celdas de detalle NETO
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            var data = record.data;
-                                                                            metaData.style = "text-align:right;";
-                                                                            return Ext.util.Format.number(value, '0,000.00');
-                                                                        },
-                                                                        editor: {
-                                                                            xtype: 'textfield',
-                                                                            editable: true,
-                                                                            allowBlank: false,
-                                                                            enableKeyEvents: true,
-                                                                            maskRe: /[0-9\.-]/,
-                                                                            selectOnFocus: true,
-                                                                            listeners: {
-                                                                                specialkey: 'eventKeyAdjustment'
-                                                                            }
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'Billing <br> Adjustment',
-                                                                        dataIndex: 'BILADJ',
-                                                                        width: 80,
-                                                                        xtype: 'gridcolumn',
-                                                                        cls: 'detalle-neto', // Agrega una clase personalizada a las celdas de detalle NETO
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            var data = record.data;
-                                                                            metaData.style = "text-align:right;";
-                                                                            if (data.COMISTOTA !== 0 && data.COMISTOTA !== undefined) {
-                                                                                metaData.style = "background-color: #A2F4FE;text-align:right;";
-                                                                                metaData.tdAttr = 'data-qtip="' + "Commission: " + data.COMISTOTA + '"';
-                                                                            }
-                                                                            if (record.get('isInValidCombination') && data.STVAL === '3') {
-                                                                                metaData.style += "background-color: yellow;"; // Aplicar estilo si el registro está en una combinación válida
-                                                                            }
-                                                                            return Ext.util.Format.number(value, '0,000.00');
-                                                                        },
-                                                                        editor: {
-                                                                            xtype: 'textfield',
-                                                                            editable: true,
-                                                                            allowBlank: false,
-                                                                            enableKeyEvents: true,
-                                                                            maskRe: /[0-9\.-]/,
-                                                                            selectOnFocus: true,
-                                                                            listeners: {
-                                                                                specialkey: 'eventKeyAdjustment'
-                                                                            }
-                                                                        }
-                                                                    },
-                                                                    {text: 'Star <br> Date', dataIndex: 'STRDATE', width: 65,
+                                                                    
+                                                                    {text: 'Source', dataIndex: 'CFUENTE', width: 65,
                                                                         //                                                                editor: {xtype: 'textfield', editable: true},
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
                                                                             return value;
                                                                         }
                                                                     },
-                                                                    {text: 'End <br> Date', dataIndex: 'ENDDATE', width: 65,
+                                                                    {text: 'Sub <br> Source', dataIndex: 'SUBFTE', width: 65,
                                                                         //                                                                editor: {xtype: 'textfield', editable: true},
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
@@ -1185,7 +1120,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                                             return value;
                                                                         }
                                                                     },
-                                                                    {text: 'Comments', dataIndex: 'COMMENTS', width: 100,
+                                                                    {text: 'SOCIETY', dataIndex: 'SOCIETY', width: 100,
                                                                         //                                                                editor: {xtype: 'textfield', editable: true},
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
