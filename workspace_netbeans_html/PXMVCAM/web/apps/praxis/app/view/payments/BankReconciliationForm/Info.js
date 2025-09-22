@@ -6575,18 +6575,18 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                     }
                                                 ]
                                             },
-                                            {
+                                           {
                                                 sortable: false,
                                                 xtype: 'actioncolumn',
                                                 id: prototype.id + '-gridEditCash',
                                                 width: 40,
-                                                text: 'View',
+                                                text: 'View Cash',
                                                 align: 'center',
                                                 items: [
                                                     {
                                                         iconCls: 'prx-icon-edit',
                                                         tooltip: 'View',
-                                                        handler: 'onEditClick'
+                                                        handler: 'onEditClickCash'
                                                     }
                                                 ]
                                             }

@@ -4207,4 +4207,69 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         Ext.getCmp(prototype.id + '-gridDataDetalleCash').bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-paggin4').bindStore(storeGridDatas);
     },
+    onEditClickCash: function (grid, rowIndex, colIndex, item, e, record, actionItem) {
+         console.log('EDITO EL CASH WAAA')
+        item.disable();
+
+        var rec = grid.getStore().getAt(rowIndex);
+        console.log('RECDATA');
+        console.log(rec.data);
+        console.log(rec.data.CERROR, 'rec.data.CERROR');
+        this.searchBeanCash(rec);
+        setTimeout(function () {
+            item.enable()
+        }, 1000); // Simular una tarea de 1 segundo
+
+    },
+    winDataEntryCASH: function (action, beanCons) {
+        action = action === null || action === undefined ? 'U' : action;
+
+        Ext.create('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', {
+            id: prototype.id + '-dataEntryAMDPCASH',
+            params: {
+                action: action,
+                lstCountry: me.lstCountry,
+                lstCard: me.lstCard,
+                lstBank: me.lstBank,
+                beanCons: beanCons
+            }
+        }).show();
+    },
+    searchBeanCash: function (rec) {
+
+        Ext.Ajax.request({
+            url: prototype.url + '/searchBeanAMDPCash',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: JSON.stringify(rec.data)},
+//            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+            success: function (response, opts) {
+//                console.log(response);
+//                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+                var res = Ext.JSON.decode(response.responseText);
+                console.log(res,'SOY CASHHHHH');
+//                if (res.success) {
+                if (res.success) {
+                    var beanCons = res.result;
+                    console.log('beanCons');
+                    console.log(beanCons);
+                    if (beanCons !== null) {
+                        me.winDataEntryCASH('U', beanCons);
+                    } else {
+                        global.Msg({
+                            msg: 'An error has ocurred. Please contact our System Department'
+                        });
+                    }
+
+                } else {  
+                    global.Msg({msg: res.Mensaje});
+                }
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+//                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+            }
+        });
+    },
+    
 });
