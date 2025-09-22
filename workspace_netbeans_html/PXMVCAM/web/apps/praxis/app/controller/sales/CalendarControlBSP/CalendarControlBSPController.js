@@ -137,7 +137,7 @@ Ext.define('Ext.Praxis.controller.sales.CalendarControlBSP.CalendarControlBSPCon
             var file = fileField.fileInputEl.dom.files[0];
             // enviamos parametros
             var formData = new FormData();
-            formData.append("excelfile", file); 
+            formData.append("excelfile", file); // nombre clave que espera el backend
             formData.append("country", Ext.getCmp(prototype.id + '-txtFilterCountry').getValue());
             formData.append("calendarType", Ext.getCmp(prototype.id + '-typeCalendar').getValue());
             formData.append("calendarDate", Ext.getCmp(prototype.id + '-txtFilterDate').getValue());
@@ -150,43 +150,36 @@ Ext.define('Ext.Praxis.controller.sales.CalendarControlBSP.CalendarControlBSPCon
                     'Content-Type': null 
                 },
                 timeout: 120000,
+                
                 success: function (response) {
-                    var wrapper = Ext.decode(response.responseText);
+                   var inner = Ext.decode(response.responseText);
 
-                    try {
-                        var data = Ext.decode(wrapper.response); // si es JSON válido
-                        Ext.Msg.alert(wrapper.message,
-                                'Country: ' + data.COUNTRY + ' - ' +
-                                'Type: ' + data.TYPE + ' - ' +
-                                'Year: ' + data.DATE
-                                );
-                    } catch (e) {
-                        // si no es JSON válido, mostramos tal cual el error
-                        Ext.Msg.alert(wrapper.message, wrapper.response);
-                    }
+                    Ext.Msg.alert('Success',
+                            'File Succesfully processed : ' +
+                            'Country: ' + inner.COUNTRY +
+                            ' - Type: ' + inner.TYPE +
+                            ' - Year: ' + inner.DATE
+                            );
 
                     Ext.getCmp(prototype.id + '-contenedor-calendario').unmask();
                 },
 
-                //captura error desde el api
+                
                 failure: function (response) {
                     Ext.getCmp(prototype.id + '-contenedor-calendario').unmask();
 
-                    let msg = 'Error en la carga';
+                    let msg = 'Error al procesar el archivo.';
                     try {
                         let data = Ext.decode(response.responseText);
                         if (data.message) {
-                            msg = data.message;
-                        } else if (data.response) {
-                            msg = data.response;
+                            msg = data.message;   // usamos el mensaje exacto del API
                         }
                     } catch (e) {
+                        // si no es JSON válido, dejamos el mensaje genérico
                     }
 
                     Ext.Msg.alert('Error', msg);
                 }
-
-
 
             });
         } else {

@@ -39,6 +39,7 @@ import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -658,62 +659,45 @@ public class CalendarControlBSPController extends BaseController {
 
     ///carga y forqamteo de excel
     
-        @RequestMapping(value = "uploadExcel", method = RequestMethod.POST)
-        public ResponseEntity<?> uploadExcel(
+    
+    @RequestMapping(value = "uploadExcel", method = RequestMethod.POST)
+    public ResponseEntity<?> uploadExcel(
             @RequestParam("excelfile") MultipartFile file,
             @RequestParam("country") String country,
             @RequestParam("calendarType") String calendarType,
             @RequestParam("calendarDate") String calendarDate) {
 
-        System.out.println("***** UploadExcel - Sending to Python API *****");
-
         try {
-            // Guardar el archivo MultipartFile en un archivo temporal
-            File convFile = new File(System.getProperty("java.io.tmpdir") + "/" + file.getOriginalFilename());
-            file.transferTo(convFile);
+            // Guardar archivo temporal
+            File tempFile = new File(System.getProperty("java.io.tmpdir"), file.getOriginalFilename());
+            file.transferTo(tempFile);
 
-            String urlREST = serverSession.getServerSession()
+            // URL API Python
+            String url = serverSession.getServerSession()
                     .getPropertySession()
-                    .get("RUTA_REST_DJANGO")
-                    .toString();
-            String urlAPI = "/api/calendar/uploadExcel/";
-            Unirest.setTimeouts(3600000, 3600000);
+                    .get("RUTA_REST_DJANGO") + "/api/calendar/uploadExcel/";
 
-
-            // Enviar request a Django
-            HttpResponse<String> response = Unirest.post(urlREST+urlAPI)
-                    .field("excelfile", convFile) 
+            // Llamada al API Django
+            HttpResponse<String> response = Unirest.post(url)
+                    .field("excelfile", tempFile)
                     .field("country", country)
                     .field("calendarType", calendarType)
                     .field("calendarDate", calendarDate)
                     .asString();
-            
-            String responseBody = response.getBody();
-            Map<String, Object> map = new HashMap<>();
 
-            map.put("message", "Respuesta desde API Python");
-            map.put("response", responseBody);
-
-            return ResponseEntity.ok(map);
-
-
-            
-            
-            
-
-            
-//            if (response.getStatus() == 200) {
-//                System.out.println("✅ Respuesta exitosa: " + response.getBody());
-//                return ResponseEntity.ok(response.getBody());
-//            } else {
-//                System.err.println("❌ Error desde API Python: " + response.getStatus() + " - " + response.getBody());
-//                return ResponseEntity.status(response.getStatus()).body(response.getBody());
-//            }   
-
+            // Si hay error, devolvemos igual
+            if (response.getStatus() == 200) {
+                System.out.println(" Respuesta exitosa: " + response.getBody());
+                return new ResponseEntity<>(response.getBody(), HttpStatus.OK);
+            } else {
+                System.err.println(" Error desde API Python: " + response.getStatus() + " -> " + response.getBody());
+                return new ResponseEntity<>(response.getBody(), HttpStatus.valueOf(response.getStatus()));
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body("Error al procesar el archivo: " + e.getMessage());
+            return new ResponseEntity<>("Error al procesar el archivo: " + e.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
