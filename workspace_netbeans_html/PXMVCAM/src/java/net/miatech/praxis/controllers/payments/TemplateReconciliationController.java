@@ -562,6 +562,106 @@ public class TemplateReconciliationController extends BaseController {
         return lst;
     }
 
+    @RequestMapping(value = "getPendingDepositsSales")
+    public @ResponseBody
+    String fetchPendingDepositsSales(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- TemplateReconciliation : getPendingDepositsSales -----------");
+
+        map.put("success", true);
+
+        List<A2290Filter> lst = this.searchPendingDepositsSales(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+    
+    public List<A2290Filter> searchPendingDepositsSales(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2290Filter> lst = new ArrayList<>(0);
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new TemplateReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (false) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.searchPendingDepositsSales(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    
+    @RequestMapping(value = "getPendingSales")
+    public @ResponseBody
+    String fetchPendingSales(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- TemplateReconciliation : fetchPendingSales -----------");
+
+        map.put("success", true);
+
+        List<A2290Filter> lst = this.searchPendingSales(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+    
+    public List<A2290Filter> searchPendingSales(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2290Filter> lst = new ArrayList<>(0);
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new TemplateReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (false) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.searchPendingSales(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    
     @RequestMapping(value = "executeConciliation")
     public @ResponseBody
     String assignTickets(HttpServletRequest request) throws Exception {
@@ -575,6 +675,7 @@ public class TemplateReconciliationController extends BaseController {
         String listBandoc = "";
         String listHead = "";
         String listSettlements = "";
+        String listSales = "";
         String regs = "", regsEC = "", message = "";
         
         try {
@@ -587,117 +688,151 @@ public class TemplateReconciliationController extends BaseController {
             listBandoc = request.getParameter("beanBandoc");
             listHead = request.getParameter("beanHead");
             listSettlements = request.getParameter("beanSettlements");
+            listSales = request.getParameter("beanSales");
             
             Type listType = new TypeToken<List<A2290Filter>>() {}.getType();
             List<A2290Filter> bandocList = gson.fromJson(listBandoc, listType);
             List<A2290Filter> headList = gson.fromJson(listHead, listType);
             List<A2290Filter> settlementsList = gson.fromJson(listSettlements, listType);
             List<A2290Filter> discountsList = gson.fromJson(listDiscounts, listType);
+            List<A2290Filter> salesList = gson.fromJson(listSales, listType);
             
             String headGroup = "";
             String bandocGroup = "";
             String settlementGroup = "";
             String discountsGroup = "";
+            String salesGroup = "";
             
             
             List<MPF101> lstData = new ArrayList<>();
             MPF101 obj = new MPF101();
             obj = new MPF101();
 
-            boolean firstSettlement = true;
-            boolean firstConcat = true;
+            if (!filter.IN_CODPRO.equals("VN") && 
+                !filter.IN_CODPRO.equals("BM") &&
+                    !filter.IN_CODPRO.equals("AB")) {
+                boolean firstSettlement = true;
+                boolean firstConcat = true;
 
-            for (A2290Filter settlements : settlementsList) {
-                obj = new MPF101();
-                obj.CCUST = filter.IN_CCUST;
-                obj.SDATE = settlements.SDATE.trim();
-                obj.SCOUNTRY = settlements.SCOUNTRY.trim();
-                obj.TDOC = settlements.TDOC.trim();
-                obj.CODEBANK = settlements.CODEBANK.trim();
-                obj.SCARCOD = settlements.SCARCOD.trim();
-                obj.SCARDN = settlements.SCARDN.trim();
-                obj.SAUTHOC = settlements.SAUTHOC.trim();
-                obj.SEQ = settlements.SEQ.trim();
-                obj.SVFOP = settlements.SVFOP;
-                obj.TOTAL = settlements.TOTAL;
-                obj.NETO = settlements.NETO;
-                obj.CODPRO = settlements.CODPRO.trim();
-                obj.CCUSTPRO = settlements.CCUSTPRO.trim();
-                obj.PRDA = settlements.PRDA.trim();
-                obj.FLIQUI = settlements.ADATE.trim();
-                obj.NLIQUI = settlements.LIQUIDACIO.trim();
-                obj.MERCHAND = settlements.MERCHAND.trim();
-                obj.TIPOL = "L";
+                for (A2290Filter settlements : settlementsList) {
+                    obj = new MPF101();
+                    obj.CCUST = filter.IN_CCUST;
+                    obj.SDATE = settlements.SDATE.trim();
+                    obj.SCOUNTRY = settlements.SCOUNTRY.trim();
+                    obj.TDOC = settlements.TDOC.trim();
+                    obj.CODEBANK = settlements.CODEBANK.trim();
+                    obj.SCARCOD = settlements.SCARCOD.trim();
+                    obj.SCARDN = settlements.SCARDN.trim();
+                    obj.SAUTHOC = settlements.SAUTHOC.trim();
+                    obj.SEQ = settlements.SEQ.trim();
+                    obj.SVFOP = settlements.SVFOP;
+                    obj.TOTAL = settlements.TOTAL;
+                    obj.NETO = settlements.NETO;
+                    obj.CODPRO = settlements.CODPRO.trim();
+                    obj.CCUSTPRO = settlements.CCUSTPRO.trim();
+                    obj.PRDA = settlements.PRDA.trim();
+                    obj.FLIQUI = settlements.ADATE.trim();
+                    obj.NLIQUI = settlements.LIQUIDACIO.trim();
+                    obj.MERCHAND = settlements.MERCHAND.trim();
+                    obj.TIPOL = "L";
 
-                if (firstSettlement) {
-                    for (A2290Filter bandoc : bandocList) {
-                        obj.CCUST_EC = bandoc.CCUST.trim();
-                        obj.ADATE = bandoc.ADATE.trim();
-                        obj.SOCIETY = bandoc.SOCIETY.trim();
-                        obj.CODEBANK_EC = bandoc.CODEBANK.trim();
-                        obj.BANDOC = bandoc.BANDOC.trim();
-                        break;
+                    if (firstSettlement) {
+                        for (A2290Filter bandoc : bandocList) {
+                            obj.CCUST_EC = bandoc.CCUST.trim();
+                            obj.ADATE = bandoc.ADATE.trim();
+                            obj.SOCIETY = bandoc.SOCIETY.trim();
+                            obj.CODEBANK_EC = bandoc.CODEBANK.trim();
+                            obj.BANDOC = bandoc.BANDOC.trim();
+                            break;
+                        }
+                        firstSettlement = false;
+                        regsEC = obj.CCUST_EC + ";" + obj.ADATE + ";" + obj.SOCIETY + ";" + obj.CODEBANK_EC + ";" + obj.BANDOC;
                     }
-                    firstSettlement = false;
-                    regsEC = obj.CCUST_EC + ";" + obj.ADATE + ";" + obj.SOCIETY + ";" + obj.CODEBANK_EC + ";" + obj.BANDOC;
+
+                    if (firstConcat) {
+                        regs = regs + "|" + obj.CCUST.trim() + ";" + obj.SDATE.trim() + ";" + obj.SCOUNTRY.trim() + ";" + obj.TDOC.trim() + ";"
+                            + obj.CODEBANK.trim() + ";" + obj.SCARCOD.trim() + ";" + obj.SCARDN.trim()
+                            + ";" + obj.SAUTHOC.trim() + ";" + obj.SEQ.trim() + ";" + obj.SVFOP + ";" + obj.TOTAL + ";" + obj.NETO + ";" + obj.CODPRO.trim()
+                            + ";" + obj.CCUSTPRO.trim() + ";" + obj.PRDA.trim() + ";" + obj.FLIQUI.trim() + ";" + obj.NLIQUI.trim() + ";" + obj.MERCHAND.trim() + ";" + obj.TIPOL.trim() + ";";
+                        regs = regs + regsEC; // Concatenación solo una vez al inicio
+                        firstConcat = false;
+                    } else {
+                        regs = regs + "|" + obj.CCUST.trim() + ";" + obj.SDATE.trim() + ";" + obj.SCOUNTRY.trim() + ";" + obj.TDOC.trim() + ";"
+                            + obj.CODEBANK.trim() + ";" + obj.SCARCOD.trim() + ";" + obj.SCARDN.trim()
+                            + ";" + obj.SAUTHOC.trim() + ";" + obj.SEQ.trim() + ";" + obj.SVFOP + ";" + obj.TOTAL + ";" + obj.NETO + ";" + obj.CODPRO.trim()
+                            + ";" + obj.CCUSTPRO.trim() + ";" + obj.PRDA.trim() + ";" + obj.FLIQUI.trim() + ";" + obj.NLIQUI.trim() + ";" + obj.MERCHAND.trim() + ";" + obj.TIPOL.trim();
+                    }
+
                 }
 
-                if (firstConcat) {
-                    regs = regs + "|" + obj.CCUST.trim() + ";" + obj.SDATE.trim() + ";" + obj.SCOUNTRY.trim() + ";" + obj.TDOC.trim() + ";"
-                        + obj.CODEBANK.trim() + ";" + obj.SCARCOD.trim() + ";" + obj.SCARDN.trim()
-                        + ";" + obj.SAUTHOC.trim() + ";" + obj.SEQ.trim() + ";" + obj.SVFOP + ";" + obj.TOTAL + ";" + obj.NETO + ";" + obj.CODPRO.trim()
-                        + ";" + obj.CCUSTPRO.trim() + ";" + obj.PRDA.trim() + ";" + obj.FLIQUI.trim() + ";" + obj.NLIQUI.trim() + ";" + obj.MERCHAND.trim() + ";" + obj.TIPOL.trim() + ";";
-                    regs = regs + regsEC; // Concatenación solo una vez al inicio
-                    firstConcat = false;
-                } else {
-                    regs = regs + "|" + obj.CCUST.trim() + ";" + obj.SDATE.trim() + ";" + obj.SCOUNTRY.trim() + ";" + obj.TDOC.trim() + ";"
-                        + obj.CODEBANK.trim() + ";" + obj.SCARCOD.trim() + ";" + obj.SCARDN.trim()
-                        + ";" + obj.SAUTHOC.trim() + ";" + obj.SEQ.trim() + ";" + obj.SVFOP + ";" + obj.TOTAL + ";" + obj.NETO + ";" + obj.CODPRO.trim()
-                        + ";" + obj.CCUSTPRO.trim() + ";" + obj.PRDA.trim() + ";" + obj.FLIQUI.trim() + ";" + obj.NLIQUI.trim() + ";" + obj.MERCHAND.trim() + ";" + obj.TIPOL.trim();
+                for (A2290Filter discount : discountsList) {
+
+                    regs = regs + "|" + "134" + ";" + "" + ";" + "" + ";" + "" + ";"
+                    + "" + ";" + "" + ";" + ""
+                    + ";" + "" + ";" + "" + ";" + obj.SVFOP + ";" + discount.IMPORTECeba + ";" + discount.IMPORTEPAG + ";" + discount.CODPRO.trim()
+                    + ";" + discount.CCUSTPRO.trim() + ";" + discount.PRDA.trim() + ";" + discount.FLIQUIDACI.trim() + ";" + discount.LIQUIDACIO.trim() + ";" + discount.MERCHAND.trim() + ";" + "D";
+
                 }
 
-            }
+                System.out.println(headGroup);
+                System.out.println(bandocGroup);
+                System.out.println(settlementGroup);
+                System.out.println(discountsGroup);
 
+                obj.liq = regs.substring(1);
+                obj.ec = regsEC;
+                regs = "";
+                regsEC = "";
+                lstData.add(obj);
 
-            for (A2290Filter discount : discountsList) {
+                if (message.equals("")) {
+                    System.out.print("sucesssssssssssssssssss");
+                    StatementReconciliationsLogic logicStatement = new StatementReconciliationsLogic();
+                    logicStatement.setSession(this.serverSession.getServerSession());
+                    message = logicStatement.loadPX287MPS106(lstData);
+
+                }
+            } else {
                 
-                regs = regs + "|" + "134" + ";" + "" + ";" + "" + ";" + "" + ";"
-                + "" + ";" + "" + ";" + ""
-                + ";" + "" + ";" + "" + ";" + obj.SVFOP + ";" + discount.IMPORTECeba + ";" + discount.IMPORTEPAG + ";" + discount.CODPRO.trim()
-                + ";" + discount.CCUSTPRO.trim() + ";" + discount.PRDA.trim() + ";" + discount.FLIQUIDACI.trim() + ";" + discount.LIQUIDACIO.trim() + ";" + discount.MERCHAND.trim() + ";" + "D";
-                
-            }
-            
-            
-            // Recorrer la lista de objetos Bandoc
-//            for (A2290Filter head : headList) {
-//                headGroup = headGroup + "|" 
-//                    + head.CCUST.trim() + ";" + head.PRDA.trim() + ";" + head.CODPRO.trim() + ";" 
-//                    + head.CCUSTPRO.trim() + ";" + head.FLIQUIDACI.trim() + ";" + head.LIQUIDACIO.trim() + ";" 
-//                    + head.MERCHAND.trim() + ";" + head.MONEDA.trim() + ";" + head.BANDOC.trim() + ";" 
-//                    + head.DATECI.trim() + ";" + head.TRANCI.trim() + ";" + head.VALDATE.trim() + ";" 
-//                    + head.MONEDAPAGO.trim() + ";" + head.IMPORTEPAG + ";" + head.TOTAL + ";" 
-//                    + head.NETO;
-//            }
+                    List<String> salesParts = new ArrayList<>();
+                    for (A2290Filter sale : salesList) {
+                        salesParts.add(
+                            sale.CCUST.trim() + ";" + sale.CCIA.trim() + ";" + sale.FORMA.trim() + ";" 
+                            + sale.SERIE.trim() + ";" + sale.TDOC.trim() + ";" + sale.SCARDNCOR.trim() + ";" 
+                            + sale.SAUTHOC.trim() + ";" + sale.SEQ.trim() + ";" + sale.CORRL.trim() + ";" 
+                            + sale.SVFOP + ";" + sale.TOTAL
+                        );
+                    }
+                    salesGroup = String.join("|", salesParts);
 
-            
-            System.out.println(headGroup);
-            System.out.println(bandocGroup);
-            System.out.println(settlementGroup);
-            System.out.println(discountsGroup);
-            
-            obj.liq = regs.substring(1);
-            obj.ec = regsEC;
-            regs = "";
-            regsEC = "";
-            lstData.add(obj);
 
-            if (message.equals("")) {
-                System.out.print("sucesssssssssssssssssss");
-                StatementReconciliationsLogic logicStatement = new StatementReconciliationsLogic();
-                logicStatement.setSession(this.serverSession.getServerSession());
-                message = logicStatement.loadPX287MPS100(lstData);
+                   List<String> bandocParts = new ArrayList<>();
+                    for (A2290Filter bandoc : bandocList) {
+                        bandocParts.add(
+                            bandoc.CCUST.trim() + ";" + bandoc.ADATE.trim() + ";" + bandoc.SOCIETY.trim() + ";" 
+                            + bandoc.CODEBANK.trim() + ";" + bandoc.BANDOC.trim()
+                        );
+                    }
 
+                    bandocGroup = String.join("|", bandocParts);
+
+
+                    System.out.print("sucesssssssssssssssssss");
+
+                    obj.liq = salesGroup;
+                    obj.ec = bandocGroup;
+                    obj.processR = filter.IN_CODPRO;
+                    regs = "";
+                    regsEC = "";
+                    lstData.add(obj);
+
+                    if (message.equals("")) {
+                        System.out.print("sucesssssssssssssssssss");
+                        StatementReconciliationsLogic logicStatement = new StatementReconciliationsLogic();
+                        logicStatement.setSession(this.serverSession.getServerSession());
+                            message = logicStatement.loadPX287MPS106(lstData);
+
+                    }
             }
             
 //            lst = logic.searchPendingHeads(filter);
@@ -710,9 +845,9 @@ public class TemplateReconciliationController extends BaseController {
             m.put("result", message);
         }
         
-        if (message != null && message.contains("Operation Succefull")) {
+        if (message != null) {
             m.put("success", true);
-            m.put("result", "Operation Successful");
+            m.put("result", message);
         } else {
             m.put("success", false);
             m.put("result", message);
