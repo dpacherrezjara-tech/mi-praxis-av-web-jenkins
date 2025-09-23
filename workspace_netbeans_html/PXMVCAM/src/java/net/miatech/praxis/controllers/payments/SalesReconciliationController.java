@@ -25,7 +25,6 @@ import net.miatech.praxis.classes.ExportUtil;
 import net.miatech.praxis.classes.ProMail;
 import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.exceptions.SpringException;
-import net.miatech.praxis.logic.payments.BankReconciliationLogic;
 import net.miatech.praxis.logic.payments.LoadConciliationLogic;
 import net.miatech.praxis.logic.payments.StatementReconciliationsLogic;
 import net.miatech.praxis.payment.filter.A2290Filter;
@@ -3390,7 +3389,7 @@ public class SalesReconciliationController extends BaseController {
         boolean iboolean;
         String msj = "";
         String msjError = "";
-        String contactos_BPO = "plopez@miatech.net;monica@miatech.net";
+        String contactos_BPO = "";
 
         List<MPF100Filter> listaData;
         List<MPF100Filter> listaData_BPO;
@@ -3425,6 +3424,8 @@ public class SalesReconciliationController extends BaseController {
 
                         if (listaData.size() > 0) {
 
+                            //agreggamos pdf
+                            String ruta_pdf = "C:\\Dumps\\ComunicadoFee_Avianca\\ComunicadoFee.pdf";
                             String ruta_file = obtenerExcel(listaData, agent_name);
                             //                        String ruta_file_adjust ="";
                             //                        if(listaData_ADJUST.size()>0){
@@ -3438,6 +3439,7 @@ public class SalesReconciliationController extends BaseController {
 
                             if (!ruta_file.equals("")) {
                                 adjuntos.add(ruta_file);
+                                adjuntos.add(ruta_pdf);
                                 //                            if(!ruta_file_adjust.equals("")){
                                 //                                adjuntos.add(ruta_file_adjust);   
                                 //                            }
@@ -3497,7 +3499,7 @@ public class SalesReconciliationController extends BaseController {
                                     + "correo&nbsp;<a href=\"mailto:conciliacionventastc@avianca.com\"><u>conciliacionventastc@avianca.com</u></a>&nbsp;con copia "
                                     + "a: <a href=\"mailto:cheryd.quintero@avianca.com\"><u>cheryd.quintero@avianca.com</u></a>&nbsp;"
                                     + "<a href=\"mailto:jose.higuera@avianca.com\"><u>jose.higuera@avianca.com</u></a>&nbsp;<a href=\"mailto:monica.zuluaga@avianca.com\"><u>monica.zuluaga@avianca.com</u></a>"
-                                    + "&nbsp;<a href=\"mailto:carlos.jaimes@avianca.com\"><u>carlos.jaimes@avianca.com</u></a>. D<strong><strong>e encontrar tiquetes los cuales no hayan "
+                                    + "&nbsp;<a href=\"mailto:carlos.jaimes@avianca.com\"><u>carlos.jaimes@avianca.com</u></a>. <strong><strong>De encontrar tiquetes los cuales no hayan "
                                     + "sido cancelados, solicitamos su legalizaci&oacute;n de forma inmediata mediante&nbsp;la confirmaci&oacute;n del cobro mediante BSP - nota de cargo respondiendo en este "
                                     + "mismo correo.</strong></strong></p>\n"
                                     + "<p>&nbsp;</p>\n"
@@ -3523,9 +3525,15 @@ public class SalesReconciliationController extends BaseController {
                                     + "la ADM y solicitar el reembolso y/o ACM seg&uacute;n corresponda.</li>\n"
                                     + "<li>Verificar que&nbsp;los soportes que env&iacute;an no&nbsp;hayan presentado anulaci&oacute;n no satisfactoria,&nbsp;porque de ser as&iacute; no se pueden "
                                     + "tomar para cancelar tiquetes pendientes y por ende se genera la nota de cargo.</li>\n"
-                                    + "</ul>\n"
                                     + "<p>&nbsp;</p>\n"
-                                    + "<p>Cordial saludo,</p>\n"
+                                    + "</ul>\n"
+                                    + "<p><strong><strong>\"Estimados Agentes de Viajes, informamos que a partir del 1 de octubre se reactivará el cobro del fee administrativo de USD 15"
+                                    + "por tiquete para aquellos que no estén pagados correctamente en la fecha de la venta, sin pagos, pagos parciales o pagos con datos que no coincidan.  "
+                                    + "Adjuntamos el comunicado oficial con el detalle para su conocimiento.\"</strong></strong></p>\n"
+                                    
+                                    + "<p>&nbsp;</p>\n"
+                                    + "<p>&nbsp;</p>\n"
+                                    + "<p>Cordial saludo.</p>\n"
                                     + "<img src=\"cid:logo\" />";
                             iboolean = proMail.enviaCorreoAV("", asunto, receptores, CC, Ccp, mensaje, adjuntos, this.serverSession.getServerSession());
 
@@ -3534,6 +3542,9 @@ public class SalesReconciliationController extends BaseController {
                                 contIatas += 1;
                                 msj += " Email Sent.";
 
+                                
+                                
+                                
                                 String msj_marca = logic.marcarTicketsEnviados(obj);
                                 if (!msj_marca.equals("OK")) {
                                     msjError = msjError + "-" + obj.IN_AGENT;
@@ -3549,11 +3560,7 @@ public class SalesReconciliationController extends BaseController {
                             if (file.exists()) {
                                 file.delete();
                             }
-                            //                        File file2 = new File(ruta_file_adjust);
-                            //                        if (file2.exists()) {
-                            //                            file2.delete();
-                            //                        }
-
+                        
                         }
                     }
 
@@ -3567,6 +3574,7 @@ public class SalesReconciliationController extends BaseController {
                 }
 
                 System.out.println("Se enviara a bpo");
+            
 
                 listaData_BPO = logic.loadPX263SQP00XXXJT3(obj);
                 if (listaData_BPO.size() > 0) {
