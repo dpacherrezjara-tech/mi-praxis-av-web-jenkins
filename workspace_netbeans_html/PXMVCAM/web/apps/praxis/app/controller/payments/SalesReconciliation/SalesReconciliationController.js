@@ -3344,7 +3344,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
             items: [
                 {
                     xtype: 'monthpicker',
-                    id: prototype.id + '-monthPicker',
+                    id: prototype.id + '-monthPicker'
 //                    listeners: {
 ////                        cancelclick: 'cancelarSeleccionFecha',
 //                        monthdblclick: 'aceptarSeleccionFecha'
