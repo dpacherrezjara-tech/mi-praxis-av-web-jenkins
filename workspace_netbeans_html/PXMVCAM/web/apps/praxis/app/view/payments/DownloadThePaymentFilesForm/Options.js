@@ -11,98 +11,16 @@ Ext.define('Ext.Praxis.view.payments.DownloadThePaymentFilesForm.Options', {
             xtype: 'panel',
             id: prototype.id + '-boxPaginacion',
             hidden: false,
-            width: 100,
+           width: prototype.widthContenedor,
             border: false,
             items: [
                 {
-                    xtype: 'toolbar',
-                    cls: 'x-toolbar-pag',
-                    items: [
-                        {
-                            xtype: 'button',
-                            id: prototype.id + '-btn-pag-first',
-                            iconCls: 'prx-icon-pagination-first',
-                            tooltip: 'First Page'
-
-                        },
-                        {
-                            xtype: 'button',
-                            id: prototype.id + '-btn-pag-previous',
-                            iconCls: 'prx-icon-pagination-previous',
-                            tooltip: 'Previous Page'
-
-                        },
-                        {
-                            xtype: 'button',
-                            id: prototype.id + '-btn-pag-next',
-                            iconCls: 'prx-icon-pagination-next',
-                            tooltip: 'Next Page'
-
-                        },
-                        {
-                            xtype: 'button',
-                            id: prototype.id + '-btn-pag-last',
-                            iconCls: 'prx-icon-pagination-last',
-                            tooltip: 'Last Page'
-
-                        },
-                        {
-                            xtype: 'pagingtoolbar',
-                            id: prototype.id + '-paggin',
-                            pageSize: 10,
-                            border: false,
-                            displayInfo: false,
-                            hidden: true
-                        },
-                        {
-                            xtype: 'pagingtoolbar',
-                            id: prototype.id + '-paggin2',
-                            pageSize: 10,
-                            border: false,
-                            displayInfo: false,
-                            hidden: true
-                        },
-                        {
-                            xtype: 'pagingtoolbar',
-                            id: prototype.id + '-paggin3',
-                            pageSize: 10,
-                            border: false,
-                            displayInfo: false,
-                            hidden: true
-                        },
-                        {
-                            xtype: 'pagingtoolbar',
-                            id: prototype.id + '-paggin4',
-                            pageSize: 10,
-                            border: false,
-                            displayInfo: false,
-                            hidden: true
-                        },
-                        {
-                            xtype: 'pagingtoolbar',
-                            id: prototype.id + '-paggin5',
-                            pageSize: 10,
-                            border: false,
-                            displayInfo: false,
-                            hidden: true
-                        },
-                        {
-                            xtype: 'pagingtoolbar',
-                            id: prototype.id + '-paggin6',
-                            pageSize: 10,
-                            border: false,
-                            displayInfo: false,
-                            hidden: true
-                        },
-                        {
-                            xtype: 'pagingtoolbar',
-                            id: prototype.id + '-paggin7',
-                            pageSize: 10,
-                            border: false,
-                            displayInfo: false,
-                            hidden: true
-                        }
-                        
+                    xtype: 'Paginator',
+                    id: prototype.id + '-pagginator-01',
+                    pagInfo: [
+                        prototype.id + '-lbl-currentPage',
+                        prototype.id + '-lbl-pageCount',
+                        prototype.id + '-lbl-total'
                     ]
                 }
             ]

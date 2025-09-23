@@ -61,9 +61,9 @@ Ext.define('Ext.Praxis.view.payments.UserMaintenanceForm.Info', {
                                         items:
                                                 [
                                                     {text: 'User', dataIndex: 'A4717USER', width: 200},
-                                                    {text: 'Pass', dataIndex: 'A4717PSCO', width: 100},
+                                                   // {text: 'Pass', dataIndex: 'A4717PASS', width: 100},
                                                     {text: 'Processor </br> type', dataIndex: 'A4717TYPEDES', width: 200},
-                                                    {text: 'Status', dataIndex: 'A4717ESTAT', width: 60, sortable: false, align: 'right',renderer: 'onRendererColumnStatus'},
+                                                    {text: 'Status', dataIndex: 'A4717ESTAT', width: 60, sortable: false, align: 'right', renderer: 'onRendererColumnStatus'},
                                                     {text: 'User Created',
                                                         defaults: {
                                                             menuDisabled: true,
@@ -105,6 +105,18 @@ Ext.define('Ext.Praxis.view.payments.UserMaintenanceForm.Info', {
                                                         ]
                                                     }
                                                 ]
+                                    },
+                                    listeners: {
+                                        afterrender: function (grid) {
+                                            // variable de ejemplo: usuario logueado
+                                            var username = document.getElementById('menuUser').innerText.trim();
+                                            console.log(username);
+
+                                            var col = grid.down('gridcolumn[dataIndex=A4717PSCO]');
+                                            if (col && username === 'SAP26T') {
+                                                col.setVisible(false); // oculta la columna completa
+                                            }
+                                        }
                                     }
                                 }
                             ]

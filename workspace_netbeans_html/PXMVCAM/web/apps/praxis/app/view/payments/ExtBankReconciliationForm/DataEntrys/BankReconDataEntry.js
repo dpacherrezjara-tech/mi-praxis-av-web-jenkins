@@ -1387,7 +1387,7 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                             xtype: 'container',
                             layout: {
                                 type: 'hbox',
-                                pack: 'center'   
+                                pack: 'center'
                             },
                             items: [
                                 {
@@ -1411,6 +1411,17 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                     title: 'Header',
                                     titleAlign: 'center',
                                     columns: [
+                                        {text: 'Status', dataIndex: 'STVAL', flex: 1, align: 'center', textAlign: 'center',
+                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                metaData.style = "font-weight:bold;";
+                                                let opts = {
+                                                    '1': 'Match',
+                                                    '3': 'Pending',
+                                                    '5': 'Manual'
+                                                };
+                                                return opts[value] || '';
+                                            }
+                                        },
                                         {text: 'Net Reconcile', dataIndex: 'NETO', flex: 1, align: 'center',
                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                 metaData.style = "text-align:right;background-color:#B2DAFA";

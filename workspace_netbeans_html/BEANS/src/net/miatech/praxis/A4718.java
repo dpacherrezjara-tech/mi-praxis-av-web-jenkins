@@ -17,6 +17,8 @@ public class A4718 {
 
     public String A4718USRIN;
     public String A4718FECIN;
+    public String A4718FINI;
+    public String A4718FFIN;
     public String A4718HORIN;
 
     public String A4718USRAC;
@@ -26,6 +28,22 @@ public class A4718 {
     public String A4718TYPEDES;
     public String A4718ESTATDES;
 
+    public String getA4718FINI() {
+        return A4718FINI;
+    }
+
+    public void setA4718FINI(String A4718FINI) {
+        this.A4718FINI = A4718FINI;
+    }
+
+    public String getA4718FFIN() {
+        return A4718FFIN;
+    }
+
+    public void setA4718FFIN(String A4718FFIN) {
+        this.A4718FFIN = A4718FFIN;
+    }
+    
     public String getA4718TYPEDES() {
         return A4718TYPEDES;
     }
