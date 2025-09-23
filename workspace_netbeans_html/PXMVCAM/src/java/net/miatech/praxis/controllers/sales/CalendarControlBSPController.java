@@ -39,6 +39,7 @@ import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -654,67 +655,6 @@ public class CalendarControlBSPController extends BaseController {
         } catch (Exception e) {
             e.printStackTrace();
             throw new SpringException(e);
-        }
-    }
-
-    ///carga y forqamteo de excel
-    
-        @RequestMapping(value = "uploadExcel", method = RequestMethod.POST)
-        public ResponseEntity<?> uploadExcel(
-            @RequestParam("excelfile") MultipartFile file,
-            @RequestParam("country") String country,
-            @RequestParam("calendarType") String calendarType,
-            @RequestParam("calendarDate") String calendarDate) {
-
-        System.out.println("***** UploadExcel - Sending to Python API *****");
-
-        try {
-            // Guardar el archivo MultipartFile en un archivo temporal
-            File convFile = new File(System.getProperty("java.io.tmpdir") + "/" + file.getOriginalFilename());
-            file.transferTo(convFile);
-
-            String urlREST = serverSession.getServerSession()
-                    .getPropertySession()
-                    .get("RUTA_REST_DJANGO")
-                    .toString();
-            String urlAPI = "/api/calendar/uploadExcel/";
-            Unirest.setTimeouts(3600000, 3600000);
-
-
-            // Enviar request a Django
-            HttpResponse<String> response = Unirest.post(urlREST+urlAPI)
-                    .field("excelfile", convFile) 
-                    .field("country", country)
-                    .field("calendarType", calendarType)
-                    .field("calendarDate", calendarDate)
-                    .asString();
-            
-            String responseBody = response.getBody();
-            Map<String, Object> map = new HashMap<>();
-
-            map.put("message", "Respuesta desde API Python");
-            map.put("response", responseBody);
-
-            return ResponseEntity.ok(map);
-
-
-            
-            
-            
-
-            
-//            if (response.getStatus() == 200) {
-//                System.out.println("✅ Respuesta exitosa: " + response.getBody());
-//                return ResponseEntity.ok(response.getBody());
-//            } else {
-//                System.err.println("❌ Error desde API Python: " + response.getStatus() + " - " + response.getBody());
-//                return ResponseEntity.status(response.getStatus()).body(response.getBody());
-//            }   
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).body("Error al procesar el archivo: " + e.getMessage());
         }
     }
 
