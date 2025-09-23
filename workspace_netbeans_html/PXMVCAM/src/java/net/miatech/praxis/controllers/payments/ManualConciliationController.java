@@ -276,10 +276,12 @@ public class ManualConciliationController extends BaseController {
         String msj = "";
         Gson gson = new Gson();
         String beanString = "";
+        String beanIntercompany = "";
 
         try {
 
             beanString = request.getParameter("beanString");
+            beanIntercompany = request.getParameter("beanIntercompany");
             System.out.println("JSON recibido en el servidor: " + beanString);
             A2290Filter[] filters = gson.fromJson(beanString, A2290Filter[].class);
             List<A2290Filter> filterList = Arrays.asList(filters);
@@ -287,7 +289,7 @@ public class ManualConciliationController extends BaseController {
             UserView user = this.serverSession.getServerSession().getUserView();
             logic = new ManualConciliationLogic();
             logic.setSession(this.serverSession.getServerSession());
-            msj = logic.loadPX269SQP00834GRILL(filterList, user);
+            msj = logic.loadPX269SQP00834GRILL(filterList, user, beanIntercompany);
 
             map.put("success", true);
             map.put("Mensaje", msj);
@@ -311,17 +313,19 @@ public class ManualConciliationController extends BaseController {
         String msj = "";
         Gson gson = new Gson();
         String beanString = "";
+        String beanIntercompany = "";
 
         try {
 
             beanString = request.getParameter("beanString");
+            beanIntercompany = request.getParameter("beanIntercompany");
             System.out.println("JSON recibido en el servidor: " + beanString);
             filter = gson.fromJson(beanString, A2290Filter.class);
 
             UserView user = this.serverSession.getServerSession().getUserView();
             logic = new ManualConciliationLogic();
             logic.setSession(this.serverSession.getServerSession());
-            msj = logic.loadPX269SQP00834ALL(filter, user);
+            msj = logic.loadPX269SQP00834ALL(filter, user,beanIntercompany);
 
             map.put("success", true);
             map.put("Mensaje", msj);

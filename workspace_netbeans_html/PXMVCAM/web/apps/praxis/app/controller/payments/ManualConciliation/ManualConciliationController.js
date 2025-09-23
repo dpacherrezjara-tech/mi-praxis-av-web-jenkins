@@ -1277,6 +1277,9 @@ Ext.define('Ext.Praxis.controller.payments.ManualConciliation.ManualConciliation
             var rquery = selectedRecordCo.get('RQUERY'); // Obtener el valor de RQUERY
             var tquery = selectedRecordCo.get('TQUERY'); // Obtener el valor de RQUERY
             var ttable = selectedRecordCo.get('TTABLE'); // Obtener el valor de RQUERY
+            if ( Ext.getCmp(prototype.id + '-chkIntercompany').getValue() ){
+                rquery = rquery.replace("A.CCUST = B.CCUST AND", "");                  
+            }
         } else {
             global.Msg({msg: '...You must select a rule...'
             });
