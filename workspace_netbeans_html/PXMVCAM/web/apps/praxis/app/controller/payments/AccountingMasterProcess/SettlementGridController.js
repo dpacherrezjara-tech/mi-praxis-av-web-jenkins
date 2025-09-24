@@ -129,7 +129,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.SettlementGri
                 'Currency': x.SCURRENCY,
                 'Pay Amount': x.IMPORTEPAG,
                 'Pay Currency': x.MONEDAPAGO,
-                'Agent': x.SAGENT,
+                'IATA': x.SAGENT,
                 'Merchant': x.MERCHNC,
                 'Status': this.formatStatus(x.STVAL),
                 'Gencon': x.GENCON,
