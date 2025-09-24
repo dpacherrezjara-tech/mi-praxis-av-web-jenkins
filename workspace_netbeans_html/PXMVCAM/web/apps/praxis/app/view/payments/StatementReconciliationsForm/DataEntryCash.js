@@ -431,7 +431,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                         //<editor-fold defaultstate="collapsed" desc="Detail Setlement">
                                         {
                                             xtype: 'label',
-                                            text: 'Detail Settlement',
+                                            text: 'Header Settlement',
                                             id: prototype.id + '-titleDetail',
                                             style: 'font-weight:bold;color:#0B333C;text-decoration-line: underline;',
                                             bodyStyle: 'background:#E5ECEF;',
@@ -591,7 +591,23 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                     readOnly: true,
                                                     width: 80
                                                 },
-                                                {xtype: 'tbspacer', width: 270},
+                                                {xtype: 'tbspacer', width: 50},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Negocio',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    width: 80
+                                                },
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtNegoc',
+                                                    fieldStyle: 'text-align:center',
+                                                    enforceMaxLength: true,
+                                                    readOnly: true,
+                                                    width: 80
+                                                },
+                                                {xtype: 'tbspacer', width: 50},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Diff',
@@ -616,6 +632,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                             xtype: 'panel',
                                             id: prototype.id + '-panelScanCard',
                                             layout: 'hbox',
+                                            hidden: true,
                                             border: false,
                                             margin: '10 2 10 10',
                                             bodyStyle: 'background:#;',
@@ -826,6 +843,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                             id: prototype.id + '-panelScanCard2',
                                             layout: 'hbox',
                                             border: false,
+                                            hidden: true,
                                             margin: '0 2 0 10',
                                             bodyStyle: 'background:#;',
                                             items: [
@@ -987,27 +1005,36 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                         },
                                         //</editor-fold>
                                         //<editor-fold defaultstate="collapsed" desc="Detail new Setlement">
-                                        {xtype: 'tbspacer', height: 5},
+                                        {xtype: 'tbspacer', height: 15},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Detail Settlement',
+                                            id: prototype.id + '-titleDetailSettlement',
+                                            style: 'font-weight:bold;color:#0B333C;text-decoration-line: underline;',
+                                            bodyStyle: 'background:#E5ECEF;',
+                                            fontSize: '11',
+                                            width: 280,
+                                            margin: '10 2 10 8'
+                                        },
                                         {
                                             xtype: 'panel',
                                             layout: 'hbox',
                                             border: false,
                                             margin: '10 0 0 30',
-                                            //bodyStyle: 'background:#efe5e5;',
                                             items: [
                                                 {
                                                     xtype: 'panel',
                                                     id: prototype.id + '-panelDataInfoScan',
                                                     layout: 'vbox',
                                                     border: false,
-                                                    width: 1250,
+                                                    width: 1156,
                                                     height: 280,
                                                     autoScroll: true,
                                                     items: [
                                                         {
                                                             xtype: 'grid',
                                                             id: prototype.id + '-gridDataInfoScan',
-                                                            width: 1194,
+                                                            width: 1100,
                                                             height: 250,
                                                             columnLines: true,
                                                             plugins: [
@@ -1023,49 +1050,51 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                                     align: 'center'
                                                                 },
                                                                 items: [
-                                                                    {text: 'Status', dataIndex: 'descSTVAL', width: 85,
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    {
+                                                                        text: 'Value <br> Date',
+                                                                        dataIndex: 'VALDATE',
+                                                                        width: 90,
+                                                                        renderer: function (value, metaData) {
                                                                             metaData.style = "text-align:center;";
                                                                             return value;
                                                                         }
                                                                     },
-                                                                    {text: 'Abono <br> Date', dataIndex: 'ADATE', width: 65,
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:center;";
-                                                                            return value;
-                                                                        }
-                                                                    },
-                                                                    {text: 'Value <br> Date', dataIndex: 'VALDATE', width: 65,
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:center;";
-                                                                            return value;
-                                                                        }
-                                                                    },
-
-                                                                    {text: 'Agent', dataIndex: 'SAGENT', width: 75,
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    {
+                                                                        text: 'Agent',
+                                                                        dataIndex: 'SAGENT',
+                                                                        width: 105,
+                                                                        renderer: function (value, metaData) {
                                                                             metaData.style = "text-align:center;";
                                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                             metaData.unselectableAttr = "unselectable='off'";
                                                                             return value;
                                                                         }
                                                                     },
-                                                                    {text: 'Sconsol', dataIndex: 'SCONSOL', width: 75,
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    {
+                                                                        text: 'Sconsol',
+                                                                        dataIndex: 'SCONSOL',
+                                                                        width: 105,
+                                                                        renderer: function (value, metaData) {
                                                                             metaData.style = "text-align:center;";
-                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                            metaData.unselectableAttr = "unselectable='off'";
                                                                             return value;
-                                                                        }   
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Currency',
+                                                                        dataIndex: 'SCURRENCY',
+                                                                        width: 120,
+                                                                        renderer: function (value, metaData) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
                                                                     },
                                                                     {
                                                                         text: 'Neto',
                                                                         dataIndex: 'NETO',
-                                                                        width: 80,
+                                                                        width: 100,
                                                                         xtype: 'gridcolumn',
-                                                                        cls: 'detalle-neto', // Agrega una clase personalizada a las celdas de detalle NETO
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            var data = record.data;
+                                                                        cls: 'detalle-neto',
+                                                                        renderer: function (value, metaData) {
                                                                             metaData.style = "text-align:right;";
                                                                             return Ext.util.Format.number(value, '0,000.00');
                                                                         },
@@ -1084,10 +1113,10 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                                     {
                                                                         text: 'Payment <br> Amount',
                                                                         dataIndex: 'PAYAMOU',
-                                                                        width: 80,
+                                                                        width: 100,
                                                                         xtype: 'gridcolumn',
-                                                                        cls: 'detalle-neto', // Agrega una clase personalizada a las celdas de detalle NETO
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                        cls: 'detalle-neto',
+                                                                        renderer: function (value, metaData, record) {
                                                                             var data = record.data;
                                                                             metaData.style = "text-align:right;";
                                                                             if (data.COMISTOTA !== 0 && data.COMISTOTA !== undefined) {
@@ -1095,7 +1124,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                                                 metaData.tdAttr = 'data-qtip="' + "Commission: " + data.COMISTOTA + '"';
                                                                             }
                                                                             if (record.get('isInValidCombination') && data.STVAL === '3') {
-                                                                                metaData.style += "background-color: yellow;"; // Aplicar estilo si el registro está en una combinación válida
+                                                                                metaData.style += "background-color: yellow;";
                                                                             }
                                                                             return Ext.util.Format.number(value, '0,000.00');
                                                                         },
@@ -1112,100 +1141,40 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                                         }
                                                                     },
                                                                     {
-                                                                        text: 'Settlement <br> Adjustment',
-                                                                        dataIndex: 'SETADJ',
-                                                                        width: 80,
-                                                                        xtype: 'gridcolumn',
-                                                                        cls: 'detalle-neto', // Agrega una clase personalizada a las celdas de detalle NETO
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            var data = record.data;
-                                                                            metaData.style = "text-align:right;";
-                                                                            return Ext.util.Format.number(value, '0,000.00');
-                                                                        },
-                                                                        editor: {
-                                                                            xtype: 'textfield',
-                                                                            editable: true,
-                                                                            allowBlank: false,
-                                                                            enableKeyEvents: true,
-                                                                            maskRe: /[0-9\.-]/,
-                                                                            selectOnFocus: true,
-                                                                            listeners: {
-                                                                                specialkey: 'eventKeyAdjustment'
-                                                                            }
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'Billing <br> Adjustment',
-                                                                        dataIndex: 'BILADJ',
-                                                                        width: 80,
-                                                                        xtype: 'gridcolumn',
-                                                                        cls: 'detalle-neto', // Agrega una clase personalizada a las celdas de detalle NETO
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            var data = record.data;
-                                                                            metaData.style = "text-align:right;";
-                                                                            if (data.COMISTOTA !== 0 && data.COMISTOTA !== undefined) {
-                                                                                metaData.style = "background-color: #A2F4FE;text-align:right;";
-                                                                                metaData.tdAttr = 'data-qtip="' + "Commission: " + data.COMISTOTA + '"';
-                                                                            }
-                                                                            if (record.get('isInValidCombination') && data.STVAL === '3') {
-                                                                                metaData.style += "background-color: yellow;"; // Aplicar estilo si el registro está en una combinación válida
-                                                                            }
-                                                                            return Ext.util.Format.number(value, '0,000.00');
-                                                                        },
-                                                                        editor: {
-                                                                            xtype: 'textfield',
-                                                                            editable: true,
-                                                                            allowBlank: false,
-                                                                            enableKeyEvents: true,
-                                                                            maskRe: /[0-9\.-]/,
-                                                                            selectOnFocus: true,
-                                                                            listeners: {
-                                                                                specialkey: 'eventKeyAdjustment'
-                                                                            }
-                                                                        }
-                                                                    },
-                                                                    {text: 'Star <br> Date', dataIndex: 'STRDATE', width: 65,
-                                                                        //                                                                editor: {xtype: 'textfield', editable: true},
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:center;";
-                                                                            return value;
-                                                                        }
-                                                                    },
-                                                                    {text: 'End <br> Date', dataIndex: 'ENDDATE', width: 65,
-                                                                        //                                                                editor: {xtype: 'textfield', editable: true},
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:center;";
-                                                                            return value;
-                                                                        }
-                                                                    },
-                                                                    {text: 'Reference', dataIndex: 'REFERENCE', width: 125,
-                                                                        //                                                                editor: {xtype: 'textfield', editable: true},
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:center;";
-                                                                            return value;
-                                                                        }
-                                                                    },
-                                                                    {text: 'Comments', dataIndex: 'COMMENTS', width: 100,
-                                                                        //                                                                editor: {xtype: 'textfield', editable: true},
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                        text: 'Star <br> Date',
+                                                                        dataIndex: 'STRDATE',
+                                                                        width: 90,
+                                                                        renderer: function (value, metaData) {
                                                                             metaData.style = "text-align:center;";
                                                                             return value;
                                                                         }
                                                                     },
                                                                     {
-                                                                        sortable: false,
-                                                                        xtype: 'actioncolumn',
-                                                                        width: 40,
-                                                                        text: 'Del.',
-                                                                        id: prototype.id + '-gridColumnDelete',
-                                                                        align: 'center',
-                                                                        items: [
-                                                                            {
-                                                                                iconCls: 'prx-icon-image-trash',
-                                                                                tooltip: 'Delete',
-                                                                                handler: 'removeTKT'
-                                                                            }
-                                                                        ]
+                                                                        text: 'End <br> Date',
+                                                                        dataIndex: 'ENDDATE',
+                                                                        width: 90,
+                                                                        renderer: function (value, metaData) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Reference',
+                                                                        dataIndex: 'REFERENCE',
+                                                                        width: 90,
+                                                                        renderer: function (value, metaData) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Comments',
+                                                                        dataIndex: 'COMMENTS',
+                                                                        width: 195,
+                                                                        renderer: function (value, metaData) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
                                                                     }
                                                                 ]
                                                             }
@@ -1214,13 +1183,32 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                 }
                                             ]
                                         },
+                                       
+
                                         {
                                             xtype: 'panel',
                                             layout: 'hbox',
                                             border: false,
-                                            margin: '0 0 0 350',
+                                            margin: '0 0 0 180',
                                             items: [
-                                                {xtype: 'tbspacer', width: 340},
+                                                {xtype: 'tbspacer', width: 170},
+                                                
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Sum Amount:',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    width: 90
+                                                },
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtSumAmount',
+                                                    fieldStyle: 'text-align:right',
+                                                    enforceMaxLength: true,
+                                                    readOnly: true,
+                                                    width: 100
+                                                },
+                                                {xtype: 'tbspacer', width: 10},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Qty:',
@@ -1236,22 +1224,8 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                     readOnly: true,
                                                     width: 40
                                                 },
-                                                {xtype: 'tbspacer', width: 10},
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Sum Amount:',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 90
-                                                },
-                                                {xtype: 'tbspacer', width: 10},
-                                                {
-                                                    xtype: 'textfield',
-                                                    id: prototype.id + '-de-txtSumAmount',
-                                                    fieldStyle: 'text-align:right',
-                                                    enforceMaxLength: true,
-                                                    readOnly: true,
-                                                    width: 100
-                                                }
+                                                {xtype: 'tbspacer', width: 150},
+                                                
                                             ]
                                         }
                                         //</editor-fold>
@@ -1283,7 +1257,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                     border: false,
                                     margin: '8 2 4 2',
                                     defaults: {
-                                        labelAlign: 'left'
+                                        labelAlign: 'center'
                                     },
                                     items: [
                                         {xtype: 'tbspacer', width: 7},
@@ -1860,6 +1834,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                 {
                     text: 'Update',
                     id: prototype.id + '-btn-update',
+                    hidden: true,
                     iconCls: 'prx-icon-update',
                     listeners: {
                         click: 'onUpdateClick'

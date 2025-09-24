@@ -74,21 +74,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
     },
     mostrarData: function () {
         console.log('mostrarData');
-        if (this.beanResult.descSTVAL === 'Match' || this.beanResult.descSTVAL === 'Match Manual') {
 
-            Ext.getCmp(prototype.id + '-gridColumnDelete').hide();
-            Ext.getCmp(prototype.id + '-panelDataInfoScan').setWidth(1057);
-            Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1055);
-            Ext.getCmp(prototype.id + '-panelScanCard').hide();
-            Ext.getCmp(prototype.id + '-panelScanCard2').hide();
-            Ext.getCmp(prototype.id + '-btn-update').hide();
-            this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETOC, '0,000.00'));
-        } else {
-            
-            Ext.getCmp(prototype.id + '-btn-update').show();
-            this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETOL, '0,000.00'));
-            
-        }
         
         // STATEMENT INFORMATION 
         let  cfuente = '';
@@ -99,6 +85,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
         }
         this.setValue('de-txtVALDATEL', this.beanResult.VALDATE);
         this.setValue('de-txtInput', cfuente);
+        this.setValue('de-txtNegoc', 'PASAJES');
         
         
         
