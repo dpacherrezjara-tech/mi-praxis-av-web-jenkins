@@ -62,6 +62,8 @@
         public double DesvStd_CA = 0;
         public double CANT_MESES_CC = 0;
         public double CANT_MESES_CA = 0;
+        public double CANT_QTYTKTS_CC = 0;
+        public double CANT_QTYTKTS_CA = 0;
         public double Alerta_CC = 0;
         public double Alerta_CA = 0;
 

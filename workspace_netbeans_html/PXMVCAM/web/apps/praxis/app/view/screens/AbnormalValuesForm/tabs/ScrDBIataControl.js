@@ -1113,7 +1113,7 @@ Ext.define('Ext.Praxis.view.screens.AbnormalValuesForm.tabs.ScrDBIataControl', {
                                             xtype: 'grid',
                                             id: prototype.id + '-gridTotal_AG',
                                             padding: '5px 0px 0px 0px',
-                                            width: 1475,
+                                            width: 1570,
                                             height: 528,
                                             columnLines: true,
                                             columns: {
@@ -1125,6 +1125,13 @@ Ext.define('Ext.Praxis.view.screens.AbnormalValuesForm.tabs.ScrDBIataControl', {
                                                 items: [
                                                     {
                                                         text: 'Agent', align: 'center', style:'background:#8A99A6;',columns: [
+                                                            {
+                                                                text: 'Client', dataIndex: 'CCUST', align: 'center', width: 70,style:'background:#8A99A6;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "font-weight:bold;text-align:center;background:#d5f4d5;";
+                                                                    return value;
+                                                                }
+                                                            },
                                                             {
                                                                 text: 'Code', dataIndex: 'AIRLINE', align: 'center', width: 70,style:'background:#8A99A6;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
@@ -1157,14 +1164,14 @@ Ext.define('Ext.Praxis.view.screens.AbnormalValuesForm.tabs.ScrDBIataControl', {
                                                                 text: 'Status', dataIndex: 'STATUS_E', align: 'center', width: 80,style:'background:#8A99A6;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "font-weight:bold;text-align:center;";
-                                                                    return value;
+                                                                    return (value === null || value === undefined || value === '') ? '' : value;
                                                                 }
                                                             },
                                                             {
                                                                 text: 'Risk <br> Status', dataIndex: 'RISKSTATUS_E', align: 'center', width: 50,style:'background:#8A99A6;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "font-weight:bold;text-align:center;";
-                                                                    return value;
+                                                                   return (value === null || value === undefined || value === '') ? '' : value;
                                                                 }
                                                             },
                                                             {
@@ -1192,7 +1199,7 @@ Ext.define('Ext.Praxis.view.screens.AbnormalValuesForm.tabs.ScrDBIataControl', {
                                                                         }
                                                                     },
                                                                     {
-                                                                        text: 'Qty Tkts', dataIndex: 'Rej6', align: 'center', width: 70,style:'background:#6C87A8;',
+                                                                        text: 'Qty Tkts', dataIndex: 'CANT_QTYTKTS_CC', align: 'center', width: 70,style:'background:#6C87A8;',
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:right;background:#99ccff;";
                                                                             return Ext.util.Format.number(value, '0,000');
@@ -1240,7 +1247,7 @@ Ext.define('Ext.Praxis.view.screens.AbnormalValuesForm.tabs.ScrDBIataControl', {
                                                                         }
                                                                     },
                                                                      {
-                                                                        text: 'Qty Tkts', dataIndex: 'Rej6', align: 'center', width: 70,style:'background:#336699;',
+                                                                        text: 'Qty Tkts', dataIndex: 'CANT_QTYTKTS_CA', align: 'center', width: 70,style:'background:#336699;',
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:right;background:#99ccff;";
                                                                             return Ext.util.Format.number(value, '0,000');

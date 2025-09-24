@@ -1689,6 +1689,7 @@ public class AbnormalValueDAO {
 
                 while (rst.next()) {
                     objRtn = new WRF016Filterwk();
+                    objRtn.CCUST = rst.getString("CCUST");
                     objRtn.AIRLINE = rst.getString("VENDOR");
                     objRtn.strFlag = rst.getString("DESCRIP");
                     objRtn.strFormatDate = rst.getString("DIRECC");
@@ -1742,6 +1743,9 @@ public class AbnormalValueDAO {
                     
                     objRtn.CANT_MESES_CC = rst.getDouble("CANT_MESES_CC");
                     objRtn.CANT_MESES_CA = rst.getDouble("CANT_MESES_CA");
+                    
+                    objRtn.CANT_QTYTKTS_CC = rst.getDouble("CANT_QTYTKTS_CC");
+                    objRtn.CANT_QTYTKTS_CA = rst.getDouble("CANT_QTYTKTS_CA");
 
 //                    objRtn.Rate4 = TOTGEN;
                     objRtn.Rate4 = TOTDIFF;
