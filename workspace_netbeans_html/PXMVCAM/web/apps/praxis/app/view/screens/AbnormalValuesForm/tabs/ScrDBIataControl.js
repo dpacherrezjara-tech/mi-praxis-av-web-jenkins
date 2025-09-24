@@ -1113,7 +1113,7 @@ Ext.define('Ext.Praxis.view.screens.AbnormalValuesForm.tabs.ScrDBIataControl', {
                                             xtype: 'grid',
                                             id: prototype.id + '-gridTotal_AG',
                                             padding: '5px 0px 0px 0px',
-                                            width: 1500,
+                                            width: 1570,
                                             height: 528,
                                             columnLines: true,
                                             columns: {
@@ -1125,6 +1125,13 @@ Ext.define('Ext.Praxis.view.screens.AbnormalValuesForm.tabs.ScrDBIataControl', {
                                                 items: [
                                                     {
                                                         text: 'Agent', align: 'center', style:'background:#8A99A6;',columns: [
+                                                            {
+                                                                text: 'Client', dataIndex: 'CCUST', align: 'center', width: 70,style:'background:#8A99A6;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "font-weight:bold;text-align:center;background:#d5f4d5;";
+                                                                    return value;
+                                                                }
+                                                            },
                                                             {
                                                                 text: 'Code', dataIndex: 'AIRLINE', align: 'center', width: 70,style:'background:#8A99A6;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {

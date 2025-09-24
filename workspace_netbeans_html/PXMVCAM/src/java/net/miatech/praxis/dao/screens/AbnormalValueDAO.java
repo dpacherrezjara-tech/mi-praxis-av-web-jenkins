@@ -1689,6 +1689,7 @@ public class AbnormalValueDAO {
 
                 while (rst.next()) {
                     objRtn = new WRF016Filterwk();
+                    objRtn.CCUST = rst.getString("CCUST");
                     objRtn.AIRLINE = rst.getString("VENDOR");
                     objRtn.strFlag = rst.getString("DESCRIP");
                     objRtn.strFormatDate = rst.getString("DIRECC");
