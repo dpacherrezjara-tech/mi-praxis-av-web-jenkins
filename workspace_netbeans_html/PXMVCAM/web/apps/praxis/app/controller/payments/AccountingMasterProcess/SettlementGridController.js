@@ -75,8 +75,11 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.SettlementGri
         console.log('liquidation');
         const me = this;
         let params = {
-            'IN_IDCONT': me.view.searchParams.IN_IDCONT
-        }
+            'IN_IDCONT': me.view.searchParams.IN_IDCONT,
+            'IN_BANDOC':'',
+            'IN_DATECI':'',
+            'IN_TRANCI':''
+        };
         console.log('Download Params: ', params);
         Ext.Msg.show(
                 {
