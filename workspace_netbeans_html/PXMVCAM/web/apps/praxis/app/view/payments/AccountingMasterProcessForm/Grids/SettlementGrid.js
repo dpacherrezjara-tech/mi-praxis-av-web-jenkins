@@ -150,6 +150,15 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.Settlemen
         items: [
             {
                 xtype: 'button',
+                iconCls: 'prx-icon-image-process',
+                scale: 'small',
+                tooltip: 'Download Liquidations',
+                listeners: {
+                    click: 'onDownloadLiquidation'
+                }
+            },
+            {
+                xtype: 'button',
                 iconCls: 'prx-icon-excel',
                 scale: 'small',
                 tooltip: 'Export to Excel',
