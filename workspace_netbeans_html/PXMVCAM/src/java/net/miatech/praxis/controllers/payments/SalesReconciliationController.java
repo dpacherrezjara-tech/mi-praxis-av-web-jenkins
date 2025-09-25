@@ -3527,7 +3527,7 @@ public class SalesReconciliationController extends BaseController {
                                     + "tomar para cancelar tiquetes pendientes y por ende se genera la nota de cargo.</li>\n"
                                     + "<p>&nbsp;</p>\n"
                                     + "</ul>\n"
-                                    + "<p><strong><strong>\"Estimados Agentes de Viajes, informamos que a partir del 1 de octubre se reactivará el cobro del fee administrativo de USD 15"
+                                    + "<p><strong><strong>\"Estimados Agentes de Viajes, informamos que a partir del 1 de octubre se reactivará el cobro del fee administrativo de USD 15 "
                                     + "por tiquete para aquellos que no estén pagados correctamente en la fecha de la venta, sin pagos, pagos parciales o pagos con datos que no coincidan.  "
                                     + "Adjuntamos el comunicado oficial con el detalle para su conocimiento.\"</strong></strong></p>\n"
                                     
@@ -3543,7 +3543,7 @@ public class SalesReconciliationController extends BaseController {
                                 msj += " Email Sent.";
 
                                 
-                                
+                                //AQUI SE MARCA LOS TICKETS ENVIADOS
                                 
                                 String msj_marca = logic.marcarTicketsEnviados(obj);
                                 if (!msj_marca.equals("OK")) {
