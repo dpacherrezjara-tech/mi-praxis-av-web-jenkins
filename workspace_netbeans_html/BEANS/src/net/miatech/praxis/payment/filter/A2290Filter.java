@@ -973,6 +973,42 @@ public class A2290Filter extends A2290 {
     public long lng31_40 = 0; 
     public long lng41_MAS = 0; 
     
+    //CASH
+    public long lngTotQMATCHBSP  = 0; 
+    public long lngTotQMATCHARC = 0; 
+    public long lngTotQMATCHISC  = 0; 
+    public long lngTotQPENDBSP  = 0; 
+    public long lngTotQPENDARC  = 0; 
+    public long lngTotQPENDISC  = 0; 
+    public long lngTotQMANUALBSP  = 0; 
+    public long lngTotQMANUALARC = 0; 
+    public long lngTotQMANUALISC  = 0; 
+    public long lngTotQ  = 0; 
+    public long lngTotQTKTAUTO  = 0; 
+    public long lngTotQTKTPENDING  = 0; 
+    public long lngTotQTKTMANUAL  = 0; 
+    public long lngQMATCHBSP   = 0; 
+    public long lngQMATCHARC   = 0; 
+    public long lngQMATCHISC   = 0; 
+    public long lngQPENDINGBSP   = 0; 
+    public long lngQPENDINGARC   = 0; 
+    public long lngQPENDINGISC   = 0; 
+    public long lngQPENDING   = 0; 
+    public long lngQMANUALBSP   = 0; 
+    public long lngQMANUALARC   = 0; 
+    public long lngQMANUALICS   = 0; 
+    public long lngQSALESDIRECT   = 0; 
+    public long lngQTOTAL   = 0; 
+    public long lngAUTOTKT    = 0; 
+    public long lngPENDINGTKT    = 0; 
+    public long lngMANUALTKT    = 0; 
+    public long lngTOTALTKT    = 0; 
+    public long lngTotQSALESDIRECT    = 0; 
+    public double totNETOEECC    = 0; 
+    public double totNETOSETLEMENT    = 0; 
+    public double SVFOPOT    = 0; 
+    public double SVFOPNETR    = 0; 
+    public double SVFOPNETRU    = 0; 
     
     //CASH
     public String TINPUT = "";
@@ -984,6 +1020,15 @@ public class A2290Filter extends A2290 {
     public String CONCEPT = "";
     public String REFERENCE = "";
     public String COMMENTS = "";
+    public String SUBFTE = "";
+    public String MCLOS = "";
+    public String SCURREVEN = "";
+    public String FDESD = "";
+    public String FHAST = "";
+    public String FPROC = "";
+    public String BANKNAM = "";
+    public String ACCNUMB = "";
+    public String BANKCM = "";
 
     
     //Update
