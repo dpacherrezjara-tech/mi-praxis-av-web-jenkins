@@ -3792,6 +3792,11 @@ public class StatementReconciliationsDAO {
                 beanTkt.SCURRENCY = rst.getString("SCURRENCY");
                 beanTkt.NETO = rst.getDouble("NETO");
                 beanTkt.PAYAMOU = rst.getDouble("PAYAMOU");
+                beanTkt.SUM_NETO = rst.getDouble("SUM_NETO");
+                beanTkt.SUM_PAYAMOU = rst.getDouble("SUM_PAYAMOU");
+                
+                
+                
                 beanTkt.SETADJ = rst.getDouble("SETADJ");
                 beanTkt.BILADJ = rst.getDouble("BILADJ");
                 beanTkt.DATECI = rst.getString("DATECI");

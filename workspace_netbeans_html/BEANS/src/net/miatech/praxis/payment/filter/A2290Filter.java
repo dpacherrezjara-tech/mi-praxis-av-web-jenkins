@@ -1007,6 +1007,8 @@ public class A2290Filter extends A2290 {
     public double SVFOPOT    = 0; 
     public double SVFOPNETR    = 0; 
     public double SVFOPNETRU    = 0; 
+    public double SUM_NETO    = 0; 
+    public double SUM_PAYAMOU    = 0; 
     
     //CASH
     public String TINPUT = "";

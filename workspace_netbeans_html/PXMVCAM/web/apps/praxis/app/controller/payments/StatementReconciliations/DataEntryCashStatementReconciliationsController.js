@@ -230,6 +230,40 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
                         autoLoad: true
                     });
                     console.log(res.data, 'res.data complete detail')
+                    
+                    function parseNumber(v) {
+                        if (v === null || v === undefined || v === '') return 0;
+                        if (typeof v === 'number') return v;
+                        var s = String(v).replace(/\s/g,'').replace(/,/g,''); // quita espacios y comas
+                        var n = parseFloat(s);
+                        return isNaN(n) ? 0 : n;
+                    }
+
+                    var data = Ext.isArray(res.data) ? Ext.Array.clone(res.data) : [];
+
+                    // calcular totales y qty
+                    var totalNeto = 0;
+                    var totalPayamou = 0;
+                    var qty = 0;
+                    Ext.Array.forEach(data, function(rec){
+                        // si rec.NETO undefined => 0
+                        var n = parseNumber(rec.NETO);
+                        var p = parseNumber(rec.PAYAMOU);
+                        totalNeto += n;
+                        totalPayamou += p;
+                        // considera contar solo filas "normales" (no summary previas)
+                        qty++;
+                    });
+
+                    // crear fila resumen (marca _isSummary para detectarla en renderer)
+                    var summaryRec = {
+                        totalNeto: totalNeto,           // números reales
+                        totalPayamou: totalPayamou,
+                        _isSummary: true
+                    };
+
+                    // agregar al final de la data
+                    data.push(summaryRec);
                     Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
                     meDE.calcularMontos();
                     meDE.calcularDiferencias();
