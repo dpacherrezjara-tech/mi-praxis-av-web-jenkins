@@ -1862,22 +1862,66 @@ var LarSyrExt = function () {
         // Descargar archivo
         XLSX.writeFile(wb, name + "_" + uuid + ".xlsx");
     };
-    
-    this.formatTimeStamp = function (value) {
-        if (value) {
-            const formatter = new Intl.DateTimeFormat('es-ES', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            });
-            return formatter.format(new Date(value));
-        } else {
-            return '';
-        }
-    };
+
+
+//             MODO DE USO - DESCARGA EXCEL MULTI HOJAS:    
+//             await global.writeExcelFromJsonMultiSheet(
+//                    { fileName: "Nombre del Archiivo Excel",
+//                      data:[{sheetName: "Nombre de la Hoja 01", data: data_01 },
+//                            {sheetName: "Nombre de la Hoja 02", data: data_02 },
+//                            {sheetName: "Nombre de la Hoja 03", data: data_03 }]});                
+     this.writeExcelFromJsonMultiSheet = async function ({ fileName, data }) {
+        const wb = XLSX.utils.book_new();
+        // Recorrer cada hoja
+        for (const { sheetName, data: sheetData } of data) {
+            if (!sheetData || sheetData.length === 0) continue;
+            const ws = XLSX.utils.json_to_sheet(sheetData);
+            const headers = Object.keys(sheetData[0]);
+            // === Define Headers Style ===
+            const headerStyle = {
+                font: { bold: true, color: { rgb: "FFFFFF" } },  // Texto blanco y negrita
+                fill: { fgColor: { rgb: "FF0000" } },            // Fondo rojo
+                alignment: { horizontal: "center", vertical: "center" },
+                border: {
+                    top: { style: "thin", color: { rgb: "FFFFFF" } },
+                    bottom: { style: "thin", color: { rgb: "FFFFFF" } },
+                        left: { style: "thin", color: { rgb: "FFFFFF" } },
+                        right: { style: "thin", color: { rgb: "FFFFFF" } }
+                    }
+                };
+                // Aplicar estilos a headers
+                headers.forEach((_, colIndex) => {
+                    const cellAddress = XLSX.utils.encode_cell({ r: 0, c: colIndex });
+                    if (!ws[cellAddress]) {
+                        ws[cellAddress] = { v: headers[colIndex] }; // asegurar existencia
+                    }
+                    ws[cellAddress].s = headerStyle;
+                });
+                // Agregar hoja al libro
+                XLSX.utils.book_append_sheet(wb, ws, sheetName);
+            }
+            // Generar nombre único con UUID
+            let uuid = crypto.randomUUID().replace(/-/g, '').substring(0, 6);
+            // Descargar archivo
+            XLSX.writeFile(wb, `${fileName}_${uuid}.xlsx`);
+        };
+
+
+        this.formatTimeStamp = function (value) {
+            if (value) {
+                const formatter = new Intl.DateTimeFormat('es-ES', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+                return formatter.format(new Date(value));
+            } else {
+                return '';
+            }
+        };
     
     this.loadRecordsOnTable = async function (library, table, lst) {
         let uuid = crypto.randomUUID().replace(/-/g, '');
