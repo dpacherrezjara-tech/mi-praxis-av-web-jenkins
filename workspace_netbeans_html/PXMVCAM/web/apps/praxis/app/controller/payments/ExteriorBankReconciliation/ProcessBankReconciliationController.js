@@ -113,8 +113,9 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.ProcessBan
             scope: me,
             fn: async function (btnChoice) {
                 if (btnChoice === 'yes') {
-                   me.downloadExcel(params);
-                  // me.loadDeposits(params);
+                   this.getView().setLoading(true);
+                   const data = await me.fetchPendingConciliation(params);
+                   if (data) me.downloadExcel(params, data);    
                 }
             }
         });
@@ -135,75 +136,92 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.ProcessBan
    },
 //</editor-fold>
 
-//<editor-fold defaultstate="collapsed" desc="downloadExcel">
-    downloadExcel: async function (params) {
-        const me = this;
-        this.getView().setLoading(true);
+//<editor-fold defaultstate="collapsed" desc="fetchPendingConciliation">
+fetchPendingConciliation: async function (params) {
+    const me = this; 
+    
+    const formatParamsDeposits = {
+        IN_CCUST: params.IN_CCUST,
+        IN_VALDATE_FROM: params.IN_DATE_FROM,
+        IN_VALDATE_TO: params.IN_DATE_TO
+    };
 
-        try {
-            const formatParams = {
-                IN_CCUST: params.IN_CCUST,
-                IN_VALDATE_FROM: params.IN_DATE_FROM,
-                IN_VALDATE_TO: params.IN_DATE_TO
-            };
-
-            const workbook = XLSX.utils.book_new();
-
-            // === Deposits (MPS296) ===
-            const storeDeposits = await global.callStoreGet('PRAXISMP', 'MPS296', formatParams);
-            if (storeDeposits.lstRs && storeDeposits.lstRs.length > 0) {
-                const dataDeposits = storeDeposits.lstRs[0];
-                if (dataDeposits.length > 0) {
-                    const mappedDeposits = mapHeaders(dataDeposits, depositsHeaders);
-                    XLSX.utils.book_append_sheet(
-                        workbook,
-                        XLSX.utils.json_to_sheet(mappedDeposits),
-                        'Deposits'
-                    );
-                }
-            }
-
-            // === Settlements (MPS297) ===
-            const formatParams2 = {
-                IN_CCUST: params.IN_CCUST,
-                IN_PRDA_FROM: params.IN_DATE_FROM,
-                IN_PRDA_TO: params.IN_DATE_TO
-            };
-            const storeSettlements = await global.callStoreGet('PRAXISMP', 'MPS297', formatParams2);
-            if (storeSettlements.lstRs && storeSettlements.lstRs.length > 0) {
-                const dataSettlements = storeSettlements.lstRs[0];
-                if (dataSettlements.length > 0) {
-                    const mappedSettlements = mapHeaders(dataSettlements, settlementsHeaders);
-                    XLSX.utils.book_append_sheet(
-                        workbook,
-                        XLSX.utils.json_to_sheet(mappedSettlements),
-                        'Settlements'
-                    );
-                }
-            }
-
-            if (workbook.SheetNames.length === 0) {
-                me.notifier.alert('No data available for the selected filters.');
-            } else {
-                XLSX.writeFile(
-                    workbook,
-                    `Pending_Deposits_and_Settlements_${params.IN_CCUST}_${params.IN_DATE_FROM}_${params.IN_DATE_TO}.xlsx`
-                );
-                me.notifier.success('Excel downloaded successfully!');
-                me.onCancelClick();
-            }
-        } catch (e) {
-            console.error(e);
-            me.notifier.alert('Error downloading Excel.');
-        } finally {
-            //this.getView().setLoading(false);
-            const view = me.getView?.() || me.view;
-            if (view) {
-                view.setLoading(false);
-            }
-           
+    const formatParamsSettlements = {
+        IN_CCUST: params.IN_CCUST,
+        IN_PRDA_FROM: params.IN_DATE_FROM,
+        IN_PRDA_TO: params.IN_DATE_TO
+    };
+try {
+    const [storeDeposits, storeSettlements] = await Promise.all([
+        global.callStoreGet('PRAXISMP', 'MPS296', formatParamsDeposits),
+        global.callStoreGet('PRAXISMP', 'MPS297', formatParamsSettlements)
+    ]);
+    
+            // ⚠ Validar error de conexión: respuesta vacía
+        if (!storeDeposits || Object.keys(storeDeposits).length === 0 ||
+            !storeSettlements || Object.keys(storeSettlements).length === 0) {
+            throw new Error("Connection error: one of the procedures returned empty response");
         }
+
+    return {
+        deposits: storeDeposits.lstRs?.[0] || [],
+        settlements: storeSettlements.lstRs?.[0] || []
+    };
+     } catch (e) {
+        console.error(" Connection error in fetchPendingConciliation:", e);
+        me.notifier.alert("Connection error while fetching data. Please try again later.");
+        return false;
+    } finally {
+        const view = me.getView?.() || me.view;
+        if (view) view.setLoading(false);
     }
+},
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="downloadExcel">
+    downloadExcel: async function (params, data) {
+    const me = this;
+    try {
+        // Preparar arreglo de hojas
+        const sheets = [];
+
+        if (data.deposits.length > 0) {
+            const mappedDeposits = mapHeaders(data.deposits, depositsHeaders);
+            sheets.push({ sheetName: "Deposits", data: mappedDeposits });
+        }
+
+        if (data.settlements.length > 0) {
+            const mappedSettlements = mapHeaders(data.settlements, settlementsHeaders);
+            sheets.push({ sheetName: "Settlements", data: mappedSettlements });
+        }
+
+        // ⚠ Validar si no hay nada para exportar
+        if (sheets.length === 0) {
+            me.notifier.alert("No data available for the selected filters.");
+            return;
+        }
+
+        // Llamar a tu función global
+        await global.writeExcelFromJsonMultiSheet({
+            fileName: `Pending_Deposits_and_Settlements_${params.IN_CCUST}_${params.IN_DATE_FROM}_${params.IN_DATE_TO}`,
+            data: sheets
+        });
+
+        me.notifier.success("Excel downloaded successfully!");
+        this.getView().setLoading(false);
+        me.onCancelClick();
+
+    } catch (e) {
+        console.error(e);
+        me.notifier.alert("Error downloading Excel.");
+    } finally {
+        const view = me.getView?.() || me.view;
+        if (view) view.setLoading(false);
+    }
+}
+
+
 //</editor-fold>
 });
+
 
