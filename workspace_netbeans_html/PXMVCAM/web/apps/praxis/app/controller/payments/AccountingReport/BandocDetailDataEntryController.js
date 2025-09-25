@@ -262,8 +262,8 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.BandocDetailDataEntr
                     'Sale Amount ': x.SUMA_VTA,
                     'Sale Currency': x.MDA_VTA,
                     'Qty Ticket': x.QTY_TKT,
+                    'Diff': x.SUM_DIFF,
                     'Tickets':x.LST_TKT,
-                    'Diff': x.SUM_DIFF
                 };
                 return obj;
             });
