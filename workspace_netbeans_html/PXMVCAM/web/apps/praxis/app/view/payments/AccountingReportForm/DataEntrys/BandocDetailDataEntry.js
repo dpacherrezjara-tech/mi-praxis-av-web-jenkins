@@ -491,6 +491,25 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.BandocDetai
                                     xtype: 'grid',
                                     border: false,
                                     id: prototype.idBandoc + '-gridFase2',
+                                    tbar: {
+                                        layout: {
+                                            pack: 'end'
+                                        },
+                                        defaults: {
+                                            scale: 'medium'
+                                        },
+                                        items: [
+                                            {
+                                                xtype: 'button',
+                                                iconCls: 'prx-icon-image-process',
+                                                scale: 'small',
+                                                tooltip: 'Download Liquidations',
+                                                listeners: {
+                                                    click: 'onDownloadLiquidation'
+                                                }
+                                            }
+                                        ]
+                                    },
                                     columns: {
                                         defaults: {
                                             align: 'center',
