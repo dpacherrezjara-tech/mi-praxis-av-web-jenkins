@@ -115,7 +115,9 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.ProcessBan
                 if (btnChoice === 'yes') {
                    this.getView().setLoading(true);
                    const data = await me.fetchPendingConciliation(params);
-                   if (data) me.downloadExcel(params, data);    
+                  // if (data) me.downloadExcel(params, data);  
+                   if (data) me.downloadCSV(params, data); 
+                   
                 }
             }
         });
@@ -137,46 +139,113 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.ProcessBan
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="fetchPendingConciliation">
-fetchPendingConciliation: async function (params) {
-    const me = this; 
-    
-    const formatParamsDeposits = {
-        IN_CCUST: params.IN_CCUST,
-        IN_VALDATE_FROM: params.IN_DATE_FROM,
-        IN_VALDATE_TO: params.IN_DATE_TO
-    };
+        fetchPendingConciliation: async function (params) {
+            const me = this;
 
-    const formatParamsSettlements = {
-        IN_CCUST: params.IN_CCUST,
-        IN_PRDA_FROM: params.IN_DATE_FROM,
-        IN_PRDA_TO: params.IN_DATE_TO
-    };
-try {
-    const [storeDeposits, storeSettlements] = await Promise.all([
-        global.callStoreGet('PRAXISMP', 'MPS296', formatParamsDeposits),
-        global.callStoreGet('PRAXISMP', 'MPS297', formatParamsSettlements)
-    ]);
-    
-            // ⚠ Validar error de conexión: respuesta vacía
-        if (!storeDeposits || Object.keys(storeDeposits).length === 0 ||
-            !storeSettlements || Object.keys(storeSettlements).length === 0) {
-            throw new Error("Connection error: one of the procedures returned empty response");
+            const formatParamsDeposits = {
+                IN_CCUST: params.IN_CCUST,
+                IN_VALDATE_FROM: params.IN_DATE_FROM,
+                IN_VALDATE_TO: params.IN_DATE_TO
+            };
+
+            const formatParamsSettlements = {
+                IN_CCUST: params.IN_CCUST,
+                IN_PRDA_FROM: params.IN_DATE_FROM,
+                IN_PRDA_TO: params.IN_DATE_TO
+            };
+            try {
+                // Wrapper que revisa el mensaje apenas se resuelva la promesa
+                const wrapSP = async (promise) => {
+                    const result = await promise;
+                    if (result.lstRs?.[0]?.[0]?.MENSAJE?.includes("number of rows exceeds the allowed limit")) {
+                        Ext.Msg.show({
+                            title: '.:ALERT:.',
+                            msg: `${result.lstRs[0][0].MENSAJE} Please try a smaller date range.`,
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.WARNING,
+                            scope: me
+                        });
+                        throw new Error("Exceeded row limit"); // detiene la promesa
+                    }
+                    return result;
+                };
+
+                // Ejecutamos ambos SP en paralelo
+                const [storeDeposits, storeSettlements] = await Promise.all([
+                    wrapSP(global.callStoreGet('PRAXISMP', 'MPS296', formatParamsDeposits)),
+                    wrapSP(global.callStoreGet('PRAXISMP', 'MPS297', formatParamsSettlements))
+                ]);
+
+                // Validación de respuesta vacía
+                if (!storeDeposits || !storeSettlements) {
+                    throw new Error("Connection error: one of the procedures returned empty response");
+                }
+
+                return {
+                    deposits: storeDeposits.lstRs?.[0] || [],
+                    settlements: storeSettlements.lstRs?.[0] || []
+                };
+
+            } catch (e) {
+                if (e.message !== "Exceeded row limit") {
+                    console.error("Connection error in fetchPendingConciliation:", e);
+                    me.notifier.alert("Connection error while fetching data. Please try again later.");
+                }
+                return false;
+            } finally {
+                const view = me.getView?.() || me.view;
+                if (view) view.setLoading(false);
+            }
+        },
+
+//</editor-fold>
+
+
+downloadCSV: async function (params, data) {
+    const me = this;
+    try {
+        const baseName = `${params.IN_CCUST}_${params.IN_DATE_FROM}_${params.IN_DATE_TO}`;
+        const baseNameFileZip = `Pending_Deposits_and_Settlements_${baseName}`;
+        const files = [];
+        // ⚠ Validar si hay datos
+        if ((!data.deposits || data.deposits.length === 0) &&
+            (!data.settlements || data.settlements.length === 0)) {
+            me.notifier.alert("No data available for the selected filters.");
+            return;
         }
-
-    return {
-        deposits: storeDeposits.lstRs?.[0] || [],
-        settlements: storeSettlements.lstRs?.[0] || []
-    };
-     } catch (e) {
-        console.error(" Connection error in fetchPendingConciliation:", e);
-        me.notifier.alert("Connection error while fetching data. Please try again later.");
-        return false;
+        // Descarga depósitos
+        if (data.deposits && data.deposits.length > 0) {
+            const mappedDeposits = mapHeaders(data.deposits, depositsHeaders);
+            const csvDeposits = global.jsonToCSV(mappedDeposits);
+            const base64Deposits = btoa(unescape(encodeURIComponent(csvDeposits)));
+            files.push({
+                name: `Pending_Deposits_${baseName}.csv`,
+                content: base64Deposits
+            });
+        }
+        // Descarga liquidaciones
+        if (data.settlements && data.settlements.length > 0) {
+            const mappedSettlements = mapHeaders(data.settlements, settlementsHeaders);
+            const csvSettlements = global.jsonToCSV(mappedSettlements);
+            const base64Settlements = btoa(unescape(encodeURIComponent(csvSettlements)));
+            files.push({
+                name: `Pending_Settlements_${baseName}.csv`,
+                content: base64Settlements
+            });
+        }
+        await global.downloadPackBase64Files(files, baseNameFileZip);
+         me.notifier.success("Excel downloaded successfully!");
+        this.getView().setLoading(false);
+        me.onCancelClick();
+    } catch (e) {
+        console.error(e);
+        me.notifier.alert("Error downloading CSV.");
     } finally {
         const view = me.getView?.() || me.view;
         if (view) view.setLoading(false);
     }
 },
-//</editor-fold>
+
 
 //<editor-fold defaultstate="collapsed" desc="downloadExcel">
     downloadExcel: async function (params, data) {
@@ -184,29 +253,24 @@ try {
     try {
         // Preparar arreglo de hojas
         const sheets = [];
-
         if (data.deposits.length > 0) {
             const mappedDeposits = mapHeaders(data.deposits, depositsHeaders);
             sheets.push({ sheetName: "Deposits", data: mappedDeposits });
         }
-
         if (data.settlements.length > 0) {
             const mappedSettlements = mapHeaders(data.settlements, settlementsHeaders);
             sheets.push({ sheetName: "Settlements", data: mappedSettlements });
         }
-
         // ⚠ Validar si no hay nada para exportar
         if (sheets.length === 0) {
             me.notifier.alert("No data available for the selected filters.");
             return;
         }
-
         // Llamar a tu función global
-        await global.writeExcelFromJsonMultiSheet({
+        await global.writeCSVFromJsonMultiSheet({
             fileName: `Pending_Deposits_and_Settlements_${params.IN_CCUST}_${params.IN_DATE_FROM}_${params.IN_DATE_TO}`,
             data: sheets
         });
-
         me.notifier.success("Excel downloaded successfully!");
         this.getView().setLoading(false);
         me.onCancelClick();
