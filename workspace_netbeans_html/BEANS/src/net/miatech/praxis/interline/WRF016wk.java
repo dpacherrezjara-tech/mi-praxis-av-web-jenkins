@@ -25,6 +25,14 @@ public class WRF016wk {
     public String FINVOICE = "";
     public String FECLIMIT = "";
     
+    public String VENDOR = "";
+    public String CANAV = "";
+    public String NAGENT = "";
+    public String TYPEAG = "";
+    public String ASTATUS = "";
+    public String RSTATUS = "";
+    public String SAGECTR = "";
+    
     //DATOS DE INTERLINE INVOICE  EN CURRENP
                                        
     public String CURRENP = "";

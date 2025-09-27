@@ -67,6 +67,22 @@
         public double Alerta_CC = 0;
         public double Alerta_CA = 0;
 
+        public int MONTHCRE = 0;
+        public int QTYTKCRE = 0;
+        
+        public double AMOUNCRE = 0;
+        public double FMOUNCRE = 0;
+        public double DESVICRE = 0;
+        public double ALERTCRE = 0;
+        
+        public int MONTHCAS = 0;
+        public int QTYTKCAS = 0;
+        
+        public double AMOUNCAS = 0;
+        public double FMOUNCAS = 0;
+        public double DESVICAS = 0;
+        public double ALERTCAS = 0;
+        
         public double Aud1 = 0;
         public int Rej1 = 0;
         public int Sup1 = 0;
