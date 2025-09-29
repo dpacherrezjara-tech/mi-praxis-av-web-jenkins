@@ -4,6 +4,13 @@
  * and open the template in the editor.
  */
 
+Ext.util.CSS.createStyleSheet(`
+    .row-with-comments .x-grid-cell {
+        background-color: #1AB092 !important; /* pastel amarillito */
+        color: #856404 !important;
+    }
+`, 'customRowStyles');
+
 Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliationController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.BankReconciliationController',
@@ -2998,6 +3005,18 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 case '-panelGridDataDetalle_DEBITS':
                     me.pagginActual = '-pagginDebits_detail';
                     break;
+                case '-panelGridDataMainCASH':
+                    me.pagginActual = '-paggin18';
+                    break;
+                case '-panelGridDataCountryCash':
+                    me.pagginActual = '-paggin19';
+                    break;
+                case '-panelGridDataDayCash':
+                    me.pagginActual = '-paggin20';
+                    break;
+                case '-panelGridDataDetalleCash':
+                    me.pagginActual = '-paggin21';
+                    break;
             }
         }
 
@@ -4063,7 +4082,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                     obj.proxy.extraParams = me.paramsDetail;
                 },
                 load: function (obj) {
-                    var pag = Ext.getCmp(prototype.id + '-paggin2');
+                    var pag = Ext.getCmp(prototype.id + '-paggin19');
                     var pagData = pag.getPageData();
                     Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
                     Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
@@ -4086,7 +4105,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         });
         global.clear();
         Ext.getCmp(prototype.id + '-gridDataCountryCash').bindStore(storeGridDatas);
-        Ext.getCmp(prototype.id + '-paggin2').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin19').bindStore(storeGridDatas);
     },
     onGridDayCash: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
         me.drillDown.push(me.panelActual);
@@ -4113,7 +4132,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                     obj.proxy.extraParams = me.paramsDetail;
                 },
                 load: function (obj) {
-                    var pag = Ext.getCmp(prototype.id + '-paggin3');
+                    var pag = Ext.getCmp(prototype.id + '-paggin20');
                     var pagData = pag.getPageData();
                     Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
                     Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
@@ -4136,7 +4155,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         });
         global.clear();
         Ext.getCmp(prototype.id + '-gridDataDayCash').bindStore(storeGridDatas);
-        Ext.getCmp(prototype.id + '-paggin3').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin20').bindStore(storeGridDatas);
     },
     onGridDetalleCash: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
         me.drillDown.push(me.panelActual);
@@ -4166,7 +4185,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                     obj.proxy.extraParams = me.paramsDetail;
                 },
                 load: function (obj) {
-                    var pag = Ext.getCmp(prototype.id + '-paggin4');
+                    var pag = Ext.getCmp(prototype.id + '-paggin21');
                     var pagData = pag.getPageData();
                     Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
                     Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
@@ -4205,7 +4224,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
 
 
         Ext.getCmp(prototype.id + '-gridDataDetalleCash').bindStore(storeGridDatas);
-        Ext.getCmp(prototype.id + '-paggin4').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin21').bindStore(storeGridDatas);
     },
     onEditClickCash: function (grid, rowIndex, colIndex, item, e, record, actionItem) {
          console.log('EDITO EL CASH WAAA')
@@ -4213,7 +4232,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
 
         var rec = grid.getStore().getAt(rowIndex);
         console.log('RECDATA');
-        console.log(rec.data);
+        console.log(rec.data,'RECDATA');
         console.log(rec.data.CERROR, 'rec.data.CERROR');
         this.searchBeanCash(rec);
         setTimeout(function () {

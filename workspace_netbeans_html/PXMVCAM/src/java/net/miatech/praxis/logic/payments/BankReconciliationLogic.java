@@ -202,6 +202,9 @@ public class BankReconciliationLogic {
     public List<A2290Filter> loadPX269SQP00833_MDP_SCAN_PENDING(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP00833_MDP_SCAN_PENDING(filter);
     }
+    public List<A2290Filter> loadPXBeanTicketAgent(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPXBeanTicketAgent(filter);
+    }
     //loadPX269SQP00833_DEBITS_SCAN_PENDING
     public List<A2290Filter> loadPX269SQP00833_DEBITS_SCAN_PENDING(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP00833_DEBITS_SCAN_PENDING(filter);

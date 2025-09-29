@@ -4013,6 +4013,39 @@ public class BankReconciliationController extends BaseController {
         }
         return lst;
     }
+    @RequestMapping(value = "searchBeanTicketAgent")
+    public @ResponseBody
+    String searchBeanTicketAgent(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankReconciliation : searchBeanTicketAgent-------------");
+
+        map.put("success", true);
+        List<A2290Filter> lst = this.getListBeanTicketAgent(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<A2290Filter> getListBeanTicketAgent(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2290Filter> lst = new ArrayList<>(0);
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+
+            lst = logic.loadPXBeanTicketAgent(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
 
     @RequestMapping(value = "searchBeanDebits_SCAN_PENDING")
     public @ResponseBody
