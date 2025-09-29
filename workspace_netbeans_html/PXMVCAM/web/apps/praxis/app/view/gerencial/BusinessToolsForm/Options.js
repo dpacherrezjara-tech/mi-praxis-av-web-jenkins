@@ -128,6 +128,15 @@ Ext.define('Ext.Praxis.view.gerencial.BusinessToolsForm.Options', {
                         },
                         {
                             xtype: 'button',
+                            id: prototype.id + '-btnUpdateTableFields',
+                            icon: 'resources/img/botones/refresh.png',
+                            tooltip: 'Update Table Fields',
+                            listeners: {
+                                click: 'updateTableFields'
+                            }
+                        },
+                        {
+                            xtype: 'button',
                             id: prototype.id + '-btnClear',
                             iconCls: 'prx-icon-clear',
                             tooltip: 'Clear Options'

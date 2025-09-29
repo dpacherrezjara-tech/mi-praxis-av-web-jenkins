@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-var controller = {
+var controllerBK = {
     select: function(value, row) {
         var dataStore = Ext.getCmp(prototype.id + '-gridDataColumns').getStore();
         var dataRow = dataStore.data.items[row].data;
@@ -20,6 +20,25 @@ var controller = {
         Ext.getCmp(prototype.id + '-gridDataColumns').setStore(dataStore);
     }
 };
+
+var controller = {
+    select: function(value, row) {
+        var grid = Ext.getCmp(prototype.id + '-gridDataColumns');
+        var store = grid.getStore();
+        var record = store.getAt(row);
+
+        if (record.get('select') === true) {
+            storeList.remove(storeList.findRecord('DESCRIPT', record.get('DESCRIPT')));
+            record.set('select', false);
+        } else {
+            record.set('select', true);
+            storeList.add(record.data);
+        }
+
+        grid.getView().refreshNode(row); 
+    }
+};
+
 
 var storeCombo = Ext.create('Ext.data.SimpleStore', {
     fields: ['code', 'name'],
@@ -115,6 +134,8 @@ Ext.define('Ext.Praxis.view.gerencial.BusinessToolsForm.Info', {
                                                 headerCheckbox: true,
                                                 renderer: function(value, meta, record, row, col) {
                                                     var check = record.data.select;
+//                                                    var grid = Ext.getCmp(prototype.id + '-gridDataColumns');
+//                                                    grid.getView().refreshNode(row);
                                                     if (check) {
                                                         return '<input type="checkbox" checked  onclick="controller.select(this.checked,' + row + ')">';
                                                     } else {
@@ -122,6 +143,18 @@ Ext.define('Ext.Praxis.view.gerencial.BusinessToolsForm.Info', {
                                                     }
                                                 }
                                             },
+//                                            {
+//                                                xtype: 'checkcolumn', 
+//                                                text: 'select', 
+//                                                width: 50, 
+//                                                dataIndex: 'select',
+//                                                align: 'center',
+//                                                menuDisabled: true,
+//                                                style: 'padding:2px; background: #3F5675;border-color:white',
+//                                                listeners: {
+//                                                    checkchange: 'updateGridSale'
+//                                                },
+//                                            },
                                             {text: 'Field', width: 250, dataIndex: 'DESCRIPT',
                                                 renderer: function(value, meta, record, row, col) {
                                                     var color = record.data['COLOR'].trim();

@@ -58,5 +58,13 @@ public class BusinessToolsLogic {
     public SQP00768 executeValuation(SQP00768 filter) throws Exception {
         return businessToolsDAO.executeValuation(filter);
     }
+    
+    public String deleteTable(String tableName) throws Exception {
+        return businessToolsDAO.deleteTable( tableName);
+    }
+    
+     public String INSTABLA(String tableName, String biblioteca) throws Exception {
+        return businessToolsDAO.INSTABLA(tableName, biblioteca);
+    }
 
 }
