@@ -14,6 +14,8 @@ public class WRF016wk {
     public String TUSO = "";
     public String TDOC = "";
     public String AIRLINE = "";
+    public String STATUS_E = "";
+    public String RISKSTATUS_E = "";
     public String CAMARA = "";
     public String INDTAC = "";
     public String CURRENC = "";
@@ -22,6 +24,14 @@ public class WRF016wk {
     public String INVOICE = "";
     public String FINVOICE = "";
     public String FECLIMIT = "";
+    
+    public String VENDOR = "";
+    public String CANAV = "";
+    public String NAGENT = "";
+    public String TYPEAG = "";
+    public String ASTATUS = "";
+    public String RSTATUS = "";
+    public String SAGECTR = "";
     
     //DATOS DE INTERLINE INVOICE  EN CURRENP
                                        

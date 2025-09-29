@@ -15,8 +15,10 @@ public class IMF111 {
     public String RN0 = "";
     public String CCUST = "";
     public String DSALES = "";
+    public String AGENT = "";
     public long QTKTS = 0;
     public double AMOUNT = 0;
+    public double AMOUNT_SALE = 0;
     public long QTKTS1 = 0;
     public double AMOUNT1 = 0;
     public long QTKTS2 = 0;

@@ -120,7 +120,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Info', {
                         {
                             xtype: 'panel',
                             border: false,
-                            width: 1496,
+                            width: 1445,
                             id: prototype.id + '-panelGridDataHistoric',
                             bodyStyle: 'background-color: #F4F7FD;',
                             padding: '1',
@@ -134,7 +134,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataHistoric',
                                     height: 510,
-                                    width: 1496,
+                                    width: 1445,
                                     hidden: false,
                                     columnLines: true,
                                     columns: {
@@ -175,11 +175,11 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Info', {
                                                     {text: 'Name', dataIndex: 'CORE', width: 140, align: 'left',style: 'background: #3F5675;border-color:white', }
                                                 ]
                                             },
-                                            {text: 'Mode Down Report', dataIndex: 'DREPORT', width: 250,style: 'padding:2px; background: #3F5675;border-color:white',},
-                                            {text: 'Franchise 1', dataIndex: 'FRANC1', width: 100,style: 'padding:2px; background: #3F5675;border-color:white',},
-                                            {text: 'Franchise 2', dataIndex: 'FRANC2', width: 100,style: 'padding:2px; background: #3F5675;border-color:white',},
-                                            {text: 'Franchise 3', dataIndex: 'FRANC3', width: 100,style: 'padding:2px; background: #3F5675;border-color:white',},
-                                            {text: 'Franchise 4', dataIndex: 'FRANC4', width: 100,style: 'padding:2px; background: #3F5675;border-color:white',},
+                                            {text: 'Mode Down Report', dataIndex: 'DREPORT', width: 240,style: 'padding:2px; background: #3F5675;border-color:white',},
+                                            {text: 'Franchise 1', dataIndex: 'FRANC1', width: 90,style: 'padding:2px; background: #3F5675;border-color:white',},
+                                            {text: 'Franchise 2', dataIndex: 'FRANC2', width: 90,style: 'padding:2px; background: #3F5675;border-color:white',},
+                                            {text: 'Franchise 3', dataIndex: 'FRANC3', width: 90,style: 'padding:2px; background: #3F5675;border-color:white',},
+                                            {text: 'Franchise 4', dataIndex: 'FRANC4', width: 90,style: 'padding:2px; background: #3F5675;border-color:white',},
                                             {text: 'Effective Date',style: 'background: #3F5675;border-color:white',
                                                 defaults: {
                                                     menuDisabled: true,
@@ -228,7 +228,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.Info', {
             },
             border: false,
             height: 30,
-            margin: '5 0 10 0',
+            margin: '5 0 18 0',
             defaults: {
                 border: false
             },

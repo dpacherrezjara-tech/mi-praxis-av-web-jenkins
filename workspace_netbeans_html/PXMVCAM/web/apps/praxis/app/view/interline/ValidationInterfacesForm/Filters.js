@@ -35,12 +35,11 @@ Ext.define('Ext.Praxis.view.interline.ValidationInterfacesForm.Filters', {
                     displayField: 'name',
                     enableKeyEvents: true,
                     triggerAction: 'all',
-                    value: '2',
+                    value: '1',
                     store: {
                         fields: ['code', 'name'],
                         data: [
-                            {code: '1', name: 'VALIDATION'},
-                            {code: '2', name: 'BANK'}
+                            {code: '1', name: 'VALIDATION'}
                         ]
                     },
                     listeners: {

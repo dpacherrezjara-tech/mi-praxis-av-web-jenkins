@@ -873,4 +873,40 @@ public class MerchantNumberController extends BaseController {
         }
         return new Gson().toJson(map);
     }
+    
+    @RequestMapping(value = "deleteMerchantAndSendHistoric")
+    public @ResponseBody
+    String deleteMerchantAndSendHistoric(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- MerchantNumber : deleteMerchantAndSendHistoric-------------");
+
+        String option;
+        String beanString;
+        String merchant;
+        Gson gson = new Gson();
+
+        A2354Filter filterNew = new A2354Filter();
+        A2354Filter filterOld = new A2354Filter();
+        String msj = " ";
+
+        try {
+
+            beanString = request.getParameter("beanString");
+            filterNew = gson.fromJson(beanString, A2354Filter.class);
+
+            logic = new MerchantNumberLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            msj = logic.load_MPS265(filterNew);
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
 }

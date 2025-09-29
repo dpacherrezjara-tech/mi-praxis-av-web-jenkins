@@ -68,6 +68,13 @@ Ext.define('Ext.Praxis.controller.payments.ReverseAccounting.ReverseAccountingCo
             this.onClickSearchBtn();
         }
     },
+    onClickProcessBtn: function () {
+        const me = this;
+        const newWindow = Ext.create('Ext.Praxis.view.payments.ReverseAccountingForm.DataEntrys.ProcessDataEntry', {
+            id: prototype.idEntry + '-ProcessDataEntry',
+        });
+        newWindow.show();
+    },
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Utilitarios">
     getCmp: function ( {id}){

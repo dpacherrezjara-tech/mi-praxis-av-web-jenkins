@@ -151,5 +151,17 @@ public class AbnormalValueLogic {
     public List<IMF111Filter> loadPX414SQP02214(IMF111Filter filter) throws SQLException, Exception {
         return AbnormalValueDAO.loadPX414SQP02214(filter);
     }
+    
+    public List<IMF111Filter> loadMPS365(IMF111Filter filter) throws SQLException, Exception {
+        return AbnormalValueDAO.loadMPS365(filter);
+    }
+    
+    public String SQP05572() throws Exception {
+        return AbnormalValueDAO.SQP05572();
+    }
+    
+    public String MPS363() throws Exception {
+        return AbnormalValueDAO.MPS363();
+    }
 
 }

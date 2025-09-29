@@ -78,7 +78,7 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                 },
                                 {
                                     fieldLabel: 'Processing Date',
-                                    name: 'ADATE',
+                                    name: 'PRDA',
                                     labelWidth: 120,
                                     width: 210
                                 },
@@ -113,8 +113,14 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                                 {
                                     fieldLabel: 'Bandoc',
                                     name: 'BANDOC',
-                                    labelWidth: 70,
-                                    width: 190
+                                    labelWidth: 50,
+                                    width: 150
+                                },
+                                {
+                                    fieldLabel: 'Payment Date',
+                                    name: 'ADATE',
+                                    labelWidth: 90,
+                                    width: 200
                                 }
                             ]
                         }
@@ -1362,6 +1368,204 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.BankRe
                             ]
                         }
                         //</editor-fold>
+                    ]
+                },
+                //</editor-fold>
+                //<editor-fold defaultstate="collapsed" desc="Grillas ARUBANK, MANCO MADURO Y VISANET">
+                {
+                    xtype: 'panel',
+                    border: false,
+                    id: prototype.idDE + '-panelAMV',
+                    width: '100%',
+                    defaults: {
+                        width: '100%',
+                        margin: '3 3 3 3',
+                        border: false
+                    },
+                    items: [
+                        {
+                            xtype: 'container',
+                            layout: {
+                                type: 'hbox',
+                                pack: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.idDE + '-panelHeaderAMV',
+                                    viewConfig: {
+                                        stripeRows: true,
+                                        enableTextSelection: true,
+                                        markDirty: false
+                                    },
+                                    defaults: {
+                                        align: 'center',
+                                        menuDisabled: true,
+                                        sortable: true,
+                                    },
+                                    minHeight: 70,
+                                    maxHeight: 140,
+                                    width: 700,
+                                    columnLines: true,
+                                    scrollable: true,
+                                    title: 'Header',
+                                    titleAlign: 'center',
+                                    columns: [
+                                        {text: 'Status', dataIndex: 'STVAL', flex: 1, align: 'center', textAlign: 'center',
+                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                metaData.style = "font-weight:bold;";
+                                                let opts = {
+                                                    '1': 'Match',
+                                                    '3': 'Pending',
+                                                    '5': 'Manual'
+                                                };
+                                                return opts[value] || '';
+                                            }
+                                        },
+                                        {text: 'Net Reconcile', dataIndex: 'NETO', flex: 1, align: 'center',
+                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                value = Ext.util.Format.number(value, '0,000.00');
+                                                return value;
+                                            }},
+                                        {text: 'Qty Docs', dataIndex: 'QTYDOC', flex: 1, align: 'center', textAlign: 'center'},
+                                        {text: 'Sale Amount', dataIndex: 'SVFOP', flex: 1, align: 'center',
+                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                value = Ext.util.Format.number(value, '0,000.00');
+                                                return value;
+                                            }},
+                                        {text: 'Qty Tickets', dataIndex: 'QTYTKT', flex: 1, align: 'center', textAlign: 'center'},
+                                        {text: 'Match Trans.', dataIndex: 'TRANC', flex: 1, align: 'center', textAlign: 'center'},
+                                        {text: 'Match Date', dataIndex: 'DATEC', flex: 1, align: 'center', textAlign: 'center'}
+                                    ]
+                                }]
+                        },
+                        {
+                            xtype: 'container',
+                            layout: 'hbox',
+                            height: 140,
+                            items: [
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.idDE + '-panelStatementAMV',
+                                    viewConfig: {
+                                        stripeRows: true,
+                                        enableTextSelection: true,
+                                        markDirty: false
+                                    },
+                                    defaults: {
+                                        align: 'center',
+                                        menuDisabled: true,
+                                        sortable: true,
+                                    },
+                                    minHeight: 70,
+                                    maxHeight: 140,
+                                    columnLines: true,
+                                    scrollable: true,
+                                    titleAlign: 'center',
+                                    title: 'Statements',
+                                    flex: 2,
+                                    margin: '0 5 0 0',
+                                    columns: [
+                                        {text: 'RN', locked: true, xtype: 'rownumberer', width: 40, align: 'center', textAlign: 'center'},
+                                        {text: 'Doc. Sap', dataIndex: 'BANDOC', flex: 1, align: 'center', textAlign: 'center'},
+                                        {text: 'Payment Date', dataIndex: 'ADATE', flex: 1, align: 'center', textAlign: 'center'},
+                                        {text: 'Reference', dataIndex: 'REFER', flex: 1.5, align: 'center', textAlign: 'center'},
+                                        {text: 'NET Amount', dataIndex: 'NETO', flex: 1, align: 'center',
+                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                value = Ext.util.Format.number(value, '0,000.00');
+                                                return value;
+                                            }},
+                                        {text: 'Currency', dataIndex: 'SCURRENCY', flex: 1, align: 'center', textAlign: 'center'}
+                                    ]
+                                },
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.idDE + '-panelSaleAMV',
+                                    viewConfig: {
+                                        stripeRows: true,
+                                        enableTextSelection: true,
+                                        markDirty: false
+                                    },
+                                    defaults: {
+                                        align: 'center',
+                                        menuDisabled: true,
+                                        sortable: true,
+                                    },
+                                    minHeight: 70,
+                                    maxHeight: 140,
+                                    columnLines: true,
+                                    scrollable: true,
+                                    titleAlign: 'center',
+                                    title: 'Sales',
+                                    flex: 3,
+                                    margin: '0 5 0 0',
+                                    columns: [
+                                        {text: 'RN', locked: true, xtype: 'rownumberer', width: 40, align: 'center', textAlign: 'center'},
+                                        {text: 'IATA', dataIndex: 'SAGENT', flex: 1, align: 'center', textAlign: 'center'},
+                                        {
+                                            text: 'Credit Card',
+                                            defaults: {
+                                                menuDisabled: true,
+                                                sortable: false,
+                                                align: 'center'
+                                            },
+                                            columns: [
+                                                {text: 'Code', dataIndex: 'SCARCOD', width: 80},
+                                                {text: 'Number', dataIndex: 'SCARDN', width: 150},
+                                                {text: 'Auth.', dataIndex: 'SAUTHOC', width: 60},
+                                            ]
+                                        },
+//                                        {text: 'Card Code', dataIndex: 'SCARCOD', flex: 1},
+//                                        {text: 'Card Number', dataIndex: 'SCARDN', flex: 1},
+//                                        {text: 'Auth Code', dataIndex: 'SAUTHOC', flex: 1},
+                                        {text: 'Sale Date', dataIndex: 'SDATE', flex: 1, align: 'center', textAlign: 'center'},
+                                        {text: 'Invoice', dataIndex: 'INVOICE', flex: 1.5, align: 'center', textAlign: 'center'},
+                                        {text: 'Amount', dataIndex: 'SVFOP', flex: 1, align: 'center',
+                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                value = Ext.util.Format.number(value, '0,000.00');
+                                                return value;
+                                            }},
+                                        {text: 'Currency', dataIndex: 'SCURRENCY', flex: 1}
+                                    ]
+                                },
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.idDE + '-panelTaxesAMV',
+                                    viewConfig: {
+                                        stripeRows: true,
+                                        enableTextSelection: true,
+                                        markDirty: false
+                                    },
+                                    defaults: {
+                                        align: 'center',
+                                        menuDisabled: true,
+                                        sortable: true
+                                    },
+                                    minHeight: 70,
+                                    maxHeight: 140,
+                                    columnLines: true,
+                                    scrollable: true,
+                                    titleAlign: 'center',
+                                    title: 'Taxes',
+                                    flex: 1,
+                                    columns: [
+                                        {text: 'RN', locked: true, xtype: 'rownumberer', width: 40, align: 'center', textAlign: 'center'},
+                                        {text: 'Code', dataIndex: 'CODIGO', flex: 1, align: 'center', textAlign: 'center'},
+                                        {text: 'Amount', dataIndex: 'IMPORTE', flex: 1, align: 'center',
+                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                metaData.style = "text-align:right;background-color:#B2DAFA";
+                                                value = Ext.util.Format.number(value, '0,000.00');
+                                                return value;
+                                            }},
+                                        {text: 'Currency', dataIndex: 'MONEDA', flex: 1, align: 'center', textAlign: 'center'}
+                                    ]
+                                }
+                            ]
+                        }
                     ]
                 },
                 //</editor-fold>
