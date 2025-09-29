@@ -55,26 +55,6 @@ Ext.define('Ext.Praxis.view.screens.AbnormalValuesForm.Info', {
                         {
                             xtype: 'panel',
                             bodyStyle: 'background: transparent',
-                            id: prototype.id + '-ScrAVSales_tab',
-                            title: 'Sales Analysis',
-//                            layout: {
-//                                type: 'vbox',
-//                                align: 'center'
-//                            },
-//                            margin: '10 10 10 10',
-//                            defaults: {
-//                                labelAlign: 'left'
-//                            },
-                            items: [
-                                {
-                                    id: prototype.id+ '-ScrAVSales_screen',
-                                    xtype:prototype.id + '-ScrAVSales'
-                                }
-                            ]
-                        },
-                        {
-                            xtype: 'panel',
-                            bodyStyle: 'background: transparent',
                             id: prototype.id + '-ScrDBIataControl_tab',
                             title: 'Sales Agent Control',
                             /*layout: {
@@ -89,6 +69,26 @@ Ext.define('Ext.Praxis.view.screens.AbnormalValuesForm.Info', {
                                 {                                    
                                     id: prototype.id+ '-ScrDBIataControl_screen',
                                     xtype:prototype.id + '-ScrDBIataControl'
+                                }
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            bodyStyle: 'background: transparent',
+                            id: prototype.id + '-ScrAVSales_tab',
+                            title: 'Sales Analysis',
+//                            layout: {
+//                                type: 'vbox',
+//                                align: 'center'
+//                            },
+//                            margin: '10 10 10 10',
+//                            defaults: {
+//                                labelAlign: 'left'
+//                            },
+                            items: [
+                                {
+                                    id: prototype.id+ '-ScrAVSales_screen',
+                                    xtype:prototype.id + '-ScrAVSales'
                                 }
                             ]
                         },

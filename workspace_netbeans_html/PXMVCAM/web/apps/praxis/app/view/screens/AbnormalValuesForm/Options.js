@@ -136,6 +136,24 @@ Ext.define('Ext.Praxis.view.screens.AbnormalValuesForm.Options', {
                         },
                         {
                             xtype: 'button',
+                            id: prototype.id + '-btnExcelAgentWithoutAcre',
+                           icon: 'resources/img/botones/excel-png-office-xlsx-icon-3.png',
+                           tooltip: 'Agents without accreditation type',
+                            listeners: {
+                                click: 'btnExcel_clickPending'
+                            }
+                        },
+                        {
+                            xtype: 'button',
+                            id: prototype.id + '-btnUpdateGrid',
+                           icon: 'resources/img/botones/1337982080_system-software-update.png',
+                           tooltip: 'Generate Summary Sales CC and CA',
+                            listeners: {
+                                click: 'updateSummarySales'
+                            }
+                        },
+                        {
+                            xtype: 'button',
                             id: prototype.id + '-btnClear',
                             iconCls: 'prx-icon-clear',
                             tooltip: 'Clear Options',
