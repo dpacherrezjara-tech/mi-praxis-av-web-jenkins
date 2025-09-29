@@ -53,7 +53,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                             editable: true,
                             width: 150,
                             typeAhead: true,
-                            value: 'X',
+                            value: 'Y',
                             valueField: 'value',
                             displayField: 'description',
                             listeners: {
@@ -66,7 +66,8 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                                     ["P", "Pending by credit card"],
                                     ["C", "By Clarification"],
                                     ["V", "Provisions"],
-                                    ["X", "Total by conciliation"]
+                                    ["X", "Total by conciliation"],
+                                    ["Y", "Total MDP"]
                                 ]
                             }),
                             listConfig: {maxHeight: 100},

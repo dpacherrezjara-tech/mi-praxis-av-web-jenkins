@@ -421,7 +421,7 @@ Ext.define('Ext.Praxis.controller.screens.AbnormalValues.tabs.ScrDBIataControlCo
         //meIataCtr.drillDown.push(meIataCtr.boxActual);        
 
         this.setFormatParameter();
-        win.lblUser_toolTip("Estructura: IMF078");
+        win.lblUser_toolTip("Estructura: IMF150");
         Ext.Ajax.request({
             url: prototype.url + '/loadTotalControlTotal_Agent',
             method: 'POST',
@@ -674,4 +674,44 @@ Ext.define('Ext.Praxis.controller.screens.AbnormalValues.tabs.ScrDBIataControlCo
             opacity: index % 2 ? 1 : 0.5
         };
     },
+    
+     imgExcel_clickHandler: function () {
+        
+        console.log('excell');
+         console.log(meIataCtr.boxActual)
+        meIataCtr.dw_excel = true;
+        if(meIataCtr.boxActual === '-boxMainDataIataControl'){
+            console.log(Ext.getCmp(prototype.id + '-gridTotal_AG').config.columns.items);
+            meIataCtr.goURLpost('loadTotalControlTotal_Agent',this.searchParams,Ext.getCmp(prototype.id + '-gridTotal_AG').config.columns.items);
+        }else{
+            meIataCtr.dw_excel = false;
+        }
+    },
+    goURLpost: function (method,parms,columns) {
+        
+        var js_columns = JSON.stringify(columns);
+        
+        var mapForm = document.createElement("form");
+        mapForm.target = "_blank";
+        mapForm.method = "POST"; // or "post" if appropriate
+        mapForm.action = prototype.url + '/' +method+'?dw_excel=true';
+
+        var mapInput = document.createElement("input");
+        mapInput.type = "text";
+        mapInput.name = "beanString";
+        mapInput.value = parms;
+        mapForm.appendChild(mapInput);
+        
+        var mapInput = document.createElement("input");
+        mapInput.type = "text";
+        mapInput.name = "columns";
+        mapInput.value = js_columns;
+        mapForm.appendChild(mapInput);
+
+        document.body.appendChild(mapForm);
+
+
+        mapForm.submit();
+    },
+    
 });

@@ -125,4 +125,12 @@ public class BalanceAnalysisByAgeLogic {
     public List<A2356Filter> getListTotalConciliation_Bard(A2356Filter filter) throws SQLException, Exception {
         return balanceAnalysisByAge.getListTotalConciliation_Bard(filter);
     }
+    
+    public List<A2356Filter> getListTotalConciliationMDP(A2356Filter filter) throws SQLException, Exception {
+        return balanceAnalysisByAge.getListTotalConciliationMDP(filter);
+    }
+
+    public List<A2356Filter> getListTotalConciliation_BardMDP(A2356Filter filter) throws SQLException, Exception {
+        return balanceAnalysisByAge.getListTotalConciliation_BardMDP(filter);
+    }
 }
