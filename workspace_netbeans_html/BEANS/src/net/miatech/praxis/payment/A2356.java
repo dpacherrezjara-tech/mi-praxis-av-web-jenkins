@@ -94,6 +94,8 @@ public class A2356 {
         public double totSVFOPUSD  = 0;  
         public double totSVFOPUSDP  = 0;  
         public double totSVFOPUSDLT  = 0;  
+        public double totSVFOPACCO  = 0;  
+        public double totSVFOPACCC  = 0;  
         public double totSVFOPUSDPENDING  = 0;  
         public double QTYTKT  = 0;  
         public double QTYTKTP  = 0;  
@@ -101,13 +103,19 @@ public class A2356 {
         public double QSVFOPUSDL  = 0;  
         public double QSVFOPUSDP  = 0;  
         public double SVFOPUSDLT  = 0;  
+        public double SVFOPACCO  = 0;  
+        public double SVFOPACCC  = 0;  
         public double RATECON  = 0;  
         public double RATECONL  = 0;  
+        public double RATEACCOU  = 0;  
         public double COMISION  = 0;  
         public double RTEIVA  = 0;  
         public int totQTYLIQP  = 0;  
+        public int totQTYTACCOC  = 0;  
+        public int totQTYACCO  = 0;  
         public double totRATECON  = 0;  
         public double totRATECONL  = 0;  
+        public double totRATEACCOU  = 0;  
         public double totCOMISION  = 0;  
         public double totRTEIVA  = 0;  
         public double QSVFOPUSDS  = 0;  
@@ -118,6 +126,8 @@ public class A2356 {
         public int QSALESC  = 0;
         public int QTYLIQ  = 0;
         public int QTYLIQP  = 0;
+        public int QTYACCO  = 0;
+        public int QTYTACCOC  = 0;
         public int QMATCH  = 0;
         public int QPEND  = 0;
         public int QPOLIC  = 0;
