@@ -1029,6 +1029,16 @@ public class A2290Filter extends A2290 {
     public String BANKNAM = "";
     public String ACCNUMB = "";
     public String BANKCM = "";
+    public String CBATCH = "";
+    public String SCOUNTRY_191 = "";
+    public String SCURRENCY_191 = "";
+    public String SCONSOL_191 = "";
+    public String STARDATE_191 = "";
+    public String ENDDATE_191 = "";
+    public String QTYTKT_191 = "";
+    public double NETO_191 = 0;
+    public double PAYAMOU_191 = 0;
+    public double COMISION_191 = 0;
 
     
     //Update
