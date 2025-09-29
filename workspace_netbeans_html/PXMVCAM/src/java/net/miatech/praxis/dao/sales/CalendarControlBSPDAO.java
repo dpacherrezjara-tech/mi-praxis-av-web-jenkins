@@ -44,7 +44,7 @@ public class CalendarControlBSPDAO {
         CallableStatement cstmt01 = null;
         ResultSet rs01 = null;
 
-        String SQLCLL01 = "{CALL PRAXISMP.PX115S01A1529_V40(?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.MPS335(?,?,?,?)}";
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();  cstmt01 = cnx.prepareCall(SQLCLL01);

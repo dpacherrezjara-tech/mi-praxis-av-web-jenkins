@@ -1862,22 +1862,103 @@ var LarSyrExt = function () {
         // Descargar archivo
         XLSX.writeFile(wb, name + "_" + uuid + ".xlsx");
     };
-    
-    this.formatTimeStamp = function (value) {
-        if (value) {
-            const formatter = new Intl.DateTimeFormat('es-ES', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            });
-            return formatter.format(new Date(value));
-        } else {
-            return '';
+
+
+//             MODO DE USO - DESCARGA EXCEL MULTI HOJAS:    
+//             await global.writeExcelFromJsonMultiSheet(
+//                    { fileName: "Nombre del Archiivo Excel",
+//                      data:[{sheetName: "Nombre de la Hoja 01", data: data_01 },
+//                            {sheetName: "Nombre de la Hoja 02", data: data_02 },
+//                            {sheetName: "Nombre de la Hoja 03", data: data_03 }]});                
+     this.writeExcelFromJsonMultiSheet = async function ({ fileName, data }) {
+        const wb = XLSX.utils.book_new();
+        for (const { sheetName, data: sheetData } of data) {
+          if (!sheetData || sheetData.length === 0) continue;
+          const headers = Object.keys(sheetData[0]);
+          // Crear hoja con AOA (primero headers, luego data)
+          const aoa = [headers, ...sheetData.map(row => headers.map(h => row[h]))];
+          const ws = XLSX.utils.aoa_to_sheet(aoa);
+          // === Solo estilos en headers ===
+          const headerStyle = {
+            font: {bold: true, color: {rgb: "FFFFFF"}}, // Texto blanco y negrita
+            fill: {fgColor: {rgb: "FF0000"}}, // Fondo rojo
+            alignment: {horizontal: "center", vertical: "center"}, // Centrado
+            border: {
+                top: {style: "thin", color: {rgb: "FFFFFF"}},
+                bottom: {style: "thin", color: {rgb: "FFFFFF"}},
+                left: {style: "thin", color: {rgb: "FFFFFF"}},
+                right: {style: "thin", color: {rgb: "FFFFFF"}}
+            }
+        };
+          headers.forEach((_, colIndex) => {
+            const cellAddress = XLSX.utils.encode_cell({ r: 0, c: colIndex });
+            if (ws[cellAddress]) {
+              ws[cellAddress].s = headerStyle;
+            }
+          });
+          XLSX.utils.book_append_sheet(wb, ws, sheetName);
         }
-    };
+        // UUID corto
+        const uuid = crypto.randomUUID().replace(/-/g, '').substring(0, 6);
+        // Descargar archivo
+        XLSX.writeFile(wb, `${fileName}_${uuid}.xlsx`);
+      };
+      
+      
+    // Convierte JSON a CSV
+      this.jsonToCSV = function (rows) {
+              if (!rows || rows.length === 0) return "";
+              const headers = Object.keys(rows[0]);
+              const csvRows = [headers.join(";")];
+              rows.forEach(row => {
+                  const values = headers.map(h => `"${(row[h] ?? "").toString().replace(/"/g, '""')}"`);
+                  csvRows.push(values.join(";"));
+              });
+              return csvRows.join("\n");
+          };
+
+//            Empaqueta en un Zip varios archivos en base64
+//            MODO DE USO:
+//          { files: [
+//               { name: `Nombre_de_archivo.extension`, content: data_en_base64 },
+//               { name: `Nombre_de_archivo.extension`, content: data_en_base64) }]}
+            this.downloadPackBase64Files = async function (files, baseName) {
+                try {
+                    // === Llamar al servlet en Java ===
+                    const response = await axios.post("/AVIANCA/downloadCsvZip", { files }, {
+                        responseType: "blob" // para recibir el ZIP
+                    });
+                    // Procesar descarga
+                    const blob = new Blob([response.data], { type: "application/zip" });
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = `${baseName}.zip`;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    window.URL.revokeObjectURL(url);
+                } catch (error) {
+                    console.error("Error descargando ZIP:", error);
+                }
+            };
+
+
+      this.formatTimeStamp = function (value) {
+          if (value) {
+              const formatter = new Intl.DateTimeFormat('es-ES', {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit'
+              });
+              return formatter.format(new Date(value));
+          } else {
+              return '';
+          }
+      };
     
     this.loadRecordsOnTable = async function (library, table, lst) {
         let uuid = crypto.randomUUID().replace(/-/g, '');
@@ -1946,6 +2027,34 @@ var LarSyrExt = function () {
             return '';
         }
     };
+    
+    this.exportExcelFromStore = async function (library, procedure, searchParams, columns, fileName) {
+    try {
+        let res = await global.callStorePagginExcel(library, procedure, searchParams);
+
+        const data = (res?.length > 0)
+            ? res.map((x, idx) => {
+                const row = {};
+                for (let col of columns) {
+                     let val = row[col.header] = x[col.dataIndex] ?? "";
+                    if (typeof col.formatter === "function") {
+                        val = col.formatter(val, x, idx);
+                    }
+
+                    row[col.header] = val;
+                }
+                return row;
+            })
+            : [Object.fromEntries(columns.map(col => [col.header, ""]))];
+
+        // 3. Descargar Excel
+        await global.writeExcelFromJson(data, fileName);
+
+    } catch (e) {
+        console.error("Error exportando Excel:", e);
+    } 
+    };
+
 };
 
 var global = new LarSyrExt();

@@ -1024,7 +1024,7 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00698DETALLE_V_T2(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS302(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -5701,6 +5701,12 @@ public class BankReconciliationDAO {
         objRtn0.CODE = "";
         objRtn0.NAME = "All";
         lstData.add(objRtn0);
+        
+        A2290Filter objRtn1;
+        objRtn1 = new A2290Filter();
+        objRtn1.CODE = "EM";
+        objRtn1.NAME = "Empty";
+        lstData.add(objRtn1);
 
         CallableStatement cstmt = null;
         ResultSet rst = null;
@@ -5835,7 +5841,7 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_MDP_SCAN_V3(?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS303(?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {

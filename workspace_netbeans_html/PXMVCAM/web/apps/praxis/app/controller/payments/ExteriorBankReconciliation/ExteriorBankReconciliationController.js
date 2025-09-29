@@ -165,6 +165,14 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.ExteriorBa
             Ext.getCmp(prototype.id + '-formFiltersBS-4').show();
         }
     },
+    onProcessClick: function () {
+        const me = this;
+        const dataEntry = Ext.create('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.ProcessBankReconciliationDataEntry', {
+            id: prototype.id + '-ProcessAccountingDataEntry-1',
+            procesadores: me.procesadores
+        });
+        dataEntry.show();
+    },
     //<editor-fold defaultstate="collapsed" desc="Format Parameters">
     formatBankParams: function () {
         const type = Ext.getCmp(prototype.id + '-cmbBankFilters').value;

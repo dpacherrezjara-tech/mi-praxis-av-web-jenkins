@@ -1113,12 +1113,9 @@ Ext.define('Ext.Praxis.view.screens.AbnormalValuesForm.tabs.ScrDBIataControl', {
                                             xtype: 'grid',
                                             id: prototype.id + '-gridTotal_AG',
                                             padding: '5px 0px 0px 0px',
-                                            width: 954,
+                                            width: 1570,
                                             height: 528,
                                             columnLines: true,
-                                            /*features: [{
-                                             ftype: 'summary'
-                                             }],*/
                                             columns: {
                                                 defaults: {
                                                     menuDisabled: true,
@@ -1127,37 +1124,58 @@ Ext.define('Ext.Praxis.view.screens.AbnormalValuesForm.tabs.ScrDBIataControl', {
                                                 },
                                                 items: [
                                                     {
-                                                        text: 'Agent', align: 'center', columns: [
+                                                        text: 'Agent', align: 'center', style:'background:#8A99A6;',columns: [
                                                             {
-                                                                text: 'Code', dataIndex: 'AIRLINE', align: 'center', width: 70,
+                                                                text: 'Client', dataIndex: 'CCUST', align: 'center', width: 70,style:'background:#8A99A6;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "font-weight:bold;text-align:center;background:#d5f4d5;";
                                                                     return value;
                                                                 }
                                                             },
                                                             {
-                                                                text: 'Src', dataIndex: 'strFormatDate1', align: 'center', width: 40,
+                                                                text: 'Code', dataIndex: 'VENDOR', align: 'center', width: 70,style:'background:#8A99A6;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "font-weight:bold;text-align:center;background:#d5f4d5;";
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Src', dataIndex: 'CANAV', align: 'center', width: 40,style:'background:#8A99A6;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "font-weight:bold;text-align:center;";
                                                                     return value;
                                                                 }
                                                             },
                                                             {
-                                                                text: 'Name', dataIndex: 'strFlag', align: 'center', width: 300,
+                                                                text: 'Name', dataIndex: 'NAGENT', align: 'center', width: 200,style:'background:#8A99A6;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:left;";
                                                                     return value;
                                                                 }
                                                             },
                                                             {
-                                                                text: 'Type', dataIndex: 'COMENT1', align: 'center', width: 40,
+                                                                text: 'Type', dataIndex: 'TYPEAG', align: 'center', width: 40,style:'background:#8A99A6;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "font-weight:bold;text-align:center;";
                                                                     return value;
                                                                 }
                                                             },
                                                             {
-                                                                text: 'Ctr', dataIndex: 'strFormatDate', align: 'center', width: 40,
+                                                                text: 'Status', dataIndex: 'ASTATUS', align: 'center', width: 80,style:'background:#8A99A6;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "font-weight:bold;text-align:center;";
+                                                                    return (value === null || value === undefined || value === '') ? '' : value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Risk <br> Status', dataIndex: 'RSTATUS', align: 'center', width: 50,style:'background:#8A99A6;',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "font-weight:bold;text-align:center;";
+                                                                   return (value === null || value === undefined || value === '') ? '' : value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Ctr', dataIndex: 'SAGECTR', align: 'center', width: 40,style:'background:#8A99A6;',
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "font-weight:bold;text-align:center";
                                                                     return value;
@@ -1168,49 +1186,104 @@ Ext.define('Ext.Praxis.view.screens.AbnormalValuesForm.tabs.ScrDBIataControl', {
                                                     {
                                                         text: '',
                                                         id: prototype.id + '-titFecha6_AG',
+                                                        style:'background:#8A99A6;',
                                                         columns: [
-                                                            {
-                                                                text: 'Coupons', dataIndex: 'Rej6', align: 'center', width: 70,
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:right;background:#99ccff;";
-                                                                    return Ext.util.Format.number(value, '0,000');
-                                                                }
+                                                            
+                                                             {
+                                                                text: 'Credit Card',style:'background:#6C87A8;', columns: [
+                                                                    {
+                                                                        text: 'Months', dataIndex: 'MONTHCRE', align: 'center', width: 60,style:'background:#6C87A8;',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;background:#99ccff;";
+                                                                            return value
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Qty Tkts', dataIndex: 'QTYTKCRE', align: 'center', width: 70,style:'background:#6C87A8;',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;background:#99ccff;";
+                                                                            return Ext.util.Format.number(value, '0,000');
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Amount', dataIndex: 'AMOUNCRE', align: 'center', width: 100,style:'background:#6C87A8;',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;background:#99ccff;";
+                                                                            return Ext.util.Format.number(value, '0,000.00');
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: '5 months', dataIndex: 'FMOUNCRE', align: 'center', width: 80,style:'background:#6C87A8;',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;background:#d5f4d5;";
+                                                                            return Ext.util.Format.number(value, '0,000.00');
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Desviacion', dataIndex: 'DESVICRE', align: 'center', width: 85,style:'background:#6C87A8;',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;background:#d5f4d5;";
+                                                                                    return Ext.util.Format.number(value, '0,000.00');
+                                                                                }
+                                                                    },
+                                                                     {
+                                                                        text: 'Alert', dataIndex: 'ALERTCRE', align: 'center', width: 80,style:'background:#6C87A8;',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;background:#d5f4d5;";
+                                                                                    return Ext.util.Format.number(value, '0,000.00');
+                                                                                }
+                                                                    },
+                                                                ]
                                                             },
                                                             {
-                                                                text: 'Amount', dataIndex: 'Aud6', align: 'center', width: 100,
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:right;background:#99ccff;";
-                                                                    return Ext.util.Format.number(value, '0,000.00');
-                                                                }
+                                                                text: 'Cash',style:'background:#336699;', columns: [
+                                                            
+                                                                  
+                                                                    {
+                                                                        text: 'Month', dataIndex: 'MONTHCAS', align: 'center', width: 60,style:'background:#336699;',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;background:#99ccff;";
+                                                                            return value
+                                                                        }
+                                                                    },
+                                                                     {
+                                                                        text: 'Qty Tkts', dataIndex: 'QTYTKCAS', align: 'center', width: 70,style:'background:#336699;',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;background:#99ccff;";
+                                                                            return Ext.util.Format.number(value, '0,000');
+                                                                        }
+                                                                    },
+                                                                      {
+                                                                        text: 'Amount', dataIndex: 'AMOUNCAS', align: 'center', width: 100,style:'background:#336699;',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;background:#99ccff;";
+                                                                            return Ext.util.Format.number(value, '0,000.00');
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: '5 months', dataIndex: 'FMOUNCAS', align: 'center', width: 80,style:'background:#336699;',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right;background:#d5f4d5;";
+                                                                            return Ext.util.Format.number(value, '0,000.00');
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Desviacion', dataIndex: 'DESVICAS', align: 'center', width: 85,style:'background:#336699;',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;background:#d5f4d5;";
+                                                                                    return Ext.util.Format.number(value, '0,000.00');
+                                                                                }
+                                                                    },
+                                                                     {
+                                                                        text: 'Alert', dataIndex: 'ALERTCAS', align: 'center', width: 80,style:'background:#336699;',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;background:#d5f4d5;";
+                                                                                    return Ext.util.Format.number(value, '0,000.00');
+                                                                                }
+                                                                    },
+                                                                ]
                                                             },
                                                         ]
-                                                    },
-                                                    {
-                                                        text: 'Average', columns: [
-                                                            {
-                                                                text: '5 months', dataIndex: 'Rate2', align: 'center', width: 100,
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "text-align:right;background:#d5f4d5;";
-                                                                    return Ext.util.Format.number(value, '0,000.00');
-                                                                }
-                                                            }
-                                                        ]
-                                                    },
-                                                    {
-                                                        text: 'Differences', dataIndex: 'Diff1', align: 'center', width: 100,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:right;background:#d5f4d5;";
-                                                            return Ext.util.Format.number(value, '0,000.00');
-                                                        }
-                                                    },
-                                                    {
-                                                        text: 'Variation', dataIndex: 'Rate3', align: 'center', width: 80,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            var data = record.data;
-                                                            (data.Rate3 > 0) ? metaData.style = "text-align:right;background:#d5f4d5;font-weight: bold;color:#ff0000"
-                                                                    : metaData.style = "text-align:right;background:#d5f4d5;font-weight: normal;color:#323232";
-                                                            return Ext.util.Format.number(value, '0,000.00%');
-                                                        }
                                                     }
                                                 ]
                                             }

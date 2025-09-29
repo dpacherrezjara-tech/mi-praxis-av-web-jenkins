@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import net.miatech.beans.A720Filter;
@@ -1594,8 +1595,86 @@ public class AbnormalValueDAO {
         }
 
     }
-
+    
     public List<WRF016Filterwk> loadPX109SQP01231_AGENT(DashboardFilter filter) throws SQLException, Exception {
+        List<WRF016Filterwk> lista = new ArrayList<WRF016Filterwk>(0);
+        WRF016Filterwk objRtn;
+        int CP1 = 0, CP2 = 0, CP3 = 0, CP4 = 0, CP5 = 0, CP6 = 0, TKT1 = 0, TKT2 = 0, TKT3 = 0, TKT4 = 0, TKT5 = 0, TKT6 = 0;
+        double AMT1 = 0, AMT2 = 0, AMT3 = 0, AMT4 = 0, AMT5 = 0, AMT6 = 0, TOTVAR = 0, TOTDIFF = 0, PROMEDIO = 0;
+        String mes1 = "", mes2 = "", mes3 = "", mes4 = "", mes5 = "", mes6 = "", fec_actual = "";
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS364(?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+                while (rst.next()) {
+                    objRtn = new WRF016Filterwk();
+                    objRtn.CCUST = rst.getString("CCUST");
+                    objRtn.VENDOR = rst.getString("VENDOR");
+                    objRtn.CANAV = rst.getString("CANAV");
+                    objRtn.NAGENT = rst.getString("NAGENT");
+                    objRtn.TYPEAG = rst.getString("TYPEAG");
+                    objRtn.ASTATUS = rst.getString("ASTATUS");
+                    objRtn.RSTATUS = rst.getString("RSTATUS");
+                    objRtn.SAGECTR = rst.getString("SAGECTR");
+                    
+                    objRtn.MONTHCRE = rst.getInt("MONTHCRE");
+                    objRtn.QTYTKCRE = rst.getInt("QTYTKCRE");
+                    
+                    objRtn.AMOUNCRE = rst.getDouble("AMOUNCRE");
+                    objRtn.FMOUNCRE = rst.getDouble("FMOUNCRE");
+                    objRtn.DESVICRE = rst.getDouble("DESVICRE");
+                    objRtn.ALERTCRE = rst.getDouble("ALERTCRE");
+                    
+                    objRtn.MONTHCAS = rst.getInt("MONTHCAS");
+                    objRtn.QTYTKCAS = rst.getInt("QTYTKCAS");
+                    
+                    objRtn.AMOUNCAS = rst.getDouble("AMOUNCAS");
+                    objRtn.FMOUNCAS = rst.getDouble("FMOUNCAS");
+                    objRtn.DESVICAS = rst.getDouble("DESVICAS");
+                    objRtn.ALERTCAS = rst.getDouble("ALERTCAS");
+                    
+                    lista.add(objRtn);
+                }
+            rst.close();
+
+        } catch (Exception e) {
+            //e.getMessage();
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lista;
+
+    }
+    
+    public List<WRF016Filterwk> loadPX109SQP01231_AGENTBK(DashboardFilter filter) throws SQLException, Exception {
         List<WRF016Filterwk> lista = new ArrayList<WRF016Filterwk>(0);
         WRF016Filterwk objRtn;
         int CP1 = 0, CP2 = 0, CP3 = 0, CP4 = 0, CP5 = 0, CP6 = 0, TKT1 = 0, TKT2 = 0, TKT3 = 0, TKT4 = 0, TKT5 = 0, TKT6 = 0;
@@ -3484,5 +3563,140 @@ public class AbnormalValueDAO {
 
         return lstRtn;
     }
+    
+    public List<IMF111Filter> loadMPS365(IMF111Filter filter) throws SQLException, Exception {
+
+        List<IMF111Filter> lstTkts = new ArrayList<IMF111Filter>(0);
+        IMF111Filter beanTkt;
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS365(?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+                beanTkt = new IMF111Filter();
+                beanTkt.CCUST = rst.getString("CCUST").trim();
+                beanTkt.DSALES = rst.getString("DSALES").trim();
+                beanTkt.AGENT = rst.getString("AGENT").trim();
+                beanTkt.AMOUNT_SALE = rst.getDouble("AMOUNT_SALE");
+                lstTkts.add(beanTkt);
+            }
+            rst.close();
+
+        } catch (Exception e) {
+            e.getMessage();
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstTkts;
+    }
+    
+    public String SQP05572() throws Exception {
+        String msg = null;
+        Connection cnx = null;
+        CallableStatement cs = null;
+
+        try {
+            String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS362()}";
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cs = cnx.prepareCall(SQLCLL01);
+
+            cs.execute(); 
+
+            msg = "Proceso Culminado";
+        } catch (Exception e) {
+            e.printStackTrace();
+            msg = "Error: " + e.getMessage();
+        } finally {
+            if (cs != null) {
+                try {
+                    cs.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" 
+                        + session.getUserView().getUserInfo().USR 
+                        + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+        return msg;
+    }
+
+    
+    public String MPS363() throws Exception {
+        String msg = null;
+        Connection cnx = null;
+        CallableStatement cs = null;
+        ResultSet rst = null;
+        int anioActual = Calendar.getInstance().get(Calendar.YEAR);
+        try {
+            String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS363(?,?,?,?,?,?)}";
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cs = cnx.prepareCall(SQLCLL01);
+            
+            cs.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cs.setInt(2, anioActual);
+            cs.setInt(3, anioActual);
+            cs.setString(4, "");
+            cs.setString(5, "");
+            cs.setString(6, "");
+
+            cs.execute();
+
+            msg = "Proceso Culminado";
+        } catch (Exception e) {
+            e.printStackTrace();
+            msg = "Error: " + e.getMessage();
+        }  finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cs != null) {
+                try {
+                    cs.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+        return msg;
+    }
+
 
 }

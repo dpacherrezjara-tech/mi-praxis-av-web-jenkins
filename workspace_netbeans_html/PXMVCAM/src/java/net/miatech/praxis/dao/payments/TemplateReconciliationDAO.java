@@ -668,8 +668,9 @@ public class TemplateReconciliationDAO {
         ResultSet rst = null;
         A2290Filter record = null;
         List<A2290Filter> lista = new ArrayList<A2290Filter>();
+        double TOTAL_NETO = 0;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS111(?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS111_V2(?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -699,25 +700,254 @@ public class TemplateReconciliationDAO {
             filter.page.TOTROW = cstmt.getInt(9);
 
             rst = cstmt.getResultSet();
+            
+            if (rst.next()) {
+                TOTAL_NETO = rst.getDouble("SUM_NETO");
+            }
+            
+            // Segunda lista
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+                while (rst.next()) {
+                    record = new A2290Filter();
+                    record.CCUST = rst.getString("CCUST");
+                    record.BANDOC = rst.getString("BANDOC");
+                    record.VALDATE = rst.getString("VALDATE");
+                    record.ADATE = rst.getString("ADATE");
+                    record.NETO = rst.getDouble("NETO");
+                    record.ACCOUNT = rst.getString("ACCOUNT");
+                    record.SOCIETY = rst.getString("SOCIETY");
+                    record.CODEBANK_EC = rst.getString("CODEBANK");
 
-            while (rst.next()) {
+                    record.page.PAGNUM = filter.page.PAGNUM;
+                    record.page.PAGROW = filter.page.PAGROW;
+                    record.page.TOTPAG = filter.page.TOTPAG;
+                    record.page.TOTROW = filter.page.TOTROW;
+                    
+                    record.TOTAL_NETO = TOTAL_NETO;
 
-                record = new A2290Filter();
-                record.CCUST = rst.getString("CCUST");
-                record.BANDOC = rst.getString("BANDOC");
-                record.VALDATE = rst.getString("VALDATE");
-                record.ADATE = rst.getString("ADATE");
-                record.NETO = rst.getDouble("NETO");
-                record.ACCOUNT = rst.getString("ACCOUNT");
-                record.SOCIETY = rst.getString("SOCIETY");
-                record.CODEBANK_EC = rst.getString("CODEBANK");
+                    lstTkts.add(record);
+                }
+            }
 
-                record.page.PAGNUM = filter.page.PAGNUM;
-                record.page.PAGROW = filter.page.PAGROW;
-                record.page.TOTPAG = filter.page.TOTPAG;
-                record.page.TOTROW = filter.page.TOTROW;
+        } catch (Exception e) {
+            e.getMessage();
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
 
-                lstTkts.add(record);
+        return lstTkts;
+    }
+    
+    public List<A2290Filter> searchPendingDepositsSales(A2290Filter filter) throws SQLException, Exception {
+
+        List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        A2290Filter record = null;
+        List<A2290Filter> lista = new ArrayList<A2290Filter>();
+        double TOTAL_NETO = 0;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS108(?,?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.registerOutParameter(6, Types.INTEGER);
+            cstmt.registerOutParameter(7, Types.INTEGER);
+            cstmt.registerOutParameter(8, Types.INTEGER);
+            cstmt.registerOutParameter(9, Types.INTEGER);
+
+            cstmt.setString(1, filter.IN_CCUST);
+            cstmt.setString(2, filter.IN_DATEFROM);
+            cstmt.setString(3, filter.IN_DATETO);
+            cstmt.setString(4, filter.IN_BANDOC);
+            cstmt.setString(5, filter.IN_CODPRO);
+
+            cstmt.setInt(6, filter.page.PAGNUM);
+            cstmt.setInt(7, filter.page.PAGROW);
+            cstmt.setInt(8, filter.page.TOTPAG);
+            cstmt.setInt(9, filter.page.TOTROW);
+            cstmt.execute();
+
+            filter.page.PAGNUM = cstmt.getInt(6);
+            filter.page.PAGROW = cstmt.getInt(7);
+            filter.page.TOTPAG = cstmt.getInt(8);
+            filter.page.TOTROW = cstmt.getInt(9);
+
+            rst = cstmt.getResultSet();
+            
+            if (rst.next()) {
+                TOTAL_NETO = rst.getDouble("SUM_NETO");
+            }
+            
+            // Segunda lista
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+                while (rst.next()) {
+                    record = new A2290Filter();
+                    record.RN = rst.getLong("RN");
+                    record.CCUST = rst.getString("CCUST");
+                    record.BANDOC = rst.getString("BANDOC");
+                    record.VALDATE = rst.getString("VALDATE");
+                    record.ADATE = rst.getString("ADATE");
+                    record.NETO = rst.getDouble("NETO");
+                    record.ACCOUNT = rst.getString("ACCOUNT");
+                    record.SOCIETY = rst.getString("SOCIETY");
+                    record.CODEBANK_EC = rst.getString("CODEBANK");
+                    record.SCURRENCY = rst.getString("SCURRENCY");
+                    record.checkActive = false;
+
+                    record.page.PAGNUM = filter.page.PAGNUM;
+                    record.page.PAGROW = filter.page.PAGROW;
+                    record.page.TOTPAG = filter.page.TOTPAG;
+                    record.page.TOTROW = filter.page.TOTROW;
+                    
+                    record.TOTAL_NETO = 0;
+
+                    lstTkts.add(record);
+                }
+            }
+
+        } catch (Exception e) {
+            e.getMessage();
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstTkts;
+    }
+    
+    public List<A2290Filter> searchPendingSales(A2290Filter filter) throws SQLException, Exception {
+
+        List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        A2290Filter record = null;
+        List<A2290Filter> lista = new ArrayList<A2290Filter>();
+        double TOTAL_SVFOP = 0;
+        double TOTAL_SVFOP_CONVERTED = 0;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS107(?,?,?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.registerOutParameter(7, Types.INTEGER);
+            cstmt.registerOutParameter(8, Types.INTEGER);
+            cstmt.registerOutParameter(9, Types.INTEGER);
+            cstmt.registerOutParameter(10, Types.INTEGER);
+
+            cstmt.setString(1, filter.IN_CCUST);
+            cstmt.setString(2, filter.IN_DATEFROM);
+            cstmt.setString(3, filter.IN_DATETO);
+            cstmt.setString(4, filter.IN_SAGENT);
+            cstmt.setString(5, filter.IN_CODPRO);
+            cstmt.setString(6, filter.IN_COUNTRY);
+
+            cstmt.setInt(7, filter.page.PAGNUM);
+            cstmt.setInt(8, filter.page.PAGROW);
+            cstmt.setInt(9, filter.page.TOTPAG);
+            cstmt.setInt(10, filter.page.TOTROW);
+            cstmt.execute();
+
+            filter.page.PAGNUM = cstmt.getInt(7);
+            filter.page.PAGROW = cstmt.getInt(8);
+            filter.page.TOTPAG = cstmt.getInt(9);
+            filter.page.TOTROW = cstmt.getInt(10);
+
+            rst = cstmt.getResultSet();
+            
+            if (rst.next()) {
+                TOTAL_SVFOP = rst.getDouble("SUM_SVFOP");
+                TOTAL_SVFOP_CONVERTED = rst.getDouble("SUM_SVFOP");
+            }
+            
+            // Segunda lista
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+                while (rst.next()) {
+                    record = new A2290Filter();
+                    record.RN = rst.getLong("RN");
+                    record.CCUST = rst.getString("CCUST");
+                    record.DATEC = rst.getString("DATEC");
+                    record.TRANC = rst.getString("TRANC");
+                    record.CCIA = rst.getString("CCIA");
+                    record.FORMA = rst.getString("FORMA");
+                    record.SERIE = rst.getString("SERIE");
+                    record.TDOC = rst.getString("TDOC");
+                    record.SCARDNCOR = rst.getString("SCARDNCOR");
+                    record.SAUTHOC = rst.getString("SAUTHOC");
+                    record.SEQ = rst.getString("SEQ");
+                    record.CORRL = rst.getString("CORRL");
+                    record.TKT = rst.getString("TKT");
+                    record.SAGENT = rst.getString("SAGENT");
+                    record.SVFOP = rst.getDouble("SVFOP");
+                    record.TOTAL = rst.getDouble("TOTAL");
+                    record.SVFOPCON = rst.getDouble("SVFOPCON");
+                    record.SDATE = rst.getString("SDATE");
+                    
+                    record.SCOUNTRY = rst.getString("SCOUNTRY");
+                    record.SAUTHOC = rst.getString("SAUTHOC");
+                    record.SCARDN = rst.getString("SCARDN");
+                    record.SCURREVEN = rst.getString("SCURREVEN");
+                    record.checkActive = false;
+//                    record.BANDOC = rst.getString("BANDOC");
+//                    record.VALDATE = rst.getString("VALDATE");
+//                    record.ADATE = rst.getString("ADATE");
+//                    record.NETO = rst.getDouble("NETO");
+//                    record.ACCOUNT = rst.getString("ACCOUNT");
+//                    record.SOCIETY = rst.getString("SOCIETY");
+//                    record.CODEBANK_EC = rst.getString("CODEBANK");
+
+                    record.page.PAGNUM = filter.page.PAGNUM;
+                    record.page.PAGROW = filter.page.PAGROW;
+                    record.page.TOTPAG = filter.page.TOTPAG;
+                    record.page.TOTROW = filter.page.TOTROW;
+                    
+                    record.TOTAL_SVFOP = 0;
+                    record.TOTAL_SVFOP_CONVERTED = 0;
+
+                    lstTkts.add(record);
+                }
             }
 
         } catch (Exception e) {

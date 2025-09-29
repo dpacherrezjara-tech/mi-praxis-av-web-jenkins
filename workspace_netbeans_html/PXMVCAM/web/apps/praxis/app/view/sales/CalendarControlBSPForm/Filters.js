@@ -38,7 +38,7 @@ Ext.define('Ext.Praxis.view.sales.CalendarControlBSPForm.Filters', {
                                 anchor: '100%'
                             },
                             items: [
-                                 {xtype: 'tbspacer', width: 10},
+                                {xtype: 'tbspacer', width: 10},
                                 {
                                     fieldLabel: 'Type Calendar',
                                     xtype: 'combo',
@@ -68,14 +68,16 @@ Ext.define('Ext.Praxis.view.sales.CalendarControlBSPForm.Filters', {
                                         fields: ['code', 'name'],
                                         data: [
                                             {code: 'BICCS', name: 'ICCS BSP'},
-                                            {code: 'BLOCL', name: 'BSP LOCAL'}
+                                            {code: 'BLOCL', name: 'BSP LOCAL'},
+                                            {code: 'CLOCAL', name: 'CASS LOCAL'},
+                                            {code: 'ICASS', name: 'ICCS-CASS'}
                                         ]
                                     },
                                     listeners: {
                                         change: 'btnSearch_click'
                                     }
                                 },
-                                 {xtype: 'tbspacer', width: 10},
+                                {xtype: 'tbspacer', width: 10},
                                 {
                                     xtype: 'label',
                                     text: 'Country:',
@@ -117,7 +119,14 @@ Ext.define('Ext.Praxis.view.sales.CalendarControlBSPForm.Filters', {
                                     listeners: {
                                         keypress: 'onTextKeypress'
                                     }
-                                }
+                                },
+
+                                ///AGREGAMOS BOTON PARA CARGA DE ARCHIVO Y SUBIDA
+
+
+                                ///AQUI TERMINA
+
+
                             ]
                         }
                     ]
