@@ -75,6 +75,8 @@ public class A2282Filter extends A2282 {
      public String DATECT = "";
      public String TRANCT = "";
      public String ADJUST = "";
+     public String VMESSAGE = "";
+     public int VSQLCODE = 0;
      public double SVFOPC = 0;
      
      

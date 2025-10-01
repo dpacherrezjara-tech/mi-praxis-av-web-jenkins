@@ -18,8 +18,8 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
     beanReversed: {},
     // </editor-fold>
     init: function (view) {
-       meDe = this;
-    //        this.p = this.view.params;
+        meDe = this;
+        //        this.p = this.view.params;
         this.actionCode = view.tipoAccion || 'U';  // fallback por si no lo mandan
         this.bean = (view.recordData && view.recordData.data) ? view.recordData.data : {};
 
@@ -32,26 +32,17 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
     },
     afterRender: function () {
 //    const me = this;
-    console.log(this.bean,"datos para la conciliacion");
-    
-    
-    
-    
-    
-    
-    // Rellenando el SALES information
-    
-
+        console.log(this.bean, "datos para la conciliacion");
+        // Rellenando el SALES information
         let value = Ext.util.Format.number(this.bean.SVFOPS, '0,000.00');
 //        let valueAdjust = Ext.util.Format.number(this.bean.SVFOPA, '0,000.00');
 //        let valueAdjustTotal = Ext.util.Format.number(this.bean.TOTALSVFOP, '0,000.00');
-    
+
         Ext.getCmp(prototype.id + '-de-txtBSUMDATE').setValue(this.bean.SDATE);
-    //    Ext.getCmp(prototype.id + '-de-txtTDOC').setValue(this.bean.TDOC);
-    //    Ext.getCmp(prototype.id + '-de-txtBANDOC').setValue(this.bean.STVAL);
-    //    Ext.getCmp(prototype.id + '-de-txtCODEBANK').setValue(this.bean.STVAL);
-    
-    
+        //    Ext.getCmp(prototype.id + '-de-txtTDOC').setValue(this.bean.TDOC);
+        //    Ext.getCmp(prototype.id + '-de-txtBANDOC').setValue(this.bean.STVAL);
+        //    Ext.getCmp(prototype.id + '-de-txtCODEBANK').setValue(this.bean.STVAL);
+
         Ext.getCmp(prototype.id + '-de-txtBANDOC').setValue(this.bean.SAGENT + ' - ' + this.bean.SAGENT_DESC);
         Ext.getCmp(prototype.id + '-de-txtPAYDATE').setValue(this.bean.REFER);
         Ext.getCmp(prototype.id + '-de-txtSCARCODE').setValue(this.bean.QTYTRAN1);
@@ -59,9 +50,9 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
         Ext.getCmp(prototype.id + '-de-txtComentSAUTHOC').setValue(this.bean.CERROR);
 
         Ext.getCmp(prototype.id + '-de-txtAmountTouris').setValue(value);
-        
+
         Ext.getCmp(prototype.id + '-txtUSCR').setValue(this.bean.USCR);
-                
+
         meDe.setValue('txtFECR', this.bean.FECR);
         meDe.setValue('txtHOCR', this.bean.HOCR);
         meDe.setValue('txtUSUP', this.bean.USUP);
@@ -69,120 +60,207 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
         meDe.setValue('txtHOUP', this.bean.HOUP);
 //    Ext.getCmp(prototype.id + '-de-txtComentAdjust').setValue(valueAdjust);
 //    Ext.getCmp(prototype.id + '-de-txtComentAdjustSum').setValue(valueAdjustTotal);
-    
-    let status;
-    if (this.bean.STVAL === '1') {
-        status = "Match";
-    } else if (this.bean.STVAL === '3') {
-        status = "Pending";
-    }
-    Ext.getCmp(prototype.id + '-de-txtSTATUS').setValue(status);
-    
-    // Rellenando el General Information
-    
-//    Ext.getCmp(prototype.id + '-de-txtPRDA').setValue(this.bean.STVAL);
-//    Ext.getCmp(prototype.id + '-de-txtMERCHID').setValue(this.bean.STVAL);
-//    Ext.getCmp(prototype.id + '-de-txtSAGENT').setValue(this.bean.STVAL);
-//    Ext.getCmp(prototype.id + '-de-txtTERMI').setValue(this.bean.STVAL);
-//    Ext.getCmp(prototype.id + '-de-txtIDITEMS').setValue(this.bean.STVAL);
-//    Ext.getCmp(prototype.id + '-de-txtINSTPLA').setValue(this.bean.STVAL);
-//    Ext.getCmp(prototype.id + '-de-txtCOUNTRY').setValue(this.bean.STVAL);
-//    Ext.getCmp(prototype.id + '-de-txtNEGOC').setValue(this.bean.STVAL);
-//    Ext.getCmp(prototype.id + '-de-txtINVORNBR').setValue(this.bean.STVAL);
-//    Ext.getCmp(prototype.id + '-de-txtINSTPAY').setValue(this.bean.STVAL);
-//    Ext.getCmp(prototype.id + '-de-txtIDITEMT').setValue(this.bean.STVAL);
-//    Ext.getCmp(prototype.id + '-de-txtCOREP').setValue(this.bean.STVAL);
-    
 
-    console.log(prototype.url,"esto es la URL");
-     
-    Ext.Ajax.request({
-    url: prototype.url + '/searchDateEntry',
-    method: 'POST',
-    timeout: 60000,
-//    beforerequest: Ext.getCmp(prototype.id + '-DataEntryTourism').mask('Loading...'),
-    params: {
-        beanString: Ext.encode(this.bean)
+        let status;
+        if (this.bean.STVAL === '1') {
+            status = "Match";
+            this.showMatch();
+            this.setDataMatch();
+        } else if (this.bean.STVAL === '3') {
+            status = "Pending";
+            this.hiddenPending();
+            this.setDataPending();
+        }
+        Ext.getCmp(prototype.id + '-de-txtSTATUS').setValue(status);
+
+        // Rellenando el General Information
+
+        //    Ext.getCmp(prototype.id + '-de-txtPRDA').setValue(this.bean.STVAL);
+        //    Ext.getCmp(prototype.id + '-de-txtMERCHID').setValue(this.bean.STVAL);
+        //    Ext.getCmp(prototype.id + '-de-txtSAGENT').setValue(this.bean.STVAL);
+        //    Ext.getCmp(prototype.id + '-de-txtTERMI').setValue(this.bean.STVAL);
+        //    Ext.getCmp(prototype.id + '-de-txtIDITEMS').setValue(this.bean.STVAL);
+        //    Ext.getCmp(prototype.id + '-de-txtINSTPLA').setValue(this.bean.STVAL);
+        //    Ext.getCmp(prototype.id + '-de-txtCOUNTRY').setValue(this.bean.STVAL);
+        //    Ext.getCmp(prototype.id + '-de-txtNEGOC').setValue(this.bean.STVAL);
+        //    Ext.getCmp(prototype.id + '-de-txtINVORNBR').setValue(this.bean.STVAL);
+        //    Ext.getCmp(prototype.id + '-de-txtINSTPAY').setValue(this.bean.STVAL);
+        //    Ext.getCmp(prototype.id + '-de-txtIDITEMT').setValue(this.bean.STVAL);
+        //    Ext.getCmp(prototype.id + '-de-txtCOREP').setValue(this.bean.STVAL);
+        console.log(prototype.url, "esto es la URL");
     },
-    success: function (response) {
-        const res = Ext.decode(response.responseText);
-        console.log(res,'res')
-        if (res.success) {
+    hiddenPending: function () {
+        Ext.getCmp(prototype.id + '-lblHeaderDetail').hide()
+        Ext.getCmp(prototype.id + '-panelDataDetail').hide()
+        Ext.getCmp(prototype.id + '-panelSumAmountDetail').hide()
+        Ext.getCmp(prototype.id + '-panelDataTotales').show()
+        Ext.getCmp(prototype.id + '-panelSumAmountTotales').hide()
+        Ext.getCmp(prototype.id + '-btn-update').show()
 
-            var grid = Ext.getCmp(prototype.id + '-gridDataInfoScan');
-            var grid2 = Ext.getCmp(prototype.id + '-gridDataDetail');
-            var grid3 = Ext.getCmp(prototype.id + '-gridDataTotales');
-            
-            let totalAmountScan = 0;
-            let totalAmountDetail = 0;
-            let amountAdjust = 0;
-            let countScan = 0;
-            let countDetail = 0;
-            
-            if (grid) {
-                var storeData = Ext.create('Ext.data.Store', {
-                    data: res.data,
-                    autoLoad: true
-                });
-                grid.bindStore(storeData);
+    },
+    showMatch: function () {
+        Ext.getCmp(prototype.id + '-lblHeaderDetail').show()
+        Ext.getCmp(prototype.id + '-panelDataDetail').show()
+        Ext.getCmp(prototype.id + '-panelSumAmountDetail').show()
+        Ext.getCmp(prototype.id + '-panelDataTotales').show()
+        Ext.getCmp(prototype.id + '-panelSumAmountTotales').show()
 
-                // ✅ Calcular suma y cantidad directamente desde res.data
-                
+    },
+    setDataPending: function () {
+        console.log(this.bean.SDATE, 'SDATE')
+        console.log(this.bean.SAGENT, 'SAGENT')
+        Ext.Ajax.request({
+            url: prototype.url + '/searchDataPending',
+            method: 'POST',
+            timeout: 60000,
+            beforerequest: Ext.getCmp(prototype.id + '-panelMainDE').mask('Loading...'),
+            params: {
+                beanString: Ext.encode(this.bean)
+            },
+            success: function (response) {
+                Ext.getCmp(prototype.id + '-panelMainDE').unmask()
 
-                for (let i = 0; i < res.data.length; i++) {
-                    const row = res.data[i];
-                    const amount = parseFloat(row.SVFOP) || 0;
-                    totalAmountScan += amount;
-                    countScan++;
-                }
-
-                Ext.getCmp(prototype.id + '-de-txtSumAmount').setValue(
-                    Ext.util.Format.number(totalAmountScan, '0,000.00')
-                );
-                Ext.getCmp(prototype.id + '-de-QtyTkt').setValue(countScan);
-                grid.getView().refresh();
-
-//                console.log(total, "⇨ Sum Amount");
-//                console.log(count, "⇨ Qty Tkt");
-            } else{
-                console.error("no existe grilla");
-            }
-            if( grid2 ){
-                var storeData2 = Ext.create('Ext.data.Store', {
-                    data: res.data2,
-                    autoLoad: true
-                })
-                grid2.bindStore(storeData2);
-
-
-                 //✅ Calcular suma y cantidad directamente desde res.data
-
-                for (let i = 0; i < res.data2.length; i++) {
-                    
-                    const row = res.data2[i];
-                    console.log(row,'row')
-                    if(row.TDOC === 'A' ){
-                        amountAdjust = row.SVFOPT
+                const res = Ext.decode(response.responseText);
+                console.log(res, 'res')
+                if (res.success) {
+                    var storeData = Ext.create('Ext.data.Store', {
+                        data: res.data,
+                        autoLoad: true
+                    });
+                    Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
+                    let totalAmountScan = 0;
+                    let countScan = 0;
+                    let amountAdjust = 0;
+                    for (let i = 0; i < res.data.length; i++) {
+                        const row = res.data[i];
+                        const amount = parseFloat(row.SVFOP) || 0;
+                        totalAmountScan += amount;
+                        countScan++;
                     }
-                    const amount = row.SVFOPT;
-                    totalAmountDetail += amount;
-                    countDetail++;
-                    
-                }
-                Ext.getCmp(prototype.id + '-de-txtSumAmountDetail').setValue(
-                    Ext.util.Format.number(totalAmountDetail, '0,000.00')
-                );
-//                Ext.getCmp(prototype.id + '-de-QtyTkt').setValue(count);
-                grid.getView().refresh();
-            }else{
-                console.error("no existe grilla");
-            }
-            ////////////////////////////////
-            
-               if( grid3 ){
-                   
-                   
 
+                    Ext.getCmp(prototype.id + '-de-txtSumAmount').setValue(
+                            Ext.util.Format.number(totalAmountScan, '0,000.00')
+                            );
+                    Ext.getCmp(prototype.id + '-de-QtyTkt').setValue(countScan);
+                    Ext.getCmp(prototype.id + '-gridDataInfoScan').getView().refresh();
+
+                    let differences = Math.abs(meDe.bean.SVFOPS - totalAmountScan)
+                    let comment = totalAmountScan > meDe.bean.SVFOPS ? 'Tourism: Surplus' : meDe.bean.SVFOPS - totalAmountScan != 0 ? 'Tourism: Shortage' : 'Tourism: Match';
+                    Ext.getCmp(prototype.id + '-de-txtComentSAUTHOC').setValue(comment)
+                    let datosFijos = [
+                        {TDOC: 'Sales', SVFOPT: meDe.bean.SVFOPS},
+//                            {TDOC: 'Bandoc settlement ', SVFOPT: totalAmountDetail},
+                        {TDOC: 'Card settlement', SVFOPT: totalAmountScan},
+                        {TDOC: 'Differences', SVFOPT: differences}
+                    ];
+                    // Crear el store
+                    var storeTotales = Ext.create('Ext.data.Store', {
+                        fields: ['TDOC', 'SVFOPT'], // Define los campos esperados
+                        data: datosFijos
+                    });
+                    console.log(amountAdjust, 'amountAdjust')
+
+                    Ext.getCmp(prototype.id + '-gridDataTotales').bindStore(storeTotales);
+                    Ext.getCmp(prototype.id + '-gridDataTotales').setMargin('0 0 0 20');
+                    Ext.getCmp(prototype.id + '-gridDataTotales').getView().refresh();
+
+                } else {
+                    Ext.getCmp(prototype.id + '-panelMainDE').unmask()
+                    global.Msg({msg: res.msg || 'Error en búsqueda'});
+                }
+            },
+            failure: function () {
+                Ext.getCmp(prototype.id + '-panelMainDE').unmask()
+                global.Msg({msg: 'Error de conexión al servidor (/search)'});
+            }
+        });
+    },
+    setDataMatch: function () {
+        console.log('this bean: ', this.bean);
+        Ext.Ajax.request({
+            url: prototype.url + '/searchDateEntry',
+            method: 'POST',
+            timeout: 60000,
+            beforerequest: Ext.getCmp(prototype.id + '-panelMainDE').mask('Loading...'),
+            params: {
+                beanString: Ext.encode(this.bean)
+            },
+            success: function (response) {
+                Ext.getCmp(prototype.id + '-panelMainDE').unmask()
+
+                const res = Ext.decode(response.responseText);
+                console.log(res, 'res')
+                if (res.success) {
+
+                    var grid = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+                    var grid2 = Ext.getCmp(prototype.id + '-gridDataDetail');
+                    var grid3 = Ext.getCmp(prototype.id + '-gridDataTotales');
+
+                    let totalAmountScan = 0;
+                    let totalAmountDetail = 0;
+                    let amountAdjust = 0;
+                    let countScan = 0;
+                    let countDetail = 0;
+
+                    if (grid) {
+                        var storeData = Ext.create('Ext.data.Store', {
+                            data: res.data,
+                            autoLoad: true
+                        });
+                        grid.bindStore(storeData);
+
+                        // ✅ Calcular suma y cantidad directamente desde res.data
+
+
+                        for (let i = 0; i < res.data.length; i++) {
+                            const row = res.data[i];
+                            const amount = parseFloat(row.SVFOP) || 0;
+                            totalAmountScan += amount;
+                            countScan++;
+                        }
+
+                        Ext.getCmp(prototype.id + '-de-txtSumAmount').setValue(
+                                Ext.util.Format.number(totalAmountScan, '0,000.00')
+                                );
+                        Ext.getCmp(prototype.id + '-de-QtyTkt').setValue(countScan);
+                        grid.getView().refresh();
+
+                        //                console.log(total, "⇨ Sum Amount");
+                        //                console.log(count, "⇨ Qty Tkt");
+                    } else {
+                        console.error("no existe grilla");
+                    }
+                    if (grid2) {
+                        var storeData2 = Ext.create('Ext.data.Store', {
+                            data: res.data2,
+                            autoLoad: true
+                        })
+                        grid2.bindStore(storeData2);
+
+
+                        //✅ Calcular suma y cantidad directamente desde res.data
+
+                        for (let i = 0; i < res.data2.length; i++) {
+
+                            const row = res.data2[i];
+                            console.log(row, 'row')
+                            if (row.TDOC === 'A') {
+                                amountAdjust = row.SVFOPT
+                            }
+                            const amount = row.SVFOPT;
+                            totalAmountDetail += amount;
+                            countDetail++;
+
+                        }
+                        Ext.getCmp(prototype.id + '-de-txtSumAmountDetail').setValue(
+                                Ext.util.Format.number(totalAmountDetail, '0,000.00')
+                                );
+                        //                Ext.getCmp(prototype.id + '-de-QtyTkt').setValue(count);
+                        grid.getView().refresh();
+                    } else {
+                        console.error("no existe grilla");
+                    }
+                    if (grid3) {
 
                         // Datos fijos
                         var datosFijos = [
@@ -190,30 +268,25 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
                             {TDOC: 'Bandoc settlement ', SVFOPT: totalAmountDetail},
                             {TDOC: 'Card settlement', SVFOPT: totalAmountScan}
                         ];
-                   
-                   
-                   // Crear el store
+                        // Crear el store
                         var storeTotales = Ext.create('Ext.data.Store', {
                             fields: ['TDOC', 'SVFOPT'], // Define los campos esperados
                             data: datosFijos
                         });
                         console.log(amountAdjust, 'amountAdjust')
-                        
-                        
+
                         grid3.bindStore(storeTotales);
+                        grid3.setMargin('0 0 0 130');
                         grid3.getView().refresh();
-                        
+
                         //obtener el campo ajuste
-                        
                         var validAdjus = Ext.getCmp(prototype.id + '-de-txtAmountAdjusment');
-                        
+
                         // formatea y asignar el  valor
-                        
                         var formattedValue = Ext.util.Format.number(amountAdjust, '0,000.00');
                         validAdjus.setValue(formattedValue);
-                        
+
                         // cambiar el color de fondo
-                        
                         if (amountAdjust > 0) {
                             validAdjus.setFieldStyle('text-align:right; background-color: #FFCCCC;'); // verde claro
                         } else if (amountAdjust < 0) {
@@ -221,55 +294,43 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
                         } else {
                             validAdjus.setFieldStyle('text-align:right; background-color: #FFFFFF;'); // blanco neutro
                         }
-                        
-//                        Ext.getCmp(prototype.id + '-de-txtAmountAdjusment').setValue(
-//                    Ext.util.Format.number(amountAdjust, '0,000.00')
-//                );
-                        
-            }else{
-                console.error("no existe grilla");
+                        //                        Ext.getCmp(prototype.id + '-de-txtAmountAdjusment').setValue(
+                        //                    Ext.util.Format.number(amountAdjust, '0,000.00')
+                        //                );
+
+                    } else {
+                        console.error("no existe grilla");
+                    }
+                } else {
+                    Ext.getCmp(prototype.id + '-panelMainDE').unmask()
+                    global.Msg({msg: res.msg || 'Error en búsqueda'});
+                }
+            },
+            failure: function () {
+                Ext.getCmp(prototype.id + '-panelMainDE').unmask()
+                global.Msg({msg: 'Error de conexión al servidor (/search)'});
             }
-            
-            
-            
-            //////////////////////////////////
-
-        } else {
-            global.Msg({ msg: res.msg || 'Error en búsqueda' });
-        }
+        });
     },
-    failure: function () {
-        global.Msg({ msg: 'Error de conexión al servidor (/search)' });
-    }
-});
 
-    
-    
+    getTotalAmountScan: function () {
+        const grid = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        const store = grid.getStore();
 
-},
+        let total = 0;
 
+        store.each(function (record) {
+            const amount = parseFloat(record.get('SVFOP')) || 0;
+            total += amount;
+        });
 
-
-getTotalAmountScan : function(){
-     const grid = Ext.getCmp(prototype.id + '-gridDataInfoScan');
-    const store = grid.getStore();
-
-    let total = 0;
-
-    store.each(function (record) {
-        const amount = parseFloat(record.get('SVFOP')) || 0;
-        total += amount;
-    });
-    
-    return total;
-    
-    
-    
-},
+        return total;
 
 
 
-updateSumandQTYAmount: function() {
+    },
+
+    updateSumandQTYAmount: function () {
 //    const grid = Ext.getCmp(prototype.id + '-gridDataInfoScan');
 //    const store = grid.getStore();
 //
@@ -281,32 +342,31 @@ updateSumandQTYAmount: function() {
 //    });
 
 
-    let total = meDe.getTotalAmountScan();
+        let total = meDe.getTotalAmountScan();
 
-    Ext.getCmp(prototype.id + '-de-txtSumAmount').setValue(
-        Ext.util.Format.number(total, '0,000.00')
-        
-    );
-    
-    const count = grid.getStore().getCount();
+        Ext.getCmp(prototype.id + '-de-txtSumAmount').setValue(
+                Ext.util.Format.number(total, '0,000.00')
 
-    Ext.getCmp(prototype.id + '-de-QtyTkt').setValue(count);
-    Ext.getCmp(prototype.id + '-gridDataInfoScan').getView().refresh();
-    console.log(total,"Esto cuanto suma",count ,"Esto cuantos ticket hay")
-},
+                );
 
-searchDataWithBean: function (bean) {
-    
-},
-    
+        const count = grid.getStore().getCount();
+
+        Ext.getCmp(prototype.id + '-de-QtyTkt').setValue(count);
+        Ext.getCmp(prototype.id + '-gridDataInfoScan').getView().refresh();
+        console.log(total, "Esto cuanto suma", count, "Esto cuantos ticket hay")
+    },
+
+    searchDataWithBean: function (bean) {
+
+    },
 
     ocultarBtnReversa: function () {
-        let validacion1 = ['45', '46','54','55'].includes(this.bean.CERROR);
+        let validacion1 = ['45', '46', '54', '55'].includes(this.bean.CERROR);
         let validacion2 = this.bean.TERMI === '00000000' && this.bean.CODEBANK === '0051';
-        if(validacion1  || validacion2){
+        if (validacion1 || validacion2) {
             console.log('entra en ocultar')
             Ext.getCmp(prototype.id + '-btn-reverse').hide();
-        }else{
+        } else {
             console.log('entra en mostrar')
             Ext.getCmp(prototype.id + '-btn-reverse').show();
         }
@@ -584,7 +644,7 @@ searchDataWithBean: function (bean) {
                     } else {
                         Ext.getCmp(prototype.id + '-btn-reverse').hide();
                     }
-                   
+
                 } else
                     global.Msg({msg: res.sesion});
             }
@@ -894,7 +954,7 @@ searchDataWithBean: function (bean) {
         this.lstSendManual = [];
         var store_gridInfoScan = Ext.getCmp(prototype.id + '-gridDataInfoScan').getStore();
         var qtyTkt = store_gridInfoScan.getCount();
-        
+
         for (var i = 0; i < store_gridInfoScan.data.length; i++) {
             var dataRow1 = store_gridInfoScan.data.items[i];
             this.lstSendManual.push(dataRow1.data);
@@ -905,7 +965,7 @@ searchDataWithBean: function (bean) {
         for (var i = 0; i < this.lstAdjustment.length; i++) {
             this.sumAmount = this.sumAmount + parseFloat(this.lstAdjustment[i].A1531VFOP);
         }
-        Ext.getCmp(prototype.id + '-de-QtyTkt').setValue(qtyTkt); 
+        Ext.getCmp(prototype.id + '-de-QtyTkt').setValue(qtyTkt);
         this.setValue('de-txtSumAmount', Ext.util.Format.number(this.sumAmount, '0,000.00'));
         Ext.getCmp(prototype.id + '-gridDataInfoScan').getView().refresh();
     },
@@ -1070,27 +1130,27 @@ searchDataWithBean: function (bean) {
             }
         });
     },
-    onUpdateClick: async function (btn) {
-        var deci = await this.preexecuteOption();
-        if (deci) {
-            Ext.Msg.show({
-                title: '.:Confirmation:.',
-                msg: 'Are you sure to Update?',
-                buttons: Ext.MessageBox.YESNO,
-                scope: this,
-                icon: Ext.MessageBox.QUESTION,
-                modal: true,
-                fn: function (btn) {
-                    if (btn === 'yes') {
-                        var beanTemp = {};
-                        beanTemp = this.llenarData();
-                        beanTemp.option = 'U';
-                        beanTemp.beanString = JSON.stringify(meDe.bean);
-                        this.executeOption(beanTemp);
-                    }
+    onConciliation: async function (btn) {
+//        var deci = await this.preexecuteOption();
+
+        Ext.Msg.show({
+            title: '.:Confirmation:.',
+            msg: 'Are you sure you can reconcile?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'yes') {
+                    var beanTemp = {};
+//                    beanTemp = this.llenarData();
+//                    beanTemp.option = 'U';
+//                    beanTemp.beanString = JSON.stringify(meDe.bean);
+                    this.conciliationOption();
                 }
-            });
-        }
+            }
+        });
+
     },
     onDeleteClick: function (btn) {
         Ext.Msg.show({
@@ -1168,56 +1228,86 @@ searchDataWithBean: function (bean) {
         }
         return decide;
     },
-    executeOption: async function (beanTemp, option) {
-
-        let miGrilla = Ext.getCmp(prototype.id + '-gridDataInfoScan');
-        let miGrillaAdj = Ext.getCmp(prototype.id + '-gridDataAdjustment');
-        var comentVisible = miGrillaAdj.isVisible();
-
-        let datos = {};
-        if (miGrilla) {
-            console.error('Entró al procesar Registros');
-            if (comentVisible) {
-                datos = await this.procesarRegistros(miGrilla, miGrillaAdj);
-            } else {
-                datos = await this.procesarRegistros(miGrilla);
+    conciliationOption: function () {
+        
+        Ext.Ajax.request({
+            url: prototype.url + '/executeOption',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: JSON.stringify(this.bean)},
+            beforerequest: Ext.getCmp(prototype.id + '-panelMainDE').mask('Loading...'),
+            success: function (response, opts) {
+                Ext.getCmp(prototype.id + '-panelMainDE').unmask();
+                var res = Ext.JSON.decode(response.responseText);
+                if (res.success) {
+                    console.log(res,'res')
+                    global.Msg({
+                        msg: res.data.VMESSAGE,
+                        icon: 1,
+                        fn: function () {
+                            Ext.getCmp(prototype.id + '-dataEntryTourismConciliation').close();
+                            Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+                        }
+                    });
+                } else
+                    global.Msg({msg: res.sesion});
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+                Ext.getCmp(prototype.id + '-panelMainDE').unmask();
             }
-            if (datos == false) {
-                global.Msg({msg: 'The amount exceeds the allowed ranges'});
-                return false
-            } else {
-                Ext.Ajax.request({
-                    url: prototype.url + '/executeOption',
-                    method: 'POST',
-                    timeout: 60000000,
-                    params: {beanString: datos, option: option},
-                    beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDP').mask('Loading...'),
-                    success: function (response, opts) {
-                        Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
-                        var res = Ext.JSON.decode(response.responseText);
-                        if (res.success) {
-
-                            global.Msg({
-                                msg: res.Mensaje,
-                                icon: 1,
-                                fn: function () {
-                                    Ext.getCmp(prototype.id + '-dataEntryAMDP').close();
-                                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
-                                }
-                            });
-                        } else
-                            global.Msg({msg: res.sesion});
-                    },
-                    failure: function (response, opts) {
-                        console.log('server-side failure with status code ' + response.status);
-                        Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
-                    }
-                });
-            }
-        } else {
-            console.error('No se pudo encontrar la grilla con el ID especificado.');
-        }
+        });
     },
+//    executeOption: async function (beanTemp, option) {
+//
+//        let miGrilla = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+//        let miGrillaAdj = Ext.getCmp(prototype.id + '-gridDataAdjustment');
+//        var comentVisible = miGrillaAdj.isVisible();
+//
+//        let datos = {};
+//        if (miGrilla) {
+//            console.error('Entró al procesar Registros');
+//            if (comentVisible) {
+//                datos = await this.procesarRegistros(miGrilla, miGrillaAdj);
+//            } else {
+//                datos = await this.procesarRegistros(miGrilla);
+//            }
+//            if (datos == false) {
+//                global.Msg({msg: 'The amount exceeds the allowed ranges'});
+//                return false
+//            } else {
+//                Ext.Ajax.request({
+//                    url: prototype.url + '/executeOption',
+//                    method: 'POST',
+//                    timeout: 60000000,
+//                    params: {beanString: datos, option: option},
+//                    beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDP').mask('Loading...'),
+//                    success: function (response, opts) {
+//                        Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+//                        var res = Ext.JSON.decode(response.responseText);
+//                        if (res.success) {
+//
+//                            global.Msg({
+//                                msg: res.Mensaje,
+//                                icon: 1,
+//                                fn: function () {
+//                                    Ext.getCmp(prototype.id + '-dataEntryAMDP').close();
+//                                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+//                                }
+//                            });
+//                        } else
+//                            global.Msg({msg: res.sesion});
+//                    },
+//                    failure: function (response, opts) {
+//                        console.log('server-side failure with status code ' + response.status);
+//                        Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+//                    }
+//                });
+//            }
+//        } else {
+//            console.error('No se pudo encontrar la grilla con el ID especificado.');
+//        }
+//    },
     reverseOption: function (beanTemp, option) {
 
         let miGrilla = Ext.getCmp(prototype.id + '-gridDataInfoScan');
