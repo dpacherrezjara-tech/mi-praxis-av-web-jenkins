@@ -1891,5 +1891,49 @@ Ext.define('Ext.Praxis.controller.gerencial.BusinessTools.BusinessToolsControlle
                 this.btnSearch_click();
                 break;
         }
+    },
+    updateTableFields: function(bean) {
+        let valueTable = Ext.getCmp(prototype.id + '-cmbTabla').getValue();
+        console.log(valueTable,'valueTable')
+        if (!valueTable || valueTable === '#') {
+            global.Msg({ msg: "No ha Seleccionado una DBA" });
+            return;
+        }
+        
+         var bean = {};
+
+        bean.IN_TABLENAME = valueTable;
+        
+        var beanString = JSON.stringify(bean);
+        var searchParamsPending = {
+            IN_TABLENAME: valueTable
+        };
+
+        var regionCenterGrid01 = Ext.getCmp(prototype.id + '-regionCenterGrid01');
+       
+        regionCenterGrid01.setLoading('Cargando...');
+       Ext.Ajax.request({
+            url: prototype.url + '/updateTableFields',
+            method: 'POST',
+            timeout: 600000, // 10 minutos en milisegundos
+            params: searchParamsPending,
+            success: function(response) {
+                regionCenterGrid01.setLoading(false);
+                var result = Ext.decode(response.responseText);
+                if (result.success) {
+//                    win.lblUser_toolTip("Estructura: IMF151");
+                    console.log(result)
+                    global.Msg({ msg: result.msjResult });
+                    me.imgSearch_clickHandler();
+                } else {
+                    global.Msg({ msg: result.msjResult });
+                }
+            },
+            failure: function(response) {
+                regionCenterGrid01.setLoading(false);
+                global.Msg({ msg: 'Error en la comunicación con el servidor: ' + response.status });
+            }
+        });
+
     }
 });

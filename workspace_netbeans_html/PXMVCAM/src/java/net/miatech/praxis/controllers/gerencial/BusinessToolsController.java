@@ -459,6 +459,37 @@ public class BusinessToolsController extends BaseController {
 
         return new Gson().toJson(map);
     }
+    
+    @RequestMapping(value = "updateTableFields")
+    public @ResponseBody String updateTableFields(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
+        try {
+            logic = new BusinessToolsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String tableName = request.getParameter("IN_TABLENAME"); 
+            System.out.println("Tabla recibida: " + tableName);
+
+            String biblioteca = logic.deleteTable(tableName);
+
+            if (biblioteca == null || biblioteca.toLowerCase().contains("Error")) {
+                map.put("success", false);
+                map.put("msjResult", biblioteca != null ? biblioteca : "Error: biblioteca no encontrada");
+                return new Gson().toJson(map);
+            }
+
+            String resultMPS363 = logic.INSTABLA(tableName, biblioteca);
+            map.put("success", true);
+            map.put("msjResult", resultMPS363);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            String errorMsg = "Error en updateTableFields: " + e.getMessage();
+            map.put("success", false);
+            map.put("msjResult", errorMsg);
+        }
+        return new Gson().toJson(map);
+    }
+
 
 //    @RequestMapping(value = "getXLSX")
 //    public @ResponseBody

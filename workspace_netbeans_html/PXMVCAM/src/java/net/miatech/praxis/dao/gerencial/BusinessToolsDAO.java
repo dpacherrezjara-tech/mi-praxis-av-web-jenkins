@@ -7,10 +7,12 @@ package net.miatech.praxis.dao.gerencial;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 import net.miatech.beans.SQP00768;
@@ -1271,4 +1273,89 @@ public class BusinessToolsDAO {
 
         return filter;
     }
+    
+    public String deleteTable(String tableName) throws Exception {
+    String msg = null;
+    Connection cnx = null;
+    PreparedStatement psSelect = null;
+    PreparedStatement psDelete = null;
+    ResultSet rs = null;
+
+    try {
+        cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+
+        // 1) SELECT para obtener la biblioteca (SOURCEF)
+        String sqlSelect = "SELECT SOURCEF FROM PRAXIS.A2536 WHERE TABNAME = ? LIMIT 1";
+        psSelect = cnx.prepareStatement(sqlSelect);
+        psSelect.setString(1, tableName);
+        rs = psSelect.executeQuery();
+
+        String biblioteca = null;
+        if (rs.next()) {
+            biblioteca = rs.getString("SOURCEF");
+            biblioteca = biblioteca.trim();
+        }
+
+        // 2) DELETE de los registros
+        String sqlDelete = "DELETE FROM PRAXIS.A2536 WHERE TABNAME = ?";
+        psDelete = cnx.prepareStatement(sqlDelete);
+        psDelete.setString(1, tableName);
+        int rows = psDelete.executeUpdate();
+
+        msg = biblioteca;
+    } catch (Exception e) {
+        e.printStackTrace();
+        msg = "Error: " + e.getMessage();
+    } finally {
+        if (rs != null) try { rs.close(); } catch (SQLException ignored) {}
+        if (psSelect != null) try { psSelect.close(); } catch (SQLException ignored) {}
+        if (psDelete != null) try { psDelete.close(); } catch (SQLException ignored) {}
+
+        session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+        pasarGarbageCollector();
+    }
+    return msg;
+}
+
+
+    
+    public String INSTABLA(String tableName, String biblioteca) throws Exception {
+    String msg = null;
+    Connection cnx = null;
+    CallableStatement cs = null;
+
+        try {
+            String sql = "{CALL PRAXIS.INSTABLA(?, ?, ?, ?)}"; 
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cs = cnx.prepareCall(sql);
+
+            cs.setString(1, "");
+
+            cs.setString(2, session.getUserView().getUserInfo().USR);
+
+            cs.setString(3, biblioteca);
+
+            cs.setString(4, tableName);
+
+            cs.execute();
+
+            msg = "Proceso culminado, RECARGUE LA PÁGINA";
+        } catch (Exception e) {
+            e.printStackTrace();
+            msg = "Error: " + e.getMessage();
+        } finally {
+            if (cs != null) {
+                try {
+                    cs.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR 
+                        + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+        return msg;
+    }
+
 }
