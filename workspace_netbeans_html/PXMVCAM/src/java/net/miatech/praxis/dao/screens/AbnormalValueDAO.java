@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import net.miatech.beans.A720Filter;
@@ -1595,7 +1596,7 @@ public class AbnormalValueDAO {
 
     }
     
-    public List<WRF016Filterwk> loadPX109SQP01231_AGENTBK(DashboardFilter filter) throws SQLException, Exception {
+    public List<WRF016Filterwk> loadPX109SQP01231_AGENT(DashboardFilter filter) throws SQLException, Exception {
         List<WRF016Filterwk> lista = new ArrayList<WRF016Filterwk>(0);
         WRF016Filterwk objRtn;
         int CP1 = 0, CP2 = 0, CP3 = 0, CP4 = 0, CP5 = 0, CP6 = 0, TKT1 = 0, TKT2 = 0, TKT3 = 0, TKT4 = 0, TKT5 = 0, TKT6 = 0;
@@ -1604,181 +1605,48 @@ public class AbnormalValueDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.SQP01231_V12(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS364(?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
-            cstmt.registerOutParameter(7, Types.VARCHAR);
-            cstmt.registerOutParameter(8, Types.VARCHAR);
-            cstmt.registerOutParameter(9, Types.VARCHAR);
-            cstmt.registerOutParameter(10, Types.VARCHAR);
-            cstmt.registerOutParameter(11, Types.VARCHAR);
-            cstmt.registerOutParameter(12, Types.VARCHAR);
-            cstmt.registerOutParameter(13, Types.VARCHAR);
-            cstmt.registerOutParameter(14, Types.INTEGER);
-            cstmt.registerOutParameter(15, Types.INTEGER);
-            cstmt.registerOutParameter(16, Types.INTEGER);
-            cstmt.registerOutParameter(17, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            cstmt.setString(2, filter.IN_FECHA_FROM);
-            cstmt.setString(3, filter.IN_FECHA_TO);
-            cstmt.setString(4, filter.IN_PAIS);
-            cstmt.setString(5, filter.strTIPO);
-            cstmt.setString(6, filter.FLAG);
-            cstmt.setString(7, "");
-            cstmt.setString(8, "");
-            cstmt.setString(9, "");
-            cstmt.setString(10, "");
-            cstmt.setString(11, "");
-            cstmt.setString(12, "");
-            cstmt.setString(13, "");
-
-            cstmt.setInt(14, filter.page.PAGNUM);
-            cstmt.setInt(15, filter.page.PAGROW);
-            cstmt.setInt(16, filter.page.TOTPAG);
-            cstmt.setInt(17, filter.page.TOTROW);
-
             cstmt.execute();
-
-            mes1 = cstmt.getString(7);
-            mes2 = cstmt.getString(8);
-            mes3 = cstmt.getString(9);
-            mes4 = cstmt.getString(10);
-            mes5 = cstmt.getString(11);
-            mes6 = cstmt.getString(12);
-            fec_actual = cstmt.getString(13);
-
-            filter.page.PAGNUM = cstmt.getInt(14);
-            filter.page.PAGROW = cstmt.getInt(15);
-            filter.page.TOTPAG = cstmt.getInt(16);
-            filter.page.TOTROW = cstmt.getInt(17);
 
             rst = cstmt.getResultSet();
 
-            while (rst.next()) {
-//                AMT1 = rst.getDouble("M1");
-//                CP1 = rst.getInt("C1");
-//                TKT1 = rst.getInt("T1");
-//                AMT2 = rst.getDouble("M2");
-//                CP2 = rst.getInt("C2");
-//                TKT2 = rst.getInt("T2");
-//                AMT3 = rst.getDouble("M3");
-//                CP3 = rst.getInt("C3");
-//                TKT3 = rst.getInt("T3");
-//                AMT4 = rst.getDouble("M4");
-//                CP4 = rst.getInt("C4");
-//                TKT4 = rst.getInt("T4");
-//                AMT5 = rst.getDouble("M5");
-//                CP5 = rst.getInt("C5");
-//                TKT5 = rst.getInt("T5");
-//                AMT6 = rst.getDouble("M6");
-//                CP6 = rst.getInt("C6");
-//                TKT6 = rst.getInt("T6");
-//                //TOTDIFF = rst.getDouble("TOTDIFF");
-//                PROMEDIO = rst.getDouble("PROMEDIO");
-//                TOTVAR = rst.getDouble("TOTVAR");
-
-            }
-            rst.close();
-
-            if (cstmt.getMoreResults()) {
-                rst = cstmt.getResultSet();
-
                 while (rst.next()) {
                     objRtn = new WRF016Filterwk();
-                    objRtn.AIRLINE = rst.getString("VENDOR");
-                    objRtn.strFlag = rst.getString("DESCRIP");
-                    objRtn.strFormatDate = rst.getString("DIRECC");
-                    objRtn.strFormatDate1 = rst.getString("CANAV");
-                    objRtn.COMENT1 = rst.getString("CANAL");//TYPE
-
-//                    objRtn.Aud1 = rst.getDouble("M1");
-//                    objRtn.Rej1 = rst.getInt("C1");
-//                    objRtn.Sup1 = rst.getInt("T1");
-//                    //objRtn.Rate1 = rst.getDouble("TOTGEN");
-//
-//                    objRtn.Aud2 = rst.getDouble("M2");
-//                    objRtn.Rej2 = rst.getInt("C2");
-//                    objRtn.Sup2 = rst.getInt("T2");
-//
-//                    objRtn.Aud3 = rst.getDouble("M3");
-//                    objRtn.Rej3 = rst.getInt("C3");
-//                    objRtn.Sup3 = rst.getInt("T3");
-//
-//                    objRtn.Aud4 = rst.getDouble("M4");
-//                    objRtn.Rej4 = rst.getInt("C4");
-//                    objRtn.Sup4 = rst.getInt("T4");
-//
-//                    objRtn.Aud5 = rst.getDouble("M5");
-//                    objRtn.Rej5 = rst.getInt("C5");
-//                    objRtn.Sup5 = rst.getInt("T5");
-//
-//                    objRtn.Aud6 = rst.getDouble("M6");
-//                    objRtn.Rej6 = rst.getInt("C6");
-//                    objRtn.Sup6 = rst.getInt("T6");
-
-                    objRtn.Rate2_CC = rst.getDouble("PROMEDIO_CC");
-                    objRtn.Rate2_CA = rst.getDouble("PROMEDIO_CA");
-
-                    objRtn.Diff_CC  = rst.getDouble("DIFF_CC");
-                    objRtn.Diff_CA  = rst.getDouble("DIFF_CA");
-
-                    objRtn.Var_CC   = rst.getDouble("VAR_CC");
-                    objRtn.Var_CA   = rst.getDouble("VAR_CA");
-
-                    objRtn.DesvStd_CC = rst.getDouble("DESVIACION_ESTANDAR_CC");
-                    objRtn.DesvStd_CA = rst.getDouble("DESVIACION_ESTANDAR_CA");
-
-                    objRtn.Alerta_CC  = rst.getDouble("ALERTA_CC");
-                    objRtn.Alerta_CA  = rst.getDouble("ALERTA_CA");
+                    objRtn.CCUST = rst.getString("CCUST");
+                    objRtn.VENDOR = rst.getString("VENDOR");
+                    objRtn.CANAV = rst.getString("CANAV");
+                    objRtn.NAGENT = rst.getString("NAGENT");
+                    objRtn.TYPEAG = rst.getString("TYPEAG");
+                    objRtn.ASTATUS = rst.getString("ASTATUS");
+                    objRtn.RSTATUS = rst.getString("RSTATUS");
+                    objRtn.SAGECTR = rst.getString("SAGECTR");
                     
+                    objRtn.MONTHCRE = rst.getInt("MONTHCRE");
+                    objRtn.QTYTKCRE = rst.getInt("QTYTKCRE");
                     
-                    objRtn.STATUS_E = rst.getString("STATUS_E");
-                    objRtn.RISKSTATUS_E = rst.getString("RISKSTATUS_E");
-
-                    //objRtn.Rate4 = TOTGEN;
-//                    objRtn.Rate4 = TOTDIFF;
-//                    objRtn.Rate5 = PROMEDIO;
-//                    objRtn.Rate6 = TOTVAR;
-//
-//                    objRtn.totNet1 = AMT1;
-//                    objRtn.totRej1 = CP1;
-//                    objRtn.totSup1 = TKT1;
-//                    objRtn.totNet2 = AMT2;
-//                    objRtn.totRej2 = CP2;
-//                    objRtn.totSup2 = TKT2;
-//                    objRtn.totNet3 = AMT3;
-//                    objRtn.totRej3 = CP3;
-//                    objRtn.totSup3 = TKT3;
-//                    objRtn.totNet4 = AMT4;
-//                    objRtn.totRej4 = CP4;
-//                    objRtn.totSup4 = TKT4;
-//                    objRtn.totNet5 = AMT5;
-//                    objRtn.totRej5 = CP5;
-//                    objRtn.totSup5 = TKT5;
-//                    objRtn.totNet6 = AMT6;
-//                    objRtn.totRej6 = CP6;
-//                    objRtn.totSup6 = TKT6;
-
-                    objRtn.strFormatDate4 = Functions.getMonthConvert(mes1);
-                    objRtn.strDescripcion = Functions.getMonthConvert(mes2);
-                    objRtn.strDescripcion1 = Functions.getMonthConvert(mes3);
-                    objRtn.strDescripcion2 = Functions.getMonthConvert(mes4);
-                    objRtn.strDescripcion3 = Functions.getMonthConvert(mes5);
-                    //objRtn.strDescripcion4 = Functions.getMonthConvert(mes6);
-                    objRtn.strDescripcion4 = Functions.getMonthConvert(fec_actual);
-
-                    objRtn.page.PAGNUM = filter.page.PAGNUM;
-                    objRtn.page.PAGROW = filter.page.PAGROW;
-                    objRtn.page.TOTPAG = filter.page.TOTPAG;
-                    objRtn.page.TOTROW = filter.page.TOTROW;
-
+                    objRtn.AMOUNCRE = rst.getDouble("AMOUNCRE");
+                    objRtn.FMOUNCRE = rst.getDouble("FMOUNCRE");
+                    objRtn.DESVICRE = rst.getDouble("DESVICRE");
+                    objRtn.ALERTCRE = rst.getDouble("ALERTCRE");
+                    
+                    objRtn.MONTHCAS = rst.getInt("MONTHCAS");
+                    objRtn.QTYTKCAS = rst.getInt("QTYTKCAS");
+                    
+                    objRtn.AMOUNCAS = rst.getDouble("AMOUNCAS");
+                    objRtn.FMOUNCAS = rst.getDouble("FMOUNCAS");
+                    objRtn.DESVICAS = rst.getDouble("DESVICAS");
+                    objRtn.ALERTCAS = rst.getDouble("ALERTCAS");
+                    
                     lista.add(objRtn);
                 }
-            }
+            rst.close();
 
         } catch (Exception e) {
             //e.getMessage();
@@ -1806,7 +1674,7 @@ public class AbnormalValueDAO {
 
     }
     
-    public List<WRF016Filterwk> loadPX109SQP01231_AGENT(DashboardFilter filter) throws SQLException, Exception {
+    public List<WRF016Filterwk> loadPX109SQP01231_AGENTBK(DashboardFilter filter) throws SQLException, Exception {
         List<WRF016Filterwk> lista = new ArrayList<WRF016Filterwk>(0);
         WRF016Filterwk objRtn;
         int CP1 = 0, CP2 = 0, CP3 = 0, CP4 = 0, CP5 = 0, CP6 = 0, TKT1 = 0, TKT2 = 0, TKT3 = 0, TKT4 = 0, TKT5 = 0, TKT6 = 0;
@@ -1815,7 +1683,7 @@ public class AbnormalValueDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.SQP01231_V12(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP01231(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1934,10 +1802,6 @@ public class AbnormalValueDAO {
                     objRtn.Rate2 = rst.getDouble("PROMEDIO");
                     objRtn.Diff1 = rst.getDouble("DIFF");
                     objRtn.Rate3 = rst.getDouble("VAR");
-                    objRtn.DESV_STD = rst.getDouble("DESVIACION_ESTANDAR");
-                    objRtn.STATUS_E = rst.getString("STATUS_E");
-                    objRtn.RISKSTATUS_E = rst.getString("RISKSTATUS_E");
-                    objRtn.ALERTA = rst.getDouble("ALERTA");
 
                     //objRtn.Rate4 = TOTGEN;
                     objRtn.Rate4 = TOTDIFF;
@@ -3699,5 +3563,140 @@ public class AbnormalValueDAO {
 
         return lstRtn;
     }
+    
+    public List<IMF111Filter> loadMPS365(IMF111Filter filter) throws SQLException, Exception {
+
+        List<IMF111Filter> lstTkts = new ArrayList<IMF111Filter>(0);
+        IMF111Filter beanTkt;
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS365(?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+                beanTkt = new IMF111Filter();
+                beanTkt.CCUST = rst.getString("CCUST").trim();
+                beanTkt.DSALES = rst.getString("DSALES").trim();
+                beanTkt.AGENT = rst.getString("AGENT").trim();
+                beanTkt.AMOUNT_SALE = rst.getDouble("AMOUNT_SALE");
+                lstTkts.add(beanTkt);
+            }
+            rst.close();
+
+        } catch (Exception e) {
+            e.getMessage();
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstTkts;
+    }
+    
+    public String SQP05572() throws Exception {
+        String msg = null;
+        Connection cnx = null;
+        CallableStatement cs = null;
+
+        try {
+            String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS362()}";
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cs = cnx.prepareCall(SQLCLL01);
+
+            cs.execute(); 
+
+            msg = "Proceso Culminado";
+        } catch (Exception e) {
+            e.printStackTrace();
+            msg = "Error: " + e.getMessage();
+        } finally {
+            if (cs != null) {
+                try {
+                    cs.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" 
+                        + session.getUserView().getUserInfo().USR 
+                        + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+        return msg;
+    }
+
+    
+    public String MPS363() throws Exception {
+        String msg = null;
+        Connection cnx = null;
+        CallableStatement cs = null;
+        ResultSet rst = null;
+        int anioActual = Calendar.getInstance().get(Calendar.YEAR);
+        try {
+            String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS363(?,?,?,?,?,?)}";
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cs = cnx.prepareCall(SQLCLL01);
+            
+            cs.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cs.setInt(2, anioActual);
+            cs.setInt(3, anioActual);
+            cs.setString(4, "");
+            cs.setString(5, "");
+            cs.setString(6, "");
+
+            cs.execute();
+
+            msg = "Proceso Culminado";
+        } catch (Exception e) {
+            e.printStackTrace();
+            msg = "Error: " + e.getMessage();
+        }  finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cs != null) {
+                try {
+                    cs.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+        return msg;
+    }
+
 
 }

@@ -145,10 +145,8 @@ public class A2282 {
     public String IN_FCARGA = "";
     public String IN_SCOUNTRY = "";
     public String TICKET = "";
-    public String SAGENT = "";
     public String PNAME = "";
     public String SCOUNTRY = "";
-    public String STVAL = "";
     public String IN_APLICA = "";
     public String IN_SEQNUM = "";
     public String IN_DENV = "";

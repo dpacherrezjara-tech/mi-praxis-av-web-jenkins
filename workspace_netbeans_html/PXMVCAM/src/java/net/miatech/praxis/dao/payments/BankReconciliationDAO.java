@@ -1137,6 +1137,8 @@ public class BankReconciliationDAO {
                         beanTkt.NEGOC = "CORREO";
                     } else if (beanTkt.NEGOC.equals("S")) {
                         beanTkt.NEGOC = "STANDBY";
+                    } else if (beanTkt.NEGOC.equals("4")) {
+                        beanTkt.NEGOC = "TURISMO";
                     }
                     beanTkt.DCONTA4545 = rst.getString("DCONTA4545").trim();
                     //beanTkt.USERA4545 = rst.getString("USERA4545").trim();
@@ -3890,6 +3892,8 @@ public class BankReconciliationDAO {
                         beanTkt.NEGOC = "CORREO";
                     } else if (beanTkt.NEGOC.equals("S")) {
                         beanTkt.NEGOC = "STANDBY";
+                    } else if (beanTkt.NEGOC.equals("4")) {
+                        beanTkt.NEGOC = "TURISMO";
                     }
 
                     beanTkt.lngTotQACCB = lngTotCant;
@@ -4457,6 +4461,8 @@ public class BankReconciliationDAO {
                         beanTkt.NEGOC = "CORREO";
                     } else if (beanTkt.NEGOC.equals("S")) {
                         beanTkt.NEGOC = "STANDBY";
+                    } else if (beanTkt.NEGOC.equals("4")) {
+                        beanTkt.NEGOC = "TURISMO";
                     }
 
                     beanTkt.page.PAGNUM = filter.page.PAGNUM;
@@ -7048,6 +7054,8 @@ public class BankReconciliationDAO {
                         beanTkt.NEGOC = "CORREO";
                     } else if (beanTkt.NEGOC.equals("S")) {
                         beanTkt.NEGOC = "STANDBY";
+                    } else if (beanTkt.NEGOC.equals("4")) {
+                        beanTkt.NEGOC = "TURISMO";
                     }
 
                     beanTkt.lngTotQACCB = lngTotCant;
@@ -7863,6 +7871,8 @@ public class BankReconciliationDAO {
                         beanTkt.NEGOC = "CORREO";
                     } else if (beanTkt.NEGOC.equals("S")) {
                         beanTkt.NEGOC = "STANDBY";
+                    } else if (beanTkt.NEGOC.equals("4")) {
+                        beanTkt.NEGOC = "TURISMO";
                     }
 
                     beanTkt.DCONTA4545 = rst.getString("DCONTA4545").trim();

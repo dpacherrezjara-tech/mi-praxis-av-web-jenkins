@@ -37,6 +37,14 @@ public class TourismConciliationLogic {
         return TourismConciliationDAO.loadMPF101SQP00909(filter);
     }
     
+    public List<A2282Filter> loadMPF101SQP00910(A2282Filter filter) throws Exception {
+        return TourismConciliationDAO.loadMPF101SQP00910(filter);
+    }
+    
+    public A2282Filter loadMPF101SQP00911(A2282Filter filter) throws Exception {
+        return TourismConciliationDAO.loadMPF101SQP00911(filter);
+    }
+    
     public List<A2282Filter> loadMPF148MPS227(A2282Filter filter) throws Exception {
         return TourismConciliationDAO.loadMPF148MPS227(filter);
     }
