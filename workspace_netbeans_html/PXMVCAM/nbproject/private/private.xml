@@ -165,13 +165,6 @@
             <file>file:/D:/RepositorioGit/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/web/WEB-INF/configs/CFGI0001.properties</file>
             <file>file:/D:/RepositorioGit/java/mi-praxis-am-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/dao/program/ProMasterTicketDAO.java</file>
         </group>
-        <group name="AVIANCA MDP">
-            <file>file:/D:/usersfiles/jsolano/Desktop/GITHUB/AVIANCA%20MPD/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/controllers/payments/SalesReconciliationController.java</file>
-            <file>file:/D:/usersfiles/jsolano/Desktop/GITHUB/AVIANCA%20MPD/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/logic/payments/LoadConciliationLogic.java</file>
-            <file>file:/D:/usersfiles/jsolano/Desktop/GITHUB/AVIANCA%20MPD/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/web/apps/praxis/app/controller/payments/SalesReconciliation/SalesReconciliationController.js</file>
-            <file>file:/D:/usersfiles/jsolano/Desktop/GITHUB/AVIANCA%20MPD/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/web/apps/praxis/app/view/payments/SalesReconciliationForm/Info.js</file>
-            <file>file:/D:/usersfiles/jsolano/Desktop/GITHUB/AVIANCA%20MPD/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/dao/payments/LoadConciliationDAO.java</file>
-        </group>
         <group name="AEROMEXICO">
             <file>file:/D:/GITHUB/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/web/apps/praxis/app/view/payments/ExchangeRateForm/Info.js</file>
             <file>file:/D:/GITHUB/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/controllers/payments/ExchangeRateController.java</file>
@@ -220,5 +213,6 @@
             <file>file:/D:/RepositorioGit/java/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/dao/master/MasterDAO.java</file>
             <file>file:/D:/RepositorioGit/java/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/controllers/program/ProMasterTicketController.java</file>
         </group>
+        <group name="AVIANCA MDP"/>
     </open-files>
 </project-private>
