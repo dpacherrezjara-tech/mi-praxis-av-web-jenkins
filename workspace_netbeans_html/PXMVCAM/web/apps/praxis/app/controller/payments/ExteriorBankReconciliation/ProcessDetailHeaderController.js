@@ -1,0 +1,328 @@
+/* global axios */
+
+Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.ProcessDetailHeaderController', {
+    extend: 'Ext.app.ViewController',
+    alias: 'controller.ProcessDetailHeaderController',
+//    url: CONTEXTPATH + '/AccountingReport',
+  //  request: axios.create({
+  //      baseURL: CONTEXTPATH + '/AccountingReport',
+   //     timeout: 0
+   // }),
+    notifier: new AWN(),
+    
+//<editor-fold defaultstate="collapsed" desc="onCancelClick">
+    onCancelClick: function () {
+        this.view.close();
+    },
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="onAfterRenderSettlements">
+onAfterRenderSettlements: async function () {
+    const me = this;
+    me.getView().setLoading(true);
+    const codpro = me.getView().codproParam || '';
+    const stval = me.getView().stvalParam || '';
+      //  if (codpro === 'CM' && stval === '3') {
+        if (codpro.trim() === 'CM') {
+            me.lookupReference('btnInsert').setHidden(false);
+            me.lookupReference('btnSave').setHidden(false);
+        }
+    const grid = this.lookupReference('settlementsGrid');
+    const store = grid.getStore();
+    
+    // Escuchar cambios del store
+    store.on('datachanged', this.updateTotals, this);
+    store.on('update', this.updateTotals, this);
+
+    try {
+        const params = { 
+            IN_TYPE: 'S',
+            IN_LIQUIDACIO: this.getView().liquidaParam, 
+            IN_DATE: this.getView().adateParam 
+        };
+        const storeData = await global.callStoreGet('PRAXISMP', 'MPS298', params);
+         if (grid && storeData) {
+            const rows = storeData.lstRs?.[0] || []; 
+            if (rows.length > 0) {
+                store.loadData(rows);
+                store.commitChanges(); // limpia los dirty flags
+            } else {
+                store.removeAll(); // limpiar si hubiera algo
+                grid.getView().setEmptyText("No settlements data available.");
+                grid.getView().refresh();
+            }
+        }
+    } catch (err) {
+        Ext.Msg.alert("Error", "Failed to load settlements.");
+    } finally {
+        this.getView().setLoading(false);
+    }
+},
+//</editor-fold> 
+
+//<editor-fold defaultstate="collapsed" desc="onAfterRenderTaxes">
+onAfterRenderTaxes: async function () {
+    const me = this;
+    me.getView().setLoading(true);
+    
+    const codpro = me.getView().codproParam || '';
+    const stval = me.getView().stvalParam || '';
+      //  if (codpro === 'CM' && stval === '3') {
+        if (codpro.trim() === 'CM') {
+            me.lookupReference('btnSaveTaxes').setHidden(false);
+        }
+        
+    const grid = this.lookupReference('taxesGrid');
+    const store = grid.getStore();
+    
+    store.on('datachanged', this.updateTotalsTaxes, this);
+    store.on('update', this.updateTotalsTaxes, this);
+    
+    try {
+        const params = { 
+            IN_TYPE: 'T',
+            IN_LIQUIDACIO: this.getView().liquidaParam, 
+            IN_DATE: this.getView().adateParam 
+        };
+        const storeData = await global.callStoreGet('PRAXISMP', 'MPS298', params);
+        if (grid && storeData) {
+            const rows = storeData.lstRs?.[0] || []; 
+            if (rows.length > 0) {
+                store.loadData(rows);
+                store.commitChanges(); // limpia los dirty flags
+            } else {
+                store.removeAll(); // limpiar si hubiera algo
+                grid.getView().setEmptyText("No taxes data available.");
+                grid.getView().refresh();
+            }
+        }
+    } catch (err) {
+        Ext.Msg.alert("Error", "Failed to load taxes.");
+    } finally {
+        this.getView().setLoading(false);
+    }
+},
+//</editor-fold>  
+
+//<editor-fold defaultstate="collapsed" desc="onProcessInsert">
+onProcessInsert: function () {
+    const grid = this.lookupReference('settlementsGrid'); // antes estaba mal con 'transactionsGrid'
+    const store = grid.getStore();
+    
+    let maxRN = 0;
+        store.each(rec => {
+            const rn = rec.get('RN');
+            if (rn > maxRN) {
+                maxRN = rn;
+            }
+        });
+ 
+    // tomar la primera fila como base
+   const firstRec = store.getAt(0);
+    let baseData = {};
+    
+        // ahora sobreescribes solo lo necesario
+        Ext.apply(baseData, {
+            RN: maxRN + 1,
+            STVAL: firstRec ? firstRec.get('STVAL') : '',
+            TDOC: firstRec ? firstRec.get('TDOC') : '',
+            LIQUIDACIO: firstRec ? firstRec.get('LIQUIDACIO') : '',
+            CCUST: firstRec ? firstRec.get('CCUST') : '',
+            SDATE: firstRec ? firstRec.get('SDATE') : '',
+            ADATE: firstRec ? firstRec.get('ADATE') : '',
+            SCOUNTRY: firstRec ? firstRec.get('SCOUNTRY') : '',
+            CODEBANK: firstRec ? firstRec.get('CODEBANK') : '',
+            SCARCOD: firstRec ? firstRec.get('SCARCOD') : '',
+            SCARDN: '000000XXXXXX0000',
+            SAUTHOC: firstRec ? firstRec.get('SAUTHOC') : '',
+            SEQ: firstRec ? firstRec.get('SEQ') : '',
+            SVFOP: firstRec ? firstRec.get('SVFOP') : '',
+            NETO: 0,
+            TOTAL: 0,
+            COMISION: 0
+        });
+
+
+ 
+    const newRecord = store.add(baseData)[0];
+    
+       grid.getView().scrollRowIntoView(newRecord);
+       grid.findPlugin('cellediting').startEdit(newRecord, grid.down('gridcolumn[dataIndex=TOTAL]'));
+},
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="onProcessSave">
+onProcessSave: async function () {
+    const me = this;
+    const liquidacio = me.getView().liquidaParam || '';
+    const date = me.getView().adateParam || '';
+    const grid = me.lookupReference('settlementsGrid');
+    const store = grid.getStore();
+    const tdocMap = {
+    'SALE': 'S',
+    'DEBIT': 'D',
+    'REFUND': 'R',
+    'VOID': 'V'
+};
+    
+    //  Solo tomar insertados (phantom) o modificados (dirty)
+    const modified = store.getRange().filter(r => r.dirty || r.phantom);
+    
+    if (modified.length === 0) {
+        Ext.Msg.alert("Info", "There are no changes to save.");
+        return;
+    }
+
+     Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Are you sure you want to save the changes? This action is unrecoverable.',
+            buttons: Ext.MessageBox.YESNO,
+            icon: Ext.MessageBox.QUESTION,
+            scope: me,
+            fn: async function (btnChoice) {
+                if (btnChoice === 'yes') {
+                   me.getView().setLoading(true);
+                        try {
+                             for (const rec of modified) {
+                                 let rawTDOC = rec.get('TDOC') || '';
+                                 let tdocValue = tdocMap[rawTDOC] || rawTDOC;
+                                 let params = {
+                                        IN_TYPE: rec.phantom ? 'I' : 'U',  // I = insert, U = update
+                                        IN_LIQUIDACIO: rec.get('LIQUIDACIO') || '',
+                                        IN_CCUST: rec.get('CCUST') || '',
+                                        IN_SDATE: rec.get('SDATE') || '',  
+                                        IN_ADATE: rec.get('ADATE') || '', 
+                                        IN_SCOUNTRY: rec.get('SCOUNTRY') || '',
+                                        IN_TDOC: tdocValue,  // ← aquí ya se manda como 'S', 'D', 'R' o 'V'
+                                        IN_CODEBANK: rec.get('CODEBANK') || '',
+                                        IN_SCARCOD: rec.get('SCARCOD') || '',
+                                        IN_SCARDN: rec.get('SCARDN') || '',
+                                        IN_SAUTHOC: rec.get('SAUTHOC') || '',
+                                        IN_SEQ: rec.get('SEQ') || '',
+                                        IN_SVFOP: rec.get('SVFOP') || '',
+                                        IN_SCURRENCY: rec.get('SCURRENCY') || 0,
+                                        IN_TOTAL: rec.get('TOTAL') || 0,
+                                        IN_COMISION: rec.get('COMISION') || 0
+                                    };
+                                  //  console.log("Call Stored PRAXISMP - MPS299: ", params)
+                                // await global.callStoreGet('PRAXISMP', 'MPS299', params);
+                             }
+
+                             me.notifier.success("Changes saved successfully.");
+                             store.commitChanges();
+                             me.onCancelClick();
+                             
+                         } catch (err) {
+                             console.error(err);
+                             Ext.Msg.alert("Error", "Failed to save changes.");
+                         } finally {
+                                const view = me.getView?.() || me.view;
+                                if (view) view.setLoading(false);
+                         }                               
+                }
+            }
+        });
+},
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="onProcessSaveTaxes">
+onProcessSaveTaxes: async function () {
+    const me = this;
+    const liquidacio = me.getView().liquidaParam || '';
+    const date = me.getView().adateParam || '';
+    const grid = me.lookupReference('taxesGrid');
+    const store = grid.getStore();
+    
+    //  Solo tomar insertados (phantom) o modificados (dirty)
+    const modified = store.getRange().filter(r => r.dirty || r.phantom);
+    
+    if (modified.length === 0) {
+        Ext.Msg.alert("Info", "There are no changes to save.");
+        return;
+    }
+
+     Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Are you sure you want to save the changes? This action is unrecoverable.',
+            buttons: Ext.MessageBox.YESNO,
+            icon: Ext.MessageBox.QUESTION,
+            scope: me,
+            fn: async function (btnChoice) {
+                if (btnChoice === 'yes') {
+                   me.getView().setLoading(true);
+                        try {
+                             for (const rec of modified) {
+                                 let params = {
+                                        IN_TYPE: rec.phantom ? 'I' : 'U',  // I = insert, U = update
+                                        IN_LIQUIDACIO: rec.get('LIQUIDACIO') || '',
+                                        IN_CCUST: rec.get('CCUST') || '',
+                                        IN_PRDA: rec.get('PRDA') || '',
+                                        IN_CODPRO: rec.get('CODPRO') || '',
+                                        IN_CCUSTPRO: rec.get('CCUSTPRO') || '',
+                                        IN_FLIQUIDACI: rec.get('FLIQUIDACI') || '',
+                                        IN_MERCHAND: rec.get('MERCHAND') || '',
+                                        IN_MONEDA: rec.get('MONEDA') || '',
+                                        IN_CODIGO: rec.get('CODIGO') || '',
+                                        IN_CORRL: rec.get('CORRL') || '',
+                                        IN_IMPORTE: rec.get('IMPORTE') || ''                                       
+                                    };
+                                 //   console.log("Call Stored PRAXISMP - MPS304: ", params)
+                                // await global.callStoreGet('PRAXISMP', 'MPS304', params);
+                             }
+
+                             me.notifier.success("Changes saved successfully.");
+                             store.commitChanges();
+                             me.onCancelClick();
+                             
+                         } catch (err) {
+                             console.error(err);
+                             Ext.Msg.alert("Error", "Failed to save changes.");
+                         } finally {
+                                const view = me.getView?.() || me.view;
+                                if (view) view.setLoading(false);
+                         }                               
+                }
+            }
+        });
+},
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="updateTotals">
+updateTotals: function () {
+    const grid = this.lookupReference('settlementsGrid');
+    const store = grid.getStore();
+
+    let totalNeto = 0, totalTotal = 0, sumComision = 0;
+    store.each(rec => {
+        totalNeto += rec.get('NETO') || 0;
+        totalTotal += rec.get('TOTAL') || 0;
+        sumComision += rec.get('COMISION') || 0;
+    });
+    const difference = totalNeto - (totalTotal + sumComision);
+    this.lookupReference('lblTotalTotal').setValue('Total: ' + Ext.util.Format.number(totalTotal, '0,000.00'));
+    this.lookupReference('lblTotalNeto').setValue('Amount: ' + Ext.util.Format.number(totalNeto, '0,000.00'));
+    this.lookupReference('lblTotalComision').setValue('Commission: ' + Ext.util.Format.number(sumComision, '0,000.00'));
+    this.lookupReference('lblDifference').setValue('Difference: ' + Ext.util.Format.number(difference, '0,000.00'));
+},
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="updateTotalsTaxes">
+updateTotalsTaxes: function () {
+    const grid = this.lookupReference('taxesGrid');
+    const store = grid.getStore();
+
+    let totalAmount = 0;
+
+    store.each(rec => {
+        totalAmount += rec.get('IMPORTE') || 0;
+    });
+
+    this.lookupReference('lblTotalAmountTx')
+        .setValue('Amount: ' + Ext.util.Format.number(totalAmount, '0,000.00'));
+},
+//</editor-fold>
+
+
+});
+
+

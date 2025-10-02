@@ -40,7 +40,6 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.HeaderDeta
                     if (!successful) {
                         global.Msg({msg: 'Data not Found'});
                     } else {
-                        console.log(records);
                         if (records.length === 0) {
                             global.Msg({msg: 'Data not Found'});
                         }
@@ -69,6 +68,22 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.HeaderDeta
                 });
         //global.getFile(`${this.url}/downloadSettlements?${new URLSearchParams(params)}`);
     },
+    openProcessDetailHeader: function (grid, rowIndex) {
+        const record = grid.getStore().getAt(rowIndex);
+
+        const dataEntry = Ext.create(
+            'Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.ProcessDetailHeaderDataEntry',
+            {
+                id: prototype.id + '-ProcessDetailHeaderDataEntry-1',
+                liquidaParam: record.get('LIQUIDACIO'),
+                adateParam: record.get('FLIQUIDACI'),
+                codproParam: record.get('CODPRO'),
+                stvalParam: record.get('STVAL')
+            }
+        );
+        dataEntry.show();
+    },
+
     //<editor-fold defaultstate="collapsed" desc="Utilitarios">
     getCmp: function ( {id}){
         return Ext.getCmp(prototype.id + id);
