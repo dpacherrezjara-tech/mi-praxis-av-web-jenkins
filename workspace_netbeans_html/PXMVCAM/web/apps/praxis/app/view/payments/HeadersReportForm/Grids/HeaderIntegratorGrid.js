@@ -36,40 +36,44 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Grids.HeaderIntegratorGri
                     //metaData.style = "background-color:#838187";
                     const opts = {
                         'L': () => {
-                            metaData.style = "background-color:#88d556;font-weight:bold";
-                            return 'LOADED';
+                            metaData.style = "background-color:#C2EDC4;font-weight:bold";
+                            return 'Loaded';
                         },
                         'F': () => {
                             metaData.style = "background-color:#b0d7dc;font-weight:bold";
-                            return 'FORMATTED';
+                            return 'Formatted';
                         },
                         'P': () => {
                             metaData.style = "background-color:#638be1;color:#ffffff;font-weight:bold";
-                            return 'PROCESSED';
+                            return 'Processed';
                         },
                         'E': () => {
                             metaData.style = "background-color:#fd5858;color:#dbdb12;font-weight:bold";
-                            return 'ERROR';
+                            return 'Error';
                         }
                     };
                     const key = (value || '').trim();
                     return opts[key] ? opts[key]() : key;
                 }
             },
-            {text: 'Process Status', dataIndex: 'STCAR', width: 100,
+            {text: 'Process Status', dataIndex: 'STCAR', width: 130,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     const opts = {
                         '': () => {
-//                            metaData.style = "background-color:#638be1;color:#ffffff;font-weight:bold";
-                            return '';
+                            metaData.style = "background-color:#E6E3E3;color:#4C4E57;font-weight:bold";
+                            return 'Pending';
                         },
                         '1': () => {
                             metaData.style = "background-color:#638be1;color:#ffffff;font-weight:bold";
-                            return 'TOTAL';
+                            return 'Total';
                         },
                         '2': () => {
-                            metaData.style = "background-color:#efd773;color:#ce3232;font-weight:bold"
-                            return 'PARTIAL';
+                            metaData.style = "background-color:#FFF091;color:#ce3232;font-weight:bold"
+                            return 'Partial';
+                        },
+                        '3': () => {
+                            metaData.style = "background-color:#D6F2FF;color:#094385;font-weight:bold"
+                            return 'File not found';
                         }
                     };
                     const key = (value || '').trim();
