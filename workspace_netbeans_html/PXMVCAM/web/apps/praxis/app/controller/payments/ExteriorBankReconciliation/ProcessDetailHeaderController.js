@@ -188,29 +188,36 @@ onProcessSave: async function () {
                                  let rawTDOC = rec.get('TDOC') || '';
                                  let tdocValue = tdocMap[rawTDOC] || rawTDOC;
                                  let params = {
-                                        IN_TYPE: rec.phantom ? 'I' : 'U',  // I = insert, U = update
-                                        IN_LIQUIDACIO: rec.get('LIQUIDACIO') || '',
-                                        IN_CCUST: rec.get('CCUST') || '',
-                                        IN_SDATE: rec.get('SDATE') || '',  
-                                        IN_ADATE: rec.get('ADATE') || '', 
-                                        IN_SCOUNTRY: rec.get('SCOUNTRY') || '',
-                                        IN_TDOC: tdocValue,  // ← aquí ya se manda como 'S', 'D', 'R' o 'V'
-                                        IN_CODEBANK: rec.get('CODEBANK') || '',
-                                        IN_SCARCOD: rec.get('SCARCOD') || '',
-                                        IN_SCARDN: rec.get('SCARDN') || '',
-                                        IN_SAUTHOC: rec.get('SAUTHOC') || '',
-                                        IN_SEQ: rec.get('SEQ') || '',
-                                        IN_SVFOP: rec.get('SVFOP') || '',
-                                        IN_SCURRENCY: rec.get('SCURRENCY') || 0,
+                                        IN_TYPE: rec.phantom ? 'I' : 'U',
+                                        IN_LIQUIDACIO: (rec.get('LIQUIDACIO') || '').toString().trim(),
+                                        IN_CCUST: (rec.get('CCUST') || '').toString().trim(),
+                                        IN_SDATE: (rec.get('SDATE') || '').toString().trim(),
+                                        IN_ADATE: (rec.get('ADATE') || '').toString().trim(),
+                                        IN_SCOUNTRY: (rec.get('SCOUNTRY') || '').toString().trim(),
+                                        IN_TDOC: tdocValue,
+                                        IN_CODEBANK: (rec.get('CODEBANK') || '').toString().trim(),
+                                        IN_SCARCOD: (rec.get('SCARCOD') || '').toString().trim(),
+                                        IN_SCARDN: (rec.get('SCARDN') || '').toString().trim(),
+                                        IN_SAUTHOC: (rec.get('SAUTHOC') || '').toString().trim(),
+                                        IN_SEQ: (rec.get('SEQ') || '').toString().trim(),
+                                        IN_SVFOP: (rec.get('SVFOP') || '').toString().trim(),
+                                        IN_SCURRENCY: (rec.get('SCURRENCY') || 0).toString().trim(),
                                         IN_TOTAL: rec.get('TOTAL') || 0,
-                                        IN_COMISION: rec.get('COMISION') || 0
+                                        IN_COMISION: rec.get('COMISION') || 0,
+                                        OUT_MSG: null
                                     };
                                   //  console.log("Call Stored PRAXISMP - MPS299: ", params)
-                                 await global.callStoreGet('PRAXISMP', 'MPS299', params);
+                                 const response = await global.callStoreGet('PRAXISMP', 'MPS299', params);
+                                 console.log("response: ", response)
+                               if (!response || Object.keys(response).length === 0) {
+                                    throw new Error("No response from server");
+                                }
                              }
-
+                             
                              me.notifier.success("Changes saved successfully.");
                              store.commitChanges();
+                             const parentGrid = Ext.ComponentQuery.query(prototype.id + '-HeaderDetailGrid')[0];
+                             if (parentGrid) parentGrid.getStore().reload();
                              me.onCancelClick();
                              
                          } catch (err) {
@@ -255,24 +262,31 @@ onProcessSaveTaxes: async function () {
                              for (const rec of modified) {
                                  let params = {
                                         IN_TYPE: rec.phantom ? 'I' : 'U',  // I = insert, U = update
-                                        IN_LIQUIDACIO: rec.get('LIQUIDACIO') || '',
-                                        IN_CCUST: rec.get('CCUST') || '',
-                                        IN_PRDA: rec.get('PRDA') || '',
-                                        IN_CODPRO: rec.get('CODPRO') || '',
-                                        IN_CCUSTPRO: rec.get('CCUSTPRO') || '',
-                                        IN_FLIQUIDACI: rec.get('FLIQUIDACI') || '',
-                                        IN_MERCHAND: rec.get('MERCHAND') || '',
-                                        IN_MONEDA: rec.get('MONEDA') || '',
-                                        IN_CODIGO: rec.get('CODIGO') || '',
-                                        IN_CORRL: rec.get('CORRL') || '',
-                                        IN_IMPORTE: rec.get('IMPORTE') || ''                                       
+                                        IN_LIQUIDACIO: (rec.get('LIQUIDACIO') || '').toString().trim(),
+                                        IN_CCUST: (rec.get('CCUST') || '').toString().trim(),
+                                        IN_PRDA: (rec.get('PRDA') || '').toString().trim(),
+                                        IN_CODPRO: (rec.get('CODPRO') || '').toString().trim(),
+                                        IN_CCUSTPRO: (rec.get('CCUSTPRO') || '').toString().trim(),
+                                        IN_FLIQUIDACI: (rec.get('FLIQUIDACI') || '').toString().trim(),
+                                        IN_MERCHAND: (rec.get('MERCHAND') || '').toString().trim(),
+                                        IN_MONEDA: (rec.get('MONEDA') || '').toString().trim(),
+                                        IN_CODIGO: (rec.get('CODIGO') || '').toString().trim(),
+                                        IN_CORRL: (rec.get('CORRL') || '').toString().trim(),
+                                        IN_IMPORTE: rec.get('IMPORTE') || '',
+                                        OUT_MSG: null
                                     };
                                  //   console.log("Call Stored PRAXISMP - MPS304: ", params)
-                                 await global.callStoreGet('PRAXISMP', 'MPS304', params);
+                                 const response = await global.callStoreGet('PRAXISMP', 'MPS304', params);
+                                 console.log("response: ", response)
+                              if (!response || Object.keys(response).length === 0) {
+                                    throw new Error("No response from server");
+                                }
                              }
-
+                             
                              me.notifier.success("Changes saved successfully.");
                              store.commitChanges();
+                             const parentGrid = Ext.ComponentQuery.query(prototype.id + '-HeaderDetailGrid')[0];
+                             if (parentGrid) parentGrid.getStore().reload();
                              me.onCancelClick();
                              
                          } catch (err) {
