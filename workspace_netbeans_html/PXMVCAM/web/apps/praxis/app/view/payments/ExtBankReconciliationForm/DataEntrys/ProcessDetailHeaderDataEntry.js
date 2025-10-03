@@ -14,6 +14,9 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.Proces
     adateParam: null,
     codproParam: null,
     stvalParam: null,
+    totalHeaderParam: null,
+    comisionHeaderParam: null,
+    netoHeaderParam: null,
     title: 'Header Detail',
     width: 1600,
     height: 600,
@@ -135,28 +138,27 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.Proces
                     '->',
                     {
                         xtype: 'displayfield',
-                        reference: 'lblTotalTotal',
-                        fieldStyle: 'font-weight:bold; border:1px solid #ccc; padding:2px 8px; margin-left:10px;',
-                        value: 'Total: 0'
+                        fieldStyle: 'font-weight:bold; color:#a32f2f; padding:2px 8px; margin-left:10px;',
+                        value: `HEADERS: `
                     },
                     {
                         xtype: 'displayfield',
-                        reference: 'lblTotalComision',
-                        fieldStyle: 'font-weight:bold; border:1px solid #ccc; padding:2px 8px;',
-                        value: 'Commission: 0'
+                        reference: 'lblTotalTotal_S',
+                        fieldStyle: 'font-weight:bold; background-color:#f5f5f5; border:1px solid #ccc; padding:4px 10px; margin-left:10px;',
+                        value: `Total: 0`
                     },
                     {
                         xtype: 'displayfield',
-                        reference: 'lblTotalNeto',
-                        fieldStyle: 'font-weight:bold; border:1px solid #ccc; padding:2px 8px;',
-                        value: 'Amount: 0'
+                        reference: 'lblTotalComision_S',
+                        fieldStyle: 'font-weight:bold; background-color:#f5f5f5; border:1px solid #ccc; padding:4px 10px;  margin-left:3px;',
+                        value: `Commission: 0`
                     },
                     {
                         xtype: 'displayfield',
-                        reference: 'lblDifference',
-                        fieldStyle: 'font-weight:bold; color:#a32f2f; border:1px solid #ccc; padding:2px 8px;',
-                        value: 'Difference: 0'
-                    }
+                        reference: 'lblTotalAmount_S',
+                        fieldStyle: 'font-weight:bold; background-color:#f5f5f5; border:1px solid #ccc; padding:4px 10px;  margin-left:3px;  margin-rigth:3px;',
+                        value: `Amount: 0`
+                    },  
                 ]
             },
 
@@ -217,12 +219,29 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.Proces
                 ],
                 bbar: [
                     '->',
+                     {
+                        xtype: 'displayfield',
+                        fieldStyle: 'font-weight:bold; border:1px solid #ccc; padding:2px 8px; margin-left:10px;',
+                        value: `HEADERS`
+                    },
                     {
                         xtype: 'displayfield',
-                        reference: 'lblTotalAmountTx',
+                        reference: 'lblTotalTotal_T',
                         fieldStyle: 'font-weight:bold; border:1px solid #ccc; padding:2px 8px; margin-left:10px;',
-                        value: 'Amount: 0'
-                    }          
+                        value: `Total: 0`
+                    },
+                    {
+                        xtype: 'displayfield',
+                        reference: 'lblTotalComision_T',
+                        fieldStyle: 'font-weight:bold; border:1px solid #ccc; padding:2px 8px;',
+                        value: `Commission: 0`
+                    },
+                    {
+                        xtype: 'displayfield',
+                        reference: 'lblTotalAmount_T',
+                        fieldStyle: 'font-weight:bold; border:1px solid #ccc; padding:2px 8px;',
+                        value: `Amount: 0`
+                    },         
                 ]
             }
         ]
