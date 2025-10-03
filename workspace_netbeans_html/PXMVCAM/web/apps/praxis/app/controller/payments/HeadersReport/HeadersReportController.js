@@ -71,7 +71,9 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersReportController
         }
     },
     onClearOptionsBtn: function () {
+        console.log('clear');
         Ext.getCmp(prototype.id + '-formFilters').getForm().reset();
+        Ext.getCmp(prototype.id + '-formFiltersIntegrator').getForm().reset();
     },
     formatParams: function () {
         const filters = Ext.getCmp(prototype.id + '-formFilters').getForm();
@@ -109,6 +111,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersReportController
             Ext.getCmp(prototype.id + '-filterIntegrator').hide();
             Ext.getCmp(prototype.id + '-contentIntegrator').hide();
         }
+        this.onClickSearchBtn();
     },
     
      onChangeDateSTBtn: function (obj) {
