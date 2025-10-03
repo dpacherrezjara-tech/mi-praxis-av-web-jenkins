@@ -20,19 +20,27 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.ProcessDet
 onAfterRenderSettlements: async function () {
     const me = this;
     me.getView().setLoading(true);
+    
+    const totalTotal_S = me.getView().totalHeaderParam;
+    const totalComision_S = me.getView().comisionHeaderParam;
+    const totalAmount_S = me.getView().netoHeaderParam;
+    this.lookupReference('lblTotalTotal_S').setValue('Total: ' + Ext.util.Format.number(totalTotal_S, '0,000.00'));
+    this.lookupReference('lblTotalComision_S').setValue('Commission: ' + Ext.util.Format.number(totalComision_S, '0,000.00'));
+    this.lookupReference('lblTotalAmount_S').setValue('Amount: ' + Ext.util.Format.number(totalAmount_S, '0,000.00'));
+    
     const codpro = me.getView().codproParam || '';
-    const stval = me.getView().stvalParam || '';
-      //  if (codpro === 'CM' && stval === '3') {
-        if (codpro.trim() === 'CM') {
+    const stval = me.getView().stvalParam;
+    const status = stval === 'L' ? 'M' : !stval ? 'P' : stval.trim() === '' ? 'P' : 'F';
+//    M: MATCH
+//    P: PENDING
+//    F: FALLO / ERROR
+     
+        if (codpro.trim() === 'CM' && status.trim() === 'P') {
             me.lookupReference('btnInsert').setHidden(false);
             me.lookupReference('btnSave').setHidden(false);
-        }
+            }
     const grid = this.lookupReference('settlementsGrid');
     const store = grid.getStore();
-    
-    // Escuchar cambios del store
-    store.on('datachanged', this.updateTotals, this);
-    store.on('update', this.updateTotals, this);
 
     try {
         const params = { 
@@ -65,18 +73,25 @@ onAfterRenderTaxes: async function () {
     const me = this;
     me.getView().setLoading(true);
     
+    const totalTotal_T = me.getView().totalHeaderParam;
+    const totalComision_T = me.getView().comisionHeaderParam;
+    const totalAmount_T = me.getView().netoHeaderParam;
+    this.lookupReference('lblTotalTotal_T').setValue('Total: ' + Ext.util.Format.number(totalTotal_T, '0,000.00'));
+    this.lookupReference('lblTotalComision_T').setValue('Commission: ' + Ext.util.Format.number(totalComision_T, '0,000.00'));
+    this.lookupReference('lblTotalAmount_T').setValue('Amount: ' + Ext.util.Format.number(totalAmount_T, '0,000.00'));
+    
     const codpro = me.getView().codproParam || '';
-    const stval = me.getView().stvalParam || '';
-      //  if (codpro === 'CM' && stval === '3') {
-        if (codpro.trim() === 'CM') {
+    const stval = me.getView().stvalParam;
+    const status = stval === 'L' ? 'M' : !stval ? 'P' : stval.trim() === '' ? 'P' : 'F';
+//    M: MATCH
+//    P: PENDING
+//    F: FALLO / ERROR
+        if (codpro.trim() === 'CM' && status.trim() === 'P') {
             me.lookupReference('btnSaveTaxes').setHidden(false);
-        }
-        
+                }
+
     const grid = this.lookupReference('taxesGrid');
     const store = grid.getStore();
-    
-    store.on('datachanged', this.updateTotalsTaxes, this);
-    store.on('update', this.updateTotalsTaxes, this);
     
     try {
         const params = { 
@@ -160,12 +175,12 @@ onProcessSave: async function () {
     const grid = me.lookupReference('settlementsGrid');
     const store = grid.getStore();
     const tdocMap = {
-    'SALE': 'S',
-    'DEBIT': 'D',
-    'REFUND': 'R',
-    'VOID': 'V'
-};
-    
+        'SALE': 'S',
+        'DEBIT': 'D',
+        'REFUND': 'R',
+        'VOID': 'V'
+    };
+
     //  Solo tomar insertados (phantom) o modificados (dirty)
     const modified = store.getRange().filter(r => r.dirty || r.phantom);
     
@@ -185,8 +200,11 @@ onProcessSave: async function () {
                    me.getView().setLoading(true);
                         try {
                              for (const rec of modified) {
+                                 let total = rec.get('TOTAL') || 0;
                                  let rawTDOC = rec.get('TDOC') || '';
-                                 let tdocValue = tdocMap[rawTDOC] || rawTDOC;
+                                 let tdocValueOld = tdocMap[rawTDOC] || rawTDOC;
+                                 const tdocValue = total >= 0 ? 'S' : 'D'; 
+                                 
                                  let params = {
                                         IN_TYPE: rec.phantom ? 'I' : 'U',
                                         IN_LIQUIDACIO: (rec.get('LIQUIDACIO') || '').toString().trim(),
@@ -194,7 +212,8 @@ onProcessSave: async function () {
                                         IN_SDATE: (rec.get('SDATE') || '').toString().trim(),
                                         IN_ADATE: (rec.get('ADATE') || '').toString().trim(),
                                         IN_SCOUNTRY: (rec.get('SCOUNTRY') || '').toString().trim(),
-                                        IN_TDOC: tdocValue,
+                                        IN_TDOC_OLD: tdocValueOld,
+                                        IN_TDOC_NEW: tdocValue,
                                         IN_CODEBANK: (rec.get('CODEBANK') || '').toString().trim(),
                                         IN_SCARCOD: (rec.get('SCARCOD') || '').toString().trim(),
                                         IN_SCARDN: (rec.get('SCARDN') || '').toString().trim(),
@@ -202,7 +221,7 @@ onProcessSave: async function () {
                                         IN_SEQ: (rec.get('SEQ') || '').toString().trim(),
                                         IN_SVFOP: (rec.get('SVFOP') || '').toString().trim(),
                                         IN_SCURRENCY: (rec.get('SCURRENCY') || 0).toString().trim(),
-                                        IN_TOTAL: rec.get('TOTAL') || 0,
+                                        IN_TOTAL: total,
                                         IN_COMISION: rec.get('COMISION') || 0,
                                         OUT_MSG: null
                                     };
@@ -299,41 +318,6 @@ onProcessSaveTaxes: async function () {
                 }
             }
         });
-},
-//</editor-fold>
-
-//<editor-fold defaultstate="collapsed" desc="updateTotals">
-updateTotals: function () {
-    const grid = this.lookupReference('settlementsGrid');
-    const store = grid.getStore();
-
-    let totalNeto = 0, totalTotal = 0, sumComision = 0;
-    store.each(rec => {
-        totalNeto += rec.get('NETO') || 0;
-        totalTotal += rec.get('TOTAL') || 0;
-        sumComision += rec.get('COMISION') || 0;
-    });
-    const difference = totalNeto - (totalTotal + sumComision);
-    this.lookupReference('lblTotalTotal').setValue('Total: ' + Ext.util.Format.number(totalTotal, '0,000.00'));
-    this.lookupReference('lblTotalNeto').setValue('Amount: ' + Ext.util.Format.number(totalNeto, '0,000.00'));
-    this.lookupReference('lblTotalComision').setValue('Commission: ' + Ext.util.Format.number(sumComision, '0,000.00'));
-    this.lookupReference('lblDifference').setValue('Difference: ' + Ext.util.Format.number(difference, '0,000.00'));
-},
-//</editor-fold>
-
-//<editor-fold defaultstate="collapsed" desc="updateTotalsTaxes">
-updateTotalsTaxes: function () {
-    const grid = this.lookupReference('taxesGrid');
-    const store = grid.getStore();
-
-    let totalAmount = 0;
-
-    store.each(rec => {
-        totalAmount += rec.get('IMPORTE') || 0;
-    });
-
-    this.lookupReference('lblTotalAmountTx')
-        .setValue('Amount: ' + Ext.util.Format.number(totalAmount, '0,000.00'));
 },
 //</editor-fold>
 

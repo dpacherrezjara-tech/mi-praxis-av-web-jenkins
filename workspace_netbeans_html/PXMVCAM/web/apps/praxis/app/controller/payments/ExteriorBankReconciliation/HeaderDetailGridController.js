@@ -70,7 +70,6 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.HeaderDeta
     },
     openProcessDetailHeader: function (grid, rowIndex) {
         const record = grid.getStore().getAt(rowIndex);
-
         const dataEntry = Ext.create(
             'Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.ProcessDetailHeaderDataEntry',
             {
@@ -78,7 +77,10 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.HeaderDeta
                 liquidaParam: record.get('LIQUIDACIO'),
                 adateParam: record.get('FLIQUIDACI'),
                 codproParam: record.get('CODPRO'),
-                stvalParam: record.get('STVAL')
+                stvalParam: record.get('FSELEC'),
+                totalHeaderParam: record.get('TOTAL'),
+                comisionHeaderParam: record.get('COMISION'),
+                netoHeaderParam: record.get('NETO')
             }
         );
         dataEntry.show();
