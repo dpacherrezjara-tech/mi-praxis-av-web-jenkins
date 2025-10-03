@@ -56,6 +56,16 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.HeaderDetai
                         return value;
                     }
                 }, columns: [
+                    {   text: 'Detail',
+                        width: 50,
+                        xtype: 'actioncolumn',
+                        align: 'center',
+                        items: [{
+                            iconCls: 'prx-icon-search',
+                            tooltip: 'Ver detalle',
+                            handler: 'openProcessDetailHeader' 
+                        }]
+                    },
                     {text: 'Curr.', dataIndex: 'MONEDA', width: 80},
                     {text: 'Amount', dataIndex: 'TOTAL', width: 110,
                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
