@@ -205,7 +205,7 @@ onProcessSave: async function () {
                                         IN_COMISION: rec.get('COMISION') || 0
                                     };
                                   //  console.log("Call Stored PRAXISMP - MPS299: ", params)
-                                // await global.callStoreGet('PRAXISMP', 'MPS299', params);
+                                 await global.callStoreGet('PRAXISMP', 'MPS299', params);
                              }
 
                              me.notifier.success("Changes saved successfully.");
@@ -267,7 +267,7 @@ onProcessSaveTaxes: async function () {
                                         IN_IMPORTE: rec.get('IMPORTE') || ''                                       
                                     };
                                  //   console.log("Call Stored PRAXISMP - MPS304: ", params)
-                                // await global.callStoreGet('PRAXISMP', 'MPS304', params);
+                                 await global.callStoreGet('PRAXISMP', 'MPS304', params);
                              }
 
                              me.notifier.success("Changes saved successfully.");
