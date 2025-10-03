@@ -52,6 +52,9 @@
 .prx-icon-cancel {
   background-image: url("../img/botones/24x24/1337982061_001_05.gif");
 }
+.prx-icon-cancel-small {
+  background-image: url("../img/botones/16x16/1337982061_001_05.png");
+}
 .prx-icon-pagination-first {
   background-image: url("../img/paginacion/first1.png");
 

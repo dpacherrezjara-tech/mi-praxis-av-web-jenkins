@@ -56,7 +56,7 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.Options', {
                             iconCls: 'prx-icon-image-process',
                             tooltip: 'Pending Deposits and Settlements',
                             listeners: {
-                                click: 'onProcessClick'
+                                click: 'openProcessBankReconciliation'
                             }
                         },
                         {

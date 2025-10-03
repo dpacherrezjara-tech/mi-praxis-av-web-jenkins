@@ -110,7 +110,7 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.ExteriorBa
                 searchParams: params
             });
             mainPanel.add(panelDetail);
-        }else if (type === 'T'){
+        } else if (type === 'T'){
             const taxDetail = Ext.create('Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.TaxDetailGrid', {
                 id: prototype.id + '-TaxDetailGrid-1',
                 searchParams: params
@@ -165,14 +165,16 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.ExteriorBa
             Ext.getCmp(prototype.id + '-formFiltersBS-4').show();
         }
     },
-    onProcessClick: function () {
+    openProcessBankReconciliation: function () {
         const me = this;
         const dataEntry = Ext.create('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.ProcessBankReconciliationDataEntry', {
-            id: prototype.id + '-ProcessAccountingDataEntry-1',
+            id: prototype.id + '-ProcessBankReconciliationDataEntry-1',
             procesadores: me.procesadores
         });
         dataEntry.show();
     },
+    
+
     //<editor-fold defaultstate="collapsed" desc="Format Parameters">
     formatBankParams: function () {
         const type = Ext.getCmp(prototype.id + '-cmbBankFilters').value;
