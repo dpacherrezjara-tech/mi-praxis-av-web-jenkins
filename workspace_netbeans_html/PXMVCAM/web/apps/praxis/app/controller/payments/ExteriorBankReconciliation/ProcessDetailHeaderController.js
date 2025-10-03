@@ -208,7 +208,7 @@ onProcessSave: async function () {
                                     };
                                   //  console.log("Call Stored PRAXISMP - MPS299: ", params)
                                  const response = await global.callStoreGet('PRAXISMP', 'MPS299', params);
-                                 console.log("response: ", response)
+                                 //console.log("response: ", response)
                                if (!response || Object.keys(response).length === 0) {
                                     throw new Error("No response from server");
                                 }
@@ -277,7 +277,7 @@ onProcessSaveTaxes: async function () {
                                     };
                                  //   console.log("Call Stored PRAXISMP - MPS304: ", params)
                                  const response = await global.callStoreGet('PRAXISMP', 'MPS304', params);
-                                 console.log("response: ", response)
+                                 //console.log("response: ", response)
                               if (!response || Object.keys(response).length === 0) {
                                     throw new Error("No response from server");
                                 }
