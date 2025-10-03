@@ -478,4 +478,122 @@ public class DuplicateSettlementsController extends BaseController {
         return gson.toJson(m);
         
     }
+    
+//    OIGAME
+    
+    @RequestMapping(value = "searchDelete")
+    public @ResponseBody
+    String searchDelete(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- DuplicateSettlements : searchDelete-------------");
+
+        map.put("success", true);
+        List<A2358Filter> lst = this.getListDelete(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<A2358Filter> getListDelete(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2358Filter> lst = new ArrayList<>(0);
+        A2358Filter filter = new A2358Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new DuplicateSettlementsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2358Filter.class);
+
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadPX602SQP04601Delete(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    
+    @RequestMapping(value = "sendDeleteSettlementsReverse")
+    public @ResponseBody
+    String sendDeleteSettlementsReverse(HttpServletRequest request) throws Exception {
+        System.out.println("Duplicate Settlements : sendDeleteSettlementsReverse");
+
+        A2358 filter = new A2358();
+        Gson gson = new Gson();
+        HashMap m = new HashMap();
+        String beanString = "";
+        String listSettlements = "";
+        String settlementGroup = "";
+        Type listType = new TypeToken<List<A2358>>() {}.getType();
+        String regs = "", regsEC = "", message = "";
+        
+        try {
+            logic = new DuplicateSettlementsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2358.class);
+            listSettlements = request.getParameter("beanSettlements");
+            List<A2358> settlementsList = gson.fromJson(listSettlements, listType);
+            
+            List<A2358> lstData = new ArrayList<>();
+            A2358 obj = new A2358();
+            obj = new A2358();
+
+            for (A2358 settlements : settlementsList) {
+                    obj = new A2358();
+                    obj.CCUST = settlements.CCUST;
+                    obj.SDATE = settlements.SDATE.trim();
+                    obj.SCOUNTRY = settlements.SCOUNTRY.trim();
+                    obj.TDOC = settlements.TDOC.trim();
+                    obj.CODEBANK = settlements.CODEBANK.trim();
+                    obj.SCARCOD = settlements.SCARCOD.trim();
+                    obj.SCARDN = settlements.SCARDN.trim();
+                    obj.SAUTHOC = settlements.SAUTHOC.trim();
+                    obj.SEQ = settlements.SEQ.trim();
+                    obj.SVFOP = settlements.SVFOP;
+                    
+                    lstData.add(obj);
+                }
+
+            System.out.println(lstData);
+            message = logic.loadPX287MPS106Reverse(lstData, filter);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            message = e.getMessage();
+            e.printStackTrace();
+            m.put("success", false);
+            m.put("result", message);
+        }
+        
+        if (message != null) {
+            m.put("success", true);
+            m.put("result", message);
+        } else {
+            m.put("success", false);
+            m.put("result", message);
+        }
+
+        return gson.toJson(m);
+        
+    }
 }

@@ -335,4 +335,164 @@ public class DuplicateSettlementsDAO {
         return strMsj;
     }
 
+    public List<A2358Filter> loadPX602SQP04601Delete(A2358Filter filter) throws SQLException, Exception {
+
+        List<A2358Filter> lstTkts = new ArrayList<A2358Filter>(0);
+        A2358Filter beanTkt;
+
+        double totQTYREG = 0;
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS373(?,?,?,?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.registerOutParameter(8, Types.INTEGER);
+            cstmt.registerOutParameter(9, Types.INTEGER);
+            cstmt.registerOutParameter(10, Types.INTEGER);
+            cstmt.registerOutParameter(11, Types.INTEGER);
+
+            cstmt.setString(1, filter.IN_CCUST);
+            cstmt.setString(2, filter.IN_FECHA_FROM);
+            cstmt.setString(3, filter.IN_FECHA_TO);
+            cstmt.setString(4, filter.IN_CODEBANK);
+            cstmt.setString(5, filter.IN_NEGOC);
+            cstmt.setString(6, filter.IN_SCARCOD);
+            cstmt.setString(7, filter.IN_STATUS);
+            cstmt.setInt(8, filter.page.PAGNUM);
+            cstmt.setInt(9, filter.page.PAGROW);
+            cstmt.setInt(10, filter.page.TOTPAG);
+            cstmt.setInt(11, filter.page.TOTROW);
+
+            cstmt.execute();
+
+            filter.page.PAGNUM = cstmt.getInt(8);
+            filter.page.PAGROW = cstmt.getInt(9);
+            filter.page.TOTPAG = cstmt.getInt(10);
+            filter.page.TOTROW = cstmt.getInt(11);
+
+            rst = cstmt.getResultSet();
+            while (rst.next()) {
+
+                beanTkt = new A2358Filter();
+                beanTkt.CCUST = rst.getString("CCUST").trim();
+                beanTkt.ADATE = rst.getString("ADATE").trim();
+                beanTkt.CODEBANK = rst.getString("CODEBANK").trim();
+                beanTkt.SDATE = rst.getString("SDATE").trim();
+                beanTkt.SAGENT = rst.getString("SAGENT").trim();
+                beanTkt.MERCHAND = rst.getString("MERCHAND").trim();
+                beanTkt.RED = rst.getString("RED").trim();
+                beanTkt.TDOC = rst.getString("TDOC").trim();
+                beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
+                beanTkt.NEGOC = rst.getString("NEGOC").trim();
+                beanTkt.SCARCOD = rst.getString("SCARCOD").trim();
+                beanTkt.ACCNUMBER = rst.getString("ACCNUMBER").trim();
+                beanTkt.STVAL = rst.getString("STVAL").trim();
+                beanTkt.FECR = rst.getString("FECR").trim();
+                beanTkt.HOCR = rst.getString("HOCR").trim();
+                beanTkt.SCARDN = rst.getString("SCARDN").trim();
+                beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
+                beanTkt.TERMI = rst.getString("TERMI").trim();
+                beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
+                beanTkt.SEQ = rst.getString("SEQ").trim();
+                
+                beanTkt.TOTAL = rst.getDouble("TOTAL");
+                beanTkt.SVFOP = rst.getDouble("SVFOP");
+                beanTkt.COMISION = rst.getDouble("COMISION");
+                beanTkt.NETO = rst.getDouble("NETO");
+               
+                beanTkt.page.PAGNUM = filter.page.PAGNUM;
+                beanTkt.page.PAGROW = filter.page.PAGROW;
+                beanTkt.page.TOTPAG = filter.page.TOTPAG;
+                beanTkt.page.TOTROW = filter.page.TOTROW;
+
+                lstTkts.add(beanTkt);
+            }
+            rst.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstTkts;
+    }
+    
+    public String loadPX287MPS106Reverse(List<A2358> lstLIQ, A2358 filter) throws Exception {
+        String strMsj = "Proceso Culminado";
+
+        // Verifica si es masivo
+        if ("Y".equals(filter.IN_MASSIVE.trim())) {
+            String SQL_MASSIVE = "{CALL PRAXISMP.MPS374(?,?,?,?,?,?)}";
+
+            try (Connection cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+                 CallableStatement cstmt = cnx.prepareCall(SQL_MASSIVE)) {
+
+                cstmt.setString(1, filter.IN_CCUST.trim());
+                cstmt.setString(2, filter.IN_FECHA_FROM.trim());
+                cstmt.setString(3, filter.IN_FECHA_TO.trim());
+                cstmt.setString(4, filter.IN_CODEBANK.trim());
+                cstmt.setString(5, filter.IN_NEGOC.trim());
+                cstmt.setString(6, filter.IN_SCARCOD.trim());
+
+                cstmt.execute();
+
+            } catch (SQLException e) {
+                logError.error("Error ejecutando MPS374 para usuario " +
+                    session.getUserView().getUserInfo().USR + " -> " + e.getMessage(), e);
+                strMsj = e.getMessage();
+            }
+
+        } else {
+            String SQL_DETAIL = "{CALL PRAXISMP.MPS375(?,?,?,?,?,?,?,?,?,?)}";
+
+            try (Connection cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+                 CallableStatement cstmt = cnx.prepareCall(SQL_DETAIL)) {
+
+                for (A2358 obj : lstLIQ) {
+                    cstmt.setString(1, obj.CCUST.trim());
+                    cstmt.setString(2, obj.SDATE.trim());
+                    cstmt.setString(3, obj.SCOUNTRY.trim());
+                    cstmt.setString(4, obj.TDOC.trim());
+                    cstmt.setString(5, obj.CODEBANK.trim());
+                    cstmt.setString(6, obj.SCARCOD.trim());
+                    cstmt.setString(7, obj.SCARDN.trim());
+                    cstmt.setString(8, obj.SAUTHOC.trim());
+                    cstmt.setString(9, obj.SEQ.trim());
+                    cstmt.setDouble(10, obj.SVFOP);
+
+                    cstmt.execute();
+                }
+
+            } catch (SQLException e) {
+                logError.error("Error ejecutando MPS375 para usuario " +
+                    session.getUserView().getUserInfo().USR + " -> " + e.getMessage(), e);
+                strMsj = e.getMessage();
+            }
+        }
+
+        pasarGarbageCollector();
+        return strMsj;
+    }
 }

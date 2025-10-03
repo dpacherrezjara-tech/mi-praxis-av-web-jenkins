@@ -266,6 +266,49 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.Filters', {
                     anchor: '100%',
                     margin: '0 10 0 0'
                 },
+                {
+                    xtype: 'container',
+                    layout: {
+                        type: 'hbox',
+                        align: 'middle'
+                    },
+                    padding: '0 10 5 10',
+                    items: [
+                        {
+                            xtype: 'label',
+                            text: 'Duplicates',
+                            margin: '0 5 0 0',
+                            width: 60,
+                            id: prototype.id + '-COLTACA'
+                        },
+                        {
+                            xtype: 'component',
+                            id: prototype.id + '-btnToggleSwitchTACA',
+                            margin: '0 5 0 0',
+                            html: `<style>
+                                .toggle-container{display:inline-block;position:relative;width:30px;height:16px;vertical-align:middle;}
+                                .toggle-input{opacity:0;width:0;height:0;}
+                                .toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#72e34f;transition:.4s;border-radius:16px;}
+                                .toggle-slider::before{position:absolute;content:"";height:12px;width:12px;border-radius:50%;left:2px;bottom:2px;background-color:white;transition:.4s;}
+                                .toggle-input:checked+.toggle-slider{background-color:#4c7daf;}
+                                .toggle-input:checked+.toggle-slider::before{transform:translateX(16px);}
+                            </style>
+                            <label class="toggle-container"><input type="checkbox" class="toggle-input"><span class="toggle-slider"></span></label>`,
+                            tooltip: 'Export to Report',
+                            listeners: {
+                                change: 'chgBashTACA',
+                                click: 'chgBashTACA'
+                            }
+                        },
+                        {
+                            xtype: 'label',
+                            text: 'Removed',
+                            margin: '0 0 0 5',
+                            width: 60,
+                            id: prototype.id + '-EXTACA'
+                        },
+                    ]
+                },
                 //BOTONES
                 {
                         xtype: 'button',
@@ -288,6 +331,31 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.Filters', {
                     border: false,
                     listeners: {
                         click: 'deleteSettlementsSelected'
+                    }
+                },
+                 {
+                        xtype: 'button',
+                        id: prototype.id + '-btn_AllInfoReverse',
+                        margin: '1 0 0 0',
+                        html: '<strong style="color:white;">ALL PROCESS</strong>',
+                        style: 'background:#D2691E;color:white;font-weight:bold;',
+                        border: false,
+                        hidden: true,
+                        listeners: {
+                            click: 'reverseAllSettlements'
+                        },
+                        margin: '0 10 0 0'
+                    },
+                {
+                    xtype: 'button',
+                    id: prototype.id + '-btn_SelectAllInfoReverse',
+                    margin: '1 0 0 0',
+                    html: '<strong style="color:white;">PROCESS</strong>',
+                    style: 'background:#D2691E;color:white;font-weight:bold;',
+                    border: false,
+                    hidden: true,
+                    listeners: {
+                        click: 'reverseSettlementsSelected'
                     }
                 },
             ]

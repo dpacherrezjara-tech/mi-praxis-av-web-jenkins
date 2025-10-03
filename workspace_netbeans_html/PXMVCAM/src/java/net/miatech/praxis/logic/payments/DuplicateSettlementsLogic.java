@@ -22,6 +22,10 @@ public class DuplicateSettlementsLogic {
         return DuplicateSettlementsDAO.loadPX602SQP04601(filter);
     }
    
+   public List<A2358Filter> loadPX602SQP04601Delete(A2358Filter filter) throws SQLException, Exception {
+        return DuplicateSettlementsDAO.loadPX602SQP04601Delete(filter);
+    }
+   
    public A2358Filter loadPX602SQP04602(A2358Filter filter) throws Exception {
         return DuplicateSettlementsDAO.loadPX602SQP04602(filter);
     }
@@ -32,5 +36,9 @@ public class DuplicateSettlementsLogic {
    
    public String loadPX287MPS106(List<A2358> lst, A2358 filter) throws SQLException, Exception {
         return DuplicateSettlementsDAO.loadPX287MPS106(lst, filter);
+    }
+   
+   public String loadPX287MPS106Reverse(List<A2358> lst, A2358 filter) throws SQLException, Exception {
+        return DuplicateSettlementsDAO.loadPX287MPS106Reverse(lst, filter);
     }
 }

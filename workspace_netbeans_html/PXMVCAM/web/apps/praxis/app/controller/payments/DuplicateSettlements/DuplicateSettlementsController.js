@@ -81,6 +81,44 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DuplicateSettlem
         });
     },
     xpanel_afterrender: function (obj, e) {
+        
+        $('#DuplicateSettlementsForm-btnToggleSwitchTACA').on('change', function () {
+            console.log("ME ACTIVO");
+            me.lstSettlement = [];
+            var isChecked = $(this).find('input[type=checkbox]').prop('checked'); 
+            var panelMain = Ext.getCmp(prototype.id + '-panelGridData');
+            var panelMainDelete = Ext.getCmp(prototype.id + '-panelGridDataDeleted');
+            
+            var buttonDeletedAll = Ext.getCmp(prototype.id + '-btn_AllInfo');
+            var buttonDeletedSelected = Ext.getCmp(prototype.id + '-btn_SelectAllInfo');
+            var buttonReverseAll = Ext.getCmp(prototype.id + '-btn_AllInfoReverse');
+            var buttonReverseSelected = Ext.getCmp(prototype.id + '-btn_SelectAllInfoReverse');
+            console.log(isChecked,'isChecked')
+            if (isChecked) {
+                console.log("MUESTRO SECUNDARIO");
+                me.panelActual = "-panelGridDataDeleted"; // asigno al eliminado
+                panelMainDelete.setVisible(true);
+                panelMain.setVisible(false);
+                
+                buttonDeletedAll.setVisible(false);
+                buttonDeletedSelected.setVisible(false);
+                buttonReverseAll.setVisible(true);
+                buttonReverseSelected.setVisible(true);
+            } else {
+                console.log("MUESTRO PRINCIPAL");
+                me.panelActual = "-panelGridData"; // asigno al principal
+                panelMainDelete.setVisible(false);
+                panelMain.setVisible(true);
+                
+                buttonDeletedAll.setVisible(true);
+                buttonDeletedSelected.setVisible(true);
+                buttonReverseAll.setVisible(false);
+                buttonReverseSelected.setVisible(false);
+            }
+
+            me.btnSearch_click();
+        });
+
         this.obtainData();
         this.btnSearch_click();
     },
@@ -207,6 +245,32 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DuplicateSettlem
             beanString: beanString
         };
     },
+    setFormatParameterDelete: function () {
+
+        me.bean = {};
+
+       me.bean.IN_FECHA_FROM = 
+            (Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() || '') +
+            (Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue() || '') +
+            (Ext.getCmp(prototype.id + '-cmbDateFromDay').getValue() || '');
+
+        me.bean.IN_FECHA_TO = 
+            (Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() || '') +
+            (Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue() || '') +
+            (Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() || '');
+
+        me.bean.IN_CCUST = '999';
+        me.bean.IN_CODEBANK = Ext.getCmp(prototype.id + '-txtCodeBank').getValue() || '';
+        me.bean.IN_NEGOC = Ext.getCmp(prototype.id + '-cmbNEGOC').getValue() || '';
+        me.bean.IN_SCARCOD = Ext.getCmp(prototype.id + '-cmbCARDTYPE').getValue() || '';
+        me.bean.IN_STATUS = Ext.getCmp(prototype.id + '-cmbSTATUS').getValue() || '';
+
+        var beanString = JSON.stringify(me.bean);
+        searchParams = {
+            bean: me.bean,
+            beanString: beanString
+        };
+    },
     btnAdd_click: function () {
         this.winDataEntry('I');
     },
@@ -228,8 +292,62 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DuplicateSettlem
         }).show();
     },
     btnSearch_click: function(obj, e) {
-        this.setFormatParameter();
-        this.setGridData();
+        console.log(me.panelActual,"actual")
+        if (me.panelActual == "-panelGridData") {
+            console.log(1)
+             this.setFormatParameter();
+             this.setGridData();    
+        } else {
+            console.log(2)
+             this.setFormatParameterDelete();
+             this.setGridDataDelete();
+        }
+        
+        
+       
+    },
+    setGridDataDelete: function () {
+        me.beanDelete = {};
+        me.lstSettlement = [];
+        win.lblUser_toolTip("Estructura: MPF060");
+        me.panelActual = '-panelGridDataDeleted';
+        console.log(searchParams,me.beanDelete,me.lstSettlement, 'PARAMETROSSS');
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+
+        var msj = this.validateFields();
+        if (msj !== '') {
+            global.Msg({msg: msj
+            });
+        } else {
+            var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchDelete'
+                }, listeners: {
+                    beforeload: function (obj) {
+                        obj.proxy.extraParams = searchParams;
+                    },
+                    load: function (obj) {
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        } else {
+                            var data = obj.data.items[0].data;
+                            console.log(data);
+                            var pag = Ext.getCmp(prototype.id + '-paggin');
+                            var pagData = pag.getPageData();
+
+                            Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                            Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                            Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        }
+                    }
+                }
+            });
+            global.clear();
+            Ext.getCmp(prototype.id + '-gridMainDataDelete').bindStore(storeGridDatas);
+             Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
+        }
     },
     setGridData: function () {
         me.beanDelete = {};
@@ -394,12 +512,12 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DuplicateSettlem
         let settlement = record.data;
 
         // Validación: solo permitir marcar si STVAL === 3
-        if (checked && settlement.STVAL !== 3) {
+        if (checked && parseInt(settlement.STVAL, 10) !== 3) {
             Ext.Msg.alert("Aviso", "Solo se pueden seleccionar registros con STVAL = 3");
-            // revertir el check
             record.set('checkActive', false);
             return;
         }
+
 
         if (checked) {
             // Verificar duplicado
@@ -434,6 +552,56 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DuplicateSettlem
             // Si se desmarca, filtrar lista
             me.lstSettlement = me.lstSettlement.filter(item => !(
                 item.CCUST     === settlement.CCUST &&
+                item.SDATE     === settlement.SDATE &&
+                item.SCOUNTRY  === settlement.SCOUNTRY &&
+                item.TDOC      === settlement.TDOC &&
+                item.CODEBANK  === settlement.CODEBANK &&
+                item.SCARCOD   === settlement.SCARCOD &&
+                item.SCARDN    === settlement.SCARDN &&
+                item.SAUTHOC   === settlement.SAUTHOC &&
+                item.SEQ       === settlement.SEQ &&
+                item.SVFOP     === settlement.SVFOP
+            ));
+        }
+
+        console.log(me.lstSettlement, 'LLENADO');
+    },
+    markSettlementReverse: function (column, rowIndex, checked, record) {
+        let settlement = record.data;
+
+        if (checked) {
+            // Verificar duplicado
+            let exists = me.lstSettlement.some(item =>
+                item.CCUST     === "999" &&
+                item.SDATE     === settlement.SDATE &&
+                item.SCOUNTRY  === settlement.SCOUNTRY &&
+                item.TDOC      === settlement.TDOC &&
+                item.CODEBANK  === settlement.CODEBANK &&
+                item.SCARCOD   === settlement.SCARCOD &&
+                item.SCARDN    === settlement.SCARDN &&
+                item.SAUTHOC   === settlement.SAUTHOC &&
+                item.SEQ       === settlement.SEQ &&
+                item.SVFOP     === settlement.SVFOP
+            );
+
+            if (!exists) {
+                me.lstSettlement.push({
+                    CCUST     : "999",
+                    SDATE     : settlement.SDATE,    
+                    SCOUNTRY  : settlement.SCOUNTRY, 
+                    TDOC      : settlement.TDOC,     
+                    CODEBANK  : settlement.CODEBANK, 
+                    SCARCOD   : settlement.SCARCOD,  
+                    SCARDN    : settlement.SCARDN,   
+                    SAUTHOC   : settlement.SAUTHOC,  
+                    SEQ       : settlement.SEQ, 
+                    SVFOP     : settlement.SVFOP
+                });
+            }
+        } else {
+            // Si se desmarca, filtrar lista
+            me.lstSettlement = me.lstSettlement.filter(item => !(
+                item.CCUST     === "999" &&
                 item.SDATE     === settlement.SDATE &&
                 item.SCOUNTRY  === settlement.SCOUNTRY &&
                 item.TDOC      === settlement.TDOC &&
@@ -517,6 +685,107 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DuplicateSettlem
         console.log(searchParamsDelete, 'searchParamsConciliation');
         console.log('Eliminado TODO LO SELECCIONADO...')
     },
+    
+    reverseAllSettlements: function() {
+        me.beanDelete = {};
+        
+        me.beanDelete.IN_FECHA_FROM = 
+            (Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() || '') +
+            (Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue() || '') +
+            (Ext.getCmp(prototype.id + '-cmbDateFromDay').getValue() || '');
+
+        me.beanDelete.IN_FECHA_TO = 
+            (Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() || '') +
+            (Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue() || '') +
+            (Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() || '');
+    
+        me.beanDelete.IN_MASSIVE = 'Y'; 
+        me.beanDelete.IN_CCUST = '999';
+        me.beanDelete.IN_CODEBANK = Ext.getCmp(prototype.id + '-txtCodeBank').getValue() || '';
+        me.beanDelete.IN_NEGOC = Ext.getCmp(prototype.id + '-cmbNEGOC').getValue() || '';
+        me.beanDelete.IN_SCARCOD = Ext.getCmp(prototype.id + '-cmbCARDTYPE').getValue() || '';
+        me.beanDelete.IN_STATUS = Ext.getCmp(prototype.id + '-cmbSTATUS').getValue() || '';
+        
+        let searchParamsDelete = {
+            beanString: JSON.stringify(me.beanDelete),
+            beanSettlements: JSON.stringify(me.lstSettlement)
+        };
+        
+        me.sendDeleteSettlements(searchParamsDelete, function(responseData) {
+            console.log(responseData)
+        });
+        console.log(searchParamsDelete, 'searchParamsConciliation');
+        console.log('Eliminado TODO LO SELECCIONADO...')
+    },
+    reverseSettlementsSelected: function() {
+         me.beanDelete = {};
+        
+        if (!me.lstSettlement.length) {
+            global.Msg({
+                msg: 'No ha seleccionado ningun registro.'
+            });
+            return
+        }
+        
+        me.beanDelete.IN_FECHA_FROM = 
+            (Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() || '') +
+            (Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue() || '') +
+            (Ext.getCmp(prototype.id + '-cmbDateFromDay').getValue() || '');
+
+        me.beanDelete.IN_FECHA_TO = 
+            (Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() || '') +
+            (Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue() || '') +
+            (Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() || '');
+    
+        me.beanDelete.IN_MASSIVE = 'N'; 
+        me.beanDelete.IN_CCUST = '999';
+        me.beanDelete.IN_CODEBANK = Ext.getCmp(prototype.id + '-txtCodeBank').getValue() || '';
+        me.beanDelete.IN_NEGOC = Ext.getCmp(prototype.id + '-cmbNEGOC').getValue() || '';
+        me.beanDelete.IN_SCARCOD = Ext.getCmp(prototype.id + '-cmbCARDTYPE').getValue() || '';
+        me.beanDelete.IN_STATUS = Ext.getCmp(prototype.id + '-cmbSTATUS').getValue() || '';
+        
+        let searchParamsDelete = {
+            beanString: JSON.stringify(me.beanDelete),
+            beanSettlements: JSON.stringify(me.lstSettlement)
+        };
+        
+        me.sendDeleteSettlementsReverse(searchParamsDelete, function(responseData) {
+            console.log(responseData)
+        });
+        console.log(searchParamsDelete, 'searchParamsConciliation');
+        console.log('Eliminado TODO LO SELECCIONADO...')
+    },
+    sendDeleteSettlementsReverse: function (params, callback) {
+        Ext.Ajax.request({
+            url: prototype.url + '/sendDeleteSettlementsReverse',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: params.beanString, beanSettlements: params.beanSettlements},
+            beforerequest:  Ext.getCmp(prototype.id + '-panelMain').mask('Loading...'),
+            success: function(response, options) {
+                
+                Ext.getCmp(prototype.id + '-panelMain').unmask('Loading...');
+                let res = Ext.JSON.decode(response.responseText);
+                console.log(res,'res')
+
+                if (res.success) {
+                    global.Msg({msg: res.result});
+                    me.btnSearch_click();
+                    
+                } else {
+                    
+                    global.Msg({msg: res.result});
+                    
+                    callback(res); 
+                }
+            },
+            failure: function(response, options) {
+                Ext.getCmp(prototype.id + '-panelMain').unmask('Loading...');
+                console.error("Error en la petición AJAX");
+                global.Msg({msg: "Error al obtener datos"});
+            }
+        });
+    },
     sendDeleteSettlements: function (params, callback) {
         Ext.Ajax.request({
             url: prototype.url + '/sendDeleteSettlements',
@@ -556,6 +825,9 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DuplicateSettlem
         me.pagginActual = '';
         switch (me.panelActual) {
             case  '-panelGridData':
+                me.pagginActual = '-paggin';
+                break;
+            case  '-panelGridDataDeleted':
                 me.pagginActual = '-paggin';
                 break;
         }
