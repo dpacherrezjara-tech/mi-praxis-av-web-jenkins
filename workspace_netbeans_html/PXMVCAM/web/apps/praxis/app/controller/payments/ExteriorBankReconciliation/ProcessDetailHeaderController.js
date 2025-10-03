@@ -137,6 +137,7 @@ onProcessInsert: function () {
             SAUTHOC: firstRec ? firstRec.get('SAUTHOC') : '',
             SEQ: firstRec ? firstRec.get('SEQ') : '',
             SVFOP: firstRec ? firstRec.get('SVFOP') : '',
+            SCURRENCY: firstRec ? firstRec.get('SCURRENCY') : '',
             NETO: 0,
             TOTAL: 0,
             COMISION: 0
