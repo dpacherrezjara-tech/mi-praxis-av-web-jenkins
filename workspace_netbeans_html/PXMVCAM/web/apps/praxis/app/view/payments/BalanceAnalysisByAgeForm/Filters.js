@@ -53,7 +53,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                             editable: true,
                             width: 150,
                             typeAhead: true,
-                            value: 'Y',
+                            value: 'X',
                             valueField: 'value',
                             displayField: 'description',
                             listeners: {
