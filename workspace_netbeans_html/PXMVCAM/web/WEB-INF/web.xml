@@ -36,6 +36,14 @@
         <!--<welcome-file>/index.jsp</welcome-file>-->
         <welcome-file>/</welcome-file>
     </welcome-file-list>
+	<error-page>
+        <error-code>404</error-code>
+        <location>/errorPage</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/errorPage</location>
+    </error-page>
     <!--session-management>
         <concurrency-control expired-url="/" />
     </session-management-->
