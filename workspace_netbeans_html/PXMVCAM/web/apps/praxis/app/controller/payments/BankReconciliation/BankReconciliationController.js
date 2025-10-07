@@ -495,6 +495,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 ["1", "PASAJES"],
                 ["2", "CARGO"],
                 ["3", "CORREO"],
+                ["4", "TURISMO"],
                 ["S", "STANDBY"],
             ]
         }));

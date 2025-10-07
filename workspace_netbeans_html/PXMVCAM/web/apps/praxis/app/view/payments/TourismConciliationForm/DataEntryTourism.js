@@ -30,6 +30,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                 {
                     xtype: 'panel',
                     bodyStyle: 'background: transparent;"',
+                    id: prototype.id + '-panelMainDE',
                     layout: 'vbox',
                     defaults: {
                         anchor: '100%'
@@ -240,7 +241,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                             fieldStyle: 'text-align:center;',
                                             width: 120
                                         },
-                                        {xtype: 'tbspacer', width: 10},
+                                        {xtype: 'tbspacer', width: 2},
                                     ]
                                 },
 
@@ -249,8 +250,10 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                 {
                                     xtype: 'label',
                                     text: 'Detail',
+                                    id: prototype.id + '-lblHeaderDetail',
                                     style: 'font-weight:bold;color:#0B333C;text-decoration: underline;',
                                     bodyStyle: 'background:#E5ECEF;',
+                                    
                                     width: 334,
                                     height: 20,
                                     margin: '4 2 4 8'
@@ -665,6 +668,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                                                 {
                                                     xtype: 'panel',
                                                     hidden: true,
+                                                    id: prototype.id + '-panelDataTotales',
                                                     layout: 'hbox',
                                                     border: false,
                                                     hidden: false,
@@ -2163,11 +2167,11 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.DataEntryTourism', 
                         },
                         {
                             hidden: true,
-                            text: 'Update',
+                            text: 'CONCILIATION',
                             id: prototype.id + '-btn-update',
                             iconCls: 'prx-icon-update',
                             listeners: {
-                                click: 'onUpdateClick'
+                                click: 'onConciliation'
                             }
                         },
                         {
