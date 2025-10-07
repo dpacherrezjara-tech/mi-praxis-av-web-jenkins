@@ -90,9 +90,9 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
         console.log(prototype.url, "esto es la URL");
     },
     hiddenPending: function () {
-        Ext.getCmp(prototype.id + '-lblHeaderDetail').hide()
-        Ext.getCmp(prototype.id + '-panelDataDetail').hide()
-        Ext.getCmp(prototype.id + '-panelSumAmountDetail').hide()
+//        Ext.getCmp(prototype.id + '-lblHeaderDetail').hide()
+//        Ext.getCmp(prototype.id + '-panelDataDetail').hide()
+//        Ext.getCmp(prototype.id + '-panelSumAmountDetail').hide()
         Ext.getCmp(prototype.id + '-panelDataTotales').show()
         Ext.getCmp(prototype.id + '-panelSumAmountTotales').hide()
         Ext.getCmp(prototype.id + '-btn-update').show()
@@ -123,13 +123,16 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
                 const res = Ext.decode(response.responseText);
                 console.log(res, 'res')
                 if (res.success) {
+                    //SCAN
                     var storeData = Ext.create('Ext.data.Store', {
                         data: res.data,
                         autoLoad: true
                     });
                     Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
                     let totalAmountScan = 0;
+                    let totalAmountDetail = 0;
                     let countScan = 0;
+                    let countDetail = 0;
                     let amountAdjust = 0;
                     for (let i = 0; i < res.data.length; i++) {
                         const row = res.data[i];
@@ -143,7 +146,9 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
                             );
                     Ext.getCmp(prototype.id + '-de-QtyTkt').setValue(countScan);
                     Ext.getCmp(prototype.id + '-gridDataInfoScan').getView().refresh();
-
+                    
+                    //TOTALES
+                    
                     let differences = Math.abs(meDe.bean.SVFOPS - totalAmountScan)
                     let comment = totalAmountScan > meDe.bean.SVFOPS ? 'Tourism: Surplus' : meDe.bean.SVFOPS - totalAmountScan != 0 ? 'Tourism: Shortage' : 'Tourism: Match';
                     Ext.getCmp(prototype.id + '-de-txtComentSAUTHOC').setValue(comment)
@@ -161,8 +166,31 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
                     console.log(amountAdjust, 'amountAdjust')
 
                     Ext.getCmp(prototype.id + '-gridDataTotales').bindStore(storeTotales);
-                    Ext.getCmp(prototype.id + '-gridDataTotales').setMargin('0 0 0 20');
+//                    Ext.getCmp(prototype.id + '-gridDataTotales').setMargin('0 0 0 20');
                     Ext.getCmp(prototype.id + '-gridDataTotales').getView().refresh();
+                    
+                    
+                    //DETALLE
+                    var storeData2 = Ext.create('Ext.data.Store', {
+                        data: res.data2,
+                        autoLoad: true
+                    })
+                    Ext.getCmp(prototype.id + '-gridDataDetail').bindStore(storeData2);
+
+                    for (let i = 0; i < res.data2.length; i++) {
+
+                        const row = res.data2[i];
+                        console.log(row, 'row')
+                        const amount = row.SVFOPT;
+                        totalAmountDetail += amount;
+                        countDetail++;
+
+                    }
+                    Ext.getCmp(prototype.id + '-de-txtSumAmountDetail').setValue(
+                            Ext.util.Format.number(totalAmountDetail, '0,000.00')
+                            );
+                    //                Ext.getCmp(prototype.id + '-de-QtyTkt').setValue(count);
+                    Ext.getCmp(prototype.id + '-gridDataDetail').getView().refresh();
 
                 } else {
                     Ext.getCmp(prototype.id + '-panelMainDE').unmask()
@@ -276,7 +304,7 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.DataEntryTourismC
                         console.log(amountAdjust, 'amountAdjust')
 
                         grid3.bindStore(storeTotales);
-                        grid3.setMargin('0 0 0 130');
+//                        grid3.setMargin('0 0 0 130');
                         grid3.getView().refresh();
 
                         //obtener el campo ajuste

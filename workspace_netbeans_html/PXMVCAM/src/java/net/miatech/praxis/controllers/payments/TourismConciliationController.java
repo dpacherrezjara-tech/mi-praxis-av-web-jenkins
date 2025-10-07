@@ -183,11 +183,12 @@ public class TourismConciliationController extends BaseController {
 
         try {
             Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
-
-            List<A2282Filter> lst = this.getListPending(request, false);
+            
+            Map<String, List<A2282Filter>> data = this.getListPending(request, false);
 
             map.put("success", true);
-            map.put("data", lst);
+            map.put("data",  data.get("lista1"));
+            map.put("data2",  data.get("lista2"));
 //            map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
         } catch (SQLException e) {
             map.put("success", false);
@@ -200,9 +201,10 @@ public class TourismConciliationController extends BaseController {
         return new Gson().toJson(map);
     }
     
-    public List<A2282Filter> getListPending(HttpServletRequest request, Boolean bExcel) {
+    public Map<String, List<A2282Filter>> getListPending(HttpServletRequest request, Boolean bExcel) {
 
         List<A2282Filter> lst = new ArrayList<>();
+        Map<String, List<A2282Filter>> data = new HashMap();
         A2282Filter filter;
         Gson gson = new Gson();
 
@@ -213,13 +215,13 @@ public class TourismConciliationController extends BaseController {
             logic = new TourismConciliationLogic();
             logic.setSession(this.serverSession.getServerSession());
 
-            lst = logic.loadMPF101SQP00910(filter);
+            data = logic.loadMPF101SQP00910(filter);
 
         } catch (Exception e) {
             throw new SpringException(e);
         }
 
-        return lst;
+        return data;
     }
     
     @RequestMapping(value = "executeOption")
