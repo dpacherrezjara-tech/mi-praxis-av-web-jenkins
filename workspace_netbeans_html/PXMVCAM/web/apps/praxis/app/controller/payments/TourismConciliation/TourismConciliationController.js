@@ -287,7 +287,8 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.TourismConciliati
 //        me.bean.SDATE = Ext.getCmp(prototype.id + '-txtDate').getValue();
         me.bean.SAGENT = Ext.getCmp(prototype.id + '-txtAGENTE').getValue( );
         me.bean.REFER = Ext.getCmp(prototype.id + '-txtReferTur').getValue( );
-        me.bean.CERROR = Ext.getCmp(prototype.id + '-cmbStatus').getValue( );
+        me.bean.STVAL = Ext.getCmp(prototype.id + '-cmbStatus').getValue( );
+        me.bean.CERROR = Ext.getCmp(prototype.id + '-cmbComment').getValue( );
 //        me.bean.TRANSTYPE = Ext.getCmp(prototype.id + '-cmbTRANSTYPE').getValue();
         console.log(me.bean, 'me.bean')
         var beanString = JSON.stringify(me.bean);
