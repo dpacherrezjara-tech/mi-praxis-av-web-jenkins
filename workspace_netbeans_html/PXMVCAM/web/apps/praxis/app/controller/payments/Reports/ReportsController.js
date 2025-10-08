@@ -67,16 +67,16 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                 click: this.pagLast
             },
             //-----------------Eventos Especificos -------------------            
-            '#BankReconciliationForm-cmbDateFromYear': {
+            '#ReportsForm-cmbDateFromYear': {
                 select: this.selectComboFromYear
             },
-            '#BankReconciliationForm-cmbDateToYear': {
+            '#ReportsForm-cmbDateToYear': {
                 select: this.selectComboToYear
             },
-            '#BankReconciliationForm-cmbDateFromMonth': {
+            '#ReportsForm-cmbDateFromMonth': {
                 select: this.selectComboFromMonth
             },
-            '#BankReconciliationForm-cmbDateToMonth': {
+            '#ReportsForm-cmbDateToMonth': {
                 select: this.selectComboToMonth
             },
             '#BankReconciliationForm-cmbDateDay': {
@@ -110,8 +110,6 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
         let comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
         comboToYear.bindStore(storeComboDataYear);
         comboToYear.setValue(obj.getValue());
-        console.log(storeComboDataYear, 'comboToYear')
-        console.log(comboToYear, 'comboToYear')
         if( comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue() ){
             comboFromMonth.setValue(comboToMonth.getValue())
         }
@@ -129,12 +127,10 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
         }
     },
     selectComboFromMonth: function (obj) {
-        console.log(obj, 'obj from month')
         var comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
         comboToMonth.setValue(obj.getValue());
     },
     selectComboToMonth: function (obj) {
-        console.log(obj, 'obj to month')
         var comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYear');
         var comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYear');
         var comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonth');
@@ -145,10 +141,8 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
         }
     },
     selectComboFromDay: function (obj) {
-        console.log(obj, 'obj day from')
         var comboToDay = Ext.getCmp(prototype.id + '-cmbDateToDay');
         comboToDay.setValue(obj.getValue());
-        console.log('sdadsadadsad')
     },
     selectComboToDay: function (obj) {
         var comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYear');
@@ -198,14 +192,10 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                 var res = Ext.JSON.decode(response.responseText);
                 console.log(res);
                 if (res.success) {
-//                    me.bean_detail = res.result;
-                    //llenar grilla gridDataInfoScan
                     var storeData = Ext.create('Ext.data.Store', {
                         data: res.data,
                         autoLoad: true
                     });
-                    console.log(res.data, 'res.data')
-                    console.log(storeData, 'storeData')
                     Ext.getCmp(prototype.id + '-cmbDebitType').bindStore(storeData);
                     Ext.getCmp(prototype.id + '-cmbDebitType').setValue('');
                 } else {
@@ -222,7 +212,7 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
             autoLoad: false,
             fields: ['code', 'name'],
             data: [
-                ["SDATE", "Sales Date"],
+                ["SDATE", "Val Date"],
                 ["ADATE", "Payment Date"]
             ]
         }));
@@ -261,12 +251,12 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
             url: prototype.urlMaster + '/obtainData',
             method: 'POST',
             timeout: 60000000,
-            beforerequest: Ext.getBody().mask('Loading...'),
+//            beforerequest: Ext.getBody().mask('Loading...'),
             params: {
                 beanString: JSON.stringify(this.paramsObtainData)
             },
             success: function (response, options) {
-                Ext.getBody().unmask('Loading...');
+//                Ext.getBody().unmask('Loading...');
                 var res = Ext.JSON.decode(response.responseText);
 
 
@@ -361,9 +351,7 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
     },
 
     btnSearch_click: function (obj, e) {
-        
-//        let summaryBoolean = Ext.getCmp(prototype.id + '-panelGridSumaryMain').isVisible()
-//        let detailBoolean = Ext.getCmp(prototype.id + '-boxMainData').isVisible()
+        console.log(me.panelActual,'me.panelActual')
         if ( me.panelActual == '-panelGridSumaryMain' ){
             this.setFormatParameter2();
             this.setGridSumaryMain()
@@ -402,10 +390,7 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                             global.Msg({
                                 msg: 'Data not found.'
                             });
-                        } else {
-                            var data = obj.data.items[0].data;
-                            console.log(data);
-                        }
+                        } 
                         me.setWidthPie();
                     }
                 }
@@ -420,16 +405,17 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
         let detailBoolean = Ext.getCmp(prototype.id + '-boxMainData').isVisible()
         console.log(summaryBoolean, 'summaryBoolean')
         if ( !summaryBoolean ){
-            console.log('wadafafaf')
             Ext.getCmp(prototype.id + '-containerFilters1').hide()
             Ext.getCmp(prototype.id + '-containerFilters2').hide()
-            
+            Ext.getCmp(prototype.id + '-pie').hide()
             this.setFormatParameter2();
             this.setGridSumaryMain()
+            Ext.getCmp(prototype.id + '-panelHeight').setHeight(690);
         }else{
-            
+             Ext.getCmp(prototype.id + '-panelHeight').setHeight(630);
             Ext.getCmp(prototype.id + '-containerFilters1').show()
             Ext.getCmp(prototype.id + '-containerFilters2').show()
+            Ext.getCmp(prototype.id + '-pie').show()
             this.setFormatParameter();
             this.setGridData();
         }
@@ -469,17 +455,35 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
 
                                 lstData.push(value.data)
                             }
-                            let totQTYTOTAL = lstData[0].totQTYTOTAL;
-                            let totQDMATCH = lstData[0].totQDMATCH;
-                            let totADMATCH = lstData[0].totADMATCH;
-                            let totQRMATCH = lstData[0].totQRMATCH;
-                            let totARMATCH = lstData[0].totARMATCH;
-                            let totQCMATCH = lstData[0].totQCMATCH;
-                            let totACMATCH = lstData[0].totACMATCH;
-                            let totQAMATCH = lstData[0].totQAMATCH;
-                            let totAAMATCH = lstData[0].totAAMATCH;
-                            let totQDPEND = lstData[0].totQDPEND;
-                            let totADPEND = lstData[0].totADPEND;
+                            
+                            let lastRecord = lstData.length > 0 ? lstData[lstData.length - 1] : null;
+                            
+                            let QTY_TOTAL_REFUND = lastRecord.QTY_TOTAL_REFUND;
+                            let AMOUNT_TOTAL_REFUND_USD = lastRecord.AMOUNT_TOTAL_REFUND_USD;
+                            let AMOUNT_TOTAL_REFUND_SEND = lastRecord.AMOUNT_TOTAL_REFUND_SEND;
+                            let AMOUNT_TOTAL_REFUND_SAP = lastRecord.AMOUNT_TOTAL_REFUND_SAP;
+                            
+                             let QTY_TOTAL_CHGBACK = lastRecord.QTY_TOTAL_CHGBACK;
+                            let AMOUNT_TOTAL_CHGBACK_USD = lastRecord.AMOUNT_TOTAL_CHGBACK_USD;
+                            let AMOUNT_TOTAL_CHGBACK_SEND = lastRecord.AMOUNT_TOTAL_CHGBACK_SEND;
+                            let AMOUNT_TOTAL_CHGBACK_SAP = lastRecord.AMOUNT_TOTAL_CHGBACK_SAP;
+                            
+                             let QTY_TOTAL_REVERSE_CHGBACK = lastRecord.QTY_TOTAL_REVERSE_CHGBACK;
+                            let AMOUNT_TOTAL_REVERSE_CHGBACK_USD = lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_USD;
+                            let AMOUNT_TOTAL_REVERSE_CHGBACK_SEND = lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_SEND;
+                            let AMOUNT_TOTAL_REVERSE_CHGBACK_SAP = lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_SAP;
+                            
+                             let QTY_TOTAL_ACRED = lastRecord.QTY_TOTAL_ACRED;
+                            let AMOUNT_TOTAL_ACRED_USD = lastRecord.AMOUNT_TOTAL_ACRED_USD;
+                            let AMOUNT_TOTAL_ACRED_SEND = lastRecord.AMOUNT_TOTAL_ACRED_SEND;
+                            let AMOUNT_TOTAL_ACRED_SAP = lastRecord.AMOUNT_TOTAL_ACRED_SAP;
+                            
+                             let QTY_TOTAL_PENDING = lastRecord.QTY_TOTAL_PENDING;
+                            let AMOUNT_TOTAL_PENDING_USD = lastRecord.AMOUNT_TOTAL_PENDING_USD;
+                            let AMOUNT_TOTAL_PENDING_SEND = lastRecord.AMOUNT_TOTAL_PENDING_SEND;
+                            let AMOUNT_TOTAL_PENDING_SAP = lastRecord.AMOUNT_TOTAL_PENDING_SAP;
+                            
+                            
                             console.log(lstData, 'console.log(lstData)')
                             let a = [];
                             let dataRoot = {text: '.', expanded: false, children: []};
@@ -487,34 +491,59 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                             Ext.Object.each(lstData, function (index, value) {
                                 if (a.indexOf(value.strFormatDate) < 0) {
                                     let x = [];
-
-                                    let V_QDMATCH = 0;
-                                    let V_QRMATCH = 0;
-                                    let V_QCMATCH = 0;
-                                    let V_QAMATCH = 0;
-                                    let V_QDPEND = 0;
-                                    let V_QTYTOTAL = 0;
-                                    let V_ADMATCH = 0;
-                                    let V_ARMATCH = 0;
-                                    let V_ACMATCH = 0;
-                                    let V_AAMATCH = 0;
-                                    let V_ADPEND = 0;
                                     
+                                    let V_QTY_REFUND = 0;
+                                    let V_AMOUNT_REFUND_USD = 0;
+                                    let V_AMOUNT_REFUND_SEND = 0;
+                                    let V_AMOUNT_REFUND_SAP = 0;
 
+                                     let V_QTY_CHGBACK =0;
+                                    let V_AMOUNT_CHGBACK_USD = 0;
+                                    let V_AMOUNT_CHGBACK_SEND = 0;
+                                    let V_AMOUNT_CHGBACK_SAP =0;
 
+                                     let V_QTY_REVERSE_CHGBACK = 0;
+                                    let V_AMOUNT_REVERSE_CHGBACK_USD = 0;
+                                    let V_AMOUNT_REVERSE_CHGBACK_SEND = 0;
+                                    let V_AMOUNT_REVERSE_CHGBACK_SAP = 0;
+
+                                     let V_QTY_ACRED = 0;
+                                    let V_AMOUNT_ACRED_USD = 0;
+                                    let V_AMOUNT_ACRED_SEND = 0;
+                                    let V_AMOUNT_ACRED_SAP = 0;
+
+                                     let V_QTY_PENDING = 0;
+                                    let V_AMOUNT_PENDING_USD = 0;
+                                    let V_AMOUNT_PENDING_SEND = 0;
+                                    let V_AMOUNT_PENDING_SAP = 0;
+                        
                                     Ext.Object.each(lstData, function (index, valuex) {
                                         if (value.strFormatDate === valuex.strFormatDate) {
-                                            V_QDMATCH += valuex.QDMATCH;
-                                            V_QRMATCH += valuex.QRMATCH;
-                                            V_QCMATCH += valuex.QCMATCH;
-                                            V_QAMATCH += valuex.QAMATCH;
-                                            V_QDPEND += valuex.QDPEND;
-                                            V_QTYTOTAL += valuex.QTYTOTAL;
-                                            V_ADMATCH += valuex.ADMATCH;
-                                            V_ARMATCH += valuex.ARMATCH;
-                                            V_ACMATCH += valuex.ACMATCH;
-                                            V_AAMATCH += valuex.AAMATCH;
-                                            V_ADPEND += valuex.ADPEND;
+                                             V_QTY_REFUND += valuex.QTY_REFUND;
+                                            V_AMOUNT_REFUND_USD += valuex.AMOUNT_REFUND_USD;
+                                             V_AMOUNT_REFUND_SEND += valuex.AMOUNT_REFUND_SEND;
+                                            V_AMOUNT_REFUND_SAP+= valuex.AMOUNT_REFUND_SAP;
+
+                                            V_QTY_CHGBACK += valuex.QTY_CHGBACK;
+                                            V_AMOUNT_CHGBACK_USD += valuex.AMOUNT_CHGBACK_USD;
+                                           V_AMOUNT_CHGBACK_SEND += valuex.AMOUNT_CHGBACK_SEND;
+                                            V_AMOUNT_CHGBACK_SAP += valuex.AMOUNT_CHGBACK_SAP;
+
+                                            V_QTY_REVERSE_CHGBACK += valuex.QTY_REVERSE_CHGBACK;
+                                             V_AMOUNT_REVERSE_CHGBACK_USD += valuex.AMOUNT_REVERSE_CHGBACK_USD;
+                                             V_AMOUNT_REVERSE_CHGBACK_SEND += valuex.AMOUNT_REVERSE_CHGBACK_SEND;
+                                            V_AMOUNT_REVERSE_CHGBACK_SAP += valuex.AMOUNT_REVERSE_CHGBACK_SAP;
+
+                                            V_QTY_ACRED += valuex.QTY_ACRED;
+                                            V_AMOUNT_ACRED_USD += valuex.AMOUNT_ACRED_USD;
+                                            V_AMOUNT_ACRED_SEND += valuex.AMOUNT_ACRED_SEND;
+                                            V_AMOUNT_ACRED_SAP += valuex.AMOUNT_ACRED_SAP;
+
+                                              V_QTY_PENDING += valuex.QTY_PENDING;
+                                             V_AMOUNT_PENDING_USD += valuex.AMOUNT_PENDING_USD;
+                                             V_AMOUNT_PENDING_SEND += valuex.AMOUNT_PENDING_SEND;
+                                             V_AMOUNT_PENDING_SAP += valuex.AMOUNT_PENDING_SAP;
+                                            
                                         }
                                     });
 
@@ -523,39 +552,68 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                                     dataRoot.children.push({
                                         strFormatDate: value.strFormatDate,
                                         IN_FECFILTRO: value.IN_FECFILTRO,
-                                        QDMATCH : V_QDMATCH ,
-                                        QRMATCH : V_QRMATCH ,
-                                        QCMATCH : V_QCMATCH ,
-                                        QAMATCH : V_QAMATCH ,
-                                        QDPEND : V_QDPEND  ,
-                                        QTYTOTAL : V_QTYTOTAL,
-                                        ADMATCH : V_ADMATCH ,
-                                        ARMATCH : V_ARMATCH ,
-                                        ACMATCH : V_ACMATCH ,
-                                        AAMATCH : V_AAMATCH ,
-                                        ADPEND : V_ADPEND  ,
+                                        
+                                        QTY_REFUND : V_QTY_REFUND ,
+                                        AMOUNT_REFUND_USD : V_AMOUNT_REFUND_USD ,
+                                        AMOUNT_REFUND_SEND : V_AMOUNT_REFUND_SEND ,
+                                        AMOUNT_REFUND_SAP : V_AMOUNT_REFUND_SAP ,
+                                        
+                                        QTY_CHGBACK : V_QTY_CHGBACK ,
+                                        AMOUNT_CHGBACK_USD : V_AMOUNT_CHGBACK_USD ,
+                                        AMOUNT_CHGBACK_SEND : V_AMOUNT_CHGBACK_SEND ,
+                                        AMOUNT_CHGBACK_SAP : V_AMOUNT_CHGBACK_SAP ,
+                                        
+                                        QTY_REVERSE_CHGBACK : V_QTY_REVERSE_CHGBACK ,
+                                        AMOUNT_REVERSE_CHGBACK_USD : V_AMOUNT_REVERSE_CHGBACK_USD ,
+                                        AMOUNT_REVERSE_CHGBACK_SEND : V_AMOUNT_REVERSE_CHGBACK_SEND ,
+                                        AMOUNT_REVERSE_CHGBACK_SAP : V_AMOUNT_REVERSE_CHGBACK_SAP ,
+                                        
+                                        QTY_ACRED : V_QTY_ACRED ,
+                                        AMOUNT_ACRED_USD : V_AMOUNT_ACRED_USD ,
+                                        AMOUNT_ACRED_SEND : V_AMOUNT_ACRED_SEND ,
+                                        AMOUNT_CRED_SAP : V_AMOUNT_ACRED_SAP,
+                                        
+                                        QTY_PENDING : V_QTY_PENDING ,
+                                        AMOUNT_PENDING_USD : V_AMOUNT_PENDING_USD ,
+                                        AMOUNT_PENDING_SEND : V_AMOUNT_PENDING_SEND ,
+                                        AMOUNT_PENDING_SAP : V_AMOUNT_PENDING_SAP ,
 
                                         expanded: false, children: []
                                     });
+                                    
                                     let b = [];
                                     Ext.Object.each(lstData, function (index, value01) {
                                         if (value.strFormatDate === value01.strFormatDate) {
                                             dataRoot.children[a.indexOf(value.strFormatDate)].children.push({
                                                 strFormatDate: value01.strFormatDate,
                                                 CCUST: value01.CCUST,
-//                                                FCHILD: value01.FCHILD,
                                                 IN_FECFILTRO: value01.IN_FECFILTRO,
-                                                QDMATCH : value01.QDMATCH,
-                                                QRMATCH : value01.QRMATCH,
-                                                QCMATCH : value01.QCMATCH,
-                                                QAMATCH : value01.QAMATCH,
-                                                QDPEND : value01.QDPEND,
-                                                QTYTOTAL : value01.QTYTOTAL,
-                                                ADMATCH : value01.ADMATCH,
-                                                ARMATCH : value01.ARMATCH,
-                                                ACMATCH : value01.ACMATCH,
-                                                AAMATCH : value01.AAMATCH,
-                                                ADPEND : value01.ADPEND,
+                                                
+                                                QTY_REFUND : value01.QTY_REFUND ,
+                                                AMOUNT_REFUND_USD : value01.AMOUNT_REFUND_USD ,
+                                                AMOUNT_REFUND_SEND : value01.AMOUNT_REFUND_SEND ,
+                                                AMOUNT_REFUND_SAP : value01.AMOUNT_REFUND_SAP ,
+
+                                                QTY_CHGBACK : value01.QTY_CHGBACK ,
+                                                AMOUNT_CHGBACK_USD : value01.AMOUNT_CHGBACK_USD ,
+                                                AMOUNT_CHGBACK_SEND : value01.AMOUNT_CHGBACK_SEND ,
+                                                AMOUNT_CHGBACK_SAP : value01.AMOUNT_CHGBACK_SAP ,
+
+                                                QTY_REVERSE_CHGBACK : value01.QTY_REVERSE_CHGBACK ,
+                                                AMOUNT_REVERSE_CHGBACK_USD : value01.AMOUNT_REVERSE_CHGBACK_USD ,
+                                                AMOUNT_REVERSE_CHGBACK_SEND : value01.AMOUNT_REVERSE_CHGBACK_SEND ,
+                                                AMOUNT_REVERSE_CHGBACK_SAP : value01.AMOUNT_REVERSE_CHGBACK_SAP ,
+
+                                                QTY_ACRED : value01.QTY_ACRED ,
+                                                AMOUNT_ACRED_USD : value01.AMOUNT_ACRED_USD ,
+                                                AMOUNT_ACRED_SEND : value01.AMOUNT_ACRED_SEND ,
+                                                AMOUNT_CRED_SAP : value01.AMOUNT_CRED_SAP,
+
+                                                QTY_PENDING : value01.QTY_PENDING ,
+                                                AMOUNT_PENDING_USD : value01.AMOUNT_PENDING_USD ,
+                                                AMOUNT_PENDING_SEND :value01.AMOUNT_PENDING_SEND ,
+                                                AMOUNT_PENDING_SAP : value01.AMOUNT_PENDING_SAP ,
+                                                
                                                 leaf: true
                                             });
                                         }
@@ -569,20 +627,35 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
 
                             Ext.getCmp(prototype.id + '-gridSumaryMain').setStore(storeTree);
                             
-                            Ext.getCmp(prototype.id + '-totQTYTOTAL').setText(Ext.util.Format.number(totQTYTOTAL, '0,000'));
-                            Ext.getCmp(prototype.id + '-totQDMATCH').setText(Ext.util.Format.number(totQDMATCH, '0,000'));
-                            Ext.getCmp(prototype.id + '-totADMATCH').setText(Ext.util.Format.number(totADMATCH, '0,000'));
-                            Ext.getCmp(prototype.id + '-totQRMATCH').setText(Ext.util.Format.number(totQRMATCH, '0,000'));
-                            Ext.getCmp(prototype.id + '-totARMATCH').setText(Ext.util.Format.number(totARMATCH, '0,000'));
-                            Ext.getCmp(prototype.id + '-totQCMATCH').setText(Ext.util.Format.number(totQCMATCH, '0,000'));
-                            Ext.getCmp(prototype.id + '-totACMATCH').setText(Ext.util.Format.number(totACMATCH, '0,000'));
-                            Ext.getCmp(prototype.id + '-totQAMATCH').setText(Ext.util.Format.number(totQAMATCH, '0,000'));
-                            Ext.getCmp(prototype.id + '-totAAMATCH').setText(Ext.util.Format.number(totAAMATCH, '0,000'));
-                            Ext.getCmp(prototype.id + '-totQDPEND').setText(Ext.util.Format.number(totQDPEND, '0,000'));
-                            Ext.getCmp(prototype.id + '-totADPEND').setText(Ext.util.Format.number(totADPEND, '0,000'));
+                          
                             
-                            var data = obj.data.items[0].data;
-                            console.log(data, 'datadata');
+                            Ext.getCmp(prototype.id + '-QTY_TOTAL_REFUND').setText(Ext.util.Format.number(QTY_TOTAL_REFUND, '0,000'));
+                            Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_REFUND_USD').setText(Ext.util.Format.number(AMOUNT_TOTAL_REFUND_USD, '0,000'));
+                            Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_REFUND_SEND').setText(Ext.util.Format.number(AMOUNT_TOTAL_REFUND_SEND, '0,000'));
+                            Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_REFUND_SAP').setText(Ext.util.Format.number(AMOUNT_TOTAL_REFUND_SAP, '0,000'));
+                            
+                             Ext.getCmp(prototype.id + '-QTY_TOTAL_CHGBACK').setText(Ext.util.Format.number(QTY_TOTAL_CHGBACK, '0,000'));
+                            Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_CHGBACK_USD').setText(Ext.util.Format.number(AMOUNT_TOTAL_CHGBACK_USD, '0,000'));
+                            Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_CHGBACK_SEND').setText(Ext.util.Format.number(AMOUNT_TOTAL_CHGBACK_SEND, '0,000'));
+                            Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_CHGBACK_SAP').setText(Ext.util.Format.number(AMOUNT_TOTAL_CHGBACK_SAP, '0,000'));
+                            
+                             Ext.getCmp(prototype.id + '-QTY_TOTAL_REVERSE_CHGBACK').setText(Ext.util.Format.number(QTY_TOTAL_REVERSE_CHGBACK, '0,000'));
+                            Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_REVERSE_CHGBACK_USD').setText(Ext.util.Format.number(AMOUNT_TOTAL_REVERSE_CHGBACK_USD, '0,000'));
+                            Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_REVERSE_CHGBACK_SEND').setText(Ext.util.Format.number(AMOUNT_TOTAL_REVERSE_CHGBACK_SEND, '0,000'));
+                            Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_REVERSE_CHGBACK_SAP').setText(Ext.util.Format.number(AMOUNT_TOTAL_REVERSE_CHGBACK_SAP, '0,000'));
+                            
+                             Ext.getCmp(prototype.id + '-QTY_TOTAL_ACRED').setText(Ext.util.Format.number(QTY_TOTAL_ACRED, '0,000'));
+                            Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_ACRED_USD').setText(Ext.util.Format.number(AMOUNT_TOTAL_ACRED_USD, '0,000'));
+                            Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_ACRED_SEND').setText(Ext.util.Format.number(AMOUNT_TOTAL_ACRED_SEND, '0,000'));
+                            Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_ACRED_SAP').setText(Ext.util.Format.number(AMOUNT_TOTAL_ACRED_SAP, '0,000'));
+                            
+                             Ext.getCmp(prototype.id + '-QTY_TOTAL_PENDING').setText(Ext.util.Format.number(QTY_TOTAL_PENDING, '0,000'));
+                            Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_PENDING_USD').setText(Ext.util.Format.number(AMOUNT_TOTAL_PENDING_USD, '0,000'));
+                            Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_PENDING_SEND').setText(Ext.util.Format.number(AMOUNT_TOTAL_PENDING_SEND, '0,000'));
+                            Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_PENDING_SAP').setText(Ext.util.Format.number(AMOUNT_TOTAL_PENDING_SAP, '0,000'));
+                            
+                            var data = lastRecord;
+                            console.log(lastRecord, 'datadata');
                             console.log(obj, 'objobj');
                             
                             let item = {};
@@ -591,51 +664,104 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                             let item4 = {};
                             let item5 = {};
                             let totals = [];
-                            let charts = [];
-                            let debitoMatch = (obj.data.items[0].data.totQDMATCH / obj.data.items[0].data.totQTYTOTAL) * 100;
-                            let refundMatch = (obj.data.items[0].data.totQRMATCH / obj.data.items[0].data.totQTYTOTAL) * 100;
-                            let chgbkMatch = (obj.data.items[0].data.totQCMATCH / obj.data.items[0].data.totQTYTOTAL) * 100;
-                            let acreditMatch = (obj.data.items[0].data.totQAMATCH / obj.data.items[0].data.totQTYTOTAL) * 100;
-                            let debitoPend = (obj.data.items[0].data.totQDPEND / obj.data.items[0].data.totQTYTOTAL) * 100;
-                            
-                            if (obj.data.items.length > 0) {
-                                item.Perc2 = obj.data.items[0].data.totQDMATCH;
-                                var debitsM = "Debito:\n" + Ext.util.Format.number(obj.data.items[0].data.totQDMATCH, '0,000') + "\n" + Ext.util.Format.number(debitoMatch, '0.00%');
-                                item.VENDOR = debitsM;
-                                totals.push(item);
-                                
-                                item2.Perc2 = obj.data.items[0].data.totQRMATCH;
-                                var refundM = "Refund:\n" + Ext.util.Format.number(obj.data.items[0].data.totQRMATCH, '0,000') + "\n" + Ext.util.Format.number(refundMatch, '0.00%');
-                                item2.VENDOR = refundM;
-                                totals.push(item2);
+let totalCantidad = lastRecord.QTY_TOTAL_REFUND +
+    lastRecord.QTY_TOTAL_CHGBACK +
+    lastRecord.QTY_TOTAL_REVERSE_CHGBACK +
+    lastRecord.QTY_TOTAL_ACRED +
+    lastRecord.QTY_TOTAL_PENDING;
 
-                                item3.Perc2 = obj.data.items[0].data.totQCMATCH;
-                                var chgbackM = "Chgback:\n" + Ext.util.Format.number(obj.data.items[0].data.totQCMATCH, '0,000') + "\n" + Ext.util.Format.number(chgbkMatch, '0.00%');
-                                item3.VENDOR = chgbackM;
-                                totals.push(item3);
-                                
-                                item4.Perc2 = obj.data.items[0].data.totQAMATCH;
-                                var acreditM = "Acredit:\n" + Ext.util.Format.number(obj.data.items[0].data.totQAMATCH, '0,000') + "\n" + Ext.util.Format.number(acreditMatch, '0.00%');
-                                item4.VENDOR = acreditM;
-                                totals.push(item4);
-                                
-                                item5.Perc2 = obj.data.items[0].data.totQDPEND;
-                                var debitsP = "Pending:\n" + Ext.util.Format.number(obj.data.items[0].data.totQDPEND, '0,000') + "\n" + Ext.util.Format.number(debitoPend, '0.00%');
-                                item5.VENDOR = debitsP;
-                                totals.push(item5);
-                            } else {
-                                totals.push({})
-                            }
+let refundMatch = (lastRecord.QTY_TOTAL_REFUND / totalCantidad) * 100;
+let chgbkMatch = (lastRecord.QTY_TOTAL_CHGBACK / totalCantidad) * 100;
+let reverseChgbkMatch = (lastRecord.QTY_TOTAL_REVERSE_CHGBACK / totalCantidad) * 100;
+let acreditMatch = (lastRecord.QTY_TOTAL_ACRED / totalCantidad) * 100;
+let othersPend = (lastRecord.QTY_TOTAL_PENDING / totalCantidad) * 100;
+
+if (obj.data.items.length > 0) {
+    totals.push({
+        LABEL: 'Refund',
+        Perc2: lastRecord.QTY_TOTAL_REFUND,
+        VENDOR: 'Refund:\n' + Ext.util.Format.number(refundMatch, '0.00%')
+    });
+    
+    totals.push({
+        LABEL: 'Pending',
+        Perc2: lastRecord.QTY_TOTAL_PENDING,
+        VENDOR: 'Pending:\n' + Ext.util.Format.number(othersPend, '0.00%')
+    });
+    totals.push({
+        LABEL: 'Chgback',
+        Perc2: lastRecord.QTY_TOTAL_CHGBACK,
+        VENDOR: 'Chgback:\n' + Ext.util.Format.number(chgbkMatch, '0.00%')
+    });
+    totals.push({
+        LABEL: 'Acredit',
+        Perc2: lastRecord.QTY_TOTAL_ACRED,
+        VENDOR: 'Acredit:\n'+ Ext.util.Format.number(acreditMatch, '0.00%')
+    });
+    totals.push({
+        LABEL: 'Chgback Reverse',
+        Perc2: lastRecord.QTY_TOTAL_REVERSE_CHGBACK,
+        VENDOR: 'Chgback Reverse:\n' + Ext.util.Format.number(reverseChgbkMatch, '0.00%')
+    });
+}
+
+var storeData1er = Ext.create('Ext.data.Store', {
+    data: totals,
+    autoLoad: true
+});
+
+Ext.getCmp(prototype.id + '-displayPolarSM').bindStore(storeData1er);
+//Ext.getCmp(prototype.id + '-lblTittlePaidSumaryMain').setText('Totals Debits: ' + Ext.util.Format.number(totalCantidad, '0,000'));
+
+    // Supongamos que ya tienes lastRecord con tus datos
+// Supongamos que lastRecord ya contiene tus montos
+let dataBar = [
+    {
+        category: 'Refund',
+        USD: lastRecord.AMOUNT_TOTAL_REFUND_USD,
+        SEND: lastRecord.AMOUNT_TOTAL_REFUND_SEND,
+        SAP: lastRecord.AMOUNT_TOTAL_REFUND_SAP
+    },
+    {
+        category: 'Chargeback',
+        USD: lastRecord.AMOUNT_TOTAL_CHGBACK_USD,
+        SEND: lastRecord.AMOUNT_TOTAL_CHGBACK_SEND,
+        SAP: lastRecord.AMOUNT_TOTAL_CHGBACK_SAP
+    },
+    {
+        category: 'Reverse ChgBck',
+        USD: lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_USD,
+        SEND: lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_SEND,
+        SAP: lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_SAP
+    },
+    {
+        category: 'Acreditaciones',
+        USD: lastRecord.AMOUNT_TOTAL_ACRED_USD,
+        SEND: lastRecord.AMOUNT_TOTAL_ACRED_SEND,
+        SAP: lastRecord.AMOUNT_TOTAL_ACRED_SAP
+    },
+    {
+        category: 'Pendiente',
+        USD: lastRecord.AMOUNT_TOTAL_PENDING_USD,
+        SEND: lastRecord.AMOUNT_TOTAL_PENDING_SEND,
+        SAP: lastRecord.AMOUNT_TOTAL_PENDING_SAP
+    }
+];
+
+// Asignar store al gráfico
+let chart = Ext.getCmp(prototype.id + '-displayBarSM');
+chart.setStore({
+    fields: ['category', 'USD', 'SEND', 'SAP'],
+    data: dataBar
+});
+
+// Opcional: definir títulos de la serie (se hace aquí porque no se puede en HTML si es dinámico)
+chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
 
 
-                            var storeData1er = Ext.create('Ext.data.Store', {
-                                data: totals,
-                                autoLoad: true
-                            });
-                            Ext.getCmp(prototype.id + '-displayPolarSM').bindStore(storeData1er);
-                            Ext.getCmp(prototype.id + '-lblTittlePaidSumaryMain').setText('Totals Debits: ' + Ext.util.Format.number(obj.data.items[0].data.totQTYTOTAL, '0,000'))
-                            
-                            
+//Ext.getCmp(prototype.id + '-displayBarSM').bindStore(chart);
+    
+    
                         }
 //                        me.setWidthPie();
                     }
@@ -647,66 +773,123 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
 //            Ext.getCmp(prototype.id + '-paggin2').bindStore(storeGridDatas);
         }
     },
-    onGridDataDetail: function (column, e, row, column, x, rowData) {
-        
-        console.log(rowData, 'rowData')
-        console.log(rowData.data.children, 'rowData')
-        console.log(column, 'column')
-        me.bean = {};
-        let dateFormat = {
-            '2024-Jan': '202401',
-            '2024-Feb': '202402',
-            '2024-Mar': '202403',
-            '2024-Apr': '202404',
-            '2024-May': '202405',
-            '2024-Jun': '202406',
-            '2024-Jul': '202407',
-            '2024-Aug': '202408',
-            '2024-Sep': '202409',
-            '2024-Oct': '202410',
-            '2024-Nov': '202411',
-            '2024-Dec': '202412',
+    getPeriodoYYYYMM: function(strFormatDate) {
+        if (!strFormatDate) return null;
 
+        let [anio, mesTxt] = strFormatDate.split('-');
+        const meses = {
+            Jan: '01', Feb: '02', Mar: '03', Apr: '04',
+            May: '05', Jun: '06', Jul: '07', Aug: '08',
+            Sep: '09', Oct: '10', Nov: '11', Dec: '12'
         };
-        if( !rowData.data.children ){
-            me.bean.IN_CCUST = rowData.data.CCUST;
-        }else {
-            me.bean.IN_CCUST = '';
+        return anio + (meses[mesTxt] || '00');
+    },
+    onGridDataDetail: function (column, e, rowIndex, colIndex, rowData) {
+        console.log(rowData,'rowData')
+        let esPadre = rowData.record.childNodes.length ? true : false;
+        let rowPadre = rowData.record.data;
+        let opcion = colIndex;
+        let fecha = this.getPeriodoYYYYMM(rowPadre.strFormatDate);
+        me.bean = {};
+        
+        console.log(opcion,'opcion')
+        switch (opcion) {
+            case 1:
+//                GENERAL
+                me.bean.IN_CONT = "";
+                me.bean.IN_TDOC = "";
+                break;
+            case 2:
+//                REEMBOLSO
+                me.bean.IN_CONT = "";
+                me.bean.IN_TDOC = "R";
+                break;
+            case 4:
+//                REEMBOLSO AMOUNT SEND
+                me.bean.IN_CONT = "RSEND";
+                me.bean.IN_TDOC = "R";
+                break;
+            case 5:
+//                REEMBOLSO AMOUNT AMOUNT SAP
+                me.bean.IN_CONT = "RSAP";
+                me.bean.IN_TDOC = "R";
+                break;
+            case 6:
+//                CHARBACK
+                me.bean.IN_CONT = "";
+                me.bean.IN_TDOC = "C";
+                break;
+            case 8:
+//                CHARBACK SEND
+                 me.bean.IN_CONT = "CSEND";
+                me.bean.IN_TDOC = "C";
+                break;
+            case 9:
+//                CHARBACK SAP
+                 me.bean.IN_CONT = "CSAP";
+                me.bean.IN_TDOC = "C";
+                break;
+            case 10:
+//                REVERSA CHARBACK
+                me.bean.IN_CONT = "";
+                me.bean.IN_TDOC = "RC";
+                break;
+            case 12:
+//                REVERSA CHARBACK SEND
+                me.bean.IN_CONT = "RVSEND";
+                me.bean.IN_TDOC = "RC";
+                break;
+            case 13:
+//                REVERSA CHARBACK SAP
+                me.bean.IN_CONT = "RVSAP";
+                me.bean.IN_TDOC = "RC";
+                break;
+            case 14:
+//                ACREDITACIONES
+                me.bean.IN_CONT = "";
+                me.bean.IN_TDOC = "A";
+                break;
+            case 16:
+//                ACREDITACIONES SEND
+                me.bean.IN_CONT = "ASEND";
+                me.bean.IN_TDOC = "A";
+                break;
+            case 17:
+//                ACREDITACIONES SAP
+                me.bean.IN_CONT = "ASAP";
+                me.bean.IN_TDOC = "A";
+                break;
+            case 18:
+//                PENDIENTE
+                me.bean.IN_CONT = "";
+                me.bean.IN_TDOC = "P";
+                break;
+            default:
+                resultado = 'AV GROUP';
+                break;
         }
-        me.bean.IN_DATE = dateFormat[rowData.data.strFormatDate];
         
-        if ( column === 1 ){
-            me.bean.IN_TDOC = 'Z';
-        }else if( column === 2 ){
-            me.bean.IN_TDOC = 'D';
-        }else if( column === 4 ){
-            me.bean.IN_TDOC = 'R';
-        }else if ( column === 6 ){
-            me.bean.IN_TDOC = 'C';
-        }else if ( column === 8 ){
-            me.bean.IN_TDOC = 'A';
-        }else if ( column === 10 ){
-            me.bean.IN_TDOC = 'P';
+        
+        if (esPadre) {
+            me.bean.IN_CCUST = "";
+        } else {
+            me.bean.IN_CCUST =rowPadre.CCUST;
         }
         
-        me.bean.IN_FECFILTRO = rowData.data.IN_FECFILTRO;
-        
+        me.bean.IN_DATE = fecha;
+        me.bean.IN_FECFILTRO = rowPadre.IN_FECFILTRO;
+
         me.paramsDetail.beanString = JSON.stringify(me.bean);
-        var beanString = JSON.stringify(me.bean);
-//        searchParams = {
-//            beanString: beanString,
-//            bean: me.bean
-//        };
-        console.log(searchParams, 'searchParams')
-        me.drillDown.push(me.panelActual);
-//        me.typeBean = 'D' // DRILL DOWN
+        
+        console.log(me.panelActual, 'me.panelActual')
+        console.log(me.bean, 'searchParams')
+
         this.setGridDataDetail();
-
-
     },
     setGridDataDetail: function (){
         win.lblUser_toolTip("Estructura: MPF101");
         me.panelActual = '-boxDataDetail';
+        Ext.getCmp(prototype.id + '-panelHeight').setHeight(630);
         global.selectedChild(me.childs, prototype.id + me.panelActual);
         var msj = this.validateFields();
         if (msj !== '') {
@@ -718,11 +901,9 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                     url: prototype.url + '/searchDataDetail'
                 }, listeners: {
                     beforeload: function (obj) {
-//                        Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
                         obj.proxy.extraParams = me.paramsDetail;
                     },
                     load: function (obj) {
-//                        Ext.getCmp(prototype.id + '-contentInfo').unmask();
                         var pag = Ext.getCmp(prototype.id + '-paggin3');
                         var pagData = pag.getPageData();
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
@@ -732,9 +913,6 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                             global.Msg({
                                 msg: 'Data not found.'
                             });
-                        } else {
-                            var data = obj.data.items[0].data;
-                            console.log(data);
                         }
                         me.setWidthPie();
                     }
@@ -840,18 +1018,18 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
         }
     },
     btnFilter_click: function (obj) {
-        var option = Ext.getCmp(prototype.id + '-contFilter');
-        if (option.isVisible(option)) {
-            option.setVisible(false);
-        } else {
-            option.setVisible(true);
-        }
+//        var option = Ext.getCmp(prototype.id + '-contFilter');
+//        if (option.isVisible(option)) {
+//            option.setVisible(false);
+//        } else {
+//            option.setVisible(true);
+//        }
     },
     setWidthPie: function () {
 
         var ancho = Ext.getCmp(prototype.id + me.panelActual).getWidth();
         console.log(ancho, 'ancho')
-//        Ext.getCmp(prototype.id + '-pie').setWidth(ancho);
+        Ext.getCmp(prototype.id + '-pie').setWidth(ancho);
         Ext.getCmp(prototype.id + '-pie').setVisible(true);
     },
     getPaggin: function () {
@@ -859,12 +1037,16 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
         switch (me.panelActual) {
             case  '-boxMainData':
                 me.pagginActual = '-paggin';
+                Ext.getCmp(prototype.id + '-panelHeight').setHeight(660);
                 break;
             case  '-panelGridSumaryMain':
                 me.pagginActual = '-paggin2';
+                Ext.getCmp(prototype.id + '-pie').setVisible(false);
+                Ext.getCmp(prototype.id + '-panelHeight').setHeight(690);
                 break;
             case  '-boxDataDetail':
                 me.pagginActual = '-paggin3';
+                Ext.getCmp(prototype.id + '-panelHeight').setHeight(660);
                 break;
         }
     },

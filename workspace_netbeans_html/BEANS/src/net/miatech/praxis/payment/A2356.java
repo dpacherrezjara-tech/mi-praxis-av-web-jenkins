@@ -168,6 +168,61 @@ public class A2356 {
         public double totAPEND  = 0;  
         public double totAPOLIC  = 0;  
         public double totAPOLIPE  = 0;  
+        
+        
+        
+        public int QTY_REFUND  = 0;  
+        public double AMOUNT_REFUND_USD  = 0;  
+        public double AMOUNT_REFUND_SEND  = 0;  
+        public double AMOUNT_REFUND_SAP  = 0;  
+        
+        public int QTY_CHGBACK  = 0;  
+        public double AMOUNT_CHGBACK_USD  = 0;  
+        public double AMOUNT_CHGBACK_SEND  = 0;  
+        public double AMOUNT_CHGBACK_SAP  = 0;  
+        
+        public int QTY_REVERSE_CHGBACK  = 0;  
+        public double AMOUNT_REVERSE_CHGBACK_USD  = 0;  
+        public double AMOUNT_REVERSE_CHGBACK_SEND  = 0;  
+        public double AMOUNT_REVERSE_CHGBACK_SAP  = 0;  
+        
+        public int QTY_ACRED  = 0;  
+        public double AMOUNT_ACRED_USD  = 0;  
+        public double AMOUNT_ACRED_SEND  = 0;  
+        public double AMOUNT_ACRED_SAP  = 0;  
+        
+        public int QTY_PENDING  = 0;  
+        public double AMOUNT_PENDING_USD  = 0;  
+        public double AMOUNT_PENDING_SEND  = 0;  
+        public double AMOUNT_PENDING_SAP  = 0;  
+        
+        public int QTY_TOTAL_REFUND  = 0;  
+        public double AMOUNT_TOTAL_REFUND_USD  = 0;  
+        public double AMOUNT_TOTAL_REFUND_SEND  = 0;  
+        public double AMOUNT_TOTAL_REFUND_SAP  = 0;  
+        
+        public int QTY_TOTAL_CHGBACK  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_USD  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_SEND  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_SAP  = 0;  
+        
+        public int QTY_TOTAL_REVERSE_CHGBACK  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_CHGBACK_USD  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_CHGBACK_SEND  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_CHGBACK_SAP  = 0;  
+        
+        public int QTY_TOTAL_ACRED  = 0;  
+        public double AMOUNT_TOTAL_ACRED_USD  = 0;  
+        public double AMOUNT_TOTAL_ACRED_SEND  = 0;  
+        public double AMOUNT_TOTAL_ACRED_SAP  = 0;  
+        
+        public int QTY_TOTAL_PENDING  = 0;  
+        public double AMOUNT_TOTAL_PENDING_USD  = 0;  
+        public double AMOUNT_TOTAL_PENDING_SEND  = 0;  
+        public double AMOUNT_TOTAL_PENDING_SAP  = 0;  
+        
+        
+        
         public String USCR  = "";
         public String FECR  = "";
         public String HOCR  = "";
