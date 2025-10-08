@@ -182,6 +182,29 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Filters', {
                             },
                             margin: '0 10 0 0' 
                         },
+                        {
+                                xtype: 'displayfield',
+                                id: prototype.id + '-lblExchangeMessage2',
+                                fieldLabel: 'Estado tipo cambio',
+                                labelWidth: 110,
+                                hidden:true,
+                                width: 600,
+                                labelStyle: 'font-size: 12px; text-align: left;',
+                                fieldStyle: 'font-size: 12px; color: #444; padding-bottom: 8px;',
+                                value: '', // Se llena dinámicamente con el mensaje
+                                listeners: {
+                                    afterrender: function (cmp) {
+                                        // Creamos el tooltip vacío al inicio
+                                        cmp.tooltip = Ext.create('Ext.tip.ToolTip', {
+                                            target: cmp.getEl(),
+                                            trackMouse: true,
+                                            maxWidth: 600,
+                                            dismissDelay: 0,
+                                            html: '' // se actualiza luego
+                                        });
+                                    }
+                                }
+                            },
                         // --- FILA 2 (country, cards, author) ---
                 {
                     xtype: 'container',
@@ -358,7 +381,30 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Filters', {
                             listConfig: {minWidth: 150},
                             enableKeyEvents: true,
                             triggerAction: 'all'
-                        }
+                        },
+                        {
+                                xtype: 'displayfield',
+                                id: prototype.id + '-lblExchangeMessage',
+                                fieldLabel: 'Estado tipo cambio',
+                                labelWidth: 110,
+                                width: 600,
+                                labelStyle: 'font-size: 12px; text-align: left;',
+                                fieldStyle: 'font-size: 12px; color: #444; padding-bottom: 8px;',
+                                value: '', // Se llena dinámicamente con el mensaje
+                                listeners: {
+                                    afterrender: function (cmp) {
+                                        // Creamos el tooltip vacío al inicio
+                                        cmp.tooltip = Ext.create('Ext.tip.ToolTip', {
+                                            target: cmp.getEl(),
+                                            trackMouse: true,
+                                            maxWidth: 600,
+                                            dismissDelay: 0,
+                                            html: '' // se actualiza luego
+                                        });
+                                    }
+                                }
+                            }
+
                     ]
                 }
             ]

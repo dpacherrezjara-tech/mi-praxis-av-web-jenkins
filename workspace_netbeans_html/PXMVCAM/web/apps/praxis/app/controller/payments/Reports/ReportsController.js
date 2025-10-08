@@ -360,6 +360,57 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
             this.setGridData();
         }
         
+        
+        Ext.Ajax.request({
+            url: prototype.url + '/verifyExchangeRates',    
+            method: 'POST',
+            timeout: 60000000,
+            params: searchParams,
+            success: function (response, opts) {
+                var res = Ext.JSON.decode(response.responseText);
+
+                var lbl = Ext.getCmp(prototype.id + '-lblExchangeMessage');
+                var lbl2 = Ext.getCmp(prototype.id + '-lblExchangeMessage2');
+
+                if (lbl) {
+                    // 🔹 Mostrar mensaje principal
+                    lbl.setValue(res.message);
+                    lbl2.setValue(res.message);
+
+                    // 🔹 Si hay data, construir el contenido del tooltip
+                    if (res.data && res.data.length > 0) {
+                        let tooltipHtml = '<b>Registros sin tipo de cambio:</b><br><table style="font-size:12px;border-collapse:collapse;">';
+                        tooltipHtml += '<tr><th style="padding:2px 5px;">Fecha</th><th style="padding:2px 5px;">Moneda</th><th style="padding:2px 5px;">Cantidad</th></tr>';
+                        res.data.forEach(r => {
+                            tooltipHtml += `<tr>
+                                <td style="padding:2px 5px;">${r.SDATE}</td>
+                                <td style="padding:2px 5px;">${r.SCURRENCY}</td>
+                                <td style="padding:2px 5px;">${r.QTY}</td>
+                            </tr>`;
+                        });
+                        tooltipHtml += '</table>';
+                        lbl.tooltip.update(tooltipHtml);
+                        lbl2.tooltip.update(tooltipHtml);
+
+                        // Color de advertencia si hay errores
+                        lbl.setFieldStyle('color: #d9534f; font-weight: bold;');
+                        lbl2.setFieldStyle('color: #d9534f; font-weight: bold;');
+                    } else {
+                        // Caso sin errores
+                        lbl.tooltip.update('Todos los registros cuentan con tipo de cambio.');
+                        lbl.setFieldStyle('color: #28a745; font-weight: bold;');
+                        
+                        lbl2.tooltip.update('Todos los registros cuentan con tipo de cambio.');
+                        lbl2.setFieldStyle('color: #28a745; font-weight: bold;');
+                    }
+                }
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+            }
+        });
+
+        
     },
 
     setGridData: function () {
@@ -407,6 +458,7 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
         if ( !summaryBoolean ){
             Ext.getCmp(prototype.id + '-containerFilters1').hide()
             Ext.getCmp(prototype.id + '-containerFilters2').hide()
+            Ext.getCmp(prototype.id + '-lblExchangeMessage2').show()
             Ext.getCmp(prototype.id + '-pie').hide()
             this.setFormatParameter2();
             this.setGridSumaryMain()
@@ -415,12 +467,11 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
              Ext.getCmp(prototype.id + '-panelHeight').setHeight(630);
             Ext.getCmp(prototype.id + '-containerFilters1').show()
             Ext.getCmp(prototype.id + '-containerFilters2').show()
+            Ext.getCmp(prototype.id + '-lblExchangeMessage2').hide()
             Ext.getCmp(prototype.id + '-pie').show()
             this.setFormatParameter();
             this.setGridData();
         }
-        
-
     },
     setGridSumaryMain: function () {
         win.lblUser_toolTip("Estructura: MPF101");
@@ -1038,15 +1089,18 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
             case  '-boxMainData':
                 me.pagginActual = '-paggin';
                 Ext.getCmp(prototype.id + '-panelHeight').setHeight(660);
+                Ext.getCmp(prototype.id + '-lblExchangeMessage2').hide()
                 break;
             case  '-panelGridSumaryMain':
                 me.pagginActual = '-paggin2';
                 Ext.getCmp(prototype.id + '-pie').setVisible(false);
                 Ext.getCmp(prototype.id + '-panelHeight').setHeight(690);
+                Ext.getCmp(prototype.id + '-lblExchangeMessage2').show()
                 break;
             case  '-boxDataDetail':
                 me.pagginActual = '-paggin3';
                 Ext.getCmp(prototype.id + '-panelHeight').setHeight(660);
+                Ext.getCmp(prototype.id + '-lblExchangeMessage2').hide()
                 break;
         }
     },
