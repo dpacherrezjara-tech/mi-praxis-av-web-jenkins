@@ -3,46 +3,39 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Filters', {
     alias: 'widget.' + prototype.id + '-filters',
     border: true,
     bodyStyle: 'background-color: #E3EAF9;',
-    padding: '2px 0px 1px 0px',
-    layout: 'column',
+    layout: {
+        type: 'vbox',
+        align: 'stretch'
+    },
+    defaults: {
+        width: '100%'
+    },
     items: [
         {
-            xtype: 'form',
-            id: prototype.id + '-contFilter',
-            border: false,
-            bodyStyle: 'background: transparent',
-            padding: '2px 5px 1px 5px',
-            layout: 'column',
-            defaults: {
-                labelStyle: 'font-weight:bold;',
-                fieldStyle: 'text-align: left;',
-                padding: '5px 1px 5px 1px',
-                anchor: '100%',
-                hiddenLabel: false,
-                labelAlign: 'right',
-                hidden: false
+            xtype: 'container',
+            id: prototype.id + '-filterMain',
+            layout: {
+                type: 'vbox',
+                align: 'stretch'
             },
+            style: 'padding: 10px 0 10px 15px;',
             items: [
+                // --- FILA 1 (fechas y search) ---
                 {
-                    xtype: 'panel',
-                    width: '100%',
-                    layout: 'hbox',
-                    border: false,
-                    bodyStyle: 'background: transparent;"',
+                    xtype: 'container',
+                    layout: {
+                        type: 'hbox',
+                        align: 'middle'
+                    },
+                    margin: '0 0 10 0',
+//                    defaults: { margin: '0 10 0 0' },
                     items: [
-                        {xtype: 'tbspacer', width: 25},
-                        {
-                            xtype: 'label',
-                            text: 'Search By:',
-                            padding: '4 10 0 0',
-                            width: 80,
-                            style: {
-                                fontWeight: 'bold'
-                            }
-                        },
                         {
                             xtype: 'combo',
+                            fieldLabel: 'Search By',
                             id: prototype.id + '-cmbFecFiltro',
+                            labelStyle: 'text-align: left; font-size: 12px;',
+                            fieldStyle: 'text-align: left; font-size: 12px;',
                             queryMode: 'local',
                             allowBlank: false,
                             forceSelection: true,
@@ -50,7 +43,8 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Filters', {
                             caseSensitive: false,
                             autoSelect: true,
                             editable: true,
-                            width: 100,
+                            width: 170,
+                            labelWidth: 60,
                             value: "SDATE",
                             typeAhead: true,
                             valueField: 'code',
@@ -58,26 +52,23 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Filters', {
                             listConfig: {minWidth: 130},
                             enableKeyEvents: true,
                             triggerAction: 'all',
-                            listeners: {
-                            }
+                            margin: '0 10 0 0' 
                         },
-                        {xtype: 'tbspacer', width: 10},
-                        //<editor-fold defaultstate="collapsed" desc="cmbDate">
                         {
                             xtype: 'combo',
                             id: prototype.id + '-cmbDateFromYear',
-                            fieldStyle: 'text-align: left;',
+                            labelStyle: 'text-align: left; font-size: 12px;',
+                            fieldStyle: 'text-align: left; font-size: 12px;',
                             disabled: false,
                             editable: false,
                             fieldLabel: 'From',
-                            width: 120,
-                            labelWidth: 45,
+                            width: 95,
+                            labelWidth: 35,
                             labelAlign: 'right',
                             queryMode: 'local',
                             triggerAction: 'all',
                             valueField: 'code',
                             displayField: 'name',
-//                            listConfig: {maxHeight: 111, minWidth: 70},
                             maxLength: 4,
                             enforceMaxLength: true,
                             maskRe: /[0-9]/,
@@ -85,28 +76,29 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Filters', {
                                 change: 'cbxDateFromYear_changeHandler'
                             }
                         },
-                        {xtype: 'tbspacer', width: 10},
                         {
                             xtype: 'combo',
                             id: prototype.id + '-cmbDateFromMonth',
-                            fieldStyle: 'text-align: left;',
+                            labelStyle: 'text-align: left; font-size: 12px;',
+                            fieldStyle: 'text-align: left; font-size: 12px;',
                             disabled: false,
                             editable: false,
                             fieldLabel: '',
-                            width: 65,
+                            width: 50,
                             labelWidth: 0,
                             labelAlign: 'right',
                             queryMode: 'local',
                             triggerAction: 'all',
-                            valueField: 'code', displayField: 'name',
+                            valueField: 'code',
+                            displayField: 'name',
                             listConfig: {minWidth: 60},
                             maxLength: 3,
                             enforceMaxLength: true,
                             listeners: {
                                 change: 'cbxDateFromMonth_changeHandler'
-                            }
+                            },
+                            margin: '0 10 0 0' 
                         },
-                        {xtype: 'tbspacer', width: 10},
                         {
                             xtype: 'combo',
                             id: prototype.id + '-cmbDateDay',
@@ -126,48 +118,48 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Filters', {
                             listener: {
                                 change: 'onDateFromDaySelect',
                                 expand: 'eventSelectFromDay'
-
-                            }
+                            },
+                            margin: '0 10 0 0' 
                         },
-                        {xtype: 'tbspacer', width: 15},
-
                         {
                             xtype: 'combo',
                             id: prototype.id + '-cmbDateToYear',
-                            fieldStyle: 'text-align: left;',
+                            labelStyle: 'text-align: left; font-size: 12px;',
+                            fieldStyle: 'text-align: left; font-size: 12px;',
                             disabled: false,
                             editable: false,
                             fieldLabel: 'To',
-                            width: 106,
-                            labelWidth: 31,
+                            width: 80,
+                            labelWidth: 20,
                             labelAlign: 'left',
                             queryMode: 'local',
                             triggerAction: 'all',
-                            valueField: 'code', displayField: 'name',
+                            valueField: 'code',
+                            displayField: 'name',
                             listConfig: {maxHeight: 111, minWidth: 70},
                             maxLength: 4,
                             enforceMaxLength: true,
                             maskRe: /[0-9]/
                         },
-                        {xtype: 'tbspacer', width: 10},
                         {
                             xtype: 'combo',
                             id: prototype.id + '-cmbDateToMonth',
-                            fieldStyle: 'text-align: left;',
+                            labelStyle: 'text-align: left; font-size: 12px;',
+                            fieldStyle: 'text-align: left; font-size: 12px;',
                             disabled: false,
                             editable: false,
                             fieldLabel: '',
-                            width: 65,
-//                            labelWidth: 0,
+                            width: 50,
                             labelAlign: 'right',
                             queryMode: 'local',
                             triggerAction: 'all',
-                            valueField: 'code', displayField: 'name',
+                            valueField: 'code',
+                            displayField: 'name',
                             listConfig: {minWidth: 60},
                             maxLength: 3,
-                            enforceMaxLength: true
+                            enforceMaxLength: true,
+                            margin: '0 10 0 0' 
                         },
-                        {xtype: 'tbspacer', width: 10},
                         {
                             xtype: 'combo',
                             id: prototype.id + '-cmbDateToDay',
@@ -187,240 +179,234 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Filters', {
                             listener: {
                                 change: 'onDateToDaySelect',
                                 expand: 'eventSelectToDay'
+                            },
+                            margin: '0 10 0 0' 
+                        },
+                        {
+                                xtype: 'displayfield',
+                                id: prototype.id + '-lblExchangeMessage2',
+                                fieldLabel: 'Estado tipo cambio',
+                                labelWidth: 110,
+                                hidden:true,
+                                width: 600,
+                                labelStyle: 'font-size: 12px; text-align: left;',
+                                fieldStyle: 'font-size: 12px; color: #444; padding-bottom: 8px;',
+                                value: '', // Se llena dinámicamente con el mensaje
+                                listeners: {
+                                    afterrender: function (cmp) {
+                                        // Creamos el tooltip vacío al inicio
+                                        cmp.tooltip = Ext.create('Ext.tip.ToolTip', {
+                                            target: cmp.getEl(),
+                                            trackMouse: true,
+                                            maxWidth: 600,
+                                            dismissDelay: 0,
+                                            html: '' // se actualiza luego
+                                        });
+                                    }
+                                }
+                            },
+                        // --- FILA 2 (country, cards, author) ---
+                {
+                    xtype: 'container',
+                    id: prototype.id + '-containerFilters1',
+                    layout: {
+                        type: 'hbox',
+                        align: 'middle'
+                    },
+                    margin: '0 0 10 0',
+                    defaults: { margin: '0 10 0 0' },
+                    items: [
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbCountry',
+                            fieldLabel: 'Country',
+                            queryMode: 'local',
+                            labelStyle: 'text-align: left; font-size: 12px;',
+                            fieldStyle: 'text-align: left; font-size: 12px;',
+                            allowBlank: false,
+                            forceSelection: true,
+                            selectOnFocus: true,
+                            caseSensitive: false,
+                            autoSelect: true,
+                            editable: true,
+                            width: 200,
+                            labelWidth: 50,
+                            typeAhead: true,
+                            valueField: 'A006PAIS',
+                            displayField: 'A006NOMBRE',
+                            listConfig: {maxHeight: 200},
+                            enableKeyEvents: true,
+                            triggerAction: 'all'
+                        },
+                        {
+                            xtype: 'textfield',
+                            fieldLabel: 'Card Number',
+                            id: prototype.id + '-txtCard1',
+                            labelStyle: 'text-align: left; font-size: 12px;',
+                            fieldStyle: 'text-align: left; font-size: 12px;',
+                            enforceMaxLength: true,
+                            maskRe: /[0-9]/,
+                            maxLength: 6,
+                            width: 140,
+                            labelWidth: 80,
+                            enableKeyEvents: true,
+                            listeners: {
+                                keyup: 'tarjeta_keyDownHandler'
                             }
                         },
-                        //</editor-fold>
                         {
-                            xtype: 'container',
-                            id: prototype.id + '-containerFilters1',
-                            layout: 'hbox',
-                            items: [
-                                {
-                                    xtype: 'label',
-                                    text: 'Country:',
-                                    padding: '4 10 0 20',
-                                    width: 80,
-                                    style: {
-                                        fontWeight: 'bold'
-                                    }
-                                },
-                                {
-                                    xtype: 'combo',
-                                    id: prototype.id + '-cmbCountry',
-                                    queryMode: 'local',
-                                    allowBlank: false,
-                                    forceSelection: true,
-                                    selectOnFocus: true,
-                                    caseSensitive: false,
-                                    autoSelect: true,
-                                    editable: true,
-                                    width: 219,
-                                    typeAhead: true,
-                                    valueField: 'A006PAIS',
-                                    displayField: 'A006NOMBRE',
-                                    listConfig: {maxHeight: 200},
-                                    enableKeyEvents: true,
-                                    triggerAction: 'all',
-                                },
-                                {xtype: 'tbspacer', width: 20},
-                                {
-                                    xtype: 'label',
-                                    text: 'Card Number:',
-                                    padding: '4 0 0 20',
-                                    width: 110,
-                                    style: {
-                                        fontWeight: 'bold'
-                                    },
-                                    autoEl: {
-                                        tag: 'label',
-                                        'data-qtip': 'Credit Card Number'
-                                    }
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-txtCard1',
-                                    fieldStyle: 'text-align:center',
-                                    enforceMaxLength: true,
-                                    maskRe: /[0-9]/,
-                                    maxLength: 6,
-                                    width: 85,
-                                    enableKeyEvents: true,
-                                    listeners: {
-                                        keyup: 'tarjeta_keyDownHandler'
-                                    }
-                                },
-                                {xtype: 'tbspacer', width: 8},
-                                {
-                                    xtype: 'label',
-                                    text: '*****(*)',
-                                    padding: '4 0 0 0',
-                                    width: 65,
-                                    style: {
-                                        fontWeight: 'bold'
-                                    },
-                                    autoEl: {
-                                        tag: 'label',
-                                        'data-qtip': '5 encrypted characters for AMEX and 6 characters for the rest.'
-                                    }
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-txtCard2',
-                                    fieldStyle: 'text-align:center',
-                                    enforceMaxLength: true,
-                                    maskRe: /[0-9]/,
-                                    maxLength: 4,
-                                    width: 100,
-                                    enableKeyEvents: true,
-                                    listeners: {
-                                        keypress: 'eventKey'
-                                    }
-                                },
-                                {xtype: 'tbspacer', width: 20},
-                                {
-                                    xtype: 'label',
-                                    text: 'Author. Cod : ',
-                                    padding: '4 0 0 20',
-                                    width: 110,
-                                    style: {
-                                        fontWeight: 'bold'
-                                    }
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-txtAUTHOC',
-                                    fieldStyle: 'text-align:center',
-                                    enforceMaxLength: true,
-                                    maskRe: /[0-9a-zA-Z]/,
-                                    maxLength: 8,
-                                    width: 100,
-                                    enableKeyEvents: true,
-                                    listeners: {
-                                        keypress: 'eventKey'
-                                    }
-                                },
-                            ]
+                            xtype: 'textfield',
+                            id: prototype.id + '-txtCard2',
+                            fieldLabel: '*****(*)',
+                            autoEl: {
+                                tag: 'label',
+                                'data-qtip': '5 encrypted characters for AMEX and 6 characters for the rest.'
+                            },
+                            labelStyle: 'text-align: left; font-size: 12px;',
+                            fieldStyle: 'text-align: left; font-size: 12px;',
+                            enforceMaxLength: true,
+                            maskRe: /[0-9]/,
+                            maxLength: 4,
+                            width: 100,
+                            labelWidth: 55,
+                            enableKeyEvents: true,
+                            listeners: {
+                                keypress: 'eventKey'
+                            }
                         },
+                        {
+                            xtype: 'textfield',
+                            fieldLabel: 'Author. Cod',
+                            id: prototype.id + '-txtAUTHOC',
+                            labelStyle: 'text-align: left; font-size: 12px;',
+                            fieldStyle: 'text-align: left; font-size: 12px;',
+                            enforceMaxLength: true,
+                            maskRe: /[0-9a-zA-Z]/,
+                            maxLength: 8,
+                            width: 140,
+                            labelWidth: 70,
+                            enableKeyEvents: true,
+                            listeners: {
+                                keypress: 'eventKey'
+                            }
+                        },
+                        
+                        {
+                            xtype: 'combo',
+                            fieldLabel: 'Bank',
+                            id: prototype.id + '-cmbBank',
+                            labelStyle: 'text-align: left; font-size: 12px;',
+                            fieldStyle: 'text-align: left; font-size: 12px;',
+                            queryMode: 'local',
+                            editable: true,
+                            valueField: 'CODEBANK',
+                            displayField: 'IN_CODE_IN_NAME',
+                            emptyText: 'All',
+                            labelWidth: 40,
+                            width: 180
+                        }
                     ]
                 },
+                    ]
+                },
+
+                // --- FILA 3 (bank, status, tdic, debit) ---
                 {
                     xtype: 'container',
                     id: prototype.id + '-containerFilters2',
-                    
+                    layout: {
+                        type: 'hbox',
+                        align: 'middle'
+                    },
+                    defaults: { margin: '0 10 0 0' },
                     items: [
                         {
-                            xtype: 'panel',
-                            width: '100%',
-                            layout: 'hbox',
-                            border: false,
-                            bodyStyle: 'background: transparent;"',
-                            items: [
-                                {xtype: 'tbspacer', width: 25},
-                                {
-                                    xtype: 'label',
-                                    text: 'Bank: ',
-                                    padding: '4 0 0 0',
-                                    width: 80,
-                                    style: {
-                                        fontWeight: 'bold'
-                                    }
-                                },
-                                {
-                                    xtype: 'combo',
-                                    id: prototype.id + '-cmbBank',
-                                    queryMode: 'local',
-                                    editable: true,
-                                    valueField: 'CODEBANK',
-                                    displayField: 'IN_CODE_IN_NAME',
-                                    emptyText: 'All',
-                                    labelWidth: 60,
-                                    width: 250
-                                },
-                                {
-                                    xtype: 'label',
-                                    text: 'Status:',
-                                    padding: '4 10 0 20',
-                                    width: 80,
-                                    style: {
-                                        fontWeight: 'bold'
-                                    }
-                                },
-                                {
-                                    xtype: 'combo',
-                                    id: prototype.id + '-cmbSTVAL',
-                                    queryMode: 'local',
-                                    allowBlank: false,
-                                    forceSelection: true,
-                                    selectOnFocus: true,
-                                    caseSensitive: false,
-                                    autoSelect: true,
-                                    editable: true,
-                                    width: 150,
-                                    value: "",
-                                    typeAhead: true,
-                                    valueField: 'code',
-                                    displayField: 'name',
-                                    listConfig: {minWidth: 150},
-                                    enableKeyEvents: true,
-                                    triggerAction: 'all',
-                                    listeners: {
-                                    }
-                                },
-                                {
-                                    xtype: 'label',
-                                    text: 'Dcoument Type:',
-                                    padding: '4 10 0 20',
-                                    width: 150,
-                                    style: {
-                                        fontWeight: 'bold'
-                                    }
-                                },
-                                {
-                                    xtype: 'combo',
-                                    id: prototype.id + '-cmbTDOC',
-                                    queryMode: 'local',
-                                    allowBlank: false,
-                                    forceSelection: true,
-                                    selectOnFocus: true,
-                                    caseSensitive: false,
-                                    autoSelect: true,
-                                    editable: true,
-                                    width: 130,
-                                    value: "",
-                                    typeAhead: true,
-                                    valueField: 'code',
-                                    displayField: 'name',
-                                    listConfig: {minWidth: 130},
-                                    enableKeyEvents: true,
-                                    triggerAction: 'all',
-                                    listeners: {
-                                    }
-                                },
-                                {xtype: 'tbspacer', width: 23},
-                                {
-                                    xtype: 'label',
-                                    text: 'Debit Type:',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 70
-                                },
-                                {xtype: 'tbspacer', width: 25},
-                                {
-                                    xtype: 'combo',
-                                    id: prototype.id + '-cmbDebitType',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    fieldStyle: 'text-align:left;',
-                                    queryMode: 'local',
-                                    triggerAction: 'all',
-                                    valueField: 'CODE',
-                                    displayField: 'NAME',
-                                    width: 190,
-//                                            hidden: true,
-                                    hiddenLabel: false
-                                },
-                            ]
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbTDOC',
+                            fieldLabel: 'Dcoument Type',
+                            labelStyle: 'text-align: left; font-size: 12px;',
+                            fieldStyle: 'text-align: left; font-size: 12px;',
+                            width: 230,
+                            labelWidth: 90,
+                            queryMode: 'local',
+                            allowBlank: false,
+                            forceSelection: true,
+                            selectOnFocus: true,
+                            caseSensitive: false,
+                            autoSelect: true,
+                            editable: true,
+                            value: "",
+                            typeAhead: true,
+                            valueField: 'code',
+                            displayField: 'name',
+                            listConfig: {minWidth: 130},
+                            enableKeyEvents: true,
+                            triggerAction: 'all'
                         },
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbDebitType',
+                            fieldLabel: 'Debit Type',
+                            labelStyle: 'text-align: left; font-size: 12px;',
+                            fieldStyle: 'text-align: left; font-size: 12px;',
+                            style: 'font-weight:bold;color:#0B333C;',
+                            fieldStyle: 'text-align:left;',
+                            queryMode: 'local',
+                            triggerAction: 'all',
+                            valueField: 'CODE',
+                            displayField: 'NAME',
+                            width: 200,
+                            labelWidth: 70,
+                            hiddenLabel: false
+                        },
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbSTVAL',
+                            fieldLabel: 'Status',
+                            queryMode: 'local',
+                            labelStyle: 'text-align: left; font-size: 12px;',
+                            fieldStyle: 'text-align: left; font-size: 12px;',
+                            allowBlank: false,
+                            forceSelection: true,
+                            selectOnFocus: true,
+                            caseSensitive: false,
+                            autoSelect: true,
+                            editable: true,
+                            labelWidth: 40,
+                            width: 160,
+                            value: "",
+                            typeAhead: true,
+                            valueField: 'code',
+                            displayField: 'name',
+                            listConfig: {minWidth: 150},
+                            enableKeyEvents: true,
+                            triggerAction: 'all'
+                        },
+                        {
+                                xtype: 'displayfield',
+                                id: prototype.id + '-lblExchangeMessage',
+                                fieldLabel: 'Estado tipo cambio',
+                                labelWidth: 110,
+                                width: 600,
+                                labelStyle: 'font-size: 12px; text-align: left;',
+                                fieldStyle: 'font-size: 12px; color: #444; padding-bottom: 8px;',
+                                value: '', // Se llena dinámicamente con el mensaje
+                                listeners: {
+                                    afterrender: function (cmp) {
+                                        // Creamos el tooltip vacío al inicio
+                                        cmp.tooltip = Ext.create('Ext.tip.ToolTip', {
+                                            target: cmp.getEl(),
+                                            trackMouse: true,
+                                            maxWidth: 600,
+                                            dismissDelay: 0,
+                                            html: '' // se actualiza luego
+                                        });
+                                    }
+                                }
+                            }
+
                     ]
-                },
+                }
             ]
         }
     ]
