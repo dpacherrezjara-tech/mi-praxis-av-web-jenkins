@@ -8,6 +8,7 @@ package net.miatech.praxis.controllers.payments;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,6 +23,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,6 +38,7 @@ import net.miatech.praxis.logic.payments.BankReconciliationLogic;
 import net.miatech.praxis.logic.payments.LoadSalesConciliationLogic;
 import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.A2309AFilter;
+import net.miatech.praxis.payment.filter.MPF100Filter;
 import net.miatech.praxis.spring.INF020;
 import net.miatech.utils.Functions;
 import org.apache.commons.io.IOUtils;
@@ -54,6 +57,7 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.codehaus.jackson.JsonParser;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -5505,4 +5509,73 @@ public class BankReconciliationController extends BaseController {
         }
         return lst;
     }
+    
+    //FASE 2 
+    
+    @RequestMapping(value = "searchBeanAMDP_SCANCASH")
+    public @ResponseBody
+    String searchBeanAMDP_SCANCASH(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankReconciliation : getListAMDP_SCANCASH-------------");
+
+        map.put("success", true);
+        List<MPF100Filter> lst = this.getListAMDP_SCANCASH(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<MPF100Filter> getListAMDP_SCANCASH(HttpServletRequest request, Boolean bExcel) {
+
+        List<MPF100Filter> lst = new ArrayList<>(0);
+        MPF100Filter filter = new MPF100Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, MPF100Filter.class);
+
+            lst = logic.loadMPS306_AMDP_SCANCASH(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    
+    @RequestMapping(value = "/ManualConciliacionCash")
+    public @ResponseBody
+    String ManualConciliacionCash(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("-------------- BankReconciliation : ManualConciliacionCash -------------");
+
+        Gson gson = new Gson();
+        MPF100Filter mainRecord = new MPF100Filter();          
+        List<MPF100Filter> agentTkt = new ArrayList<>(); 
+        MPF100Filter filter = new MPF100Filter();
+
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, MPF100Filter.class);
+            
+            logic.ConciliationManualCash(filter);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("success", false);
+            map.put("message", "Error al procesar la conciliación: " + e.getMessage());
+        }
+
+        return new Gson().toJson(map);
+    }
+
+
+
+
+
 }

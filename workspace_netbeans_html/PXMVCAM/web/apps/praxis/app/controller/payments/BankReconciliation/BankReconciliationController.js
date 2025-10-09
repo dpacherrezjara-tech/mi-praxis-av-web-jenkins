@@ -4059,9 +4059,34 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         me.drillDown.push(me.panelActual);
         me.panelActual = '-panelGridDataCountryCash';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
+        
+        var cant = 0;   
+        switch (columnNum) {
+            case 0:
+                console.log('ENTRA A FECHA');
+                rowData.data.IN_STVAL = "";
+                cant = rowData.data.lngQTMATCH;
+                break;
+            case 1:
+                console.log('ENTRA A MATCH');
+                rowData.data.IN_STVAL = "1";
+                cant = rowData.data.lngQTMANUAL;
+                break;
+            case 3:
+                console.log('ENTRA AL MANUAL');
+                rowData.data.IN_STVAL = "5";
+                cant = rowData.data.lngQTPEND;
+                break;
+            case 4:
+                console.log('ENTRA AL MANUAL');
+                rowData.data.IN_STVAL = "3";
+                cant = rowData.data.lngQTPEND;
+                break;
+        }
 
 //        this.beanDetDay.strFecFiltro = rowData.data.strFecFiltro;
         this.beanDetDay.IN_SDATE = rowData.data.IN_SDATE;
+        this.beanDetDay.IN_STVAL = rowData.data.IN_STVAL;
         this.beanDetDay.IN_TDOC = rowData.data.IN_TDOC;
         console.log(rowData.data.IN_TDOC, 'rowData.data.IN_TDOC')
         this.beanDetDay.IN_COUNTRY = rowData.data.IN_COUNTRY;
@@ -4111,9 +4136,34 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         me.drillDown.push(me.panelActual);
         me.panelActual = '-panelGridDataDayCash';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
+        
+        var cant = 0;   
+        switch (columnNum) {
+            case 0:
+                console.log('ENTRA A FECHA');
+                rowData.data.IN_STVAL = "";
+                cant = rowData.data.lngQTMATCH;
+                break;
+            case 2:
+                console.log('ENTRA A MATCH');
+                rowData.data.IN_STVAL = "1";
+                cant = rowData.data.lngQTMANUAL;
+                break;
+            case 3:
+                console.log('ENTRA AL MANUAL');
+                rowData.data.IN_STVAL = "5";
+                cant = rowData.data.lngQTPEND;
+                break;
+            case 5:
+                console.log('ENTRA AL MANUAL');
+                rowData.data.IN_STVAL = "3";
+                cant = rowData.data.lngQTPEND;
+                break;
+        }   
 
 //        this.beanDetDay.strFecFiltro = rowData.data.strFecFiltro;
         this.beanDetDay.IN_SDATE = rowData.data.IN_SDATE;
+        this.beanDetDay.IN_STVAL = rowData.data.IN_STVAL;
         this.beanDetDay.IN_TDOC = rowData.data.IN_TDOC;
         this.beanDetDay.IN_COUNTRY = rowData.data.SCOUNTRY;
         this.beanDetDay.strFormatDate = rowData.data.strFormatDate;

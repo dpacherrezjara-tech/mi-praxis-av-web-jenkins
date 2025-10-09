@@ -362,14 +362,19 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.setFormatParameter();
         if ( Ext.getCmp(prototype.id + '-cmbNEGOC').getValue() !== '' ){
             this.searchMPF060()
+            this.mostrarCamposCredit()
         } else if (Ext.getCmp(prototype.id + '-txtBANDOC').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbDateDay').getValue() !== ''
                 || Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbStatus').getValue() !== '') {
             this.btnSearch_BANDOC();
+            this.mostrarCamposCredit();
         } else if (Ext.getCmp(prototype.id + '-btnToggleSwitchCASH').getEl().down("#chkCash").dom.checked){
             console.log("Probando")
             this.setGridDataCash();
+            this.ocultarCamposCredit();
+            
         } else {
             this.setGridData();
+            this.mostrarCamposCredit();
         }
 
 
@@ -2286,6 +2291,66 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             comboFromDay.setValue(obj.getValue())
         }
     },
+    /*     
+     * Funciones para CASH    
+     */
+    // 🔹 Función para ocultar los campos (modo CASH)
+    ocultarCamposCredit: function () {
+        var ids = [
+            '-cmbCOREP',
+            '-cmbDateSel',
+            '-COL',
+            '-btnToggleSwitchFT',
+            '-EXT',
+            '-cmbTDOC',
+            '-cmbBank',
+            '-cmbExt',
+            '-formLIQvsEC',
+            '-btn_Concilia_LIQvsEC',
+            '-pendingBuss',
+            '-labelpendingBuss',
+            '-txtBANDOC',
+        ];
+        console.log("Ocultando campos (Cash)");
+
+        Ext.Array.forEach(ids, function (id) {
+            var cmp = Ext.getCmp(prototype.id + id);
+            if (cmp) {
+                cmp.setVisible(false);
+            }
+        });
+    },
+
+// 🔹 Función para mostrar los campos (modo CREDITCARD)
+    mostrarCamposCredit: function () {
+        var ids = [
+            '-cmbCOREP',
+            '-cmbDateSel',
+            '-COL',
+            '-btnToggleSwitchFT',
+            '-EXT',
+            '-cmbTDOC',
+            '-cmbBank',
+            '-cmbExt',
+            '-formLIQvsEC',
+            '-btn_Concilia_LIQvsEC',
+            '-pendingBuss',
+            '-labelpendingBuss',
+            '-txtBANDOC',
+        ];
+        console.log("Mostrando campos (CreditCard)");
+
+        Ext.Array.forEach(ids, function (id) {
+            var cmp = Ext.getCmp(prototype.id + id);
+            if (cmp) {
+                cmp.setVisible(true);
+            }
+        });
+    },
+
+
+    
+    
     /*     
      * Funciones para la paginacion     
      */

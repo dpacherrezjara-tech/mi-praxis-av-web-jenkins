@@ -4,6 +4,8 @@
  */
 package net.miatech.praxis.payment.filter;
 
+import java.util.ArrayList;
+import java.util.List;
 import net.miatech.beans.Pagination;
 import net.miatech.praxis.payment.MPF100;
 import net.miatech.utils.Functions;
@@ -538,5 +540,62 @@ public class MPF100Filter extends MPF100 {
     public String IN_CODE = "";
     public String IN_CURRENCY = "";
     public String IN_MERCHANT = "";
+    
+    //Campos Cash
+    public long lngTOTALE = 0;
+    public long lngQPEND = 0;
+    public long lngQPEND1 = 0;
+    public long lngQSALESDIRECT = 0;
+    public long lngQMATCHPercent = 0;
+    public long lngQTMATCH = 0;
+    public long lngQTMANUAL = 0;
+    public long lngQTPEND = 0;
+    public long lngTOTALL = 0;
+    public long lngQTMATCHPercent = 0;
+    public long lngTotTOTALE = 0;
+    public long lngTotQPEND = 0;
+    public long lngTotQPEND1 = 0;
+    public long lngTotQPEND3 = 0;
+    public long lngTotQTMATCH = 0;
+    public long lngTotQTMANUAL = 0;
+    public long lngTotQTPEND = 0;
+    public long lngTotTOTALL = 0;
+    public long lngTotQSALESDIRECT = 0;
+    public long lngTotQMATCHPercent = 0;
+    public long lngTotQTMATCHPercent = 0;   
+    public String IN_SOURCE = "";
+    public String SDATE_MIN = "";
+    public String SDATE_MAX = "";
+    public String SCONSOL = "";
+    public String TKT = "";
+    public String CFUENTE = "";
+    public String INVOICE = "";
+    public String ACCNUMA = "";
+    public String CBATCH = "";
+    public String STRDATE = "";
+    public String ENDDATE = "";
+    public String DATECI = "";
+    public String TRANCI = "";
+    public String TRANC = "";
+    public String BANDOC = "";
+    public double SVFOPNETR = 0;
+   private List<MPF100Filter> mainRecords = new ArrayList<>();
+    private List<MPF100Filter> agentList = new ArrayList<>();
+
+    public List<MPF100Filter> getMainRecords() {
+        return mainRecords;
+    }
+
+    public void setMainRecords(List<MPF100Filter> mainRecords) {
+        this.mainRecords = mainRecords;
+    }
+
+    public List<MPF100Filter> getAgentList() {
+        return agentList;
+    }
+
+    public void setAgentList(List<MPF100Filter> agentList) {
+        this.agentList = agentList;
+    }
 
 }

@@ -3,6 +3,10 @@ Ext.util.CSS.createStyleSheet(`
         background-color: #1AB092 !important; /* pastel amarillito */
         color: #856404 !important;
     }
+    .row-with-commentsICCS .x-grid-cell {
+        background-color: #057ECB !important; /* pastel amarillito */
+        color: #856404 !important;
+    }
 `, 'customRowStyles');
 
 

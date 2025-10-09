@@ -5265,7 +5265,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             {
                                                                 text: 'Auto', dataIndex: 'lngQMATCH', width: 100, align: 'center', menuDisabled: true, //flex: 1
                                                                 listeners: {
-                                                                    click: 'onGridDetCardSMain'
+                                                                    click: 'onGridCountryCash'
                                                                 },
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "color:#057ECB;text-align:right;background-color:#d5f4d5;";
@@ -5297,7 +5297,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             {
                                                                 text: 'Manual', dataIndex: 'lngQMANUAL', width: 100, align: 'center', menuDisabled: true, //flex: 1
                                                                 listeners: {
-                                                                    click: 'onGridDetCardSMain'
+                                                                    click: 'onGridCountryCash'
                                                                 },
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "color:#057ECB;text-align:right;background-color:#d5f4d5;";
@@ -5313,7 +5313,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             {
                                                                 text: 'Diff', dataIndex: 'lngQDIFF', width: 100, align: 'center', menuDisabled: true, hidden: true, //flex: 1
                                                                 listeners: {
-                                                                    click: 'onGridDetCardSMain'
+                                                                    click: 'onGridCountryCash'
                                                                 },
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "color:#057ECB;text-align:right;background-color:#d5f4d5;";
@@ -5334,7 +5334,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             {
                                                                 text: 'w/o Sales', dataIndex: 'lngQPEND', width: 100, align: 'center', menuDisabled: true, //flex: 1
                                                                 listeners: {
-                                                                    click: 'onGridDetCardSMain'
+                                                                    click: 'onGridCountryCash'
                                                                 },
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "color:#057ECB;text-align:right;background-color:#d5f4d5;";
@@ -5667,7 +5667,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             {
                                                                 text: 'Auto', dataIndex: 'lngQMATCH', width: 100, align: 'center', menuDisabled: true, //flex: 1
                                                                 listeners: {
-                                                                    click: 'onGridDetCardS'
+                                                                    click: 'onGridDayCash'
                                                                 },
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "color:#057ECB;text-align:right;background-color:#d5f4d5;";
@@ -5683,7 +5683,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             {
                                                                 text: 'Manual', dataIndex: 'lngQMANUAL', width: 100, align: 'center', menuDisabled: true, //flex: 1
                                                                 listeners: {
-                                                                    click: 'onGridDetCardS'
+                                                                    click: 'onGridDayCash'
                                                                 },
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "color:#057ECB;text-align:right;background-color:#d5f4d5;";
@@ -5699,7 +5699,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             {
                                                                 text: 'Diff', dataIndex: 'lngQDIFF', width: 100, align: 'center', menuDisabled: true, //flex: 1
                                                                 listeners: {
-                                                                    click: 'onGridDetCardS'
+                                                                    click: 'onGridDayCash'
                                                                 },
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "color:#057ECB;text-align:right;background-color:#d5f4d5;";
@@ -5720,7 +5720,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             {
                                                                 text: 'w/o Sales', dataIndex: 'lngQPEND', width: 100, align: 'center', menuDisabled: true, //flex: 1
                                                                 listeners: {
-                                                                    click: 'onGridDetCardS'
+                                                                    click: 'onGridDayCash'
                                                                 },
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "color:#057ECB;text-align:right;background-color:#d5f4d5;";

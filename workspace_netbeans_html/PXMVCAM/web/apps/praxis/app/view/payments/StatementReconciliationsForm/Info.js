@@ -357,8 +357,6 @@
                                             align: 'center'
                                         },
                                         items: [
-
-                                            // ===================== DATE =====================
                                             {
                                                 text: 'Payment',
                                                 id: prototype.id + '-htDate',
@@ -379,7 +377,6 @@
                                                     }
                                                 ]
                                             },
-
                                             // ===================== BANK STATEMENT =====================
                                             {
                                                 text: 'Bank Statement Reconciliation',

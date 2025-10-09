@@ -60,6 +60,7 @@ public class A2290Filter extends A2290 {
     public String IN_FUNDSTRGK = "";
     public String IN_LIQUIDACIO = "";
     public String IN_TYPER = "";
+    public String INTERCOMPANY = "";
 
     public String IN_FROMADATE = "";
     public String IN_TOADATE = "";
@@ -1009,8 +1010,15 @@ public class A2290Filter extends A2290 {
     public double SVFOPNETRU    = 0; 
     public double SUM_NETO    = 0; 
     public double SUM_PAYAMOU    = 0; 
+    public double SUM_TKT    = 0; 
     
     //CASH
+    
+    // MAIN_SUMMARY 
+    public String IN_SOURCE = "";
+    
+    
+    
     public String TINPUT = "";
     public String STRDATE = "";
     public String ENDDATE = "";
