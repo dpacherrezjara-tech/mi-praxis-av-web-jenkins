@@ -162,6 +162,7 @@ Ext.define('Ext.Praxis.controller.payments.ErrorControlModule.ErrorControlModule
         var win = Ext.create('Ext.window.Window', {
             title: 'Ejecutar Proceso MPS210',
             modal: true,
+            id: prototype.id + '-panelInputs',
             width: 380,
             layout: {type: 'vbox', align: 'stretch'},
             bodyPadding: 12,
@@ -221,16 +222,21 @@ Ext.define('Ext.Praxis.controller.payments.ErrorControlModule.ErrorControlModule
                             url: prototype.url + '/callStoreMPS210',
                             method: 'POST',
                             params: {
+                                beforerequest: Ext.getCmp(prototype.id + '-panelInputs').mask('Loading...'),
                                 V_CODPRO: procesador,
                                 V_PRDA: fecha
                             },
                             success: function (response) {
+                                Ext.getCmp(prototype.id + '-panelInputs').unmask('Loading...');
                                 var data = Ext.decode(response.responseText);
                                 Ext.Msg.alert(
                                         data.success ? 'Éxito' : 'Error',
                                         data.message || (data.success ? 'Proceso ejecutado correctamente.' : 'Error al ejecutar el proceso.')
                                         );
                                 win.close();
+
+                                Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+                                       
                             },
                             failure: function () {
                                 Ext.Msg.alert('Error', 'No se pudo conectar con el servidor.');
@@ -254,6 +260,7 @@ Ext.define('Ext.Praxis.controller.payments.ErrorControlModule.ErrorControlModule
         // 🔹 Cargamos el combo usando tu método ya existente
         me.obtainData(win.down('#cmbWinProcesador'));
     },
+
 
 
     
