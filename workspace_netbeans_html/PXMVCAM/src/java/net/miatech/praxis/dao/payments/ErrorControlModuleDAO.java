@@ -165,68 +165,7 @@ public class ErrorControlModuleDAO {
     
     
     
-    ////////////lISTA PROCESADORES  ///
-    
-    
-    
-    public List<A4451Filter> listarProcesadoresCBO(A4451Filter filter) throws SQLException, Exception {
-
-        List<A4451Filter> lstProcesador = new ArrayList<A4451Filter>(0);
-        
-        A4451Filter item;
-        
-        item = new A4451Filter();
-        item.A4451KEY2 = "";
-        item.A4451KEY3 = "ALL";
-        lstProcesador.add(item);
-
-
-
-        CallableStatement cstmt = null;
-        ResultSet rst = null;
-
-        String SQLCLL01 = "{CALL PRAXISMP.MPS212()}";
-
-        Connection cnx = null;
-        try {
-            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-            cstmt = cnx.prepareCall(SQLCLL01);
-
-            cstmt.execute();
-
-            rst = cstmt.getResultSet();
-
-             while (rst.next()) {
-            item = new A4451Filter();
-            item.A4451KEY2 = rst.getString("A4451KEY2").trim();
-            item.A4451KEY3 = item.A4451KEY2 + '-' +  rst.getString("A4451KEY3").trim();
-            lstProcesador.add(item);
-        }
-            rst.close();
-
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (rst != null) try {
-                    rst.close();
-                } catch (SQLException e) {
-                }
-                if (cstmt != null) try {
-                    cstmt.close();
-                } catch (SQLException e) {
-                }
-                if (cnx != null) {
-                    session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
-                }
-            }
-
-            return lstProcesador;
-
-    
-    }
-    
+       
     
     // LLAMAMOS  callMPS210
         public String callStoreMPS210(String codpro, String prda) throws SQLException, Exception {

@@ -89,39 +89,47 @@ Ext.define('Ext.Praxis.controller.payments.ErrorControlModule.ErrorControlModule
     
 
     ////////////////////////////////////////////////////////////////////////////
-    //////OBETENEMOS CBO DE PROCESADORES DESDE NUESTRA CONSULTA DE TABLA ///////
+    //////OBETENEMOS CBO DE PROCESADORES DESDE MASTER ///////
     ////////////////////////////////////////////////////////////////////////////
 
-    obtainData: function (comboTarget) {
 
-        var me = this;
+    obtainData: function(comboTarget) {
 
-        Ext.Ajax.request({
-            url: prototype.url + '/getProcesador',
+         this.dataObtain.IN_PF122CODPR = 2;
+        
+         Ext.Ajax.request({
+            url: prototype.urlMaster + '/obtainData',
             method: 'POST',
             timeout: 60000000,
             params: {beanString: JSON.stringify(this.dataObtain)},
             success: function (response, options) {
-                var res = Ext.JSON.decode(response.responseText);
-                console.log("Respuesta completa procesador:", response);
-                var lstProcesador = res.listaProcesadores;
-
-                var storeDataProcesadores = Ext.create('Ext.data.Store', {
-                    data: lstProcesador,
-                    autoLoad: true
-                });
-
-                var combo = comboTarget || Ext.getCmp(prototype.id + '-cmbIN_PROCESADOR');
-                if (combo) {
+                var res = Ext.JSON.decode(response.responseText);    
+                if (res.success) {
+                    
+                    
+                    me.lstProcesador = res.listaProcesadores;
+                    
+                    var storeDataProcesadores = Ext.create('Ext.data.Store', {
+                        data: me.lstProcesador,
+                        autoLoad: true
+                    });
+                    
+                    var combo = comboTarget || Ext.getCmp(prototype.id + '-cmbIN_PROCESADOR');           
+                    if (combo) {
                     combo.bindStore(storeDataProcesadores);
                     combo.setValue('');
-                }
+                    }
+                  
+                   
+                  
+                    global.clear();
 
+                } else
+                    global.Msg({msg: res.sesion});
             }
         });
-
-
     },
+
 
     setFormatParameter: function () {
 
@@ -252,12 +260,12 @@ Ext.define('Ext.Praxis.controller.payments.ErrorControlModule.ErrorControlModule
                     }
                 }
             ],
-            buttonAlign: 'center' // 🔹 centra los botones
+            buttonAlign: 'center' // 
         });
 
         win.show();
 
-        // 🔹 Cargamos el combo usando tu método ya existente
+        
         me.obtainData(win.down('#cmbWinProcesador'));
     },
 
