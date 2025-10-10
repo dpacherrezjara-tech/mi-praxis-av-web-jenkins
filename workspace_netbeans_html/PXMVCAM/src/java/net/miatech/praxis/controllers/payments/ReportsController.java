@@ -763,5 +763,48 @@ public class ReportsController extends BaseController {
 
         return new Gson().toJson(map);
     }
+    
+    @RequestMapping(value = "/verifyExchangeRates")
+    public @ResponseBody String verifyExchangeRates(ModelMap map, HttpServletRequest request) {
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+        List<A2290Filter> lst = new ArrayList<>(0);
+
+        try {
+            logic = new ReportsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+
+            lst = logic.load_MPS350(filter);
+
+            map.put("success", true);
+            map.put("total", lst.size());
+
+            if (lst.isEmpty()) {
+                // ✅ No hay registros sin tipo de cambio
+                map.put("message", "Tipos de cambio actualizados correctamente. No se encontraron registros pendientes.");
+                map.put("data", lst);
+            } else {
+                // ⚠️ Hay registros sin tipo de cambio
+                map.put("message", "Se encontraron registros que no cuentan con tipo de cambio a USD.");
+                map.put("data", lst);
+            }
+
+            System.out.println("Total : " + lst.size());
+
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("message", "Error de base de datos: " + ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("message", "Error inesperado: " + ex.getMessage());
+        }
+
+        return new Gson().toJson(map);
+    }
+
 
 }
