@@ -126,41 +126,6 @@ public class ErrorControlModuleController extends BaseController{
     
     
     
-    
-    
-    
-    @RequestMapping(value = "getProcesador")
-    public @ResponseBody
-    String getProcesador(ModelMap map, HttpServletRequest request) {
-        System.out.println("-------------- ErrorControlModule: getProcesador-------------");
-
-        map.put("success", true);
-        List<A4451Filter> lst = this.getListProcesadores(request, false);
-        System.out.println("Total : " + lst.size());
-        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
-        map.put("listaProcesadores", lst);
-        return new Gson().toJson(map);
-    }
-
-    public List<A4451Filter> getListProcesadores(HttpServletRequest request, Boolean bExcel ) {
-
-        List<A4451Filter> lst = new ArrayList<>(0);
-        A4451Filter filter = new A4451Filter();
-
-        try {
-            logic = new ErrorControlModuleLogic();
-            logic.setSession(this.serverSession.getServerSession());
-
-
-            lst = logic.listarProcesadoresCBO(filter);
-        } catch (Exception e) {
-            throw new SpringException(e);
-        }
-        return lst;
-
-    }
-    
-    
     /// llamamos al store callStoreMPS210
     
     @RequestMapping(value = "callStoreMPS210", method = RequestMethod.POST)

@@ -35,20 +35,6 @@ public class ErrorControlModuleLogic {
     }
      
      
-     
-//     public List<A4451Filter> loadPRAXISMPLISTAR_PAISES_CBO(A4451Filter filter) throws SQLException, Exception {
-//        return errorControl.loadPRAXISMPLISTAR_PAISES_CBO(filter);
-//    }
-     
-        public List<A4451Filter> listarProcesadoresCBO(A4451Filter filter) throws SQLException, Exception {
-        return errorControl.listarProcesadoresCBO(filter);
-    }
-     
-     
-//      public String MPF116UPDATE_PAYMENT_SCHEDULE(MPF116Filter filter) throws SQLException, Exception {
-//        return paySchedule.MPF116UPDATE_PAYMENT_SCHEDULE(filter);
-//    }
-        
         public String callStoreMPS210(String codpro,String prda) throws SQLException, Exception {
             return errorControl.callStoreMPS210(codpro, prda);
         }

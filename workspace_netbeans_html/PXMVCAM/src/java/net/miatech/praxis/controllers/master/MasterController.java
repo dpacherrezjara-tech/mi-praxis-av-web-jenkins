@@ -21,6 +21,7 @@ import net.miatech.praxis.payment.A2280;
 import net.miatech.praxis.payment.A2287;
 import net.miatech.praxis.payment.filter.A2280Filter;
 import net.miatech.praxis.payment.filter.A2357Filter;
+import net.miatech.praxis.payment.filter.A4451Filter;
 import net.miatech.praxis.persistence.facade.UserFacade;
 import net.miatech.praxis.persistence.facadeimpl.UserFacadeImpl;
 import net.miatech.praxis.spring.INF020;
@@ -130,6 +131,13 @@ public class MasterController extends BaseController {
             if (data.CARDEQUIVALENT != 0) {
                 List<A2280> lstCardEquivalent = masterDAO.loadTarjetasEquivalent();
                 map.put("lstCardEquivalent", lstCardEquivalent);
+            }
+            
+            if (data.IN_PF122CODPR != 0) {
+                A4451Filter filter = new A4451Filter();
+                List<A4451Filter> lst;
+                lst = masterDAO.listarProcesadoresCBO(filter);
+                map.put("listaProcesadores", lst);
             }
             
         } catch (NumberFormatException | SQLException ex) {
