@@ -641,6 +641,7 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
         beanDetLine.IN_NAME = rowData.data.NAME.trim();
         beanDetLine.consulta = '';
         me.paramsDetail.beanString = JSON.stringify(beanDetLine);
+        me.paramsDetail.consulta = '2';
         me.drillDown.push(me.panelActual);
         me.panelActual = '-boxDelivery';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
@@ -1103,7 +1104,8 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
                 global.getFile(prototype.url + '/getXLSX?beanString=' + encodeURI(searchParams.beanString));
                 break;
             case  '-boxDelivery':
-                global.getFile(prototype.url + '/getXLSX_Delivery?beanString=' + encodeURI(me.paramsDetail.beanString));
+                global.getFile(prototype.url + '/getXLSX_Delivery?beanString=' + encodeURI(me.paramsDetail.beanString) +
+                '&consulta=' + encodeURI(me.paramsDetail.consulta) );
                 break;
             case  '-boxDataDetalle':
                 global.getFile(prototype.url + '/getXLSX_Detalle?beanString=' + encodeURI(me.paramsDetail.beanString));
