@@ -6104,6 +6104,7 @@ public class BankReconciliationDAO {
                 beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
                 beanTkt.INVOICE = rst.getString("INVOICE").trim();
                 beanTkt.CFUENTE = rst.getString("CFUENTE").trim();
+                beanTkt.tot_VFOP = rst.getDouble("SUM_SVFOPNETR");
 
                 lstData.add(beanTkt);
             }
@@ -8686,39 +8687,11 @@ beanTkt.COREP = "";
         ResultSet rs01 = null;
 
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
-        hmDescEstados.put("", "Pending");
-        hmDescEstados.put("0", "Stand By");
         hmDescEstados.put("1", "Match");
-        hmDescEstados.put("2", "Sales Without Settlement");
-        hmDescEstados.put("3", "Settlement Without Sales");
-        hmDescEstados.put("4", "Match with Differences");
+        hmDescEstados.put("3", "Pending");
+        hmDescEstados.put("4", "Match to be confirmed");
         hmDescEstados.put("5", "Match Manual");
-//        hmDescEstados.put("6", "Forced Match");
-//        hmDescEstados.put("7", "Compensation Match");
-//        hmDescEstados.put("8", "Pending RFND");
 
-        HashMap<String, String> hmDescSTCONL = new HashMap<String, String>();
-        hmDescSTCONL.put("", "");
-        hmDescSTCONL.put("1", "Accounted");
-        hmDescSTCONL.put("2", "Accounted to Debug");
-
-        HashMap<String, String> hmDescReglas = new HashMap<String, String>();
-        hmDescReglas.put("", "");
-        hmDescReglas.put("1", "By Credit Card");
-        hmDescReglas.put("2", "By Authoc");
-        hmDescReglas.put("3", "By PNR");
-        hmDescReglas.put("4", "By Terminal Zeros");
-        hmDescReglas.put("*", "Intercompany");
-        hmDescReglas.put("S", "By Spreadsheet");
-        hmDescReglas.put("V", "By IATA/SDATE");
-        hmDescReglas.put("T", "By WEB-OPER");
-
-        HashMap<String, String> hmDescFCOMPL = new HashMap<String, String>();
-        hmDescFCOMPL.put("", "");
-        hmDescFCOMPL.put("1", "PLUSGRADE");
-        hmDescFCOMPL.put("2", "LIGAS");
-        hmDescFCOMPL.put("3", "TABLET");
-        hmDescFCOMPL.put("4", "BPO");
 
         HashMap<String, String> hmDescTDOC = new HashMap<String, String>();
         hmDescTDOC.put("", "");
@@ -8728,31 +8701,8 @@ beanTkt.COREP = "";
         hmDescTDOC.put("A", "Adjust.");
         hmDescTDOC.put("N", "ADM");
 
-        HashMap<String, String> hmDescDebitType = new HashMap<String, String>();
-        hmDescDebitType.put("RFND", "Reembolsos");
-        hmDescDebitType.put("RFND-DNG", "Reembolso Denegado");
-        hmDescDebitType.put("ACRED", "Acreditacion");
-        hmDescDebitType.put("CBCK-ID", "Chargeback con ID");
-        hmDescDebitType.put("CBCK-IDM", "Chargeback Media");
-        hmDescDebitType.put("DB-TKT", "Debito con Tkt");
-        hmDescDebitType.put("DOBLE-DB", "Doble Debito");
-        hmDescDebitType.put("ANL-NS", "Anulacion no Satisfactoria");
-        hmDescDebitType.put("R-CBCK", "Reversal Chargeback");
-        hmDescDebitType.put("NO-IDN", "Debito No Identificado");
-
-        //SE DEJA TAMPA COMO '134'
-        HashMap<String, String> hmCCUST = new HashMap<String, String>();
-        hmCCUST.put("TA01", "202");
-//        hmCCUST.put("QT01", "729");
-        hmCCUST.put("QT01", "134");
-        hmCCUST.put("AV01", "134");
-        hmCCUST.put("A500", "134");
-        hmCCUST.put("AB01", "134");
-        hmCCUST.put("LR01", "133");
-        hmCCUST.put("2K01", "547");
-
         //loadPX269SQP00833
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS326_MPF191_DATAENTRY(?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS326_MPF191_DATAENTRY(?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -8766,6 +8716,7 @@ beanTkt.COREP = "";
             cstmt01.setString(5, filter.SAGENT.trim());
             cstmt01.setString(6, filter.TRANC.trim());
             cstmt01.setString(7, filter.CBATCH.trim());
+            cstmt01.setString(8, filter.TINPUT.trim());
             cstmt01.execute();
 
             rs01 = cstmt01.getResultSet();
@@ -8774,12 +8725,6 @@ beanTkt.COREP = "";
                 objRtn.CCUST = rs01.getString("CCUST");
                 objRtn.SOCIETY = rs01.getString("SOCIETY");
                 objRtn.SOCIETYL = rs01.getString("SOCIETYL");
-
-                if (hmCCUST.containsKey(objRtn.SOCIETY)) {
-                    objRtn.CCUSTCC = hmCCUST.get(objRtn.SOCIETY);
-                } else {
-                    objRtn.CCUSTCC = objRtn.CCUST;
-                }
 
                 objRtn.SAGENT = rs01.getString("SAGENT");
                 objRtn.DESAGENT = objRtn.SAGENT + " - " + rs01.getString("DESAGENT");
@@ -8817,12 +8762,6 @@ beanTkt.COREP = "";
                 objRtn.STVALS = rs01.getString("STVALS");
                 objRtn.CHARNBR = rs01.getString("CHARNBR");
                 objRtn.SVFOP = rs01.getDouble("SVFOP");
-//                objRtn.SVFOPC = rs01.getDouble("SVFOPC");
-//                objRtn.SVFOPD = rs01.getDouble("SVFOPD");
-//                objRtn.FAREO = rs01.getDouble("FAREO");
-//                objRtn.FAREC = rs01.getDouble("FAREC");
-//                objRtn.DIFF_FARE = rs01.getDouble("FAREDIFFC"); //CAMBIO SOLICITADO PARA UTILIZAR CAMPO EN LA BD
-                //objRtn.DIFF_FARE = objRtn.FAREO - objRtn.FAREC;
 
                 objRtn.COMMAMO = rs01.getDouble("COMMAMO");
                 objRtn.COMMAMOC = rs01.getDouble("COMMAMOC");
@@ -8842,9 +8781,6 @@ beanTkt.COREP = "";
 //                objRtn.ACCNUMA = rs01.getString("ACCNUMA").trim();
                 objRtn.QTYTKT = rs01.getInt("QTYTKT");
                 objRtn.QTYDOC = rs01.getInt("QTYDOC");
-
-//                objRtn.COMMFAREC = rs01.getDouble("COMMFAREC");
-//                objRtn.TOTAL_ADM = rs01.getDouble("ADMTOTAL");
 
                 objRtn.BANDOC = rs01.getString("BANDOC");
                 objRtn.DATEC = rs01.getString("DATEC").trim();
@@ -8872,17 +8808,7 @@ beanTkt.COREP = "";
                 objRtn.RTEICAC = rs01.getDouble("RTEICAC");
                 objRtn.NETOC = rs01.getDouble("NETOC");
                 objRtn.STCON = rs01.getString("STCON").trim();
-                if (hmDescSTCONL.containsKey(rs01.getString("STCON").trim())) {
-                    objRtn.STCON = hmDescSTCONL.get(rs01.getString("STCON").trim()).toString();
-                } else {
-                    objRtn.STCON = rs01.getString("FREGLA").trim();
-                }
                 objRtn.FCONT = rs01.getString("FCONT").trim();
-
-//                objRtn.COREP = rs01.getString("COREP").trim();
-//                objRtn.CODPRO = rs01.getString("CODPRO").trim();
-//                objRtn.CCUSTPRO = rs01.getString("CCUSTPRO").trim();
-
                 objRtn.USCR = rs01.getString("USCR");
                 objRtn.FECR = rs01.getString("FECR");
                 objRtn.HOCR = rs01.getString("HOCR");
@@ -8946,7 +8872,7 @@ beanTkt.COREP = "";
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS326_MPF191(?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS326_MPF191(?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -8957,7 +8883,8 @@ beanTkt.COREP = "";
             cstmt.setString(2, filter.SDATEC.trim());
             cstmt.setString(3, filter.CBATCH.trim());
             cstmt.setString(4, filter.BANDOC.trim());
-            cstmt.setInt(5, filter.QTYDOC);
+            cstmt.setString(5, filter.TINPUT.trim());
+            cstmt.setInt(6, filter.QTYDOC);
 
             cstmt.execute();
 

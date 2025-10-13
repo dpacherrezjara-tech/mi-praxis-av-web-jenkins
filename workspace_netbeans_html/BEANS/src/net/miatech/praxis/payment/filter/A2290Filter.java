@@ -231,6 +231,7 @@ public class A2290Filter extends A2290 {
     public double totCOMISION = 0;
     public int QTYDOC = 0;
     public String DESCCREJEC = "";
+    public String CBATCH = "";
 
     public double IVA = 0;
     public double IVAC = 0;
@@ -1036,9 +1037,7 @@ public class A2290Filter extends A2290 {
     public String FPROC = "";
     public String BANKNAM = "";
     public String ACCNUMB = "";
-    public String BANKCM = "";
-    public String CBATCH = "";
-    public String SCOUNTRY_191 = "";
+    public String BANKCM = "";    public String SCOUNTRY_191 = "";
     public String SCURRENCY_191 = "";
     public String SCONSOL_191 = "";
     public String STARDATE_191 = "";
