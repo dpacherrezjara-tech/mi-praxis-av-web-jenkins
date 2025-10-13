@@ -47,4 +47,10 @@ public class ReportsLogic {
     public List<A2290Filter> loadPX269SQP05103_DEBITYPE(A2290Filter filter) throws SQLException, Exception {
         return banksCatalogDAO.loadPX269SQP05103_DEBITYPE(filter);
     }
+    
+    public List<A2290Filter> load_MPS350(A2290Filter filter) throws SQLException, Exception {
+        return banksCatalogDAO.load_MPS350(filter);
+    }
+    
+    
 }

@@ -31,17 +31,17 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.ReportsForm', {
                     border: false,
                     bodyCls: 'colorFondo',
                     layout: 'fit',
-//                    defaults: {
-//                        border: false,
-//                        autoScroll: true
-//                    },
+                    defaults: {
+                        border: false,
+                        autoScroll: true
+                    },
                     items: [
                         {
                             xtype: 'panel',
-                            region: 'center',
-                            width: 980,
+                            id: prototype.id + '-panelPrincipal',
+                            hidden: false,
+                            width: 1000,
                             layout: 'border',
-                            
                             items: [
                                 {
                                     region: 'center',
@@ -53,32 +53,33 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.ReportsForm', {
                                     border: true,
                                     autoScroll: true,
                                     defaults: {
-                                        width: 1800,
+                                        width: 1600,
                                         align: 'center'
                                     },
                                     items: [
-                                        {xtype: prototype.id + '-options'},
+                                       {
+                                            xtype:prototype.id + '-options',
+                                            style:'margin-top:20px'
+                                        },
                                         {
                                             xtype: prototype.id + '-filters',
                                             id: prototype.id + '-contentFilter'
                                         },
                                         {
                                             xtype: 'panel',
-                                            height: 650,
-                                            width: 1800,
+                                            height: 630,
                                             layout: 'fit',
+                                            id: prototype.id + '-panelHeight',
                                             items: [
                                                 {
                                                     xtype: 'panel',
                                                     id: prototype.id + '-centerC-panel01',
-                                                    width: 1800,
                                                     layout: 'border',
                                                     align: 'center',
-                                                    border: true,
+                                                    border: false,
                                                     defaults: {
                                                         border: false
                                                     },
-                                                    bodyStyle: 'background-color: white;',
                                                     items: [
                                                         {
                                                             region: 'center',
