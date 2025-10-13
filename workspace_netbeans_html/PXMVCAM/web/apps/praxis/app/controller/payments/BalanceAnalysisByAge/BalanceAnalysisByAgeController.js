@@ -32,7 +32,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         prototype.url = CONTEXTPATH + '/BalanceAnalysisByAge';
         prototype.urlMaster = CONTEXTPATH + '/MasterController';
         this.childs = Ext.getCmp(prototype.id + '-panelMain').items.items;
-        me.panelActual = '-panelGridConciliationMDP';
+        me.panelActual = '-panelGridConciliation';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
 
 
