@@ -3427,6 +3427,16 @@ public class SalesReconciliationController extends BaseController {
                          
                         }
                         
+                        String fventa = "";
+                        if (listaData != null && !listaData.isEmpty()) {
+                            fventa = listaData.get(0).SDATE;
+                            if (fventa != null && fventa.length() >= 6) {
+                                fventa = fventa.substring(0, 6); // toma los primeros 6 caracteres
+                            }
+                        }
+                        
+                        
+                        
                         
 //                        listaData_ADJUST = logic.loadPX263SQP00XXXJT2(obj);
 
@@ -3489,7 +3499,7 @@ public class SalesReconciliationController extends BaseController {
                                     Ccp.add(parts[i]);
                                 }
                             }
-                            String asunto = "Gestión de inconsistencias en conciliación de ventas en Tarjetas de Crédito  "+iata+ " - " + Functions.getFechaActual();
+                            String asunto = "Gestión de inconsistencias en conciliación de ventas en Tarjetas de Crédito  "+iata+ " - " + fventa;
                             String mensaje = "<p>Estimados miembros de agencia de viajes:</p>\n"
                                     + "<p>Les brindamos inicialmente un cordial saludo</p>\n"
                                     + "<p>&nbsp;</p>\n"
