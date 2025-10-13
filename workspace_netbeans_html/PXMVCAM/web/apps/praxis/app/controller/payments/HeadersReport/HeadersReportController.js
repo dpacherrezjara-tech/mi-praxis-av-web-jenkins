@@ -15,8 +15,8 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersReportController
     init: function (view) {
     },
     afterRender: async function () {
-        await this.loadFilters();
-        this.onClickSearchBtn();
+      //  await this.loadFilters();
+       // this.onClickSearchBtn();
     },
     loadFilters: async function () {
         const me = this;
@@ -37,15 +37,38 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersReportController
     },
     onClickSearchBtn: function () {
         const me = this;
-        let params = me.formatParams();
-        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
-        mainPanel.removeAll();
-        const panelDetail = Ext.create('Ext.Praxis.view.payments.HeadersReportForm.Grids.HeadersGrid', {
-            id: prototype.id + '-HeadersGrid-1',
-            searchParams: params,
-            filters: me.filters
-        });
-        mainPanel.add(panelDetail);
+        const params = me.formatParams();
+        
+        console.log("params: ", params)
+        console.log("filters: ", me.filters)
+
+        // Detectar qué vista está activa
+        const isHeadersVisible = !Ext.getCmp(prototype.id + '-viewHeaders').hidden;
+        const isSequenceVisible = !Ext.getCmp(prototype.id + '-viewSecuence').hidden;
+
+        // Si estamos en Headers
+        if (isHeadersVisible) {
+            const headersContainer = Ext.getCmp(prototype.id + '-HeadersGrid');
+            headersContainer.removeAll();
+            const grid = Ext.create('Ext.Praxis.view.payments.HeadersReportForm.Grids.HeadersGrid', {
+                id: prototype.id + '-HeadersGridCmp',
+                searchParams: params,
+                filters: me.filters
+            });
+            headersContainer.add(grid);
+        }
+
+        // Si estamos en Sequence
+        if (isSequenceVisible) {
+            const sequenceContainer = Ext.getCmp(prototype.id + '-SequencesGrid');
+            sequenceContainer.removeAll();
+            const grid = Ext.create('Ext.Praxis.view.payments.HeadersReportForm.Grids.SequencesGrid', {
+                id: prototype.id + '-SequencesGridCmp',
+                searchParams: params,
+                filters: me.filters
+            });
+            sequenceContainer.add(grid);
+        }
     },
     onDisplayFilterBtn: function () {
         const filters = Ext.getCmp(prototype.id + '-contentFilter');
@@ -69,14 +92,23 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersReportController
         win.show();
     },
     onChangeView: function(field, newValue){
-        if(newValue.opcion === '2'){
-            Ext.getCmp(prototype.id + '-contentFilter').hide();
-            Ext.getCmp(prototype.id + '-mainContent').hide();
+        if(newValue.opcion === '1'){
+            Ext.getCmp(prototype.id + '-viewHeaders').show();
+            Ext.getCmp(prototype.id + '-viewSecuence').hide();
+            Ext.getCmp(prototype.id + '-viewDayPilot').hide();   
+            Ext.getCmp(prototype.id + '-panelFilters').show(); 
+        } else if (newValue.opcion === '2') {
+            Ext.getCmp(prototype.id + '-viewHeaders').hide();
+            Ext.getCmp(prototype.id + '-viewSecuence').show();
+            Ext.getCmp(prototype.id + '-viewDayPilot').hide();  
+            Ext.getCmp(prototype.id + '-panelFilters').show(); 
+
+        } else if(newValue.opcion === '3'){
+            Ext.getCmp(prototype.id + '-viewHeaders').hide();
+            Ext.getCmp(prototype.id + '-viewSecuence').hide();
+            Ext.getCmp(prototype.id + '-viewDayPilot').show();  
             Ext.getCmp(prototype.id + '-dayPilotCmp').show();
-        }else{
-            Ext.getCmp(prototype.id + '-contentFilter').show();
-            Ext.getCmp(prototype.id + '-mainContent').show();
-            Ext.getCmp(prototype.id + '-dayPilotCmp').hide();
+            Ext.getCmp(prototype.id + '-panelFilters').hide(); 
         }
     }
 });
