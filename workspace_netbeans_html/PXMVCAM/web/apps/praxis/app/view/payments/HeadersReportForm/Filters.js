@@ -137,7 +137,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Filters', {
                                 },
                                 {
                                     xtype: 'textfield',
-                                    fieldLabel: 'Corrl AV',
+                                    fieldLabel: 'Header ID',
                                     labelWidth: 90,
                                     width: 280,
                                     name: 'IN_HEADER',

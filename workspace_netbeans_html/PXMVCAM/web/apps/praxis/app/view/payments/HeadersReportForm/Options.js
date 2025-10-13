@@ -17,14 +17,15 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Options', {
             items: [
                 {
                     xtype: 'radiogroup',
-                    columns: 2, // Muestra los radios en columna
+                    columns: 3, // Muestra los radios en columna
                     vertical: false,
                     border: false,
                     padding: 5,
-                    width:200,
+                    width:300,
                     items: [
-                        {boxLabel: '<span style="color: green; font-weight: bold;">Report</span>', name: 'opcion', inputValue: '1', checked: true},
-                        {boxLabel: '<span style="color: green; font-weight: bold;">Week View</span>', name: 'opcion', inputValue: '2'}
+                        {boxLabel: '<span style="color: green; font-weight: bold;">Headers</span>', name: 'opcion', inputValue: '1', checked: true},
+                        {boxLabel: '<span style="color: green; font-weight: bold;">Sequence</span>', name: 'opcion', inputValue: '2', checked: false},
+                        {boxLabel: '<span style="color: green; font-weight: bold;">Week View</span>', name: 'opcion', inputValue: '3'}
                     ],
                     listeners: {
                         change: 'onChangeView'

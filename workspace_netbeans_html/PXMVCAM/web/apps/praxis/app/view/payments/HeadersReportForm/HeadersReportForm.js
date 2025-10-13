@@ -12,7 +12,8 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.HeadersReportForm', {
         'Ext.Praxis.view.payments.HeadersReportForm.Options',
         'Ext.Praxis.view.payments.HeadersReportForm.Filters',
         'Ext.Praxis.view.payments.HeadersReportForm.Grids.HeadersGrid',
-        'Ext.Praxis.view.payments.HeadersReportForm.Grids.DayPilotPanel'
+        'Ext.Praxis.view.payments.HeadersReportForm.Grids.DayPilotPanel',
+        'Ext.Praxis.view.payments.HeadersReportForm.Grids.SequencesGrid'
     ],
     controller: 'HeadersReportController',
     layout: {
@@ -59,40 +60,86 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.HeadersReportForm', {
                                             xtype: prototype.id + '-options'
                                         },
                                         {
-                                            id: prototype.id + '-contentFilter',
+                                            xtype: prototype.id + '-filters',
+                                            id: prototype.id + '-panelFilters'
+                                        },
+                                        //<editor-fold defaultstate="collapsed" desc="Header">
+                                        //xtype: prototype.id + '-HeadersGrid',                                   
+                                        {
                                             xtype: 'panel',
+                                            id: prototype.id + '-viewHeaders',
+                                            height: prototype.height,
+                                            border: false,
                                             bodyStyle: 'background-color: #E3EAF9;',
-                                            layout:{
-                                                type:'hbox',
-                                                pack:'left'
-                                            },
-                                            border: true,
-                                            defaults: {
-                                                width: prototype.width,
+                                            layout: {
+                                                type: 'vbox',
                                                 align: 'center'
                                             },
                                             items: [
                                                 {
-                                                    xtype: prototype.id + '-filters'
+                                                    xtype: 'panel',
+                                                    id: prototype.id + '-HeadersGrid',
+                                                    height: prototype.height,
+                                                    border: false,
+                                                    bodyStyle: 'background-color: #E3EAF9;',
+                                                    layout: {
+                                                        type: 'vbox',
+                                                        align: 'center'
+                                                    }
                                                 }
                                             ]
                                         },
+                                        //</editor-fold>
+                                        //<editor-fold defaultstate="collapsed" desc="Secuence">
+                                        //xtype: prototype.id + '-SequencesGrid',
                                         {
                                             xtype: 'panel',
-                                            id: prototype.id + '-mainContent',
+                                            id: prototype.id + '-viewSecuence',
+                                            hidden: true,
+                                            border: false,
                                             height: prototype.height,
                                             bodyStyle: 'background-color: #E3EAF9;',
                                             layout: {
                                                 type: 'vbox',
                                                 align: 'center'
-                                            }
+                                            },
+                                            items: [
+                                                {
+                                                    xtype: 'panel',
+                                                    id: prototype.id + '-SequencesGrid',
+                                                    height: prototype.height,
+                                                    border: false,
+                                                    bodyStyle: 'background-color: #E3EAF9;',
+                                                    layout: {
+                                                        type: 'vbox',
+                                                        align: 'center'
+                                                    }
+                                                }
+                                            ]
                                         },
+                                        //</editor-fold>
+                                        //<editor-fold defaultstate="collapsed" desc="DayPilot">
+                                        //id: prototype.id + '-dayPilotCmp',
                                         {
-                                            xtype: 'daypilotpanel',
-                                            id: prototype.id + '-dayPilotCmp',
+                                            xtype: 'panel',
+                                            id: prototype.id + '-viewDayPilot',
+                                            hidden: true,
+                                            border: false,
                                             height: prototype.height,
-                                            hidden:true
+                                            bodyStyle: 'background-color: #E3EAF9;',
+                                            layout: {
+                                                type: 'vbox',
+                                                align: 'center'
+                                            },
+                                            items: [                                               
+                                                {
+                                                    xtype: 'daypilotpanel',
+                                                    id: prototype.id + '-dayPilotCmp',
+                                                    height: prototype.height,
+                                                }
+                                            ]
                                         }
+                                        //</editor-fold>
                                     ]
                                 }
                             ]
@@ -103,7 +150,6 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.HeadersReportForm', {
         }
     ]
 });
-
 
 
 
