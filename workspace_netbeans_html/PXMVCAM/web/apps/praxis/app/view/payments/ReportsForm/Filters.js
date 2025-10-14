@@ -188,7 +188,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Filters', {
                                 fieldLabel: 'Estado tipo cambio',
                                 labelWidth: 110,
                                 hidden:true,
-                                width: 600,
+                                width: 800,
                                 labelStyle: 'font-size: 12px; text-align: left;',
                                 fieldStyle: 'font-size: 12px; color: #444; padding-bottom: 8px;',
                                 value: '', // Se llena dinámicamente con el mensaje
@@ -387,7 +387,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Filters', {
                                 id: prototype.id + '-lblExchangeMessage',
                                 fieldLabel: 'Estado tipo cambio',
                                 labelWidth: 110,
-                                width: 600,
+                                width: 800,
                                 labelStyle: 'font-size: 12px; text-align: left;',
                                 fieldStyle: 'font-size: 12px; color: #444; padding-bottom: 8px;',
                                 value: '', // Se llena dinámicamente con el mensaje
