@@ -1846,7 +1846,7 @@ public class InvoiceControlDAO {
                     AMOUNT_TOTAL_ACTIVE += bean.SUM_ACTIVE;
                     AMOUNT_TOTAL_DIFFERENCE += bean.DIFFERENCE;
                     
-                    AMOUNT_TOTAL_MPF100 += bean.DIFFERENCE;
+                    AMOUNT_TOTAL_MPF100 += bean.SUM_MPF100;
                     AMOUNT_TOTAL_DIFFERENCE_100 += bean.DIFFERENCE_100;
                     AMOUNT_TOTAL_PENDING_MPF100 += bean.PENDING_MPF100;
 
