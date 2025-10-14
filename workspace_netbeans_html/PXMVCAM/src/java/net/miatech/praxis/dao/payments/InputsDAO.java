@@ -321,7 +321,7 @@ public class InputsDAO {
         hmTablaFuente.put("AXLIGATB-D", "A4125");
         hmTablaFuente.put("WORLDPAY-D", "A4039");
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP04393(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.MPS385(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         try {
             
