@@ -65,6 +65,8 @@ public String IN_DEUSAP = "";
 public String IN_PROCES = "";
 public String IN_SCOUNTRY = "";
 public String IN_SOCIETY = "";
+public String IN_DATE = "";
+public String IN_INVOICE = "";
 public String IN_SCURRENCY = "";
 public String IN_SBENCEN = "";
 public String IN_COSTCEN = "";
@@ -80,6 +82,9 @@ public String IN_EQUIVA6 = "";
 public String IN_EQUIVA7 = "";
 public String IN_EQUIVA8 = "";
 public String IN_EQUIVA9 = "";
+
+public String IN_FECHA_FROM = "";
+public String IN_FECHA_TO = "";
 
 public String OPTION = "";
 public String NEGOC = "";
@@ -136,6 +141,35 @@ public String IDFBENEF = "";
 public String DEFFEC = "";
 public String DFINAL = "";
 public String SEQ = "";
+
+public String PAIS = "";
+public String IATA = "";
+public String IATANAME = "";
+public String INVOICE = "";
+public String CLASEDOC = "";
+public String SDATE = "";
+public String SCURRENCYL = "";
+public String CURUSD = "";
+public String strFormatDate = "";
+public String CURRENCY = "";
+
+public double SVFOPUSD = 0;
+public double SVFOPL = 0;
+public double SUM_ACTIVE = 0;
+public double SUM_MPF100 = 0;
+public double DIFFERENCE = 0;
+public double DIFFERENCE_100 = 0;
+public double PENDING_MPF100 = 0;
+
+public double AMOUNT_TOTAL_USD = 0;
+public double AMOUNT_TOTAL_ACTIVE = 0;
+public double AMOUNT_TOTAL_DIFFERENCE = 0;
+public double AMOUNT_TOTAL_MPF100 = 0;
+public double AMOUNT_TOTAL_DIFFERENCE_100 = 0;
+public double AMOUNT_TOTAL_PENDING_MPF100 = 0;
+
+public int QTY = 0;
+public int QTY_TOTAL= 0;
 
 
 public List<A4202> lstDetalle = new ArrayList<A4202>(0);
