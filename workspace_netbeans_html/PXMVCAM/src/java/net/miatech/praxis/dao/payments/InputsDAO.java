@@ -210,7 +210,7 @@ public class InputsDAO {
         CallableStatement cstmt01 = null;
         ResultSet rs01 = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00665(?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS353(?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -321,7 +321,7 @@ public class InputsDAO {
         hmTablaFuente.put("AXLIGATB-D", "A4125");
         hmTablaFuente.put("WORLDPAY-D", "A4039");
 
-        String SQLCLL01 = "{CALL PRAXISMP.MPS385(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP04393(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         try {
             
