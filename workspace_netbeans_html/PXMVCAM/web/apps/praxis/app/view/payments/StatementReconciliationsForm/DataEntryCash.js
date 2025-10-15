@@ -1,6 +1,10 @@
 Ext.util.CSS.createStyleSheet(`
     .row-with-comments .x-grid-cell {
-        background-color: #9E9B9B !important; /* pastel amarillito */
+        background-color: #1AB092 !important; /* pastel amarillito */
+        color: #856404 !important;
+    }
+    .row-with-commentsICCS .x-grid-cell {
+        background-color: #057ECB !important; /* pastel amarillito */
         color: #856404 !important;
     }
 `, 'customRowStyles');

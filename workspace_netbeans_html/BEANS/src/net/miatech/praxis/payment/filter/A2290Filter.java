@@ -42,7 +42,6 @@ public class A2290Filter extends A2290 {
     public String IN_FECHA_FROM = "";
     public String IN_ADATE = "";
     public String IN_FECHA_TO = "";
-    public String IN_FECFILTRO = "";
     public String strFecFiltro = "";
     public String strYearFrom = "";
     public String strYearTo = "";
@@ -62,7 +61,6 @@ public class A2290Filter extends A2290 {
     public String IN_LIQUIDACIO = "";
     public String IN_TYPER = "";
     public String INTERCOMPANY = "";
-    public String IN_INTERCOMPANY = "";
 
     public String IN_FROMADATE = "";
     public String IN_TOADATE = "";
@@ -233,6 +231,7 @@ public class A2290Filter extends A2290 {
     public double totCOMISION = 0;
     public int QTYDOC = 0;
     public String DESCCREJEC = "";
+    public String CBATCH = "";
 
     public double IVA = 0;
     public double IVAC = 0;
@@ -1012,8 +1011,15 @@ public class A2290Filter extends A2290 {
     public double SVFOPNETRU    = 0; 
     public double SUM_NETO    = 0; 
     public double SUM_PAYAMOU    = 0; 
+    public double SUM_TKT    = 0; 
     
     //CASH
+    
+    // MAIN_SUMMARY 
+    public String IN_SOURCE = "";
+    
+    
+    
     public String TINPUT = "";
     public String STRDATE = "";
     public String ENDDATE = "";
@@ -1031,7 +1037,17 @@ public class A2290Filter extends A2290 {
     public String FPROC = "";
     public String BANKNAM = "";
     public String ACCNUMB = "";
-    public String BANKCM = "";
+    public String BANKCM = "";    public String SCOUNTRY_191 = "";
+    public String SCURRENCY_191 = "";
+    public String SCONSOL_191 = "";
+    public String STARDATE_191 = "";
+    public String ENDDATE_191 = "";
+    public String QTYTKT_191 = "";
+    public double NETO_191 = 0;
+    public double PAYAMOU_191 = 0;
+    public double COMISION_191 = 0;
+    public double USDEQUI = 0;
+    public String DCYCLE = "";
 
     
     //Update
