@@ -1046,6 +1046,8 @@ public class A2290Filter extends A2290 {
     public double NETO_191 = 0;
     public double PAYAMOU_191 = 0;
     public double COMISION_191 = 0;
+    public double USDEQUI = 0;
+    public String DCYCLE = "";
 
     
     //Update

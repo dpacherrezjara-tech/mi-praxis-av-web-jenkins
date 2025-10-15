@@ -1446,6 +1446,24 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                         dataIndex: 'selected',
                                                                         width: 70,
                                                                         stopSelection: false,
+                                                                        listeners: {
+                                                                            beforecheckchange: function (checkColumn, rowIndex, checked, record, e, eOpts) {
+                                                                                // Obtener el grid
+                                                                                const grid = checkColumn.up('grid');
+                                                                                const store = grid.getStore();
+
+                                                                                // Desmarcar todos los demás registros
+                                                                                store.each(function (rec) {
+                                                                                    if (rec !== record && rec.get('selected')) {
+                                                                                        rec.set('selected', false);
+                                                                                    }
+                                                                                });
+
+                                                                                // Permitir marcar solo uno
+                                                                                record.set('selected', checked);
+                                                                                return false; // Evita que el valor se duplique
+                                                                            }
+                                                                        }
                                                                     }
 
                                                                     
@@ -1484,9 +1502,13 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                     // Si hay comentario -> aplicar clase
                                                                     if ((record.get('REFERENCE') && record.get('REFERENCE').trim() !== '') || 
                                                                                 (record.get('COMMENTS') && record.get('COMMENTS').trim() !== '')) {
-                                                                        return 'row-with-commentsICCS';
+                                                                        return 'row-with-blue';
                                                                     }
                                                                     return '';
+                                                                },
+                                                                selModel: {
+                                                                    mode: 'SINGLE',     // ✅ solo una fila seleccionada a la vez
+                                                                    allowDeselect: true // permite deseleccionar
                                                                 },
                                                                 listeners: {
                                                                     itemmouseenter: function (view, record, item) {
@@ -1502,6 +1524,13 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                     itemmouseleave: function (view, record, item) {
                                                                         Ext.tip.QuickTipManager.unregister(item);
                                                                     },
+                                                                    select: function (rowModel, record) {
+                                                                        console.log('Seleccionado:', record.data);
+                                                                        // Aquí puedes guardar el registro seleccionado en una variable global o pasarlo a tu lógica
+                                                                    },
+                                                                    deselect: function (rowModel, record) {
+                                                                        console.log('Deseleccionado:', record.data);
+                                                                    }
 
                                                                 }
                                                             },
@@ -1515,7 +1544,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                     {
                                                                         text: 'Status',
                                                                         dataIndex: 'descSTVAL',
-                                                                        width: 120  ,
+                                                                        width: 150  ,
                                                                         renderer: function (value, metaData) {
                                                                             metaData.style = "text-align:center;";
                                                                             return value;
@@ -1533,12 +1562,15 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                     {
                                                                         text: 'Country',
                                                                         dataIndex: 'DESC_SCOUNTRY',
-                                                                        width: 120  ,
+                                                                        width: 120,
                                                                         renderer: function (value, metaData) {
                                                                             metaData.style = "text-align:center;";
-                                                                            return value;
+                                                                            if (!value) return '';
+                                                                            value = value.toLowerCase();
+                                                                            return value.charAt(0).toUpperCase() + value.slice(1); 
                                                                         }
                                                                     },
+
                                                                     {
                                                                         text: 'Consol.',
                                                                         dataIndex: 'SCONSOL',
@@ -1562,7 +1594,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                         dataIndex: 'NETO',
                                                                         width: 130,
                                                                         xtype: 'numbercolumn',
-                                                                        summaryType: 'sum',   // 🔥 suma automático
+                                                                        summaryType: 'sum',   
                                                                         
                                                                         renderer: function (value, metaData) {
                                                                             metaData.style = "text-align:right;";
@@ -1594,6 +1626,16 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                         }
                                                                         
                                                                     },
+                                                                    {
+                                                                        text: 'Cicle',
+                                                                        dataIndex: 'DCYCLE',
+                                                                        width: 90,
+                                                                        renderer: function (value, metaData) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
+                                                                        
+                                                                    },
                                                                     
                                                                     {
                                                                         text: 'QTYTKT',
@@ -1612,6 +1654,32 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                             click: 'onGridViewTKTAgent'
                                                                         },
                                                                     },
+                                                                    {
+                                                                        xtype: 'checkcolumn',
+                                                                        text: 'Select',
+                                                                        dataIndex: 'selected',
+                                                                        width: 70,
+                                                                        stopSelection: false,
+                                                                        listeners: {
+                                                                            beforecheckchange: function (checkColumn, rowIndex, checked, record, e, eOpts) {
+                                                                                // Obtener el grid
+                                                                                const grid = checkColumn.up('grid');
+                                                                                const store = grid.getStore();
+
+                                                                                // Desmarcar todos los demás registros
+                                                                                store.each(function (rec) {
+                                                                                    if (rec !== record && rec.get('selected')) {
+                                                                                        rec.set('selected', false);
+                                                                                    }
+                                                                                });
+
+                                                                                // Permitir marcar solo uno
+                                                                                record.set('selected', checked);
+                                                                                return false; // Evita que el valor se duplique
+                                                                            }
+                                                                        }
+                                                                    }
+
                                                                     
                                                                 ]
                                                             }
@@ -1890,7 +1958,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                                             return value;
                                                                                         }
                                                                                     },
-                                                                                    {text: 'MCLOS', dataIndex: 'MCLOS', width: 80,
+                                                                                    {text: 'Fpaymen', dataIndex: 'MCLOS', width: 80,
                                                                                         editor: {xtype: 'textfield', editable: false},
                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                             metaData.style = "text-align:center;";
@@ -1935,9 +2003,10 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                                             return value;
                                                                                         },
                                                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                                            var data = Ext.getCmp(prototype.id + '-gridDataInfoScanAgent').getStore().getData().items[0].data;
-                                                                                            metaData.style = 'text-align:right; margin-right:3px ';
-                                                                                            return '<b>' + Ext.util.Format.number(data.tot_VFOP, '0,000.00') + '<b>';
+                                                                                            let grid = Ext.getCmp(prototype.id + '-gridDataInfoScanAgent');
+                                                                                            let total = grid.getStore().sum('SVFOPNETR');
+                                                                                            metaData.style = 'text-align:right; margin-right:3px;';
+                                                                                            return '<b>' + Ext.util.Format.number(total, '0,000.00') + '</b>';
                                                                                         }
                                                                                     },
                                                                                     {text: 'Curr', dataIndex: 'SCURRENCY', width: 65,
