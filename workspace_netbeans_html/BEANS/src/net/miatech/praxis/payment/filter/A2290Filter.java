@@ -1058,6 +1058,7 @@ public class A2290Filter extends A2290 {
     public String HOSEND = "";
     public String FERECV = "";
     public String HORECV = "";
+    public String IN_FECFILTRO  = "";
 
     public String getVariable() {
         return BANDOC;
