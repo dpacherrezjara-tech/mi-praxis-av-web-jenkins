@@ -210,7 +210,7 @@ public class InputsDAO {
         CallableStatement cstmt01 = null;
         ResultSet rs01 = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00665_2(?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS353(?,?,?,?,?)}";
 
         Connection cnx = null;
         try {

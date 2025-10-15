@@ -175,8 +175,8 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
 
         Ext.getCmp(prototype.id + '-cmbDateFromYear').setValue(this.fecha.getFullYear());
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(this.fecha.getFullYear());
-        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue("");
-        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue("");
+        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue(month);
+        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue(month);
         Ext.getCmp(prototype.id + '-cmbDateDay').setValue("");
         Ext.getCmp(prototype.id + '-cmbDateDay').setValue("");
 
@@ -397,7 +397,7 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                         lbl2.setFieldStyle('color: #d9534f; font-weight: bold;');
                     } else {
                         // Caso sin errores
-                        lbl.tooltip.update('Todos los registros cuentan con tipo de cambio.');
+                        lbl.tooltip.update('Todo con tipo de cambio.');
                         lbl.setFieldStyle('color: #28a745; font-weight: bold;');
                         
                         lbl2.tooltip.update('Todos los registros cuentan con tipo de cambio.');
@@ -475,7 +475,7 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
     },
     setGridSumaryMain: function () {
         win.lblUser_toolTip("Estructura: MPF101");
-        
+        me.drillDown.push(me.panelActual);
         me.panelActual = '-panelGridSumaryMain';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
         var msj = this.validateFields();
@@ -939,6 +939,7 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
     },
     setGridDataDetail: function (){
         win.lblUser_toolTip("Estructura: MPF101");
+        me.drillDown.push(me.panelActual);
         me.panelActual = '-boxDataDetail';
         Ext.getCmp(prototype.id + '-panelHeight').setHeight(630);
         global.selectedChild(me.childs, prototype.id + me.panelActual);
@@ -1005,6 +1006,24 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
     btnBack_click: function (obj, e) {
 
         if (me.drillDown.length > 0) {
+            
+             let summaryBoolean = Ext.getCmp(prototype.id + '-panelGridSumaryMain').isVisible()
+                if ( !summaryBoolean ){
+                    Ext.getCmp(prototype.id + '-containerFilters1').hide()
+                    Ext.getCmp(prototype.id + '-containerFilters2').hide()
+                    Ext.getCmp(prototype.id + '-lblExchangeMessage2').show()
+                    Ext.getCmp(prototype.id + '-pie').hide()
+                    Ext.getCmp(prototype.id + '-panelHeight').setHeight(690);
+                }else{
+                     Ext.getCmp(prototype.id + '-panelHeight').setHeight(630);
+                    Ext.getCmp(prototype.id + '-containerFilters1').show()
+                    Ext.getCmp(prototype.id + '-containerFilters2').show()
+                    Ext.getCmp(prototype.id + '-lblExchangeMessage2').hide()
+                    Ext.getCmp(prototype.id + '-pie').show()
+                }
+            
+            
+            
             me.panelActual = me.drillDown.pop();
             global.selectedChild(me.childs, prototype.id + me.panelActual);
             me.setWidthPie();
