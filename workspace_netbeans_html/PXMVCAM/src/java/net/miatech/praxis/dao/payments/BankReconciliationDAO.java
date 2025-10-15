@@ -8866,7 +8866,7 @@ beanTkt.COREP = "";
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Match");
         hmDescEstados.put("3", "Pending");
-        hmDescEstados.put("4", "Match with Difference");
+        hmDescEstados.put("4", "Match to be confirmed");
         hmDescEstados.put("5", "Match Manual");
 
         CallableStatement cstmt = null;
@@ -8909,10 +8909,11 @@ beanTkt.COREP = "";
                 beanTkt.DESC_SCOUNTRY = rst.getString("DESC_SCOUNTRY");
                 beanTkt.CFUENTE = rst.getString("CFUENTE");
                 beanTkt.SAGENT = rst.getString("SAGENT");
-                beanTkt.SCONSOL = rst.getString("SCONSOL");
+                beanTkt.SCONSOL = rst.getString("SCONSOL_TABLE");
                 beanTkt.SCURRENCY = rst.getString("SCURRENCY");
                 beanTkt.NETO = rst.getDouble("NETO");
                 beanTkt.PAYAMOU = rst.getDouble("PAYAMOU");
+                beanTkt.USDEQUI = rst.getDouble("USDEQUI");
                 beanTkt.SUM_NETO = rst.getDouble("SUM_NETO");
                 beanTkt.SUM_PAYAMOU = rst.getDouble("SUM_PAYAMOU");
                 beanTkt.SUM_TKT = rst.getDouble("SUM_TKT");
@@ -8930,6 +8931,7 @@ beanTkt.COREP = "";
                 beanTkt.COMMENTS = rst.getString("COMMENTS");
                 beanTkt.BANDOC = rst.getString("BANDOC");
                 beanTkt.CBATCH = rst.getString("CBATCH");
+                beanTkt.DCYCLE = rst.getString("DCYCLE");
                 lstData.add(beanTkt);
             }
             rst.close();
@@ -9030,6 +9032,7 @@ beanTkt.COREP = "";
                 beanTkt.INVOICE = rst.getString("INVOICE").trim();
                 beanTkt.ACCNUMA = rst.getString("ACCNUMA").trim();
                 beanTkt.SCONSOL = rst.getString("SCONSOL").trim();
+                beanTkt.MCLOS = rst.getString("MCLOS").trim();
 
                 lstData.add(beanTkt);
             }

@@ -9,6 +9,11 @@ Ext.util.CSS.createStyleSheet(`
         background-color: #1AB092 !important; /* pastel amarillito */
         color: #856404 !important;
     }
+/* Nueva fila con celeste suave */
+    .row-with-blue .x-grid-cell {
+        background-color: #B3E5FC !important; /* celeste pastel */
+        color: #004D66 !important; /* texto azul oscuro */
+    }
 `, 'customRowStyles');
 
 Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliationController', {
