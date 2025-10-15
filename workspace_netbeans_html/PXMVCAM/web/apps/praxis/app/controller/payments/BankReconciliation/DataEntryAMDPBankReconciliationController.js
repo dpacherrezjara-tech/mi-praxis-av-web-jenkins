@@ -57,7 +57,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         if (this.bean.STVAL === '1' || this.bean.STVAL === '4' || this.bean.STVAL === '5') {
             this.onSearchCompleteDetail();
             Ext.getCmp(prototype.id + '-btn-update').hide();
-            this.ocultarBtnReversa();
+//            this.ocultarBtnReversa();
         } else {
 
             if (this.bean.NEGOC === '1') {
@@ -1103,73 +1103,83 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         let miGrilla = Ext.getCmp(prototype.id + '-gridDataInfoScan');
 
         let datos = {};
+        
+        datos.DATEC = this.bean.DATEC;
+        datos.TRANC = this.bean.TRANC;
+        datos.CODPRO = this.bean.CODPRO;
+        datos.TDOCORG = this.bean.TDOCORG;
+
+        let beanReversa = JSON.stringify(datos);
         var cont;
-        if (miGrilla) {
-            cont = this.desprocesarRegistros(miGrilla);
-            if (cont === 0) {
+//        return false;
+        Ext.Ajax.request({
+            url: prototype.url + '/reverseOption',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: beanReversa, option: option},
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDP').mask('Loading...'),
+            success: function (response, opts) {
+                Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+                var res = Ext.JSON.decode(response.responseText);
+                if (res.success) {
 
-                datos = this.desprocesarOnlyLiquidacion();
-                Ext.Ajax.request({
-                    url: prototype.url + '/reverseOptionOnlyLiq',
-                    method: 'POST',
-                    timeout: 60000000,
-                    params: {beanString: datos, option: option},
-                    beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDP').mask('Loading...'),
-                    success: function (response, opts) {
-                        Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
-                        var res = Ext.JSON.decode(response.responseText);
-                        if (res.success) {
-
-                            global.Msg({
-                                msg: res.Mensaje,
-                                icon: 1,
-                                fn: function () {
-                                    Ext.getCmp(prototype.id + '-dataEntryAMDP').close();
-                                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
-                                }
-                            });
-                        } else
-                            global.Msg({msg: res.sesion});
-                    },
-                    failure: function (response, opts) {
-                        console.log('server-side failure with status code ' + response.status);
-                        Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
-                    }
-                });
-
-            } else {
-                datos = this.desprocesarRegistros(miGrilla);
-                Ext.Ajax.request({
-                    url: prototype.url + '/reverseOption',
-                    method: 'POST',
-                    timeout: 60000000,
-                    params: {beanString: datos, option: option},
-                    beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDP').mask('Loading...'),
-                    success: function (response, opts) {
-                        Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
-                        var res = Ext.JSON.decode(response.responseText);
-                        if (res.success) {
-
-                            global.Msg({
-                                msg: res.Mensaje,
-                                icon: 1,
-                                fn: function () {
-                                    Ext.getCmp(prototype.id + '-dataEntryAMDP').close();
-                                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
-                                }
-                            });
-                        } else
-                            global.Msg({msg: res.sesion});
-                    },
-                    failure: function (response, opts) {
-                        console.log('server-side failure with status code ' + response.status);
-                        Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
-                    }
-                });
+                    global.Msg({
+                        msg: res.Mensaje,
+                        icon: 1,
+                        fn: function () {
+                            Ext.getCmp(prototype.id + '-dataEntryAMDP').close();
+                            Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+                        }
+                    });
+                } else
+                    global.Msg({msg: res.sesion});
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+                Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
             }
-        } else {
-            console.error('No se pudo encontrar la grilla con el ID especificado.');
-        }
+        });
+        
+//        if (miGrilla) {
+//            cont = this.desprocesarRegistros(miGrilla);
+//            if (cont === 0) {
+//
+//                datos = this.desprocesarOnlyLiquidacion();
+//                Ext.Ajax.request({
+//                    url: prototype.url + '/reverseOptionOnlyLiq',
+//                    method: 'POST',
+//                    timeout: 60000000,
+//                    params: {beanString: datos, option: option},
+//                    beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDP').mask('Loading...'),
+//                    success: function (response, opts) {
+//                        Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+//                        var res = Ext.JSON.decode(response.responseText);
+//                        if (res.success) {
+//
+//                            global.Msg({
+//                                msg: res.Mensaje,
+//                                icon: 1,
+//                                fn: function () {
+//                                    Ext.getCmp(prototype.id + '-dataEntryAMDP').close();
+//                                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+//                                }
+//                            });
+//                        } else
+//                            global.Msg({msg: res.sesion});
+//                    },
+//                    failure: function (response, opts) {
+//                        console.log('server-side failure with status code ' + response.status);
+//                        Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+//                    }
+//                });
+//
+//            } else {
+//                datos = this.desprocesarRegistros(miGrilla);
+//                
+//            }
+//        } else {
+//            console.error('No se pudo encontrar la grilla con el ID especificado.');
+//        }
     },
     //</editor-fold>
 
