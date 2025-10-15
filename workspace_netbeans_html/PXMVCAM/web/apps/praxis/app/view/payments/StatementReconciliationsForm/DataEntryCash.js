@@ -17,7 +17,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
         'Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCashStatementReconciliationsController'
     ],
     controller: 'DataEntryCashStatementReconciliationsController',
-    title: 'Statement Reconciliation - Data Entry Form',
+    title: 'Statement Reconciliation - Agency Sales - Data Entry Form',
     header: true,
     height: 780,
     width: 1200,
