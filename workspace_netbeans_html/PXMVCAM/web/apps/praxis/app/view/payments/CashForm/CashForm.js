@@ -1,21 +1,20 @@
 
-prototype.id = 'AgentsCatalogForm';
-prototype.url = CONTEXTPATH + '/AgentsCatalog';
+prototype.id = 'CashForm';
+prototype.url = CONTEXTPATH + '/Cash';
 
-Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.AgentsCatalogForm', {
+Ext.define('Ext.Praxis.view.payments.CashForm.CashForm', {
     extend: 'Ext.form.Panel',
-    alias: 'widget.AgentsCatalogForm',
+    alias: 'widget.CashForm',
     requires: [
-        'Ext.Praxis.view.payments.AgentsCatalogForm.Options',
-        'Ext.Praxis.view.payments.AgentsCatalogForm.Filters',
-        'Ext.Praxis.view.payments.AgentsCatalogForm.Info',
-        'Ext.Praxis.controller.payments.AgentsCatalog.AgentsCatalogController'
+        'Ext.Praxis.view.payments.CashForm.Options',
+        'Ext.Praxis.view.payments.CashForm.Filters',
+        'Ext.Praxis.view.payments.CashForm.Info',
+        'Ext.Praxis.controller.payments.Cash.CashController'
     ],
-    controller: 'AgentsCatalogController',
+    controller: 'CashController',
     layout: {
         type: 'fit'
     },
-    padding: '0 0 0 0',
     border: false,
     defaults: {
         border: false
@@ -40,7 +39,7 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.AgentsCatalogForm', {
                         {
                             xtype: 'panel',
                             region: 'center',
-                            width: 1000,
+                            width: 980,
                             layout: 'border',
                             
                             items: [
@@ -54,13 +53,12 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.AgentsCatalogForm', {
                                     border: true,
                                     autoScroll: true,
                                     defaults: {
-                                        width: 1500,
+                                        width: 1600,
                                         align: 'center'
                                     },
                                     items: [
                                         {
-                                            xtype: prototype.id + '-options',
-                                            style:'margin-top:20px'
+                                            xtype: prototype.id + '-options'
                                         }
                                         ,
                                         {
@@ -70,18 +68,21 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.AgentsCatalogForm', {
                                         ,
                                         {
                                             xtype: 'panel',
-                                            height: 640,
+                                            height: 600,
+                                            width: 1600,
                                             layout: 'fit',
                                             items: [
                                                 {
                                                     xtype: 'panel',
                                                     id: prototype.id + '-centerC-panel01',
+                                                    width: 1600,
                                                     layout: 'border',
                                                     align: 'center',
-                                                    border: false,
+                                                    border: true,
                                                     defaults: {
                                                         border: false
                                                     },
+                                                    bodyStyle: 'background-color: white;',
                                                     items: [
                                                         {
                                                             region: 'center',

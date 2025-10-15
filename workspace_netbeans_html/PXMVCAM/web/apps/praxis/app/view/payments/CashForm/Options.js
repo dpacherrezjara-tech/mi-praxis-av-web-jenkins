@@ -1,4 +1,4 @@
-Ext.define('Ext.Praxis.view.payments.InputsForm.Options', {
+Ext.define('Ext.Praxis.view.payments.CashForm.Options', {
     extend: 'Ext.form.Panel',
     alias: 'widget.' + prototype.id + '-options',
     border: false,
@@ -61,8 +61,23 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Options', {
                             border: false,
                             displayInfo: false,
                             hidden: true
+                        },
+                        {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id + '-paggin3',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
+                        },
+                        {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id + '-paggin4',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
                         }
-
                     ]
                 }
             ]
@@ -75,21 +90,11 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Options', {
                 {
                     xtype: 'toolbar',
                     items: [
-//                        {
-//                            xtype: 'button',
-//                            id: prototype.id + '-btnSearch',
-//                            iconCls: 'prx-icon-search',
-//                            tooltip: 'Search'
-//                        },
-                        
-                                                {
+                        {
                             xtype: 'button',
                             id: prototype.id + '-btnSearch',
                             iconCls: 'prx-icon-search',
-                            tooltip: 'Search',
-                            listeners: {
-                                click: 'searchDetAllFilter_clickHandler'
-                            }
+                            tooltip: 'Search'
                         },
                         {
                             xtype: 'button',
@@ -104,16 +109,15 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Options', {
 //                            iconCls: 'prx-icon-add',
 //                            tooltip: 'New'
 //                        },
-                        
-                        {
-                            xtype:'button',
-                            id: prototype.id+'-btnDisplay',
-                            icon: 'resources/img/botones/FalseChart.png',
-                            tooltip: 'Display Charts',
-                            listeners: {
-                                click: 'btnDisplay_click'
-                            }
-                        },
+//                        {
+//                            xtype:'button',
+//                            id: prototype.id+'-btnDisplay',
+//                            icon: 'resources/img/botones/FalseChart.png',
+//                            tooltip: 'Display Charts',
+//                            listeners: {
+//                                click: 'btnDisplay_click'
+//                            }
+//                        },
                         {
                             xtype: 'button',
                             id: prototype.id + '-btnExcel',

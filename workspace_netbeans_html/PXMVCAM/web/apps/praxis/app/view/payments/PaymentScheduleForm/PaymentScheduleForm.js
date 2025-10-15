@@ -1,80 +1,77 @@
 
-prototype.id = 'AgentsCatalogForm';
-prototype.url = CONTEXTPATH + '/AgentsCatalog';
+prototype.id = 'PaymentScheduleForm';
+prototype.url = CONTEXTPATH + '/PaymentSchedule';
 
-Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.AgentsCatalogForm', {
+Ext.define('Ext.Praxis.view.payments.PaymentScheduleForm.PaymentScheduleForm', {
     extend: 'Ext.form.Panel',
-    alias: 'widget.AgentsCatalogForm',
+    alias: 'widget.PaymentScheduleForm',
     requires: [
-        'Ext.Praxis.view.payments.AgentsCatalogForm.Options',
-        'Ext.Praxis.view.payments.AgentsCatalogForm.Filters',
-        'Ext.Praxis.view.payments.AgentsCatalogForm.Info',
-        'Ext.Praxis.controller.payments.AgentsCatalog.AgentsCatalogController'
+        'Ext.Praxis.view.payments.PaymentScheduleForm.Options',
+        'Ext.Praxis.view.payments.PaymentScheduleForm.Filters',
+        'Ext.Praxis.view.payments.PaymentScheduleForm.Info',
+        'Ext.Praxis.controller.payments.PaymentSchedule.PaymentScheduleController'
     ],
-    controller: 'AgentsCatalogController',
-    layout: {
-        type: 'fit'
-    },
-    padding: '0 0 0 0',
+    controller: 'PaymentScheduleController',
+    layout: {type: 'fit'},
     border: false,
     defaults: {
         border: false
     },
-    items: [
+     items: [
         {
             id: prototype.id + '-xpanel',
             border: false,
-            autoScroll: false,
+            bodyCls: 'colorFondo',
             layout: 'fit',
             items: [
                 {
-                    id: prototype.id + '-form',
+                    id: prototype.id +'-form',
                     border: false,
                     bodyCls: 'colorFondo',
                     layout: 'fit',
-//                    defaults: {
-//                        border: false,
-//                        autoScroll: true
-//                    },
+                    defaults: {
+                        border: false,
+                        autoScroll: true
+                    },
                     items: [
                         {
                             xtype: 'panel',
-                            region: 'center',
-                            width: 1000,
+                            id: prototype.id + '-panelPrincipal',
+                            hidden: false,
+                            width: 980,
                             layout: 'border',
-                            
                             items: [
                                 {
                                     region: 'center',
-                                    id: prototype.id + '-centerC',
+                                    id: prototype.id +'-center',
                                     layout: {
                                         type: 'vbox',
                                         align: 'center'
                                     },
-                                    border: true,
+                                    border: false,
                                     autoScroll: true,
                                     defaults: {
-                                        width: 1500,
+                                        width: 1650,
                                         align: 'center'
                                     },
                                     items: [
                                         {
-                                            xtype: prototype.id + '-options',
-                                            style:'margin-top:20px'
-                                        }
-                                        ,
+                                            xtype:prototype.id + '-options'
+                                        },
                                         {
-                                            xtype: prototype.id + '-filters',
-                                            id: prototype.id + '-contentFilter'
-                                        }
-                                        ,
+                                            xtype:prototype.id+ '-filters',
+                                            id: prototype.id+'-contentFilter'
+                                        },
                                         {
                                             xtype: 'panel',
-                                            height: 640,
+                                            height: 650,
+                                            width: 1650,
+                                            bodyStyle: 'background-color: #E3EAEF;border: none;',
                                             layout: 'fit',
                                             items: [
                                                 {
                                                     xtype: 'panel',
+                                                    width: 1650,
                                                     id: prototype.id + '-centerC-panel01',
                                                     layout: 'border',
                                                     align: 'center',
@@ -91,11 +88,10 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.AgentsCatalogForm', {
                                                     ]
                                                 }
                                             ]
-                                        }
-                                   ]
+                                        }   
+                                    ]
                                 }
                             ]
-                            
                         }
                     ]
                 }
@@ -103,6 +99,9 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.AgentsCatalogForm', {
         }
     ]
 });
+
+
+
 
 
 
