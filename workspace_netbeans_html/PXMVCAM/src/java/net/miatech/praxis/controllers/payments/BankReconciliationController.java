@@ -925,13 +925,14 @@ public class BankReconciliationController extends BaseController {
             beanString = request.getParameter("beanString");
             System.out.println("JSON recibido en el servidor: " + beanString);
 
-            A2290Filter[] filters = gson.fromJson(beanString, A2290Filter[].class);
-            List<A2290Filter> filterList = Arrays.asList(filters);
+            A2290Filter filters = gson.fromJson(beanString, A2290Filter.class);
+//            List<A2290Filter> filterList = Arrays.asList(filters);
 
             UserView user = this.serverSession.getServerSession().getUserView();
             logic = new BankReconciliationLogic();
             logic.setSession(this.serverSession.getServerSession());
-            msj = logic.loadPX269SQP05117(filterList, user);
+//            msj = logic.loadPX269SQP05117(filterList, user);
+            msj = logic.loadPX269MPS287(filters, user);
 
             map.put("success", true);
             map.put("Mensaje", msj);
