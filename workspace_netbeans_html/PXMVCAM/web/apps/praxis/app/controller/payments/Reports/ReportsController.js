@@ -315,6 +315,8 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
         me.bean.IN_STVAL = Ext.getCmp(prototype.id + '-cmbSTVAL').getValue();
         me.bean.IN_TDOC = Ext.getCmp(prototype.id + '-cmbTDOC').getValue();
         me.bean.IN_CODPRO = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
+        me.bean.IN_HEADER = Ext.getCmp(prototype.id + '-txtIHEADER').getValue();
+        me.bean.IN_CONTABLE = Ext.getCmp(prototype.id + '-txtIIDCONTABLE').getValue();
         if (Ext.getCmp(prototype.id + '-txtCard1').getValue().trim() !== '' && Ext.getCmp(prototype.id + '-txtCard2').getValue().trim() !== '') {
             if (Ext.getCmp(prototype.id + '-txtCard1').getValue().trim().length === 6 && Ext.getCmp(prototype.id + '-txtCard2').getValue().trim().length === 4) {
                 me.bean.IN_CARDN1 = Ext.getCmp(prototype.id + '-txtCard1').getValue().trim();
@@ -372,6 +374,9 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
              me.safeValue(Ext.getCmp(prototype.id + '-cmbDateToDay').getValue());
      
         me.bean.IN_CODPRO = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
+        
+        me.bean.IN_HEADER = Ext.getCmp(prototype.id + '-txtIHEADER').getValue();
+        me.bean.IN_CONTABLE = Ext.getCmp(prototype.id + '-txtIIDCONTABLE').getValue();
         
         var beanString = JSON.stringify(me.bean);
         searchParams = {
@@ -464,9 +469,9 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
 //                        Ext.getCmp(prototype.id + '-contentInfo').unmask();
                         var pag = Ext.getCmp(prototype.id + '-paggin');
                         var pagData = pag.getPageData();
-                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000.00'));
-                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000.00'));
-                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000.00'));
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
                         if (obj.data.length === 0) {
                             global.Msg({
                                 msg: 'Data not found.'
@@ -1045,6 +1050,8 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
         me.bean.IN_DATE = fecha;
         me.bean.IN_FECFILTRO = rowPadre.IN_FECFILTRO;
         me.bean.IN_CODPRO = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
+        me.bean.IN_HEADER = Ext.getCmp(prototype.id + '-txtIHEADER').getValue();
+        me.bean.IN_CONTABLE = Ext.getCmp(prototype.id + '-txtIIDCONTABLE').getValue();
 
         me.paramsDetail.beanString = JSON.stringify(me.bean);
         
@@ -1074,9 +1081,9 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                     load: function (obj) {
                         var pag = Ext.getCmp(prototype.id + '-paggin3');
                         var pagData = pag.getPageData();
-                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000.00'));
-                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000.00'));
-                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000.00'));
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
                         if (obj.data.length === 0) {
                             global.Msg({
                                 msg: 'Data not found.'
@@ -1146,9 +1153,9 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
             if (me.pagginActual !== '') {
                 var pag = Ext.getCmp(prototype.id + me.pagginActual);
                 var pagData = pag.getPageData();
-                Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000.00'));
-                Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000.00'));
-                Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000.00'));
+                Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
             }
         } else {
             global.showMenu();
@@ -1291,6 +1298,15 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
     },
     safeValue: function safeValue(value) {
         return (value && value !== 'null' && value !== 'undefined') ? value : '';
+    },
+    onUpperValue: function (obj, e, eOpts) {
+        let value = obj.getValue().toUpperCase();
+        obj.setValue(value);
+    },
+    eventKey: function (e, eOpts) {
+        if (eOpts.getKey() === 13) {
+            this.btnSearch_click();
+        }
     }
 }
 );

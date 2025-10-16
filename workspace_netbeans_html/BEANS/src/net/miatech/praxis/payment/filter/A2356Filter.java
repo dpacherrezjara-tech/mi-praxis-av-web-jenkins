@@ -155,6 +155,8 @@ public class A2356Filter extends A2356 {
     public String IN_TDOC = "";
     public String IN_FECFILTRO = "";
     public String IN_CODPRO = "";
+    public String IN_HEADER = "";
+    public String IN_CONTABLE = "";
     public String IN_CONT = "";
     public String IN_SCURRENCY = "";
     public String IN_SCOUNTRY = "";
