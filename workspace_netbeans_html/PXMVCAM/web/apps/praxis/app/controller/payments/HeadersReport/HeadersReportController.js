@@ -13,14 +13,33 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersReportController
     }),
     filters: [],
     init: function (view) {
+        this.hasSearched = false; //  Indicador de si ya se realizó una búsqueda
+        this.hasLoadedSequences = false; //  Indicador de si ya se cargó SequencesGrid
     },
     afterRender: async function () {
-      //  await this.loadFilters();
-       // this.onClickSearchBtn();
+    const me = this;
+      await this.loadFilters();
+
+      // --- Cargar HeadersGrid al abrir el componente ---
+      me.onClickSearchBtn();
+      me.hasLoadedHeaders = true;
+
+      // --- Escuchar cuando se muestre la vista Sequences ---
+      const sequenceView = Ext.getCmp(prototype.id + '-viewSecuence');
+
+      // Si las vistas se activan/desactivan con "show"/"hide"
+      if (sequenceView) {
+          sequenceView.on('show', function () {
+              if (!me.hasLoadedSequences) {
+                  me.onClickSearchBtn();
+                  me.hasLoadedSequences = true;
+              }
+          });
+      }
     },
     loadFilters: async function () {
         const me = this;
-        const panelFilter = Ext.getCmp(prototype.id + '-contentFilter');
+        const panelFilter = Ext.getCmp(prototype.id + '-panelFilters');
         panelFilter.setLoading(true);
         try {
             const res = await me.requestMisc.get('loadMdpFilters');
@@ -39,8 +58,8 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersReportController
         const me = this;
         const params = me.formatParams();
         
-        console.log("params: ", params)
-        console.log("filters: ", me.filters)
+//        console.log("params: ", params)
+//        console.log("filters: ", me.filters)
 
         // Detectar qué vista está activa
         const isHeadersVisible = !Ext.getCmp(prototype.id + '-viewHeaders').hidden;
@@ -71,7 +90,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersReportController
         }
     },
     onDisplayFilterBtn: function () {
-        const filters = Ext.getCmp(prototype.id + '-contentFilter');
+        const filters = Ext.getCmp(prototype.id + '-panelFilters');
         if (filters.isVisible()) {
             filters.hide();
         } else {
@@ -92,17 +111,47 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersReportController
         win.show();
     },
     onChangeView: function(field, newValue){
+    const cmbStatus = Ext.getCmp(prototype.id + '-formFilters')
+        ?.down('combobox[name=IN_STSAP]');
+
+    const storeStatusHeaders = [
+        ['', 'All'],
+        ['5', 'SFTP'],
+        ['L', 'Loaded'],
+        ['R', 'Rejected'],
+        ['J', 'Justified'],
+        ['6', 'Partially Rejected'],
+        ['9', 'Partially Justified']
+    ];
+
+    const storeStatusSequences = [
+        ['', 'All'],
+        ['1', 'Send'],
+        ['2', 'Loaded'],
+        ['4', 'Total Rejected'],
+        ['5', 'Partial Rejected'],
+        ['R', 'Manual Rejected'],
+        ['L', 'Manual Loaded']
+    ];
+    
         if(newValue.opcion === '1'){
             Ext.getCmp(prototype.id + '-viewHeaders').show();
             Ext.getCmp(prototype.id + '-viewSecuence').hide();
             Ext.getCmp(prototype.id + '-viewDayPilot').hide();   
-            Ext.getCmp(prototype.id + '-panelFilters').show(); 
+            Ext.getCmp(prototype.id + '-panelFilters').show();
+            if (cmbStatus) {
+                cmbStatus.getStore().loadData(storeStatusHeaders);
+                cmbStatus.setValue('');
+                }
         } else if (newValue.opcion === '2') {
             Ext.getCmp(prototype.id + '-viewHeaders').hide();
             Ext.getCmp(prototype.id + '-viewSecuence').show();
             Ext.getCmp(prototype.id + '-viewDayPilot').hide();  
             Ext.getCmp(prototype.id + '-panelFilters').show(); 
-
+            if (cmbStatus) {
+                cmbStatus.getStore().loadData(storeStatusSequences);
+                cmbStatus.setValue('');
+                }
         } else if(newValue.opcion === '3'){
             Ext.getCmp(prototype.id + '-viewHeaders').hide();
             Ext.getCmp(prototype.id + '-viewSecuence').hide();
