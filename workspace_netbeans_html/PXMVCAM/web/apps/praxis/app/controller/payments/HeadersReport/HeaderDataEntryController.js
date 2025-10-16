@@ -28,6 +28,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
             const res = await global.callStoreGet('PRAXISMP', 'SPHRP002', {
                 IN_IDCONT: me.view.praxisId
             });
+//            console.log("res SPHRP002: ", res)
             //const {header, files, bandocs, rejections} = res.lstRs.at(0).at(0);
             const header = res.lstRs.at(0);
             const files = res.lstRs.at(1);
@@ -124,6 +125,8 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
         this.view.close();
     },
     onRejectRec: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
+//        console.log('onRejectRec Header ejecutado', record);
+//        console.log('onRejectRec filters', this.view.filters);
         const me = this;
         const {BANDOC, DATECI, TRANCI, REFER} = record.data;
 
@@ -273,7 +276,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
                             OBSERV: comment
                         };
                         me.dataRej = global.arrayAddUnique(me.dataRej, [obj], ['BANDOC', 'DATECI', 'TRANCI']).data;
-                        console.log(me.dataRej);
+//                        console.log(me.dataRej);
                         me.dataAcc = me.dataAcc.filter(x => !(x.BANDOC === BANDOC && x.DATECI === DATECI && x.TRANCI === TRANCI));
                         me.loadStores();
                         me.notifier.success(REFER + '<br>Successfully Rejected');
@@ -323,7 +326,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
         const me = this;
         //me.view.setLoading(true);
         const {idCont, header, status} = params;
-        console.log(params);
+//        console.log("PARAMS HEADER:", params);
         if (status !== 'A') {
             const newWin = Ext.create('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.RejectHeaderDataEntry', {
                 id: prototype.idDEheader + '-rejectHeader-1',
@@ -383,7 +386,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
     },
     onSaveRecord: function (btn) {
         let params = this.formatParams();
-        console.log(params);
+//        console.log(params);
         Ext.Msg.show(
                 {
                     title: '.:PRAXIS:.',
