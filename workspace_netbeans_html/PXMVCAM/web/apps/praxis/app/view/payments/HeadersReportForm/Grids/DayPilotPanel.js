@@ -161,7 +161,6 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Grids.DayPilotPanel', {
             me.weekData = me.convertToEvents(me.groupByHourAndCCUST(response));
             me.calendar.events.list = me.weekData;
             me.calendar.update();
-            console.log('Week Data', me.weekData);
         } catch (e) {
             console.error(e);
             global.Msg({msg: 'Error on Load'});
@@ -172,7 +171,6 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Grids.DayPilotPanel', {
     convertToEvents: function (groupedData) {
         let events = [];
         let tipocon = Ext.getCmp(prototype.id + '-cmbTipoconWk').value;
-        console.log(groupedData);
         Object.values(groupedData).forEach((item, index) => {
             let dateStr = "20" + item.FSEND.trim(); // Convierte FSEND a formato Año-Mes-Día (Ej: "250217" → "2025-02-17")
             let formattedDate = dateStr.substring(0, 4) + "-" + dateStr.substring(4, 6) + "-" + dateStr.substring(6, 8);
