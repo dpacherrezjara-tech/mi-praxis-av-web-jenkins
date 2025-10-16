@@ -96,24 +96,24 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Filters', {
                             enforceMaxLength: true,
                             listeners: {
                                 change: 'cbxDateFromMonth_changeHandler'
-                            },
-                            margin: '0 10 0 0' 
+                            }
                         },
                         {
                             xtype: 'combo',
                             id: prototype.id + '-cmbDateDay',
                             labelAlign: 'right',
                             queryMode: 'local',
+                            labelStyle: 'text-align: left; font-size: 12px;',
+                            fieldStyle: 'text-align: left; font-size: 12px;',
                             triggerAction: 'all',
                             editable: false,
                             autoSelect: false,
                             enableKeyEvents: true,
                             caseSensitive: true,
-                            hidden: true,
                             valueField: 'code',
                             displayField: 'name',
                             emptyText: 'All',
-                            width: 70,
+                            width: 40,
                             anchor: '100%',
                             listener: {
                                 change: 'onDateFromDaySelect',
@@ -157,12 +157,13 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Filters', {
                             displayField: 'name',
                             listConfig: {minWidth: 60},
                             maxLength: 3,
-                            enforceMaxLength: true,
-                            margin: '0 10 0 0' 
+                            enforceMaxLength: true
                         },
                         {
                             xtype: 'combo',
                             id: prototype.id + '-cmbDateToDay',
+                            labelStyle: 'text-align: left; font-size: 12px;',
+                            fieldStyle: 'text-align: left; font-size: 12px;',
                             labelAlign: 'right',
                             queryMode: 'local',
                             triggerAction: 'all',
@@ -170,16 +171,38 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Filters', {
                             autoSelect: false,
                             enableKeyEvents: true,
                             caseSensitive: true,
-                            hidden: true,
                             valueField: 'code',
                             displayField: 'name',
                             emptyText: 'All',
-                            width: 70,
+                            width: 40,
                             anchor: '100%',
                             listener: {
                                 change: 'onDateToDaySelect',
                                 expand: 'eventSelectToDay'
                             },
+                            margin: '0 10 0 0' 
+                        },
+                         {
+                            xtype: 'combo',
+                            fieldLabel: 'Processor',
+                            id: prototype.id + '-cmbProcessor',
+                            labelStyle: 'text-align: left; font-size: 12px;',
+                            fieldStyle: 'text-align: left; font-size: 12px;',
+                            queryMode: 'local',
+                            allowBlank: false,
+                            forceSelection: true,
+                            selectOnFocus: true,
+                            caseSensitive: false,
+                            autoSelect: true,
+                            editable: true,
+                            width: 180,
+                            labelWidth: 60,
+                            typeAhead: true,
+                            valueField: 'A4451KEY2',
+                            displayField: 'A4451KEY3',
+                            listConfig: {minWidth: 130},
+                            enableKeyEvents: true,
+                            triggerAction: 'all',
                             margin: '0 10 0 0' 
                         },
                         {
@@ -188,7 +211,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Filters', {
                                 fieldLabel: 'Estado tipo cambio',
                                 labelWidth: 110,
                                 hidden:true,
-                                width: 800,
+                                width: 640,
                                 labelStyle: 'font-size: 12px; text-align: left;',
                                 fieldStyle: 'font-size: 12px; color: #444; padding-bottom: 8px;',
                                 value: '', // Se llena dinámicamente con el mensaje
@@ -387,7 +410,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Filters', {
                                 id: prototype.id + '-lblExchangeMessage',
                                 fieldLabel: 'Estado tipo cambio',
                                 labelWidth: 110,
-                                width: 800,
+                                width: 700,
                                 labelStyle: 'font-size: 12px; text-align: left;',
                                 fieldStyle: 'font-size: 12px; color: #444; padding-bottom: 8px;',
                                 value: '', // Se llena dinámicamente con el mensaje
