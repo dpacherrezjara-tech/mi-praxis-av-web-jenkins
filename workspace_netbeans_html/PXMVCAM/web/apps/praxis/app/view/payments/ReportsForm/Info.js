@@ -55,6 +55,9 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                     features: [{
                                             ftype: 'summary'
                                         }],
+                                    viewConfig: {
+        enableTextSelection: true 
+    },
                                     columns: {
                                         defaults: {
                                             menuDisabled: true,
@@ -1038,6 +1041,9 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                     features: [{
                                             ftype: 'summary'
                                         }],
+                                    viewConfig: {
+        enableTextSelection: true 
+    },
                                     columns: {
                                         defaults: {
                                             menuDisabled: true,
