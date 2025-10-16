@@ -397,7 +397,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                                                                 },
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "color:#057ECB;text-align:right;";
-                                                                                    value = '<b>' + Ext.util.Format.number(value, ',0,000.00') + '</b>';
+                                                                                    value = '<b>' + Ext.util.Format.number(value, ',0,000') + '</b>';
                                                                                     return '<a href="#payments-reports-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
                                                                                 },
                                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
@@ -433,7 +433,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                                                                 },
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "color:#057ECB;text-align:right;";
-                                                                                    value = '<b>' + Ext.util.Format.number(value, ',0,000.00') + '</b>';
+                                                                                    value = '<b>' + Ext.util.Format.number(value, ',0,000') + '</b>';
                                                                                     return '<a href="#payments-reports-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
                                                                                 },
                                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
@@ -527,7 +527,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                                                                 },
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "color:#057ECB;text-align:right;background-color:#f6f8fa;";
-                                                                                    value = '<b>' + Ext.util.Format.number(value, ',0,000.00') + '</b>';
+                                                                                    value = '<b>' + Ext.util.Format.number(value, ',0,000') + '</b>';
                                                                                     return '<a href="#payments-reports-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
                                                                                 },
                                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
@@ -621,7 +621,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                                                                 },
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "color:#057ECB;text-align:right;background-color:#f6f8fa;";
-                                                                                    value = '<b>' + Ext.util.Format.number(value, ',0,000.00') + '</b>';
+                                                                                    value = '<b>' + Ext.util.Format.number(value, ',0,000') + '</b>';
                                                                                     return '<a href="#payments-reports-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
                                                                                 },
                                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
@@ -714,7 +714,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                                                                 },
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "color:#057ECB;text-align:right;";
-                                                                                    value = '<b>' + Ext.util.Format.number(value, ',0,000.00') + '</b>';
+                                                                                    value = '<b>' + Ext.util.Format.number(value, ',0,000') + '</b>';
                                                                                     return '<a href="#payments-reports-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
                                                                                 },
                                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
@@ -808,7 +808,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                                                                 },
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                     metaData.style = "color:#057ECB;text-align:right;";
-                                                                                    value = '<b>' + Ext.util.Format.number(value, ',0,000.00') + '</b>';
+                                                                                    value = '<b>' + Ext.util.Format.number(value, ',0,000') + '</b>';
                                                                                     return '<a href="#payments-reports-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
                                                                                 },
                                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
