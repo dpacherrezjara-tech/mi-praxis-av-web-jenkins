@@ -15,6 +15,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.ReportsForm', {
     layout: {
         type: 'fit'
     },
+    padding: '0 0 0 0',
     border: false,
     defaults: {
         border: false
@@ -38,8 +39,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.ReportsForm', {
                     items: [
                         {
                             xtype: 'panel',
-                            id: prototype.id + '-panelPrincipal',
-                            hidden: false,
+                            region: 'center',
                             width: 1000,
                             layout: 'border',
                             items: [
@@ -53,7 +53,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.ReportsForm', {
                                     border: true,
                                     autoScroll: true,
                                     defaults: {
-                                        width: 1600,
+                                        width: 2120,
                                         align: 'center'
                                     },
                                     items: [
@@ -67,7 +67,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.ReportsForm', {
                                         },
                                         {
                                             xtype: 'panel',
-                                            height: 630,
+                                            height: 620,
                                             layout: 'fit',
                                             id: prototype.id + '-panelHeight',
                                             items: [
