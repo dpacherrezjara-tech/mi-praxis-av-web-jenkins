@@ -1,4 +1,4 @@
-prototype.idDEheader = prototype.id + '-SequencesDataEntry';
+prototype.idDEsequence = prototype.id + '-SequencesDataEntry';
 
 Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataEntry', {
     extend: 'Ext.window.Window',
@@ -25,7 +25,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
     items: [
         {
             xtype: 'form',
-            id: prototype.idDEheader + '-mainForm',
+            id: prototype.idDEsequence + '-mainFormSequences',
             layout: {
                 type: 'vbox',
                 pack: 'stretch'
@@ -67,7 +67,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
               //<editor-fold defaultstate="collapsed" desc="File Details">
                 {
                     title: '<span style="font-weight: bold; text-decoration-line: underline;font-size:13px;">File Details</span>',
-                    itemId: prototype.idDEheader + '-fileDetails',
+                    itemId: prototype.idDEsequence + '-fileDetails',
                     layout: {
                         type: 'vbox',
                         align: 'stretch'
@@ -120,7 +120,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
 
                 //</editor-fold> 
                
-              //<editor-fold defaultstate="collapsed" desc="Grid Files">
+              //<editor-fold defaultstate="collapsed" desc="Grids">
                 {
                     xtype: 'panel',
                     border: false,
@@ -135,7 +135,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                     items: [
                         {
                             xtype: 'tabpanel',
-                            id: prototype.idDEheader + '-tabMain2',
+                            id: prototype.idDEsequence + '-tabMainSequences2',
                             width: '100%',
                              flex: 1, 
                             height: '100%',
@@ -149,7 +149,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                 layout: 'fit',
                                 defaults: {
                                     width: '100%',
-                                    minHeight: 100,
+                                    minHeight: 389,
                                     maxHeight: 390,
                                     viewConfig: {
                                         stripeRows: true,
@@ -166,14 +166,14 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                 {
                                     title: 'Sequences',
                                     itemId: 'A',
-                                    id: prototype.idDEheader + '-tabAccounted',
+                                    id: prototype.idDEsequence + '-tabSequences',
                                     layout: 'fit',
                                     items: [
                                         {
                                             xtype: 'grid',
                                             border: false,
-                                            id: prototype.idDEheader + '-gridAccounted',
-                                            emptyText: 'No documents available',
+                                            id: prototype.idDEsequence + '-gridSequences',
+                                            emptyText: 'No documents available', 
                                             tbar: {
                                                 xtype: 'panel',
                                                 layout: {
@@ -193,7 +193,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                                         width: 200,
                                                         maxLength: 30,
                                                         listeners: {
-                                                            change: 'onChangeReference'
+                                                            change: 'onFilterReference'
                                                         }
                                                     },
                                                     {
@@ -207,7 +207,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                                         width: 190,
                                                         maxLength: 10,
                                                         listeners: {
-                                                            change: 'onChangeBandoc'
+                                                            change: 'onFilterBandoc'
                                                         }
                                                     },
                                                     {
@@ -215,7 +215,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                                         margin: '2 5 2 5',
                                                         scale: 'small',
                                                         text: 'Reject XLSX',
-                                                        id: prototype.idDEheader + '-btn-rej-excel',
+                                                        id: prototype.idDEsequence + '-btn-rej-excel',
                                                         iconCls: 'prx-icon-excel',
                                                         listeners: {
                                                             click: 'onRejectByExcel'
@@ -226,7 +226,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                                         margin: '2 5 2 5',
                                                         scale: 'small',
                                                         text: 'Reject All',
-                                                        id: prototype.idDEheader + '-btn-rejectAll',
+                                                        id: prototype.idDEsequence + '-btn-rejectAll',
                                                         iconCls: 'prx-icon-incomplete',
                                                         listeners: {
                                                             click: 'onRejectAll'
@@ -245,22 +245,32 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                                     }
                                                 ]
                                             },
-                                            columns: {
-                                                defaults: {
-                                                    align: 'center',
-                                                    menuDisabled: true,
-                                                    sortable: true
-                                                },
-                                                items: [
+                                            store: {
+                                                fields: [
+                                                    'BANDOC',
+                                                    'REFER',
+                                                    'VALDATE',
+                                                    'MERCHAND',
+                                                    'IATA',
+                                                    'PROFIT_CENTER',
+                                                    'CENTRO_COSTO',
+                                                    'MONEDA_PAGO',
+                                                    'MONTO_PAGO',
+                                                    'MONEDA_REVENUE',
+                                                    'MONTO_REVENUE'
+                                                ]
+                                            },
+                                            columns: [
                                                     {
                                                         text: 'RN',
                                                         locked: true,
                                                         xtype: 'rownumberer', // Columna de número de fila
                                                         width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
                                                     },
-                                                    {text: 'Bank Doc.', dataIndex: 'BANKDOC', flex: 1},
-                                                    {text: 'Value Date', dataIndex: 'VALUE_DATE', flex: 1},
-                                                    {text: 'Affiliate', dataIndex: 'AFILIADO', flex: 1},
+                                                    {text: 'Bank Doc.', dataIndex: 'BANDOC', flex: 1},
+                                                    {text: 'Referencia', dataIndex: 'REFER', flex: 1},
+                                                    {text: 'Value Date', dataIndex: 'VALDATE', flex: 1},
+                                                    {text: 'Merchand', dataIndex: 'MERCHAND', flex: 1},
                                                     {text: 'IATA', dataIndex: 'IATA', flex: 1},
                                                     {text: 'Profit', dataIndex: 'PROFIT_CENTER', flex: 1},
                                                     {text: 'Cost Center', dataIndex: 'CENTRO_COSTO', flex: 1},
@@ -269,23 +279,22 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                                     {text: 'Rev. Currency', dataIndex: 'MONEDA_REVENUE', flex: 0.8},
                                                     {text: 'Rev. Amount', dataIndex: 'MONTO_REVENUE', flex: 0.8},
                                                     {
-                                                        sortable: false,
                                                         xtype: 'actioncolumn',
-                                                        id: prototype.idDEheader + '-btnRejectRec',
+                                                        id: prototype.idDEsequence + '-btnRejectRec',
                                                         width: 50,
                                                         text: 'Rej.',
                                                         align: 'center',
                                                         items: [
                                                             {
                                                                 iconCls: 'prx-icon-image-trash',
-                                                                tooltip: 'Reject',
+                                                                tooltip: 'Reject Sequence',
                                                                 handler: 'onRejectRec'
                                                             }
                                                         ]
                                                     }
-                                                ]
-                                            }
-                                        }
+                                                 ]
+                                            },
+                                        
                                     ]
                                 },
                                //</editor-fold>   
@@ -295,13 +304,13 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                     title: 'Derived headers',
                                     itemId: 'B',
                                     disabled: true,
-                                    id: prototype.idDEheader + '-tabDerived',
+                                    id: prototype.idDEsequence + '-tabDerived',
                                     layout: 'fit',
                                     items: [
                                         {
                                             xtype: 'grid',
                                             border: false,
-                                            id: prototype.idDEheader + '-gridDerived',
+                                            id: prototype.idDEsequence + '-gridDerived',
                                             emptyText: 'No documents available',
                                             columns: {
                                                 defaults: {
@@ -327,6 +336,54 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                     ]
                                 },
                      //</editor-fold>  
+                     
+                               //<editor-fold defaultstate="collapsed" desc="Rejections">
+                                {
+                                    title: 'Rejections',
+                                    itemId: 'C',
+                                    disabled: true,
+                                    id: prototype.idDEsequence + '-tabRejections',
+                                    layout: 'fit',
+                                    items: [
+                                        {
+                                            xtype: 'grid',
+                                            border: false,
+                                            id: prototype.idDEsequence + '-gridRejections',
+                                            emptyText: 'No documents available',
+                                            columns: {
+                                                defaults: {
+                                                    align: 'center',
+                                                    menuDisabled: true,
+                                                    sortable: true
+                                                },
+                                                items: [
+                                                    {
+                                                        text: 'RN',
+                                                        locked: true,
+                                                        xtype: 'rownumberer', // Columna de número de fila
+                                                        width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
+                                                    },
+                                                    {text: 'Status', dataIndex: 'STREJ', flex: 0.7,
+                                                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                        metaData.style = "font-weight:bold;";
+                                                        const opts = {
+                                                            'R': 'Rejected'
+                                                        };
+                                                        return opts[value];
+                                                    }},
+                                                    {text: 'Reference', dataIndex: 'REFER', flex: 1},
+                                                    {text: 'Bank Doc.', dataIndex: 'BANDOC', flex: 1},
+                                                    {text: 'Value Date', dataIndex: 'VALDATE', flex: 1},
+                                                    {text: 'Processor', dataIndex: 'CODPRO', flex: 1},
+                                                    {text: 'Code', dataIndex: 'CODREC', flex: 1},
+                                                    {text: 'Comment', dataIndex: 'OBSERV', flex: 1}
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                },
+                     //</editor-fold>  
+                              
                             ]
                         }
                     ]
@@ -354,7 +411,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
             items: [
                 {
                     text: 'Save',
-                    id: prototype.idDEheader + '-btn-save',
+                    id: prototype.idDEsequence + '-btn-save',
                     iconCls: 'prx-icon-image-update',
                     listeners: {
                         click: 'onSaveRecord'
@@ -362,7 +419,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                 },
                 {
                     text: 'Cancel',
-                    id: prototype.idDEheader + '-btn-cancel',
+                    id: prototype.idDEsequence + '-btn-cancel',
                     iconCls: 'prx-icon-cancel',
                     listeners: {
                         click: 'onCancelClick'
@@ -375,7 +432,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
        //<editor-fold defaultstate="collapsed" desc="Control Data">
                          {
                     title: '<span style="font-weight: bold; text-decoration-line: underline;font-size:13px;">User Control Data</span>',
-                    itemId: prototype.idDEheader + '-userDetails',
+                    itemId: prototype.idDEsequence + '-userDetails',
                     dock: 'bottom',
                     //margin: '0 0 5 0',
                     layout: {
