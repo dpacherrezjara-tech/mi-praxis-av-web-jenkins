@@ -206,6 +206,46 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Filters', {
                             margin: '0 10 0 0' 
                         },
                         {
+                            xtype: 'textfield',
+                            id: prototype.id + '-txtIHEADER',
+                            fieldLabel: 'Header',
+                            disabled: false,
+                            labelStyle: 'text-align: left; font-size: 12px;',
+                            fieldStyle: 'text-align: center; font-size: 12px;',
+                            labelWidth: 45,
+                            enforceMaxLength: true,
+                            hidden: false, 
+//                            maskRe: /[0-9A-Za-z]/, 
+                            maxLength: 32, 
+                            width: 203,
+                            enableKeyEvents: true,
+                            margin: '0 10 0 0',
+                            listeners: {
+                                keyup: 'onUpperValue',
+                                keypress: 'eventKey'
+                            }
+                        },
+                        {
+                            xtype: 'textfield',
+                            id: prototype.id + '-txtIIDCONTABLE',
+                            fieldLabel: 'ID Accounting',
+                            disabled: false,
+                            labelStyle: 'text-align: left; font-size: 12px;',
+                            fieldStyle: 'text-align: center; font-size: 12px;',
+                            labelWidth: 80,
+                            enforceMaxLength: true,
+                            hidden: false, 
+//                            maskRe: /[0-9A-Za-z]/, 
+                            maxLength: 200, 
+                            width: 203,
+                            enableKeyEvents: true,
+                            margin: '0 10 0 0',
+                            listeners: {
+                                keyup: 'onUpperValue',
+                                keypress: 'eventKey'
+                            }
+                        },
+                        {
                                 xtype: 'displayfield',
                                 id: prototype.id + '-lblExchangeMessage2',
                                 fieldLabel: 'Estado tipo cambio',

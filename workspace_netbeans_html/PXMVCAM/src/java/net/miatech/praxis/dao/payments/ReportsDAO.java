@@ -59,17 +59,17 @@ public class ReportsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS356(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS356(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(15, Types.INTEGER);
-            cstmt.registerOutParameter(16, Types.INTEGER);
             cstmt.registerOutParameter(17, Types.INTEGER);
             cstmt.registerOutParameter(18, Types.INTEGER);
+            cstmt.registerOutParameter(19, Types.INTEGER);
+            cstmt.registerOutParameter(20, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_FECHA_FROM);
@@ -85,18 +85,20 @@ public class ReportsDAO {
             cstmt.setString(12, filter.IN_TDOC.trim());
             cstmt.setString(13, filter.IN_FECFILTRO.trim());
             cstmt.setString(14, filter.IN_CODPRO.trim());
+            cstmt.setString(15, filter.IN_HEADER.trim());
+            cstmt.setString(16, filter.IN_CONTABLE.trim());
 
-            cstmt.setInt(15, filter.page.PAGNUM);
-            cstmt.setInt(16, filter.page.PAGROW);
-            cstmt.setInt(17, filter.page.TOTPAG);
-            cstmt.setInt(18, filter.page.TOTROW);
+            cstmt.setInt(17, filter.page.PAGNUM);
+            cstmt.setInt(18, filter.page.PAGROW);
+            cstmt.setInt(19, filter.page.TOTPAG);
+            cstmt.setInt(20, filter.page.TOTROW);
 
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(15);
-            filter.page.PAGROW = cstmt.getInt(16);
-            filter.page.TOTPAG = cstmt.getInt(17);
-            filter.page.TOTROW = cstmt.getInt(18);
+            filter.page.PAGNUM = cstmt.getInt(17);
+            filter.page.PAGROW = cstmt.getInt(18);
+            filter.page.TOTPAG = cstmt.getInt(19);
+            filter.page.TOTROW = cstmt.getInt(20);
 
             rst = cstmt.getResultSet();
 
@@ -190,17 +192,17 @@ public class ReportsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS367(?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS367(?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(7, Types.INTEGER);
-            cstmt.registerOutParameter(8, Types.INTEGER);
             cstmt.registerOutParameter(9, Types.INTEGER);
             cstmt.registerOutParameter(10, Types.INTEGER);
+            cstmt.registerOutParameter(11, Types.INTEGER);
+            cstmt.registerOutParameter(12, Types.INTEGER);
 
             cstmt.setString(1, filter.IN_CCUST);
             cstmt.setString(2, filter.IN_DATE);
@@ -208,19 +210,21 @@ public class ReportsDAO {
             cstmt.setString(4, filter.IN_FECFILTRO);
             cstmt.setString(5, filter.IN_CONT);
             cstmt.setString(6, filter.IN_CODPRO);
+            cstmt.setString(7, filter.IN_HEADER);
+            cstmt.setString(8, filter.IN_CONTABLE);
 
 
-            cstmt.setInt(7, filter.page.PAGNUM);
-            cstmt.setInt(8, filter.page.PAGROW);
-            cstmt.setInt(9, filter.page.TOTPAG);
-            cstmt.setInt(10, filter.page.TOTROW);
+            cstmt.setInt(9, filter.page.PAGNUM);
+            cstmt.setInt(10, filter.page.PAGROW);
+            cstmt.setInt(11, filter.page.TOTPAG);
+            cstmt.setInt(12, filter.page.TOTROW);
 
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(7);
-            filter.page.PAGROW = cstmt.getInt(8);
-            filter.page.TOTPAG = cstmt.getInt(9);
-            filter.page.TOTROW = cstmt.getInt(10);
+            filter.page.PAGNUM = cstmt.getInt(9);
+            filter.page.PAGROW = cstmt.getInt(10);
+            filter.page.TOTPAG = cstmt.getInt(11);
+            filter.page.TOTROW = cstmt.getInt(12);
 
             rst = cstmt.getResultSet();
 
@@ -325,7 +329,7 @@ public class ReportsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS366(?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS366(?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -337,6 +341,8 @@ public class ReportsDAO {
             cstmt.setString(3, filter.IN_FECHA_TO);
             cstmt.setString(4, filter.IN_FECFILTRO);
             cstmt.setString(5, filter.IN_CODPRO);
+            cstmt.setString(6, filter.IN_HEADER);
+            cstmt.setString(7, filter.IN_CONTABLE);
  
             cstmt.execute();
 
