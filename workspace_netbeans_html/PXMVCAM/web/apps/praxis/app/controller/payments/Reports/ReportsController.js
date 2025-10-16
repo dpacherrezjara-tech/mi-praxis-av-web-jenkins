@@ -510,8 +510,10 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
     },
     setGridSumaryMain: function () {
         win.lblUser_toolTip("Estructura: MPF101");
-        me.drillDown.push(me.panelActual);
-        me.panelActual = '-panelGridSumaryMain';
+        if (me.panelActual != '-panelGridSumaryMain') {
+            me.drillDown.push(me.panelActual);
+            me.panelActual = '-panelGridSumaryMain';
+        }
         global.selectedChild(me.childs, prototype.id + me.panelActual);
         var msj = this.validateFields();
         if (msj !== '') {
@@ -1062,8 +1064,12 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
     },
     setGridDataDetail: function (){
         win.lblUser_toolTip("Estructura: MPF101");
-        me.drillDown.push(me.panelActual);
-        me.panelActual = '-boxDataDetail';
+        
+        if (me.panelActual != '-boxDataDetail') {
+            me.drillDown.push(me.panelActual);
+            me.panelActual = '-boxDataDetail';
+        }
+        
         Ext.getCmp(prototype.id + '-panelHeight').setHeight(620);
         global.selectedChild(me.childs, prototype.id + me.panelActual);
         var msj = this.validateFields();
@@ -1094,6 +1100,7 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                 }
             });
             global.clear();
+            this.getPaggin();
             Ext.getCmp(prototype.id + '-gridDataDetail').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-paggin3').bindStore(storeGridDatas);
         }
@@ -1234,17 +1241,55 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                 me.pagginActual = '-paggin';
                 Ext.getCmp(prototype.id + '-panelHeight').setHeight(620);
                 Ext.getCmp(prototype.id + '-lblExchangeMessage2').hide()
+                Ext.getCmp(prototype.id + '-txtIHEADER').show()
+                Ext.getCmp(prototype.id + '-txtIIDCONTABLE').show()
+                Ext.getCmp(prototype.id + '-cmbProcessor').show()
+                Ext.getCmp(prototype.id + '-cmbDateFromYear').enable();
+                Ext.getCmp(prototype.id + '-cmbDateFromMonth').enable();
+                Ext.getCmp(prototype.id + '-cmbDateDay').enable();
+
+                Ext.getCmp(prototype.id + '-cmbDateToYear').enable();
+                Ext.getCmp(prototype.id + '-cmbDateToMonth').enable();
+                Ext.getCmp(prototype.id + '-cmbDateToDay').enable();
+                Ext.getCmp(prototype.id + '-cmbFecFiltro').enable();
+                
                 break;
             case  '-panelGridSumaryMain':
                 me.pagginActual = '-paggin2';
                 Ext.getCmp(prototype.id + '-pie').setVisible(false);
                 Ext.getCmp(prototype.id + '-panelHeight').setHeight(690);
                 Ext.getCmp(prototype.id + '-lblExchangeMessage2').show()
+                Ext.getCmp(prototype.id + '-txtIHEADER').show()
+                Ext.getCmp(prototype.id + '-txtIIDCONTABLE').show()
+                Ext.getCmp(prototype.id + '-cmbProcessor').show()
+                
+                Ext.getCmp(prototype.id + '-cmbDateFromYear').enable();
+                Ext.getCmp(prototype.id + '-cmbDateFromMonth').enable();
+                Ext.getCmp(prototype.id + '-cmbDateDay').enable();
+
+                Ext.getCmp(prototype.id + '-cmbDateToYear').enable();
+                Ext.getCmp(prototype.id + '-cmbDateToMonth').enable();
+                Ext.getCmp(prototype.id + '-cmbDateToDay').enable();
+                
+                Ext.getCmp(prototype.id + '-cmbFecFiltro').enable();
                 break;
             case  '-boxDataDetail':
                 me.pagginActual = '-paggin3';
                 Ext.getCmp(prototype.id + '-panelHeight').setHeight(620);
                 Ext.getCmp(prototype.id + '-lblExchangeMessage2').hide()
+                Ext.getCmp(prototype.id + '-txtIHEADER').hide()
+                Ext.getCmp(prototype.id + '-txtIIDCONTABLE').hide()
+                Ext.getCmp(prototype.id + '-cmbProcessor').hide()
+                
+                Ext.getCmp(prototype.id + '-cmbDateFromYear').disable();
+                Ext.getCmp(prototype.id + '-cmbDateFromMonth').disable();
+                Ext.getCmp(prototype.id + '-cmbDateDay').disable();
+
+                Ext.getCmp(prototype.id + '-cmbDateToYear').disable();
+                Ext.getCmp(prototype.id + '-cmbDateToMonth').disable();
+                Ext.getCmp(prototype.id + '-cmbDateToDay').disable();
+                Ext.getCmp(prototype.id + '-cmbFecFiltro').disable();
+                
                 break;
         }
     },
