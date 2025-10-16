@@ -28,9 +28,9 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.SequencesGridController
         Ext.Msg.alert('Export', 'Exportar secuencias a Excel próximamente.');
     },
     onUpdateSequences: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
-     //   const me = this;
+        const me = this;
         global.cleanPXobj(record.data);
-       // console.log("data: ", record.data);
+   //     console.log("data filters: ", me.view.filters);
         const dataEntry = Ext.create('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataEntry', {
             id: prototype.id + '-SequencesDataEntry-1',
             praxisId: record.data.IDCONT,
@@ -39,7 +39,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.SequencesGridController
         });
         dataEntry.show();
         // Luego de mostrarla, llenamos los datos del encabezado
-        const fileDetails = dataEntry.down('#' + prototype.idDEheader + '-fileDetails');
+        const fileDetails = dataEntry.down('#' + prototype.idDEsequence + '-fileDetails');
                
             if (fileDetails && record.data) {
                 for (let key in record.data) {
@@ -96,7 +96,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.SequencesGridController
                 }
             };
             
-            const userDetails = dataEntry.down('#' + prototype.idDEheader + '-userDetails');
+            const userDetails = dataEntry.down('#' + prototype.idDEsequence + '-userDetails');
                 if (userDetails && record.data) {
                 for (let key in record.data) {
                     const field = userDetails.down(`#${key}`);
