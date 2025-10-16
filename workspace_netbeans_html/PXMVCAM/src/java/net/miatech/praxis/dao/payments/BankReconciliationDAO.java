@@ -2081,6 +2081,7 @@ public class BankReconciliationDAO {
                 objRtn.COREP = rs01.getString("COREP").trim();
                 objRtn.CODPRO = rs01.getString("CODPRO").trim();
                 objRtn.CCUSTPRO = rs01.getString("CCUSTPRO").trim();
+                objRtn.TDOCORG = rs01.getString("TDOCORG").trim();
 
                 objRtn.USCR = rs01.getString("USCR");
                 objRtn.FECR = rs01.getString("FECR");
@@ -2810,6 +2811,51 @@ public class BankReconciliationDAO {
                 cstmt.execute();
 //                cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
             }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            strMsj = e.getMessage();
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                    cnx.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return strMsj;
+    }
+    
+    public String loadPX269MPS287(A2290Filter filter, UserView user) throws SQLException, Exception {
+
+        //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
+        String strMsj = "SUCCESSFUL. Information Updated.", strCardn = "";
+        CallableStatement cstmt = null;
+
+        Connection cnx = null;
+
+        String SQLCLL01 = "{CALL PRAXISMP.MPS287(?,?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+//            A2290Filter filter = filters.get(0);
+
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, filter.DATEC.trim());
+            cstmt.setString(2, filter.TRANC.trim());
+            cstmt.setString(3, filter.CODPRO.trim());
+            cstmt.setString(4, filter.TDOCORG.trim());
+
+            cstmt.execute();
+            cstmt.close();
 
         } catch (Exception e) {
             e.printStackTrace();
