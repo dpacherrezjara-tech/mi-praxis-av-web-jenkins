@@ -51,7 +51,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.RejectHeaderDataEntryCo
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            console.log(res);
+//            console.log(res);
             me.notifier.info('Header Updated');
             me.view.setLoading(true);
         } else {
