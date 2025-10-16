@@ -136,8 +136,8 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersReportController
     
         if(newValue.opcion === '1'){
             Ext.getCmp(prototype.id + '-viewHeaders').show();
-            Ext.getCmp(prototype.id + '-viewSecuence').hide();
-            Ext.getCmp(prototype.id + '-viewDayPilot').hide();   
+            Ext.getCmp(prototype.id + '-viewSecuence').hide(); 
+            Ext.getCmp(prototype.id + '-dayPilotCmp').hide();
             Ext.getCmp(prototype.id + '-panelFilters').show();
             if (cmbStatus) {
                 cmbStatus.getStore().loadData(storeStatusHeaders);
@@ -146,7 +146,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersReportController
         } else if (newValue.opcion === '2') {
             Ext.getCmp(prototype.id + '-viewHeaders').hide();
             Ext.getCmp(prototype.id + '-viewSecuence').show();
-            Ext.getCmp(prototype.id + '-viewDayPilot').hide();  
+            Ext.getCmp(prototype.id + '-dayPilotCmp').hide();
             Ext.getCmp(prototype.id + '-panelFilters').show(); 
             if (cmbStatus) {
                 cmbStatus.getStore().loadData(storeStatusSequences);
@@ -154,8 +154,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersReportController
                 }
         } else if(newValue.opcion === '3'){
             Ext.getCmp(prototype.id + '-viewHeaders').hide();
-            Ext.getCmp(prototype.id + '-viewSecuence').hide();
-            Ext.getCmp(prototype.id + '-viewDayPilot').show();  
+            Ext.getCmp(prototype.id + '-viewSecuence').hide(); 
             Ext.getCmp(prototype.id + '-dayPilotCmp').show();
             Ext.getCmp(prototype.id + '-panelFilters').hide(); 
         }
