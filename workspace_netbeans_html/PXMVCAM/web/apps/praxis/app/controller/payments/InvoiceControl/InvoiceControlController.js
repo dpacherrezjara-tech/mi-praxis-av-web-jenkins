@@ -122,8 +122,8 @@ Ext.define('Ext.Praxis.controller.payments.InvoiceControl.InvoiceControlControll
         Ext.getCmp(prototype.id + '-cmbDateFromYear').setValue(yearDesde);
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(yearActual);
 
-        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue(monthActual); 
-        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue(monthActual); 
+        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue(""); 
+        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue(""); 
 
         Ext.getCmp(prototype.id + '-cmbDateDay').setValue("");
         Ext.getCmp(prototype.id + '-cmbDateToDay').setValue("");
@@ -167,8 +167,8 @@ Ext.define('Ext.Praxis.controller.payments.InvoiceControl.InvoiceControlControll
 
         Ext.getCmp(prototype.id + '-cmbDateFromYear').setValue(this.fecha.getFullYear());
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(this.fecha.getFullYear());
-        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue("01");
-        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue("01");
+        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue("");
+        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue("");
         Ext.getCmp(prototype.id + '-cmbDateDay').setValue("");
         Ext.getCmp(prototype.id + '-cmbDateDay').setValue("");
 
@@ -224,85 +224,105 @@ Ext.define('Ext.Praxis.controller.payments.InvoiceControl.InvoiceControlControll
                                 msg: 'Data not found.'
                             });
                         } else {
-                            
-                            let lstData = []
-                            for (let value of obj.data.items) {
-                                lstData.push(value.data)
-                            }
-                            
-                            let QTY_INVOICES = 0;
-                            let SVFOPL = 0;
-                            let QTY_100_ALL = 0;
-                            let QTY_100_PENDING = 0;
+let lstData = [];
+for (let value of obj.data.items) {
+    lstData.push(value.data);
+}
 
-                            let a = [];
-                            let dataRoot = { text: '.', expanded: false, children: [] };
+let QTY_INVOICES = 0;
+let SVFOPL = 0;
+let QTY_100_ALL = 0;
+// quitar acumulador de porcentajes; lo calcularemos al final a partir de totales
+let QTY_100_PENDING = 0;
 
-                            Ext.Object.each(lstData, function (index, value) {
-                                if (a.indexOf(value.strFormatDate) < 0) {
+let a = [];
+let dataRoot = { text: '.', expanded: false, children: [] };
 
-                                    // Acumuladores por mes
-                                    let V_QTY_INVOICES = 0;
-                                    let V_SVFOPL = 0;
-                                    let V_QTY_100_ALL = 0;
-                                    let V_QTY_100_PENDING = 0;
+Ext.Object.each(lstData, function (index, value) {
+    if (a.indexOf(value.strFormatDate) < 0) {
 
-                                    // Calcular sumas por mes
-                                    Ext.Object.each(lstData, function (index, valuex) {
-                                        if (value.strFormatDate === valuex.strFormatDate) {
-                                            V_QTY_INVOICES += valuex.QTY_INVOICES;
-                                            V_SVFOPL += valuex.SVFOPL;
-                                            V_QTY_100_ALL += valuex.QTY_100_ALL;
-                                            V_QTY_100_PENDING += valuex.QTY_100_PENDING;
-                                        }
-                                    });
+        // Acumuladores por mes
+        let V_QTY_INVOICES = 0;
+        let V_SVFOPL = 0;
+        let V_QTY_100_ALL = 0;
 
-                                    // Sumar a los totales generales
-                                    QTY_INVOICES += V_QTY_INVOICES;
-                                    SVFOPL += V_SVFOPL;
-                                    QTY_100_ALL += V_QTY_100_ALL;
-                                    QTY_100_PENDING += V_QTY_100_PENDING;
+        // Calcular sumas por mes
+        Ext.Object.each(lstData, function (index, valuex) {
+            if (value.strFormatDate === valuex.strFormatDate) {
+                V_QTY_INVOICES += valuex.QTY_INVOICES;
+                V_SVFOPL += valuex.SVFOPL;
+                V_QTY_100_ALL += valuex.QTY_100_ALL;
+            }
+        });
 
-                                    // Agregar nodo padre (mes)
-                                    a.push(value.strFormatDate);
-                                    dataRoot.children.push({
-                                        strFormatDate: value.strFormatDate,
-                                        QTY_INVOICES: V_QTY_INVOICES,
-                                        SVFOPL: V_SVFOPL,
-                                        QTY_100_ALL: V_QTY_100_ALL,
-                                        QTY_100_PENDING: V_QTY_100_PENDING,
-                                        expanded: false,
-                                        children: []
-                                    });
+        // Calcular porcentaje de avance por mes (Praxis sobre Avianca)
+        // ESTE porcentaje es solo para mostrar en el nodo del mes (no se suma)
+        let V_QTY_100_RATE = 0;
+        if (V_QTY_INVOICES > 0) {
+            V_QTY_100_RATE = (V_QTY_100_ALL / V_QTY_INVOICES) * 100;
+            V_QTY_100_RATE = Math.min(100, V_QTY_100_RATE);
+        }
 
-                                    // Agregar nodos hijos (sociedades)
-                                    Ext.Object.each(lstData, function (index, value01) {
-                                        if (value.strFormatDate === value01.strFormatDate) {
-                                            dataRoot.children[a.indexOf(value.strFormatDate)].children.push({
-                                                strFormatDate: value01.strFormatDate,
-                                                CCUST: value01.SOCIETY,
-                                                QTY_INVOICES: value01.QTY_INVOICES,
-                                                SVFOPL: value01.SVFOPL,
-                                                QTY_100_ALL: value01.QTY_100_ALL,
-                                                QTY_100_PENDING: value01.QTY_100_PENDING,
-                                                leaf: true
-                                            });
-                                        }
-                                    });
-                                }
-                            });
+        // Sumar a los totales generales (solo sumamos cantidades, no porcentajes)
+        QTY_INVOICES += V_QTY_INVOICES;
+        SVFOPL += V_SVFOPL;
+        QTY_100_ALL += V_QTY_100_ALL;
+        // NO sumar V_QTY_100_RATE a QTY_100_PENDING aquí
 
-                            // Asignar al store
-                            var storeTree = Ext.create('Ext.data.TreeStore', {
-                                root: dataRoot
-                            });
-                            Ext.getCmp(prototype.id + '-gridSumaryMain').setStore(storeTree);
+        // Agregar nodo padre (mes)
+        a.push(value.strFormatDate);
+        dataRoot.children.push({
+            strFormatDate: value.strFormatDate,
+            QTY_INVOICES: V_QTY_INVOICES,
+            SVFOPL: V_SVFOPL,
+            QTY_100_ALL: V_QTY_100_ALL,
+            QTY_100_PENDING: V_QTY_100_RATE.toFixed(2), // porcentaje del mes con dos decimales
+            expanded: false,
+            children: []
+        });
 
-                            // Mostrar totales formateados
-                            Ext.getCmp(prototype.id + '-QTY_INVOICES').setText(Ext.util.Format.number(QTY_INVOICES, '0,000'));
-                            Ext.getCmp(prototype.id + '-SVFOPL').setText(Ext.util.Format.number(SVFOPL, '0,000.00'));
-                            Ext.getCmp(prototype.id + '-QTY_100_ALL').setText(Ext.util.Format.number(QTY_100_ALL, '0,000'));
-                            Ext.getCmp(prototype.id + '-QTY_100_PENDING').setText(Ext.util.Format.number(QTY_100_PENDING, '0,000'));
+        // Agregar nodos hijos (sociedades)
+        Ext.Object.each(lstData, function (index, value01) {
+            if (value.strFormatDate === value01.strFormatDate) {
+                let percentPending = 0;
+                if (value01.QTY_INVOICES > 0) {
+                    percentPending = (value01.QTY_100_ALL / value01.QTY_INVOICES) * 100;
+                    percentPending = Math.min(100, percentPending);
+                }
+
+                dataRoot.children[a.indexOf(value.strFormatDate)].children.push({
+                    strFormatDate: value01.strFormatDate,
+                    CCUST: value01.SOCIETY,
+                    QTY_INVOICES: value01.QTY_INVOICES,
+                    SVFOPL: value01.SVFOPL,
+                    QTY_100_ALL: value01.QTY_100_ALL,
+                    QTY_100_PENDING: percentPending.toFixed(2),
+                    leaf: true
+                });
+            }
+        });
+    }
+});
+
+// Asignar al store
+var storeTree = Ext.create('Ext.data.TreeStore', {
+    root: dataRoot
+});
+Ext.getCmp(prototype.id + '-gridSumaryMain').setStore(storeTree);
+
+// ==== Calcular RATE global correctamente a partir de totales ====
+let overallRate = 0;
+if (QTY_INVOICES > 0) {
+    overallRate = (QTY_100_ALL / QTY_INVOICES) * 100;
+    overallRate = Math.min(100, overallRate);
+}
+QTY_100_PENDING = overallRate; // valor numérico (porcentaje)
+
+// Mostrar totales formateados
+Ext.getCmp(prototype.id + '-QTY_INVOICES').setText(Ext.util.Format.number(QTY_INVOICES, '0,000'));
+Ext.getCmp(prototype.id + '-SVFOPL').setText(Ext.util.Format.number(SVFOPL, '0,000.00'));
+Ext.getCmp(prototype.id + '-QTY_100_ALL').setText(Ext.util.Format.number(QTY_100_ALL, '0,000'));
+Ext.getCmp(prototype.id + '-QTY_100_PENDING').setText(Ext.util.Format.number(QTY_100_PENDING, '0.00') + ' %');
 
                             
                             
@@ -341,45 +361,44 @@ Ext.define('Ext.Praxis.controller.payments.InvoiceControl.InvoiceControlControll
                             Ext.getCmp(prototype.id + '-displayPolarSM').bindStore(storeDataPie);
 
                           // === GRÁFICO DE BARRAS AGRUPADAS POR MES ===
-let dataBar = [];
+                            let dataBar = [];
 
-// Recorremos los meses agrupados (padres del árbol)
-Ext.Array.each(dataRoot.children, function (mes) {
-    dataBar.push({
-        month: mes.strFormatDate,    // Ejemplo: "2025-Jan"
-        Avianca: mes.QTY_INVOICES,
-        PraxisTotal: mes.QTY_100_ALL,
-        PraxisPend: mes.QTY_100_PENDING
-    });
-});
+                            // Recorremos los meses agrupados (padres del árbol)
+                            Ext.Array.each(dataRoot.children, function (mes) {
+                                dataBar.push({
+                                    month: mes.strFormatDate,    // Ejemplo: "2025-Jan"
+                                    Avianca: mes.QTY_INVOICES,
+                                    PraxisTotal: mes.QTY_100_ALL
+                                });
+                            });
 
-// Ordenar los meses correctamente (YYYY-MMM)
-const monthOrder = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                            // Ordenar los meses correctamente (YYYY-MMM)
+                            const monthOrder = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
-dataBar.sort((a, b) => {
-    const [yearA, monA] = a.month.split('-');
-    const [yearB, monB] = b.month.split('-');
+                            dataBar.sort((a, b) => {
+                                const [yearA, monA] = a.month.split('-');
+                                const [yearB, monB] = b.month.split('-');
 
-    // Comparar primero el año
-    const yearDiff = parseInt(yearA) - parseInt(yearB);
-    if (yearDiff !== 0) return yearDiff;
+                                // Comparar primero el año
+                                const yearDiff = parseInt(yearA) - parseInt(yearB);
+                                if (yearDiff !== 0) return yearDiff;
 
-    // Luego el orden del mes
-    return monthOrder.indexOf(monA) - monthOrder.indexOf(monB);
-});
+                                // Luego el orden del mes
+                                return monthOrder.indexOf(monA) - monthOrder.indexOf(monB);
+                            });
 
-// Configuramos el gráfico dinámicamente
-let chart = Ext.getCmp(prototype.id + '-displayBarSM');
+                            // Configuramos el gráfico dinámicamente
+                            let chart = Ext.getCmp(prototype.id + '-displayBarSM');
 
-chart.setStore({
-    fields: ['month', 'Avianca', 'PraxisTotal', 'PraxisPend'],
-    data: dataBar
-});
+                            chart.setStore({
+                                fields: ['month', 'Avianca', 'PraxisTotal'],
+                                data: dataBar
+                            });
 
-// Ajustamos la serie a los tres campos
-let serie = chart.getSeries()[0];
-serie.setYField(['Avianca', 'PraxisTotal', 'PraxisPend']);
-serie.setTitle(['Avianca', 'Praxis Total', 'Praxis Pendiente']);
+                            // Ajustamos la serie a los tres campos
+                            let serie = chart.getSeries()[0];
+                            serie.setYField(['Avianca', 'PraxisTotal']);
+                            serie.setTitle(['Avianca Total', 'Praxis Total']);
 
 
 
