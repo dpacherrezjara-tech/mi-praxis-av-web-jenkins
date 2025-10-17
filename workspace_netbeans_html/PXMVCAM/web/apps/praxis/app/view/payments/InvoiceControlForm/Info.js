@@ -50,7 +50,7 @@ Ext.define('Ext.Praxis.view.payments.InvoiceControlForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetail',
                                     height: 510,
-                                    width: 910,
+                                    width: 1000,
                                     hidden: false,
                                     columnLines: true,
                                     viewConfig: {
@@ -130,6 +130,11 @@ Ext.define('Ext.Praxis.view.payments.InvoiceControlForm.Info', {
                                                                     return  value;
                                                                 },},
                                                     {text:  '<span style="color:black;font-weight:bold;">Difference</span>' ,align: 'center', dataIndex: 'DIFFERENCE', width: 90,style: 'background: #CFE9F6;border-color:white',renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "color:#2B2B2B;text-align:right;";
+                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                    return  value;
+                                                                },},
+                                                        {text:  '<span style="color:black;font-weight:bold;">Gencon</span>' ,align: 'center', dataIndex: 'SUM_GENCON', width: 90,style: 'background: #CFE9F6;border-color:white',renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "color:#2B2B2B;text-align:right;";
                                                                     value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
                                                                     return  value;
@@ -265,7 +270,7 @@ Ext.define('Ext.Praxis.view.payments.InvoiceControlForm.Info', {
                                  {
                                     xtype: 'treepanel',
                                     id: prototype.id + '-gridSumaryMain',
-                                    width: 587,
+                                    width: 667,
                                     useArrows: true,
                                     rootVisible: false,
                                     multiSelect: true,
@@ -393,14 +398,31 @@ Ext.define('Ext.Praxis.view.payments.InvoiceControlForm.Info', {
                                                                  dataIndex: 'QTY_100_PENDING', width: 70, style:'background:#F9D88C;color:black !important',align: 'center ', menuDisabled: true, //flex: 1
 
                                                                 renderer: function (value, metaData) {
-        metaData.style = "color:#2B2B2B;text-align:right;";
-        if (value === null || value === undefined || value === '') return '';
-        return '<b>' + Ext.util.Format.number(value, '0.00') + '%</b>';
-    },
+                                                                                metaData.style = "color:#2B2B2B;text-align:right;";
+                                                                                if (value === null || value === undefined || value === '') return '';
+                                                                                return '<b>' + Ext.util.Format.number(value, '0.00') + '%</b>';
+                                                                            },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
                                                                     metaData.style = 'text-align:right; margin-right:3px ';
                                                                     return '<b>' + Ext.util.Format.number(data.totARMATCH, '0,000') + '<b>';
+                                                                }
+                                                            },
+                                                              {
+                                                                text:  '<span style="color:black;font-weight:bold;">Not Found</span>' , dataIndex: 'QTY_NOT_FOUND',
+                                                                style:'background:#FFA8A8;color:black !important',width: 80, align: 'center', menuDisabled: true,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                    return value;
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                    return '<b>' + Ext.util.Format.number(data.totARMATCH, '0,000') + '<b>';
+                                                                },
+                                                                listeners: {
+                                                                    click: 'onGridDataDetail'
                                                                 }
                                                             },
                                                                 ]
@@ -438,7 +460,8 @@ Ext.define('Ext.Praxis.view.payments.InvoiceControlForm.Info', {
                                             {width: 70, id: prototype.id + '-QTY_INVOICES',style:'background: #FBD2D1;text-align:right'},
                                             {width: 120, id: prototype.id + '-SVFOPL',style:'background: #FBD2D1;text-align:right'},
                                             {width: 70, id: prototype.id + '-QTY_100_ALL',style:'background: #D1FBD2;text-align:right'},
-                                            {width: 70, id: prototype.id + '-QTY_100_PENDING',style:'background: #F9D88C;text-align:right'}
+                                            {width: 70, id: prototype.id + '-QTY_100_PENDING',style:'background: #F9D88C;text-align:right'},
+                                             {width: 80, id: prototype.id + '-QTY_NOT_FOUND',style:'background: #FFA8A8;text-align:right'},
                                         ]
                                     },
                                   {
@@ -513,11 +536,11 @@ Ext.define('Ext.Praxis.view.payments.InvoiceControlForm.Info', {
                                                     series: [{
                                                         type: 'bar',
                                                         xField: 'month',
-                                                        yField: ['Avianca', 'PraxisTotal'],
-                                                        title: ['Avianca Total', 'Praxis Total'],
+                                                        yField: ['Avianca', 'PraxisTotal','NOtFound'],
+                                                        title: ['Avianca Total', 'Praxis Total','Not Found'],
                                                         stacked: false, // Barras agrupadas
                                                         style: { opacity: 0.95 },
-                                                        colors: ['#A7C7F2', '#B8E986'], // 🎨 tonos pastel
+                                                        colors: ['#A7C7F2', '#B8E986','#FFA8A8'], // 🎨 tonos pastel
                                                         highlightCfg: { fillStyle: '#FFF2A8' },
                                                         tooltip: {
                                                             trackMouse: true,
