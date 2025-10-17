@@ -1126,9 +1126,6 @@ public class InvoiceControlController extends BaseController {
             Cell CH2_4 = row2.createCell(4);
             Cell CH2_5 = row2.createCell(5);
             Cell CH2_6 = row2.createCell(6);
-            Cell CH2_7 = row2.createCell(7);
-            Cell CH2_8 = row2.createCell(8);
-            Cell CH2_9 = row2.createCell(9);
 
             CH2_0.setCellStyle(headerStyle);
             CH2_1.setCellStyle(headerStyle);
@@ -1137,9 +1134,6 @@ public class InvoiceControlController extends BaseController {
             CH2_4.setCellStyle(headerStyle);
             CH2_5.setCellStyle(headerStyle);
             CH2_6.setCellStyle(headerStyle);
-            CH2_7.setCellStyle(headerStyle);
-            CH2_8.setCellStyle(headerStyle);
-            CH2_9.setCellStyle(headerStyle);
 
             // Nombres de cabecera nivel 2
             CH2_2.setCellValue("Avianca");
@@ -1162,16 +1156,13 @@ public class InvoiceControlController extends BaseController {
             Cell CH3_4 = row3.createCell(4);
             Cell CH3_5 = row3.createCell(5);
             Cell CH3_6 = row3.createCell(6);
-            Cell CH3_7 = row3.createCell(7);
-            Cell CH3_8 = row3.createCell(8);
-            Cell CH3_9 = row3.createCell(9);
 
             CH3_2.setCellValue("Currency");
             CH3_3.setCellValue("Qty");
             CH3_4.setCellValue("Amount");
 
             CH3_5.setCellValue("Qty");
-            CH3_6.setCellValue("Pending");
+            CH3_6.setCellValue("Rate (%)");
 
             CH3_0.setCellStyle(headerStyle);
             CH3_1.setCellStyle(headerStyle);
@@ -1180,9 +1171,6 @@ public class InvoiceControlController extends BaseController {
             CH3_4.setCellStyle(headerStyle);
             CH3_5.setCellStyle(headerStyle);
             CH3_6.setCellStyle(headerStyle);
-            CH3_7.setCellStyle(headerStyle);
-            CH3_8.setCellStyle(headerStyle);
-            CH3_9.setCellStyle(headerStyle);
 
             // ==== Merges ====
             sheet.addMergedRegion(new CellRangeAddress(2, 2, 2, 2));
@@ -1196,7 +1184,12 @@ public class InvoiceControlController extends BaseController {
 
             //============================================
 
-            while (iter.hasNext()) {
+            CellStyle bodyStylePercent = workbook.createCellStyle();
+            bodyStylePercent.cloneStyleFrom(bodyStyle);
+            bodyStylePercent.setDataFormat(workbook.createDataFormat().getFormat("0.00%"));
+
+            
+           while (iter.hasNext()) {
                 row1 = sheet.createRow(vj);
                 Cell rcell0 = row1.createCell(0);
                 Cell rcell1 = row1.createCell(1);
@@ -1206,19 +1199,30 @@ public class InvoiceControlController extends BaseController {
                 Cell rcell5 = row1.createCell(5);
                 Cell rcell6 = row1.createCell(6);
 
-                rcell0.setCellValue(listaData.get(vi).strFormatDate);
-                rcell1.setCellValue(listaData.get(vi).SOCIETY);
-                rcell2.setCellValue(listaData.get(vi).CURRENCY);
-                rcell3.setCellValue(listaData.get(vi).QTY_INVOICES);
-                rcell4.setCellValue(listaData.get(vi).SVFOPL);
-                 rcell5.setCellValue(listaData.get(vi).QTY_100_ALL);
-                rcell6.setCellValue(listaData.get(vi).QTY_100_PENDING);
-                
+                A2354Filter item = listaData.get(vi);
+
+                // Cálculo del rate
+                double rate = 0;
+                if ( item.QTY_INVOICES > 0) {
+                    rate = ((double) item.QTY_100_ALL / (double) item.QTY_INVOICES);
+                }
+
+                rcell0.setCellValue(item.strFormatDate);
+                rcell1.setCellValue(item.SOCIETY);
+                rcell2.setCellValue(item.CURRENCY);
+                rcell3.setCellValue(item.QTY_INVOICES);
+                rcell4.setCellValue(item.SVFOPL);
+                rcell5.setCellValue(item.QTY_100_ALL);
+
+                // Escribir el porcentaje
+                rcell6.setCellValue(rate); // <-- valor decimal (ej. 0.925)
+                rcell6.setCellStyle(bodyStylePercent); // aplicaremos estilo %
 
                 iter.next();
                 ++vi;
                 ++vj;
             }
+
 
             sheet.autoSizeColumn(0, true);
             sheet.autoSizeColumn(1, true);
