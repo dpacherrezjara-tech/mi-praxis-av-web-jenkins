@@ -32,6 +32,7 @@ public String STATUS = "";
 public String desSTATUS = "";
 public String IN_STATUS = "";
 public String IN_COUNTRY = "";
+public String IN_NOTFOUND = "";
 public String IN_COREP = "";
 public String CODE = "";
 public String COREP = "";
@@ -160,6 +161,7 @@ public double SUM_MPF100 = 0;
 public double DIFFERENCE = 0;
 public double DIFFERENCE_100 = 0;
 public double PENDING_MPF100 = 0;
+public double SUM_GENCON = 0;
 
 public double AMOUNT_TOTAL_USD = 0;
 public double AMOUNT_TOTAL_ACTIVE = 0;
@@ -172,6 +174,7 @@ public int QTY = 0;
 public int QTY_INVOICES = 0;
 public int QTY_100_ALL = 0;
 public int QTY_100_PENDING = 0;
+public int QTY_NOT_FOUND = 0;
 public int QTY_TOTAL= 0;
 
 
