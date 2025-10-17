@@ -134,7 +134,7 @@ Ext.define('Ext.Praxis.view.payments.InvoiceControlForm.Info', {
                                                                     value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
                                                                     return  value;
                                                                 },},
-                                                        {text:  '<span style="color:black;font-weight:bold;">Gencon</span>' ,align: 'center', dataIndex: 'SUM_GENCON', width: 90,style: 'background: #CFE9F6;border-color:white',renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                        {text:  '<span style="color:black;font-weight:bold;">AV</span>' ,align: 'center', dataIndex: 'SUM_GENCON', width: 90,style: 'background: #CFE9F6;border-color:white',renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "color:#2B2B2B;text-align:right;";
                                                                     value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
                                                                     return  value;

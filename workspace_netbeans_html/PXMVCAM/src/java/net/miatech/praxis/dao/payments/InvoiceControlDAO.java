@@ -1809,7 +1809,7 @@ public class InvoiceControlDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS354_V2(?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS354(?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1881,7 +1881,7 @@ public class InvoiceControlDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS355_V2(?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS355(?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
