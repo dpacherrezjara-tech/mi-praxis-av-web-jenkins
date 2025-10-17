@@ -23,7 +23,9 @@ extend: 'Ext.app.ViewController',
 
             try {
                 const res = await global.callStoreGet('PRAXISMP', 'MPS308', {
-                IN_IDCONT: me.view.praxisId
+                IN_IDCONT: me.view.praxisId,
+                IN_MODO: me.view.recordData.MODO,
+                IN_CORRL: me.view.recordData.CORRL
                 })
                 const infoSequences = res.lstRs[0] || [];
                 const infoDerived = res.lstRs[1] || [];
@@ -77,19 +79,12 @@ extend: 'Ext.app.ViewController',
         },
         loadStores: function () {
         const me = this;
-        
-//        console.log("me.dataSequences: ", me.dataSequences)
-//        console.log("me.dataDerived: ", me.dataDerived)
-//        console.log("me.dataRejections: ", me.dataRejections)
-        
+        const mainTabPanel = Ext.getCmp(prototype.idDEsequence + '-tabMainSequences2'); 
         const tabSequences = Ext.getCmp(prototype.idDEsequence + '-tabSequences');
         const tabDerived = Ext.getCmp(prototype.idDEsequence + '-tabDerived');
         const tabRejections = Ext.getCmp(prototype.idDEsequence + '-tabRejections');
         
-//        console.log("tabSequences: ", tabSequences)
-//        console.log("tabDerived: ", tabDerived)
-//        console.log("tabRejections: ", tabRejections)
-           
+        // activar o desactivar tabs
         if (me.dataSequences && me.dataSequences.length > 0) tabSequences.setDisabled(false);
         else tabSequences.setDisabled(true);
         if (me.dataDerived && me.dataDerived.length > 0) tabDerived.setDisabled(false);
@@ -97,19 +92,26 @@ extend: 'Ext.app.ViewController',
         if (me.dataRejections && me.dataRejections.length > 0) tabRejections.setDisabled(false);
         else tabRejections.setDisabled(true);
         
+        // enfocar tab con data
+        if (me.dataSequences && me.dataSequences.length > 0){
+           if (mainTabPanel && tabSequences) mainTabPanel.setActiveTab(tabSequences); //  Enfocar el tabSequences
+        } else if (me.dataDerived && me.dataDerived.length > 0){
+           if (mainTabPanel && tabDerived) mainTabPanel.setActiveTab(tabDerived); //  Enfocar el tabDerived
+        } else if (me.dataRejections && me.dataRejections.length > 0){
+           if (mainTabPanel && tabRejections) mainTabPanel.setActiveTab(tabRejections); //  Enfocar el tabDerived
+        } else {
+           if (mainTabPanel && tabSequences) mainTabPanel.setActiveTab(tabSequences); //  Enfocar el tabSequences 
+        }
+      
+        // Cargar data en store
         const gridSequences = Ext.getCmp(prototype.idDEsequence + '-gridSequences');
         const gridDerived = Ext.getCmp(prototype.idDEsequence + '-gridDerived');
-        const gridRejections = Ext.getCmp(prototype.idDEsequence + '-gridRejections');
-        
-//        console.log("gridSequences: ", gridSequences)
-//        console.log("gridDerived: ", gridDerived)
-//        console.log("gridRejections: ", gridRejections)
-
+        const gridRejections = Ext.getCmp(prototype.idDEsequence + '-gridRejections');             
+                
             if (gridSequences) {
                 const store = Ext.create('Ext.data.Store', {
                 fields: [
-                        'BANDOC', 'REFER', 'VALDATE', 'CODPRO', 'MERCHAND', 'IATA',
-                        'PROFIT_CENTER', 'CENTRO_COSTO', 'MONEDA_PAGO', 'MONTO_PAGO',
+                        'BANDOC', 'REFER', 'VALDATE', 'CODPRO', 'MONEDA_PAGO', 'MONTO_PAGO',
                         'MONEDA_REVENUE', 'MONTO_REVENUE'
                 ],
                 data:  me.dataSequences,
@@ -126,7 +128,7 @@ extend: 'Ext.app.ViewController',
             if (gridDerived) {
                 const store = Ext.create('Ext.data.Store', {
                 fields: [
-                        'DERIVED_FROM', 'NEW_PRAXIS_ID', 'NEW_HEADER_ID', 'NEW_FILENAME', 'QTY_SEQUENCES'
+                        'R_SOURCE', 'NEW_PRAXIS_ID', 'NEW_FILENAME', 'NEW_HEADER_ID', 'QTY_SEQUENCES' , 'R_SOURCE'
                 ],
                 data: me.dataDerived,
                 pageSize: 50,
@@ -135,6 +137,21 @@ extend: 'Ext.app.ViewController',
                         enablePaging: true // Habilitar la paginación en memoria
                        }
                 });
+                
+                const field = gridDerived.down('[name=STATUS_ORG]');
+                const value = Array.isArray(me.dataDerived) && me.dataDerived.length > 0 ? me.dataDerived[0].STATUS_ORG : '';
+                const colorMap = {
+                  '1': { text: 'SENT', color: '#459af5' },
+                  '2': { text: 'LOADED', color: '#49cc70' },
+                  '4': { text: 'TOTAL REJECTED', color: '#e86666' },
+                  '5': { text: 'PARTIAL REJECTED', color: '#f7db4a' },
+                  'R': { text: 'MANUAL REJECTED', color: '#faae2f' },
+                  'L': { text: 'MANUAL LOADED', color: '#77d1cb' }
+                };
+                const cfg = colorMap[value] || { text: '-', color: '#ccc' };
+                field.setValue(cfg.text);
+                field.setFieldStyle(`text-align:center;background-color:${cfg.color};color:#000;font-weight:bold;`);
+                
                 gridDerived.setStore(store);
                 gridDerived.getView().refresh(); // 🔹 fuerza repintado del grid
             };

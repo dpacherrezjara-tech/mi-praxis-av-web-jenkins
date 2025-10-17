@@ -250,10 +250,6 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                                     'BANDOC',
                                                     'REFER',
                                                     'VALDATE',
-                                                    'MERCHAND',
-                                                    'IATA',
-                                                    'PROFIT_CENTER',
-                                                    'CENTRO_COSTO',
                                                     'MONEDA_PAGO',
                                                     'MONTO_PAGO',
                                                     'MONEDA_REVENUE',
@@ -270,12 +266,8 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                                     {text: 'Bank Doc.', dataIndex: 'BANDOC', flex: 1},
                                                     {text: 'Referencia', dataIndex: 'REFER', flex: 1},
                                                     {text: 'Value Date', dataIndex: 'VALDATE', flex: 1},
-                                                    {text: 'Merchand', dataIndex: 'MERCHAND', flex: 1},
-                                                    {text: 'IATA', dataIndex: 'IATA', flex: 1},
-                                                    {text: 'Profit', dataIndex: 'PROFIT_CENTER', flex: 1},
-                                                    {text: 'Cost Center', dataIndex: 'CENTRO_COSTO', flex: 1},
-                                                    {text: 'Pay. Currency', dataIndex: 'MONEDA_PAGO', flex: 0.8},
-                                                    {text: 'Pay. Amount', dataIndex: 'MONTO_PAGO', flex: 0.8},
+                                                    {text: 'Currency', dataIndex: 'MONEDA_PAGO', flex: 0.8},
+                                                    {text: 'Amount', dataIndex: 'MONTO_PAGO', flex: 0.8},
                                                     {text: 'Rev. Currency', dataIndex: 'MONEDA_REVENUE', flex: 0.8},
                                                     {text: 'Rev. Amount', dataIndex: 'MONTO_REVENUE', flex: 0.8},
                                                     {
@@ -298,45 +290,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                     ]
                                 },
                                //</editor-fold>   
-                     
-                               //<editor-fold defaultstate="collapsed" desc="Derived headers">
-                                {
-                                    title: 'Derived headers',
-                                    itemId: 'B',
-                                    disabled: true,
-                                    id: prototype.idDEsequence + '-tabDerived',
-                                    layout: 'fit',
-                                    items: [
-                                        {
-                                            xtype: 'grid',
-                                            border: false,
-                                            id: prototype.idDEsequence + '-gridDerived',
-                                            emptyText: 'No documents available',
-                                            columns: {
-                                                defaults: {
-                                                    align: 'center',
-                                                    menuDisabled: true,
-                                                    sortable: true
-                                                },
-                                                items: [
-                                                    {
-                                                        text: 'RN',
-                                                        locked: true,
-                                                        xtype: 'rownumberer', // Columna de número de fila
-                                                        width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
-                                                    },
-                                                    {text: 'Derived From', dataIndex: 'DERIVED_FROM', flex: 0.7},
-                                                    {text: 'Qty. Sequence', dataIndex: 'QTY_SEQUENCES', flex: 0.4},
-                                                    {text: 'New Header ID', dataIndex: 'NEW_HEADER_ID', flex: 1},
-                                                    {text: 'New File Name', dataIndex: 'NEW_FILENAME', flex: 1},
-                                                    {text: 'Praxis ID', dataIndex: 'NEW_PRAXIS_ID', flex: 1}
-                                                ]
-                                            }
-                                        }
-                                    ]
-                                },
-                     //</editor-fold>  
-                     
+                               
                                //<editor-fold defaultstate="collapsed" desc="Rejections">
                                 {
                                     title: 'Rejections',
@@ -383,6 +337,110 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                     ]
                                 },
                      //</editor-fold>  
+                     
+                               //<editor-fold defaultstate="collapsed" desc="Derived headers">
+                                {
+                                    title: 'Reprocessing Summary',
+                                    itemId: 'B',
+                                    disabled: true,
+                                    id: prototype.idDEsequence + '-tabDerived',
+                                    layout: 'fit',
+                                    items: [
+                                        {
+                                            xtype: 'grid',
+                                            border: false,
+                                            id: prototype.idDEsequence + '-gridDerived',
+                                            emptyText: 'No documents available',
+                                            tbar: {
+                                                xtype: 'panel',
+                                                layout: {
+                                                    type: 'hbox',
+                                                    pack: 'end'
+                                                },
+                                                width: '100%',
+                                                items: [
+                                                    {
+                                                        xtype: 'textfield',
+                                                        margin: '2 5 2 5',
+                                                        labelStyle: 'text-align:left;font-weight: bolder;',
+                                                        fieldStyle: 'text-align:center;',
+                                                        editable: false,
+                                                        fieldLabel: 'Original State',
+                                                        labelWidth: 100,
+                                                        width: 500,
+                                                        maxLength: 30,
+                                                        name: 'STATUS_ORG',
+                                                        value: 'LOADED', // valor por defecto o dinámico
+                                                        fieldStyle: 'text-align:center;background-color:#43bf68;color:#fff;font-weight:bold;',
+                                                    }
+                                                ]
+                                            },
+                                            columns: {
+                                                defaults: {
+                                                    align: 'center',
+                                                    menuDisabled: true,
+                                                    sortable: true
+                                                },
+                                                items: [
+                                                    {
+                                                        text: 'RN',
+                                                        locked: true,
+                                                        xtype: 'rownumberer', // Columna de número de fila
+                                                        width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
+                                                    },
+                                                    {text: 'Process Origin', dataIndex: 'R_SOURCE', flex: 1,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                        //metaData.style = "background-color:#838187";
+                                                        const opts = {
+                                                                'AUTO_SUCCESS': () => {
+                                                                    metaData.style = "background-color:#43bf68;color:#ffffff;font-weight:bold"; // Verde
+                                                                    return 'Auto Process';
+                                                                },
+                                                                'MANUAL_REJECT': () => {
+                                                                    metaData.style = "background-color:#f5a623;color:#000000;font-weight:bold"; // Naranja
+                                                                    return 'Manual Reprocess';
+                                                                }
+                                                            };
+
+                                                        return opts[value]();
+                                                    }
+                                                    },
+                                                    {text: 'Qty. Sequence', dataIndex: 'QTY_SEQUENCES', flex: 0.5},
+                                                    {text: 'New Header ID', dataIndex: 'NEW_HEADER_ID', flex: 1},
+                                                    {text: 'New File Name', dataIndex: 'NEW_FILENAME', flex: 1,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                        let filename = value;
+                                                        if (!value){
+                                                           filename = 'Pending File';
+                                                           metaData.style = "background-color:#d4d4d4;color:000";
+                                                        }       
+                                                        return filename;
+                                                    }
+                                                    },
+                                                    {text: 'New Praxis ID', dataIndex: 'NEW_PRAXIS_ID', flex: 1},
+                                                    {text: 'Description', dataIndex: 'R_SOURCE', flex: 2,
+                                                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                        //metaData.style = "background-color:#838187";
+                                                        const opts = {
+                                                                'AUTO_SUCCESS': () => {
+                                                                    return 'Generated automatically from successful sequences';
+                                                                },
+                                                                'MANUAL_REJECT': () => {                                                         
+                                                                    return 'Generated manually from previously rejected sequences';
+                                                                }
+                                                            };
+
+                                                        return opts[value]();
+                                                    }
+                                                  }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                },
+                     //</editor-fold>  
+                     
+                         
                               
                             ]
                         }

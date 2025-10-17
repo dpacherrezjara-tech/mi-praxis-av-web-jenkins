@@ -32,7 +32,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Grids.SequencesGrid', {
                         'REG': 'Regular',
                         'ADJ': 'Adjustment'
                     };
-                    return opts[value];
+                    return opts[value] || 'Without Header';
                 }
             },        
             {text: 'Header ID', dataIndex: 'CORRLAV', width: 200,
@@ -153,10 +153,6 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Grids.SequencesGrid', {
             },
             { text: 'Qty.<br>Sequence', dataIndex: 'TOT_SECUENCIAS', width: 100 },
             { text: 'Rej.<br>Sequence', dataIndex: 'REJ_SECUENCIAS', width: 100 },
-            { text: 'Pay.<br>Currency', dataIndex: 'PAY_CURRENCY', width: 80 },
-            { text: 'Pay.<br>Amount', dataIndex: 'PAY_AMOUNT', width: 100 },
-            { text: 'Rev.<br>Currency', dataIndex: 'REV_CURRENCY', width: 80 },
-            { text: 'Rev.<br>Amount', dataIndex: 'REV_AMOUNT', width: 100 },
             { text: 'User<br>Created', dataIndex: 'USCR', width: 120 },
             { text: 'Date<br>Created', dataIndex: 'TSCR', width: 150,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
