@@ -51,4 +51,11 @@ public class MPF106 {
     public String SBENCEN = "";    
     public String SOCIETY = "";    
     public String CIACOME = "";    
+    
+    public String FORMPAYM = "";    
+    public String NACCBANK = "";    
+    public String FRECPAYM = "";    
+    public String DESCRIPTION_PAYMENT = "";  
+    public String T_DATEF = "";    
+    public String T_DATET = "";   
 }

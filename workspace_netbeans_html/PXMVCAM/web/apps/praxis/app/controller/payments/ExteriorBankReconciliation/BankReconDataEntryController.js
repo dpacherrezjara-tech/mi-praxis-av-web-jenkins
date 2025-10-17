@@ -83,25 +83,6 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
             }
             me.view.center();
 
-
-
-//            if (me.bean.STVAL !== '3') {
-//                me.headers = data.headers;
-//                me.settlements = data.settlements;
-//                me.taxes = data.taxes;
-//
-//                const corep = (me.bean.COREP || '').trim();
-//
-//                if (['AB', 'BM', 'VN'].includes(corep)) {
-//                    await me.setMatchGrids();
-//                } else {
-//                    me.setMatchGrids();
-//                }
-//
-//            } else {
-//                me.setPendingGrids();
-//            }
-//            me.view.center();
         } catch (e) {
             console.error(e);
             me.notifier.alert('Error on load Bank Info');
@@ -117,6 +98,7 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
         };
         console.log('params', parameters);
 
+        Ext.getCmp(prototype.idDE + '-btn-reverse').show();
         const panelAMV = Ext.getCmp(prototype.idDE + '-panelAMV');
         const gridHeader = Ext.getCmp(prototype.idDE + '-panelHeaderAMV');
         const gridStatement = Ext.getCmp(prototype.idDE + '-panelStatementAMV');
@@ -587,8 +569,12 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
         const me = this;
         me.view.mask('Loading...');
         try {
-            const res = await me.request.post('/reverseConciliationF1', params);
-            console.log(res);
+            const arr = ['VN', 'BM', 'AB'];
+            if (!arr.includes(params.IN_CODPRO)) {
+                await global.callStorePost('PRAXISMP', 'MPS286',params);
+            } else {
+                await global.callStorePost('PRAXISMP', 'MPS285',params);
+            }
             me.notifier.success(`Reversed Conciliation`);
         } catch (e) {
             console.error(e);
@@ -788,14 +774,13 @@ Ext.define('Ext.Praxis.controller.payments.ExteriorBankReconciliation.BankReconD
     formatReverseParams: function () {
         const me = this;
         let params = {
-            VP_CCUST: me.bean.CCUST,
-            VP_PRDA: '',
             VP_CODPRO: me.bean.CODPRO,
-            VP_CCUSTPRO: me.bean.CCUSTPRO,
             VP_BANDOC: me.bean.BANDOC,
             VP_DATECI: me.bean.DATECI,
             VP_TRANCI: me.bean.TRANCI,
-            VP_FASE: ''
+            IN_DATEC: me.bean.FAJUST,
+            IN_TRANC: me.bean.IDCADJ.trim(),
+            IN_CODPRO: me.bean.CODPRO
         };
         return params;
     },

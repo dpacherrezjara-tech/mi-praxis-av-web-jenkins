@@ -17,6 +17,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Options', {
             items: [
                 {
                     xtype: 'radiogroup',
+                    id: prototype.id + '-viewOption',
                     columns: 3, // Muestra los radios en columna
                     vertical: false,
                     border: false,
@@ -24,8 +25,9 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Options', {
                     width:300,
                     items: [
                         {boxLabel: '<span style="color: green; font-weight: bold;">Headers</span>', name: 'opcion', inputValue: '1', checked: true},
-                        {boxLabel: '<span style="color: green; font-weight: bold;">Sequence</span>', name: 'opcion', inputValue: '2', checked: false},
-                        {boxLabel: '<span style="color: green; font-weight: bold;">Week View</span>', name: 'opcion', inputValue: '3'}
+                        {boxLabel: '<span style="color: green; font-weight: bold;">Sequence</span>', name: 'opcion', inputValue: '2'},
+                        {boxLabel: '<span style="color: green; font-weight: bold;">Integrator</span>', name: 'opcion', inputValue: '3'},
+                        {boxLabel: '<span style="color: green; font-weight: bold;">Week View</span>', name: 'opcion', inputValue: '4'}
                     ],
                     listeners: {
                         change: 'onChangeView'

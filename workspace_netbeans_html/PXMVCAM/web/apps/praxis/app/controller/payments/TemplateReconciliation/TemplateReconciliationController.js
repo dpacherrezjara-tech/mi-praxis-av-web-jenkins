@@ -10,6 +10,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
     beanDebits: {},
     beanBandoc: {},
     beanDiscounts: {},
+    beanSales: {},
     beanSettlements: {},
     beanHead: {},
     beanConciliation: {},
@@ -24,6 +25,8 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
     boxActual: '-vskMain',
     pagginActual: '-paggin',
     user: '',
+    esIgual: 0,
+    esPercent: 0,
     columnCode: '',
     init: function (view) {
         me = this;
@@ -40,6 +43,12 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             },
             '#TemplateReconciliationForm-btnSearch': {
                 click: this.btnSearch_click
+            },
+            '#TemplateReconciliationForm-btnSearchSales': {
+                click: this.searchSales
+            },
+            '#TemplateReconciliationForm-chkMarkSales': {
+                click: this.markAllGridSale
             },
             '#TemplateReconciliationForm-btnClear': {
                 click: this.btnClear_click
@@ -377,6 +386,147 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         
         me.updateGridTotal();
     },
+    updateGridBandocSale: function (column, rowIndex, checked, record) {
+        let recordBandocSale = me.getGridRecords(prototype.id + '-gridData212');
+        let totalBandocSale = 0;
+
+        for (let row of recordBandocSale) {
+            totalBandocSale += row.NETO || 0;
+        }
+
+        var grid = Ext.getCmp(prototype.id + '-gridData212');
+        var store = grid.getStore();
+        var tam = store.getCount();
+
+        if (tam > 0) {
+            var firstRecord = store.getAt(0);
+            firstRecord.set('TOTAL_NETO', totalBandocSale);
+        }
+
+        grid.getView().refreshNode(rowIndex);
+
+        store.suspendEvents();
+        record.set('select', record.get('checkActive') === true);
+        record.commit();
+        store.resumeEvents();
+
+        me.updateGridTotalSale();
+    },
+    updateGridSale: function (column, rowIndex, checked, record) {
+        let recordBandocSale = me.getGridRecords(prototype.id + '-gridDataVentas');
+        let totalBandocSale = 0;
+        let totalBandocSaleConverted = 0;
+
+        for (let row of recordBandocSale) {
+            totalBandocSale += row.SVFOP || 0;
+            totalBandocSaleConverted += row.SVFOPCON || 0;
+        }
+
+        var grid = Ext.getCmp(prototype.id + '-gridDataVentas');
+        var store = grid.getStore();
+        var tam = store.getCount();
+
+        if (tam > 0) {
+            var firstRecord = store.getAt(0);
+            firstRecord.set('TOTAL_SVFOP', totalBandocSale);
+            firstRecord.set('TOTAL_SVFOP_CONVERTED', totalBandocSaleConverted);
+        }
+
+        grid.getView().refreshNode(rowIndex);
+
+        store.suspendEvents();
+        record.set('select', record.get('checkActive') === true);
+        record.commit();
+        store.resumeEvents();
+
+        me.updateGridTotalSale();
+    }, 
+    markAllGridSale: function (checkbox, newValue) {
+        var grid  = Ext.getCmp(prototype.id + '-gridDataVentas');
+        var store = grid.getStore();
+        var tam   = store.getCount();
+        if (tam === 0) return;
+
+        var checkCol = grid.down('checkcolumn[dataIndex=checkActive]');
+        if (checkCol && checkCol.suspendEvents) checkCol.suspendEvents();
+        store.suspendEvents();
+
+
+        for (var i = 0; i < tam; i++) {
+            var rec = store.getAt(i);
+            rec.set('checkActive', newValue);
+            rec.set('select', newValue);
+            rec.commit();
+        }
+
+        store.resumeEvents();
+        if (checkCol && checkCol.resumeEvents) checkCol.resumeEvents();
+
+        // ✅ solo recalcular total si se marcó
+        if (newValue) {
+            var totalBandocSale = 0;
+            var totalBandocSaleConverted = 0;
+            for (var j = 0; j < tam; j++) {
+                totalBandocSale += (store.getAt(j).get('SVFOP') || 0);
+                totalBandocSaleConverted += (store.getAt(j).get('SVFOPCON') || 0);
+            }
+
+            var firstRecord = store.getAt(0);
+            firstRecord.set('TOTAL_SVFOP', totalBandocSale);
+            firstRecord.set('TOTAL_SVFOP_CONVERTED', totalBandocSaleConverted);
+            firstRecord.commit();
+        } else {
+            // opcional: limpiar el total si desmarcan
+            var firstRecord = store.getAt(0);
+            firstRecord.set('TOTAL_SVFOP', 0);
+            firstRecord.set('TOTAL_SVFOP_CONVERTED', 0);
+            firstRecord.commit();
+        }
+
+        grid.getView().refresh();
+        me.updateGridTotalSale();
+    },
+    markAllGridBandoc: function (checkbox, newValue) {
+        var grid  = Ext.getCmp(prototype.id + '-gridData212');
+        var store = grid.getStore();
+        var tam   = store.getCount();
+        if (tam === 0) return;
+
+        var checkCol = grid.down('checkcolumn[dataIndex=checkActive]');
+        if (checkCol && checkCol.suspendEvents) checkCol.suspendEvents();
+        store.suspendEvents();
+
+
+        for (var i = 0; i < tam; i++) {
+            var rec = store.getAt(i);
+            rec.set('checkActive', newValue);
+            rec.set('select', newValue);
+            rec.commit();
+        }
+
+        store.resumeEvents();
+        if (checkCol && checkCol.resumeEvents) checkCol.resumeEvents();
+
+        // ✅ solo recalcular total si se marcó
+        if (newValue) {
+            var totalBandocSale = 0;
+            for (var j = 0; j < tam; j++) {
+                totalBandocSale += (store.getAt(j).get('NETO') || 0);
+            }
+
+            var firstRecord = store.getAt(0);
+            firstRecord.set('TOTAL_NETO', totalBandocSale);
+            firstRecord.commit();
+        } else {
+            // opcional: limpiar el total si desmarcan
+            var firstRecord = store.getAt(0);
+            firstRecord.set('TOTAL_NETO', 0);
+            firstRecord.commit();
+        }
+
+        grid.getView().refresh();
+        me.updateGridTotalSale();
+    },
     updateGridDiscount: function (column, rowIndex, checked, record) {
         console.log(record.data.blockChange,'record')
         
@@ -435,6 +585,18 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         this.searchSettlements();
     },
     verifyConciliation: function() {
+        
+//        if (this.esIgual !== 0) {
+//            Ext.Msg.show({
+//                title: '.:PRAXISEX:.',
+//                msg: 'La Diferencia tiene que ser 0.',
+//                buttons: Ext.MessageBox.OK,
+//                icon: Ext.MessageBox.ERROR,
+//                modal: true
+//            });
+//            return
+//        }
+        
         Ext.Msg.show({
             title: '.:PRAXISEX:.',
             msg: 'Are you sure you want to execute the conciliation?',
@@ -457,8 +619,32 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         let recordBandoc = me.getGridRecords(prototype.id + '-gridData21');
         let recordSettlements = me.getGridRecords(prototype.id + '-gridData');
         let recordHead = me.getGridRecords(prototype.id + '-gridDataCabecera');
+        let recordSale = me.getGridRecords(prototype.id + '-gridDataVentas');
         let getProcess = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
         let getCustomer = Ext.getCmp(prototype.id + '-typeClient').getValue();
+        
+        if (!recordBandoc.length) {
+            global.Msg({
+                msg: 'No ha seleccionado un bandoc.'
+            });
+            return
+        }
+        
+        if (getProcess !== "VN" && getProcess !== "BM"  && getProcess !== "AB") {
+            if (!recordSettlements.length) {
+                global.Msg({
+                    msg: 'No ha seleccionado liquidaciones.'
+                });
+                return
+            }
+        } else {
+            if (!recordSale.length) {
+                global.Msg({
+                    msg: 'No ha seleccionado Ventas.'
+                });
+                return
+            }
+        }
         
         let cleanSettlements = recordSettlements.map(function(item) {
             return {
@@ -515,24 +701,27 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                 CODEBANK_EC: item.CODEBANK
             };
         });
+        
+        let cleanSale = recordBandoc.map(function(item) {
+            return {
+                CCUST: item.CCUST,
+                CCIA: item.CCIA,
+                FORMA: item.FORMA,
+                SERIE: item.SERIE,
+                TDOC: item.TDOC,
+                SCARDNCOR: item.SCARDNCOR,
+                SAUTHOC: item.SAUTHOC,
+                SEQ: item.SEQ,
+                CORRL: item.CORRL,
+                SVFOP: item.SVFOP,
+                TOTAL: item.TOTAL,
+            };
+        });
 
         console.log(cleanSettlements)
         console.log(cleanDiscounts)
         console.log(cleanBandoc)
-        
-        if (!recordBandoc.length) {
-            global.Msg({
-                msg: 'No ha seleccionado un bandoc.'
-            });
-            return
-        }
-        
-        if (!recordSettlements.length) {
-            global.Msg({
-                msg: 'No ha seleccionado liquidaciones.'
-            });
-            return
-        }
+        console.log(cleanSale)
 
         me.beanConciliation.IN_CCUST = getCustomer;
         me.beanConciliation.IN_CODPRO = getProcess;
@@ -542,7 +731,8 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             beanDiscounts: JSON.stringify(cleanDiscounts),
             beanBandoc: JSON.stringify(cleanBandoc),
             beanHead: JSON.stringify(recordHead),
-            beanSettlements: JSON.stringify(cleanSettlements)
+            beanSettlements: JSON.stringify(cleanSettlements),
+            beanSales: JSON.stringify(cleanSale)
         };
         
         console.log(searchParamsConciliation, 'searchParamsConciliation');
@@ -557,7 +747,8 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             url: prototype.url + '/executeConciliation',
             method: 'POST',
             timeout: 60000000,
-            params: {beanString: params.beanString, beanDiscounts: params.beanDiscounts, beanBandoc: params.beanBandoc, beanHead: params.beanHead, beanSettlements: params.beanSettlements},
+            params: {beanString: params.beanString, beanDiscounts: params.beanDiscounts, beanBandoc: params.beanBandoc, 
+                beanHead: params.beanHead, beanSettlements: params.beanSettlements, beanSales:params.beanSales},
             beforerequest:  Ext.getCmp(prototype.id + '-xpanel').mask('Loading...'),
             success: function(response, options) {
                 
@@ -574,6 +765,9 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                     Ext.getCmp(prototype.id + '-gridData21').getStore().removeAll();
                     Ext.getCmp(prototype.id + '-gridData21').getView().refresh();
                     
+                    Ext.getCmp(prototype.id + '-gridDataVentas').getStore().removeAll();
+                    Ext.getCmp(prototype.id + '-gridDataVentas').getView().refresh();
+                    
                     me.searchSettlements();
                     me.updateGridTotal();
                     
@@ -581,7 +775,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                     
                     global.Msg({msg: res.result});
                     
-                    callback(res); // Retorna los datos mediante callback
+                    callback(res); 
                 }
             },
             failure: function(response, options) {
@@ -642,6 +836,63 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             .map(record => record.getData())
             .filter(data => data.checkActive === true);
     },
+    // <editor-fold defaultstate="collapsed" desc="Llenar Grilla Bandoc para Ventas">
+    searchBandocSales: function (e, eOpts) {
+        if (eOpts.getKey() !== 13) return false;
+        this.fetchBandocSales();
+    },
+    fetchBandocSales: function () {
+        let me = this;
+        me.beanBandoc = {};
+
+        let getProcess  = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
+        let getBandoc   = Ext.getCmp(prototype.id + '-txtBandocSale').getValue();
+        let getCustomer = Ext.getCmp(prototype.id + '-typeClient').getValue();
+        let getBandocFrom = Ext.Date.format(Ext.getCmp(prototype.id + '-txtFromBandoc').getValue(), 'Ymd');
+        let getBandocTo = Ext.Date.format(Ext.getCmp(prototype.id + '-txtToBandoc').getValue(), 'Ymd');
+
+        me.beanBandoc.IN_CCUST    = getCustomer;
+        me.beanBandoc.IN_BANDOC   = getBandoc;
+        me.beanBandoc.IN_DATEFROM = getBandocFrom;
+        me.beanBandoc.IN_DATETO   = getBandocTo;
+        me.beanBandoc.IN_CODPRO   =getProcess;
+
+        let searchParamsBandoc = {
+            beanString: JSON.stringify(me.beanBandoc)
+        };
+        
+        me.getBandocSales(searchParamsBandoc);
+       
+    },
+    getBandocSales: function (params) {
+        
+        var storeGridDiscounts = Ext.create('Ext.Praxis.store.flown.PassengerConciliation.GridData', {
+            proxy: {
+                url: prototype.url + '/getPendingDepositsSales'
+            }, listeners: {
+                beforeload: function(obj) {
+                    obj.proxy.extraParams = params;
+                },
+                load: function(obj) {
+                    console.log(obj.data, 'BANDOC SALE');
+                    if (obj.data.length === 0) {
+                        global.Msg({
+                            msg: 'Data not found.'
+                        });
+                    } else {
+                        var bean = obj.data.items[0].data;
+                    }
+                    
+                    me.updateGridTotalSale();
+                }
+            }
+        });
+
+        Ext.getCmp(prototype.id + '-gridData212').setStore(storeGridDiscounts);
+        storeGridDiscounts.load();
+        
+    },
+    // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Llenar Grilla Bandoc">
     searchBandoc: function (e, eOpts) {
         if (eOpts.getKey() !== 13) return false;
@@ -651,61 +902,50 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         let me = this;
         me.beanBandoc = {};
 
-        let getBandoc = Ext.getCmp(prototype.id + '-txtBandoc').getValue();
+        let getProcess  = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
+        let getBandoc   = Ext.getCmp(prototype.id + '-txtBandoc').getValue();
         let getCustomer = Ext.getCmp(prototype.id + '-typeClient').getValue();
 
-        me.beanBandoc.IN_CCUST = getCustomer;
-        me.beanBandoc.IN_BANDOC = getBandoc;
+        me.beanBandoc.IN_CCUST    = getCustomer;
+        me.beanBandoc.IN_BANDOC   = getBandoc;
         me.beanBandoc.IN_DATEFROM = '';
-        me.beanBandoc.IN_DATETO = '';
-        me.beanBandoc.IN_CODPRO = '';
+        me.beanBandoc.IN_DATETO   = '';
+        me.beanBandoc.IN_CODPRO   = '';
 
         let searchParamsBandoc = {
             beanString: JSON.stringify(me.beanBandoc)
         };
-
-        console.log(searchParamsBandoc, 'searchParamsBandoc');
-
-        me.getBandoc(searchParamsBandoc, function(responseData) {
-            let store = Ext.create('Ext.data.Store', {
-                data: responseData.data
-            });
-
-            Ext.getCmp(prototype.id + '-gridData21').bindStore(store);
-        });
+        
+        me.getBandoc(searchParamsBandoc);
+       
     },
-    getBandoc: function (params, callback) {
-        Ext.Ajax.request({
-            url: prototype.url + '/getPendingDeposits',
-            method: 'POST',
-            timeout: 60000000,
-            params: params,
-            beforerequest:  Ext.getCmp(prototype.id + '-gridData21').mask('Loading...'),
-            success: function(response, options) {
-                Ext.getCmp(prototype.id + '-gridData21').unmask('Loading...');
-                let res = Ext.JSON.decode(response.responseText);
-
-                if (!res.success) {
-                    global.Msg({msg: res.sesion});
-                } else {
-                    
-                    if (!res.data.length) {
+    getBandoc: function (params) {
+        
+        var storeGridDiscounts = Ext.create('Ext.Praxis.store.flown.PassengerConciliation.GridData', {
+            proxy: {
+                url: prototype.url + '/getPendingDeposits'
+            }, listeners: {
+                beforeload: function(obj) {
+                    obj.proxy.extraParams = params;
+                },
+                load: function(obj) {
+                    console.log(obj.data);
+                    if (obj.data.length === 0) {
                         global.Msg({
                             msg: 'Data not found.'
                         });
+                    } else {
+                        var bean = obj.data.items[0].data;
                     }
                     
-                    callback(res); // Retorna los datos mediante callback
+                    me.updateGridTotal();
                 }
-                
-                me.updateGridTotal();
-            },
-            failure: function(response, options) {
-                Ext.getCmp(prototype.id + '-gridData21').unmask('Loading...');
-                console.error("Error en la petición AJAX");
-                global.Msg({msg: "Error al obtener datos"});
             }
         });
+
+        Ext.getCmp(prototype.id + '-gridData21').setStore(storeGridDiscounts);
+        storeGridDiscounts.load();
+        
     },
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Llenar Grilla Descuentos">
@@ -790,37 +1030,6 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                 }
             }
         });
-        
-//        var storeGridDiscounts = Ext.create('Ext.data.Store', {
-//            proxy: {
-//                type: 'ajax',
-//                url: prototype.url + '/getPendingDiscounts',
-//                reader: {
-//                    type: 'json',
-//                    rootProperty: 'data'
-//                },
-//                extraParams: params
-//            },
-//            listeners: {
-//                beforeload: function(store, operation) {
-//                    Ext.getCmp(prototype.id + '-gridDataDescuentos').mask('Loading...');
-//                },
-//                load: function(store, records, successful) {
-//                    Ext.getCmp(prototype.id + '-gridDataDescuentos').unmask();
-//                    if (records.length === 0) {
-//                        global.Msg({
-//                            msg: 'Data not found.'
-//                        });
-//                    }
-//                    // Aquí puedes agregar lógica para los totales si es necesario
-//                },
-//                exception: function(proxy, response, operation) {
-//                    Ext.getCmp(prototype.id + '-gridDataDescuentos').unmask();
-//                    console.error("Error en la petición AJAX");
-//                    global.Msg({msg: "Error al obtener datos"});
-//                }
-//            }
-//        });
 
         Ext.getCmp(prototype.id + '-gridDataDescuentos').setStore(storeGridDiscounts);
         storeGridDiscounts.load();
@@ -890,6 +1099,67 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         });
         global.clear();
         Ext.getCmp(prototype.id + '-gridData').setStore(storeGridDatas);
+    },
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Llenar Grilla Ventas">
+    searchSales: function () {
+        this.fetchSales();
+    },
+    fetchSales: function () {
+        let me = this;
+        me.beanSales = {};
+
+        let getProcess = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
+        let getCustomer = Ext.getCmp(prototype.id + '-typeClient').getValue();
+        let getDateFrom = Ext.Date.format(Ext.getCmp(prototype.id + '-txtFromSale').getValue(), 'Ymd');
+        let getDateTo = Ext.Date.format(Ext.getCmp(prototype.id + '-txtToSale').getValue(), 'Ymd');
+        let getAgent = Ext.getCmp(prototype.id + '-txtAgentSale').getValue();
+        let getCountry = Ext.getCmp(prototype.id + '-txtCountrySale').getValue();
+
+        
+        
+        me.beanSales.IN_CCUST = getCustomer;
+        me.beanSales.IN_CODPRO = getProcess;
+        me.beanSales.IN_DATEFROM = getDateFrom;
+        me.beanSales.IN_DATETO = getDateTo;
+        me.beanSales.IN_SAGENT = getAgent;
+        me.beanSales.IN_COUNTRY = getCountry;
+
+        let searchParamsSales = {
+            beanString: JSON.stringify(me.beanSales)
+        };
+
+        console.log(searchParamsSales, 'searchParamsSales');
+
+        me.getSales(searchParamsSales);
+    },
+    getSales: function (params) {
+        
+        var storeGridSale = Ext.create('Ext.Praxis.store.flown.PassengerConciliation.GridData', {
+            proxy: {
+                url: prototype.url + '/getPendingSales'
+            }, listeners: {
+                beforeload: function(obj) {
+                    obj.proxy.extraParams = params;
+                },
+                load: function(obj) {
+                    console.log(obj.data);
+                    if (obj.data.length === 0) {
+                        global.Msg({
+                            msg: 'Data not found.'
+                        });
+                    } else {
+                        var bean = obj.data.items[0].data;
+//                        me.setTotalRowGridData(bean);
+                    }
+                    
+                    me.updateGridTotalSale();
+                }
+            }
+        });
+
+        Ext.getCmp(prototype.id + '-gridDataVentas').setStore(storeGridSale);
+        storeGridSale.load();
     },
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Llenar Grilla Cabecera">
@@ -1078,6 +1348,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
 //        Ext.getCmp(prototype.id + '-cmbDateToDayDesc').setValue('15');
         
         this.paramsObtainData.COREP = 2;
+        this.paramsObtainData.COUNTRY = 2;
         
         Ext.Ajax.request({
             url: prototype.urlMaster + '/obtainData',
@@ -1091,14 +1362,22 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                 Ext.getBody().unmask('Loading...');
                 var res = Ext.JSON.decode(response.responseText);
                 var lstProcessor = res.lstProcessor;
+                var lstCountry = res.lstCountry;
                
                 var storeDataProcessor = Ext.create('Ext.data.Store', {
                     data: lstProcessor,
                     autoLoad: true
                 });
                 
+                var storeDataCountrys = Ext.create('Ext.data.Store', {
+                    data: lstCountry,
+                    autoLoad: true
+                });
+                
                 Ext.getCmp(prototype.id + '-cmbCOREP').bindStore(storeDataProcessor);
-                Ext.getCmp(prototype.id + '-cmbCOREP').setValue('EV');
+                Ext.getCmp(prototype.id + '-cmbCOREP').setValue('BM');
+                
+                Ext.getCmp(prototype.id + '-txtCountrySale').bindStore(storeDataCountrys);
             }
         });
     },
@@ -1107,9 +1386,12 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         let recordDiscounts = me.getGridRecords(prototype.id + '-gridDataDescuentos');
         let recordBandoc = me.getGridRecords(prototype.id + '-gridData21');
         let recordSettlements = me.getGridRecords(prototype.id + '-gridData');
+        let recordSales = me.getGridRecords(prototype.id + '-gridDataVentas');
 
+        this.esIgual = 0;
         let totalDescGrid = 0;
         let totalSettGrid = 0;
+        let totalSaleGrid = 0;
         let comisionSettGrid = 0;
         let totalBandocGrid = 0;
 
@@ -1131,13 +1413,20 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                 comisionSettGrid += Number(sett.COMISION) || 0;
             }
         }
+        
+        if (recordSales.length) {
+            for (let sale of recordSales) {
+                totalSaleGrid += Number(sale.SVFOP) || 0;
+            }
+        }
 
         let formattedDesc = Ext.util.Format.number(totalDescGrid, '0,000.00');
         let formattedBandoc = Ext.util.Format.number(totalBandocGrid, '0,000.00');
         let formattedSett = Ext.util.Format.number(totalSettGrid, '0,000.00');
+        let formattedSale = Ext.util.Format.number(totalSaleGrid, '0,000.00');
         let formattedComision = Ext.util.Format.number(comisionSettGrid, '0,000.00');
 
-        let calculo = totalSettGrid - Math.abs(comisionSettGrid) - Math.abs(totalDescGrid);
+        let calculo = Math.abs(totalSettGrid - Math.abs(comisionSettGrid) - Math.abs(totalDescGrid) - Math.abs(totalSaleGrid));
         let formattedDiff = Ext.util.Format.number(calculo, '0,000.00');
         
         let diferencia_bandoc_calculo = totalBandocGrid - calculo;
@@ -1146,6 +1435,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         let cmpDesc = Ext.getCmp(prototype.id + '-txtTotalDescGrid');
 //        let cmpBandoc = Ext.getCmp(prototype.id + '-txtTotalBandocGrid');
         let cmpSett = Ext.getCmp(prototype.id + '-txtTotalSettGrid');
+        let cmpSale = Ext.getCmp(prototype.id + '-txtVentasSettGrid');
         let cmpComision = Ext.getCmp(prototype.id + '-txtComisionSettGrid');
         let cmpDiff = Ext.getCmp(prototype.id + '-txtTotalDiffGrid');
         let cmpDiffB = Ext.getCmp(prototype.id + '-txtTotalDiff');
@@ -1153,13 +1443,15 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         cmpDesc.setValue(formattedDesc);
 //        cmpBandoc.setValue(formattedBandoc);
         cmpSett.setValue(formattedSett);
+        cmpSale.setValue(formattedSale);
         cmpDiff.setValue(formattedDiff);
         cmpDiffB.setValue(formattedDiffB);
         cmpComision.setValue(formattedComision);
 
-        let esIgual = diferencia_bandoc_calculo === 0;
+        
+        this.esIgual = diferencia_bandoc_calculo === 0;
 
-        let colorFondo = esIgual ? '#4CAF50' : '#F44336';
+        let colorFondo = this.esIgual ? '#4CAF50' : '#F44336';
         let colorTexto = 'white';
 
         Ext.defer(function () {
@@ -1176,10 +1468,326 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             });
         }, 10);
     },
+    updateGridTotalSale: function () {
+        let recordBandoc = me.getGridRecords(prototype.id + '-gridData212');
+        let recordSales = me.getGridRecords(prototype.id + '-gridDataVentas');
+
+        this.esIgual = 0;
+        let totalBandoc = 0;
+        let totalSales = 0;
+        let totalSalesConverted = 0;
+
+        if (recordSales.length) {
+            for (let sale of recordSales) {
+                totalSales += Number(sale.SVFOP) || 0;
+                totalSalesConverted += Number(sale.SVFOPCON) || 0;
+            }
+        }
+
+        if (recordBandoc.length) {
+            for (let bandoc of recordBandoc) {
+                totalBandoc += Number(bandoc.NETO) || 0;
+            }
+        }
+
+        let formattedBandoc = Ext.util.Format.number(totalBandoc, '0,000.00');
+        let formattedSale = Ext.util.Format.number(totalSalesConverted, '0,000.00');
+
+        let calculo = totalSalesConverted - totalBandoc;
+        let porcentaje = calculo > 0 ? (calculo / totalSalesConverted) * 100 : 0;
+        let formattedDiff = Ext.util.Format.number(calculo, '0,000.00');
+        let formattedPorcentaje = Ext.util.Format.number(porcentaje, '0.00') + '%';
+        
+        let cmpDeposito = Ext.getCmp(prototype.id + '-txtTotalDeposito');
+        let cmpVenta = Ext.getCmp(prototype.id + '-txtVentas');
+        let cmpDiferencia = Ext.getCmp(prototype.id + '-txtTotalDiffVenta');
+        let cmpPorcentaje = Ext.getCmp(prototype.id + '-txtPercentVenta');
+
+        cmpDeposito.setValue(formattedBandoc);
+        cmpVenta.setValue(formattedSale);
+        cmpDiferencia.setValue(formattedDiff);
+        cmpPorcentaje.setValue(formattedPorcentaje);
+
+        this.esIgual = calculo >= 0;
+        this.esPercent = porcentaje <= 10;
+
+        let colorFondo = this.esIgual ? '#4CAF50' : '#F44336';
+        let colorFondo2 = this.esPercent ? '#4CAF50' : '#F44336';
+        let colorTexto = 'white';
+
+        Ext.defer(function () {
+            [cmpDiferencia].forEach(cmp => {
+                let el = cmp.getEl();
+                if (el) {
+                    el.setStyle({
+                        'background-color': colorFondo,
+                        'color': colorTexto,
+                        'font-weight': 'bold',
+                        'border-radius': '0px'
+                    });
+                }
+            });
+        }, 10);
+        
+        Ext.defer(function () {
+            [cmpPorcentaje].forEach(cmp => {
+                let el = cmp.getEl();
+                if (el) {
+                    el.setStyle({
+                        'background-color': colorFondo2,
+                        'color': colorTexto,
+                        'font-weight': 'bold',
+                        'border-radius': '0px'
+                    });
+                }
+            });
+        }, 10);
+    },
     changeProcessor: function () {
+        
+        let getProcess = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
+        this.changeViewTemplate(getProcess)
+        
         Ext.getCmp(prototype.id + '-gridDataDescuentos').getStore().removeAll();
         Ext.getCmp(prototype.id + '-gridDataDescuentos').getView().refresh();
-        me.searchSettlements();
-        me.updateGridTotal();
-    }
+        
+        Ext.getCmp(prototype.id + '-gridDataVentas').getStore().removeAll();
+        Ext.getCmp(prototype.id + '-gridDataVentas').getView().refresh();
+        
+        Ext.getCmp(prototype.id + '-gridData21').getStore().removeAll();
+        Ext.getCmp(prototype.id + '-gridData21').getView().refresh();
+        
+        if (getProcess !== "VN" && getProcess !== "BM" && getProcess !== "AB" ) {
+            me.searchSettlements();
+            me.updateGridTotal();
+        } else {
+            me.updateGridTotalSale();
+        }
+        
+    },
+    changeViewTemplate: function(getProcess) {
+        
+        if (getProcess !== "VN" && getProcess !== "BM"  && getProcess !== "AB") {
+            console.log(1)
+            Ext.getCmp(prototype.id + "-boxConsultas2").hide();
+            Ext.getCmp(prototype.id + "-boxConsultas").show();
+            Ext.getCmp(prototype.id + "-gridData21").show();
+            Ext.getCmp(prototype.id + "-txtBandoc").show();
+            Ext.getCmp(prototype.id + "-btnExecute").show();
+            Ext.getCmp("panelResumenTotales").show();
+            Ext.getCmp("panelResumenBandocMenosCalculo").show();
+        } else {
+            console.log(2)
+            Ext.getCmp(prototype.id + "-boxConsultas2").show();
+            Ext.getCmp(prototype.id + "-boxConsultas").hide();
+            Ext.getCmp(prototype.id + "-gridData21").hide();
+            Ext.getCmp(prototype.id + "-txtBandoc").hide();
+            Ext.getCmp(prototype.id + "-btnExecute").hide();
+            Ext.getCmp("panelResumenTotales").hide();
+            Ext.getCmp("panelResumenBandocMenosCalculo").hide();
+            Ext.getCmp(prototype.id + '-centerC-panel02')
+            .getEl()
+            .setStyle('margin-top', '60px');
+
+
+
+        }
+        
+        
+    },
+    verifyConciliationSale: function() {
+        
+//        if (this.esIgual !== 0) {
+//            Ext.Msg.show({
+//                title: '.:PRAXISEX:.',
+//                msg: 'La Diferencia tiene que ser 0.',
+//                buttons: Ext.MessageBox.OK,
+//                icon: Ext.MessageBox.ERROR,
+//                modal: true
+//            });
+//            return
+//        }
+        
+        Ext.Msg.show({
+            title: '.:PRAXISEX:.',
+            msg: 'Are you sure you want to execute the conciliation?',
+            buttons: Ext.MessageBox.OKCANCEL,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function(btn) {
+                if (btn === 'ok') {
+                    this.executeConciliationSale();
+                }
+            }
+        });
+    },
+    executeConciliationSale: function() {
+        let me = this;
+        me.beanConciliation = {};
+        
+        
+        let recordDiscounts = me.getGridRecordsDiscount(prototype.id + '-gridDataDescuentos');
+        let recordSettlements = me.getGridRecords(prototype.id + '-gridData');
+        let recordHead = me.getGridRecords(prototype.id + '-gridDataCabecera');
+        let recordBandoc = me.getGridRecords(prototype.id + '-gridData212');
+        let recordSale = me.getGridRecords(prototype.id + '-gridDataVentas');
+        let getProcess = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
+        let getCustomer = Ext.getCmp(prototype.id + '-typeClient').getValue();
+        
+        if (!recordBandoc.length) {
+            global.Msg({
+                msg: 'No ha seleccionado un bandoc.'
+            });
+            return
+        }
+        
+        if (!recordSale.length) {
+            global.Msg({
+                msg: 'No ha seleccionado Ventas.'
+            });
+            return
+        }
+        
+        let cleanSettlements = recordSettlements.map(function(item) {
+            return {
+                RN: item.RN,
+                SDATE: item.SDATE ? item.SDATE.trim() : '',
+                SCOUNTRY: item.SCOUNTRY ? item.SCOUNTRY.trim() : '',
+                TDOC: item.TDOC ? item.TDOC.trim() : '',
+                CODEBANK: item.CODEBANK ? item.CODEBANK.trim() : '',
+                SCARCOD: item.SCARCOD ? item.SCARCOD.trim() : '',
+                SCARDN: item.SCARDN ? item.SCARDN.trim() : '',
+                SAUTHOC: item.SAUTHOC ? item.SAUTHOC.trim() : '',
+                SEQ: item.SEQ ? item.SEQ.trim() : '',
+                SVFOP: item.SVFOP,
+                TOTAL: item.TOTAL,
+                NETO: item.NETO,
+                CODPRO: item.CODPRO ? item.CODPRO.trim() : '',
+                CCUSTPRO: item.CCUSTPRO ? item.CCUSTPRO.trim() : '',
+                PRDA: item.PRDA ? item.PRDA.trim() : '',
+                ADATE: item.ADATE ? item.ADATE.trim() : '',
+                MERCHAND: item.MERCHAND ? item.MERCHAND.trim() : '',
+                LIQUIDACIO: item.LIQUIDACIO ? item.LIQUIDACIO.trim() : '',
+                SCURRENCY: item.SCURRENCY ? item.SCURRENCY.trim() : '',
+                IMPORTEPAG: item.IMPORTEPAG
+            };
+        });
+        
+        let cleanDiscounts = recordDiscounts.map(function(item) {
+            return {
+                RN: item.RN,
+                CODPRO: item.CODPRO,
+                FLIQUIDACI: item.FLIQUIDACI,
+                MONEDA: item.MONEDA,
+                CCUSTPRO: item.CCUSTPRO,
+                CCUST: item.CCUST,
+                PRDA: item.PRDA,
+                ADATE: item.ADATE,
+                MERCHAND: item.MERCHAND,
+                MONEDAPAGO: item.MONEDAPAGO,
+                LIQUIDACIO: item.LIQUIDACIO,
+                IMPORTECeba: item.IMPORTECeba,
+                IMPORTEPAG: item.IMPORTEPAG
+            };
+        });
+
+        let cleanBandoc = recordBandoc.map(function(item) {
+            return {
+                CCUST: item.CCUST,
+                BANDOC: item.BANDOC,
+                VALDATE: item.VALDATE,
+                ADATE: item.ADATE,
+                NETO: item.NETO,
+                ACCOUNT: item.ACCOUNT,
+                SOCIETY: item.SOCIETY,
+                CODEBANK_EC: item.CODEBANK
+            };
+        });
+        
+        let cleanSale = recordSale.map(function(item) {
+            return {
+                CCUST: item.CCUST,
+                CCIA: item.CCIA,
+                FORMA: item.FORMA,
+                SERIE: item.SERIE,
+                TDOC: item.TDOC,
+                SCARDNCOR: item.SCARDNCOR,
+                SAUTHOC: item.SAUTHOC,
+                SEQ: item.SEQ,
+                CORRL: item.CORRL,
+                SVFOP: item.SVFOP,
+                TOTAL: item.TOTAL,
+            };
+        });
+
+        console.log(cleanSettlements)
+        console.log(cleanDiscounts)
+        console.log(cleanBandoc)
+        console.log(cleanSale)
+
+        me.beanConciliation.IN_CCUST = getCustomer;
+        me.beanConciliation.IN_CODPRO = getProcess;
+
+        let searchParamsConciliation = {
+            beanString: JSON.stringify(me.beanConciliation),
+            beanDiscounts: JSON.stringify(cleanDiscounts),
+            beanBandoc: JSON.stringify(cleanBandoc),
+            beanHead: JSON.stringify(recordHead),
+            beanSettlements: JSON.stringify(cleanSettlements),
+            beanSales: JSON.stringify(cleanSale)
+        };
+        
+        console.log(searchParamsConciliation, 'searchParamsConciliation');
+        
+        me.sendConciliationSale(searchParamsConciliation, function(responseData) {
+            console.log(responseData)
+        });
+        
+    },
+    sendConciliationSale: function (params, callback) {
+        Ext.Ajax.request({
+            url: prototype.url + '/executeConciliation',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: params.beanString, beanDiscounts: params.beanDiscounts, beanBandoc: params.beanBandoc, 
+                beanHead: params.beanHead, beanSettlements: params.beanSettlements, beanSales:params.beanSales},
+            beforerequest:  Ext.getCmp(prototype.id + '-xpanel').mask('Loading...'),
+            success: function(response, options) {
+                
+                Ext.getCmp(prototype.id + '-xpanel').unmask('Loading...');
+                let res = Ext.JSON.decode(response.responseText);
+                console.log(res,'res')
+
+                if (res.success) {
+                    global.Msg({msg: res.result});
+                    
+                    Ext.getCmp(prototype.id + '-gridDataDescuentos').getStore().removeAll();
+                    Ext.getCmp(prototype.id + '-gridDataDescuentos').getView().refresh();
+                    
+                    Ext.getCmp(prototype.id + '-gridData21').getStore().removeAll();
+                    Ext.getCmp(prototype.id + '-gridData21').getView().refresh();
+                    
+                    Ext.getCmp(prototype.id + '-gridData212').getStore().removeAll();
+                    Ext.getCmp(prototype.id + '-gridData212').getView().refresh();
+                    
+                    Ext.getCmp(prototype.id + '-gridDataVentas').getStore().removeAll();
+                    Ext.getCmp(prototype.id + '-gridDataVentas').getView().refresh();
+                    
+                    me.updateGridTotalSale();
+                    
+                } else {
+                    
+                    global.Msg({msg: res.result});
+                    
+                    callback(res); 
+                }
+            },
+            failure: function(response, options) {
+                Ext.getCmp(prototype.id + '-xpanel').unmask('Loading...');
+                console.error("Error en la petición AJAX");
+                global.Msg({msg: "Error al obtener datos"});
+            }
+        });
+    },
 });

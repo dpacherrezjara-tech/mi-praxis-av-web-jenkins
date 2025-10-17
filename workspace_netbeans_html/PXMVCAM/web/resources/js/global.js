@@ -2027,6 +2027,34 @@ var LarSyrExt = function () {
             return '';
         }
     };
+    
+    this.exportExcelFromStore = async function (library, procedure, searchParams, columns, fileName) {
+    try {
+        let res = await global.callStorePagginExcel(library, procedure, searchParams);
+
+        const data = (res?.length > 0)
+            ? res.map((x, idx) => {
+                const row = {};
+                for (let col of columns) {
+                     let val = row[col.header] = x[col.dataIndex] ?? "";
+                    if (typeof col.formatter === "function") {
+                        val = col.formatter(val, x, idx);
+                    }
+
+                    row[col.header] = val;
+                }
+                return row;
+            })
+            : [Object.fromEntries(columns.map(col => [col.header, ""]))];
+
+        // 3. Descargar Excel
+        await global.writeExcelFromJson(data, fileName);
+
+    } catch (e) {
+        console.error("Error exportando Excel:", e);
+    } 
+    };
+
 };
 
 var global = new LarSyrExt();

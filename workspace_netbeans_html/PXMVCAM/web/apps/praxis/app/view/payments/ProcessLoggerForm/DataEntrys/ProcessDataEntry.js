@@ -50,7 +50,8 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.DataEntrys.ProcessDataEnt
                                 data: [
                                     ['F2', 'F2 Conciliation EXT'],
                                     ['DB', 'Debits Conciliation'],
-                                    ['PRO', 'Provision']
+                                    ['PRO', 'Provision'],
+                                    ['OP', 'OP Conciliation']
                                 ]
                             }),
                             labelWidth: 80,
@@ -237,6 +238,65 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.DataEntrys.ProcessDataEnt
                         }
                     ]
                 },
+                {
+                    xtype: 'form',
+                    layout: 'hbox',
+                    width: '100%',
+                    id: prototype.idProcess + '-formPO',
+                    bodyStyle: 'background-color:#efe5e5',
+                    hidden: true,
+                    border: true,
+                    defaults: {
+                        xtype: 'textfield',
+                        fieldStyle: 'text-align: center;',
+                        padding: '5 1 5 1',
+                        hiddenLabel: false,
+                        labelAlign: 'right',
+                        hidden: false
+                    },
+                    items: [
+                         {
+                            xtype: 'combobox',
+                            fieldLabel: 'Client',
+                            name: 'IN_CCUST',
+                            store: Ext.create('Ext.data.SimpleStore', {
+                                fields: ['code', 'name'],
+                                data: [
+                                    ['134', 'AV - AVIANCA'],
+                                    ['202', 'TA - TACA']
+                                ]
+                            }),
+                            labelWidth: 80,
+                            width: 210,
+                            displayField: 'name',
+                            valueField: 'code',
+                            queryMode: 'local',
+                            editable: false,
+                            value: '134'
+                        },
+                        {
+                            xtype: 'combobox',
+                            fieldLabel: 'Processor',
+                            name: 'IN_CODPRO',
+                            store: Ext.create('Ext.data.SimpleStore', {
+                                fields: ['code', 'name'],
+                                data: [
+                                    ['AB', 'AB - ARUBA '],
+                                    ['BM', 'BM - MADURO'],
+                                    ['VN', 'VS - VISANET']
+                                ]
+                            }),
+                            labelWidth: 80,
+                            width: 210,
+                            displayField: 'name',
+                            valueField: 'code',
+                            queryMode: 'local',
+                            editable: false,
+                            value: 'AB'
+                        }
+                    ]
+                },
+               
                 {
                     xtype: 'form',
                     layout: 'vbox',

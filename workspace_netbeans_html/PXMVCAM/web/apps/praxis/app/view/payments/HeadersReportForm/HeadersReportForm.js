@@ -13,7 +13,8 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.HeadersReportForm', {
         'Ext.Praxis.view.payments.HeadersReportForm.Filters',
         'Ext.Praxis.view.payments.HeadersReportForm.Grids.HeadersGrid',
         'Ext.Praxis.view.payments.HeadersReportForm.Grids.DayPilotPanel',
-        'Ext.Praxis.view.payments.HeadersReportForm.Grids.SequencesGrid'
+        'Ext.Praxis.view.payments.HeadersReportForm.Grids.SequencesGrid',
+        'Ext.Praxis.view.payments.HeadersReportForm.FiltersIntegrator'
     ],
     controller: 'HeadersReportController',
     layout: {
@@ -73,10 +74,17 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.HeadersReportForm', {
                                             bodyStyle: 'background-color: #E3EAF9;',
                                             layout: {
                                                 type: 'vbox',
+//                                              type: 'hbox',
+//                                              pack: 'left'
+//                                              },
+//                                          border: true,
+//                                          defaults: {
+//                                              width: prototype.width,
                                                 align: 'center'
                                             },
                                             items: [
                                                 {
+
                                                     xtype: 'panel',
                                                     id: prototype.id + '-HeadersGrid',
                                                     height: prototype.height,
@@ -86,6 +94,14 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.HeadersReportForm', {
                                                         type: 'vbox',
                                                         align: 'center'
                                                     }
+
+//                                                    xtype: prototype.id + '-filtersReport',
+//                                                    id: prototype.id + '-filterReport'
+//                                                },
+//                                                {
+//                                                    xtype: prototype.id + '-filtersIntegrator',
+//                                                    id: prototype.id + '-filterIntegrator'
+
                                                 }
                                             ]
                                         },
@@ -120,10 +136,21 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.HeadersReportForm', {
                                         //</editor-fold>
                                         //<editor-fold defaultstate="collapsed" desc="DayPilot">
                                         {
+                                            xtype: 'panel',
+                                            id: prototype.id + '-contentIntegrator',
+                                            height: prototype.height,
+                                            bodyStyle: 'background-color: #E3EAF9;',
+                                            layout: {
+                                                type: 'vbox',
+                                                align: 'center'
+                                            },
+                                            hidden: true
+                                        },
+                                        {
                                             xtype: 'daypilotpanel',
                                             id: prototype.id + '-dayPilotCmp',
                                             height: prototype.height,
-                                            hidden:true
+                                            hidden: true
                                         }
                                         //</editor-fold>
                                     ]

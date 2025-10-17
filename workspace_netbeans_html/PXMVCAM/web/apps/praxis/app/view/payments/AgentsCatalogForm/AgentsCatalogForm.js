@@ -40,7 +40,7 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.AgentsCatalogForm', {
                         {
                             xtype: 'panel',
                             region: 'center',
-                            width: 980,
+                            width: 1000,
                             layout: 'border',
                             
                             items: [
@@ -54,37 +54,34 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.AgentsCatalogForm', {
                                     border: true,
                                     autoScroll: true,
                                     defaults: {
-                                        width: 1800,
+                                        width: 1500,
                                         align: 'center'
                                     },
                                     items: [
                                         {
-                                            xtype: prototype.id + '-options'
+                                            xtype: prototype.id + '-options',
+                                            style:'margin-top:20px'
                                         }
                                         ,
                                         {
                                             xtype: prototype.id + '-filters',
-                                            id: prototype.id + '-contentFilter',
-//                                            hidden: true
+                                            id: prototype.id + '-contentFilter'
                                         }
                                         ,
                                         {
                                             xtype: 'panel',
-                                            height: 600,
-                                            width: 1800,
+                                            height: 640,
                                             layout: 'fit',
                                             items: [
                                                 {
                                                     xtype: 'panel',
                                                     id: prototype.id + '-centerC-panel01',
-                                                    width: 2300,
                                                     layout: 'border',
                                                     align: 'center',
-                                                    border: true,
+                                                    border: false,
                                                     defaults: {
                                                         border: false
                                                     },
-                                                    bodyStyle: 'background-color: white;',
                                                     items: [
                                                         {
                                                             region: 'center',

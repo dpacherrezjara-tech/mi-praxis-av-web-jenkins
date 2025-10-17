@@ -33,11 +33,11 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.BandocDetailDataEntr
         let mpf091 = data.at(3);
         let mpf140 = data.at(6);
         let totals = data.at(7);
-        
+
         //formularios
         const sapForm = Ext.getCmp(prototype.idBandoc + '-sapForm');
         const tacaflowForm = Ext.getCmp(prototype.idBandoc + '-tacaflowForm');
-        
+
         //tacaflow information
         if (me.view.searchParams.IN_BANDOC.slice(0,2) === 'CM'){
             tacaflowForm.show();
@@ -48,7 +48,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.BandocDetailDataEntr
             sapForm.show();
             sapForm.getForm().setValues(mpf102);
         }
-        
+
         if (mpf060.length > 0) {
             Ext.getCmp(prototype.idBandoc + '-tabF1').setTitle(`PHASE 1 (${mpf060.length})`);
             Ext.getCmp(prototype.idBandoc + '-tabF1').setDisabled(false);
@@ -110,7 +110,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.BandocDetailDataEntr
         }
 
         let treeData = {};
-        
+
         let opts = {
           'EXTR':'Bank Statement',
           'LQF1':'Phase 1',
@@ -176,5 +176,115 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.BandocDetailDataEntr
     },
     onReloadInfo:function(){
         this.loadData();
+    },
+    onDownloadExcel: function () {
+        const me = this;
+        let params = me.view.searchParams;
+        console.log('Download Params: ', params);
+        Ext.Msg.show(
+                {
+                    title: '.:PRAXIS:.',
+                    msg: 'Download Excel?',
+                    buttons: Ext.MessageBox.YESNO,
+                    scope: this,
+                    icon: Ext.MessageBox.QUESTION,
+                    modal: true,
+                    fn: function (btn) {
+                        if (btn === 'yes') {
+                            global.downloadFile(me.request, 'downloadExcelSettlements', params, 'xlsx');
+                        }
+                    }
+                });
+    },
+
+    onDownloadLiquidation: function () {
+        const me = this;
+        console.log('liquidation',me.view.searchParams);
+
+        let params = {
+            ...me.view.searchParams,
+            'IN_IDCONT': ''
+        };
+        console.log('Download Params: ', params);
+        Ext.Msg.show(
+                {
+                    title: '.:PRAXIS:.',
+                    msg: 'Download File?',
+                    buttons: Ext.MessageBox.YESNO,
+                    scope: this,
+                    icon: Ext.MessageBox.QUESTION,
+                    modal: true,
+                    fn: function (btn) {
+                        if (btn === 'yes') {
+//                        global.downloadFile(me.request,'downloadExcelErrors',params,'xlsx');
+                            this.downloadExcel(params);
+                        }
+                    }
+                });
+    },
+
+    downloadExcel: async function (params) {
+        console.log('txt');
+        let me = this;
+        me.view.setLoading(true);
+        
+        console.log('params')
+
+        try {
+            let lst = await global.callStoreGet('PRAXISMP', 'MPS295', params);
+            console.log('data inicial', lst);
+            const lstVals = lst.lstRs[0];
+
+            if (!lst || !lst.lstRs || !Array.isArray(lst.lstRs[0]) || lst.lstRs[0].length === 0) {
+                me.view.setLoading(false);
+                global.Msg({
+                    msg: 'Data not found'
+                });
+                return;
+            }
+            ;
+
+            let lstJson = lstVals.map(x => {
+                global.cleanPXobj(x);
+                let obj = {
+                    'Bank Doc': x.BANDOC,
+                    'Card Number': x.SCARDN,
+                    'Auth Code': x.SAUTHOC,
+                    'Date': x.SDATE,
+                    'Settl. Amount': x.SVFOP,
+                    'Currency': x.SCURRENCY,
+                    'Pay Amount': x.IMPORTEPAG,
+                    'Pay Currency': x.MONEDAPAGO,
+                    'IATA': x.SAGENT,
+                    'Merchant': x.MERCHNC,
+                    'Status': this.formatStatus(x.STVAL),
+                    'Gencon': x.GENCON,
+                    'Sale Amount ': x.SUMA_VTA,
+                    'Sale Currency': x.MDA_VTA,
+                    'Qty Ticket': x.QTY_TKT,
+                    'Diff': x.SUM_DIFF,
+                    'Tickets':x.LST_TKT,
+                };
+                return obj;
+            });
+            await global.writeExcelFromJson(lstJson, 'Liquidation Report');
+            me.view.setLoading(false);
+
+        } catch (err) {
+            console.error("Error on load Grid", err);
+            me.view.setLoading(false);
+            global.Msg({msg: "Data not found "})
+        }
+
+
+
+    },
+
+    formatStatus: function (x) {
+        let opts = {
+            '1': 'Match',
+            '5': 'Match Manual'
+        };
+        return opts[x] || '';
     }
 });

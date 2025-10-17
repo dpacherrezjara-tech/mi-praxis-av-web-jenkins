@@ -57,7 +57,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         if (this.bean.STVAL === '1' || this.bean.STVAL === '4' || this.bean.STVAL === '5') {
             this.onSearchCompleteDetail();
             Ext.getCmp(prototype.id + '-btn-update').hide();
-            this.ocultarBtnReversa();
+//            this.ocultarBtnReversa();
         } else {
 
             if (this.bean.NEGOC === '1') {
@@ -531,7 +531,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.setValue('de-txtDES_CERROIN', this.bean.DES_CERROIN);
         this.setValue('de-txtFLAG', this.bean.FLAG);
         this.setValue('de-txtCERROR', this.bean.CERROR);
-        this.setValue('de-txtDES_CERROR', this.bean.DES_CERROR);
+        this.setValue('de-txtDES_CERROR',this.bean.CERROR +' - '+ this.bean.DES_CERROR);
         this.setValue('de-txtBSUMDATE', this.bean.SDATE);
         this.setValue('de-txtTDOC', this.bean.strPEM);
         this.setValue('de-txtSPNR', this.bean.SPNR);
@@ -830,9 +830,6 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.lstAdjustment = [];
         Ext.getCmp(prototype.id + '-gridDataAdjustment').hide();
         Ext.getCmp(prototype.id + '-panelADJ').hide();
-        
-        this.calcularSumAmount();
-        this.calcularMontos();
     },
 
 //</editor-fold>
@@ -877,28 +874,23 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
             method: 'POST',
             timeout: 60000000,
             params: {beanString: JSON.stringify(meDe.bean)},
-//            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDP').mask('Loading...'),
             success: function (response, opts) {
                 
                 var res = Ext.JSON.decode(response.responseText);
-                
                 if (res.success) {
                     
                   var msj = res.mensaje;  
                   global.Msg({
                     msg: msj
                    });
-//                Ext.getCmp(prototype.id + '-dataEntry').unmask();
-//                    var beanCons = res.result;
-//                    console.log('beanCons');
-//                    console.log(beanCons);
-//                    if (beanCons !== null) {
-//                        me.winDataEntryDebits('U', beanCons);
-//                    } else {
-//                        global.Msg({
-//                            msg: 'An error has ocurred. Please contact our System Department'
-//                        });
-//                    }
+                Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+                Ext.getCmp(prototype.id + '-dataEntryAMDP').close();
+                  Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+
+
+                  
+
 
                 } else {
                     global.Msg({msg: res.Mensaje});
@@ -917,13 +909,34 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
     },
     onUpdateClick: async function (btn) {
         
-// 
+      
+        
+
         let valorComent = Ext.getCmp(prototype.id + '-cmbCOMENT').getValue();
         console.log(valorComent,"visualkizar xxx");
         
-        if (valorComent == "75" ||valorComent== "76" ||  valorComent==  "77" || valorComent==  "78"){
+        if (valorComent == "58" || valorComent == "59" || valorComent == "75" ||valorComent== "76" ||  valorComent==  "77" || valorComent==  "78"){
             
-            this.updateComent();  
+            
+            
+               Ext.Msg.show({
+                    title: '.:Confirmation:.',
+                    msg: 'Are you sure to Update?',
+                    buttons: Ext.MessageBox.YESNO,
+                    scope: this,
+                    icon: Ext.MessageBox.QUESTION,
+                    modal: true,
+                    fn: function (btn) {
+                        if (btn === 'yes') {
+                           
+                            this.updateComent();
+                        }
+                    }
+                });
+            
+            
+            
+            
 //            console.log("recibe comentario codigo");
             
         }else{
@@ -1090,73 +1103,83 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         let miGrilla = Ext.getCmp(prototype.id + '-gridDataInfoScan');
 
         let datos = {};
+        
+        datos.DATEC = this.bean.DATEC;
+        datos.TRANC = this.bean.TRANC;
+        datos.CODPRO = this.bean.CODPRO;
+        datos.TDOCORG = this.bean.TDOCORG;
+
+        let beanReversa = JSON.stringify(datos);
         var cont;
-        if (miGrilla) {
-            cont = this.desprocesarRegistros(miGrilla);
-            if (cont === 0) {
+//        return false;
+        Ext.Ajax.request({
+            url: prototype.url + '/reverseOption',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: beanReversa, option: option},
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDP').mask('Loading...'),
+            success: function (response, opts) {
+                Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+                var res = Ext.JSON.decode(response.responseText);
+                if (res.success) {
 
-                datos = this.desprocesarOnlyLiquidacion();
-                Ext.Ajax.request({
-                    url: prototype.url + '/reverseOptionOnlyLiq',
-                    method: 'POST',
-                    timeout: 60000000,
-                    params: {beanString: datos, option: option},
-                    beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDP').mask('Loading...'),
-                    success: function (response, opts) {
-                        Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
-                        var res = Ext.JSON.decode(response.responseText);
-                        if (res.success) {
-
-                            global.Msg({
-                                msg: res.Mensaje,
-                                icon: 1,
-                                fn: function () {
-                                    Ext.getCmp(prototype.id + '-dataEntryAMDP').close();
-                                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
-                                }
-                            });
-                        } else
-                            global.Msg({msg: res.sesion});
-                    },
-                    failure: function (response, opts) {
-                        console.log('server-side failure with status code ' + response.status);
-                        Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
-                    }
-                });
-
-            } else {
-                datos = this.desprocesarRegistros(miGrilla);
-                Ext.Ajax.request({
-                    url: prototype.url + '/reverseOption',
-                    method: 'POST',
-                    timeout: 60000000,
-                    params: {beanString: datos, option: option},
-                    beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDP').mask('Loading...'),
-                    success: function (response, opts) {
-                        Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
-                        var res = Ext.JSON.decode(response.responseText);
-                        if (res.success) {
-
-                            global.Msg({
-                                msg: res.Mensaje,
-                                icon: 1,
-                                fn: function () {
-                                    Ext.getCmp(prototype.id + '-dataEntryAMDP').close();
-                                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
-                                }
-                            });
-                        } else
-                            global.Msg({msg: res.sesion});
-                    },
-                    failure: function (response, opts) {
-                        console.log('server-side failure with status code ' + response.status);
-                        Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
-                    }
-                });
+                    global.Msg({
+                        msg: res.Mensaje,
+                        icon: 1,
+                        fn: function () {
+                            Ext.getCmp(prototype.id + '-dataEntryAMDP').close();
+                            Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+                        }
+                    });
+                } else
+                    global.Msg({msg: res.sesion});
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+                Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
             }
-        } else {
-            console.error('No se pudo encontrar la grilla con el ID especificado.');
-        }
+        });
+        
+//        if (miGrilla) {
+//            cont = this.desprocesarRegistros(miGrilla);
+//            if (cont === 0) {
+//
+//                datos = this.desprocesarOnlyLiquidacion();
+//                Ext.Ajax.request({
+//                    url: prototype.url + '/reverseOptionOnlyLiq',
+//                    method: 'POST',
+//                    timeout: 60000000,
+//                    params: {beanString: datos, option: option},
+//                    beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDP').mask('Loading...'),
+//                    success: function (response, opts) {
+//                        Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+//                        var res = Ext.JSON.decode(response.responseText);
+//                        if (res.success) {
+//
+//                            global.Msg({
+//                                msg: res.Mensaje,
+//                                icon: 1,
+//                                fn: function () {
+//                                    Ext.getCmp(prototype.id + '-dataEntryAMDP').close();
+//                                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+//                                }
+//                            });
+//                        } else
+//                            global.Msg({msg: res.sesion});
+//                    },
+//                    failure: function (response, opts) {
+//                        console.log('server-side failure with status code ' + response.status);
+//                        Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+//                    }
+//                });
+//
+//            } else {
+//                datos = this.desprocesarRegistros(miGrilla);
+//                
+//            }
+//        } else {
+//            console.error('No se pudo encontrar la grilla con el ID especificado.');
+//        }
     },
     //</editor-fold>
 

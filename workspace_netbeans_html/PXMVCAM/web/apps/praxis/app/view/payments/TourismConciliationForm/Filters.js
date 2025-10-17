@@ -445,6 +445,34 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Filters', {
                     store: new Ext.data.SimpleStore({
                         fields: ['value', 'description'],
                         data: [
+//                            ["", "All"],["72", "Match"], ["73", "Surpluses"], ["74", "Shortages"]
+                            ["", "All"],["3", "Pending"], ["1", "Match"]
+                        ]
+                    }),
+//                    width: 100,
+                    emptyText: 'All',
+                    value: '',
+                    displayField: 'description',
+                    valueField: 'value',
+                    queryMode: 'local',
+//                    filterPickList: true,
+                    editable: true,
+//                    multiSelect: true,
+                    forceSelection: true,
+
+                },
+                {xtype: 'tbspacer', width: 20},
+                {
+                    xtype: 'combo',
+                    fieldLabel: 'Comments: ',
+                    id: prototype.id + '-cmbComment',
+                    labelWidth: 70,
+                    width: 180,
+                    
+//                            fieldLabel: 'Doc',
+                    store: new Ext.data.SimpleStore({
+                        fields: ['value', 'description'],
+                        data: [
                             ["", "All"],["72", "Match"], ["73", "Surpluses"], ["74", "Shortages"]
                         ]
                     }),

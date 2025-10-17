@@ -42,7 +42,7 @@ Ext.define('Ext.Praxis.controller.screens.AbnormalValues.tabs.ScrDBIataControlCo
                 ["3", "Total Control"]
             ]
         }));
-        type.setValue("1");
+        type.setValue("2");
     },
     afterRender: function () {
 
@@ -79,6 +79,12 @@ Ext.define('Ext.Praxis.controller.screens.AbnormalValues.tabs.ScrDBIataControlCo
                 Ext.getCmp(prototype.id + '-radioButton').hide();
             }
         } else if (selectBy == '2') {
+            
+            let fecha = new Date();
+            let numeroMes = String(fecha.getMonth() + 1).padStart(2, '0');
+            console.log(numeroMes,'numeroMes')
+            Ext.getCmp(prototype.id + '-cmbDateFromMonth2').setValue(numeroMes);
+             Ext.getCmp(prototype.id + '-cmbDateToMonth2').setValue(numeroMes);
             Ext.getCmp(prototype.id + '-chkMonth_label').hide();
             Ext.getCmp(prototype.id + '-chkONE').hide();
             Ext.getCmp(prototype.id + '-radioButton').hide();
@@ -88,6 +94,7 @@ Ext.define('Ext.Praxis.controller.screens.AbnormalValues.tabs.ScrDBIataControlCo
             this.loadTotalControlTotal_Agent();
 
         } else if (selectBy == '3') {
+            
             Ext.getCmp(prototype.id + '-chkMonth_label').hide();
             Ext.getCmp(prototype.id + '-chkONE').hide();
             Ext.getCmp(prototype.id + '-radioButton').hide();
@@ -419,9 +426,19 @@ Ext.define('Ext.Praxis.controller.screens.AbnormalValues.tabs.ScrDBIataControlCo
 
         //meIataCtr.boxActual = 'boxMainDataIataAverageControl';
         //meIataCtr.drillDown.push(meIataCtr.boxActual);        
+        
+        const hoy = new Date();
+        const dia = String(hoy.getDate()).padStart(2, '0');
+        const mes = String(hoy.getMonth() + 1).padStart(2, '0');
+        const anio = hoy.getFullYear();
+
+        const fechaFormateada = `${dia}-${mes}-${anio}`;
+
+        console.log(fechaFormateada);
+
 
         this.setFormatParameter();
-        win.lblUser_toolTip("Estructura: IMF078");
+        win.lblUser_toolTip("Estructura: IMF150");
         Ext.Ajax.request({
             url: prototype.url + '/loadTotalControlTotal_Agent',
             method: 'POST',
@@ -438,14 +455,14 @@ Ext.define('Ext.Praxis.controller.screens.AbnormalValues.tabs.ScrDBIataControlCo
                 //console.log(lstData);                
                 if (lstData.length > 0) {
                     var bean = lstData[0];
-                    Ext.getCmp(prototype.id + '-titFecha6_AG').setText(bean.strDescripcion4);
+                    Ext.getCmp(prototype.id + '-titFecha6_AG').setText(fechaFormateada);
 
-                    Ext.getCmp(prototype.id + '-titFecha6_AG_2').setText(bean.strDescripcion4);
-                    Ext.getCmp(prototype.id + '-titFecha5_AG').setText(bean.strDescripcion3);
-                    Ext.getCmp(prototype.id + '-titFecha4_AG').setText(bean.strDescripcion2);
-                    Ext.getCmp(prototype.id + '-titFecha3_AG').setText(bean.strDescripcion1);
-                    Ext.getCmp(prototype.id + '-titFecha2_AG').setText(bean.strDescripcion);
-                    Ext.getCmp(prototype.id + '-titFecha1_AG').setText(bean.strFormatDate4);
+//                    Ext.getCmp(prototype.id + '-titFecha6_AG_2').setText(bean.strDescripcion4);
+//                    Ext.getCmp(prototype.id + '-titFecha5_AG').setText(bean.strDescripcion3);
+//                    Ext.getCmp(prototype.id + '-titFecha4_AG').setText(bean.strDescripcion2);
+//                    Ext.getCmp(prototype.id + '-titFecha3_AG').setText(bean.strDescripcion1);
+//                    Ext.getCmp(prototype.id + '-titFecha2_AG').setText(bean.strDescripcion);
+//                    Ext.getCmp(prototype.id + '-titFecha1_AG').setText(bean.strFormatDate4);
 
                     var storeData = Ext.create('Ext.data.Store', {
                         data: lstData,
@@ -674,4 +691,44 @@ Ext.define('Ext.Praxis.controller.screens.AbnormalValues.tabs.ScrDBIataControlCo
             opacity: index % 2 ? 1 : 0.5
         };
     },
+    
+     imgExcel_clickHandler: function () {
+        
+        console.log('excell');
+         console.log(meIataCtr.boxActual)
+        meIataCtr.dw_excel = true;
+        if(meIataCtr.boxActual === '-boxMainDataIataControl'){
+            console.log(Ext.getCmp(prototype.id + '-gridTotal_AG').config.columns.items);
+            meIataCtr.goURLpost('loadTotalControlTotal_Agent',this.searchParams,Ext.getCmp(prototype.id + '-gridTotal_AG').config.columns.items);
+        }else{
+            meIataCtr.dw_excel = false;
+        }
+    },
+    goURLpost: function (method,parms,columns) {
+        
+        var js_columns = JSON.stringify(columns);
+        
+        var mapForm = document.createElement("form");
+        mapForm.target = "_blank";
+        mapForm.method = "POST"; // or "post" if appropriate
+        mapForm.action = prototype.url + '/' +method+'?dw_excel=true';
+
+        var mapInput = document.createElement("input");
+        mapInput.type = "text";
+        mapInput.name = "beanString";
+        mapInput.value = parms;
+        mapForm.appendChild(mapInput);
+        
+        var mapInput = document.createElement("input");
+        mapInput.type = "text";
+        mapInput.name = "columns";
+        mapInput.value = js_columns;
+        mapForm.appendChild(mapInput);
+
+        document.body.appendChild(mapForm);
+
+
+        mapForm.submit();
+    },
+    
 });

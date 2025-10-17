@@ -28,8 +28,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.UUID;
 import java.util.logging.Level;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.miatech.beans.A720Filter;
@@ -38,18 +40,23 @@ import net.miatech.beans.IMF121Filter;
 import net.miatech.praxis.classes.ExportUtil;
 import net.miatech.praxis.exceptions.SpringException;
 import net.miatech.praxis.interline.filter.WRF016Filterwk;
+import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.A2789Filter;
 import net.miatech.praxis.payment.filter.A2790Filter;
 import net.miatech.utils.ExportSchema;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.RegionUtil;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  *
@@ -400,6 +407,28 @@ public class AbnormalValuesController extends BaseController {
             map.put("success", true);
 
             if (Boolean.parseBoolean(request.getParameter("dw_excel"))) {
+                
+               for (WRF016Filterwk item : lstData) {
+                    if (item.CANAV != null) {
+                        item.CANAV = item.CANAV.replace('\u00A0', ' ').trim();
+                    }
+                    if (item.NAGENT != null) {
+                        item.NAGENT = item.NAGENT.replace('\u00A0', ' ').trim();
+                    }
+                    if (item.TYPEAG != null) {
+                        item.TYPEAG = item.TYPEAG.replace('\u00A0', ' ').trim();
+                    }
+                    if (item.ASTATUS != null) {
+                        item.ASTATUS = item.ASTATUS.replace('\u00A0', ' ').trim();
+                    }
+                    if (item.RSTATUS != null) {
+                        item.RSTATUS = item.RSTATUS.replace('\u00A0', ' ').trim();
+                    }
+                    if (item.SAGECTR != null) {
+                        item.SAGECTR = item.SAGECTR.replace('\u00A0', ' ').trim();
+                    }
+                }
+
                 String nameExcel = exportFieldsCompleto(request, response, lstData);
                 map.put("nameExcel", nameExcel);
             } else {
@@ -1430,4 +1459,113 @@ public class AbnormalValuesController extends BaseController {
         }
         return new Gson().toJson(map);
     }
+
+    public List<IMF111Filter> getListPendingAgent(HttpServletRequest request, Boolean bExcel) {
+
+        List<IMF111Filter> lst = new ArrayList<>(0);
+        IMF111Filter filter = new IMF111Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new AbnormalValueLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, IMF111Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (false) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadMPS365(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    
+    @RequestMapping(value = "getXLSXPendingAgent")
+    public void getXLSXPendingAgent(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String fileNameDownload = "Pending Agent Report - " + Functions.getFechaActual() + ".xlsx";
+
+            List<IMF111Filter> listaData = this.getListPendingAgent(request, true);
+            Workbook workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Report");
+
+            // Crear header
+            Row row1 = sheet.createRow(0);
+            row1.createCell(0).setCellValue("CCUST");
+            row1.createCell(1).setCellValue("DSALES");
+            row1.createCell(2).setCellValue("AGENT");
+            row1.createCell(3).setCellValue("AMOUNT_SALE");
+
+            // Data
+            int rowIdx = 1;
+            for (IMF111Filter data : listaData) {
+                Row row = sheet.createRow(rowIdx++);
+                row.createCell(0).setCellValue(data.CCUST);
+                row.createCell(1).setCellValue(data.DSALES);
+                row.createCell(2).setCellValue(data.AGENT);
+                row.createCell(3).setCellValue(data.AMOUNT_SALE);
+            }
+
+            // Ajustar ancho
+            for (int i = 0; i < 4; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            // Configuración de respuesta
+            response.setContentType(
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            );
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+
+            // Escribir al response
+            ServletOutputStream out = response.getOutputStream();
+            workbook.write(out);
+            out.flush();
+            workbook.close();
+
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+    }
+
+    
+    @RequestMapping(value = "updateSummarySales")
+    public @ResponseBody String loadIatas(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
+        try {
+            logic = new AbnormalValueLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String resultSQP05572 = logic.SQP05572();
+            map.put("success", true);
+            map.put("msjResult", resultSQP05572);
+
+            String resultMPS363 = logic.MPS363();
+            map.put("success", true);
+            map.put("msjResult", resultMPS363);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            String errorMsg = "Error en updateSummarySales: " + e.getMessage();
+            map.put("success", false);
+            map.put("msjResult", errorMsg);
+        }
+        return new Gson().toJson(map);
+    }
+
 }

@@ -49,24 +49,25 @@ public class CalendarBSPDAO {
     public List<PX036S01A1529Filter> loadPX036S01A1529(PX036S01A1529Filter filter) {
         List<PX036S01A1529Filter> lstRtn = new ArrayList<>(0);
         PX036S01A1529Filter objRtn;
-        strSQL = "{CALL PX036S01A1529(?,?,?,?,?,?)}";
+        strSQL = "{CALL PX036S01A1529(?,?,?,?,?,?,?)}";
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();  cs = cnx.prepareCall(strSQL);
-            cs.registerOutParameter(3, Types.INTEGER);
             cs.registerOutParameter(4, Types.INTEGER);
             cs.registerOutParameter(5, Types.INTEGER);
-            cs.registerOutParameter(6, Types.INTEGER);            
+            cs.registerOutParameter(6, Types.INTEGER);
+            cs.registerOutParameter(7, Types.INTEGER);            
             cs.setString(1, filter.IN_A1529ISOC);
             cs.setString(2, filter.IN_A1529ANIO);
-            cs.setInt(3, filter.page.PAGNUM);
-            cs.setInt(4, filter.page.PAGROW);
-            cs.setInt(5, filter.page.TOTPAG);
-            cs.setInt(6, filter.page.TOTROW);            
+            cs.setString(3, filter.IN_A1529CUTO);
+            cs.setInt(4, filter.page.PAGNUM);
+            cs.setInt(5, filter.page.PAGROW);
+            cs.setInt(6, filter.page.TOTPAG);
+            cs.setInt(7, filter.page.TOTROW);            
             cs.execute();
-            filter.page.PAGNUM = cs.getInt(3);
-            filter.page.PAGROW = cs.getInt(4);
-            filter.page.TOTPAG = cs.getInt(5);
-            filter.page.TOTROW = cs.getInt(6);            
+            filter.page.PAGNUM = cs.getInt(4);
+            filter.page.PAGROW = cs.getInt(5);
+            filter.page.TOTPAG = cs.getInt(6);
+            filter.page.TOTROW = cs.getInt(7);            
             rst = cs.getResultSet();
             while (rst.next()) {
                 objRtn = new PX036S01A1529Filter();

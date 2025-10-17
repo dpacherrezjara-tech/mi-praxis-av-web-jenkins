@@ -10,6 +10,10 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryReportSa
     lstAmounts: [],
     lstSendManual: [],
     lstBlocked: [],
+    request: axios.create({
+        baseURL: CONTEXTPATH + '/SalesReconciliation',
+        timeout: 0
+    }),
     lstAdjustment: [],
     sumAmount: 0,
     sumAmountBlocked: 0,
@@ -172,33 +176,102 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryReportSa
         console.log(searchParams,'searchParams')
     },
     imgExcel: function (obj, e) {
+        
+        meDe.obtenerCantidad();
 
-        Ext.Msg.show({
-            title: '.:PRAXIS:.',
-            msg: 'Download Excel ?',
-            buttons: Ext.MessageBox.OKCANCEL,
-            scope: this,
-            icon: Ext.MessageBox.QUESTION,
-            modal: true,
-            fn: function (btn) {
-                if (btn === 'ok') {
-                    this.exportExcel();
-                }
+    },
+    
+    
+//////////////////////
+
+
+    obtenerCantidad: function () {
+
+        this.setFormatParameter();
+
+        Ext.Ajax.request({
+            url: prototype.url + '/getContador',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: JSON.stringify(me.bean)},
+            success: function (response, options) {
+                var res = Ext.JSON.decode(response.responseText);
+                var cantidad = parseInt(res.cantidad, 10);
+                
+                    if (cantidad === 0) {
+                        
+                // Mensaje cuando no hay registros
+                Ext.Msg.show({
+                    title: '.:PRAXIS:.',
+                    msg: 'No records found to export.',
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.INFO,
+                    modal: true
+                });
+                return;
+            }
+                
+                Ext.Msg.show({
+                    title: '.:PRAXIS:.',
+                    msg: 'Records to export: ' + cantidad + ' - ' + 'Download File?',
+                    buttons: Ext.MessageBox.OKCANCEL,
+                    scope: me,
+                    icon: Ext.MessageBox.QUESTION,
+                    modal: true,
+                    fn: function (btn) {
+                        if (btn === 'ok') {
+                            meDe.exportExcel();
+                        }
+                    }
+                });
             }
         });
     },
+
+    
+    
     exportExcel: function () {
         let rgTypeR = Ext.getCmp(prototype.id + '-rgTypeReport').getValue().tipor;
         this.setFormatParameter();
         if (rgTypeR == "D"){
             console.log(JSON.stringify(this.bean));
-            global.getFile(prototype.url + '/getReport?beanString=' + encodeURI(JSON.stringify(me.bean)));
+            this.exportExcelAPI();
+//            global.getFile(prototype.url + '/getReport?beanString=' + encodeURI(JSON.stringify(me.bean)));
         }else{
             global.getFile(prototype.url + '/getReportSumary?beanString=' + encodeURI(JSON.stringify(me.bean)));
         }
         
 
     },
+    
+    
+    
+    ///////////////EXCEL API///////////////////////////////////////
+    
+    exportExcelAPI: function() {
+        
+        const {IN_FECHA_FROM, IN_FECHA_TO, IN_TDOC, IN_STAT, IN_SCURRENCY, IN_SCOUNTRY,IN_TP} = me.bean;
+
+        let params = {
+            IN_FECHA_FROM: IN_FECHA_FROM,
+            IN_FECHA_TO: IN_FECHA_TO,
+            IN_TDOC: IN_TDOC,
+            IN_STAT:IN_STAT,
+            IN_SCURRENCY: IN_SCURRENCY,
+            IN_SCOUNTRY: IN_SCOUNTRY,
+            IN_TP: IN_TP     
+           
+        };
+        
+        console.log(params,'PRUEBA DESCARGA TICKET EXCEL');
+     
+            global.downloadFile(meDe.request, 'downloadTicketsDetail', params, 'zip');
+      
+    },
+    
+    
+    
+    
     cbxDateFromYear_changeHandler: function () {
         let comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYearReport');
         let comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYearReport');

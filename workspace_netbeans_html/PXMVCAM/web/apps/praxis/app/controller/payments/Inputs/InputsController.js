@@ -641,6 +641,7 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
         beanDetLine.IN_NAME = rowData.data.NAME.trim();
         beanDetLine.consulta = '';
         me.paramsDetail.beanString = JSON.stringify(beanDetLine);
+        me.paramsDetail.consulta = '2';
         me.drillDown.push(me.panelActual);
         me.panelActual = '-boxDelivery';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
@@ -701,6 +702,8 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
         global.clear();
         Ext.getCmp(prototype.id + '-gridDataLOG').bindStore(storeGridDatas);
     },
+    
+    
 //    searchDetAll_clickHandler: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
 //        var beanDetAll = rowData.data;
 //        me.drillDown.push(me.panelActual);
@@ -1062,13 +1065,13 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
     },
     btnClear_click: function (obj, e) {
         Ext.getCmp(prototype.id + '-cmbDateFromYear').setValue(this.fecha.getFullYear());
-        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue('01');
+        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue('ALL');
         Ext.getCmp(prototype.id + '-cmbDateFromDay').setValue('');
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(this.fecha.getFullYear());
-        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('01');
+        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('ALL');
         Ext.getCmp(prototype.id + '-cmbDateToDay').setValue('');
         Ext.getCmp(prototype.id + '-cmbVISTA').setValue('D');
-        Ext.getCmp(prototype.id + '-cmbFUENTE').setValue('ACCB');
+        Ext.getCmp(prototype.id + '-cmbFUENTE').setValue('ALL');
         Ext.getCmp(prototype.id + '-cmbCountry').setValue('');
 
     },
@@ -1101,7 +1104,8 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
                 global.getFile(prototype.url + '/getXLSX?beanString=' + encodeURI(searchParams.beanString));
                 break;
             case  '-boxDelivery':
-                global.getFile(prototype.url + '/getXLSX_Delivery?beanString=' + encodeURI(me.paramsDetail.beanString));
+                global.getFile(prototype.url + '/getXLSX_Delivery?beanString=' + encodeURI(me.paramsDetail.beanString) +
+                '&consulta=' + encodeURI(me.paramsDetail.consulta) );
                 break;
             case  '-boxDataDetalle':
                 global.getFile(prototype.url + '/getXLSX_Detalle?beanString=' + encodeURI(me.paramsDetail.beanString));

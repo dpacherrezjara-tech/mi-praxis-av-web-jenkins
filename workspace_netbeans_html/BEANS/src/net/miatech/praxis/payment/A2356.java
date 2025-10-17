@@ -94,6 +94,8 @@ public class A2356 {
         public double totSVFOPUSD  = 0;  
         public double totSVFOPUSDP  = 0;  
         public double totSVFOPUSDLT  = 0;  
+        public double totSVFOPACCO  = 0;  
+        public double totSVFOPACCC  = 0;  
         public double totSVFOPUSDPENDING  = 0;  
         public double QTYTKT  = 0;  
         public double QTYTKTP  = 0;  
@@ -101,13 +103,19 @@ public class A2356 {
         public double QSVFOPUSDL  = 0;  
         public double QSVFOPUSDP  = 0;  
         public double SVFOPUSDLT  = 0;  
+        public double SVFOPACCO  = 0;  
+        public double SVFOPACCC  = 0;  
         public double RATECON  = 0;  
         public double RATECONL  = 0;  
+        public double RATEACCOU  = 0;  
         public double COMISION  = 0;  
         public double RTEIVA  = 0;  
         public int totQTYLIQP  = 0;  
+        public int totQTYTACCOC  = 0;  
+        public int totQTYACCO  = 0;  
         public double totRATECON  = 0;  
         public double totRATECONL  = 0;  
+        public double totRATEACCOU  = 0;  
         public double totCOMISION  = 0;  
         public double totRTEIVA  = 0;  
         public double QSVFOPUSDS  = 0;  
@@ -118,6 +126,8 @@ public class A2356 {
         public int QSALESC  = 0;
         public int QTYLIQ  = 0;
         public int QTYLIQP  = 0;
+        public int QTYACCO  = 0;
+        public int QTYTACCOC  = 0;
         public int QMATCH  = 0;
         public int QPEND  = 0;
         public int QPOLIC  = 0;
@@ -168,6 +178,61 @@ public class A2356 {
         public double totAPEND  = 0;  
         public double totAPOLIC  = 0;  
         public double totAPOLIPE  = 0;  
+        
+        
+        
+        public int QTY_REFUND  = 0;  
+        public double AMOUNT_REFUND_USD  = 0;  
+        public double AMOUNT_REFUND_SEND  = 0;  
+        public double AMOUNT_REFUND_SAP  = 0;  
+        
+        public int QTY_CHGBACK  = 0;  
+        public double AMOUNT_CHGBACK_USD  = 0;  
+        public double AMOUNT_CHGBACK_SEND  = 0;  
+        public double AMOUNT_CHGBACK_SAP  = 0;  
+        
+        public int QTY_REVERSE_CHGBACK  = 0;  
+        public double AMOUNT_REVERSE_CHGBACK_USD  = 0;  
+        public double AMOUNT_REVERSE_CHGBACK_SEND  = 0;  
+        public double AMOUNT_REVERSE_CHGBACK_SAP  = 0;  
+        
+        public int QTY_ACRED  = 0;  
+        public double AMOUNT_ACRED_USD  = 0;  
+        public double AMOUNT_ACRED_SEND  = 0;  
+        public double AMOUNT_ACRED_SAP  = 0;  
+        
+        public int QTY_PENDING  = 0;  
+        public double AMOUNT_PENDING_USD  = 0;  
+        public double AMOUNT_PENDING_SEND  = 0;  
+        public double AMOUNT_PENDING_SAP  = 0;  
+        
+        public int QTY_TOTAL_REFUND  = 0;  
+        public double AMOUNT_TOTAL_REFUND_USD  = 0;  
+        public double AMOUNT_TOTAL_REFUND_SEND  = 0;  
+        public double AMOUNT_TOTAL_REFUND_SAP  = 0;  
+        
+        public int QTY_TOTAL_CHGBACK  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_USD  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_SEND  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_SAP  = 0;  
+        
+        public int QTY_TOTAL_REVERSE_CHGBACK  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_CHGBACK_USD  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_CHGBACK_SEND  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_CHGBACK_SAP  = 0;  
+        
+        public int QTY_TOTAL_ACRED  = 0;  
+        public double AMOUNT_TOTAL_ACRED_USD  = 0;  
+        public double AMOUNT_TOTAL_ACRED_SEND  = 0;  
+        public double AMOUNT_TOTAL_ACRED_SAP  = 0;  
+        
+        public int QTY_TOTAL_PENDING  = 0;  
+        public double AMOUNT_TOTAL_PENDING_USD  = 0;  
+        public double AMOUNT_TOTAL_PENDING_SEND  = 0;  
+        public double AMOUNT_TOTAL_PENDING_SAP  = 0;  
+        
+        
+        
         public String USCR  = "";
         public String FECR  = "";
         public String HOCR  = "";

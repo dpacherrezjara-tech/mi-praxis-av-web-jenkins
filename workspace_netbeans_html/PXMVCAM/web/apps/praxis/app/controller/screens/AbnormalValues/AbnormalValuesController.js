@@ -6,6 +6,7 @@ Ext.define('Ext.Praxis.controller.screens.AbnormalValues.AbnormalValuesControlle
     lstCountry: [],
     bean: {},
     dataObtain: {},
+    searchParamsPending: {},
     store_Sales: '',
     store_Refund: '',
     tab_Actual: '',
@@ -29,6 +30,12 @@ Ext.define('Ext.Praxis.controller.screens.AbnormalValues.AbnormalValuesControlle
             },
             '#AbnormalValuesForm-cmbDateFromMonth': {
                 select: this.selectComboFromMonth
+            },
+             '#AbnormalValuesForm-btnExcelAgentWithoutAcre': {
+                select: this.btnExcel_clickPending
+            },
+             '#AbnormalValuesForm-btnUpdateGrid': {
+                select: this.updateSummarySales
             },
         });
 
@@ -394,4 +401,66 @@ Ext.define('Ext.Praxis.controller.screens.AbnormalValues.AbnormalValuesControlle
         Ext.getCmp(prototype.id + '-lblPagination').hide();
     },
     // </editor-fold>
+    btnExcel_clickPending: function (obj, e) {
+        console.log('WAAAAAA')
+        this.setFormatParameter();
+        Ext.Msg.show({
+                title: '.:PRAXIS:.',
+                msg: 'Download Excel ?..',
+                buttons: Ext.MessageBox.OKCANCEL,
+                scope: this,
+                icon: Ext.MessageBox.QUESTION,
+                modal: true,
+                fn: function (btn) {
+                    if (btn === 'ok') {
+                        this.exportExcelPending();
+                    }
+                }
+            });
+    },
+     setFormatParameter: function () {
+        var bean = {};
+
+        bean.IN_FECHA_FROM = '202504';
+        
+        var beanString = JSON.stringify(bean);
+        searchParamsPending = {
+            beanString: beanString,
+            bean: bean
+        };
+    },
+    exportExcelPending: function () {
+        this.setFormatParameter();
+        global.getFile(prototype.url + '/getXLSXPendingAgent?beanString=' + encodeURI(searchParamsPending.beanString));
+    },
+    updateSummarySales: function(bean) {
+        
+        var tabMain = Ext.getCmp(prototype.id + '-tabMain');
+       
+        tabMain.setLoading('Cargando...');
+       Ext.Ajax.request({
+            url: prototype.url + '/updateSummarySales',
+            method: 'POST',
+            timeout: 600000, // 10 minutos en milisegundos
+            params: bean,
+            success: function(response) {
+                tabMain.setLoading(false);
+                var result = Ext.decode(response.responseText);
+                if (result.success) {
+                    win.lblUser_toolTip("Estructura: IMF151");
+                    console.log(result)
+                    global.Msg({ msg: result.msjResult });
+                    me.imgSearch_clickHandler();
+                } else {
+                    global.Msg({ msg: result.msjResult });
+                }
+            },
+            failure: function(response) {
+                tabMain.setLoading(false);
+                global.Msg({ msg: 'Error en la comunicación con el servidor: ' + response.status });
+            }
+        });
+
+    }
+
 });

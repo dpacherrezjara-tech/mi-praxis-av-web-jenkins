@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -55,7 +56,7 @@ public class TourismConciliationDAO {
     ResultSet rs01 = null;
     double dblAmount = 0;
 
-String SQLCLL01 = "{CALL PRAXISMP.MPS227(?,?,?,?,?,?,?,?,?,?,?,?)}";
+    String SQLCLL01 = "{CALL PRAXISMP.MPS227(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
     Connection cnx = null;
 
     try {
@@ -69,25 +70,26 @@ String SQLCLL01 = "{CALL PRAXISMP.MPS227(?,?,?,?,?,?,?,?,?,?,?,?)}";
         cstmt.setString(5, filter.SDATE.trim());
         cstmt.setString(6, filter.SAGENT.trim());
         cstmt.setString(7, filter.REFER.trim());
-        cstmt.setString(8, filter.CERROR.trim());
+        cstmt.setString(8, filter.STVAL.trim());
+        cstmt.setString(9, filter.CERROR.trim());
 //        cstmt.setString(7, filter.CERROR.trim());
 
-        cstmt.registerOutParameter(9, Types.INTEGER);
         cstmt.registerOutParameter(10, Types.INTEGER);
         cstmt.registerOutParameter(11, Types.INTEGER);
         cstmt.registerOutParameter(12, Types.INTEGER);
+        cstmt.registerOutParameter(13, Types.INTEGER);
 
-        cstmt.setInt(9, filter.page.PAGNUM);
-        cstmt.setInt(10, filter.page.PAGROW);
-        cstmt.setInt(11, filter.page.TOTPAG);
-        cstmt.setInt(12, filter.page.TOTROW);
+        cstmt.setInt(10, filter.page.PAGNUM);
+        cstmt.setInt(11, filter.page.PAGROW);
+        cstmt.setInt(12, filter.page.TOTPAG);
+        cstmt.setInt(13, filter.page.TOTROW);
 
         cstmt.execute();
 
-        filter.page.PAGNUM = cstmt.getInt(9);
-        filter.page.PAGROW = cstmt.getInt(10);
-        filter.page.TOTPAG = cstmt.getInt(11);
-        filter.page.TOTROW = cstmt.getInt(12);
+        filter.page.PAGNUM = cstmt.getInt(10);
+        filter.page.PAGROW = cstmt.getInt(11);
+        filter.page.TOTPAG = cstmt.getInt(12);
+        filter.page.TOTROW = cstmt.getInt(13);
 
         rs01 = cstmt.getResultSet();
         if (rs01.next()) {
@@ -367,6 +369,178 @@ String SQLCLL01 = "{CALL PRAXISMP.MPS227(?,?,?,?,?,?,?,?,?,?,?,?)}";
         }
 
         return list;
+    }
+
+    public Map<String, List<A2282Filter>> loadMPF101SQP00910(A2282Filter filter) throws SQLException, Exception {
+        List<A2282Filter> list1 = new ArrayList<>();
+        List<A2282Filter> list2 = new ArrayList<>();
+        Map<String, List<A2282Filter>> data = new HashMap();
+        CallableStatement cstmt = null;
+        ResultSet rs = null;
+        Connection cnx = null;
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();//MPS368
+            String sql = "{CALL PRAXISMP.MPS368(?, ?, ?)}";
+            cstmt = cnx.prepareCall(sql);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.SDATE);
+            cstmt.setString(3, filter.SAGENT);
+
+            boolean hasResults = cstmt.execute();
+            int resultIndex = 1;
+
+            while (hasResults) {
+                rs = cstmt.getResultSet();
+
+                if (resultIndex == 1) {
+                    
+                    while (rs.next()) {
+                        A2282Filter item = new A2282Filter();
+
+                        item.TDOC = rs.getString("TDOC");
+                        item.STVAL = rs.getString("STVAL");
+                        item.SCOUNTRY = rs.getString("SCOUNTRY");
+                        item.SDATE = rs.getString("SDATE");
+                        item.SAGENT = rs.getString("SAGENT");
+                        item.NEGOC = rs.getString("NEGOC");
+                        item.MERCHNC = rs.getString("MERCHNC");
+                        item.SUCMERCH = rs.getString("SUCMERCH");
+                        item.SPNR = rs.getString("SPNR");
+                        item.CODPRO = rs.getString("CODPRO");
+                        item.PRDA = rs.getString("PRDA");
+                        item.PAYDATE = rs.getString("PAYDATE");
+                        item.VALDATE = rs.getString("VALDATE");
+                        item.SCARCOD = rs.getString("SCARCOD");
+                        item.SCARDN = rs.getString("SCARDN");
+                        item.SCARDNCOR = rs.getString("SCARDNCOR");
+                        item.SAUTHOC = rs.getString("SAUTHOC");
+                        item.BANDOC = rs.getString("BANDOC");
+                        item.TERMI = rs.getString("TERMI");
+                        item.ACCNUMBER = rs.getString("ACCNUMBER");
+                        item.QTYTKT = rs.getDouble("QTYTKT");
+                        item.FREGLA = rs.getString("FREGLA");
+                        item.SCURRENCY = rs.getString("SCURRENCY");
+                        item.SVFOP = rs.getString("SVFOP");
+                        item.NETO = rs.getDouble("NETO");
+                        item.SVFOPC = rs.getDouble("SVFOPC");
+                        item.STVALS = rs.getString("STVALS");
+                        item.SDATES = rs.getString("SDATES");
+                        item.DATECS = rs.getString("DATECS");
+                        item.TRANCS = rs.getString("TRANCS");
+                        item.DATECI = rs.getString("DATECI");
+                        item.TRANCI = rs.getString("TRANCI");
+                        item.TRANC = rs.getString("TRANC");
+                        item.USCR = rs.getString("USCR");
+                        item.HOCR = rs.getString("HOCR");
+                        item.USUP = rs.getString("USUP");
+                        item.FEUP = rs.getString("FEUP");
+                        item.HOUP = rs.getString("HOUP");
+                        item.DATECT = rs.getString("DATECT");
+                        item.REFER = rs.getString("REFER");
+
+                        list1.add(item);
+                    }
+
+                } else if (resultIndex == 2) {
+                    
+                    while (rs.next()) {
+                        A2282Filter item2 = new A2282Filter();
+
+                        item2.TDOC = rs.getString("TDOC");
+                        item2.BANDOC = rs.getString("BANDOC");
+                        item2.SCURRENCY = rs.getString("SCURRENCY");
+                        item2.SVFOPT = rs.getDouble("SVFOP");
+                        item2.DATECI = rs.getString("DATECI");
+                        item2.TRANCI = rs.getString("TRANCI");
+                        item2.DATECT = rs.getString("DATECT");
+                        item2.REFER = rs.getString("REFERTUR");
+                        list2.add(item2);
+                    }
+                }
+
+                rs.close();
+                hasResults = cstmt.getMoreResults();
+                resultIndex++;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+        data.put("lista1", list1);
+        data.put("lista2", list2);
+        return data;
+    }
+    
+    public A2282Filter loadMPF101SQP00911(A2282Filter filter) throws SQLException, Exception {
+
+        //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
+        String strMsj = "SUCCESSFUL. Information Updated.", strCardn = "";
+        CallableStatement cstmt = null;
+        CallableStatement cstmt2 = null;
+        CallableStatement cstmt3 = null;
+        Connection cnx = null;
+        Connection cnx2 = null;
+        Connection cnx3 = null;
+        A2282Filter objRpt = new A2282Filter();
+        String SQLCLL01 = "{CALL PRAXISMP.MPS369(?,?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+
+            cstmt = cnx.prepareCall(SQLCLL01);
+            cstmt.setString(1, filter.SDATE.trim());
+            cstmt.setString(2, filter.SAGENT.trim());
+              
+            cstmt.registerOutParameter(3, Types.INTEGER);
+            cstmt.registerOutParameter(4, Types.VARCHAR);
+
+            cstmt.setInt(3, 1);
+            cstmt.setString(4, "");
+
+            cstmt.execute();
+            objRpt.VSQLCODE = cstmt.getInt(3);
+            objRpt.VMESSAGE = cstmt.getString(4);
+            cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
+
+            
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            strMsj = e.getMessage();
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return objRpt;
     }
 
     

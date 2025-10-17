@@ -630,8 +630,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
             var rquery = selectedRecord.get('RQUERY'); // Obtener el valor de RQUERY
             var tquery = selectedRecord.get('TQUERY'); // Obtener el valor de RQUERY
             var ttable = selectedRecord.get('TTABLE'); // Obtener el valor de RQUERY
-            console.log('RQUERY seleccionado:', rquery);
-            console.log('TQUERY seleccionado:', tquery);
+            
             console.log('Table seleccionada:', ttable);
             console.log(Ext.getCmp(prototype.id + '-cmbTipoFecha').getValue().split(".")[1], 'nikaa')
             me.beanDetailTW.strFecFiltro = Ext.getCmp(prototype.id + '-cmbTipoFecha').getValue().split(".")[1];
@@ -653,6 +652,17 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
             }else{
                 me.beanDetailTW.SPNR = "";
             }
+            if ( Ext.getCmp(prototype.id + '-chkIntercompany').getValue() ){
+                me.beanDetailTW.INTERCOMPANY = "Y";
+                rquery = rquery.replace("A.CCUST = B.CCUST AND", "")
+                
+            }else{
+                me.beanDetailTW.INTERCOMPANY = "";
+            }
+            console.log('RQUERY seleccionado:', rquery);
+            console.log('TQUERY seleccionado:', tquery);
+            
+            
             me.beanDetailTW.DIFFDAYS = parseInt(Ext.getCmp(prototype.id + '-cmbDiffDays').getValue(), 10)
             me.beanDetailTW.RQUERY = rquery;
             me.beanDetailTW.TQUERY = tquery;
@@ -829,6 +839,13 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
 
         let miGrilla = Ext.getCmp(prototype.id + '-gridDataMain');
         let datos = {};
+        let valueIntercompany = '';
+        if ( Ext.getCmp(prototype.id + '-chkIntercompany').getValue() ){
+                valueIntercompany = "Y";
+                
+            }else{
+                valueIntercompany = "";
+        }
         if (miGrilla) {
 
             datos = await this.procesarRegistros(miGrilla);
@@ -837,7 +854,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
                     url: '/AVIANCA/ManualConciliation/executeGrillUpdate',
                     method: 'POST',
                     timeout: 60000000,
-                    params: {beanString: datos},
+                    params: {beanString: datos, beanIntercompany: valueIntercompany},
                     beforerequest: Ext.getCmp(prototype.id + '-panelGridDataMain').mask('Loading...'),
                     success: function (response, opts) {
                         Ext.getCmp(prototype.id + '-panelGridDataMain').unmask();
@@ -879,6 +896,10 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
             var rquery = selectedRecord.get('RQUERY'); // Obtener el valor de RQUERY
             var tquery = selectedRecord.get('TQUERY'); // Obtener el valor de RQUERY
             var ttable = selectedRecord.get('TTABLE'); // Obtener el valor de RQUERY
+            
+            if ( Ext.getCmp(prototype.id + '-chkIntercompany').getValue() ){
+                rquery = rquery.replace("A.CCUST = B.CCUST AND", "");   
+            }
 
         } else {
             global.Msg({msg: '...You must select a rule...'
@@ -888,6 +909,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
         let listaDeDatos = [];
         var grid = Ext.getCmp(prototype.id + '-gridDataMain');
         var store = grid.getStore();
+        console.log(store,"este es mi STORE");
         var selectedRecords = store.getRange().filter(record => record.get('select'));
 
         if (selectedRecords.length === 0) {
@@ -944,7 +966,13 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
 
     },
     executeOptionAll: async function () {
-
+        let valueIntercompany = '';
+        if ( Ext.getCmp(prototype.id + '-chkIntercompany').getValue() ){
+                valueIntercompany = "Y";
+                
+            }else{
+                valueIntercompany = "";
+        }
 
         var gridCo = Ext.getCmp(prototype.id + '-gridDataColumns_JS');
         var storeCo = gridCo.getStore();
@@ -954,6 +982,9 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
         if (selectedRecordCo) {
             var codrule = selectedRecordCo.get('CODRULE'); // Obtener el valor de RQUERY
             var rquery = selectedRecordCo.get('RQUERY'); // Obtener el valor de RQUERY
+            if ( Ext.getCmp(prototype.id + '-chkIntercompany').getValue() ){
+                rquery = rquery.replace("A.CCUST = B.CCUST AND", "");   
+            }
             var tquery = selectedRecordCo.get('TQUERY'); // Obtener el valor de RQUERY
             var ttable = selectedRecordCo.get('TTABLE'); // Obtener el valor de RQUERY
         } else {
@@ -1002,7 +1033,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
             url: '/AVIANCA/ManualConciliation/executeAllUpdate',
             method: 'POST',
             timeout: 60000000,
-            params: {beanString: JSON.stringify(me.beanDetailTW)},
+            params: {beanString: JSON.stringify(me.beanDetailTW), beanIntercompany: valueIntercompany},
             beforerequest: Ext.getCmp(prototype.id + '-panelGridDataMain').mask('Loading...'),
             success: function (response, opts) {
                 Ext.getCmp(prototype.id + '-panelGridDataMain').unmask();
@@ -2130,6 +2161,9 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
 
         if (selectedRecord) {
             var rquery = selectedRecord.get('RQUERY'); // Obtener el valor de RQUERY
+            if ( Ext.getCmp(prototype.id + '-chkIntercompany').getValue() ){
+                rquery = rquery.replace("A.CCUST = B.CCUST AND", "");   
+            }
             var tquery = selectedRecord.get('TQUERY'); // Obtener el valor de RQUERY
             var ttable = selectedRecord.get('TTABLE'); // Obtener el valor de RQUERY
             console.log('RQUERY seleccionado:', rquery);
@@ -2154,6 +2188,11 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
             }else{
                 bean.SPNR = "";
             }
+            if ( Ext.getCmp(prototype.id + '-chkIntercompany').getValue() ){
+                bean.INTERCOMPANY = "Y";
+            }else{
+                bean.INTERCOMPANY = "";
+            }
             bean.DIFFDAYS = parseInt(Ext.getCmp(prototype.id + '-cmbDiffDays').getValue(), 10)
             bean.RQUERY = rquery;
             bean.TQUERY = tquery;
@@ -2172,6 +2211,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
     },
     exportExcel: function () {
         this.setParameterTW();
+        console.log(me.gridActual,"Esto es mi grid actual");
         switch (me.gridActual) {
             case  '-gridData':
 //                        var grid = Ext.getCmp(prototype.id + '-gridData');
