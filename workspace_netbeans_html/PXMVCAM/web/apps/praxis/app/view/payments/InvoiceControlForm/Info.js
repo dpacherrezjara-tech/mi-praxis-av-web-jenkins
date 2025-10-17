@@ -389,14 +389,14 @@ Ext.define('Ext.Praxis.view.payments.InvoiceControlForm.Info', {
                                                                 }
                                                             },
                                                                          {
-                                                                  text:  '<span style="color:black;font-weight:bold;">Pending</span>' ,
+                                                                  text:  '<span style="color:black;font-weight:bold;">Rate</span>' ,
                                                                  dataIndex: 'QTY_100_PENDING', width: 70, style:'background:#F9D88C;color:black !important',align: 'center ', menuDisabled: true, //flex: 1
 
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                     metaData.style = "color:#2B2B2B;text-align:right;";
-                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
-                                                                    return  value;
-                                                                },
+                                                                renderer: function (value, metaData) {
+        metaData.style = "color:#2B2B2B;text-align:right;";
+        if (value === null || value === undefined || value === '') return '';
+        return '<b>' + Ext.util.Format.number(value, '0.00') + '%</b>';
+    },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
                                                                     metaData.style = 'text-align:right; margin-right:3px ';
@@ -513,11 +513,11 @@ Ext.define('Ext.Praxis.view.payments.InvoiceControlForm.Info', {
                                                     series: [{
                                                         type: 'bar',
                                                         xField: 'month',
-                                                        yField: ['Avianca', 'PraxisTotal', 'PraxisPend'],
-                                                        title: ['Avianca', 'Praxis Total', 'Praxis Pendiente'],
+                                                        yField: ['Avianca', 'PraxisTotal'],
+                                                        title: ['Avianca Total', 'Praxis Total'],
                                                         stacked: false, // Barras agrupadas
                                                         style: { opacity: 0.95 },
-                                                        colors: ['#A7C7F2', '#B8E986', '#F9D88C'], // 🎨 tonos pastel
+                                                        colors: ['#A7C7F2', '#B8E986'], // 🎨 tonos pastel
                                                         highlightCfg: { fillStyle: '#FFF2A8' },
                                                         tooltip: {
                                                             trackMouse: true,
