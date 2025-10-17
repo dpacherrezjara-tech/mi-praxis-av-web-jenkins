@@ -736,8 +736,7 @@ public class InvoiceControlController extends BaseController {
                     i++;
                     Row row = rowIterator.next();
 
-                    if (row.getCell(0) == null && row.getCell(1) == null && row.getCell(2) == null && row.getCell(3) == null && row.getCell(4) == null && row.getCell(5) == null
-                            && row.getCell(6) == null && row.getCell(7) == null && row.getCell(8) == null && row.getCell(9) == null && row.getCell(10) == null) {
+                    if (row.getCell(0) == null && row.getCell(1) == null && row.getCell(2) == null && row.getCell(3) == null && row.getCell(4) == null) {
                         break;
                     }
 
@@ -1114,7 +1113,7 @@ public class InvoiceControlController extends BaseController {
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
             sheet.addMergedRegion(new CellRangeAddress(0, 2, 0, 0));
             sheet.addMergedRegion(new CellRangeAddress(0, 2, 1, 1));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 9));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 6));
             ++vj;
             //============================================
 
@@ -1145,14 +1144,10 @@ public class InvoiceControlController extends BaseController {
             // Nombres de cabecera nivel 2
             CH2_2.setCellValue("Avianca");
             CH2_5.setCellValue("Praxis");
-            CH2_7.setCellValue("Accounting");
-            CH2_9.setCellValue("Praxis");
 
             // Uniones correctas de columnas
-            sheet.addMergedRegion(new CellRangeAddress(1, 1, 2, 4)); // Avianca → C-E
-            sheet.addMergedRegion(new CellRangeAddress(1, 1, 5, 6)); // Praxis → F-G
-            sheet.addMergedRegion(new CellRangeAddress(1, 1, 7, 8)); // Accounting → H-I
-            sheet.addMergedRegion(new CellRangeAddress(1, 1, 9, 9)); // Praxis → J
+            sheet.addMergedRegion(new CellRangeAddress(1, 1, 2, 4));
+            sheet.addMergedRegion(new CellRangeAddress(1, 1, 5, 6));
 
             ++vj;
 
@@ -1175,13 +1170,8 @@ public class InvoiceControlController extends BaseController {
             CH3_3.setCellValue("Qty");
             CH3_4.setCellValue("Amount");
 
-            CH3_5.setCellValue("Amount");
-            CH3_6.setCellValue("Difference");
-
-            CH3_7.setCellValue("Amount");
-            CH3_8.setCellValue("Difference");
-
-            CH3_9.setCellValue("Pending");
+            CH3_5.setCellValue("Qty");
+            CH3_6.setCellValue("Pending");
 
             CH3_0.setCellStyle(headerStyle);
             CH3_1.setCellStyle(headerStyle);
@@ -1202,11 +1192,6 @@ public class InvoiceControlController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(2, 2, 5, 5));
             sheet.addMergedRegion(new CellRangeAddress(2, 2, 6, 6)); 
 
-            sheet.addMergedRegion(new CellRangeAddress(2, 2, 7, 7)); 
-            sheet.addMergedRegion(new CellRangeAddress(2, 2, 8, 8)); 
-
-            sheet.addMergedRegion(new CellRangeAddress(2, 2, 9, 9));
-
             ++vj;
 
             //============================================
@@ -1220,20 +1205,15 @@ public class InvoiceControlController extends BaseController {
                 Cell rcell4 = row1.createCell(4);
                 Cell rcell5 = row1.createCell(5);
                 Cell rcell6 = row1.createCell(6);
-                Cell rcell7 = row1.createCell(7);
-                Cell rcell8 = row1.createCell(8);
-                Cell rcell9 = row1.createCell(9);
 
                 rcell0.setCellValue(listaData.get(vi).strFormatDate);
                 rcell1.setCellValue(listaData.get(vi).SOCIETY);
                 rcell2.setCellValue(listaData.get(vi).CURRENCY);
-                rcell3.setCellValue(listaData.get(vi).QTY);
+                rcell3.setCellValue(listaData.get(vi).QTY_INVOICES);
                 rcell4.setCellValue(listaData.get(vi).SVFOPL);
-                rcell5.setCellValue(listaData.get(vi).SUM_MPF100);
-                rcell6.setCellValue(listaData.get(vi).DIFFERENCE_100);
-                rcell7.setCellValue(listaData.get(vi).SUM_ACTIVE);
-                rcell8.setCellValue(listaData.get(vi).DIFFERENCE);
-                rcell9.setCellValue(listaData.get(vi).PENDING_MPF100);
+                 rcell5.setCellValue(listaData.get(vi).QTY_100_ALL);
+                rcell6.setCellValue(listaData.get(vi).QTY_100_PENDING);
+                
 
                 iter.next();
                 ++vi;

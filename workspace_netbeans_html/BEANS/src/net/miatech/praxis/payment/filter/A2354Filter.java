@@ -169,6 +169,9 @@ public double AMOUNT_TOTAL_DIFFERENCE_100 = 0;
 public double AMOUNT_TOTAL_PENDING_MPF100 = 0;
 
 public int QTY = 0;
+public int QTY_INVOICES = 0;
+public int QTY_100_ALL = 0;
+public int QTY_100_PENDING = 0;
 public int QTY_TOTAL= 0;
 
 
