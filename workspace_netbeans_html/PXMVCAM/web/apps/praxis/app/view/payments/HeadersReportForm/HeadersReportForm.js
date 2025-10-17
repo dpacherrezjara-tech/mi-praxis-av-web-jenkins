@@ -61,11 +61,16 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.HeadersReportForm', {
                                             xtype: prototype.id + '-options'
                                         },
                                         {
-                                            xtype: prototype.id + '-filters',
+                                            xtype: prototype.id + '-filtersReport',
                                             id: prototype.id + '-panelFilters'
                                         },
-                                        //<editor-fold defaultstate="collapsed" desc="Header">
-                                        //xtype: prototype.id + '-HeadersGrid',                                   
+                                        {
+                                        xtype: prototype.id + '-filtersIntegrator',
+                                        id: prototype.id + '-filterIntegrator',
+                                        hidden: true,
+                                        },
+                                        
+                                        //<editor-fold defaultstate="collapsed" desc="Header">                                   
                                         {
                                             xtype: 'panel',
                                             id: prototype.id + '-viewHeaders',
@@ -84,7 +89,6 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.HeadersReportForm', {
                                             },
                                             items: [
                                                 {
-
                                                     xtype: 'panel',
                                                     id: prototype.id + '-HeadersGrid',
                                                     height: prototype.height,
@@ -94,20 +98,12 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.HeadersReportForm', {
                                                         type: 'vbox',
                                                         align: 'center'
                                                     }
-
-//                                                    xtype: prototype.id + '-filtersReport',
-//                                                    id: prototype.id + '-filterReport'
-//                                                },
-//                                                {
-//                                                    xtype: prototype.id + '-filtersIntegrator',
-//                                                    id: prototype.id + '-filterIntegrator'
-
                                                 }
                                             ]
                                         },
                                         //</editor-fold>
+                                        
                                         //<editor-fold defaultstate="collapsed" desc="Secuence">
-                                        //xtype: prototype.id + '-SequencesGrid',
                                         {
                                             xtype: 'panel',
                                             id: prototype.id + '-viewSecuence',
@@ -134,7 +130,8 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.HeadersReportForm', {
                                             ]
                                         },
                                         //</editor-fold>
-                                        //<editor-fold defaultstate="collapsed" desc="DayPilot">
+                                        
+                                        //<editor-fold defaultstate="collapsed" desc="contentIntegrator">
                                         {
                                             xtype: 'panel',
                                             id: prototype.id + '-contentIntegrator',
@@ -146,6 +143,9 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.HeadersReportForm', {
                                             },
                                             hidden: true
                                         },
+                                        //</editor-fold>
+                                        
+                                        //<editor-fold defaultstate="collapsed" desc="DayPilot">
                                         {
                                             xtype: 'daypilotpanel',
                                             id: prototype.id + '-dayPilotCmp',

@@ -18,11 +18,11 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Options', {
                 {
                     xtype: 'radiogroup',
                     id: prototype.id + '-viewOption',
-                    columns: 3, // Muestra los radios en columna
+                    columns: 4, // Muestra los radios en columna
                     vertical: false,
                     border: false,
                     padding: 5,
-                    width:300,
+                    width:420,
                     items: [
                         {boxLabel: '<span style="color: green; font-weight: bold;">Headers</span>', name: 'opcion', inputValue: '1', checked: true},
                         {boxLabel: '<span style="color: green; font-weight: bold;">Sequence</span>', name: 'opcion', inputValue: '2'},
