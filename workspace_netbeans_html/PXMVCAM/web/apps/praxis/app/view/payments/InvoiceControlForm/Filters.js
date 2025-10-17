@@ -198,7 +198,6 @@ Ext.define('Ext.Praxis.view.payments.InvoiceControlForm.Filters', {
                     valueField: 'A006PAIS',
                     displayField: 'A006NOMBRE',
                     listConfig: {maxHeight: 111},
-                    enableKeyEvents: true,
                     triggerAction: 'all',
                      margin: '0 10 0 0',
                       listeners: {

@@ -234,6 +234,7 @@ let SVFOPL = 0;
 let QTY_100_ALL = 0;
 // quitar acumulador de porcentajes; lo calcularemos al final a partir de totales
 let QTY_100_PENDING = 0;
+let QTY_NOT_FOUND = 0;
 
 let a = [];
 let dataRoot = { text: '.', expanded: false, children: [] };
@@ -245,6 +246,7 @@ Ext.Object.each(lstData, function (index, value) {
         let V_QTY_INVOICES = 0;
         let V_SVFOPL = 0;
         let V_QTY_100_ALL = 0;
+        let V_QTY_NOT_FOUND = 0;
 
         // Calcular sumas por mes
         Ext.Object.each(lstData, function (index, valuex) {
@@ -252,6 +254,7 @@ Ext.Object.each(lstData, function (index, value) {
                 V_QTY_INVOICES += valuex.QTY_INVOICES;
                 V_SVFOPL += valuex.SVFOPL;
                 V_QTY_100_ALL += valuex.QTY_100_ALL;
+                V_QTY_NOT_FOUND += valuex.QTY_NOT_FOUND;
             }
         });
 
@@ -267,6 +270,7 @@ Ext.Object.each(lstData, function (index, value) {
         QTY_INVOICES += V_QTY_INVOICES;
         SVFOPL += V_SVFOPL;
         QTY_100_ALL += V_QTY_100_ALL;
+        QTY_NOT_FOUND += V_QTY_NOT_FOUND;
         // NO sumar V_QTY_100_RATE a QTY_100_PENDING aquí
 
         // Agregar nodo padre (mes)
@@ -276,6 +280,7 @@ Ext.Object.each(lstData, function (index, value) {
             QTY_INVOICES: V_QTY_INVOICES,
             SVFOPL: V_SVFOPL,
             QTY_100_ALL: V_QTY_100_ALL,
+            QTY_NOT_FOUND: V_QTY_NOT_FOUND,
             QTY_100_PENDING: V_QTY_100_RATE.toFixed(2), // porcentaje del mes con dos decimales
             expanded: false,
             children: []
@@ -296,6 +301,7 @@ Ext.Object.each(lstData, function (index, value) {
                     QTY_INVOICES: value01.QTY_INVOICES,
                     SVFOPL: value01.SVFOPL,
                     QTY_100_ALL: value01.QTY_100_ALL,
+                    QTY_NOT_FOUND: value01.QTY_NOT_FOUND,
                     QTY_100_PENDING: percentPending.toFixed(2),
                     leaf: true
                 });
@@ -323,6 +329,7 @@ Ext.getCmp(prototype.id + '-QTY_INVOICES').setText(Ext.util.Format.number(QTY_IN
 Ext.getCmp(prototype.id + '-SVFOPL').setText(Ext.util.Format.number(SVFOPL, '0,000.00'));
 Ext.getCmp(prototype.id + '-QTY_100_ALL').setText(Ext.util.Format.number(QTY_100_ALL, '0,000'));
 Ext.getCmp(prototype.id + '-QTY_100_PENDING').setText(Ext.util.Format.number(QTY_100_PENDING, '0.00') + ' %');
+Ext.getCmp(prototype.id + '-QTY_NOT_FOUND').setText(Ext.util.Format.number(QTY_NOT_FOUND, '0,000'));
 
                             
                             
@@ -368,7 +375,8 @@ Ext.getCmp(prototype.id + '-QTY_100_PENDING').setText(Ext.util.Format.number(QTY
                                 dataBar.push({
                                     month: mes.strFormatDate,    // Ejemplo: "2025-Jan"
                                     Avianca: mes.QTY_INVOICES,
-                                    PraxisTotal: mes.QTY_100_ALL
+                                    PraxisTotal: mes.QTY_100_ALL,
+                                    NOtFound: mes.QTY_NOT_FOUND
                                 });
                             });
 
@@ -391,14 +399,14 @@ Ext.getCmp(prototype.id + '-QTY_100_PENDING').setText(Ext.util.Format.number(QTY
                             let chart = Ext.getCmp(prototype.id + '-displayBarSM');
 
                             chart.setStore({
-                                fields: ['month', 'Avianca', 'PraxisTotal'],
+                                fields: ['month', 'Avianca', 'PraxisTotal','NOtFound'],
                                 data: dataBar
                             });
 
                             // Ajustamos la serie a los tres campos
                             let serie = chart.getSeries()[0];
-                            serie.setYField(['Avianca', 'PraxisTotal']);
-                            serie.setTitle(['Avianca Total', 'Praxis Total']);
+                            serie.setYField(['Avianca', 'PraxisTotal','NOtFound']);
+                            serie.setTitle(['Avianca Total', 'Praxis Total','Not Found']);
 
 
 
@@ -457,6 +465,7 @@ Ext.getCmp(prototype.id + '-QTY_100_PENDING').setText(Ext.util.Format.number(QTY
     },
     onGridDataDetail: function (column, e, rowIndex, colIndex, rowData) {
         
+        
         let esPadre = rowData.record.childNodes.length ? true : false;
         let rowPadre = rowData.record.data;
         let fecha = this.getPeriodoYYYYMM(rowPadre.strFormatDate);
@@ -466,6 +475,12 @@ Ext.getCmp(prototype.id + '-QTY_100_PENDING').setText(Ext.util.Format.number(QTY
             me.bean.IN_SOCIETY = "";
         } else {
             me.bean.IN_SOCIETY = rowPadre.CCUST;
+        }
+        
+        if (colIndex == 7) {
+            me.bean.IN_NOTFOUND = 'Y';
+        } else {
+            me.bean.IN_NOTFOUND = '';
         }
         
         const mapCCUST = {
@@ -478,6 +493,7 @@ Ext.getCmp(prototype.id + '-QTY_100_PENDING').setText(Ext.util.Format.number(QTY
         let codigo = mapCCUST[rowPadre.CCUST];
         Ext.getCmp(prototype.id + '-typeSociety').setValue(codigo);
         console.log(codigo,"RAAAAAAAAAAAAA")
+        
         
         me.bean.IN_DATE = fecha;
         me.bean.IN_INVOICE = "";
