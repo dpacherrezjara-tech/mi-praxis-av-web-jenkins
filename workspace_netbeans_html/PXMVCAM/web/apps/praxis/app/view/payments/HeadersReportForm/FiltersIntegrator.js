@@ -58,11 +58,12 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.FiltersIntegrator', {
                                     labelWidth: 50,
                                     width: 140,
                                     name: 'IN_DATEF',
-                                    value: new Date(anioActual, mesActual, 1),
-                                    listeners: {
-                                        change: 'onChangeDateSTBtn'
-                                    },
-                                  id: prototype.id + '-datefieldFromST'
+//                                    value: new Date(anioActual, mesActual, 1),
+//                                    listeners: {
+//                                        change: 'onChangeDateSTBtn'
+//                                    },
+                                  id: prototype.id + '-datefieldFromST',
+                                  value: new Date()
                                 },
                                 {
                                     xtype: 'datefield',
@@ -71,11 +72,12 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.FiltersIntegrator', {
                                     labelWidth: 30,
                                     width: 120,
                                     name: 'IN_DATET',
-                                    value: new Date(anioActual, mesActual, 1),
-                                    listeners: {
-                                        change: 'onChangeDateSTBtn'
-                                    },
-                                    id: prototype.id + '-datefieldToST'
+//                                    value: new Date(anioActual, mesActual, 1),
+//                                    listeners: {
+//                                        change: 'onChangeDateSTBtn'
+//                                    },
+                                    id: prototype.id + '-datefieldToST',
+                                    value: new Date()
                                 },
                                 {
                                     xtype: 'textfield',

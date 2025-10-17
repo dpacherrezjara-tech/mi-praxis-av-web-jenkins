@@ -2861,5 +2861,53 @@ public class Functions {
         linea = linea.replace("Ãº", "ú").replace("Ã­", "í").replace("Ã?ltima", "Última").replace("CRÃ?DITO", "CRÉDITO");//.replace("País", "Pais");
         return linea.trim().replace("ó", "&oacute;").replace("ñ", "n").replace("Ú", "&uacute;").replace("ú", "&uacute;").replace("í", "&iacute;").replace("é", "&eacute;");
     }
+    
+    public static String getAbreviaturaMesCbas(String strDate) {
+        switch (strDate.trim()) {
+            case "01": return "Jan";
+            case "02": return "Feb";
+            case "03": return "Mar";
+            case "04": return "Apr";
+            case "05": return "May";
+            case "06": return "Jun";
+            case "07": return "Jul";
+            case "08": return "Aug";
+            case "09": return "Sep";
+            case "10": return "Oct";
+            case "11": return "Nov";
+            case "12": return "Dec";
+            default:   return strDate;
+        }
+    }
+    
+    public static String getMonthConvertCbas(String strDate) {
+        if (strDate == null || strDate.trim().isEmpty()) return "";
+
+        String fecha = strDate.trim().replace("-", "").replace("*", "");
+
+        try {
+            int len = fecha.length();
+
+            if (len == 4) {
+                return fecha; 
+
+            } else if (len == 6) {
+                String year = fecha.substring(0, 4);
+                String month = getAbreviaturaMesCbas(fecha.substring(4, 6));
+                return year + "-" + month;
+
+            } else if (len == 8) {
+                String year = fecha.substring(0, 4);
+                String month = getAbreviaturaMes(fecha.substring(4, 6));
+                String day = fecha.substring(6, 8);
+                return year + "-" + month + "-" + day;
+            }
+
+        } catch (Exception e) {
+            
+        }
+
+        return strDate;
+    }
 
 }
