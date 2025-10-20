@@ -49,8 +49,8 @@ Ext.define('Ext.Praxis.view.payments.InvoiceControlForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetail',
-                                    height: 510,
-                                    width: 1000,
+                                    height: 516,
+                                    width: 1003,
                                     hidden: false,
                                     columnLines: true,
                                     viewConfig: {
