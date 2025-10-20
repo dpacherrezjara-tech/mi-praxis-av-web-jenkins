@@ -32,7 +32,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         prototype.url = CONTEXTPATH + '/BalanceAnalysisByAge';
         prototype.urlMaster = CONTEXTPATH + '/MasterController';
         this.childs = Ext.getCmp(prototype.id + '-panelMain').items.items;
-        me.panelActual = '-panelGridConciliation';
+        me.panelActual = '-panelGridSumaryMain';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
 
 
@@ -335,9 +335,14 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         let panelGridData = Ext.getCmp(prototype.id + '-panelGridData')
         let panelGridConciliation = Ext.getCmp(prototype.id + '-panelGridConciliation')
         let panelGridConciliationMDP = Ext.getCmp(prototype.id + '-panelGridConciliationMDP')
+        let panelGridSumaryMain = Ext.getCmp(prototype.id + '-panelGridSumaryMain')
         console.log(panelGridData.isVisible(), 'VISIBILIDAD?')
         
-        if (panelGridConciliationMDP.isVisible()) {
+        if (panelGridSumaryMain.isVisible()) {
+            this.setFormatParameterDashboard();
+            this.setGridDataDashboard();
+        } 
+        else if (panelGridConciliationMDP.isVisible()) {
             this.setFormatParameter2();
             this.setGridDataConciliationMDP();
         } 
@@ -930,6 +935,13 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             Ext.getCmp(prototype.id + '-pie').setVisible(false);
             this.setFormatParameter2();
             this.setGridDataConciliation();
+            Ext.getCmp(prototype.id + '-contentFilter2').hide();
+            Ext.getCmp(prototype.id + '-contentFilter3').hide();
+            
+        } else if (newValue === 'A') {
+            Ext.getCmp(prototype.id + '-pie').setVisible(false);
+            this.setFormatParameter2();
+//            this.setGridDataConciliation();
             Ext.getCmp(prototype.id + '-contentFilter2').hide();
             Ext.getCmp(prototype.id + '-contentFilter3').hide();
             
@@ -2182,7 +2194,11 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
     },
     getPaggin: function () {
         me.pagginActual = '';
+        this.toggleFiltersByPanel(me.panelActual, prototype);
         switch (me.panelActual) {
+             case  '-panelGridSumaryMain':
+                me.pagginActual = '-paggin';
+                break;
             case  '-boxMainData':
                 me.pagginActual = '-paggin';
                 break;
@@ -3226,5 +3242,289 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 
         }
     },
-}
-);
+    toggleFiltersByPanel: function (panelId, prototype) {
+        const filterIds = [
+            prototype.id + '-cmbCountry',
+            prototype.id + '-txtAGENCY',
+            prototype.id + '-cmbPercentage',
+            prototype.id + '-cmbSource',
+            prototype.id + '-txtCUTDAYS',
+            prototype.id + '-txtFECR',
+            prototype.id + '-txtHOCR',
+            prototype.id + '-chkboxTypeRecord',
+            prototype.id + '-chkboxSurplus',
+            prototype.id + '-rayita'
+        ];
+
+        const hide = (panelId === '-panelGridSumaryMain');
+        
+        if (hide) {
+            Ext.getCmp(prototype.id + '-panelHeight').setHeight(750);
+        } else {
+            Ext.getCmp(prototype.id + '-panelHeight').setHeight(1100);
+        }
+
+        Ext.Array.each(filterIds, function (cmpId) {
+            const cmp = Ext.getCmp(cmpId);
+            if (cmp) {
+                cmp.setVisible(!hide); 
+            } else {
+                console.warn('No se encontró el componente con id:', cmpId);
+            }
+        });
+    },
+    setFormatParameterDashboard: function () {
+        me.bean = {};
+        me.bean.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue();
+        me.bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue();
+//        me.bean.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
+//        me.bean.IN_SAGENT = Ext.getCmp(prototype.id + '-txtAGENCY').getValue();
+//        me.bean.IN_PERCENTAGE = Ext.getCmp(prototype.id + '-cmbPercentage').getValue();
+//        me.bean.IN_CANAL = Ext.getCmp(prototype.id + '-cmbSource').getValue();
+//        me.bean.IN_CUTDAYS = Ext.getCmp(prototype.id + '-txtCUTDAYS').getValue();
+//        me.bean.IN_TOP = Ext.getCmp(prototype.id + '-cmbTOP').getValue();
+        me.bean.IN_CCUST = Ext.getCmp(prototype.id + '-cmbAviancaGroup').getValue();
+//        me.bean.IN_TREG = Ext.getCmp(prototype.id + '-chkboxTypeRecord').getValue() ? '1' : '2';
+//        me.bean.IN_SURPLUS = Ext.getCmp(prototype.id + '-chkboxSurplus').getValue() ? '1' : '2';
+
+        console.log(me.bean, 'setFormatParameterDashboard');
+        var beanString = JSON.stringify(me.bean);
+        searchParams = {
+            beanString: beanString,
+            bean: me.bean
+        };
+    },
+    setGridDataDashboard: function () {
+        win.lblUser_toolTip("Estructura: MPF102");
+        me.panelActual = '-panelGridSumaryMain';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+     
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchSumaryMain'
+                }, listeners: {
+                    beforeload: function (obj) {
+                        Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
+                        obj.proxy.extraParams = searchParams;
+                    },
+                    load: function (obj) {
+                        Ext.getCmp(prototype.id + '-contentInfo').unmask();
+                       
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        } else {
+                            
+                            let lstData = [];
+                                for (let value of obj.data.items) {
+                                    lstData.push(value.data);
+                                }
+
+                                // Totales generales
+                                let F1_TOTAL_GLOBAL = 0;
+                                let F1_TOTAL_STVAL3_GLOBAL = 0;
+                                let F1_TOTAL_STVAL1_GLOBAL = 0;
+
+                                let a = [];
+                                let dataRoot = { text: '.', expanded: false, children: [] };
+
+                                Ext.Object.each(lstData, function (index, value) {
+                                    if (a.indexOf(value.strFormatDate) < 0) {
+                                        let V_F1_TOTAL = 0;
+                                        let V_F1_TOTAL_STVAL3 = 0;
+                                        let V_F1_TOTAL_STVAL1 = 0;
+                                        let V_F1_PERCENT = 0;
+
+                                        // Agrupar por mes
+                                        Ext.Object.each(lstData, function (index, valuex) {
+                                            if (value.strFormatDate === valuex.strFormatDate) {
+                                                V_F1_TOTAL += valuex.F1_TOTAL;
+                                                V_F1_TOTAL_STVAL3 += valuex.F1_TOTAL_STVAL3;
+                                                V_F1_TOTAL_STVAL1 += valuex.F1_TOTAL_STVAL1;
+                                            }
+                                        });
+
+                                        // Calcular porcentaje por mes
+                                        if (V_F1_TOTAL > 0) {
+                                            V_F1_PERCENT = (V_F1_TOTAL_STVAL1 * 100) / V_F1_TOTAL;
+                                        }
+
+                                        // Agregar al árbol
+                                        a.push(value.strFormatDate);
+                                        dataRoot.children.push({
+                                            strFormatDate: value.strFormatDate,
+                                            F1_TOTAL: V_F1_TOTAL,
+                                            F1_TOTAL_STVAL3: V_F1_TOTAL_STVAL3,
+                                            F1_TOTAL_STVAL1: V_F1_TOTAL_STVAL1,
+                                            F1_PERCENT: V_F1_PERCENT.toFixed(2) + '%',
+                                            expanded: false,
+                                            children: []
+                                        });
+
+                                        // Agregar las filas hijas
+                                        Ext.Object.each(lstData, function (index, value01) {
+                                            if (value.strFormatDate === value01.strFormatDate) {
+                                                let V_CHILD_PERCENT = 0;
+                                                if (value01.F1_TOTAL > 0) {
+                                                    V_CHILD_PERCENT = (value01.F1_TOTAL_STVAL1 * 100) / value01.F1_TOTAL;
+                                                }
+
+                                                dataRoot.children[a.indexOf(value.strFormatDate)].children.push({
+                                                    strFormatDate: value01.strFormatDate,
+                                                    CCUST: value01.CCUST,
+                                                    F1_TOTAL: value01.F1_TOTAL,
+                                                    F1_TOTAL_STVAL3: value01.F1_TOTAL_STVAL3,
+                                                    F1_TOTAL_STVAL1: value01.F1_TOTAL_STVAL1,
+                                                    F1_PERCENT: V_CHILD_PERCENT.toFixed(2) + '%',
+                                                    leaf: true
+                                                });
+                                            }
+                                        });
+
+                                        // Acumular global
+                                        F1_TOTAL_GLOBAL += V_F1_TOTAL;
+                                        F1_TOTAL_STVAL3_GLOBAL += V_F1_TOTAL_STVAL3;
+                                        F1_TOTAL_STVAL1_GLOBAL += V_F1_TOTAL_STVAL1;
+                                    }
+                                });
+
+                                // Calcular porcentaje global
+                                let F1_PERCENT_GLOBAL = 0;
+                                if (F1_TOTAL_GLOBAL > 0) {
+                                    F1_PERCENT_GLOBAL = (F1_TOTAL_STVAL1_GLOBAL * 100) / F1_TOTAL_GLOBAL;
+                                }
+
+                                // Crear el store
+                                var storeTree = Ext.create('Ext.data.TreeStore', {
+                                    root: dataRoot
+                                });
+
+                                Ext.getCmp(prototype.id + '-gridSumaryMain').setStore(storeTree);
+
+                                Ext.getCmp(prototype.id + '-F1_TOTAL_GLOBAL').setText(Ext.util.Format.number(F1_TOTAL_GLOBAL, '0'));
+                                Ext.getCmp(prototype.id + '-F1_TOTAL_STVAL3_GLOBAL').setText(Ext.util.Format.number(F1_TOTAL_STVAL3_GLOBAL, '0,000'));
+                                Ext.getCmp(prototype.id + '-F1_TOTAL_STVAL1_GLOBAL').setText(Ext.util.Format.number(F1_TOTAL_STVAL1_GLOBAL, '0,000'));
+                                Ext.getCmp(prototype.id + '-F1_PERCENT_GLOBAL').setText(F1_PERCENT_GLOBAL.toFixed(2) + '%');
+
+                                console.log({
+                                    F1_TOTAL_GLOBAL,
+                                    F1_TOTAL_STVAL3_GLOBAL,
+                                    F1_TOTAL_STVAL1_GLOBAL,
+                                    F1_PERCENT_GLOBAL
+                                }, 'totales globales');
+
+                            
+                            return;
+                            var data = lastRecord;
+                            console.log(lastRecord, 'datadata');
+                            console.log(obj, 'objobj');
+                            
+                            return;
+                            
+                            let item = {};
+                            let item2 = {};
+                            let item3 = {};
+                            let item4 = {};
+                            let item5 = {};
+                            let totals = [];
+                            let totalCantidad = lastRecord.QTY_TOTAL_REFUND +
+                                lastRecord.QTY_TOTAL_CHGBACK +
+                                lastRecord.QTY_TOTAL_REVERSE_CHGBACK +
+                                lastRecord.QTY_TOTAL_ACRED +
+                                lastRecord.QTY_TOTAL_PENDING;
+
+                            let refundMatch = (lastRecord.QTY_TOTAL_REFUND / totalCantidad) * 100;
+                            let chgbkMatch = (lastRecord.QTY_TOTAL_CHGBACK / totalCantidad) * 100;
+                            let reverseChgbkMatch = (lastRecord.QTY_TOTAL_REVERSE_CHGBACK / totalCantidad) * 100;
+                            let acreditMatch = (lastRecord.QTY_TOTAL_ACRED / totalCantidad) * 100;
+                            let othersPend = (lastRecord.QTY_TOTAL_PENDING / totalCantidad) * 100;
+
+                            if (obj.data.items.length > 0) {
+                                totals.push({
+                                    LABEL: 'Refund',
+                                    Perc2: lastRecord.QTY_TOTAL_REFUND,
+                                    VENDOR: 'Refund:\n' + Ext.util.Format.number(refundMatch, '0.00%')
+                                });
+
+                                totals.push({
+                                    LABEL: 'Pending',
+                                    Perc2: lastRecord.QTY_TOTAL_PENDING,
+                                    VENDOR: 'Pending:\n' + Ext.util.Format.number(othersPend, '0.00%')
+                                });
+                                totals.push({
+                                    LABEL: 'Chgback',
+                                    Perc2: lastRecord.QTY_TOTAL_CHGBACK,
+                                    VENDOR: 'Chgback:\n' + Ext.util.Format.number(chgbkMatch, '0.00%')
+                                });
+                                totals.push({
+                                    LABEL: 'Acredit',
+                                    Perc2: lastRecord.QTY_TOTAL_ACRED,
+                                    VENDOR: 'Acredit:\n'+ Ext.util.Format.number(acreditMatch, '0.00%')
+                                });
+                                totals.push({
+                                    LABEL: 'Chgback Reverse',
+                                    Perc2: lastRecord.QTY_TOTAL_REVERSE_CHGBACK,
+                                    VENDOR: 'Chgback Reverse:\n' + Ext.util.Format.number(reverseChgbkMatch, '0.00%')
+                                });
+                            }
+
+                            var storeData1er = Ext.create('Ext.data.Store', {
+                                data: totals,
+                                autoLoad: true
+                            });
+
+                            Ext.getCmp(prototype.id + '-displayPolarSM').bindStore(storeData1er);
+                            //Ext.getCmp(prototype.id + '-lblTittlePaidSumaryMain').setText('Totals Debits: ' + Ext.util.Format.number(totalCantidad, '0,000'));
+
+                            let dataBar = [
+                                {
+                                    category: 'Refund',
+                                    USD: lastRecord.AMOUNT_TOTAL_REFUND_USD,
+                                    SEND: lastRecord.AMOUNT_TOTAL_REFUND_SEND,
+                                    SAP: lastRecord.AMOUNT_TOTAL_REFUND_SAP
+                                },
+                                {
+                                    category: 'Chargeback',
+                                    USD: lastRecord.AMOUNT_TOTAL_CHGBACK_USD,
+                                    SEND: lastRecord.AMOUNT_TOTAL_CHGBACK_SEND,
+                                    SAP: lastRecord.AMOUNT_TOTAL_CHGBACK_SAP
+                                },
+                                {
+                                    category: 'Reverse ChgBck',
+                                    USD: lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_USD,
+                                    SEND: lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_SEND,
+                                    SAP: lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_SAP
+                                },
+                                {
+                                    category: 'Acreditaciones',
+                                    USD: lastRecord.AMOUNT_TOTAL_ACRED_USD,
+                                    SEND: lastRecord.AMOUNT_TOTAL_ACRED_SEND,
+                                    SAP: lastRecord.AMOUNT_TOTAL_ACRED_SAP
+                                },
+                                {
+                                    category: 'Pendiente',
+                                    USD: lastRecord.AMOUNT_TOTAL_PENDING_USD,
+                                    SEND: lastRecord.AMOUNT_TOTAL_PENDING_SEND,
+                                    SAP: lastRecord.AMOUNT_TOTAL_PENDING_SAP
+                                }
+                            ];
+
+                            let chart = Ext.getCmp(prototype.id + '-displayBarSM');
+                            chart.setStore({
+                                fields: ['category', 'USD', 'SEND', 'SAP'],
+                                data: dataBar
+                            });
+
+                            chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
+
+                        }
+                    }
+                }
+            });
+        global.clear();
+        this.getPaggin();
+
+    }
+
+});

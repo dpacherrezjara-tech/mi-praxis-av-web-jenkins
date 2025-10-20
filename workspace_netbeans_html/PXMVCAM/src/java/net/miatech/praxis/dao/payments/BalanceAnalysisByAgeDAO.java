@@ -3300,4 +3300,68 @@ public class BalanceAnalysisByAgeDAO {
 
         return lstData;
     }
+
+    public List<A2356Filter> getListsearchDashboardMDP(A2356Filter filter) throws SQLException, Exception {
+
+        List<A2356Filter> lstData = new ArrayList<A2356Filter>(0);
+        A2356Filter bean;
+       
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS390(?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, filter.IN_CCUST);
+            cstmt.setString(2, filter.IN_FECHA_FROM);
+            cstmt.setString(3, filter.IN_FECHA_TO);
+
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+                bean = new A2356Filter();
+                    bean.RN = rst.getInt("RN");
+
+                    bean.VALDATE = rst.getString("VALDATE").trim();
+                    bean.strFormatDate = Functions.getMonthConvert(rst.getString("VALDATE").trim());
+                    bean.CCUST = rst.getString("CCUST").trim();
+                    
+                    bean.F1_TOTAL = rst.getInt("F1_TOTAL");
+                    bean.F1_TOTAL_STVAL3 = rst.getInt("F1_TOTAL_STVAL3");
+                    bean.F1_TOTAL_STVAL1 = rst.getInt("F1_TOTAL_STVAL1");
+
+                    lstData.add(bean);
+            }
+            rst.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstData;
+    }
+
 }

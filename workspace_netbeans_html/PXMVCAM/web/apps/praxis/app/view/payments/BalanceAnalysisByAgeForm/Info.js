@@ -8049,6 +8049,460 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                         // </editor-fold>
                         {
                             xtype: 'panel',
+                            border: false,
+                            width: 1597,
+                            id: prototype.id + '-panelGridSumaryMain',
+                            bodyStyle: 'background-color: #F4F7FD;margin-top:20px',
+                            padding: '1',
+                            hidden: false,
+                            layout: {
+                                type: 'vbox',
+//                                align: 'center'
+                            },
+                            items: [
+                                 {
+                                    xtype: 'treepanel',
+                                    id: prototype.id + '-gridSumaryMain',
+                                    width: 1597,
+                                    useArrows: true,
+                                    rootVisible: false,
+                                    multiSelect: true,
+                                    columnLines: true,
+                                    rowLines: true,
+                                    scrollable: true,
+                                    features: [{
+                                            ftype: 'summary'
+                                        }],
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: false,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Valdate</span>', style:'background:#c9daf5;color:black !important',
+                                                dataIndex: 'strFormatDate', width: 100, align: 'center', xtype: 'treecolumn',
+                                                listeners: {
+                                                    click: 'onGridCountry'
+                                                },
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:left;";
+                                                    value = '<b>' + value + '</b>';
+                                                    return  !record.data.children ? ' ' : value;
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Society</span>', style:'background:#c9daf5;color:black !important',
+                                                dataIndex: 'CCUST',
+                                                width: 85,
+                                                align: 'center', // centra a nivel de columna (por defecto)
+                                                renderer: function (value, metaData, record) {
+                                                    metaData.style = "text-align:center; color:#008FE3; text-decoration:underline; display:block; text-align:center;cursor:pointer";
+
+                                                    const strCCUST = {
+                                                        '547': 'AEROGAL',
+                                                        '134': 'AVIANCA',
+                                                        '133': 'LACSA',
+                                                        '202': 'TACA'
+                                                    };
+
+                                                    const displayText = strCCUST[value] || 'AV GROUP';
+                                                    return displayText;
+                                                },
+                                                listeners: {
+                                                    click: 'onGridDataDetail'
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">F1 - Settlement</span>', menuDisabled: true,style:'background:#FBD2D1;color:black !important',
+                                                columns: [
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Received</span>', dataIndex: 'F1_TOTAL', width: 70, style:'background:#FBD2D1;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                         listeners: {
+                                                             click: 'onGridDataDetail'
+                                                         },
+                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                             metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                             value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                             return value;
+                                                         },
+                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                             var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                             metaData.style = 'text-align:right; margin-right:3px ';
+                                                             return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                         }
+                                                     },
+                                                     {
+                                                        text: '<span style="color:black;font-weight:bold;">Total</span>', menuDisabled: true,style:'background:#FBD2D1;color:black !important',
+                                                        columns: [
+                                                                {
+                                                            text: '<span style="color:black;font-weight:bold;">W/O Settl</span>', dataIndex: 'F1_TOTAL_STVAL3', width: 70, style:'background:#FBD2D1;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                             listeners: {
+                                                                 click: 'onGridDataDetail'
+                                                             },
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                                {
+                                                            text: '<span style="color:black;font-weight:bold;">Completed</span>', dataIndex: 'F1_TOTAL_STVAL1', width: 80, style:'background:#FBD2D1;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                             listeners: {
+                                                                 click: 'onGridDataDetail'
+                                                             },
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                        ]
+                                                    },
+                                                     {
+                                                        text: '<span style="color:black;font-weight:bold;">%</span>', menuDisabled: true,style:'background:#FBD2D1;color:black !important',
+                                                        columns: [
+                                                            {
+                                                                text: '<span style="color:black;font-weight:bold;">Progress</span>', dataIndex: 'F1_PERCENT', width: 70, style:'background:#FBD2D1;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                                 listeners: {
+                                                                     click: 'onGridDataDetail'
+                                                                 },
+                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                     metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                     return '<b>' + value + '</b>';
+                                                                 },
+                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                     var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                     metaData.style = 'text-align:right; margin-right:3px ';
+                                                                     return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                                 }
+                                                             }
+                                                        ]
+                                                    }
+                                                     
+                                                ]
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">F2 - Sales</span>', menuDisabled: true,style:'background:#D1FBD2;color:black !important',
+                                                columns: [
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Total</span>', menuDisabled: true,style:'background:#D1FBD2;color:black !important',
+                                                        columns: [
+                                                            {
+                                                            text: '<span style="color:black;font-weight:bold;">F1 Completed</span>', dataIndex: 'F1_TOTAL_STVAL3', width: 90, style:'background:#D1FBD2;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                             listeners: {
+                                                                 click: 'onGridDataDetail'
+                                                             },
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                         {
+                                                            text: '<span style="color:black;font-weight:bold;">W/O Sales</span>', dataIndex: 'F1_TOTAL_STVAL3', width: 70, style:'background:#D1FBD2;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                             listeners: {
+                                                                 click: 'onGridDataDetail'
+                                                             },
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                          {
+                                                            text: '<span style="color:black;font-weight:bold;">F2 Completed</span>', dataIndex: 'F1_TOTAL_STVAL3', width: 90, style:'background:#D1FBD2;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                             listeners: {
+                                                                 click: 'onGridDataDetail'
+                                                             },
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">%</span>', menuDisabled: true,style:'background:#D1FBD2;color:black !important',
+                                                        columns: [
+                                                            {
+                                                                text: '<span style="color:black;font-weight:bold;">Progress</span>', dataIndex: 'F1_PERCENT', width: 70, style:'background:#D1FBD2;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                                 listeners: {
+                                                                     click: 'onGridDataDetail'
+                                                                 },
+                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                     metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                     return '<b>' + value + '</b>';
+                                                                 },
+                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                     var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                     metaData.style = 'text-align:right; margin-right:3px ';
+                                                                     return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                                 }
+                                                             }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Accounted</span>', menuDisabled: true,style:'background:#D6D6D6;color:black !important',
+                                                columns: [
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Total</span>', menuDisabled: true,style:'background:#D6D6D6;color:black !important',
+                                                        columns: [
+                                                            {
+                                                            text: '<span style="color:black;font-weight:bold;">F2 Completed</span>', dataIndex: 'F1_TOTAL_STVAL3', width: 100, style:'background:#D6D6D6;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                             listeners: {
+                                                                 click: 'onGridDataDetail'
+                                                             },
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                          {
+                                                            text: '<span style="color:black;font-weight:bold;">W/O  Acc</span>', dataIndex: 'F1_TOTAL_STVAL3', width: 90, style:'background:#D6D6D6;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                             listeners: {
+                                                                 click: 'onGridDataDetail'
+                                                             },
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                         {
+                                                            text: '<span style="color:black;font-weight:bold;">Completed Acc</span>', dataIndex: 'F1_TOTAL_STVAL3', width: 100, style:'background:#D6D6D6;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                             listeners: {
+                                                                 click: 'onGridDataDetail'
+                                                             },
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">%</span>', menuDisabled: true,style:'background:#D6D6D6;color:black !important',
+                                                        columns: [
+                                                            {
+                                                                text: '<span style="color:black;font-weight:bold;">Progress</span>', dataIndex: 'F1_PERCENT', width: 70, style:'background:#D6D6D6;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                                 listeners: {
+                                                                     click: 'onGridDataDetail'
+                                                                 },
+                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                     metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                     return '<b>' + value + '</b>';
+                                                                 },
+                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                     var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                     metaData.style = 'text-align:right; margin-right:3px ';
+                                                                     return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                                 }
+                                                             }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Sent to AV</span>', menuDisabled: true,style:'background:#DCD1F7;color:black !important',
+                                                columns: [
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Total</span>', menuDisabled: true,style:'background:#DCD1F7;color:black !important',
+                                                        columns: [
+                                                            {
+                                                            text: '<span style="color:black;font-weight:bold;">Completed Acc</span>', dataIndex: 'F1_TOTAL_STVAL3', width: 100, style:'background:#DCD1F7;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                             listeners: {
+                                                                 click: 'onGridDataDetail'
+                                                             },
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Pending</span>', menuDisabled: true,style:'background:#DCD1F7;color:black !important',
+                                                        columns: [
+                                                            {
+                                                            text: '<span style="color:black;font-weight:bold;">To Sent</span>', dataIndex: 'F1_TOTAL_STVAL3', width: 90, style:'background:#DCD1F7;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                             listeners: {
+                                                                 click: 'onGridDataDetail'
+                                                             },
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Total</span>', menuDisabled: true,style:'background:#DCD1F7;color:black !important',
+                                                        columns: [
+                                                            {
+                                                            text: '<span style="color:black;font-weight:bold;">Load SAP</span>', dataIndex: 'F1_TOTAL_STVAL3', width: 90, style:'background:#DCD1F7;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                             listeners: {
+                                                                 click: 'onGridDataDetail'
+                                                             },
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                         {
+                                                            text: '<span style="color:black;font-weight:bold;">Return Error</span>', dataIndex: 'F1_TOTAL_STVAL3', width: 90, style:'background:#DCD1F7;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                             listeners: {
+                                                                 click: 'onGridDataDetail'
+                                                             },
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">%</span>', menuDisabled: true,style:'background:#DCD1F7;color:black !important',
+                                                        columns: [
+                                                            {
+                                                                text: '<span style="color:black;font-weight:bold;">Progress</span>', dataIndex: 'F1_PERCENT', width: 70, style:'background:#DCD1F7;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                                 listeners: {
+                                                                     click: 'onGridDataDetail'
+                                                                 },
+                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                     metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                     return '<b>' + value + '</b>';
+                                                                 },
+                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                     var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                     metaData.style = 'text-align:right; margin-right:3px ';
+                                                                     return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                                 }
+                                                             }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                        xtype: 'panel',
+                                        id: prototype.id + '-SummaryMainData',
+                                        align: 'left',
+                                        margin: '0 0 0 0 ',
+                                        layout: {
+                                            type: 'hbox',
+                                            align: 'left'
+                                        },
+                                        defaults: {
+                                            xtype: 'label',
+                                            align: 'left',
+                                            html: '' + '&nbsp',
+                                            height: 45,
+                                            padding: '5 5 5 0',
+                                            style: 'background:#A0BFD3;color:#244066;text-align:right;font-weight:bold;border: 0.3px #4A6371 solid;font-size:11px'
+                                        },
+                                        items: [
+                                            {
+                                                width: 185,
+                                                id: prototype.id + '-SPACE1',
+                                                style: 'background:#c9daf5; text-align:center; font-weight:bold; color:black;',
+                                                html: 'Totals'
+                                            },
+                                            {width: 70, id: prototype.id + '-F1_TOTAL_GLOBAL',style:'background: #FBD2D1;text-align:right'},
+                                            {width: 70, id: prototype.id + '-F1_TOTAL_STVAL3_GLOBAL',style:'background: #FBD2D1;text-align:right'},
+                                            {width: 80, id: prototype.id + '-F1_TOTAL_STVAL1_GLOBAL',style:'background: #FBD2D1;text-align:right'},
+                                            {width: 70, id: prototype.id + '-F1_PERCENT_GLOBAL',style:'background: #FBD2D1;text-align:right'},
+                                            {width: 90, id: prototype.id + '-F2_TOTAL_GLOBAL',style:'background: #D1FBD2;text-align:right'},
+                                            {width: 70, id: prototype.id + '-F2_TOTAL_STVAL3_GLOBAL',style:'background: #D1FBD2;text-align:right'},
+                                            {width: 90, id: prototype.id + '-F2_TOTAL_STVAL1_GLOBAL',style:'background: #D1FBD2;text-align:right'},
+                                            {width: 70, id: prototype.id + '-F2_PERCENT_GLOBAL',style:'background: #D1FBD2;text-align:right'},
+                                            {width: 100, id: prototype.id + '-SENT_TOTAL_GLOBAL',style:'background: #D6D6D6;text-align:right'},
+                                            {width: 90, id: prototype.id + '-SENT_TOTAL_STVAL3_GLOBAL',style:'background: #D6D6D6;text-align:right'},
+                                            {width: 100, id: prototype.id + '-SENT_TOTAL_STVAL1_GLOBAL',style:'background: #D6D6D6;text-align:right'},
+                                            {width: 70, id: prototype.id + '-SENT_PERCENT_GLOBAL',style:'background: #D6D6D6;text-align:right'},
+                                            {width: 100, id: prototype.id + '-SAP_TOTAL_GLOBAL',style:'background: #DCD1F7;text-align:right'},
+                                            {width: 90, id: prototype.id + '-SAP_TOTAL_STVAL3_GLOBAL',style:'background: #DCD1F7;text-align:right'},
+                                            {width: 100, id: prototype.id + '-SAP_TOTAL_STVAL1_GLOBAL',style:'background: #DCD1F7;text-align:right'},
+                                            {width: 90, id: prototype.id + '-SAP_PERCENT_GLOBAL',style:'background: #DCD1F7;text-align:right'},
+                                            {width: 70, id: prototype.id + '-SAP_PERCENT_GLOBAL1',style:'background: #DCD1F7;text-align:right'},
+                                        ]
+                                    },
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
                             id: prototype.id + '-pie',
                             layout: {
                                 type: 'hbox',
@@ -8109,6 +8563,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                 }
                             ]
                         },
+                        
                     ]
                 },
                 {

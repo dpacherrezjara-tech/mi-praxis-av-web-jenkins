@@ -12,6 +12,7 @@ package net.miatech.praxis.payment;
  */
 public class A2356 {
         public String CCUST= "";  
+        public String VALDATE= "";  
         public String FCHILD= "";  
         public String NAME = "";  
         public String TYPE = "";  
@@ -125,6 +126,9 @@ public class A2356 {
         public int QSALES  = 0;
         public int QSALESC  = 0;
         public int QTYLIQ  = 0;
+        public int F1_TOTAL  = 0;
+        public int F1_TOTAL_STVAL3  = 0;
+        public int F1_TOTAL_STVAL1  = 0;
         public int QTYLIQP  = 0;
         public int QTYACCO  = 0;
         public int QTYTACCOC  = 0;
