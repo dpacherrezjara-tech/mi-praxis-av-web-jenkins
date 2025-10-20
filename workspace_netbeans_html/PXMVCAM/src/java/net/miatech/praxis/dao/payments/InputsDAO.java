@@ -320,8 +320,10 @@ public class InputsDAO {
         hmTablaFuente.put("AXPLUSGR-D", "A4123");
         hmTablaFuente.put("AXLIGATB-D", "A4125");
         hmTablaFuente.put("WORLDPAY-D", "A4039");
+        hmTablaFuente.put("LIQUI-BSP", "MPF195");
+        
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP04393(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP04393_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         try {
             
@@ -1247,6 +1249,7 @@ public class InputsDAO {
                 objRtn.PROCDATE = rs01.getString("PROCDATE").trim();
                 objRtn.QTYDOC = rs01.getInt("QTYDOC");
                 objRtn.tot_QTYDOC = rs01.getInt("TOT_QTYDOC");
+
                 
                 objRtn.strTitulo = strTitulo;
                 

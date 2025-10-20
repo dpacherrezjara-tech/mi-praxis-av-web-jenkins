@@ -3585,7 +3585,7 @@ public class StatementReconciliationsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL PRAXISMP.SQP006CASH(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.SQP006CASH(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -3613,6 +3613,7 @@ public class StatementReconciliationsDAO {
             cstmt.setString(19, filter.IN_DATECI.trim());
             cstmt.setString(20, filter.IN_TRANCI.trim());
             cstmt.setString(21, filter.IN_FUNDSTRGK.trim());
+            cstmt.setString(22, filter.IN_SCOUNTRY.trim());
             cstmt.execute();
 
             rst = cstmt.getResultSet();

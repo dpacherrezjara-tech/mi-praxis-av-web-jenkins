@@ -579,6 +579,7 @@ public class MPF100Filter extends MPF100 {
     public String TRANC = "";
     public String BANDOC = "";
     public String MCLOS = "";
+    public String NOMBRECSV = "";
     public double SVFOPNETR = 0;
    private List<MPF100Filter> mainRecords = new ArrayList<>();
     private List<MPF100Filter> agentList = new ArrayList<>();

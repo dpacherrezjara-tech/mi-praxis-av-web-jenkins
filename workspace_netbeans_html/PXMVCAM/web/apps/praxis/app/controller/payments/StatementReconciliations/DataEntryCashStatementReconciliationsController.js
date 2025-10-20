@@ -204,6 +204,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
         this.beanScan.IN_TRANCI = meDE.beanResult.TRANCI;
         this.beanScan.IN_ACCNUMBER = meDE.beanResult.ACCNUMBER;
         this.beanScan.IN_TDOC = meDE.beanResult.TDOC;
+        this.beanScan.IN_SCOUNTRY = meDE.beanResult.SCOUNTRY;
 
         if (this.beanScan.IN_STVAL === 'Match' ) {
             this.beanScan.IN_STVAL = '1';
@@ -1035,6 +1036,25 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
         var datosEnJSON = Ext.JSON.encode(listaDeDatos);
         return datosEnJSON;
     },
+     ExportCSV: function () {
+            console.log('Descargando CSV...');
+
+            const country = this.beanResult.SCOUNTRY; // Ejemplo: "CO"
+            const date = this.beanResult.VALDATE;       // Ejemplo: "20250731"
+
+            if (!country || !date) {
+                Ext.Msg.alert('Error', 'Faltan parámetros para la descarga (SCOUNTRY o ADATE).');
+                return;
+            }
+
+            // Enviamos los dos parámetros al backend
+            const url = prototype.url + '/getCSV?country=' + encodeURIComponent(country)
+                                       + '&date=' + encodeURIComponent(date);
+
+            console.log('Solicitando:', url);
+
+            global.getFile(url);
+        },
     validacionInsert: function (beanTemp) {
         var msjResult = '';
 
@@ -1062,4 +1082,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
         }
     }
 // </editor-fold>
+
+
 });

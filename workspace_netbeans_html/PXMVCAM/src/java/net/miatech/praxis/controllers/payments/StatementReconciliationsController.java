@@ -11,7 +11,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -4536,5 +4541,65 @@ public class StatementReconciliationsController extends BaseController {
         }
         return lst;
     }
+    @RequestMapping(value = "getCSV")
+    public @ResponseBody void getCSV(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        System.out.println("Report : getCSV");
+
+        String country = request.getParameter("country");
+        String date = request.getParameter("date");
+
+        if (country == null || date == null || country.isEmpty() || date.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("Parámetros 'country' y 'date' son obligatorios");
+            return;
+        }
+
+        // Carpeta base donde buscar los archivos CSV
+        Path folderPath = Paths.get("W:\\ALDAIR\\BSP");
+
+        System.out.println("Buscando archivos para country=" + country + " y date=" + date);
+
+        // Buscar el archivo que cumpla con el patrón: "CO*20250731*.csv"
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(folderPath, "*.csv")) {
+            Path matchedFile = null;
+            for (Path path : stream) {
+                String fileName = path.getFileName().toString();
+                if (fileName.startsWith(country) && fileName.contains(date)) {
+                    matchedFile = path;
+                    break;
+                }
+            }
+
+            if (matchedFile == null) {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                response.getWriter().write("No se encontró ningún archivo para " + country + " y fecha " + date);
+                return;
+            }
+
+            System.out.println("Archivo encontrado: " + matchedFile);
+
+            // Configurar cabeceras
+            response.setContentType("text/csv");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + matchedFile.getFileName().toString() + "\"");
+
+            try (FileInputStream fis = new FileInputStream(matchedFile.toFile());
+                 OutputStream out = response.getOutputStream()) {
+
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+
+                while ((bytesRead = fis.read(buffer)) != -1) {
+                    out.write(buffer, 0, bytesRead);
+                }
+
+                out.flush();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("Error al buscar o descargar el archivo CSV");
+        }
+    }
+
 
 }

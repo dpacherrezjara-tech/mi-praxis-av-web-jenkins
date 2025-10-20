@@ -1028,6 +1028,14 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                             width: 280,
                                             margin: '10 2 10 8'
                                         },
+                                         {xtype: 'tbspacer', width: 1000},
+                                        {
+                                                                            xtype: 'button',
+                                                                            id: prototype.id + '-btnExcelCash',
+                                                                            iconCls: 'prx-icon-excel',
+                                                                            tooltip: 'Export to csv',
+                                                                            handler: 'ExportCSV'
+                                                                        },
                                         {
                                             xtype: 'panel',
                                             layout: 'hbox',
