@@ -4231,6 +4231,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         this.setGridDataDetalleCash();
     },
     setGridDataDetalleCash: function (data) {
+        console.log("Prueba");
+        me.panelActual = '-panelGridDataDetalleCash';
         win.lblUser_toolTip("Estructura: MPF191");
 //        me.setWidthPie();
         var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
@@ -4346,5 +4348,24 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             }
         });
     },
+     ExportCSV: function () {
+            console.log('Descargando CSV...');
+
+            const country = this.bean.SCOUNTRY; // Ejemplo: "CO"
+            const date = this.bean.ADATE;       // Ejemplo: "20250731"
+
+            if (!country || !date) {
+                Ext.Msg.alert('Error', 'Faltan parámetros para la descarga (SCOUNTRY o ADATE).');
+                return;
+            }
+
+            // Enviamos los dos parámetros al backend
+            const url = prototype.url + '/getCSV?country=' + encodeURIComponent(country)
+                                       + '&date=' + encodeURIComponent(date);
+
+            console.log('Solicitando:', url);
+
+            global.getFile(url);
+        }
     
 });

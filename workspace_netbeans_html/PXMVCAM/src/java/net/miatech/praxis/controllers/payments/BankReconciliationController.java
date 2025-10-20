@@ -4,6 +4,20 @@
  * and open the template in the editor.
  */
 package net.miatech.praxis.controllers.payments;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -15,7 +29,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,6 +44,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.miatech.beans.JavaToFlexResponse;
@@ -59,6 +81,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.codehaus.jackson.JsonParser;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -5578,6 +5601,72 @@ public class BankReconciliationController extends BaseController {
 
         return new Gson().toJson(map);
     }
+    
+    @RequestMapping(value = "getCSV")
+    public @ResponseBody void getCSV(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        System.out.println("Report : getCSV");
+
+        String country = request.getParameter("country");
+        String date = request.getParameter("date");
+
+        if (country == null || date == null || country.isEmpty() || date.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("Parámetros 'country' y 'date' son obligatorios");
+            return;
+        }
+
+        // Carpeta base donde buscar los archivos CSV
+        Path folderPath = Paths.get("W:\\ALDAIR\\BSP");
+
+        System.out.println("Buscando archivos para country=" + country + " y date=" + date);
+
+        // Buscar el archivo que cumpla con el patrón: "CO*20250731*.csv"
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(folderPath, "*.csv")) {
+            Path matchedFile = null;
+            for (Path path : stream) {
+                String fileName = path.getFileName().toString();
+                if (fileName.startsWith(country) && fileName.contains(date)) {
+                    matchedFile = path;
+                    break;
+                }
+            }
+
+            if (matchedFile == null) {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                response.getWriter().write("No se encontró ningún archivo para " + country + " y fecha " + date);
+                return;
+            }
+
+            System.out.println("Archivo encontrado: " + matchedFile);
+
+            // Configurar cabeceras
+            response.setContentType("text/csv");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + matchedFile.getFileName().toString() + "\"");
+
+            try (FileInputStream fis = new FileInputStream(matchedFile.toFile());
+                 OutputStream out = response.getOutputStream()) {
+
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+
+                while ((bytesRead = fis.read(buffer)) != -1) {
+                    out.write(buffer, 0, bytesRead);
+                }
+
+                out.flush();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("Error al buscar o descargar el archivo CSV");
+        }
+    }
+
+
+    
+    
+
+    
 
 
 

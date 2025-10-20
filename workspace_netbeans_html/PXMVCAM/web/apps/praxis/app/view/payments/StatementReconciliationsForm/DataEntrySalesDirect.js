@@ -5,7 +5,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntrySales
         'Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySalesDirectStatementReconciliationsController'
     ],
     controller: 'DataEntrySalesDirectStatementReconciliationsController',
-    title: 'Statement Reconciliation - Data Entry Form',
+    title: 'Statement Reconciliation - Direct Sales - Data Entry Form',
     header: true,
     height: 780,
     width: 1200,
@@ -1035,7 +1035,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntrySales
                                                                             return value;
                                                                         }
                                                                     },
-                                                                    {text: 'MCLOS', dataIndex: 'MCLOS', width: 65,
+                                                                    {text: 'Pay. <br> Date', dataIndex: 'MCLOS', width: 65,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
                                                                             return value;
@@ -1075,29 +1075,15 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntrySales
                                                                             return value;
                                                                         }   
                                                                     },
-                                                                    {
-                                                                        text: 'Neto',
-                                                                        dataIndex: 'SVFOPNETR',
-                                                                        width: 80,
-                                                                        xtype: 'gridcolumn',
-                                                                        cls: 'detalle-neto', // Agrega una clase personalizada a las celdas de detalle NETO
+                                                                    {text: 'Account', dataIndex: 'ACCOUNT', width: 75,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            var data = record.data;
-                                                                            metaData.style = "text-align:right;";
-                                                                            return Ext.util.Format.number(value, '0,000.00');
-                                                                        },
-                                                                        editor: {
-                                                                            xtype: 'textfield',
-                                                                            editable: true,
-                                                                            allowBlank: false,
-                                                                            enableKeyEvents: true,
-                                                                            maskRe: /[0-9\.-]/,
-                                                                            selectOnFocus: true,
-                                                                            listeners: {
-                                                                                specialkey: 'eventKeyAdjustment'
-                                                                            }
-                                                                        }
+                                                                            metaData.style = "text-align:center;";
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            metaData.unselectableAttr = "unselectable='off'";
+                                                                            return value;
+                                                                        }   
                                                                     },
+                                                                    
                                                                     
                                                                     {text: 'Source', dataIndex: 'CFUENTE', width: 65,
                                                                         //                                                                editor: {xtype: 'textfield', editable: true},
@@ -1120,12 +1106,43 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntrySales
                                                                             return value;
                                                                         }
                                                                     },
-                                                                    {text: 'SOCIETY', dataIndex: 'SOCIETY', width: 100,
+                                                                    {
+                                                                        text: 'Neto',
+                                                                        dataIndex: 'SVFOPNETR',
+                                                                        width: 95,
+                                                                        xtype: 'gridcolumn',
+                                                                        cls: 'detalle-neto', // Agrega una clase personalizada a las celdas de detalle NETO
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            var data = record.data;
+                                                                            metaData.style = "text-align:right;";
+                                                                            return Ext.util.Format.number(value, '0,000.00');
+                                                                        },
+                                                                        editor: {
+                                                                            xtype: 'textfield',
+                                                                            editable: true,
+                                                                            allowBlank: false,
+                                                                            enableKeyEvents: true,
+                                                                            maskRe: /[0-9\.-]/,
+                                                                            selectOnFocus: true,
+                                                                            listeners: {
+                                                                                specialkey: 'eventKeyAdjustment'
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                    {text: 'SOCIETY', dataIndex: 'SOCIETY', width: 85,
                                                                         //                                                                editor: {xtype: 'textfield', editable: true},
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
                                                                             return value;
                                                                         }
+                                                                    },
+                                                                    {text: 'Days', dataIndex: 'PASSED_DAYS', width: 43,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            metaData.unselectableAttr = "unselectable='off'";
+                                                                            return value;
+                                                                        }   
                                                                     },
                                                                     {
                                                                         sortable: false,
@@ -1153,9 +1170,9 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntrySales
                                             xtype: 'panel',
                                             layout: 'hbox',
                                             border: false,
-                                            margin: '0 0 0 350',
+                                            margin: '0 0 0 333',
                                             items: [
-                                                {xtype: 'tbspacer', width: 340},
+                                                {xtype: 'tbspacer', width: 320},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Qty:',

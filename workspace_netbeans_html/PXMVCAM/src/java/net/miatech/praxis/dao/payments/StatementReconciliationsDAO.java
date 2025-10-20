@@ -3585,7 +3585,7 @@ public class StatementReconciliationsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL PRAXISMP.SQP006CASH(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.SQP006CASH(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -3613,6 +3613,7 @@ public class StatementReconciliationsDAO {
             cstmt.setString(19, filter.IN_DATECI.trim());
             cstmt.setString(20, filter.IN_TRANCI.trim());
             cstmt.setString(21, filter.IN_FUNDSTRGK.trim());
+            cstmt.setString(22, filter.IN_SCOUNTRY.trim());
             cstmt.execute();
 
             rst = cstmt.getResultSet();
@@ -3701,7 +3702,7 @@ public class StatementReconciliationsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL PRAXISMP.MPS305_SALESDIRECT_DETAILTICKET(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.MPS328(?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -3709,26 +3710,10 @@ public class StatementReconciliationsDAO {
             cstmt = cnx.prepareCall(SQLCLL01);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            cstmt.setString(2, filter.IN_FROMADATE.trim());
-            cstmt.setString(3, filter.IN_TOADATE.trim());
-            cstmt.setString(4, filter.IN_FROMSDATE.trim());
-            cstmt.setString(5, filter.IN_TOSDATE.trim());
-            cstmt.setString(6, filter.IN_CODEBANK.trim());
-            cstmt.setString(7, filter.IN_MERCHAND.trim());
-            cstmt.setString(8, filter.IN_BANDOC.trim());
-            cstmt.setString(9, filter.IN_STVAL.trim());
-            cstmt.setString(10, filter.IN_RED.trim());
-            cstmt.setString(11, filter.IN_SCARCOD.trim());
-            cstmt.setString(12, filter.IN_ACCNUMBER.trim());
-            cstmt.setString(13, filter.IN_SDATE.trim());
-            cstmt.setString(14, filter.IN_strNETO.trim());
-            cstmt.setString(15, filter.IN_TDOC.trim());
-            cstmt.setString(16, filter.IN_SEQ.trim());
-            cstmt.setString(17, filter.IN_TERMI.trim());
-            cstmt.setString(18, filter.IN_SAGENT.trim());
-            cstmt.setString(19, filter.IN_DATECI.trim());
-            cstmt.setString(20, filter.IN_TRANCI.trim());
-            cstmt.setString(21, filter.IN_FUNDSTRGK.trim());
+            cstmt.setString(2, filter.IN_BANDOC.trim());
+            cstmt.setString(3, filter.IN_DATECI.trim());
+            cstmt.setString(4, filter.IN_TRANCI.trim());
+
             cstmt.execute();
 
             rst = cstmt.getResultSet();
@@ -3822,6 +3807,8 @@ public class StatementReconciliationsDAO {
                 beanTkt.FPROC = rst.getString("FPROC");
                 beanTkt.BANKNAM = rst.getString("BANKNAM");
                 beanTkt.ACCNUMB = rst.getString("ACCNUMB");
+                beanTkt.ACCOUNT = rst.getString("ACCOUNT");
+                beanTkt.PASSED_DAYS = rst.getString("DAYSP");
                 beanTkt.BANKCM = rst.getString("BANKCM");
                 beanTkt.USCR = rst.getString("USCR");
                 beanTkt.FECR = rst.getString("FECR");

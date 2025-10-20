@@ -17,7 +17,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
         'Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCashStatementReconciliationsController'
     ],
     controller: 'DataEntryCashStatementReconciliationsController',
-    title: 'Statement Reconciliation - Data Entry Form',
+    title: 'Statement Reconciliation - Agency Sales - Data Entry Form',
     header: true,
     height: 780,
     width: 1200,
@@ -1028,6 +1028,14 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                             width: 280,
                                             margin: '10 2 10 8'
                                         },
+                                         {xtype: 'tbspacer', width: 1000},
+                                        {
+                                                                            xtype: 'button',
+                                                                            id: prototype.id + '-btnExcelCash',
+                                                                            iconCls: 'prx-icon-excel',
+                                                                            tooltip: 'Export to csv',
+                                                                            handler: 'ExportCSV'
+                                                                        },
                                         {
                                             xtype: 'panel',
                                             layout: 'hbox',

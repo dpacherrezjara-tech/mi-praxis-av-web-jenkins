@@ -1066,6 +1066,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         }
         this.beanLiquiCash.IN_STVAL = rowData.data.IN_STVAL;
         this.beanLiquiCash.IN_ADATE = rowData.data.SDATE;  
+        this.beanLiquiCash.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();;  
         me.paramsDetail.beanString = JSON.stringify(this.beanLiquiCash);
         this.setGridDataDetLiquidaCash();
     },

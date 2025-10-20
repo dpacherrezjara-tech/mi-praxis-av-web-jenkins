@@ -984,6 +984,7 @@ public class A2290Filter extends A2290 {
     public long lngTotQMANUALARC = 0; 
     public long lngTotQMANUALISC  = 0; 
     public long lngTotQ  = 0; 
+    public long lngQEECC  = 0; 
     public long lngTotQTKTAUTO  = 0; 
     public long lngTotQTKTPENDING  = 0; 
     public long lngTotQTKTMANUAL  = 0; 
@@ -1004,6 +1005,7 @@ public class A2290Filter extends A2290 {
     public long lngMANUALTKT    = 0; 
     public long lngTOTALTKT    = 0; 
     public long lngTotQSALESDIRECT    = 0; 
+    public long lngTotQTYECC    = 0; 
     public double totNETOEECC    = 0; 
     public double totNETOSETLEMENT    = 0; 
     public double SVFOPOT    = 0; 
@@ -1043,6 +1045,7 @@ public class A2290Filter extends A2290 {
     public String STARDATE_191 = "";
     public String ENDDATE_191 = "";
     public String QTYTKT_191 = "";
+    public String NINPUT = "";
     public double NETO_191 = 0;
     public double PAYAMOU_191 = 0;
     public double COMISION_191 = 0;

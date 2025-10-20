@@ -5213,7 +5213,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
                             height: 'auto',
-                            width: 1140,
+                            width: 1240,
                             margin: '0 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -5223,7 +5223,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataMainCASH',
-                                    width: 1462,
+                                    width: 1562,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -5259,6 +5259,27 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                             {
                                                 text: 'Settlement Reconciliation',
                                                 columns: [
+                                                    {
+                                                        text: 'EECC', menuDisabled: true,
+                                                        columns: [
+                                                            {
+                                                                text: 'Match', dataIndex: 'lngQEECC', width: 100, align: 'center', menuDisabled: true, //flex: 1
+                                                                listeners: {
+                                                                    click: ''
+                                                                },
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "color:#057ECB;text-align:right;background-color:#d5f4d5;";
+                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                    return value;
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var data = Ext.getCmp(prototype.id + '-gridDataMainCASH').getStore().getData().items[0].data;
+                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQTYECC, '0,000') + '<b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
                                                     {
                                                         text: 'Match', menuDisabled: true,
                                                         columns: [
