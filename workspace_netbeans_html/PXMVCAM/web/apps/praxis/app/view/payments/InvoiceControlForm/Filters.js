@@ -182,6 +182,30 @@ Ext.define('Ext.Praxis.view.payments.InvoiceControlForm.Filters', {
                     margin: '0 10 0 0' 
                 },
                 {
+                    xtype: 'combo',
+                    id: prototype.id + '-cmbCountry',
+                    fieldLabel: 'Country',
+                    queryMode: 'local',
+                    allowBlank: false,
+                    forceSelection: true,
+                    selectOnFocus: true,
+                    caseSensitive: false,
+                    autoSelect: true,
+                    editable: true,
+                    labelWidth: 45,
+                    width: 219,
+                    typeAhead: true,
+                    valueField: 'A006PAIS',
+                    displayField: 'A006NOMBRE',
+                    listConfig: {maxHeight: 111},
+                    triggerAction: 'all',
+                     margin: '0 10 0 0',
+                      listeners: {
+                        keypress: 'btnSearch_click'
+                    }
+                },
+                
+                {
                     xtype: 'textfield',
                     id: prototype.id + '-txtINVOICE',
                     fieldLabel: 'Invoice',
@@ -339,33 +363,6 @@ Ext.define('Ext.Praxis.view.payments.InvoiceControlForm.Filters', {
                     listeners: {
                         keypress: 'buscarFilter'
                     }
-                },
-                {
-                    xtype: 'label',
-                    hidden:true,
-                    text: 'Country:',
-                    width: 50,
-                    margin: '1.5 0 0 0'
-                },
-                {
-                    xtype: 'combo',
-                    hidden:true,
-                    id: prototype.id + '-cmbCountry',
-                    queryMode: 'local',
-                    allowBlank: false,
-                    forceSelection: true,
-                    selectOnFocus: true,
-                    caseSensitive: false,
-                    autoSelect: true,
-                    editable: true,
-                    width: 150,
-                    typeAhead: true,
-                    valueField: 'A006PAIS',
-                    displayField: 'A006NOMBRE',
-                    listConfig: {maxHeight: 111},
-                    enableKeyEvents: true,
-                    triggerAction: 'all',
-                    margin: '0 10 0 0'
                 },
                 {
                     xtype: 'label',

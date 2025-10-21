@@ -65,8 +65,9 @@ Ext.define('Ext.Praxis.view.payments.InvoiceControlForm.InvoiceControlForm', {
                                         },
                                         {
                                             xtype: 'panel',
-                                            height: 590,
+                                            height: 660,
                                             layout: 'fit',
+                                             id: prototype.id + '-panelHeight',
                                             items: [
                                                 {
                                                     xtype: 'panel',

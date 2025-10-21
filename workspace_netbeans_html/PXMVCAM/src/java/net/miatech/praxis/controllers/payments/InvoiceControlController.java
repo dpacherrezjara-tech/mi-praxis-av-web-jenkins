@@ -736,8 +736,7 @@ public class InvoiceControlController extends BaseController {
                     i++;
                     Row row = rowIterator.next();
 
-                    if (row.getCell(0) == null && row.getCell(1) == null && row.getCell(2) == null && row.getCell(3) == null && row.getCell(4) == null && row.getCell(5) == null
-                            && row.getCell(6) == null && row.getCell(7) == null && row.getCell(8) == null && row.getCell(9) == null && row.getCell(10) == null) {
+                    if (row.getCell(0) == null && row.getCell(1) == null && row.getCell(2) == null && row.getCell(3) == null && row.getCell(4) == null) {
                         break;
                     }
 
@@ -1114,7 +1113,7 @@ public class InvoiceControlController extends BaseController {
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
             sheet.addMergedRegion(new CellRangeAddress(0, 2, 0, 0));
             sheet.addMergedRegion(new CellRangeAddress(0, 2, 1, 1));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 9));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 6));
             ++vj;
             //============================================
 
@@ -1127,9 +1126,6 @@ public class InvoiceControlController extends BaseController {
             Cell CH2_4 = row2.createCell(4);
             Cell CH2_5 = row2.createCell(5);
             Cell CH2_6 = row2.createCell(6);
-            Cell CH2_7 = row2.createCell(7);
-            Cell CH2_8 = row2.createCell(8);
-            Cell CH2_9 = row2.createCell(9);
 
             CH2_0.setCellStyle(headerStyle);
             CH2_1.setCellStyle(headerStyle);
@@ -1138,21 +1134,14 @@ public class InvoiceControlController extends BaseController {
             CH2_4.setCellStyle(headerStyle);
             CH2_5.setCellStyle(headerStyle);
             CH2_6.setCellStyle(headerStyle);
-            CH2_7.setCellStyle(headerStyle);
-            CH2_8.setCellStyle(headerStyle);
-            CH2_9.setCellStyle(headerStyle);
 
             // Nombres de cabecera nivel 2
             CH2_2.setCellValue("Avianca");
             CH2_5.setCellValue("Praxis");
-            CH2_7.setCellValue("Accounting");
-            CH2_9.setCellValue("Praxis");
 
             // Uniones correctas de columnas
-            sheet.addMergedRegion(new CellRangeAddress(1, 1, 2, 4)); // Avianca → C-E
-            sheet.addMergedRegion(new CellRangeAddress(1, 1, 5, 6)); // Praxis → F-G
-            sheet.addMergedRegion(new CellRangeAddress(1, 1, 7, 8)); // Accounting → H-I
-            sheet.addMergedRegion(new CellRangeAddress(1, 1, 9, 9)); // Praxis → J
+            sheet.addMergedRegion(new CellRangeAddress(1, 1, 2, 4));
+            sheet.addMergedRegion(new CellRangeAddress(1, 1, 5, 6));
 
             ++vj;
 
@@ -1167,21 +1156,13 @@ public class InvoiceControlController extends BaseController {
             Cell CH3_4 = row3.createCell(4);
             Cell CH3_5 = row3.createCell(5);
             Cell CH3_6 = row3.createCell(6);
-            Cell CH3_7 = row3.createCell(7);
-            Cell CH3_8 = row3.createCell(8);
-            Cell CH3_9 = row3.createCell(9);
 
             CH3_2.setCellValue("Currency");
             CH3_3.setCellValue("Qty");
             CH3_4.setCellValue("Amount");
 
-            CH3_5.setCellValue("Amount");
-            CH3_6.setCellValue("Difference");
-
-            CH3_7.setCellValue("Amount");
-            CH3_8.setCellValue("Difference");
-
-            CH3_9.setCellValue("Pending");
+            CH3_5.setCellValue("Qty");
+            CH3_6.setCellValue("Rate (%)");
 
             CH3_0.setCellStyle(headerStyle);
             CH3_1.setCellStyle(headerStyle);
@@ -1190,9 +1171,6 @@ public class InvoiceControlController extends BaseController {
             CH3_4.setCellStyle(headerStyle);
             CH3_5.setCellStyle(headerStyle);
             CH3_6.setCellStyle(headerStyle);
-            CH3_7.setCellStyle(headerStyle);
-            CH3_8.setCellStyle(headerStyle);
-            CH3_9.setCellStyle(headerStyle);
 
             // ==== Merges ====
             sheet.addMergedRegion(new CellRangeAddress(2, 2, 2, 2));
@@ -1202,16 +1180,16 @@ public class InvoiceControlController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(2, 2, 5, 5));
             sheet.addMergedRegion(new CellRangeAddress(2, 2, 6, 6)); 
 
-            sheet.addMergedRegion(new CellRangeAddress(2, 2, 7, 7)); 
-            sheet.addMergedRegion(new CellRangeAddress(2, 2, 8, 8)); 
-
-            sheet.addMergedRegion(new CellRangeAddress(2, 2, 9, 9));
-
             ++vj;
 
             //============================================
 
-            while (iter.hasNext()) {
+            CellStyle bodyStylePercent = workbook.createCellStyle();
+            bodyStylePercent.cloneStyleFrom(bodyStyle);
+            bodyStylePercent.setDataFormat(workbook.createDataFormat().getFormat("0.00%"));
+
+            
+           while (iter.hasNext()) {
                 row1 = sheet.createRow(vj);
                 Cell rcell0 = row1.createCell(0);
                 Cell rcell1 = row1.createCell(1);
@@ -1220,25 +1198,31 @@ public class InvoiceControlController extends BaseController {
                 Cell rcell4 = row1.createCell(4);
                 Cell rcell5 = row1.createCell(5);
                 Cell rcell6 = row1.createCell(6);
-                Cell rcell7 = row1.createCell(7);
-                Cell rcell8 = row1.createCell(8);
-                Cell rcell9 = row1.createCell(9);
 
-                rcell0.setCellValue(listaData.get(vi).strFormatDate);
-                rcell1.setCellValue(listaData.get(vi).SOCIETY);
-                rcell2.setCellValue(listaData.get(vi).CURRENCY);
-                rcell3.setCellValue(listaData.get(vi).QTY);
-                rcell4.setCellValue(listaData.get(vi).SVFOPL);
-                rcell5.setCellValue(listaData.get(vi).SUM_MPF100);
-                rcell6.setCellValue(listaData.get(vi).DIFFERENCE_100);
-                rcell7.setCellValue(listaData.get(vi).SUM_ACTIVE);
-                rcell8.setCellValue(listaData.get(vi).DIFFERENCE);
-                rcell9.setCellValue(listaData.get(vi).PENDING_MPF100);
+                A2354Filter item = listaData.get(vi);
+
+                // Cálculo del rate
+                double rate = 0;
+                if ( item.QTY_INVOICES > 0) {
+                    rate = ((double) item.QTY_100_ALL / (double) item.QTY_INVOICES);
+                }
+
+                rcell0.setCellValue(item.strFormatDate);
+                rcell1.setCellValue(item.SOCIETY);
+                rcell2.setCellValue(item.CURRENCY);
+                rcell3.setCellValue(item.QTY_INVOICES);
+                rcell4.setCellValue(item.SVFOPL);
+                rcell5.setCellValue(item.QTY_100_ALL);
+
+                // Escribir el porcentaje
+                rcell6.setCellValue(rate); // <-- valor decimal (ej. 0.925)
+                rcell6.setCellStyle(bodyStylePercent); // aplicaremos estilo %
 
                 iter.next();
                 ++vi;
                 ++vj;
             }
+
 
             sheet.autoSizeColumn(0, true);
             sheet.autoSizeColumn(1, true);
@@ -1318,6 +1302,7 @@ public class InvoiceControlController extends BaseController {
             Cell CH1_6 = row1.createCell(6);
             Cell CH1_7 = row1.createCell(7);
             Cell CH1_8 = row1.createCell(8);
+            Cell CH1_9 = row1.createCell(9);
 
             CH1_0.setCellValue("Sale Date");
             CH1_1.setCellValue("Invoice");
@@ -1325,7 +1310,7 @@ public class InvoiceControlController extends BaseController {
             CH1_3.setCellValue("Avianca");
             CH1_4.setCellValue("Praxis");
             CH1_6.setCellValue("Accounting");
-            CH1_8.setCellValue("Praxis");
+            CH1_9.setCellValue("Praxis");
             
 
             CH1_0.setCellStyle(headerStyle);
@@ -1337,14 +1322,15 @@ public class InvoiceControlController extends BaseController {
             CH1_6.setCellStyle(headerStyle);
             CH1_7.setCellStyle(headerStyle);
             CH1_8.setCellStyle(headerStyle);
+            CH1_9.setCellStyle(headerStyle);
 
             sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
             sheet.addMergedRegion(new CellRangeAddress(0, 1, 1, 1));
             sheet.addMergedRegion(new CellRangeAddress(0, 1, 2, 2));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 3, 3));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, 5));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 6, 7));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 8, 8));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 6, 8));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 9, 9));
             ++vj;
             //============================================
 
@@ -1359,6 +1345,7 @@ public class InvoiceControlController extends BaseController {
             Cell CH2_6 = row2.createCell(6);
             Cell CH2_7 = row2.createCell(7);
             Cell CH2_8 = row2.createCell(8);
+            Cell CH2_9 = row2.createCell(9);
 
             CH2_0.setCellStyle(headerStyle);
             CH2_1.setCellStyle(headerStyle);
@@ -1369,6 +1356,7 @@ public class InvoiceControlController extends BaseController {
             CH2_6.setCellStyle(headerStyle);
             CH2_7.setCellStyle(headerStyle);
             CH2_8.setCellStyle(headerStyle);
+            CH2_9.setCellStyle(headerStyle);
 
             // Nombres de cabecera nivel 2
             CH2_3.setCellValue("Amount");
@@ -1376,7 +1364,8 @@ public class InvoiceControlController extends BaseController {
             CH2_5.setCellValue("Difference");
             CH2_6.setCellValue("Amount");
             CH2_7.setCellValue("Difference");
-            CH2_8.setCellValue("Pending");
+            CH2_8.setCellValue("AV");
+            CH2_9.setCellValue("Pending");
 
             // Uniones correctas de columnas
             sheet.addMergedRegion(new CellRangeAddress(1, 1, 3, 3)); 
@@ -1385,6 +1374,7 @@ public class InvoiceControlController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(1, 1, 6, 6));
             sheet.addMergedRegion(new CellRangeAddress(1, 1, 7, 7));
             sheet.addMergedRegion(new CellRangeAddress(1, 1, 8, 8));
+            sheet.addMergedRegion(new CellRangeAddress(1, 1, 9, 9));
 
             ++vj;
             
@@ -1401,6 +1391,7 @@ public class InvoiceControlController extends BaseController {
                 Cell rcell6 = row1.createCell(6);
                 Cell rcell7 = row1.createCell(7);
                 Cell rcell8 = row1.createCell(8);
+                Cell rcell9 = row1.createCell(9);
 
                 rcell0.setCellValue(listaData.get(vi).SDATE);
                 rcell1.setCellValue(listaData.get(vi).INVOICE);
@@ -1410,7 +1401,8 @@ public class InvoiceControlController extends BaseController {
                 rcell5.setCellValue(listaData.get(vi).DIFFERENCE_100);
                 rcell6.setCellValue(listaData.get(vi).SUM_ACTIVE);
                 rcell7.setCellValue(listaData.get(vi).DIFFERENCE);
-                rcell8.setCellValue(listaData.get(vi).PENDING_MPF100);
+                rcell8.setCellValue(listaData.get(vi).SUM_GENCON);
+                rcell9.setCellValue(listaData.get(vi).PENDING_MPF100);
 
                 iter.next();
                 ++vi;
