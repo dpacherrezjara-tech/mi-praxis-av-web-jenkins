@@ -155,8 +155,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 
         Ext.getCmp(prototype.id + '-cmbDateFromYear').setValue(this.fecha.getFullYear());
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(this.fecha.getFullYear());
-        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue("");
-        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue("");
+        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue(month);
+        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue(month);
 
         var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro');
         cmbFecFiltro.bindStore(Ext.create('Ext.data.ArrayStore', {
@@ -3325,6 +3325,15 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                 let F1_TOTAL_GLOBAL = 0;
                                 let F1_TOTAL_STVAL3_GLOBAL = 0;
                                 let F1_TOTAL_STVAL1_GLOBAL = 0;
+                                
+                                let F2_F1_TOTAL_COMPLETED_GLOBAL = 0;
+                                let F2_TOTAL_PENDING_OVER50_GLOBAL = 0;
+                                let F2_TOTAL_MATCH_OVER50_GLOBAL = 0;
+                                
+                                let F3_F2_TOTAL_COMPLETED_GLOBAL = 0;
+                                let F3_TOTAL_WO_ACC_GLOBAL = 0;
+                                let F3_TOTAL_COMPLETED_GLOBAL = 0;
+                                let F3_TOTAL_COMPLETED_SAP_GLOBAL = 0;
 
                                 let a = [];
                                 let dataRoot = { text: '.', expanded: false, children: [] };
@@ -3335,6 +3344,17 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                         let V_F1_TOTAL_STVAL3 = 0;
                                         let V_F1_TOTAL_STVAL1 = 0;
                                         let V_F1_PERCENT = 0;
+                                        
+                                        let V_F2_F1_TOTAL_COMPLETED = 0;
+                                        let V_F2_TOTAL_PENDING_OVER50 = 0;
+                                        let V_F2_TOTAL_MATCH_OVER50 = 0;
+                                        let V_F2_PERCENT = 0;
+                                        
+                                        let V_F3_F2_TOTAL_COMPLETED = 0;
+                                        let V_F3_TOTAL_WO_ACC = 0;
+                                        let V_F3_TOTAL_COMPLETED = 0;
+                                        let V_F3_TOTAL_COMPLETED_SAP = 0;
+                                        let V_F3_PERCENT = 0;
 
                                         // Agrupar por mes
                                         Ext.Object.each(lstData, function (index, valuex) {
@@ -3342,12 +3362,29 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                                 V_F1_TOTAL += valuex.F1_TOTAL;
                                                 V_F1_TOTAL_STVAL3 += valuex.F1_TOTAL_STVAL3;
                                                 V_F1_TOTAL_STVAL1 += valuex.F1_TOTAL_STVAL1;
+                                                
+                                                V_F2_F1_TOTAL_COMPLETED += valuex.F2_F1_TOTAL_COMPLETED;
+                                                V_F2_TOTAL_PENDING_OVER50 += valuex.F2_TOTAL_PENDING_OVER50;
+                                                V_F2_TOTAL_MATCH_OVER50 += valuex.F2_TOTAL_MATCH_OVER50;
+                                                
+                                                V_F3_F2_TOTAL_COMPLETED += valuex.F3_F2_TOTAL_COMPLETED;
+                                                V_F3_TOTAL_WO_ACC += valuex.F3_TOTAL_WO_ACC;
+                                                V_F3_TOTAL_COMPLETED += valuex.F3_TOTAL_COMPLETED;
+                                                V_F3_TOTAL_COMPLETED_SAP += valuex.F3_TOTAL_COMPLETED_SAP;
                                             }
                                         });
 
                                         // Calcular porcentaje por mes
                                         if (V_F1_TOTAL > 0) {
                                             V_F1_PERCENT = (V_F1_TOTAL_STVAL1 * 100) / V_F1_TOTAL;
+                                        }
+                                        
+                                        if (V_F2_F1_TOTAL_COMPLETED > 0) {
+                                            V_F2_PERCENT = (V_F2_TOTAL_MATCH_OVER50 * 100) / V_F2_F1_TOTAL_COMPLETED;
+                                        }
+                                        
+                                        if (V_F3_F2_TOTAL_COMPLETED > 0) {
+                                            V_F3_PERCENT = (V_F3_TOTAL_COMPLETED * 100) / V_F3_F2_TOTAL_COMPLETED;
                                         }
 
                                         // Agregar al árbol
@@ -3358,6 +3395,18 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                             F1_TOTAL_STVAL3: V_F1_TOTAL_STVAL3,
                                             F1_TOTAL_STVAL1: V_F1_TOTAL_STVAL1,
                                             F1_PERCENT: V_F1_PERCENT.toFixed(2) + '%',
+                                            
+                                            F2_F1_TOTAL_COMPLETED: V_F2_F1_TOTAL_COMPLETED,
+                                            F2_TOTAL_PENDING_OVER50: V_F2_TOTAL_PENDING_OVER50,
+                                            F2_TOTAL_MATCH_OVER50: V_F2_TOTAL_MATCH_OVER50,
+                                            F2_PERCENT: V_F2_PERCENT.toFixed(2) + '%',
+                                            
+                                            F3_F2_TOTAL_COMPLETED: V_F3_F2_TOTAL_COMPLETED,
+                                            F3_TOTAL_WO_ACC: V_F3_TOTAL_WO_ACC,
+                                            F3_TOTAL_COMPLETED: V_F3_TOTAL_COMPLETED,
+                                            F3_TOTAL_COMPLETED_SAP: V_F3_TOTAL_COMPLETED_SAP,
+                                            F3_PERCENT: V_F3_PERCENT.toFixed(2) + '%',
+                                            
                                             expanded: false,
                                             children: []
                                         });
@@ -3366,8 +3415,19 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                         Ext.Object.each(lstData, function (index, value01) {
                                             if (value.strFormatDate === value01.strFormatDate) {
                                                 let V_CHILD_PERCENT = 0;
+                                                let V_CHILD_PERCENT_F2 = 0;
+                                                let V_CHILD_PERCENT_F3 = 0;
+                                                
                                                 if (value01.F1_TOTAL > 0) {
                                                     V_CHILD_PERCENT = (value01.F1_TOTAL_STVAL1 * 100) / value01.F1_TOTAL;
+                                                }
+                                                
+                                                if (value01.F2_F1_TOTAL_COMPLETED > 0) {
+                                                    V_CHILD_PERCENT_F2 = (value01.F2_TOTAL_MATCH_OVER50 * 100) / value01.F2_F1_TOTAL_COMPLETED;
+                                                }
+                                                
+                                                if (value01.F3_F2_TOTAL_COMPLETED > 0) {
+                                                    V_CHILD_PERCENT_F3 = (value01.F3_TOTAL_COMPLETED * 100) / value01.F3_F2_TOTAL_COMPLETED;
                                                 }
 
                                                 dataRoot.children[a.indexOf(value.strFormatDate)].children.push({
@@ -3377,6 +3437,18 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                                     F1_TOTAL_STVAL3: value01.F1_TOTAL_STVAL3,
                                                     F1_TOTAL_STVAL1: value01.F1_TOTAL_STVAL1,
                                                     F1_PERCENT: V_CHILD_PERCENT.toFixed(2) + '%',
+                                                    
+                                                    F2_F1_TOTAL_COMPLETED: value01.F2_F1_TOTAL_COMPLETED,
+                                                    F2_TOTAL_PENDING_OVER50: value01.F2_TOTAL_PENDING_OVER50,
+                                                    F2_TOTAL_MATCH_OVER50: value01.F2_TOTAL_MATCH_OVER50,
+                                                    F2_PERCENT: V_CHILD_PERCENT_F2.toFixed(2) + '%',
+                                                    
+                                                    F3_F2_TOTAL_COMPLETED: value01.F3_F2_TOTAL_COMPLETED,
+                                                    F3_TOTAL_WO_ACC: value01.F3_TOTAL_WO_ACC,
+                                                    F3_TOTAL_COMPLETED: value01.F3_TOTAL_COMPLETED,
+                                                    F3_TOTAL_COMPLETED_SAP: value01.F3_TOTAL_COMPLETED_SAP,
+                                                    F3_PERCENT: V_CHILD_PERCENT_F3.toFixed(2) + '%',
+                                                    
                                                     leaf: true
                                                 });
                                             }
@@ -3386,6 +3458,15 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                         F1_TOTAL_GLOBAL += V_F1_TOTAL;
                                         F1_TOTAL_STVAL3_GLOBAL += V_F1_TOTAL_STVAL3;
                                         F1_TOTAL_STVAL1_GLOBAL += V_F1_TOTAL_STVAL1;
+                                        
+                                        F2_F1_TOTAL_COMPLETED_GLOBAL += V_F2_F1_TOTAL_COMPLETED;
+                                        F2_TOTAL_PENDING_OVER50_GLOBAL += V_F2_TOTAL_PENDING_OVER50;
+                                        F2_TOTAL_MATCH_OVER50_GLOBAL += V_F2_TOTAL_MATCH_OVER50;
+                                        
+                                        F3_F2_TOTAL_COMPLETED_GLOBAL += V_F3_F2_TOTAL_COMPLETED;
+                                        F3_TOTAL_WO_ACC_GLOBAL += V_F3_TOTAL_WO_ACC;
+                                        F3_TOTAL_COMPLETED_GLOBAL += V_F3_TOTAL_COMPLETED;
+                                        F3_TOTAL_COMPLETED_SAP_GLOBAL += V_F3_TOTAL_COMPLETED_SAP;
                                     }
                                 });
 
@@ -3393,6 +3474,16 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                 let F1_PERCENT_GLOBAL = 0;
                                 if (F1_TOTAL_GLOBAL > 0) {
                                     F1_PERCENT_GLOBAL = (F1_TOTAL_STVAL1_GLOBAL * 100) / F1_TOTAL_GLOBAL;
+                                }
+                                
+                                let F1_PERCENT_GLOBAL_F2 = 0;
+                                if (F2_F1_TOTAL_COMPLETED_GLOBAL > 0) {
+                                    F1_PERCENT_GLOBAL_F2 = (F2_TOTAL_MATCH_OVER50_GLOBAL * 100) / F2_F1_TOTAL_COMPLETED_GLOBAL;
+                                }
+                                
+                                let F1_PERCENT_GLOBAL_F3 = 0;
+                                if (F3_F2_TOTAL_COMPLETED_GLOBAL > 0) {
+                                    F1_PERCENT_GLOBAL_F3 = (F3_TOTAL_COMPLETED_GLOBAL * 100) / F3_F2_TOTAL_COMPLETED_GLOBAL;
                                 }
 
                                 // Crear el store
@@ -3406,7 +3497,72 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                 Ext.getCmp(prototype.id + '-F1_TOTAL_STVAL3_GLOBAL').setText(Ext.util.Format.number(F1_TOTAL_STVAL3_GLOBAL, '0,000'));
                                 Ext.getCmp(prototype.id + '-F1_TOTAL_STVAL1_GLOBAL').setText(Ext.util.Format.number(F1_TOTAL_STVAL1_GLOBAL, '0,000'));
                                 Ext.getCmp(prototype.id + '-F1_PERCENT_GLOBAL').setText(F1_PERCENT_GLOBAL.toFixed(2) + '%');
+                                
+                                Ext.getCmp(prototype.id + '-F2_TOTAL_GLOBAL').setText(Ext.util.Format.number(F2_F1_TOTAL_COMPLETED_GLOBAL, '0'));
+                                Ext.getCmp(prototype.id + '-F2_TOTAL_STVAL3_GLOBAL').setText(Ext.util.Format.number(F2_TOTAL_PENDING_OVER50_GLOBAL, '0,000'));
+                                Ext.getCmp(prototype.id + '-F2_TOTAL_STVAL1_GLOBAL').setText(Ext.util.Format.number(F2_TOTAL_MATCH_OVER50_GLOBAL, '0,000'));
+                                Ext.getCmp(prototype.id + '-F2_PERCENT_GLOBAL').setText(F1_PERCENT_GLOBAL_F2.toFixed(2) + '%');
+                                
+                                Ext.getCmp(prototype.id + '-SENT_TOTAL_GLOBAL').setText(Ext.util.Format.number(F3_F2_TOTAL_COMPLETED_GLOBAL, '0'));
+                                Ext.getCmp(prototype.id + '-SENT_TOTAL_STVAL3_GLOBAL').setText(Ext.util.Format.number(F3_TOTAL_WO_ACC_GLOBAL, '0,000'));
+                                Ext.getCmp(prototype.id + '-SENT_TOTAL_STVAL1_GLOBAL').setText(Ext.util.Format.number(F3_TOTAL_COMPLETED_GLOBAL, '0,000'));
+                                Ext.getCmp(prototype.id + '-SENT_PERCENT_GLOBAL').setText(F1_PERCENT_GLOBAL_F3.toFixed(2) + '%');
 
+                                Ext.getCmp(prototype.id + '-SAP_TOTAL_STVAL1_GLOBAL').setText(Ext.util.Format.number(F3_TOTAL_COMPLETED_SAP_GLOBAL, '0,000'));
+                                
+                                // ==== F1 - Settlement ====
+                                var totalsF1 = [];
+                                if (typeof F1_PERCENT_GLOBAL !== 'undefined') {
+                                    totalsF1.push({
+                                        LABEL: 'Advance',
+                                        Perc2: F1_PERCENT_GLOBAL,
+                                        VENDOR: 'Advance:\n' + Ext.util.Format.number(F1_PERCENT_GLOBAL, '0.00') + '%'
+                                    });
+                                    totalsF1.push({
+                                        LABEL: 'Pending',
+                                        Perc2: 100 - F1_PERCENT_GLOBAL,
+                                        VENDOR: 'Pending:\n' + Ext.util.Format.number(100 - F1_PERCENT_GLOBAL, '0.00') + '%'
+                                    });
+                                }
+                                var storeF1 = Ext.create('Ext.data.Store', { fields: ['LABEL', 'Perc2', 'VENDOR'], data: totalsF1 });
+                                Ext.getCmp(prototype.id + '-displayPolarSM').bindStore(storeF1);
+
+
+                                // ==== F2 - Sales ====
+                                var totalsF2 = [];
+                                if (typeof F1_PERCENT_GLOBAL_F2 !== 'undefined') {
+                                    totalsF2.push({
+                                        LABEL: 'Advance',
+                                        Perc2: F1_PERCENT_GLOBAL_F2,
+                                        VENDOR: 'Advance:\n' + Ext.util.Format.number(F1_PERCENT_GLOBAL_F2, '0.00') + '%'
+                                    });
+                                    totalsF2.push({
+                                        LABEL: 'Pending',
+                                        Perc2: 100 - F1_PERCENT_GLOBAL_F2,
+                                        VENDOR: 'Pending:\n' + Ext.util.Format.number(100 - F1_PERCENT_GLOBAL_F2, '0.00') + '%'
+                                    });
+                                }
+                                var storeF2 = Ext.create('Ext.data.Store', { fields: ['LABEL', 'Perc2', 'VENDOR'], data: totalsF2 });
+                                Ext.getCmp(prototype.id + '-displayPolarF2').bindStore(storeF2);
+                                
+                                // ==== Accounted ====
+                                var totalsF3 = [];
+                                if (typeof F1_PERCENT_GLOBAL_F3 !== 'undefined') {
+                                    totalsF3.push({
+                                        LABEL: 'Advance',
+                                        Perc2: F1_PERCENT_GLOBAL_F3,
+                                        VENDOR: 'Advance:\n' + Ext.util.Format.number(F1_PERCENT_GLOBAL_F3, '0.00') + '%'
+                                    });
+                                    totalsF3.push({
+                                        LABEL: 'Pending',
+                                        Perc2: 100 - F1_PERCENT_GLOBAL_F3,
+                                        VENDOR: 'Pending:\n' + Ext.util.Format.number(100 - F1_PERCENT_GLOBAL_F3, '0.00') + '%'
+                                    });
+                                }
+                                var storeF3 = Ext.create('Ext.data.Store', { fields: ['LABEL', 'Perc2', 'VENDOR'], data: totalsF3 });
+                                Ext.getCmp(prototype.id + '-displayPolarF3').bindStore(storeF3);
+
+                                
                                 console.log({
                                     F1_TOTAL_GLOBAL,
                                     F1_TOTAL_STVAL3_GLOBAL,
@@ -3503,7 +3659,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                     SAP: lastRecord.AMOUNT_TOTAL_ACRED_SAP
                                 },
                                 {
-                                    category: 'Pendiente',
+                                    category: 'Pending',
                                     USD: lastRecord.AMOUNT_TOTAL_PENDING_USD,
                                     SEND: lastRecord.AMOUNT_TOTAL_PENDING_SEND,
                                     SAP: lastRecord.AMOUNT_TOTAL_PENDING_SAP
