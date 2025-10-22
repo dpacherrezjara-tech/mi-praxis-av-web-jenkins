@@ -680,7 +680,7 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                                         AMOUNT_REVERSE_CHGBACK_USD : V_AMOUNT_REVERSE_CHGBACK_USD ,
                                         AMOUNT_REVERSE_CHGBACK_SEND : V_AMOUNT_REVERSE_CHGBACK_SEND ,
                                         AMOUNT_REVERSE_CHGBACK_SAP : V_AMOUNT_REVERSE_CHGBACK_SAP ,
-                                        AMOUNT_REVERSE_PENDING_CHGBACK_SAP : V_AMOUNT_REVERSE_CHGBACK_SAP ,
+                                        AMOUNT_REVERSE_PENDING_CHGBACK_SAP : V_AMOUNT_REVERSE_PENDING_CHGBACK_SAP ,
                                         
                                         QTY_ACRED : V_QTY_ACRED ,
                                         AMOUNT_ACRED_USD : V_AMOUNT_ACRED_USD ,
