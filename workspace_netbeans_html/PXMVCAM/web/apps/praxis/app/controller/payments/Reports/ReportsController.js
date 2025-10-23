@@ -1085,6 +1085,7 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                         obj.proxy.extraParams = me.paramsDetail;
                     },
                     load: function (obj) {
+                        console.log(obj,'objAAAA')
                         var pag = Ext.getCmp(prototype.id + '-paggin3');
                         var pagData = pag.getPageData();
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
