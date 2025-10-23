@@ -6215,7 +6215,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                     {
                                                         iconCls: 'prx-icon-edit',
                                                         tooltip: 'Edit',
-                                                        handler: 'onEditClick'
+//                                                        handler: 'onEditClick'
                                                     }
                                                 ]
                                             }
