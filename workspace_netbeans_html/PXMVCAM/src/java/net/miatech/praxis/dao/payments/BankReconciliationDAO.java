@@ -8428,6 +8428,8 @@ public class BankReconciliationDAO {
                 bean.O_PAYAMOU = rst.getDouble("PAYAMOU");
                 bean.O_STRDATE = rst.getString("STRDATE");
                 bean.O_ENDDATE = rst.getString("ENDDATE");
+                bean.O_SUM_NETO = rst.getDouble("SUM_NETO");
+                bean.O_SUM_PAYAMOU = rst.getDouble("SUM_PAYAMOU");
 
                 
 

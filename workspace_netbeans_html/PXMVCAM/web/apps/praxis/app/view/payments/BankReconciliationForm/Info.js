@@ -6062,7 +6062,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataMPF199',
-                                    width: 1057,
+                                    width: 1099,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -6080,7 +6080,15 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 width: 100,
                                                 renderer: function (value, metaData) {
                                                     metaData.style = "text-align:center;";
-                                                    return value;
+
+                                                    switch (value) {
+                                                        
+                                                        case '3':
+                                                        case 3:
+                                                            return 'Pending';
+                                                        default:
+                                                            return value; // Si no coincide, muestra el valor original
+                                                    }
                                                 }
                                             },
                                             {
@@ -6155,11 +6163,11 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                     metaData.style = "text-align:right;";
                                                     return Ext.util.Format.number(value, '0,000.00');
                                                 },
-//                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-//                                                    var data = Ext.getCmp(prototype.id + '-gridDataInfoScan').getStore().getData().items[0].data;
-//                                                    metaData.style = 'text-align:right; margin-right:3px ';
-//                                                    return '<b>' + Ext.util.Format.number(data.SUM_NETO, '0,000.00') + '<b>';
-//                                                }
+                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                    var data = Ext.getCmp(prototype.id + '-gridDataMPF199').getStore().getData().items[0].data;
+                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                    return '<b>' + Ext.util.Format.number(data.O_SUM_NETO, '0,000.00') + '<b>';
+                                                }
 
                                             },
                                             {
@@ -6172,11 +6180,11 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                     metaData.style = "text-align:right;";
                                                     return Ext.util.Format.number(value, '0,000.00');
                                                 },
-//                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-//                                                    var data = Ext.getCmp(prototype.id + '-gridDataInfoScan').getStore().getData().items[0].data;
-//                                                    metaData.style = 'text-align:right; margin-right:3px ';
-//                                                    return '<b>' + Ext.util.Format.number(data.SUM_PAYAMOU, '0,000.00') + '<b>';
-//                                                }
+                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                    var data = Ext.getCmp(prototype.id + '-gridDataMPF199').getStore().getData().items[0].data;
+                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                    return '<b>' + Ext.util.Format.number(data.O_SUM_PAYAMOU, '0,000.00') + '<b>';
+                                                }
                                             },
                                             {
                                                 text: 'Star <br> Date',
@@ -6196,6 +6204,20 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                     return value;
                                                 }
 
+                                            },
+                                               {
+                                                sortable: false,
+                                                xtype: 'actioncolumn',
+                                                width: 42,
+                                                text: 'Edit',
+                                                align: 'center',
+                                                items: [
+                                                    {
+                                                        iconCls: 'prx-icon-edit',
+                                                        tooltip: 'Edit',
+                                                        handler: 'onEditClick'
+                                                    }
+                                                ]
                                             }
 
                                         ]
