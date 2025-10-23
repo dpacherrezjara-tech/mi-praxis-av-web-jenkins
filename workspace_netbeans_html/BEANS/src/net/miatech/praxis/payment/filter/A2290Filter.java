@@ -1073,6 +1073,9 @@ public class A2290Filter extends A2290 {
     public String O_ENDDATE ="";
     public double O_SUM_NETO = 0;
     public double O_SUM_PAYAMOU = 0;
+    public String O_TADJ = "";
+    public String O_REFERENCE = "";
+    public String O_COMMENTS = "";
     
     
     

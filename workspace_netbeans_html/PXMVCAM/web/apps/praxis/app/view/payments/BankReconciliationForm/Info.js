@@ -6043,13 +6043,14 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                             bodyStyle: 'background: transparent;',
                             border: false,
 //                            height: 'auto',
-                            width: 1400,
+                            width: 1470,
                             margin: '0 0 0 0 ',
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
                             },
-                            items: [
+                            
+                            items: [                        
                                 {
                                     xtype: 'label',
                                     id: prototype.id + '-labelMPF199',
@@ -6062,7 +6063,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataMPF199',
-                                    width: 1099,
+                                    width: 1454,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -6103,26 +6104,58 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                             {
                                                 text: 'Concept',
                                                 dataIndex: 'O_CONCEPT',
-                                                width: 175,
+                                                width: 100,
                                                 renderer: function (value, metaData, record) {
                                                     metaData.style = "text-align:center;";
 
                                                     const agent = (record.get('O_CONCEPT') || '').trim();
                                                     if (value === 'P') {
-                                                        value = 'Positive Billing';
+                                                        value = 'Positive';
                                                     } else if (value === 'N') {
-                                                        value = 'Negative Billing';
-                                                    } else if (value === 'Z') {
+                                                        value = 'Negative';
+                                                     } else if (value === 'X') {
                                                         value = 'No Billing';
-                                                    } else if (value === 'S') {
-                                                        value = 'Settlement Adjustment';
+                                                    } else if (value === 'A') {
+                                                        value = 'Adjusment';
+                                                    } else if (value === 'M') {
+                                                        value = 'Automatic';
+                                                    } else if (value === 'C') {
+                                                        value = 'Compensantion';
                                                     } else {
-                                                        value = 'Billing';
+                                                        value = '';
                                                     }
 
                                                     return value;
                                                 }
                                             },
+                                            
+                                            {
+                                                text: 'Type<br>Adjusment',
+                                                dataIndex: 'O_TADJ',
+                                                width: 150,
+                                                renderer: function (value, metaData, record) {
+                                                    metaData.style = "text-align:center;";
+
+                                                    const agent = (record.get('O_TADJ') || '').trim();
+                                                    if (value === 'N') {
+                                                        value = 'NON-REMITTANCE';
+                                                    } else if (value === 'R') {
+                                                        value = 'RECOVERY';
+                                                     } else if (value === 'U') {
+                                                        value = 'UNCLEARED';
+                                                    } else if (value === 'E') {
+                                                        value = 'EXCESS';
+                                                    } else if (value === 'S') {
+                                                        value = 'SHORT';
+                                                    }  else {
+                                                        value = 'OTROS';
+                                                    }
+
+                                                    return value;
+                                                }
+                                            },
+                                            
+                                            
                                             {
                                                 text: 'Agent',
                                                 dataIndex: 'O_SAGENT',
@@ -6205,6 +6238,35 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 }
 
                                             },
+                                            
+                                            
+                                              {
+                                                text: 'Reference',
+                                                dataIndex: 'O_REFERENCE',
+                                                width: 280,
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+
+                                            },
+                                            
+                                            
+//                                            
+//                                             {
+//                                                text: 'Comments',
+//                                                dataIndex: 'O_COMMENTS',
+//                                                width: 200,
+//                                                renderer: function (value, metaData) {
+//                                                    metaData.style = "text-align:center;";
+//                                                    return value;
+//                                                }
+//
+//                                            },
+                                            
+                                            
+                                            
+                                            
                                                {
                                                 sortable: false,
                                                 xtype: 'actioncolumn',
