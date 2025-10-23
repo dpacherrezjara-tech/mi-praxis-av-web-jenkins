@@ -64,6 +64,7 @@ public class A2356 {
         public String DIFFDAYS  = "";  
         public double TOTAL  = 0;  
         public double NETO  = 0;  
+        public double SVFOP  = 0;  
         public double SVFOPUSD  = 0;  
         public double SVFOPUSDP  = 0;  
         public double SVFOPUSDPENDING  = 0;  
@@ -77,6 +78,7 @@ public class A2356 {
         public double PERCPENDING  = 0;  
         public double totTOTAL  = 0;  
         public double totNETO  = 0;  
+        public double totSVFOP  = 0;  
         public double totQTYTKT10 = 0;
         public double totQTYTKT30 = 0;
         public double totQTYTKT60 = 0;

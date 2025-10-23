@@ -55,7 +55,7 @@ public class ReportsDAO {
 
         List<A2356Filter> lstData = new ArrayList<A2356Filter>(0);
         A2356Filter bean;
-        double totTOTAL = 0, totNETO = 0;
+        double totTOTAL = 0, totNETO = 0,totSVFOP = 0;
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
@@ -105,6 +105,7 @@ public class ReportsDAO {
             while (rst.next()) {
                 totTOTAL = rst.getDouble("TOTAL");
                 totNETO = rst.getDouble("NETO");
+                totSVFOP = rst.getDouble("SVFOP");
             }
             rst.close();
 
@@ -128,6 +129,7 @@ public class ReportsDAO {
                     bean.FTRAN = rst.getString("FTRAN").trim();
                     bean.MERCHAND = rst.getString("MERCHNC").trim();
                     bean.TOTAL = rst.getDouble("TOTAL");
+                    bean.SVFOP = rst.getDouble("SVFOP");
                     bean.NETO = rst.getDouble("NETO");
                     bean.SCURRENCY = rst.getString("SCURRENCY").trim();
                     bean.TYPE = rst.getString("TYPE").trim();
@@ -150,6 +152,7 @@ public class ReportsDAO {
 
                     bean.totTOTAL = totTOTAL;
                     bean.totNETO = totNETO;
+                    bean.totSVFOP = totSVFOP;
 
                     bean.page.PAGNUM = filter.page.PAGNUM;
                     bean.page.PAGROW = filter.page.PAGROW;
@@ -188,7 +191,7 @@ public class ReportsDAO {
 
         List<A2356Filter> lstData = new ArrayList<A2356Filter>(0);
         A2356Filter bean;
-        double totTOTAL = 0, totNETO = 0;
+        double totTOTAL = 0, totNETO = 0,totSVFOP = 0;
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
@@ -231,6 +234,7 @@ public class ReportsDAO {
             while (rst.next()) {
                 totTOTAL = rst.getDouble("TOTAL");
                 totNETO = rst.getDouble("NETO");
+                totSVFOP = rst.getDouble("SVFOP");
             }
             rst.close();
 
@@ -255,6 +259,7 @@ public class ReportsDAO {
                     bean.MERCHAND = rst.getString("MERCHNC").trim();
                     bean.TOTAL = rst.getDouble("TOTAL");
                     bean.NETO = rst.getDouble("NETO");
+                    bean.SVFOP = rst.getDouble("SVFOP");
                     bean.SCURRENCY = rst.getString("SCURRENCY").trim();
                     bean.TYPE = rst.getString("TYPE").trim();
                     bean.STVAL = rst.getString("STVAL").trim();
@@ -276,6 +281,7 @@ public class ReportsDAO {
 
                     bean.totTOTAL = totTOTAL;
                     bean.totNETO = totNETO;
+                    bean.totSVFOP = totSVFOP;
 
                     bean.page.PAGNUM = filter.page.PAGNUM;
                     bean.page.PAGROW = filter.page.PAGROW;
