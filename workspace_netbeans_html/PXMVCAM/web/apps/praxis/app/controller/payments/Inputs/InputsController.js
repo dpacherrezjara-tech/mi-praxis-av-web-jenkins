@@ -436,6 +436,7 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
         console.log(rowData.data);
         var beanDetAll = rowData.data;
         beanDetAll.IN_FECHA_FROM = rowData.data.DTRANS;
+        beanDetAll.IN_CONSULTA = '2';
 
         fte = Ext.getCmp(prototype.id + '-cmbFUENTE').getValue();
         var fte = Ext.getCmp(prototype.id + '-cmbFUENTE').getValue();
@@ -579,6 +580,7 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
     searchDelivery_clickHandler: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
         var beanDeliv = rowData.data;
         beanDeliv.IN_FECRFILE = rowData.data.strFormatDate.replaceAll('-', '');
+        let tipoConsulta = '';
         switch (columnNum) {
             case 1:
                 beanDeliv.IN_ERROR = '';
@@ -586,13 +588,26 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
             case 9:
                 beanDeliv.IN_ERROR = '1';
                 break;
+            case 5:
+                beanDeliv.IN_NAME = rowData.data.DESCRIP;
+                tipoConsulta = '3'
+                break;
+            case 10:
+                beanDeliv.IN_NAME = rowData.data.DESCRIP;
+                tipoConsulta = '1'
+                break;
+            case 11:
+                beanDeliv.IN_NAME = rowData.data.DESCRIP;
+                tipoConsulta = '4'
+                break;
         }
         Fuente = beanDeliv.FUENTE;
+        console.log(beanDeliv,'beanDelivbeanDeliv')
         if (beanDeliv.IN_ERROR === '1' && beanDeliv.QRECERR === 0) {
             global.Msg({msg: 'Data not found.'});
         } else {
             me.paramsDetail.beanString = JSON.stringify(beanDeliv);
-            me.paramsDetail.consulta = '1';
+            me.paramsDetail.consulta = tipoConsulta;
             this.searchDelivery();
         }
         console.log(beanDeliv);
@@ -639,7 +654,7 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
         beanDetLine.IN_ADATE = rowData.data.ADATE;
         beanDetLine.IN_CODEBANK = rowData.data.BANK;
         beanDetLine.IN_NAME = rowData.data.NAME.trim();
-        beanDetLine.consulta = '';
+        beanDetLine.consulta = '2';
         me.paramsDetail.beanString = JSON.stringify(beanDetLine);
         me.drillDown.push(me.panelActual);
         me.panelActual = '-boxDelivery';
