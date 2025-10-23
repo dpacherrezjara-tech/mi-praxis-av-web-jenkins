@@ -5213,7 +5213,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
                             height: 'auto',
-                            width: 1240,
+                            width: 1282,
                             margin: '0 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -5280,6 +5280,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             }
                                                         ]
                                                     },
+                                                    ///aqui validamos 
                                                     {
                                                         text: 'Match', menuDisabled: true,
                                                         columns: [
@@ -5371,7 +5372,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         ]
                                                     },
                                                     {
-                                                        text: 'Total', dataIndex: 'lngQSALES', width: 100, align: 'center', menuDisabled: true,
+                                                        text: 'Total', dataIndex: 'lngQSALES', width: 80, align: 'center', menuDisabled: true,
                                                         listeners: {
                                                             click: 'onGridTotalCORE'
                                                         },
@@ -5386,11 +5387,41 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             return '<b>' + Ext.util.Format.number(data.lngTotQSALES, '0,000') + '<b>';
                                                         }
                                                     },
+                                                    
+                                                    
+                                     //////onGridMPF199/////   //agregamos pending payment
+                                                    
+                                                     {
+                                                       
+                                                                text: 'Pending <br> Payment', dataIndex: 'lngQTYADJ', width: 80, align: 'center', menuDisabled: true, //flex: 1
+                                                                listeners: {
+                                                                    click: 'onGridMPF199'
+                                                                },
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "color:#057ECB;text-align:right;background-color:#d5f4d5;";
+                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                    return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                                },
+                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var data = Ext.getCmp(prototype.id + '-gridDataMainCASH').getStore().getData().items[0].data;
+                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQTYADJ, '0,000') + '<b>';
+                                                                }
+                                                            },
+                                                    
+                                                    
+                                                    /////
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
                                                     {
                                                         text: 'Accounted', menuDisabled: true,
                                                         columns: [
                                                             {
-                                                                text: 'Processed', dataIndex: 'lngQPOLIC', width: 100, align: 'center', menuDisabled: true, //flex: 1
+                                                                text: 'Processed', dataIndex: 'lngQPOLIC', width: 80, align: 'center', menuDisabled: true, //flex: 1
 //                                                                listeners: {
 //                                                                    click: 'onGridDetCardSMain'
 //                                                                },
@@ -5996,6 +6027,195 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                 },
                             ]
                         },
+                        
+                        
+                        /////////////PAE+NEL MPF199/////////////////////
+                        
+                        ////////////////////////////////////////////////
+                        ////////////////////////////////////////////////////
+                        
+                        
+                        
+                        
+                        {
+                            xtype: 'panel',
+                            id: prototype.id + '-panelGridDataMPF199',
+                            bodyStyle: 'background: transparent;',
+                            border: false,
+//                            height: 'auto',
+                            width: 1400,
+                            margin: '0 0 0 0 ',
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'label',
+                                    id: prototype.id + '-labelMPF199',
+                                    labelAlign: 'center',
+                                    labelStyle: 'color:#231223',
+                                    align: 'center',
+                                    margin: '5 0 5 0'
+//                                    hide: true
+                                },
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridDataMPF199',
+                                    width: 1057,
+                                    columnLines: true,
+                                    features: [{
+                                            ftype: 'summary'
+                                        }],
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: false,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {
+                                                text: 'Status',
+                                                dataIndex: 'O_STVAL',
+                                                width: 100,
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Value <br> Date',
+                                                dataIndex: 'O_ADATE',
+                                                width: 120,
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Concept',
+                                                dataIndex: 'O_CONCEPT',
+                                                width: 175,
+                                                renderer: function (value, metaData, record) {
+                                                    metaData.style = "text-align:center;";
+
+                                                    const agent = (record.get('O_CONCEPT') || '').trim();
+                                                    if (value === 'P') {
+                                                        value = 'Positive Billing';
+                                                    } else if (value === 'N') {
+                                                        value = 'Negative Billing';
+                                                    } else if (value === 'Z') {
+                                                        value = 'No Billing';
+                                                    } else if (value === 'S') {
+                                                        value = 'Settlement Adjustment';
+                                                    } else {
+                                                        value = 'Billing';
+                                                    }
+
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Agent',
+                                                dataIndex: 'O_SAGENT',
+                                                width: 100,
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Consol.',
+                                                dataIndex: 'O_SCONSOL',
+                                                width: 90,
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Currency',
+                                                dataIndex: 'O_SCURRENCY',
+                                                width: 80,
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Neto',
+                                                dataIndex: 'O_NETO',
+                                                width: 115,
+                                                xtype: 'numbercolumn',
+                                                summaryType: 'sum', // 🔥 suma automático
+
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:right;";
+                                                    return Ext.util.Format.number(value, '0,000.00');
+                                                },
+//                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+//                                                    var data = Ext.getCmp(prototype.id + '-gridDataInfoScan').getStore().getData().items[0].data;
+//                                                    metaData.style = 'text-align:right; margin-right:3px ';
+//                                                    return '<b>' + Ext.util.Format.number(data.SUM_NETO, '0,000.00') + '<b>';
+//                                                }
+
+                                            },
+                                            {
+                                                text: 'Issued Payment',
+                                                dataIndex: 'O_PAYAMOU',
+                                                width: 115,
+                                                xtype: 'numbercolumn',
+                                                summaryType: 'sum', // 🔥 suma automático
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:right;";
+                                                    return Ext.util.Format.number(value, '0,000.00');
+                                                },
+//                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+//                                                    var data = Ext.getCmp(prototype.id + '-gridDataInfoScan').getStore().getData().items[0].data;
+//                                                    metaData.style = 'text-align:right; margin-right:3px ';
+//                                                    return '<b>' + Ext.util.Format.number(data.SUM_PAYAMOU, '0,000.00') + '<b>';
+//                                                }
+                                            },
+                                            {
+                                                text: 'Star <br> Date',
+                                                dataIndex: 'O_STRDATE',
+                                                width: 80,
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'End <br> Date',
+                                                dataIndex: 'O_ENDDATE',
+                                                width: 80,
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+
+                                            }
+
+                                        ]
+                                        
+                                    }
+                                }
+                            ]
+                        },
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        ////////////////////////////////////////////////
+                        ////////////////////////////////////////////////
+                        ////////////////////////////////////////////////
                         {
                             xtype: 'panel',
                             id: prototype.id + '-panelGridDataDayCash',
@@ -7086,8 +7306,21 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                         ]
                                     }
                                 }
+                                
+                                
+                                
+                                
+                               
+                                
                             ]
                         },
+                        
+                         //AGREGAMOS PANEL 
+                         
+                         
+                        
+                        
+                        
                         {
                             xtype: 'panel',
                             id: prototype.id + '-paginacionTW',

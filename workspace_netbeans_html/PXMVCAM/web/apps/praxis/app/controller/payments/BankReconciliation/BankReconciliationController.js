@@ -24,6 +24,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     stack: [],
     beanTemp: {},
     beanDetDay: {},
+    beanDetPenADJ:{},
     beanDet: {},
     beanDet2: {},
     beanDet3: {},
@@ -4060,6 +4061,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         Ext.getCmp(prototype.id + '-gridDataTotalCORE').bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-paggin15').bindStore(storeGridDatas);
     },
+    
+    
     onGridCountryCash: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
         me.drillDown.push(me.panelActual);
         me.panelActual = '-panelGridDataCountryCash';
@@ -4093,7 +4096,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         this.beanDetDay.IN_SDATE = rowData.data.IN_SDATE;
         this.beanDetDay.IN_STVAL = rowData.data.IN_STVAL;
         this.beanDetDay.IN_TDOC = rowData.data.IN_TDOC;
-        console.log(rowData.data.IN_TDOC, 'rowData.data.IN_TDOC')
+        console.log(rowData.data.IN_TDOC, 'rowData.data.IN_TDOC');
         this.beanDetDay.IN_COUNTRY = rowData.data.IN_COUNTRY;
         this.beanDetDay.strFormatDate = rowData.data.strFormatDate;
         this.beanDetDay.strFecFiltro = rowData.data.strFecFiltro;
@@ -4101,6 +4104,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         me.paramsDetail.beanString = JSON.stringify(this.beanDetDay);
         this.setGridDataCountryCash();
     },
+    
+    
     setGridDataCountryCash: function (data) {
         win.lblUser_toolTip("Estructura: MPF193 ");
 //        me.setWidthPie();
@@ -4137,6 +4142,77 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         Ext.getCmp(prototype.id + '-gridDataCountryCash').bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-paggin19').bindStore(storeGridDatas);
     },
+    
+    
+    /////////AGREGAMOS CONSLTA PARA LISTA MPF199
+    ///////////////////////////////////////////////////
+    
+    
+    onGridMPF199: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
+        me.drillDown.push(me.panelActual);
+        me.panelActual = '-panelGridDataMPF199';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        
+        
+        
+        obj = {};
+        obj.IN_SDATE = rowData.data.SDATE;
+        
+      
+
+        me.beanDetPenADJ.beanString = JSON.stringify(obj);
+        this.setGridDataMPF199();
+    },
+    
+    
+    setGridDataMPF199: function() {
+        win.lblUser_toolTip("Estructura: MPF199");
+//        me.panelActual = '-panelGridDataMPF199';
+//        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        me.setWidthPie();
+        var msj = this.validateFields();
+        if (msj !== '') {
+            global.Msg({msg: msj
+            });
+        } else {
+            var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchListMPF199'
+                }, listeners: {
+                    beforeload: function(obj) {
+                        obj.proxy.extraParams = me.beanDetPenADJ ;                                    
+                        
+                    },
+                    load: function(obj) {
+                        var pag = Ext.getCmp(prototype.id + '-pagginMPF199');
+                        var pagData = pag.getPageData();
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        }
+                    }
+                }
+            });
+            
+            global.clear();
+            Ext.getCmp(prototype.id + '-gridDataMPF199').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-pagginMPF199').bindStore(storeGridDatas);
+        }
+    },
+    
+    
+    
+    
+    
+    
+    //////////////////////////7
+    //////////////////////////7
+    
+    
     onGridDayCash: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
         me.drillDown.push(me.panelActual);
         me.panelActual = '-panelGridDataDayCash';

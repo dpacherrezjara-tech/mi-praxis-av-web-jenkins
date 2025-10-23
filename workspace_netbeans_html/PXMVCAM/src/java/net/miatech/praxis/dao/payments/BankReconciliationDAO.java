@@ -8066,7 +8066,7 @@ public class BankReconciliationDAO {
         A2290Filter beanTkt;
         long lngTotQSALES = 0, lngTotQMATCH = 0, lngTotQMANUAL = 0, lngTotQDIFF = 0, lngTotQPEND = 0, lngTotQTICKET = 0, lngTotQTMATCH = 0, lngTotQTMANUAL = 0, lngTotQTPEND = 0;
         long lngTotQTOTS2 = 0, lngTotQPOLI2 = 0, lngTotQTOTS3 = 0, lngTotQPOLI3 = 0;
-        long lngTotQPOLIC = 0, lngTotQPOLIPE = 0, lngTotQTYECC = 0;
+        long lngTotQPOLIC = 0, lngTotQPOLIPE = 0, lngTotQTYECC = 0, lngTotQTYADJ = 0;
 
         // <editor-fold defaultstate="collapsed" desc=" 'DATE' ">
         filter.strYearFrom = Functions.fillZeros(4, filter.strYearFrom).replace("00", "");//YYYY
@@ -8078,7 +8078,7 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS323(?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS323_V2(?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -8125,6 +8125,9 @@ public class BankReconciliationDAO {
                 lngTotQPOLIC = rst.getLong("QPOLIC");
                 lngTotQPOLIPE = rst.getLong("QPOLIPE");
                 lngTotQTYECC = rst.getLong("QTYECC");
+                //
+                lngTotQTYADJ = rst.getLong("QTYADJ");
+                
             }
             rst.close();
 
@@ -8159,6 +8162,7 @@ public class BankReconciliationDAO {
                     beanTkt.lngQPOLIC = rst.getLong("QPOLIC");
                     beanTkt.lngQPOLIPE = rst.getLong("QPOLIPE");
                     beanTkt.lngQEECC = rst.getLong("QEECC");
+                    beanTkt.lngQTYADJ = rst.getLong("QADJ");
 
                     beanTkt.lngTotQSALES = lngTotQSALES;
                     beanTkt.lngTotQMATCH = lngTotQMATCH;
@@ -8176,6 +8180,7 @@ public class BankReconciliationDAO {
                     beanTkt.lngTotQPOLIC = lngTotQPOLIC;
                     beanTkt.lngTotQPOLIPE = lngTotQPOLIPE;
                     beanTkt.lngTotQTYECC = lngTotQTYECC;
+                    beanTkt.lngTotQTYADJ = lngTotQTYADJ;
 
                     beanTkt.page.PAGNUM = filter.page.PAGNUM;
                     beanTkt.page.PAGROW = filter.page.PAGROW;
@@ -8361,6 +8366,124 @@ public class BankReconciliationDAO {
 
         return lstTkts;
     }
+    
+    
+    ///LISTA MPF199
+    
+     public List<A2290Filter> loadLISTAR_MPF199(A2290Filter filter)throws SQLException, Exception {
+        
+        
+        
+        List<A2290Filter> listaData = new ArrayList<>();
+        A2290Filter bean;
+        
+        
+        String SQL = "{CALL PRAXISMP.LISTA_MPF199(?, ?, ? , ?, ? , ?)}";
+        
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        Connection cnx = null;
+        
+        
+        
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQL);
+
+            // para la paginacion
+            cstmt.registerOutParameter(3, Types.INTEGER);
+            cstmt.registerOutParameter(4, Types.INTEGER);
+            cstmt.registerOutParameter(5, Types.INTEGER);
+            cstmt.registerOutParameter(6, Types.INTEGER);
+
+            // los de entrada
+    
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.IN_SDATE);
+            cstmt.setInt(3, filter.page.PAGNUM);
+            cstmt.setInt(4, filter.page.PAGROW);
+            cstmt.setInt(5, filter.page.TOTPAG);
+            cstmt.setInt(6, filter.page.TOTROW);
+
+            cstmt.execute();
+
+            // se actualiza paginacion
+            filter.page.PAGNUM = cstmt.getInt(3);
+            filter.page.PAGROW = cstmt.getInt(4);
+            filter.page.TOTPAG = cstmt.getInt(5);
+            filter.page.TOTROW = cstmt.getInt(6);
+
+            rst = cstmt.getResultSet();
+
+            while (rst != null && rst.next()) {
+                bean = new A2290Filter();
+
+                bean.O_STVAL = rst.getString("STVAL");
+                bean.O_ADATE = rst.getString("ADATE");
+                bean.O_CONCEPT = rst.getString("CONCEPT");
+                bean.O_SAGENT = rst.getString("SAGENT");
+                bean.O_SCONSOL = rst.getString("SCONSOL");
+                bean.O_SCURRENCY = rst.getString("SCURRENCY");
+                bean.O_NETO = rst.getDouble("NETO");
+                bean.O_PAYAMOU = rst.getDouble("PAYAMOU");
+                bean.O_STRDATE = rst.getString("STRDATE");
+                bean.O_ENDDATE = rst.getString("ENDDATE");
+
+                
+
+
+               //// del sistema
+//                bean.USCR = rst.getString("PF122USRIN");
+//                bean.FECR = rst.getString("PF122FECIN");
+//                bean.HOCR = rst.getString("PF122HORIN");
+//                bean.USUP = rst.getString("PF122USRAC");
+//                bean.FEUP = rst.getString("PF122FECAC");
+//                bean.HOUP = rst.getString("PF122HORAC");
+
+
+
+                // Copiar paginación en cada bean si es necesario
+                bean.page.PAGNUM = filter.page.PAGNUM;
+                bean.page.PAGROW = filter.page.PAGROW;
+                bean.page.TOTPAG = filter.page.TOTPAG;
+                bean.page.TOTROW = filter.page.TOTROW;
+
+                listaData.add(bean);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (rst != null) try {
+                rst.close();
+            } catch (SQLException ignored) {
+            }
+            if (cstmt != null) try {
+                cstmt.close();
+            } catch (SQLException ignored) {
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+            pasarGarbageCollector();
+        }
+
+        return listaData;
+        
+        
+        
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    ////
     
         public List<A2290Filter> loadPX269SQP00698DayCash(A2290Filter filter) throws SQLException, Exception {
 
