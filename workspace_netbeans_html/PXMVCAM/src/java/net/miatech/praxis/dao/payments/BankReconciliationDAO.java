@@ -8378,7 +8378,7 @@ public class BankReconciliationDAO {
         A2290Filter bean;
         
         
-        String SQL = "{CALL PRAXISMP.LISTA_MPF199(?, ?, ? , ?, ? , ?)}";
+        String SQL = "{CALL PRAXISMP.MPS333(?, ?, ? , ?, ? , ?, ?)}";
         
         CallableStatement cstmt = null;
         ResultSet rst = null;
@@ -8391,27 +8391,28 @@ public class BankReconciliationDAO {
             cstmt = cnx.prepareCall(SQL);
 
             // para la paginacion
-            cstmt.registerOutParameter(3, Types.INTEGER);
             cstmt.registerOutParameter(4, Types.INTEGER);
             cstmt.registerOutParameter(5, Types.INTEGER);
             cstmt.registerOutParameter(6, Types.INTEGER);
+            cstmt.registerOutParameter(7, Types.INTEGER);
 
             // los de entrada
     
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_SDATE);
-            cstmt.setInt(3, filter.page.PAGNUM);
-            cstmt.setInt(4, filter.page.PAGROW);
-            cstmt.setInt(5, filter.page.TOTPAG);
-            cstmt.setInt(6, filter.page.TOTROW);
+            cstmt.setString(3, filter.IN_SAGENT);
+            cstmt.setInt(4, filter.page.PAGNUM);
+            cstmt.setInt(5, filter.page.PAGROW);
+            cstmt.setInt(6, filter.page.TOTPAG);
+            cstmt.setInt(7, filter.page.TOTROW);
 
             cstmt.execute();
 
             // se actualiza paginacion
-            filter.page.PAGNUM = cstmt.getInt(3);
-            filter.page.PAGROW = cstmt.getInt(4);
-            filter.page.TOTPAG = cstmt.getInt(5);
-            filter.page.TOTROW = cstmt.getInt(6);
+            filter.page.PAGNUM = cstmt.getInt(4);
+            filter.page.PAGROW = cstmt.getInt(5);
+            filter.page.TOTPAG = cstmt.getInt(6);
+            filter.page.TOTROW = cstmt.getInt(7);
 
             rst = cstmt.getResultSet();
 
@@ -8433,6 +8434,7 @@ public class BankReconciliationDAO {
                 bean.O_TADJ = rst.getString("TADJ");
                 bean.O_REFERENCE = rst.getString("REFERENCE");
                 bean.O_COMMENTS = rst.getString("COMMENTS");
+                
 
                 
 
