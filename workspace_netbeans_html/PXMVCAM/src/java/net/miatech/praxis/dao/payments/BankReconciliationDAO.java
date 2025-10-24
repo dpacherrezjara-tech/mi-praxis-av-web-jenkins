@@ -8378,7 +8378,7 @@ public class BankReconciliationDAO {
         A2290Filter bean;
         
         
-        String SQL = "{CALL PRAXISMP.MPS333(?, ?, ? , ?, ? , ?, ?)}";
+        String SQL = "{CALL PRAXISMP.MPS333(?, ?, ? , ?, ? , ?, ?, ?)}";
         
         CallableStatement cstmt = null;
         ResultSet rst = null;
@@ -8391,28 +8391,29 @@ public class BankReconciliationDAO {
             cstmt = cnx.prepareCall(SQL);
 
             // para la paginacion
-            cstmt.registerOutParameter(4, Types.INTEGER);
             cstmt.registerOutParameter(5, Types.INTEGER);
             cstmt.registerOutParameter(6, Types.INTEGER);
             cstmt.registerOutParameter(7, Types.INTEGER);
+            cstmt.registerOutParameter(8, Types.INTEGER);
 
             // los de entrada
     
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_SDATE);
             cstmt.setString(3, filter.IN_SAGENT);
-            cstmt.setInt(4, filter.page.PAGNUM);
-            cstmt.setInt(5, filter.page.PAGROW);
-            cstmt.setInt(6, filter.page.TOTPAG);
-            cstmt.setInt(7, filter.page.TOTROW);
+            cstmt.setString(4, filter.IN_ADATE);
+            cstmt.setInt(5, filter.page.PAGNUM);
+            cstmt.setInt(6, filter.page.PAGROW);
+            cstmt.setInt(7, filter.page.TOTPAG);
+            cstmt.setInt(8, filter.page.TOTROW);
 
             cstmt.execute();
 
             // se actualiza paginacion
-            filter.page.PAGNUM = cstmt.getInt(4);
-            filter.page.PAGROW = cstmt.getInt(5);
-            filter.page.TOTPAG = cstmt.getInt(6);
-            filter.page.TOTROW = cstmt.getInt(7);
+            filter.page.PAGNUM = cstmt.getInt(5);
+            filter.page.PAGROW = cstmt.getInt(6);
+            filter.page.TOTPAG = cstmt.getInt(7);
+            filter.page.TOTROW = cstmt.getInt(8);
 
             rst = cstmt.getResultSet();
 
