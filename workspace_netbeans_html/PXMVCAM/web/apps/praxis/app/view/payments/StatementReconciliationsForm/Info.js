@@ -400,8 +400,8 @@
                                                                 summaryRenderer: function () {
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataCash')
                                                                                   .getStore().getData().items[0].data;
-                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQMATCH, '0,000') + '</b>';
-                                                                }
+                                                                        return '<div style="text-align:right;"><b>' + Ext.util.Format.number(data.lngTotQMATCH, '0,000') + '</b></div>';
+                                                                }   
                                                             },
                                                             {
                                                                 text: '%',
@@ -415,7 +415,7 @@
                                                                 summaryRenderer: function () {
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataCash')
                                                                                   .getStore().getData().items[0].data;
-                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQMATCHPercent, '0,000') + '%</b>';
+                                                                        return '<div style="text-align:right;"><b>' + Ext.util.Format.number(data.lngTotQMATCHPercent, '0,000') + '</b></div>';
                                                                 }
                                                             },
                                                             {
@@ -432,7 +432,7 @@
                                                                 summaryRenderer: function () {
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataCash')
                                                                                   .getStore().getData().items[0].data;
-                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQMANUAL, '0,000') + '</b>';
+                                                                        return '<div style="text-align:right;"><b>' + Ext.util.Format.number(data.lngTotQMANUAL, '0,000') + '</b></div>';
                                                                 }
                                                             }
                                                         ]
@@ -456,7 +456,7 @@
                                                                 summaryRenderer: function () {
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataCash')
                                                                                   .getStore().getData().items[0].data;
-                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQPEND, '0,000') + '</b>';
+                                                                        return '<div style="text-align:right;"><b>' + Ext.util.Format.number(data.lngTotQPEND, '0,000') + '</b></div>';
                                                                 }
                                                             }
                                                         ]
@@ -474,7 +474,7 @@
                                                         summaryRenderer: function () {
                                                             var data = Ext.getCmp(prototype.id + '-gridDataCash')
                                                                           .getStore().getData().items[0].data;
-                                                            return '<b>' + Ext.util.Format.number(data.lngTotTOTALE, '0,000') + '</b>';
+                                                                        return '<div style="text-align:right;"><b>' + Ext.util.Format.number(data.lngTotTOTALE, '0,000') + '</b></div>';
                                                         }
                                                     }
                                                 ]
@@ -503,7 +503,7 @@
                                                                 summaryRenderer: function () {
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataCash')
                                                                                   .getStore().getData().items[0].data;
-                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQTMATCH, '0,000') + '</b>';
+                                                                        return '<div style="text-align:right;"><b>' + Ext.util.Format.number(data.lngTotQTMATCH, '0,000') + '</b></div>';
                                                                 }
                                                             },
                                                             {
@@ -517,7 +517,7 @@
                                                                 summaryRenderer: function () {
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataCash')
                                                                                   .getStore().getData().items[0].data;
-                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQTMATCHPercent/100, '0,000') + '%</b>';
+                                                                        return '<div style="text-align:right;"><b>' + Ext.util.Format.number(data.lngTotQTMATCHPercent, '0,000') + '</b></div>';
                                                                 }
                                                             },
                                                             {
@@ -534,7 +534,7 @@
                                                                 summaryRenderer: function () {
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataCash')
                                                                                   .getStore().getData().items[0].data;
-                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQTMANUAL, '0,000') + '</b>';
+                                                                        return '<div style="text-align:right;"><b>' + Ext.util.Format.number(data.lngTotQTMANUAL, '0,000') + '</b></div>';
                                                                 }
                                                             }
                                                         ]
@@ -558,7 +558,7 @@
                                                                 summaryRenderer: function () {
                                                                     var data = Ext.getCmp(prototype.id + '-gridDataCash')
                                                                                   .getStore().getData().items[0].data;
-                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQTPEND, '0,000') + '</b>';
+                                                                        return '<div style="text-align:right;"><b>' + Ext.util.Format.number(data.lngTotQTPEND, '0,000') + '</b></div>';
                                                                 }
                                                             }
                                                         ]
@@ -576,7 +576,7 @@
                                                         summaryRenderer: function () {
                                                             var data = Ext.getCmp(prototype.id + '-gridDataCash')
                                                                           .getStore().getData().items[0].data;
-                                                            return '<b>' + Ext.util.Format.number(data.lngTotTOTALL, '0,000') + '</b>';
+                                                                        return '<div style="text-align:right;"><b>' + Ext.util.Format.number(data.lngTotTOTALL, '0,000') + '</b></div>';
                                                         }
                                                     },
 
@@ -595,7 +595,7 @@
                                                         summaryRenderer: function () {
                                                             var data = Ext.getCmp(prototype.id + '-gridDataCash')
                                                                           .getStore().getData().items[0].data;
-                                                            return '<b>' + Ext.util.Format.number(data.lngTotQSALESDIRECT, '0,000') + '</b>';
+                                                            return '<div style="text-align:right;"><b>' + Ext.util.Format.number(data.lngTotQSALESDIRECT, '0,000') + '</b></div>';
                                                         }
                                                     },
                                                     {
@@ -609,7 +609,7 @@
                                                         summaryRenderer: function () {
                                                             var data = Ext.getCmp(prototype.id + '-gridDataCash')
                                                                           .getStore().getData().items[0].data;
-                                                            return '<b>' + Ext.util.Format.number(data.lngTotQSALES, '0,000') + '</b>';
+                                                            return '<div style="text-align:right;"><b>' + Ext.util.Format.number(data.lngTotQSALES, '0,000') + '</b></div>';
                                                         }
                                                     }
                                                 ]
