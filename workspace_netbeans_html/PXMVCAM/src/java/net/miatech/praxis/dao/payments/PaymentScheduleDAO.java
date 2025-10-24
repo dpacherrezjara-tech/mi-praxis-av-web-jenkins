@@ -59,7 +59,7 @@ public class PaymentScheduleDAO {
         MPF116Filter bean;
         
         
-        String SQL = "{CALL PRAXISMP.LISTAR_SCHEDULE_MPF116(?, ?, ?, ?, ?, ?,?,?)}";
+        String SQL = "{CALL PRAXISMP.MPS346(?, ?, ?, ?, ?, ?,?,?)}";
         
         CallableStatement cstmt = null;
         ResultSet rst = null;
@@ -239,7 +239,7 @@ public class PaymentScheduleDAO {
     CallableStatement cstmt = null;
     Connection cnx = null;
 
-    String SQL = "{CALL PRAXISMP.UPDATE_PAYMENT_SCHEDULE(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+    String SQL = "{CALL PRAXISMP.MPS347(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
     try {
         cnx = session.getCNXIBMDB2().getIBMDB2Connection();
