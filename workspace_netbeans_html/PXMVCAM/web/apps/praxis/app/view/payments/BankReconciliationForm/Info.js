@@ -6043,23 +6043,131 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                             bodyStyle: 'background: transparent;',
                             border: false,
 //                            height: 'auto',
-                            width: 1470,
+                            width: 1475,
                             margin: '0 0 0 0 ',
                             layout: {
                                 type: 'vbox',
-                                align: 'center'
+                                align: 'stretch'
                             },
+                            bodyPadding: 10,
                             
                             items: [                        
                                 {
                                     xtype: 'label',
                                     id: prototype.id + '-labelMPF199',
                                     labelAlign: 'center',
-                                    labelStyle: 'color:#231223',
+                                    style: 'font-weight: bold; color: #231223; text-align: center; display: block;',
+                                    
                                     align: 'center',
-                                    margin: '5 0 5 0'
-//                                    hide: true
+                                    margin: '5 0 5 0',
+                                    hidden: true
                                 },
+                                
+                                
+                                //FILTROS
+                                {
+                                    xtype: 'container',
+                                    layout: {
+                                        type: 'hbox',
+                                        align: 'middle',
+                                        pack: 'start' ,
+                                        margin: '15px 0 15px 15px'
+                                    },
+                                    margin: '10 0 10 10', // 🔹 margen: arriba, derecha, abajo, izquierda
+                                    items: [
+                                        {
+                                            xtype: 'label',
+                                            text: 'Agent :',
+                                            padding: '2 0 0 20',
+                                            width: 80,
+                                            style: {
+                                                    'text-align': 'right',
+                                                    'font-weight': 'bold'
+                                                },
+                                        },
+                                         { xtype: 'tbspacer', width: 20 },
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-txtINSAGENT',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+                                            maskRe: /[0-9]/,
+                                            maxLength: 8,
+                                            width: 100,
+                                            enableKeyEvents: false
+                                //          listeners: {
+                                //              keypress: 'btnSearchMPF199_click'
+                                //          }
+                                        },
+                                        
+                                        //fecha
+                                        
+                                        {
+                                            xtype: 'tbspacer',
+                                            width: 20
+                                        },
+                                        {
+                                            xtype: 'fieldcontainer',
+                                            fieldLabel: 'Date Picker',
+                                            layout: 'hbox',
+                                            labelStyle: 'font-weight: bold;',
+                                            defaults: {
+                                                xtype: 'datefield',
+                                                format: 'd/m/Y', // formato visible para el usuario
+                                                submitFormat: 'Ymd', // formato que se envía al backend (ej. 20251024)
+                                                editable: false,
+                                                allowBlank: true,
+                                                width: 160,
+                                                fieldStyle: 'text-align:center'
+                                            },
+                                            items: [
+                                                {
+                                                    id: prototype.id + '-txtDATEPICKER',
+                                                    name: 'IN_ADATE',
+                                                    emptyText: 'Seleccione fecha'
+                                                }
+                                            ]
+                                        },
+
+                                        
+                                        
+//                                        {
+//                                            xtype: 'label',
+//                                            text: 'DATE :',
+//                                            padding: '2 0 0 20',
+//                                            width: 80,
+//                                            style: {
+//                                                    'text-align': 'right',
+//                                                    'font-weight': 'bold'
+//                                                },
+//                                        },
+//                                         { xtype: 'tbspacer', width: 20 },
+//                                        {
+//                                            xtype: 'textfield',
+//                                            id: prototype.id + '-O_ADATE',
+//                                            fieldStyle: 'text-align:center',
+//                                            enforceMaxLength: true,
+//                                            maskRe: /[0-9a-zA-Z]/,
+//                                            maxLength: 8,
+//                                            width: 100,
+//                                            enableKeyEvents: false
+//                                //          listeners: {
+//                                //              keypress: 'btnSearch_click'
+//                                //          }
+//                                        }
+                                        
+                                        
+                                    ]
+                                },
+
+                           
+
+                                
+                                
+                                
+                                
+                                
+                                
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataMPF199',
@@ -6108,7 +6216,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 renderer: function (value, metaData, record) {
                                                     metaData.style = "text-align:center;";
 
-                                                    const agent = (record.get('O_CONCEPT') || '').trim();
+                                                    const concept = (record.get('O_CONCEPT') || '').trim();
                                                     if (value === 'P') {
                                                         value = 'Positive';
                                                     } else if (value === 'N') {
@@ -6136,7 +6244,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 renderer: function (value, metaData, record) {
                                                     metaData.style = "text-align:center;";
 
-                                                    const agent = (record.get('O_TADJ') || '').trim();
+                                                    const tadj = (record.get('O_TADJ') || '').trim();
                                                     if (value === 'N') {
                                                         value = 'NON-REMITTANCE';
                                                     } else if (value === 'R') {
@@ -6250,23 +6358,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 }
 
                                             },
-                                            
-                                            
-//                                            
-//                                             {
-//                                                text: 'Comments',
-//                                                dataIndex: 'O_COMMENTS',
-//                                                width: 200,
-//                                                renderer: function (value, metaData) {
-//                                                    metaData.style = "text-align:center;";
-//                                                    return value;
-//                                                }
-//
-//                                            },
-                                            
-                                            
-                                            
-                                            
+                                
                                                {
                                                 sortable: false,
                                                 xtype: 'actioncolumn',
@@ -6276,7 +6368,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 items: [
                                                     {
                                                         iconCls: 'prx-icon-edit',
-                                                        tooltip: 'Edit',
+                                                        tooltip: 'Edit'
 //                                                        handler: 'onEditClick'
                                                     }
                                                 ]
