@@ -148,7 +148,7 @@ public class InputsDAO {
             cstmt01.setString(2, filter.IN_FECHA_FROM);
             cstmt01.setString(3, filter.IN_FECHA_TO);
             cstmt01.setString(4, Functions.getFechaActual());
-            cstmt01.setString(5, "2");
+            cstmt01.setString(5, filter.IN_CONSULTA);
             cstmt01.execute();
 
             rs01 = cstmt01.getResultSet();
@@ -222,7 +222,7 @@ public class InputsDAO {
             cstmt01.setString(2, filter.IN_FECHA_FROM);
             cstmt01.setString(3, filter.IN_FECHA_TO);
             cstmt01.setString(4, filter.IN_FUENTE);
-            cstmt01.setString(5, "2");
+            cstmt01.setString(5, filter.IN_CONSULTA);
             cstmt01.execute();
 
             rs01 = cstmt01.getResultSet();
@@ -1025,7 +1025,7 @@ public class InputsDAO {
         CallableStatement cstmt01 = null;
         ResultSet rs01 = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00691(?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00691(?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1035,8 +1035,10 @@ public class InputsDAO {
 
             cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.IN_FECHA_FROM.substring(0, 4));
-            cstmt01.setString(3, filter.IN_FUENTE.trim());
-            cstmt01.setString(4, consulta);
+            cstmt01.setString(3, filter.IN_TDATE);
+            cstmt01.setString(4, filter.IN_MENSA.trim());
+            cstmt01.setString(5, filter.IN_FUENTE.trim());
+            cstmt01.setString(6, consulta);
             cstmt01.execute();
 
             rs01 = cstmt01.getResultSet();

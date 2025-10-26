@@ -108,17 +108,21 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                                                             click: 'searchDetAll_clickHandler'
                                                         },
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;';
-                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
+                                                            metaData.style = 'text-align:right;';
+                                                            return value;
+//                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;';
+//                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
                                                         }
                                                     },
                                                     {text: 'Error', width: 70, dataIndex: 'QRECE',
-                                                        listeners: {
-                                                            click: 'searchDetAll_clickHandler'
-                                                        },
+//                                                        listeners: {
+//                                                            click: 'searchDetAll_clickHandler'
+//                                                        },
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;';
-                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
+                                                            metaData.style = 'text-align:right;';
+                                                            return value;
+//                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;';
+//                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
                                                         }
                                                     }
                                                 ]
@@ -329,11 +333,14 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                                             },
                                             {
                                                 text: 'Details / error Message', dataIndex: 'MENSA', width: 380,
+                                                listeners: {
+                                                    click: 'searchCalendar_clickHandler'
+                                                },
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
-                                                    metaData.style = "text-align:left;";
+                                                    metaData.style = 'color:#057ECB;text-align:center;text-decoration:none;font-weight:bold;';
                                                     metaData.tdAttr = 'data-qtip="' + data.MENSA + '"';
-                                                    return value;
+                                                    return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
                                                 }
                                             }
                                         ]
