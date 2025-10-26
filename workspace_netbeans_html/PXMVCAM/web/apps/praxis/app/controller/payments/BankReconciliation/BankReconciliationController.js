@@ -4391,7 +4391,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                         if (Ext.getCmp(prototype.id + '-txtCard1').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtCard2').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtAUTHOC').getValue().trim() !== '' || me.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbNEGOC')) !== '' || Ext.getCmp(prototype.id + '-cmbCOMENTF').getValue() !== '' || Ext.getCmp(prototype.id + '-txtAGENCY').getValue() !== '') {
                             title = " ";
                         } else {
-                            title = " Sales Date : " + bean.SDATE + " - Country : " + bean.IN_COUNTRY;
+                            title = " Sales Date : " + bean.ADATE + " - Country : " + bean.IN_COUNTRY;
                         }
 
                         console.log(title);

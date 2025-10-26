@@ -24,6 +24,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         this.p = this.view.params;
         this.actionCode = this.p.action;
         this.bean = this.p.beanCons;
+        console.log(this.p.beanCons,"PROBANDO")
         this.lstCard = this.p.lstCard;
         this.lstBank = this.p.lstBank;
         this.lstCountry = this.p.lstCountry;
@@ -58,10 +59,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         Ext.getCmp(prototype.id + '-btn-cancel').show();
         console.log(this.bean.STVAL,'ESTADOOOO')
         console.log(this.bean.CBATCH,"wdaaaaaaaaaaaaaaA")
+        
         this.onSearchCompleteDetail();
-        if (this.bean.STVAL === '1' || this.bean.STVAL === '5') {
-            this.onSearchCompleteDetail();
-        } 
     },
     ocultarBtnReversa: function () {
         let validacion1 = ['45', '46','54','55'].includes(this.bean.CERROR);
@@ -78,9 +77,6 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
     joinMultiSelect: function (element) {
         let comboBox = element.getValue();
         return comboBox.join('|');
-    },
-    gaaaa: function (element) {
-        console.log("Prueba")
     },
     onSearchCompleteDetail: function () {
         var paramDetail = {};
@@ -140,7 +136,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
           this.setValue('de-txtScurrency', this.bean.SCURRENCY);  
           this.setValue('de-txtNeto', Ext.util.Format.number(this.bean.NETO, '0,000.00'));  
           this.setValue('de-txtBandoc', this.bean.BANDOC);  
-          this.setValue('de-txtAccount', this.bean.ACCNUMBER);  
+          this.setValue('de-txtAccount', this.bean.ACCNUMB);  
           this.setValue('de-txtQtyTkt', this.bean.QTYTKT);
 
           
@@ -155,11 +151,11 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         this.setValue('de-txtTRANC', this.bean.TRANC);
         this.setValue('de-txtQTYDOC', this.bean.QTYDOC);
         this.setValue('de-txtQTYTKT', this.bean.QTYTKT);
-        this.setValue('de-txtSOCIETY', this.bean.SOCIETY);
-        this.setValue('de-txtSOCIETYL', this.bean.SOCIETYL);
+        this.setValue('de-txtNetoPending', Ext.util.Format.number(this.bean.lngPayamouPending, '0,000.00'));
+        this.setValue('de-txtNetConciliado', Ext.util.Format.number(this.bean.lngPayamouMatch, '0,000.00'));
         
         // 191 
-        this.setValue('de-txtCOUNTRY191', this.bean.SCOUNTRY_191);
+        this.setValue('de-txtCOUNTRY191', this.bean.DESC_SCOUNTRY);
         this.setValue('de-txtCurrency191', this.bean.SCURRENCY_191);
         this.setValue('de-txtSCONSOL_191', this.bean.SCONSOL_191);
         this.setValue('de-txtSTRDATE', this.bean.STARDATE_191);
@@ -980,17 +976,19 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
                 let existingKeys = {};
                 store.each(function (record) {
                     let key = record.get('TKT') + '#' + record.get('SVFOPNETR') + '#' + record.get('SCURRENCY');
+                    console.log(key,"Clave compuesta");
+                    console.log("Entro a este For");
                     existingKeys[key] = true;
                 });
 
                 let nuevos = 0;
                 let duplicados = 0;
 
-                // 🔹 Recorremos los nuevos datos
-                Ext.Array.each(res.data, function (newRecord) {
+                Ext.Array.each(res.data, function (newRecord, index) {
                     let key = newRecord.TKT + '#' + newRecord.SVFOPNETR + '#' + newRecord.SCURR;
 
                     if (!existingKeys[key]) {
+                        newRecord.id = key || Ext.id(null, 'rec-');
                         store.add(newRecord);
                         existingKeys[key] = true;
                         nuevos++;

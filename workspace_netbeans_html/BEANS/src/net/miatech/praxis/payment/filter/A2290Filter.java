@@ -61,6 +61,8 @@ public class A2290Filter extends A2290 {
     public String IN_LIQUIDACIO = "";
     public String IN_TYPER = "";
     public String INTERCOMPANY = "";
+    public String IN_CBATCH = "";
+    public String IN_FECR = "";
 
     public String IN_FROMADATE = "";
     public String IN_TOADATE = "";
@@ -1010,6 +1012,9 @@ public class A2290Filter extends A2290 {
     public long lngTotQSALESDIRECT    = 0; 
     public long lngTotQTYECC    = 0; 
     public long lngTotQTYADJ    = 0; 
+    public long lngPayamou    = 0; 
+    public long lngPayamouPending    = 0; 
+    public long lngPayamouMatch    = 0; 
     
     
     

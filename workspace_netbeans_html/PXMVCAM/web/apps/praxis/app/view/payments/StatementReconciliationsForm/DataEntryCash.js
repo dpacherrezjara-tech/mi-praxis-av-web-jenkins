@@ -174,7 +174,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                     hidden: true,
                                                     width: 160
                                                 },
-                                                {xtype: 'tbspacer', width: 335}
+                                                {xtype: 'tbspacer', width: 440}
                                             ]
                                         },
                                         {
@@ -1225,13 +1225,13 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                             border: false,
                                             margin: '0 0 0 180',
                                             items: [
-                                                {xtype: 'tbspacer', width: 170},
+                                                {xtype: 'tbspacer', width: 500},
                                                 
                                                 {
                                                     xtype: 'label',
                                                     text: 'Sum Amount:',
                                                     style: 'font-weight:bold;color:#0B333C;',
-                                                    hidden: true,
+                                                    hidden: false,
                                                     width: 90
                                                 },
                                                 {xtype: 'tbspacer', width: 10},
@@ -1240,7 +1240,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                     id: prototype.id + '-de-txtSumAmount',
                                                     fieldStyle: 'text-align:right',
                                                     enforceMaxLength: true,
-                                                    hidden: true,
+                                                    hidden: false,
                                                     readOnly: true,
                                                     width: 100
                                                 },

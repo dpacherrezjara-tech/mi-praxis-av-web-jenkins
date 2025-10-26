@@ -296,25 +296,13 @@ public class BankReconciliationLogic {
     public List<A2290Filter> loadPX269SQP00698CountryCash(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP00698CountryCash(filter);
     }
-    
-    
-    
-    
-    /////
+
     
     public List<A2290Filter> loadLISTAR_MPF199(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadLISTAR_MPF199(filter);
     }
     
-    
-    
-    
-    ////////////7
-    
-    
-    
-    
-    
+
     public List<A2290Filter> loadPX269SQP00698DayCash(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP00698DayCash(filter);
     }

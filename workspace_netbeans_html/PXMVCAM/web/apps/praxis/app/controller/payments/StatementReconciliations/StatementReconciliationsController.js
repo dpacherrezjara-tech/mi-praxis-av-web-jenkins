@@ -1056,11 +1056,11 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             case 3:
                 console.log('ENTRA AL MANUAL');
                 rowData.data.IN_STVAL = "5";
-                cant = rowData.data.lngQTPEND;
+                cant = rowData.data.lngQMANUAL;
                 break;
-            case 6:
+            case 4:
                 console.log('ENTRA AL MANUAL');
-                rowData.data.IN_STVAL = "";
+                rowData.data.IN_STVAL = "3";
                 cant = rowData.data.lngQTPEND;
                 break;
         }

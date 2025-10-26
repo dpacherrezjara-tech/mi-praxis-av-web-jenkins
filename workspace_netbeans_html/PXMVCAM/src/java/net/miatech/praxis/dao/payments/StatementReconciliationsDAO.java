@@ -1509,6 +1509,7 @@ public class StatementReconciliationsDAO {
                     beanTkt.strCREJEC = filter.strCREJEC.trim();
                     beanTkt.IN_SDATEE = filter.IN_SDATEE.trim();
                     beanTkt.IN_COUNTRY = filter.IN_COUNTRY.trim();
+                    beanTkt.DESC_SCOUNTRY = rst.getString("DES_COUNTRY").trim();
                     beanTkt.IN_EXT = filter.IN_EXT.trim();
                     beanTkt.strFormatDate = rst.getString("VALDATE").trim();
 
@@ -3574,18 +3575,14 @@ public class StatementReconciliationsDAO {
         long totQTYTRAS = 0;
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Match");
-        hmDescEstados.put("2", "Liq. Without EECC");
-        hmDescEstados.put("", "Bank w/o Sett.");
         hmDescEstados.put("3", "Pending");
-        hmDescEstados.put("4", "Match with Differences");
         hmDescEstados.put("5", "Match Manual");
         HashMap<String, String> hmDescDocType = new HashMap<String, String>();
         hmDescDocType.put("S", "Sales");
-        hmDescDocType.put("D", "Debits");
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL PRAXISMP.SQP006CASH(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.MPS344(?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -3593,27 +3590,12 @@ public class StatementReconciliationsDAO {
             cstmt = cnx.prepareCall(SQLCLL01);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            cstmt.setString(2, filter.IN_FROMADATE.trim());
-            cstmt.setString(3, filter.IN_TOADATE.trim());
-            cstmt.setString(4, filter.IN_FROMSDATE.trim());
-            cstmt.setString(5, filter.IN_TOSDATE.trim());
-            cstmt.setString(6, filter.IN_CODEBANK.trim());
-            cstmt.setString(7, filter.IN_MERCHAND.trim());
-            cstmt.setString(8, filter.IN_BANDOC.trim());
-            cstmt.setString(9, filter.IN_STVAL.trim());
-            cstmt.setString(10, filter.IN_RED.trim());
-            cstmt.setString(11, filter.IN_SCARCOD.trim());
-            cstmt.setString(12, filter.IN_ACCNUMBER.trim());
-            cstmt.setString(13, filter.IN_SDATE.trim());
-            cstmt.setString(14, filter.IN_strNETO.trim());
-            cstmt.setString(15, filter.IN_TDOC.trim());
-            cstmt.setString(16, filter.IN_SEQ.trim());
-            cstmt.setString(17, filter.IN_TERMI.trim());
-            cstmt.setString(18, filter.IN_SAGENT.trim());
-            cstmt.setString(19, filter.IN_DATECI.trim());
-            cstmt.setString(20, filter.IN_TRANCI.trim());
-            cstmt.setString(21, filter.IN_FUNDSTRGK.trim());
-            cstmt.setString(22, filter.IN_SCOUNTRY.trim());
+            cstmt.setString(2, filter.IN_STVAL.trim());
+            cstmt.setString(3, filter.IN_DATECI.trim());
+            cstmt.setString(4, filter.IN_TRANCI.trim());
+            cstmt.setString(5, filter.IN_CBATCH.trim());
+            cstmt.setString(6, filter.IN_FECR.trim());
+            cstmt.setString(7, filter.IN_SCOUNTRY.trim());
             cstmt.execute();
 
             rst = cstmt.getResultSet();
@@ -3654,6 +3636,8 @@ public class StatementReconciliationsDAO {
                 beanTkt.ENDDATE = rst.getString("ENDDATE");
                 beanTkt.REFERENCE  = rst.getString("REFERENCE");
                 beanTkt.COMMENTS = rst.getString("COMMENTS");
+                beanTkt.CBATCH = rst.getString("CBATCH");
+                beanTkt.FECR = rst.getString("FECR");
                 
                 lstTkts.add(beanTkt);
             }
@@ -4649,121 +4633,123 @@ public class StatementReconciliationsDAO {
     
         public List<MPF100Filter> loadCashSummaryMain(MPF100Filter filter) throws SQLException, Exception {
 
-        List<MPF100Filter> lstTkts = new ArrayList<MPF100Filter>(0);
-        MPF100Filter beanTkt;
-        long lngTotQMATCH = 0, lngTotQMANUAL = 0, lngTotTOTALE = 0, lngTotQPEND = 0, lngTotQPEND1 = 0, lngTotQPEND3 = 0, lngTotQSALES = 0;
-        long lngTotQTMATCH = 0, lngTotQTMANUAL = 0, lngTotQTPEND = 0, lngTotTOTALL = 0, lngTotQSALESDIRECT = 0;
+    List<MPF100Filter> lstTkts = new ArrayList<>();
+    MPF100Filter beanTkt;
 
-        // <editor-fold defaultstate="collapsed" desc=" 'DATE' ">
-        filter.strYearFrom = Functions.fillZeros(4, filter.strYearFrom).replace("00", "");//YYYY
-        filter.strMonthFrom = Functions.fillZeros(2, filter.strMonthFrom).replace("00", "");
-        filter.strYearTo = Functions.fillZeros(4, filter.strYearTo).replace("00", "");//YYYY
-        filter.strMonthTo = Functions.fillZeros(2, filter.strMonthTo).replace("00", "");
-        //</editor-fold>
+    // Variables totales
+    long lngTotQMATCH = 0, lngTotQMANUAL = 0, lngTotTOTALE = 0, lngTotQPEND = 0, lngTotQPEND1 = 0, lngTotQSALES = 0;
+    long lngTotQTMATCH = 0, lngTotQTMANUAL = 0, lngTotQTPEND = 0, lngTotTOTALL = 0, lngTotQSALESDIRECT = 0;
 
-        CallableStatement cstmt = null;
-        ResultSet rst = null;
+    // Ajuste fechas
+    filter.strYearFrom = Functions.fillZeros(4, filter.strYearFrom).replace("00", "");
+    filter.strMonthFrom = Functions.fillZeros(2, filter.strMonthFrom).replace("00", "");
+    filter.strYearTo = Functions.fillZeros(4, filter.strYearTo).replace("00", "");
+    filter.strMonthTo = Functions.fillZeros(2, filter.strMonthTo).replace("00", "");
 
-            String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS305_MAINSUMMARY(?,?,?,?,?,?,?,?,?)}";
+    String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS305_SUMMARY(?,?,?,?,?,?,?,?,?)}";
 
-        Connection cnx = null;
-        try {
-            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-            cstmt = cnx.prepareCall(SQLCLL01);
+    Connection cnx = null;
+    CallableStatement cstmt = null;
+    ResultSet rst = null;
+
+    try {
+        cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+        cstmt = cnx.prepareCall(SQLCLL01);
 
             cstmt.registerOutParameter(6, Types.INTEGER);
             cstmt.registerOutParameter(7, Types.INTEGER);
             cstmt.registerOutParameter(8, Types.INTEGER);
             cstmt.registerOutParameter(9, Types.INTEGER);
 
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            cstmt.setString(2, filter.strYearFrom + filter.strMonthFrom);
-            cstmt.setString(3, filter.strYearTo + filter.strMonthTo);
-            cstmt.setString(4, filter.IN_COUNTRY.trim());
-            cstmt.setString(5, filter.IN_SOURCE.trim());
+        cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+        cstmt.setString(2, filter.strYearFrom + filter.strMonthFrom);
+        cstmt.setString(3, filter.strYearTo + filter.strMonthTo);
+        cstmt.setString(4, filter.IN_COUNTRY.trim());
+        cstmt.setString(5, filter.IN_SOURCE.trim());
             cstmt.setInt(6, filter.page.PAGNUM);
             cstmt.setInt(7, filter.page.PAGROW);
             cstmt.setInt(8, filter.page.TOTPAG);
             cstmt.setInt(9, filter.page.TOTROW);
-            cstmt.execute();
+        cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(6);
-            filter.page.PAGROW = cstmt.getInt(7);
-            filter.page.TOTPAG = cstmt.getInt(8);
-            filter.page.TOTROW = cstmt.getInt(9);
+        // Actualiza info de paginación
+        filter.page.PAGNUM = cstmt.getInt(6);
+        filter.page.PAGROW = cstmt.getInt(7);
+        filter.page.TOTPAG = cstmt.getInt(8);
+        filter.page.TOTROW = cstmt.getInt(9);
 
+        // ======== PRIMER CURSOR: TOTALES ========
+        rst = cstmt.getResultSet();
+        if (rst != null && rst.next()) {
+            lngTotQMATCH          = rst.getLong("TOTAL_AUTOMATICO");
+            lngTotQMANUAL         = rst.getLong("TOTAL_MANUAL");
+            lngTotQPEND           = rst.getLong("TOTAL_PENDIENTE");
+            lngTotTOTALE          = rst.getLong("TOTAL_GENERAL");
+            lngTotQSALESDIRECT    = rst.getLong("TOTAL_VENTADIRECTA");
+            lngTotQSALES          = rst.getLong("TOTAL_SETTLEMENT");
+            lngTotQTMATCH         = rst.getLong("TOTAL_SETTLEMENT_MATCH");
+            lngTotQTMANUAL        = rst.getLong("TOTAL_SETTLEMENT_MANUAL");
+            lngTotQTPEND          = rst.getLong("TOTAL_SETTLEMENT_PENDING");
+            lngTotTOTALL          = rst.getLong("TOTAL");
+        }
+
+        // Cierra primer cursor
+        if (rst != null) rst.close();
+
+        // ======== SEGUNDO CURSOR: DETALLE ========
+        if (cstmt.getMoreResults()) {
             rst = cstmt.getResultSet();
 
             while (rst.next()) {
+                beanTkt = new MPF100Filter();
 
-                lngTotQMATCH = rst.getLong("TOTAL_AUTOMATICO");
-                lngTotQMANUAL = rst.getLong("TOTAL_MANUAL");
-                lngTotTOTALE = rst.getLong("TOTAL_GENERAL");
-                lngTotQPEND = rst.getLong("TOTAL_PENDIENTE");
-                lngTotQPEND1 = rst.getLong("TOTAL_OTHER");
-                lngTotQSALESDIRECT = rst.getLong("TOTAL_VENTA_DIRECTA");
-                lngTotQSALES = rst.getLong("TOTAL_CASH");
-                lngTotQTMATCH = rst.getLong("TOTAL_AUTOMATICO_LIQUI");
-                lngTotQTMANUAL = rst.getLong("TOTAL_MANUAL_LIQUI");
-                lngTotQTPEND = rst.getLong("TOTAL_PENDIENTE_LIQUI");
-                lngTotTOTALL = rst.getLong("TOTAL_GENERAL_LIQUI");
-            }
-            rst.close();
+                beanTkt.IN_COUNTRY = filter.IN_COUNTRY.trim();
+                beanTkt.SDATE = rst.getString("PERIOD").trim();
+                beanTkt.strFormatDate = Functions.getMonthConvert(beanTkt.SDATE);
 
-            if (cstmt.getMoreResults()) {
-                rst = cstmt.getResultSet();
+                // === Datos detallados ===
+                beanTkt.lngQMATCH        = rst.getLong("TOTAL_AUTOMATICO");
+                beanTkt.lngQMANUAL       = rst.getLong("TOTAL_MANUAL");
+                beanTkt.lngQPEND         = rst.getLong("TOTAL_PENDIENTE");
+                beanTkt.lngTOTALE        = rst.getLong("TOTAL_GENERAL");
+                beanTkt.lngQSALESDIRECT  = rst.getLong("TOTAL_VENTADIRECTA");
+                beanTkt.lngQSALES        = rst.getLong("TOTAL_SETTLEMENT");
+                beanTkt.lngQTMATCH       = rst.getLong("TOTAL_SETTLEMENT_MATCH");
+                beanTkt.lngQTMANUAL      = rst.getLong("TOTAL_SETTLEMENT_MANUAL");
+                beanTkt.lngQTPEND        = rst.getLong("TOTAL_SETTLEMENT_PENDING");
+                beanTkt.lngTOTALL        = rst.getLong("TOTAL");
+                beanTkt.lngQMATCHPercent = rst.getLong("PORCENTAJE");
 
-                while (rst.next()) {
+                // === Totales acumulados (del primer cursor) ===
+                beanTkt.lngTotQMATCH       = lngTotQMATCH;
+                beanTkt.lngTotQMANUAL      = lngTotQMANUAL;
+                beanTkt.lngTotQPEND        = lngTotQPEND;
+                beanTkt.lngTotTOTALE       = lngTotTOTALE;
+                beanTkt.lngTotQSALESDIRECT = lngTotQSALESDIRECT;
+                beanTkt.lngTotQSALES       = lngTotQSALES;
+                beanTkt.lngTotQTMATCH      = lngTotQTMATCH;
+                beanTkt.lngTotQTMANUAL     = lngTotQTMANUAL;
+                beanTkt.lngTotQTPEND       = lngTotQTPEND;
+                beanTkt.lngTotTOTALL       = lngTotTOTALL;
 
-                    beanTkt = new MPF100Filter();
-                    beanTkt.IN_COUNTRY = filter.IN_COUNTRY.trim();
-                    beanTkt.SDATE = rst.getString("PERIOD").trim();
-                    beanTkt.strFormatDate = Functions.getMonthConvert(rst.getString("PERIOD").trim());
-                    beanTkt.lngQMATCH = rst.getLong("AUTOMATICO");
-                    beanTkt.lngQMANUAL = rst.getLong("MANUAL");
-                    beanTkt.lngTOTALE = rst.getLong("TOTAL");
-                    beanTkt.lngQPEND = rst.getLong("PENDIENTE");
-                    beanTkt.lngQPEND1 = rst.getLong("OTHER");
-                    beanTkt.lngQSALESDIRECT = rst.getLong("VENTA_DIRECTA");
-//                    beanTkt.lngQPEND3 = rst.getLong("QPEND3");
-                    beanTkt.lngQSALES = rst.getLong("TOTAL_CASH");
-                    beanTkt.lngQMATCHPercent =  rst.getLong("PORCENTAJE");
-
-                    beanTkt.lngQTMATCH = rst.getLong("AUTOMATICO_LIQUI");
-                    beanTkt.lngQTMANUAL = rst.getLong("MANUAL_LIQUI");
-                    beanTkt.lngQTPEND = rst.getLong("PENDIENTE_LIQUI");
-                    beanTkt.lngTOTALL = rst.getLong("TOTAL_LIQUI");
-                    beanTkt.lngQTMATCHPercent =  rst.getLong("PORCENTAJE_LIQUI");
-
-                    beanTkt.lngTotQMATCH = lngTotQMATCH;
-                    beanTkt.lngTotQMANUAL = lngTotQMANUAL;
-                    beanTkt.lngTotTOTALE = lngTotTOTALE;
-                    beanTkt.lngTotQPEND = lngTotQPEND;
-                    beanTkt.lngTotQPEND1 = lngTotQPEND1;
-                    beanTkt.lngTotQPEND3 = lngTotQPEND3;
-                    beanTkt.lngTotQSALES = lngTotQSALES;
-                    beanTkt.lngTotQTMATCH = lngTotQTMATCH;
-                    beanTkt.lngTotQTMANUAL = lngTotQTMANUAL;
-                    beanTkt.lngTotQTPEND = lngTotQTPEND;
-                    beanTkt.lngTotTOTALL = lngTotTOTALL;
-                    beanTkt.lngTotQSALESDIRECT = lngTotQSALESDIRECT;
-
-                    beanTkt.lngTotQMATCHPercent = (long) (((beanTkt.lngTotQSALES - beanTkt.lngTotQPEND1) > 0) ? (beanTkt.lngTotQMATCH * 100.0) / (beanTkt.lngTotQSALES - beanTkt.lngTotQPEND1) : 0.00);
-                    beanTkt.lngTotQTMATCHPercent = (long) ((beanTkt.lngTotTOTALL > 0) ? (beanTkt.lngTotQTMATCH * 100.0) / beanTkt.lngTotTOTALL : 0.00);
-
+                // === Porcentajes globales ===
+                beanTkt.lngTotQMATCHPercent = (long) (((beanTkt.lngTotQSALES - beanTkt.lngTotQPEND) > 0)
+                    ? (beanTkt.lngTotQMATCH * 100.0) / (beanTkt.lngTotQSALES - beanTkt.lngTotQPEND)
+                    : 0.00);
+                        
                     beanTkt.page.PAGNUM = filter.page.PAGNUM;
                     beanTkt.page.PAGROW = filter.page.PAGROW;
                     beanTkt.page.TOTPAG = filter.page.TOTPAG;
                     beanTkt.page.TOTROW = filter.page.TOTROW;
-
+                             
                     lstTkts.add(beanTkt);
                 }
                 rst.close();
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
+        e.printStackTrace();
+    } finally {
             if (rst != null) {
                 try {
                     rst.close();
@@ -4778,11 +4764,15 @@ public class StatementReconciliationsDAO {
                     logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
                 }
             }
-            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
-            pasarGarbageCollector();
-        }
-
-        return lstTkts;
+        session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+        pasarGarbageCollector();
     }
 
+    return lstTkts;
 }
+
+        
+
+}
+
+
