@@ -14,6 +14,7 @@ import net.miatech.praxis.dao.payments.StatementReconciliationsDAO;
 import net.miatech.praxis.payment.MPF101;
 import net.miatech.praxis.payment.filter.A2280Filter;
 import net.miatech.praxis.payment.filter.A2290Filter;
+import net.miatech.praxis.payment.filter.MPF100Filter;
 
 /**
  *
@@ -30,9 +31,7 @@ public class StatementReconciliationsLogic {
     public List<A2290Filter> loadPX287SQP00838(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00838(filter);
     }
-    public List<A2290Filter> loadPX001CASH(A2290Filter filter) throws SQLException, Exception {
-        return StatementReconciliationsDAO.loadPX001CASH(filter);
-    }
+
     
     public List<A2290Filter> loadPX287SQP00838PEND(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00838PEND(filter);
@@ -72,6 +71,9 @@ public class StatementReconciliationsLogic {
     public List<A2290Filter> loadPX002CASH(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX002CASH(filter);
     }
+    public List<A2290Filter> loadPXSalesDirect(A2290Filter filter) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadPXSalesDirect(filter);
+    }
     
     public List<A2290Filter> loadPX287SQP00841DetailProceByS(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00841DetailProceByS(filter);
@@ -99,6 +101,9 @@ public class StatementReconciliationsLogic {
     public A2290Filter loadPXSQP005CASH(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPXSQP005CASH(filter);
     }
+    public A2290Filter loadPXSQP005CASHSALESDIRECT(A2290Filter filter) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadPXSQP005CASHSALESDIRECT(filter);
+    }
     
     public A2290Filter loadPX287SQP00844MPF060_DE(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00844MPF060_DE(filter);
@@ -125,6 +130,9 @@ public class StatementReconciliationsLogic {
     }
     public List<A2290Filter> loadPXDetailCASHLIQUID(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPXDetailCASHLIQUID(filter);
+    }
+    public List<A2290Filter> loadPXDetailSalesDirect(A2290Filter filter) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadPXDetailSalesDirect(filter);
     }
 
     public String loadPX269SQP05115(List<A2290Filter> filter, UserView user) throws SQLException, Exception {
@@ -177,4 +185,10 @@ public class StatementReconciliationsLogic {
     public boolean CONCILIA2_SEQ(String QUERY ,String ban,String dateci,String tranci,String valdate,String prda) throws SQLException, Exception {
         return StatementReconciliationsDAO.CONCILIA2_SEQ( QUERY , ban, dateci, tranci, valdate, prda);
     }
+            
+    //CASH
+    public List<MPF100Filter> loadCashSummaryMain(MPF100Filter filter) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadCashSummaryMain(filter);
+    }
+    
 }

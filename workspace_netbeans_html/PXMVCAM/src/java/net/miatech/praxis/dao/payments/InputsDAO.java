@@ -138,7 +138,7 @@ public class InputsDAO {
         ResultSet rs01 = null;
         Connection cnx = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP02957(?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP02957(?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -148,6 +148,7 @@ public class InputsDAO {
             cstmt01.setString(2, filter.IN_FECHA_FROM);
             cstmt01.setString(3, filter.IN_FECHA_TO);
             cstmt01.setString(4, Functions.getFechaActual());
+            cstmt01.setString(5, filter.IN_CONSULTA);
             cstmt01.execute();
 
             rs01 = cstmt01.getResultSet();
@@ -210,7 +211,7 @@ public class InputsDAO {
         CallableStatement cstmt01 = null;
         ResultSet rs01 = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS353(?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.MPS353(?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -221,7 +222,7 @@ public class InputsDAO {
             cstmt01.setString(2, filter.IN_FECHA_FROM);
             cstmt01.setString(3, filter.IN_FECHA_TO);
             cstmt01.setString(4, filter.IN_FUENTE);
-            cstmt01.setString(5, consulta);
+            cstmt01.setString(5, filter.IN_CONSULTA);
             cstmt01.execute();
 
             rs01 = cstmt01.getResultSet();
@@ -248,10 +249,12 @@ public class InputsDAO {
                 objRtn.FUENTE = rs01.getString("FUENTE");
                 objRtn.PPROGRAM = rs01.getString("PPROGRAM");
                 objRtn.MENSA = rs01.getString("MENSA").trim();
+                objRtn.DESCRIP = rs01.getString("DESCRIP").trim();
                 objRtn.QRECOR = rs01.getInt("QTYREAD");
                 objRtn.QRECORG = rs01.getInt("QTYWRITE");
                 objRtn.IN_TIPOFECHA = rs01.getInt("QTYRECEI");
                 objRtn.QRECERR = rs01.getInt("QTYERROR");
+                objRtn.QTYDELET = rs01.getInt("QTYDELET");
                 objRtn.totQRECOR = totQRECOR;
                 objRtn.totQRECORG = totQRECORG;
                 lstRtn.add(objRtn);
@@ -320,8 +323,10 @@ public class InputsDAO {
         hmTablaFuente.put("AXPLUSGR-D", "A4123");
         hmTablaFuente.put("AXLIGATB-D", "A4125");
         hmTablaFuente.put("WORLDPAY-D", "A4039");
+        hmTablaFuente.put("LIQUI-BSP", "MPF195");
+        
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP04393(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.MPS385(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         try {
             
@@ -1020,7 +1025,7 @@ public class InputsDAO {
         CallableStatement cstmt01 = null;
         ResultSet rs01 = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00691(?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00691(?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1030,8 +1035,10 @@ public class InputsDAO {
 
             cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt01.setString(2, filter.IN_FECHA_FROM.substring(0, 4));
-            cstmt01.setString(3, filter.IN_FUENTE.trim());
-            cstmt01.setString(4, consulta);
+            cstmt01.setString(3, filter.IN_TDATE);
+            cstmt01.setString(4, filter.IN_MENSA.trim());
+            cstmt01.setString(5, filter.IN_FUENTE.trim());
+            cstmt01.setString(6, consulta);
             cstmt01.execute();
 
             rs01 = cstmt01.getResultSet();
@@ -1247,6 +1254,7 @@ public class InputsDAO {
                 objRtn.PROCDATE = rs01.getString("PROCDATE").trim();
                 objRtn.QTYDOC = rs01.getInt("QTYDOC");
                 objRtn.tot_QTYDOC = rs01.getInt("TOT_QTYDOC");
+
                 
                 objRtn.strTitulo = strTitulo;
                 

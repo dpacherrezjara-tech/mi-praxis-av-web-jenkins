@@ -106,6 +106,7 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
         if (obj.getValue() === 'All') {
             global.Msg({msg: 'Select source'});
         }
+//        this.obtainComboFuente();
         if (obj.getValue() === 'C') {
             Ext.getCmp(prototype.id + '-Filters3_1').hide();
             Ext.getCmp(prototype.id + '-contentFilter2').show();
@@ -123,9 +124,41 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
             Ext.getCmp(prototype.id + '-contentFilter2').hide();
             Ext.getCmp(prototype.id + '-panelGridData').show();
             Ext.getCmp(prototype.id + '-boxDataDetalle').show();
+            console.log('Entra a if de grid details');
             this.setGridData();
         }
     },
+
+    obtainComboFuente: function () {
+        let consulta = Ext.getCmp(prototype.id + '-rbgChangeMDP').getValue().opcion;
+        Ext.Ajax.request({
+            url: prototype.url + '/obtainDataCombo',
+            method: 'POST',
+            timeout: 60000000,
+//            beforerequest: Ext.getCmp(prototype.id + '-centerC').mask('Loading...'),
+            params: {IN_FECHA_FROM: '',
+                IN_FECHA_TO: '',
+                consulta: consulta},
+            success: function (response, options) {
+                var res = Ext.JSON.decode(response.responseText);
+                Ext.getCmp(prototype.id + '-centerC').unmask('Loading...');
+
+                if (res.success) {
+                    Ext.getCmp(prototype.id + '-cmbFUENTE').bindStore(
+                            Ext.create('Ext.data.Store',
+                                    {data: res.lstFuentes, autoLoad: true}));
+
+                    Ext.getCmp(prototype.id + '-cmbCountry').bindStore(
+                            Ext.create('Ext.data.Store',
+                                    {data: res.lstPaises, autoLoad: true}));
+                    Ext.getCmp(prototype.id + '-cmbFUENTE').setValue('All');
+                    Ext.getCmp(prototype.id + '-cmbCountry').setValue('');
+                } else
+                    global.Msg({msg: 'Ocurrio un error'});
+            }
+        });
+    },
+
     obtainData: function () {
 
         var storeComboDataYear = win.getStoreYear(false);
@@ -166,6 +199,17 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
             ]
         }));
         cmbVISTA.setValue("D");
+
+        var cmbTDATE = Ext.getCmp(prototype.id + '-cmbTDATE');
+        cmbTDATE.bindStore(Ext.create('Ext.data.ArrayStore', {
+            autoLoad: false,
+            fields: ['code', 'name'],
+            data: [
+                ["FECR", "Creation Date"],
+                ["FECRFILE", "Process Date"]
+            ]
+        }));
+        cmbTDATE.setValue("FECR");
 
         var IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() +
                 Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue() +
@@ -321,12 +365,14 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
                 Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue() +
                 Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
         me.bean.INPNAME = Ext.getCmp(prototype.id + '-cmbFUENTE').getValue();
+        console.log(Ext.getCmp(prototype.id + '-rbgChangeMDP').getValue().opcion, 'rgMDP')
+        me.bean.IN_CONSULTA = Ext.getCmp(prototype.id + '-rbgChangeMDP').getValue().opcion;
     },
     btnSearch_click: function (obj, e) {
 
         var user = $('#menuUser').text();
 
-        if (user.includes('SAP') ||
+        if (user.includes('SAV') ||
                 user === 'ADM2' || user === 'OPER2' || user === 'OPER3' || user === 'OPER6' ||
                 user === 'OPER7' || user === 'OPER9') {
             Ext.getCmp(prototype.id + '-chkLOG').show();
@@ -340,61 +386,55 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
         var FUENTE = Ext.getCmp(prototype.id + '-cmbFUENTE').getValue();
         var cmbPrograma = Ext.getCmp(prototype.id + '-cmbPrograma').getValue();
 
-        if (chkCITY) {
-            Ext.getCmp(prototype.id + '-txtDateField').setVisible(true);
-            Ext.getCmp(prototype.id + '-cmbCountry').setVisible(true);
-            this.setGridDataCity();
+
+        //SIEMPRE ENTRA AQUÍ
+        this.setFormatParameter2();
+
+
+        if (cmbPrograma === 'All') {
+            cmbPrograma = '';
+        }
+
+        if (chkLOG) {
+            me.bean.MENSA = cmbPrograma;
+
+            var beanString = JSON.stringify(me.bean);
+            searchParams = {
+                bean: me.bean,
+                beanString: beanString
+            };
+
+            this.searchLOGSA1910(me.bean);
         } else {
-            this.setFormatParameter2();
-            if (me.bean.IN_FUENTE.substr(0, 7) === 'BSPLINK') {
-                Ext.getCmp(prototype.id + '-chkCITY').setVisible(true);
+            me.bean.MENSA = '';
+            var beanString = JSON.stringify(me.bean);
+            searchParams = {
+                bean: me.bean,
+                beanString: beanString
+            };
+
+//            this.obtainComboFuente();
+            if (cmbVISTA === 'D') {
+                Ext.getCmp(prototype.id + '-Filters3_1').show();
+                Ext.getCmp(prototype.id + '-contentFilter2').hide();
+                this.setGridData();
             } else {
-                Ext.getCmp(prototype.id + '-chkCITY').setVisible(false);
-            }
-
-            if (cmbPrograma === 'All') {
-                cmbPrograma = '';
-            }
-
-            if (chkLOG) {
-                me.bean.MENSA = cmbPrograma;
-
-                var beanString = JSON.stringify(me.bean);
-                searchParams = {
-                    bean: me.bean,
-                    beanString: beanString
-                };
-
-                this.searchLOGSA1910(me.bean);
-            } else {
-                me.bean.MENSA = '';
-                var beanString = JSON.stringify(me.bean);
-                searchParams = {
-                    bean: me.bean,
-                    beanString: beanString
-                };
-
-                if (cmbVISTA === 'D') {
-                    Ext.getCmp(prototype.id + '-Filters3_1').show();
-                    Ext.getCmp(prototype.id + '-contentFilter2').hide();
-                    this.setGridData();
+                if (FUENTE !== 'All') {
+                    Ext.getCmp(prototype.id + '-Filters3_1').hide();
+                    Ext.getCmp(prototype.id + '-contentFilter2').show();
+                    Ext.getCmp(prototype.id + '-panelGridData').hide();
+                    this.gridCalendar_clickHandler();
                 } else {
-                    if (FUENTE !== 'All') {
-                        Ext.getCmp(prototype.id + '-Filters3_1').hide();
-                        Ext.getCmp(prototype.id + '-contentFilter2').show();
-                        Ext.getCmp(prototype.id + '-panelGridData').hide();
-                        this.gridCalendar_clickHandler();
-                    } else {
-                        global.Msg({msg: 'Select source'});
-                    }
+                    global.Msg({msg: 'Select source'});
                 }
             }
-            Ext.getCmp(prototype.id + '-txtDateField').setVisible(false);
-            Ext.getCmp(prototype.id + '-cmbCountry').setVisible(false);
         }
+        Ext.getCmp(prototype.id + '-txtDateField').setVisible(false);
+        Ext.getCmp(prototype.id + '-cmbCountry').setVisible(false);
+
     },
     setGridData: function () {
-        win.lblUser_toolTip("Estructura: A2270");
+        win.lblUser_toolTip("Estructura: A2359");
         var FUENTE = Ext.getCmp(prototype.id + '-cmbFUENTE').getValue();
 
         if (FUENTE === 'All') {
@@ -436,6 +476,7 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
         console.log(rowData.data);
         var beanDetAll = rowData.data;
         beanDetAll.IN_FECHA_FROM = rowData.data.DTRANS;
+        beanDetAll.IN_CONSULTA = Ext.getCmp(prototype.id + '-rbgChangeMDP').getValue().opcion;
 
         fte = Ext.getCmp(prototype.id + '-cmbFUENTE').getValue();
         var fte = Ext.getCmp(prototype.id + '-cmbFUENTE').getValue();
@@ -460,7 +501,7 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
         this.setGridDataDetAll();
     },
     searchDetAllFilter_clickHandler: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
-
+        
         var vista = Ext.getCmp(prototype.id + '-cmbVISTA').getValue();
         if (vista === 'C') {
             Ext.getCmp(prototype.id + '-Filters3_1').hide();
@@ -490,13 +531,14 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
                     Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
 
             beanDetAll.IN_FUENTE = Ext.getCmp(prototype.id + '-cmbFUENTE').getValue();
-
+            beanDetAll.IN_CONSULTA = Ext.getCmp(prototype.id + '-rbgChangeMDP').getValue().opcion;
             me.paramsDetail.beanString = JSON.stringify(beanDetAll);
 
             var FUENTE = Ext.getCmp(prototype.id + '-cmbFUENTE').getValue();
 
             if (FUENTE === 'All') {
                 me.panelActual = '-boxMainAll';
+//                this.obtainComboFuente();
                 global.selectedChild(me.childs, prototype.id + me.panelActual);
                 this.setGridData();
             } else {
@@ -579,6 +621,7 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
     searchDelivery_clickHandler: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
         var beanDeliv = rowData.data;
         beanDeliv.IN_FECRFILE = rowData.data.strFormatDate.replaceAll('-', '');
+        let tipoConsulta = '';
         switch (columnNum) {
             case 1:
                 beanDeliv.IN_ERROR = '';
@@ -586,13 +629,26 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
             case 9:
                 beanDeliv.IN_ERROR = '1';
                 break;
+            case 5:
+                beanDeliv.IN_NAME = rowData.data.DESCRIP;
+                tipoConsulta = '3'
+                break;
+            case 10:
+                beanDeliv.IN_NAME = rowData.data.DESCRIP;
+                tipoConsulta = '1'
+                break;
+            case 11:
+                beanDeliv.IN_NAME = rowData.data.DESCRIP;
+                tipoConsulta = '4'
+                break;
         }
         Fuente = beanDeliv.FUENTE;
+        console.log(beanDeliv, 'beanDelivbeanDeliv')
         if (beanDeliv.IN_ERROR === '1' && beanDeliv.QRECERR === 0) {
             global.Msg({msg: 'Data not found.'});
         } else {
             me.paramsDetail.beanString = JSON.stringify(beanDeliv);
-            me.paramsDetail.consulta = '1';
+            me.paramsDetail.consulta = tipoConsulta;
             this.searchDelivery();
         }
         console.log(beanDeliv);
@@ -639,7 +695,7 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
         beanDetLine.IN_ADATE = rowData.data.ADATE;
         beanDetLine.IN_CODEBANK = rowData.data.BANK;
         beanDetLine.IN_NAME = rowData.data.NAME.trim();
-        beanDetLine.consulta = '';
+        beanDetLine.consulta = '2';
         me.paramsDetail.beanString = JSON.stringify(beanDetLine);
         me.paramsDetail.consulta = '2';
         me.drillDown.push(me.panelActual);
@@ -702,8 +758,7 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
         global.clear();
         Ext.getCmp(prototype.id + '-gridDataLOG').bindStore(storeGridDatas);
     },
-    
-    
+
 //    searchDetAll_clickHandler: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
 //        var beanDetAll = rowData.data;
 //        me.drillDown.push(me.panelActual);
@@ -890,11 +945,47 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
             Ext.getCmp(prototype.id + '-gridDataCity').bindStore(storeGridDatas);
         }
     },
+
+    searchCalendar_clickHandler: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
+        let beanGrid = rowData.data;
+        Ext.getCmp(prototype.id + '-Filters3_2').show();
+        Ext.getCmp(prototype.id + '-infoCalendar').show();
+
+        Ext.getCmp(prototype.id + '-Filters3_1').hide();
+        Ext.getCmp(prototype.id + '-contentFilter2').show();
+        Ext.getCmp(prototype.id + '-boxMainAll').hide();
+        Ext.getCmp(prototype.id + '-panelGridData').hide();
+        Ext.getCmp(prototype.id + '-boxDataDetalle').hide();
+
+        me.beanCalendar = {};
+        me.beanCalendar.IN_FUENTE = beanGrid.FUENTE;
+        me.beanCalendar.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbYear').getValue();
+        me.beanCalendar.IN_TDATE = Ext.getCmp(prototype.id + '-cmbTDATE').getValue();
+        me.beanCalendar.IN_MENSA = beanGrid.MENSA;
+        var beanString = JSON.stringify(me.beanCalendar);
+
+        Ext.getCmp(prototype.id + '-lbl-year').setText(me.beanCalendar.IN_FECHA_FROM);
+        Ext.getCmp(prototype.id + '-cmbFUENTE').setValue(beanGrid.FUENTE);
+        Ext.getCmp(prototype.id + '-cmbVISTA').setValue("C");
+
+        this.setCalendar2(beanString);
+        global.clear();
+
+    },
+
     gridCalendar_clickHandler: function (obj) {
         Ext.getCmp(prototype.id + '-Filters3_2').show();
         Ext.getCmp(prototype.id + '-infoCalendar').show();
 
-        this.setCalendar2();
+        me.beanCalendar = {};
+        me.beanCalendar.IN_FUENTE = Ext.getCmp(prototype.id + '-cmbFUENTE').getValue();
+        me.beanCalendar.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbYear').getValue();
+        me.beanCalendar.IN_TDATE = Ext.getCmp(prototype.id + '-cmbTDATE').getValue();
+        var beanString = JSON.stringify(me.beanCalendar);
+
+        Ext.getCmp(prototype.id + '-lbl-year').setText(me.beanCalendar.IN_FECHA_FROM);
+
+        this.setCalendar2(beanString);
         global.clear();
     },
     setClearCalendar: function () {
@@ -961,22 +1052,16 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
         Ext.getCmp(prototype.id + 'panel05').updateLayout();
     },
 
-    setCalendar2: function () {
+    setCalendar2: function (bean) {
 
         var aux = true;
-        me.beanCalendar = {};
-        me.beanCalendar.IN_FUENTE = Ext.getCmp(prototype.id + '-cmbFUENTE').getValue();
-        me.beanCalendar.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbYear').getValue();
-        var beanString = JSON.stringify(me.beanCalendar);
-
-        Ext.getCmp(prototype.id + '-lbl-year').setText(me.beanCalendar.IN_FECHA_FROM);
 
         Ext.Ajax.request({
             url: prototype.url + '/searchCalendar',
             method: 'POST',
             timeout: 60000000,
             beforerequest: Ext.getBody().mask('Loading...'),
-            params: {beanString: beanString},
+            params: {beanString: bean},
             success: function (response, options) {
                 if (aux) {
                     me.initCalendar2();
@@ -1110,7 +1195,7 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
             case  '-boxDataDetalle':
                 global.getFile(prototype.url + '/getXLSX_Detalle?beanString=' + encodeURI(me.paramsDetail.beanString));
                 break;
-                
+
         }
 
     },

@@ -362,14 +362,19 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.setFormatParameter();
         if ( Ext.getCmp(prototype.id + '-cmbNEGOC').getValue() !== '' ){
             this.searchMPF060()
+            this.mostrarCamposCredit()
         } else if (Ext.getCmp(prototype.id + '-txtBANDOC').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbDateDay').getValue() !== ''
                 || Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbStatus').getValue() !== '') {
             this.btnSearch_BANDOC();
+            this.mostrarCamposCredit();
         } else if (Ext.getCmp(prototype.id + '-btnToggleSwitchCASH').getEl().down("#chkCash").dom.checked){
             console.log("Probando")
             this.setGridDataCash();
+            this.ocultarCamposCredit();
+            
         } else {
             this.setGridData();
+            this.mostrarCamposCredit();
         }
 
 
@@ -1035,15 +1040,51 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         me.drillDown.push(me.panelActual);
         me.panelActual = '-boxDetLiquiCash';
         console.log(rowData.data,"Esto es mi detalle");
-        global.selectedChild(me.childs, prototype.id + me.panelActual);
-        this.beanLiquiCash.IN_STVAL = '1';  
+        global.selectedChild(me.childs, prototype.id + me.panelActual);    
+        var cant = 0;   
+        switch (columnNum) {
+            case 0:
+                console.log('ENTRA A FECHA');
+                rowData.data.IN_STVAL = "";
+                cant = rowData.data.lngQTMATCH;
+                break;
+            case 1:
+                console.log('ENTRA A MATCH');
+                rowData.data.IN_STVAL = "1";
+                cant = rowData.data.lngQTMANUAL;
+                break;
+            case 3:
+                console.log('ENTRA AL MANUAL');
+                rowData.data.IN_STVAL = "5";
+                cant = rowData.data.lngQMANUAL;
+                break;
+            case 4:
+                console.log('ENTRA AL MANUAL');
+                rowData.data.IN_STVAL = "3";
+                cant = rowData.data.lngQTPEND;
+                break;
+        }
+        this.beanLiquiCash.IN_STVAL = rowData.data.IN_STVAL;
         this.beanLiquiCash.IN_ADATE = rowData.data.SDATE;  
+        this.beanLiquiCash.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();;  
         me.paramsDetail.beanString = JSON.stringify(this.beanLiquiCash);
         this.setGridDataDetLiquidaCash();
     },
     
+    onGridDetSalesDirect: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
+        me.drillDown.push(me.panelActual);
+        me.panelActual = '-boxDetSalesDirect';
+        
+        global.selectedChild(me.childs, prototype.id + me.panelActual); 
+        console.log(me.panelActual,"llego aqui 1"); 
+        this.beanLiquiCash.IN_STVAL = "1";
+        this.beanLiquiCash.IN_ADATE = rowData.data.SDATE;  
+        me.paramsDetail.beanString = JSON.stringify(this.beanLiquiCash);
+        this.setGridDataSalesDirect();
+    },
+    
     setGridDataDetLiquidaCash: function () {
-        win.lblUser_toolTip("Estructura: MPF190");
+        win.lblUser_toolTip("Estructura: MPF102");
         me.setWidthPie();
         this.setFormatParameter();
         var msj = this.validateFields();
@@ -1079,6 +1120,47 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             global.clear();
             Ext.getCmp(prototype.id + '-gridDetLiquiCash').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-paggin20').bindStore(storeGridDatas);
+        }
+    },
+    
+    setGridDataSalesDirect: function () {
+        win.lblUser_toolTip("Estructura: MPF102");
+        console.log("llego aqui 2  ");
+        me.setWidthPie();
+        this.setFormatParameter();
+        var msj = this.validateFields();
+        if (msj !== '') {
+            global.Msg({msg: msj
+            });
+        } else {
+            var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchDetSalesDirect'
+                }, listeners: {
+                    beforeload: function (obj) {
+                        obj.proxy.extraParams = me.paramsDetail;
+                    },
+                    load: function (obj) {
+                        var pag = Ext.getCmp(prototype.id + '-paggin21');
+                        var pagData = pag.getPageData();
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        console.log(obj.data,"Esto es lo que recibo");
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        } else {
+                            var data = obj.data.items[0].data;
+                            win.setText('lblTittleCashSalesDirect', data.strTitulo);
+                        }
+                    }
+                }
+            });
+            global.clear();
+            Ext.getCmp(prototype.id + '-gridDetSalesDirect').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-paggin21').bindStore(storeGridDatas);
         }
     },
 
@@ -1641,6 +1723,15 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         
 
     },
+    onEditClickSalesDirect: function (grid, rowIndex, colIndex) {
+        var rec = grid.getStore().getAt(rowIndex);
+        
+        me.recGlobal = grid.getStore().getAt(rowIndex);
+        console.log(rec,"esta es la informacion que voy a enviar")
+        this.winDataEntrySalesDirect('U', rec);
+        
+
+    },
     winDataEntry: function (action, rec) {
         action = action === null || action === undefined ? 'U' : action;
         rec = rec === null || rec === undefined ? {} : rec;
@@ -1676,6 +1767,22 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
         Ext.create('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash', {
             id: prototype.id + '-dataEntryCash',
+            params: {
+                action: action,
+                rec: rec,
+                lstCountry: me.lstCountry,
+                controllerParent: me,
+                panelActual : me.panelActual,
+                paramsGrid : me.paramsDetail
+            }
+        }).show();
+    },
+    winDataEntrySalesDirect: function (action, rec) {
+        action = action === null || action === undefined ? 'U' : action;
+        rec = rec === null || rec === undefined ? {} : rec;
+
+        Ext.create('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntrySalesDirect', {
+            id: prototype.id + '-dataEntrySalesDirect',
             params: {
                 action: action,
                 rec: rec,
@@ -2105,6 +2212,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             case '-boxDetLiquiCash':
                 me.pagginActual = '-paggin20';
                 break;
+            case '-boxDetSalesDirect':
+                me.pagginActual = '-paggin21';
+                break;
             
         }
     },
@@ -2183,6 +2293,66 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         }
     },
     /*     
+     * Funciones para CASH    
+     */
+    // 🔹 Función para ocultar los campos (modo CASH)
+    ocultarCamposCredit: function () {
+        var ids = [
+            '-cmbCOREP',
+            '-cmbDateSel',
+            '-COL',
+            '-btnToggleSwitchFT',
+            '-EXT',
+            '-cmbTDOC',
+            '-cmbBank',
+            '-cmbExt',
+            '-formLIQvsEC',
+            '-btn_Concilia_LIQvsEC',
+            '-pendingBuss',
+            '-labelpendingBuss',
+            '-txtBANDOC',
+        ];
+        console.log("Ocultando campos (Cash)");
+
+        Ext.Array.forEach(ids, function (id) {
+            var cmp = Ext.getCmp(prototype.id + id);
+            if (cmp) {
+                cmp.setVisible(false);
+            }
+        });
+    },
+
+// 🔹 Función para mostrar los campos (modo CREDITCARD)
+    mostrarCamposCredit: function () {
+        var ids = [
+            '-cmbCOREP',
+            '-cmbDateSel',
+            '-COL',
+            '-btnToggleSwitchFT',
+            '-EXT',
+            '-cmbTDOC',
+            '-cmbBank',
+            '-cmbExt',
+            '-formLIQvsEC',
+            '-btn_Concilia_LIQvsEC',
+            '-pendingBuss',
+            '-labelpendingBuss',
+            '-txtBANDOC',
+        ];
+        console.log("Mostrando campos (CreditCard)");
+
+        Ext.Array.forEach(ids, function (id) {
+            var cmp = Ext.getCmp(prototype.id + id);
+            if (cmp) {
+                cmp.setVisible(true);
+            }
+        });
+    },
+
+
+    
+    
+    /*     
      * Funciones para la paginacion     
      */
     pagFirst: function (obj, e) {
@@ -2195,8 +2365,10 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         pag.movePrevious();
     },
     pagNext: function (obj, e) {
+        
         this.getPaggin();
         var pag = Ext.getCmp(prototype.id + me.pagginActual);
+        console.log(pag,"Esto mueve la pag")
         pag.moveNext();
     },
     pagLast: function (obj, e) {

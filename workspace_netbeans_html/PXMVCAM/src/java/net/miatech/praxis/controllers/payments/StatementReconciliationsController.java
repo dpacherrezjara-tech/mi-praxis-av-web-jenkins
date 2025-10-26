@@ -11,7 +11,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,6 +39,7 @@ import net.miatech.praxis.logic.payments.LoadConciliationLogic;
 import net.miatech.praxis.logic.payments.StatementReconciliationsLogic;
 import net.miatech.praxis.payment.MPF101;
 import net.miatech.praxis.payment.filter.A2290Filter;
+import net.miatech.praxis.payment.filter.MPF100Filter;
 import net.miatech.utils.Functions;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -121,53 +127,6 @@ public class StatementReconciliationsController extends BaseController {
                 filter.page.PAGNUM = 1;
             }
             lst = logic.loadPX287SQP00838(filter);
-        } catch (Exception e) {
-            throw new SpringException(e);
-        }
-        return lst;
-    }
-    @RequestMapping(value = "searchCash")
-    public @ResponseBody
-    String searchCash(ModelMap map, HttpServletRequest request) {
-        System.out.println("-------------- StatementReconciliations : SearchCash-------------");
-
-        map.put("success", true);
-        List<A2290Filter> lst = this.getListCash(request, false);
-        System.out.println("Total : " + lst.size());
-        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
-        map.put("data", lst);
-        return new Gson().toJson(map);
-    }
-
-    public List<A2290Filter> getListCash(HttpServletRequest request, Boolean bExcel) {
-
-        List<A2290Filter> lst = new ArrayList<>(0);
-        A2290Filter filter = new A2290Filter();
-        Gson gson = new Gson();
-        String beanString = "";
-
-        try {
-            logic = new StatementReconciliationsLogic();
-            logic.setSession(this.serverSession.getServerSession());
-
-            beanString = request.getParameter("beanString");
-            filter = gson.fromJson(beanString, A2290Filter.class);
-            filter.page.TOTROW = -1;
-            filter.page.START = 0;
-            filter.page.LIMIT = 0;
-
-            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
-            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
-
-            if (!bExcel) {
-                filter.page.PAGROW = 20;
-                start = (start != 0 ? start : 0);
-                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
-            } else {
-                filter.page.PAGROW = -1;
-                filter.page.PAGNUM = 1;
-            }
-            lst = logic.loadPX001CASH(filter);
         } catch (Exception e) {
             throw new SpringException(e);
         }
@@ -710,6 +669,61 @@ public class StatementReconciliationsController extends BaseController {
             }
 
             lst = logic.loadPX002CASH(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    @RequestMapping(value = "searchDetSalesDirect")
+    public @ResponseBody
+    String searchDetSalesDirect(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- StatementReconciliations : searchDetSalesDirect-------------");
+        try {
+            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+            List<A2290Filter> lst = this.getListDetSalesDirect(request, false);
+            map.put("success", true);
+            map.put("data", lst);
+            map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        } catch (SQLException e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        }
+        return new Gson().toJson(map);
+    }
+
+    public List<A2290Filter> getListDetSalesDirect(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2290Filter> lst = new ArrayList<>(0);
+        A2290Filter filter;
+        Gson gson = new Gson();
+        String beanString;
+
+        try {
+            logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadPXSalesDirect(filter);
         } catch (Exception e) {
             throw new SpringException(e);
         }
@@ -3639,6 +3653,38 @@ public class StatementReconciliationsController extends BaseController {
         return new Gson().toJson(map);
 
     }
+    @RequestMapping(value = "/searchBeanSalesDirectExtracto")
+    public @ResponseBody
+    String searchBeanSalesDirectExtracto(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankStatementReconciliation : searchBeanSalesDirect-------------");
+        try {
+            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+
+            A2290Filter lst;
+            A2290Filter filter;
+            Gson gson = new Gson();
+            String beanString;
+
+            logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+
+            lst = logic.loadPXSQP005CASHSALESDIRECT(filter);
+
+            map.put("success", true);
+            map.put("data", lst);
+        } catch (SQLException e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        }
+        return new Gson().toJson(map);
+
+    }
     
     
 
@@ -3848,6 +3894,40 @@ public class StatementReconciliationsController extends BaseController {
             filter = gson.fromJson(beanString, A2290Filter.class);
 
             lst = logic.loadPXDetailCASHLIQUID(filter);
+
+            map.put("success", true);
+            map.put("data", lst);
+            map.put("dataFees", lstFees);
+        } catch (SQLException e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        }
+        return new Gson().toJson(map);
+
+    }
+    @RequestMapping(value = "/searchBean_SalesDirect")
+    public @ResponseBody
+    String searchBean_SalesDirect(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankStatementReconciliation : searchBean_SalesDirect-------------");
+        try {
+            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+
+            List<A2290Filter> lst = new ArrayList<>(0);
+            List<A2290Filter> lstFees = new ArrayList<>(0);
+            A2290Filter filter;
+            Gson gson = new Gson();
+            String beanString;
+
+            logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+
+            lst = logic.loadPXDetailSalesDirect(filter);
 
             map.put("success", true);
             map.put("data", lst);
@@ -4411,5 +4491,115 @@ public class StatementReconciliationsController extends BaseController {
 
         return clause.toString();
     }
+    
+    // CASH
+    
+        @RequestMapping(value = "searchCash")
+    public @ResponseBody
+    String searchCash(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- StatementReconciliations : SearchCash-------------");
+
+        map.put("success", true);
+        List<MPF100Filter> lst = this.getListCash(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<MPF100Filter> getListCash(HttpServletRequest request, Boolean bExcel) {
+
+        List<MPF100Filter> lst = new ArrayList<>(0);
+        MPF100Filter filter = new MPF100Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, MPF100Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+            lst = logic.loadCashSummaryMain(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    @RequestMapping(value = "getCSV")
+    public @ResponseBody void getCSV(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        System.out.println("Report : getCSV");
+
+        String country = request.getParameter("country");
+        String date = request.getParameter("date");
+
+        if (country == null || date == null || country.isEmpty() || date.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("Parámetros 'country' y 'date' son obligatorios");
+            return;
+        }
+
+        // Carpeta base donde buscar los archivos CSV
+        Path folderPath = Paths.get("W:\\ALDAIR\\BSP");
+
+        System.out.println("Buscando archivos para country=" + country + " y date=" + date);
+
+        // Buscar el archivo que cumpla con el patrón: "CO*20250731*.csv"
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(folderPath, "*.csv")) {
+            Path matchedFile = null;
+            for (Path path : stream) {
+                String fileName = path.getFileName().toString();
+                if (fileName.startsWith(country) && fileName.contains(date)) {
+                    matchedFile = path;
+                    break;
+                }
+            }
+
+            if (matchedFile == null) {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                response.getWriter().write("No se encontró ningún archivo para " + country + " y fecha " + date);
+                return;
+            }
+
+            System.out.println("Archivo encontrado: " + matchedFile);
+
+            // Configurar cabeceras
+            response.setContentType("text/csv");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + matchedFile.getFileName().toString() + "\"");
+
+            try (FileInputStream fis = new FileInputStream(matchedFile.toFile());
+                 OutputStream out = response.getOutputStream()) {
+
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+
+                while ((bytesRead = fis.read(buffer)) != -1) {
+                    out.write(buffer, 0, bytesRead);
+                }
+
+                out.flush();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("Error al buscar o descargar el archivo CSV");
+        }
+    }
+
 
 }

@@ -126,7 +126,9 @@ public class MPF100 {
     public double RIVAAMOC = 0;
     public double RICAAMOC = 0;
     public double RFTEAMOC = 0;    
-    public double NETOAMOC = 0;    
+    public double NETOAMOC = 0;
+
+    // VARIABLES CASH
     //Variables del Sistema
     public String USCR = "";
     public String FECR = "";

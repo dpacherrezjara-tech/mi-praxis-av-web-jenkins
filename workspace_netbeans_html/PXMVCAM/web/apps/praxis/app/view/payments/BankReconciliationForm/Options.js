@@ -206,6 +206,63 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Options', {
                             displayInfo: false,
                             hidden: true
                         },
+                        //para cash
+                        {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id + '-paggin16',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
+                        },
+                        {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id + '-paggin17',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
+                        },
+                        {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id + '-paggin18',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
+                        },
+                        {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id + '-paggin19',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
+                        },
+                        {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id + '-paggin20',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
+                        },
+                        {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id + '-paggin21',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
+                        },
+                         {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id + '-pagginMPF199',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
+                        }
                     ]
                 }
             ]

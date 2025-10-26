@@ -84,6 +84,7 @@ public class CalendarControlBSPController extends BaseController {
             filter.IN_A1529ISOC = request.getParameter("IN_A1529ISOC").trim();
             filter.IN_A1529BAED = request.getParameter("IN_A1529BAED").trim();
             filter.IN_A1529CUTO = request.getParameter("IN_A1529CUTO").trim();
+
             logic = new CalendarControlBSPLogic();
             logic.setSession((IServerSession) serverSession.getServerSession());
             oList = logic.loadPX115S01A1529(filter);
@@ -230,6 +231,9 @@ public class CalendarControlBSPController extends BaseController {
                     A1529BAIR = oList.get(i).A1529BAIR;
                     A1529REMW = oList.get(i).A1529REMW;
                     A1529SETW = oList.get(i).A1529SETW;
+                    if (oList.get(i).A1529CLOS != null && !oList.get(i).A1529CLOS.trim().equals("")) {
+                        A1529SETW = "<font color='#009900'><b>" + A1529SETW + "</b></font>";
+                    }
                     b = false;
                 }
                 switch (oList.get(i).A1529PCYC) {
