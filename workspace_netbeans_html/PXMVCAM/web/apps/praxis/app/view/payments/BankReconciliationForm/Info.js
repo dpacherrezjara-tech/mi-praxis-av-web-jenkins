@@ -6033,7 +6033,10 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                             bodyStyle: 'background: transparent;',
                             border: false,
 //                            height: 'auto',
-                            width: 1475,
+                            width: 1478,
+                            height:620,
+//                            scrollable: 'vertical',
+                            
                             margin: '0 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -6120,31 +6123,6 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                         },
 
                                         
-                                        
-//                                        {
-//                                            xtype: 'label',
-//                                            text: 'DATE :',
-//                                            padding: '2 0 0 20',
-//                                            width: 80,
-//                                            style: {
-//                                                    'text-align': 'right',
-//                                                    'font-weight': 'bold'
-//                                                },
-//                                        },
-//                                         { xtype: 'tbspacer', width: 20 },
-//                                        {
-//                                            xtype: 'textfield',
-//                                            id: prototype.id + '-O_ADATE',
-//                                            fieldStyle: 'text-align:center',
-//                                            enforceMaxLength: true,
-//                                            maskRe: /[0-9a-zA-Z]/,
-//                                            maxLength: 8,
-//                                            width: 100,
-//                                            enableKeyEvents: false
-//                                //          listeners: {
-//                                //              keypress: 'btnSearch_click'
-//                                //          }
-//                                        }
                                         
                                         
                                     ]
