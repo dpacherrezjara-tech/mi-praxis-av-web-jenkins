@@ -126,7 +126,7 @@ public class Functions {
 
     public static String getFechaActual() {
         Date fecha = new Date();
-        SimpleDateFormat formato = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat formato = new SimpleDateFormat("yyyyMM");
         String fechaActual = formato.format(fecha);
         return fechaActual;
     }
