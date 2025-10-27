@@ -86,6 +86,7 @@ public class CalendarControlBSPDAO {
                 objRtn.A1698_ERRORS = rs01.getInt("A1698_ERRORS");
                 objRtn.A1698_SALEWO = rs01.getInt("A1698_SALEWO");
                 objRtn.A1698_COMEN = rs01.getString("A1698_COMEN");
+                objRtn.A1529CLOS = rs01.getString("A1529CLOS");
 
                 lstRtn.add(objRtn);
             }

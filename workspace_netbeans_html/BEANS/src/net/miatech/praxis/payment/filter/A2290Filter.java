@@ -61,6 +61,8 @@ public class A2290Filter extends A2290 {
     public String IN_LIQUIDACIO = "";
     public String IN_TYPER = "";
     public String INTERCOMPANY = "";
+    public String IN_CBATCH = "";
+    public String IN_FECR = "";
 
     public String IN_FROMADATE = "";
     public String IN_TOADATE = "";
@@ -985,6 +987,9 @@ public class A2290Filter extends A2290 {
     public long lngTotQMANUALISC  = 0; 
     public long lngTotQ  = 0; 
     public long lngQEECC  = 0; 
+    public long lngQTYADJ  = 0; 
+    
+    
     public long lngTotQTKTAUTO  = 0; 
     public long lngTotQTKTPENDING  = 0; 
     public long lngTotQTKTMANUAL  = 0; 
@@ -1006,6 +1011,13 @@ public class A2290Filter extends A2290 {
     public long lngTOTALTKT    = 0; 
     public long lngTotQSALESDIRECT    = 0; 
     public long lngTotQTYECC    = 0; 
+    public long lngTotQTYADJ    = 0; 
+    public long lngPayamou    = 0; 
+    public long lngPayamouPending    = 0; 
+    public long lngPayamouMatch    = 0; 
+    
+    
+    
     public double totNETOEECC    = 0; 
     public double totNETOSETLEMENT    = 0; 
     public double SVFOPOT    = 0; 
@@ -1052,6 +1064,28 @@ public class A2290Filter extends A2290 {
     public double USDEQUI = 0;
     public String DCYCLE = "";
 
+    
+    
+    public String O_STVAL ="";
+    public String O_ADATE ="";
+    public String O_CONCEPT ="";
+    public String O_SAGENT ="";
+    public String O_SCONSOL ="";
+    public String O_SCURRENCY ="";
+    public double O_NETO =0;
+    public double O_PAYAMOU =0;
+    public String O_STRDATE ="";
+    public String O_ENDDATE ="";
+    public double O_SUM_NETO = 0;
+    public double O_SUM_PAYAMOU = 0;
+    public String O_TADJ = "";
+    public String O_REFERENCE = "";
+    public String O_COMMENTS = "";
+    
+    
+    
+    
+    
     
     //Update
     public String MENSA = "";       

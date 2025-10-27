@@ -97,13 +97,14 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
         this.setValue('de-txtNAMEP', this.beanResult.NAMEP);
         this.setValue('de-txtSTVAL', this.beanResult.descSTVAL);
         this.setValue('de-txtSCOUNTRY', this.beanResult.DESC_SCOUNTRY);
-        this.setValue('de-txtACCOUNT', this.beanResult.BANDOC);
+        this.setValue('de-txtACCOUNT', this.beanResult.ACCNUMBER);
         this.setValue('de-txtVALDATE', this.beanResult.VALDATE);
         this.setValue('de-txtSCOUNTRY_COD', this.beanResult.SCOUNTRY);
         this.setValue('de-txtSOCIETY', this.beanResult.CCUST);  
         this.setValue('de-txtDATECI', this.beanResult.DATECI);
         this.setValue('de-txtTRANCI', this.beanResult.TRANCI);
         this.setValue('de-txtQTYTRAN1', this.beanResult.QTYTRAN1);
+        this.setValue('de-txtSOCIETYS', this.beanResult.CCUST);
 
         this.setValue('de-txtMERCHAND', this.beanResult.MERCHAND);
         this.setValue('de-txtBANDOC', this.beanResult.BANDOC);
@@ -114,7 +115,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
         this.setValue('de-txtBANDOCL', this.beanResult.BANDOCL);
         this.setValue('de-txtCOREPL', this.beanResult.COREPL);
         this.setValue('de-txtSCURRENCYL', this.beanResult.SCURRENCY);
-        this.setValue('de-txtACCNUMBERL', this.beanResult.ACCNUMBERL);
+        this.setValue('de-txtACCNUMBERL', this.beanResult.ACCNUMBER);
         this.setValue('de-txtDIFF', Ext.util.Format.number(this.beanResult.DIFF, '0,000.00'));
         this.setValue('txtUSCR', this.beanResult.USCR);
         this.setValue('txtFECR', this.beanResult.FECR);
@@ -166,6 +167,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
         meDE.bean.data.IN_RED = meDE.bean.data.RED;
         meDE.bean.data.IN_STVAL = meDE.bean.data.STVAL;
         meDE.bean.data.SCURRENCY = meDE.bean.data.SCURRENCY;
+        meDE.bean.data.IN_CBATCH = meDE.bean.data.CBATCH;
+        meDE.bean.data.IN_FECR = meDE.bean.data.FECR;
         if (meDE.bean.data.IN_STVAL === 'Match' ) {
             meDE.bean.data.IN_STVAL = '1';
         } else if ( meDE.bean.data.IN_STVAL === 'Match Manual' ){
@@ -205,6 +208,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
         this.beanScan.IN_ACCNUMBER = meDE.beanResult.ACCNUMBER;
         this.beanScan.IN_TDOC = meDE.beanResult.TDOC;
         this.beanScan.IN_SCOUNTRY = meDE.beanResult.SCOUNTRY;
+        this.beanScan.IN_CBATCH = meDE.beanResult.CBATCH;
+        this.beanScan.IN_FECR = meDE.beanResult.FECR;
+        
 
         if (this.beanScan.IN_STVAL === 'Match' ) {
             this.beanScan.IN_STVAL = '1';
@@ -297,7 +303,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
             this.lstSendManual.push(dataRow1.data);
 
             if (dataRow1.data.STMANUAL !== 'Blocked') {
-                var neto = parseFloat(dataRow1.data.NETO) || 0;
+                var neto = parseFloat(dataRow1.data.PAYAMOU) || 0;
                 var comistota = parseFloat(dataRow1.data.COMISTOTA) || 0;
 
                 if (comistota !== 0) {
