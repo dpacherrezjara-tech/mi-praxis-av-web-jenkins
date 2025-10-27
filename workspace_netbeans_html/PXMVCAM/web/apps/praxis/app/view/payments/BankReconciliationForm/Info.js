@@ -5269,7 +5269,6 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                                 },
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                     metaData.style = "text-align:right;background-color:#d5f4d5;";
-                                                                    value = Ext.util.Format.number(value, '0,000.00');
                                                                     return value;
                                                                 },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
@@ -6423,7 +6422,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                                 text: 'Auto', dataIndex: 'lngQMATCH', width: 100, align: 'center',
                                                                 summaryType: 'sum',
                                                                 listeners: {
-                                                                    click: 'setGridDataDayBySTVAL'
+                                                                    click: 'onGridDetalleCash'
                                                                 },
                                                                 renderer: function (value, metaData) {
                                                                     metaData.style = "color:#057ECB;text-align:right;background-color:#d5f4d5;";
@@ -6440,7 +6439,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                                 text: 'Manual', dataIndex: 'lngQMANUAL', width: 100, align: 'center',
                                                                 summaryType: 'sum',
                                                                 listeners: {
-                                                                    click: 'setGridDataDayBySTVAL'
+                                                                    click: 'onGridDetalleCash'
                                                                 },
                                                                 renderer: function (value, metaData) {
                                                                     metaData.style = "color:#057ECB;text-align:right;background-color:#d5f4d5;";
@@ -6457,7 +6456,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                                 text: 'Diff', dataIndex: 'lngQDIFF', width: 100, align: 'center',
                                                                 summaryType: 'sum',
                                                                 listeners: {
-                                                                    click: 'setGridDataDayBySTVAL'
+                                                                    click: 'onGridDetalleCash'
                                                                 },
                                                                 renderer: function (value, metaData) {
                                                                     metaData.style = "color:#057ECB;text-align:right;background-color:#d5f4d5;";
@@ -6479,7 +6478,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                                 text: 'w/o Sales', dataIndex: 'lngQPEND', width: 100, align: 'center',
                                                                 summaryType: 'sum',
                                                                 listeners: {
-                                                                    click: 'setGridDataDayBySTVAL'
+                                                                    click: 'onGridDetalleCash'
                                                                 },
                                                                 renderer: function (value, metaData) {
                                                                     metaData.style = "color:#057ECB;text-align:right;background-color:#d5f4d5;";
