@@ -1911,6 +1911,13 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             case '-boxDetDetails':
                 global.getFile(prototype.url + '/getXLSXDetDetails?beanString=' + encodeURI(me.paramsDetail.beanString));
                 break;
+            // Excel de Cash 
+            case '-panelGridDataCash':
+                global.getFile(prototype.url + '/getXLSXDetCashMain?beanString=' + encodeURI(me.paramsDetail.beanString));
+                break;
+            case '-boxDetLiquiCash':
+                global.getFile(prototype.url + '/getXLSXDetCashMainExtract?beanString=' + encodeURI(me.paramsDetail.beanString));
+                break;
         }
     },
     onDownloadFile: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
