@@ -23,6 +23,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.RejectSequencesDataEntr
             let username = document.getElementById('menuUser').textContent;
             let params = {
                 IN_IDCONT: idCont,
+                IN_FILESQ: corrl,
                 IN_HEADER: header,
                 IN_STATUS: status,
                 IN_MAILBODY: txtReject.value,
@@ -32,11 +33,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.RejectSequencesDataEntr
             };
             const formData = new FormData();
             formData.append('params', JSON.stringify(params));
-            const res = await me.request.post(`/maintenanceHeader`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
+            const res = await global.callStoreGet('PRAXISMP', 'MPS309', params)
 //            console.log(res);
             me.notifier.info('Sequences Updated');
             me.view.setLoading(true);

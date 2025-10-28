@@ -597,7 +597,8 @@ extend: 'Ext.app.ViewController',
             const me = this;
             let jsonParams = {
                 idCont: me.view.praxisId,
-                header: me.view.recordData.CORRLAV
+                header: me.view.recordData.CORRLAV,
+                corrl: me.view.recordData.CORRL
             };
             let status = '';
             if (me.dataRejections.length > 0) {
