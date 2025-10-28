@@ -164,8 +164,55 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         
         $('#BankReconciliationForm-btnToggleSwitchFT').change(function () {
             me.btnSearch_click();
-        });
-        
+            let cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro'); 
+            let txtCard1 = Ext.getCmp(prototype.id + '-txtCard1'); 
+            let txtCard2 = Ext.getCmp(prototype.id + '-txtCard2'); 
+            let txtAUTHOC = Ext.getCmp(prototype.id + '-txtAUTHOC'); 
+            let cmbNEGOC = Ext.getCmp(prototype.id + '-cmbNEGOC'); 
+            let cmbCOREP = Ext.getCmp(prototype.id + '-cmbCOREP'); 
+            let txtAMOUNT = Ext.getCmp(prototype.id + '-txtAMOUNT'); 
+            let cmbCOMENTF = Ext.getCmp(prototype.id + '-cmbCOMENTF'); 
+            let txtBANDOC = Ext.getCmp(prototype.id + '-txtBANDOC');
+            let labelProcessor = Ext.getCmp(prototype.id + '-labelProcessor');
+            let lblAmount = Ext.getCmp(prototype.id + '-lblAmount');
+            let lblBPOComment = Ext.getCmp(prototype.id + '-lblBPOComment');
+            let lblDocSapBank = Ext.getCmp(prototype.id + '-lblDocSapBank');
+            
+            if (!cmbFecFiltro.isVisible()) {
+                Ext.getCmp(prototype.id + '-cmbFecFiltro').show(); 
+                Ext.getCmp(prototype.id + '-txtCard1').show(); 
+                Ext.getCmp(prototype.id + '-txtCard2').show(); 
+                Ext.getCmp(prototype.id + '-txtAUTHOC').show(); 
+                Ext.getCmp(prototype.id + '-cmbNEGOC').show(); 
+                Ext.getCmp(prototype.id + '-cmbCOREP').show(); 
+                Ext.getCmp(prototype.id + '-txtAMOUNT').show(); 
+                Ext.getCmp(prototype.id + '-cmbCOMENTF').show(); 
+                Ext.getCmp(prototype.id + '-txtBANDOC').show();
+                Ext.getCmp(prototype.id + '-labelProcessor').show();
+                Ext.getCmp(prototype.id + '-lblAmount').show();
+                Ext.getCmp(prototype.id + '-lblBPOComment').show();
+                Ext.getCmp(prototype.id + '-lblDocSapBank').show();
+                Ext.getCmp(prototype.id + '-datePayment').hide();
+                Ext.getCmp(prototype.id + '-txtDATEPICKER').hide();
+            } else {
+                Ext.getCmp(prototype.id + '-cmbFecFiltro').hide(); 
+                Ext.getCmp(prototype.id + '-txtCard1').hide(); 
+                Ext.getCmp(prototype.id + '-txtCard2').hide(); 
+                Ext.getCmp(prototype.id + '-txtAUTHOC').hide(); 
+                Ext.getCmp(prototype.id + '-cmbNEGOC').hide(); 
+                Ext.getCmp(prototype.id + '-cmbCOREP').hide(); 
+                Ext.getCmp(prototype.id + '-txtAMOUNT').hide(); 
+                Ext.getCmp(prototype.id + '-cmbCOMENTF').hide(); 
+                Ext.getCmp(prototype.id + '-txtBANDOC').hide();
+                Ext.getCmp(prototype.id + '-labelProcessor').hide();
+                Ext.getCmp(prototype.id + '-lblAmount').hide();
+                Ext.getCmp(prototype.id + '-lblBPOComment').hide();
+                Ext.getCmp(prototype.id + '-lblDocSapBank').hide();
+                Ext.getCmp(prototype.id + '-datePayment').show();
+                Ext.getCmp(prototype.id + '-txtDATEPICKER').show();
+            }
+            });
+
         if(window.location.href.includes("params")){
             let paramsSauthoc = window.location.href.split("AVIANCA/")[1].split("#")[0].replace("?params=","").split("/")[0]
             let paramsScardncor = window.location.href.split("AVIANCA/")[1].split("#")[0].replace("?params=","").split("/")[1]
