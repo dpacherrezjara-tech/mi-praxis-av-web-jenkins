@@ -723,7 +723,7 @@
                                         {xtype: 'tbspacer', width: 30},
                                         {
                                             xtype: 'label',
-                                            text: 'Comision',
+                                            text: 'Adjustment.',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             width: 120
                                         },
