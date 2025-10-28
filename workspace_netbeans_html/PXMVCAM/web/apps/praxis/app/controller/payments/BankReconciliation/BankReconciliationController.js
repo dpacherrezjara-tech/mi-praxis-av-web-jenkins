@@ -687,6 +687,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         Ext.getCmp(prototype.id + '-gridDetByPNR').bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-paggin11').bindStore(storeGridDatas);
     },
+    
+    
+    
+    
     btnSearch_click: function (obj, e) {
         
         
@@ -694,19 +698,43 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         
         console.log('btnSearch_click');
         
+        console.log(me.panelActual);
+    
+         var cmp = Ext.getCmp(prototype.id + '-btnToggleSwitchFT');
+         var checkbox = cmp.getEl().down('input.toggle-input').dom;
+         var isChecked = checkbox.checked;
+        console.log(isChecked);
         
-        if( me.panelActual === '-panelGridDataMPF199') { 
         
         
-        me.obJPADJ.IN_SAGENT = Ext.getCmp(prototype.id + '-txtINSAGENT').getValue()|| '';
+        if( me.panelActual === '-panelGridDataMPF199' && isChecked ) { 
+            
+            
+            
+    
+        
+        
+        
+        me.obJPADJ.IN_SAGENT = Ext.getCmp(prototype.id + '-txtAGENCY').getValue()|| '';
         me.obJPADJ.IN_ADATE = Ext.getCmp(prototype.id + '-txtDATEPICKER').getSubmitValue()|| '';
+        var statusValue = Ext.getCmp(prototype.id + '-cmbStatus').getValue();
+        if (Ext.isArray(statusValue)) {
+            statusValue = statusValue.length > 0 ? statusValue.join(',') : '';
+        }
+        me.obJPADJ.IN_STATUS = statusValue || '';;
         me.obJPADJ.beanString = JSON.stringify(me.obJPADJ);
     
           
         this.setGridDataMPF199();
         
         
+        
+        
+        
+      
        }
+       
+       
        else{
         
 
@@ -909,9 +937,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
 
                     } else {
                         console.log('4')
-                        var cmp = Ext.getCmp(prototype.id + '-btnToggleSwitchFT');
-                        var checkbox = cmp.getEl().down('input.toggle-input').dom;
-                        var isChecked = checkbox.checked;
+                       
 
                         console.log("Toggle:", isChecked ? "ON" : "OFF");
 
@@ -2896,7 +2922,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         Ext.getCmp(prototype.id + '-cmbSource').setValue('');
         Ext.getCmp(prototype.id + '-cmbCOREP').setValue('');
         Ext.getCmp(prototype.id + '-txtBANDOC').setValue('');
-        Ext.getCmp(prototype.id + '-txtINSAGENT').setValue('');
+        
         Ext.getCmp(prototype.id + '-txtDATEPICKER').setValue('');
 
     },
@@ -2925,6 +2951,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     },
     exportExcel: function () {
         this.setFormatParameter();
+        this.setGridDataMPF199();
+        
+        
 
         if (Ext.getCmp(prototype.id + '-panelTW').isVisible()) {
 
@@ -2968,6 +2997,11 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 case '-panelGridDataDetalle_DEBITS':
                     global.getFileExcelPost('searchDetByStval_DEBITS', me.paramsDetail.beanString, Ext.getCmp(prototype.id + '-gridDataDetalle_DEBITS').config.columns.items);
 //                    global.getFile(prototype.url + '/getXLSXDetByStval_DEBITS?beanString=' + encodeURI(me.paramsDetail.beanString));
+                    break;
+                    
+                    //MPF199aa
+                case '-panelGridDataMPF199':
+                    global.getFile(prototype.url + '/panelGridDataMPF199?beanString=' + encodeURI(me.obJPADJ.beanString));
                     break;
                 default:
                     global.Msg(
@@ -4193,13 +4227,17 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
      
         me.obJPADJ.IN_SAGENT = '';
         me.obJPADJ.IN_ADATE = '';
+        me.obJPADJ.IN_STATUS = '';
 
 
         me.obJPADJ.beanString = JSON.stringify(me.obJPADJ);
         
-        
-        
+   
         this.setGridDataMPF199();
+        
+
+
+        
         
         
         

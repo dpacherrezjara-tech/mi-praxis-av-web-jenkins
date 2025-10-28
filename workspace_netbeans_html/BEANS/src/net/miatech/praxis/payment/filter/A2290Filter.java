@@ -41,6 +41,7 @@ public class A2290Filter extends A2290 {
     //===============================
     public String IN_FECHA_FROM = "";
     public String IN_ADATE = "";
+    public String IN_STATUS = "";
     public String IN_FECHA_TO = "";
     public String strFecFiltro = "";
     public String strYearFrom = "";

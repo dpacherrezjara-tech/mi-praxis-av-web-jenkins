@@ -6065,66 +6065,8 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                         pack: 'start' ,
                                         margin: '15px 0 15px 15px'
                                     },
-                                    margin: '10 0 10 10', // 🔹 margen: arriba, derecha, abajo, izquierda
-                                    items: [
-                                        {
-                                            xtype: 'label',
-                                            text: 'Agent :',
-                                            padding: '2 0 0 20',
-                                            width: 80,
-                                            style: {
-                                                    'text-align': 'right',
-                                                    'font-weight': 'bold'
-                                                },
-                                        },
-                                         { xtype: 'tbspacer', width: 20 },
-                                        {
-                                            xtype: 'textfield',
-                                            id: prototype.id + '-txtINSAGENT',
-                                            fieldStyle: 'text-align:center',
-                                            enforceMaxLength: true,
-                                            maskRe: /[0-9]/,
-                                            maxLength: 8,
-                                            width: 100,
-                                            enableKeyEvents: false
-                                //          listeners: {
-                                //              keypress: 'btnSearchMPF199_click'
-                                //          }
-                                        },
-                                        
-                                        //fecha
-                                        
-                                        {
-                                            xtype: 'tbspacer',
-                                            width: 20
-                                        },
-                                        {
-                                            xtype: 'fieldcontainer',
-                                            fieldLabel: 'Date Picker',
-                                            layout: 'hbox',
-                                            labelStyle: 'font-weight: bold;',
-                                            defaults: {
-                                                xtype: 'datefield',
-                                                format: 'd/m/Y', // formato visible para el usuario
-                                                submitFormat: 'Ymd', // formato que se envía al backend (ej. 20251024)
-                                                editable: false,
-                                                allowBlank: true,
-                                                width: 160,
-                                                fieldStyle: 'text-align:center'
-                                            },
-                                            items: [
-                                                {
-                                                    id: prototype.id + '-txtDATEPICKER',
-                                                    name: 'IN_ADATE',
-                                                    emptyText: 'Seleccione fecha'
-                                                }
-                                            ]
-                                        },
+                                    margin: '10 0 10 10' // 🔹 margen: arriba, derecha, abajo, izquierda
 
-                                        
-                                        
-                                        
-                                    ]
                                 },
 
                            
@@ -6295,7 +6237,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'Star <br> Date',
+                                                text: 'Start <br> Date',
                                                 dataIndex: 'O_STRDATE',
                                                 width: 80,
                                                 renderer: function (value, metaData) {
