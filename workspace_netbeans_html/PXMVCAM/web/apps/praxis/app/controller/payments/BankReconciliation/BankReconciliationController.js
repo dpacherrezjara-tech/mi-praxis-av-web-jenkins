@@ -686,6 +686,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         Ext.getCmp(prototype.id + '-gridDetByPNR').bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-paggin11').bindStore(storeGridDatas);
     },
+    
+    
+    
+    
     btnSearch_click: function (obj, e) {
         
         
@@ -693,20 +697,43 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         
         console.log('btnSearch_click');
         
+        console.log(me.panelActual);
+    
+         var cmp = Ext.getCmp(prototype.id + '-btnToggleSwitchFT');
+         var checkbox = cmp.getEl().down('input.toggle-input').dom;
+         var isChecked = checkbox.checked;
+        console.log(isChecked);
         
-        if( me.panelActual === '-panelGridDataMPF199') { 
+        
+        
+        if( me.panelActual === '-panelGridDataMPF199' && isChecked ) { 
+            
+            
+            
+    
+        
         
         
         me.obJPADJ.IN_SAGENT = Ext.getCmp(prototype.id + '-txtAGENCY').getValue()|| '';
         me.obJPADJ.IN_ADATE = Ext.getCmp(prototype.id + '-txtDATEPICKER').getSubmitValue()|| '';
-        me.obJPADJ.IN_STATUS = Ext.getCmp(prototype.id + '-cmbStatus').getValue()|| '';
+        var statusValue = Ext.getCmp(prototype.id + '-cmbStatus').getValue();
+        if (Ext.isArray(statusValue)) {
+            statusValue = statusValue.length > 0 ? statusValue.join(',') : '';
+        }
+        me.obJPADJ.IN_STATUS = statusValue || '';;
         me.obJPADJ.beanString = JSON.stringify(me.obJPADJ);
     
           
         this.setGridDataMPF199();
         
+        
+        
+        
+        
       
        }
+       
+       
        else{
         
 
@@ -909,9 +936,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
 
                     } else {
                         console.log('4')
-                        var cmp = Ext.getCmp(prototype.id + '-btnToggleSwitchFT');
-                        var checkbox = cmp.getEl().down('input.toggle-input').dom;
-                        var isChecked = checkbox.checked;
+                       
 
                         console.log("Toggle:", isChecked ? "ON" : "OFF");
 
@@ -4206,9 +4231,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
 
         me.obJPADJ.beanString = JSON.stringify(me.obJPADJ);
         
-        
-        
+   
         this.setGridDataMPF199();
+        
+
+
+        
         
         
         
