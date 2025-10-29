@@ -1857,7 +1857,16 @@
                     hidden: true,
                     listeners: { click: 'allRefreshDataEntryAMDPCASH' }
                 },
-                {xtype: 'tbspacer', width: 390},
+                {
+                            xtype: 'button',
+                            width: 28,
+                            iconCls: 'prx-icon-excel',
+                            tooltip: 'Export to Excel',
+                            listeners: { click: 'getExcelCashTicket' },
+                            
+                            
+                },
+                {xtype: 'tbspacer', width: 3},
             ]
         }
     ]

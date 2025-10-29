@@ -20,9 +20,11 @@ import java.nio.file.Paths;
 
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,10 +41,12 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -65,18 +69,33 @@ import net.miatech.praxis.spring.INF020;
 import net.miatech.utils.Functions;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.Region;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFDataFormat;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.codehaus.jackson.JsonParser;
@@ -5972,10 +5991,922 @@ public class BankReconciliationController extends BaseController {
         }
     }
     
+    // Excel de Cash
+    // Excel de Cash
+    
+
+    @RequestMapping(value = "getXLSXDetMainCash")
+    public @ResponseBody void getXLSXMainCash(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("Report : getXLSXDetMainCash");
+        String fileNameDownload = "Bank_Reconciliation_Report_" + Functions.getFechaActual() + ".xls";
+
+        try {
+            HSSFWorkbook workbook = new HSSFWorkbook();
+            HSSFSheet sheet = workbook.createSheet("Report");
+            List<A2290Filter> listaData = Optional.ofNullable(this.getListMainCash(request, true))
+                                                  .orElse(Collections.emptyList());
+            System.out.println("Tamaño de lista devuelta : " + listaData.size());
+
+            // ======= ESTILOS Y FORMATOS =======
+            HSSFFont headerFont = workbook.createFont(); headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD); headerFont.setColor(HSSFColor.WHITE.index);
+            HSSFFont subHeaderFont = workbook.createFont(); subHeaderFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+            HSSFFont totalFont = workbook.createFont(); totalFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+
+            HSSFCellStyle headerStyle = workbook.createCellStyle();
+            headerStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); headerStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+            headerStyle.setFillForegroundColor(HSSFColor.BLUE_GREY.index); headerStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+            headerStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); headerStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
+            headerStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); headerStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+            headerStyle.setFont(headerFont);
+
+            HSSFCellStyle subHeaderStyle = workbook.createCellStyle();
+            subHeaderStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); subHeaderStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+            subHeaderStyle.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index); subHeaderStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+            subHeaderStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); subHeaderStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
+            subHeaderStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); subHeaderStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+            subHeaderStyle.setFont(subHeaderFont);
+
+            HSSFCellStyle bodyStyle = workbook.createCellStyle();
+            bodyStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); bodyStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
+            bodyStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); bodyStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+
+            HSSFCellStyle bodyGreen = workbook.createCellStyle(); bodyGreen.cloneStyleFrom(bodyStyle);
+            bodyGreen.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index); bodyGreen.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+
+            HSSFCellStyle bodyBlue = workbook.createCellStyle(); bodyBlue.cloneStyleFrom(bodyStyle);
+            bodyBlue.setFillForegroundColor(HSSFColor.PALE_BLUE.index); bodyBlue.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+
+            HSSFCellStyle totalStyle = workbook.createCellStyle();
+            totalStyle.cloneStyleFrom(bodyStyle);
+            totalStyle.setFont(totalFont);
+            totalStyle.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+
+            HSSFDataFormat df = workbook.createDataFormat();
+            HSSFCellStyle numStyleGreen = workbook.createCellStyle(); numStyleGreen.cloneStyleFrom(bodyGreen); numStyleGreen.setDataFormat(df.getFormat("#,##0"));
+            HSSFCellStyle numStyleBlue  = workbook.createCellStyle(); numStyleBlue.cloneStyleFrom(bodyBlue);  numStyleBlue.setDataFormat(df.getFormat("#,##0"));
+            HSSFCellStyle numStyleWhite = workbook.createCellStyle(); numStyleWhite.cloneStyleFrom(bodyStyle); numStyleWhite.setDataFormat(df.getFormat("#,##0"));
+
+            HSSFCellStyle pctStyle = workbook.createCellStyle(); pctStyle.cloneStyleFrom(bodyGreen); pctStyle.setDataFormat(df.getFormat("0.00%"));
+            HSSFCellStyle pctStyleTotal = workbook.createCellStyle(); pctStyleTotal.cloneStyleFrom(totalStyle); pctStyleTotal.setDataFormat(df.getFormat("0.00%"));
+
+            int r = 0;
+
+            // ====== NIVEL 1 ======
+            HSSFRow row1 = sheet.createRow(r++);
+            createHeaderCell(row1, 0, "Sales", headerStyle);
+            createHeaderCell(row1, 1, "Settlement Reconciliation", headerStyle);
+            createHeaderCell(row1, 9, "Sales Reconciliation", headerStyle);
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,0,0));    // Sales
+            sheet.addMergedRegion(new CellRangeAddress(0,0,1,8));    // Settlement Reconciliation
+            sheet.addMergedRegion(new CellRangeAddress(0,0,9,12));   // Sales Reconciliation
+
+            // ====== NIVEL 2 ======
+            HSSFRow row2 = sheet.createRow(r++);
+            createHeaderCell(row2, 0, "Date", subHeaderStyle);
+            createHeaderCell(row2, 1, "EECC", subHeaderStyle);
+            createHeaderCell(row2, 2, "Match", subHeaderStyle);
+            createHeaderCell(row2, 5, "Settlement", subHeaderStyle);
+            createHeaderCell(row2, 6, "Total", subHeaderStyle);
+            createHeaderCell(row2, 7, "Accounted", subHeaderStyle);
+            createHeaderCell(row2, 9, "Total", subHeaderStyle);
+            createHeaderCell(row2, 10, "Match", subHeaderStyle);
+            createHeaderCell(row2, 12, "Sales", subHeaderStyle);
+
+            sheet.addMergedRegion(new CellRangeAddress(1,2,0,0));
+            sheet.addMergedRegion(new CellRangeAddress(1,1,1,1));
+            sheet.addMergedRegion(new CellRangeAddress(1,1,2,4));
+            sheet.addMergedRegion(new CellRangeAddress(1,1,5,5));
+            sheet.addMergedRegion(new CellRangeAddress(1,2,6,6));
+            sheet.addMergedRegion(new CellRangeAddress(1,1,7,8));
+            sheet.addMergedRegion(new CellRangeAddress(1,1,9,9));
+            sheet.addMergedRegion(new CellRangeAddress(1,1,10,11));
+            sheet.addMergedRegion(new CellRangeAddress(1,1,12,12));
+
+            // ====== NIVEL 3 ======
+            HSSFRow row3 = sheet.createRow(r++);
+            createHeaderCell(row3, 1, "Match", subHeaderStyle);
+            createHeaderCell(row3, 2, "Auto", subHeaderStyle);
+            createHeaderCell(row3, 3, "%", subHeaderStyle);
+            createHeaderCell(row3, 4, "Manual", subHeaderStyle);
+            createHeaderCell(row3, 5, "w/o Sales", subHeaderStyle);
+            createHeaderCell(row3, 7, "Processed", subHeaderStyle);
+            createHeaderCell(row3, 8, "Pending", subHeaderStyle);
+            createHeaderCell(row3, 9, "by Ticket", subHeaderStyle);
+            createHeaderCell(row3,10, "Automatic", subHeaderStyle);
+            createHeaderCell(row3,11, "Manual", subHeaderStyle);
+            createHeaderCell(row3,12, "w/o Reconcili.", subHeaderStyle);
+
+            // ====== ACUMULADORES PARA TOTALES ======
+            double tEECC=0, tAuto=0, tManual=0, tWOsales=0, tTotal=0, tProc=0, tPend=0, tTicket=0, tMatchAuto=0, tMatchMan=0, tSalesWO=0;
+
+            // ====== DATOS ======
+            for (A2290Filter it : listaData) {
+                HSSFRow row = sheet.createRow(r++);
+                int c = 0;
+
+                createCell(row, c++, it.strFormatDate, bodyStyle);
+
+                createNumericCell(row, c++, it.lngQEECC, numStyleGreen);    tEECC += n(it.lngQEECC);
+                createNumericCell(row, c++, it.lngQMATCH, numStyleGreen);   tAuto += n(it.lngQMATCH);
+
+                // % por fila = Auto / Total (si total=0 -> 0)
+                double rowTotal = n(it.lngQSALES);
+                double rowPct = rowTotal == 0 ? 0d : n(it.lngQMATCH) / rowTotal;
+                HSSFCell cellPct = row.createCell((short) c++); cellPct.setCellValue(rowPct); cellPct.setCellStyle(pctStyle);
+
+                createNumericCell(row, c++, it.lngQMANUAL, numStyleGreen);  tManual += n(it.lngQMANUAL);
+                createNumericCell(row, c++, it.lngQPEND,  numStyleGreen);   tWOsales += n(it.lngQPEND);
+                createNumericCell(row, c++, it.lngQSALES, numStyleGreen);   tTotal += rowTotal;
+
+                createNumericCell(row, c++, it.lngQPOLIC,  numStyleBlue);   tProc += n(it.lngQPOLIC);
+                createNumericCell(row, c++, it.lngQPOLIPE, numStyleBlue);   tPend += n(it.lngQPOLIPE);
+
+                createNumericCell(row, c++, it.lngQTICKET,  numStyleWhite); tTicket += n(it.lngQTICKET);
+                createNumericCell(row, c++, it.lngQTMATCH,  numStyleWhite); tMatchAuto += n(it.lngQTMATCH);
+                createNumericCell(row, c++, it.lngQTMANUAL, numStyleWhite); tMatchMan  += n(it.lngQTMANUAL);
+                createNumericCell(row, c++, it.lngQTPEND,   numStyleWhite); tSalesWO   += n(it.lngQTPEND);
+            }
+
+            // ====== TOTAL ======
+            HSSFRow rowTotal = sheet.createRow(r++);
+            int cT = 0;
+            HSSFCell totalLabel = rowTotal.createCell((short) cT++);
+            totalLabel.setCellValue("Total");
+            totalLabel.setCellStyle(totalStyle);
+
+            // verde
+            createNumericCell(rowTotal, cT++, tEECC, totalStyle);
+            createNumericCell(rowTotal, cT++, tAuto, totalStyle);
+
+            double totalPct = (tTotal == 0) ? 0d : (tAuto / tTotal);
+            HSSFCell cellPctTot = rowTotal.createCell((short) cT++);
+            cellPctTot.setCellValue(totalPct);
+            cellPctTot.setCellStyle(pctStyleTotal);
+
+            createNumericCell(rowTotal, cT++, tManual, totalStyle);
+            createNumericCell(rowTotal, cT++, tWOsales, totalStyle);
+            createNumericCell(rowTotal, cT++, tTotal, totalStyle);
+
+            // azul
+            createNumericCell(rowTotal, cT++, tProc, totalStyle);
+            createNumericCell(rowTotal, cT++, tPend, totalStyle);
+
+            // blanco
+            createNumericCell(rowTotal, cT++, tTicket, totalStyle);
+            createNumericCell(rowTotal, cT++, tMatchAuto, totalStyle);
+            createNumericCell(rowTotal, cT++, tMatchMan, totalStyle);
+            createNumericCell(rowTotal, cT++, tSalesWO, totalStyle);
+
+            // ====== Ajustes ======
+            for (int i = 0; i <= 12; i++) sheet.autoSizeColumn(i);
+
+            response.setContentType("application/vnd.ms-excel");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+            workbook.write(response.getOutputStream());
+            workbook.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SpringException(e);
+        }
+    }
+    /* ==== Helpers ==== */
+
+    private void createHeaderCell(HSSFRow row, int col, String value, HSSFCellStyle style) {
+        HSSFCell cell = row.createCell((short) col);
+        cell.setCellValue(value);
+        cell.setCellStyle(style);
+    }
+
+    private static double n(Number x) {
+        return (x == null) ? 0d : x.doubleValue();
+    }
+    
+    private void createCell(HSSFRow row, int col, Object value, HSSFCellStyle style) {
+        HSSFCell cell = row.createCell((short) col);
+        if (value instanceof Number) cell.setCellValue(((Number) value).doubleValue());
+        else cell.setCellValue(value != null ? value.toString() : "");
+        cell.setCellStyle(style);
+    }
+
+    private void createNumericCell(HSSFRow row, int col, Number value, HSSFCellStyle style) {
+        HSSFCell cell = row.createCell((short) col);
+        cell.setCellValue(value != null ? value.doubleValue() : 0d);
+        cell.setCellStyle(style);
+    }
 
 
+    // Excel Country
     
     
+    @RequestMapping(value = "getXLSXCountryCash")
+    public @ResponseBody void getXLSXCountryCash(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("Report : getXLSXCountry");
+
+        String fileNameDownload = "Bank_Reconciliation_Report_" + Functions.getFechaActual() + ".xlsx";
+        try {
+            List<A2290Filter> listaData = (this.getListCountryCash(request, true) != null)
+                    ? this.getListCountry(request, true) : new ArrayList<A2290Filter>(0);
+            System.out.println("Tamaño de lista devuelta : " + listaData.size());
+
+            XSSFWorkbook wb = new XSSFWorkbook();
+            XSSFSheet sheet = wb.createSheet("Report");
+
+            // ===== Estilos (POI 3.0) =====
+            DataFormat df = wb.createDataFormat();
+
+            Font headerFont = wb.createFont();
+            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            headerFont.setColor(IndexedColors.WHITE.getIndex());
+
+            Font headerBlackBold = wb.createFont();
+            headerBlackBold.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            headerBlackBold.setColor(IndexedColors.BLACK.getIndex());
+
+            XSSFCellStyle headerStyle = wb.createCellStyle();
+            headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            headerStyle.setFillForegroundColor(IndexedColors.GREY_40_PERCENT.getIndex()); // azul grisáceo
+            headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            setBordersLegacy(headerStyle);
+            headerStyle.setFont(headerFont);
+
+            XSSFCellStyle subHeaderGreen = wb.createCellStyle();
+            subHeaderGreen.cloneStyleFrom(headerStyle);
+            subHeaderGreen.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
+            subHeaderGreen.setFont(headerBlackBold);
+
+            XSSFCellStyle subHeaderBlue = wb.createCellStyle();
+            subHeaderBlue.cloneStyleFrom(headerStyle);
+            subHeaderBlue.setFillForegroundColor(IndexedColors.PALE_BLUE.getIndex());
+            subHeaderBlue.setFont(headerBlackBold);
+
+            XSSFCellStyle body = wb.createCellStyle();
+            setBordersLegacy(body);
+
+            XSSFCellStyle bodyGreen = wb.createCellStyle();
+            bodyGreen.cloneStyleFrom(body);
+            bodyGreen.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
+            bodyGreen.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            bodyGreen.setDataFormat(df.getFormat("#,##0"));
+
+            XSSFCellStyle bodyBlue = wb.createCellStyle();
+            bodyBlue.cloneStyleFrom(body);
+            bodyBlue.setFillForegroundColor(IndexedColors.PALE_BLUE.getIndex());
+            bodyBlue.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            bodyBlue.setDataFormat(df.getFormat("#,##0"));
+
+            XSSFCellStyle bodyWhiteNum = wb.createCellStyle();
+            bodyWhiteNum.cloneStyleFrom(body);
+            bodyWhiteNum.setDataFormat(df.getFormat("#,##0"));
+
+            XSSFCellStyle totalStyle = wb.createCellStyle();
+            setBordersLegacy(totalStyle);
+            totalStyle.setAlignment(CellStyle.ALIGN_RIGHT);
+            totalStyle.setDataFormat(df.getFormat("#,##0"));
+            Font totalFont = wb.createFont(); totalFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            totalStyle.setFont(totalFont);
+
+            int r = 0;
+
+            // ===== NIVEL 1 =====
+            Row row1 = sheet.createRow(r++);
+            createTextCell(row1, 0, "Country", headerStyle);
+            createTextCell(row1, 2, "Settlement Reconciliation", headerStyle);
+            createTextCell(row1, 9, "Sales Reconciliation", headerStyle);
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,0,1));  // A1:B1
+            sheet.addMergedRegion(new CellRangeAddress(0,0,2,8));  // C1:I1
+            sheet.addMergedRegion(new CellRangeAddress(0,0,9,12)); // J1:M1
+
+            // ===== NIVEL 2 =====
+            Row row2 = sheet.createRow(r++);
+            createTextCell(row2, 0, "Code", headerStyle);
+            createTextCell(row2, 1, "Name", headerStyle);
+            createTextCell(row2, 2, "Match", subHeaderGreen);
+            createTextCell(row2, 5, "Settlement", subHeaderGreen);
+            createTextCell(row2, 6, "Total", subHeaderGreen);
+            createTextCell(row2, 7, "Accounted", subHeaderBlue);
+            createTextCell(row2, 9, "Total", subHeaderGreen);
+            createTextCell(row2,10, "Match", subHeaderGreen);
+            createTextCell(row2,12, "Sales", subHeaderGreen);
+
+            sheet.addMergedRegion(new CellRangeAddress(1,2,0,0)); // Code
+            sheet.addMergedRegion(new CellRangeAddress(1,2,1,1)); // Name
+            sheet.addMergedRegion(new CellRangeAddress(1,1,2,4)); // Match
+            sheet.addMergedRegion(new CellRangeAddress(1,1,5,5)); // Settlement
+            sheet.addMergedRegion(new CellRangeAddress(1,2,6,6)); // Total
+            sheet.addMergedRegion(new CellRangeAddress(1,1,7,8)); // Accounted
+            sheet.addMergedRegion(new CellRangeAddress(1,1,9,9)); // Total (Sales Rec)
+            sheet.addMergedRegion(new CellRangeAddress(1,1,10,11)); // Match (Sales Rec)
+            sheet.addMergedRegion(new CellRangeAddress(1,1,12,12)); // Sales (Sales Rec)
+
+            // ===== NIVEL 3 =====
+            Row row3 = sheet.createRow(r++);
+            createTextCell(row3, 2, "Auto", subHeaderGreen);
+            createTextCell(row3, 3, "Manual", subHeaderGreen);
+            createTextCell(row3, 4, "Diff", subHeaderGreen);
+            createTextCell(row3, 5, "w/o Sales", subHeaderGreen);
+            createTextCell(row3, 7, "Processed", subHeaderBlue);
+            createTextCell(row3, 8, "Pending", subHeaderBlue);
+            createTextCell(row3, 9, "by Ticket", subHeaderGreen);
+            createTextCell(row3,10, "Automatic", subHeaderGreen);
+            createTextCell(row3,11, "Manual", subHeaderGreen);
+            createTextCell(row3,12, "w/o Reconcili.", subHeaderGreen);
+
+            // ===== Datos + Totales =====
+            double tAuto=0,tManual=0,tDiff=0,tWoSales=0,tTotal=0,tProc=0,tPend=0,tTicket=0,tMatchAuto=0,tMatchManual=0,tSalesWO=0;
+
+            for (A2290Filter it : listaData) {
+                Row row = sheet.createRow(r++);
+                int c = 0;
+
+                // A,B
+                createTextCell(row, c++, safeStr(it.SCOUNTRY), body);
+                createTextCell(row, c++, safeStr(it.NAME), body);
+
+                // C..G (verde)
+                createNumCell(row, c++, it.lngQMATCH, bodyGreen);      tAuto       += num(it.lngQMATCH);
+                createNumCell(row, c++, it.lngQMANUAL, bodyGreen);     tManual     += num(it.lngQMANUAL);
+                createNumCell(row, c++, it.lngQDIFF, bodyGreen);       tDiff       += num(it.lngQDIFF);
+                createNumCell(row, c++, it.lngQPEND, bodyGreen);       tWoSales    += num(it.lngQPEND);
+                createNumCell(row, c++, it.lngQSALES, bodyGreen);      tTotal      += num(it.lngQSALES);
+
+                // H..I (azul)
+                createNumCell(row, c++, it.lngQPOLIC, bodyBlue);       tProc       += num(it.lngQPOLIC);
+                createNumCell(row, c++, it.lngQPOLIPE, bodyBlue);      tPend       += num(it.lngQPOLIPE);
+
+                // J..M (blanco)
+                createNumCell(row, c++, it.lngQTICKET, bodyWhiteNum);  tTicket     += num(it.lngQTICKET);
+                createNumCell(row, c++, it.lngQTMATCH, bodyWhiteNum);  tMatchAuto  += num(it.lngQTMATCH);
+                createNumCell(row, c++, it.lngQTMANUAL, bodyWhiteNum); tMatchManual+= num(it.lngQTMANUAL);
+                createNumCell(row, c++, it.lngQTPEND, bodyWhiteNum);   tSalesWO    += num(it.lngQTPEND);
+            }
+
+            // ===== Fila Total =====
+            Row rowT = sheet.createRow(r++);
+            int ct = 0;
+            createTextCell(rowT, ct++, "", totalStyle); // Code
+            createTextCell(rowT, ct++, "", totalStyle); // Name
+            createNumCell(rowT, ct++, tAuto, totalStyle);
+            createNumCell(rowT, ct++, tManual, totalStyle);
+            createNumCell(rowT, ct++, tDiff, totalStyle);
+            createNumCell(rowT, ct++, tWoSales, totalStyle);
+            createNumCell(rowT, ct++, tTotal, totalStyle);
+            createNumCell(rowT, ct++, tProc, totalStyle);
+            createNumCell(rowT, ct++, tPend, totalStyle);
+            createNumCell(rowT, ct++, tTicket, totalStyle);
+            createNumCell(rowT, ct++, tMatchAuto, totalStyle);
+            createNumCell(rowT, ct++, tMatchManual, totalStyle);
+            createNumCell(rowT, ct++, tSalesWO, totalStyle);
+
+            // Autosize
+            for (int i=0; i<=12; i++) sheet.autoSizeColumn(i);
+
+            // ===== Respuesta =====
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+            wb.write(response.getOutputStream());
+            wb.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SpringException(e);
+        }
+    }
+
+    /* ===== Helpers POI 3.0 ===== */
+    private static void setBordersLegacy(CellStyle st){
+        st.setBorderBottom(CellStyle.BORDER_THIN);
+        st.setBorderTop(CellStyle.BORDER_THIN);
+        st.setBorderLeft(CellStyle.BORDER_THIN);
+        st.setBorderRight(CellStyle.BORDER_THIN);
+    }
+    private static String safeStr(Object o){ return (o==null) ? "" : String.valueOf(o); }
+    private static double num(Number n){ return (n==null) ? 0d : n.doubleValue(); }
+
+    private static void createTextCell(Row row, int col, String val, CellStyle style){
+        Cell cell = row.createCell(col);
+        cell.setCellValue(val == null ? "" : val);
+        cell.setCellStyle(style);
+    }
+    private static void createNumCell(Row row, int col, Number val, CellStyle style){
+        Cell cell = row.createCell(col);
+        cell.setCellValue(val == null ? 0d : val.doubleValue());
+        cell.setCellStyle(style);
+    }
+    
+    @RequestMapping(value = "getXLSXDayCash")
+    public @ResponseBody void getXLSXDayCash(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("Report : getXLSXDayCash");
+        String fileNameDownload = "Bank_Reconciliation_Report_" + Functions.getFechaActual() + ".xlsx";
+
+        try {
+            // Datos
+            List<A2290Filter> listaData = (this.getListDayCash(request, true) != null)
+                    ? this.getListDayCash(request, true) : new ArrayList<A2290Filter>(0);
+            System.out.println("Tamaño de lista devuelta : " + listaData.size());
+
+            XSSFWorkbook wb = new XSSFWorkbook();
+            XSSFSheet sheet = wb.createSheet("Report");
+            DataFormat df = wb.createDataFormat();
+
+            // ===== Estilos (POI 3.0) =====
+            Font headerFontWhite = wb.createFont();
+            headerFontWhite.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            headerFontWhite.setColor(IndexedColors.WHITE.getIndex());
+
+            Font headerFontBlack = wb.createFont();
+            headerFontBlack.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            headerFontBlack.setColor(IndexedColors.BLACK.getIndex());
+
+            XSSFCellStyle headerMain = wb.createCellStyle();                 // barra azul-gris
+            headerMain.setAlignment(CellStyle.ALIGN_CENTER);
+            headerMain.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            headerMain.setFillForegroundColor(IndexedColors.GREY_40_PERCENT.getIndex());
+            headerMain.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            setBordersLegacy(headerMain);
+            headerMain.setFont(headerFontWhite);
+
+            XSSFCellStyle subHeader = wb.createCellStyle();                   // headers verdes
+            subHeader.cloneStyleFrom(headerMain);
+            subHeader.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
+            subHeader.setFont(headerFontBlack);
+
+            XSSFCellStyle body = wb.createCellStyle();                        // texto general
+            setBordersLegacy(body);
+
+            XSSFCellStyle bodyGreenNum = wb.createCellStyle();                // celdas verdes con números
+            bodyGreenNum.cloneStyleFrom(body);
+            bodyGreenNum.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
+            bodyGreenNum.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            bodyGreenNum.setDataFormat(df.getFormat("#,##0"));
+
+            XSSFCellStyle bodyRight = wb.createCellStyle();                   // números sin color
+            bodyRight.cloneStyleFrom(body);
+            bodyRight.setAlignment(CellStyle.ALIGN_RIGHT);
+            bodyRight.setDataFormat(df.getFormat("#,##0"));
+
+            XSSFCellStyle totalStyle = wb.createCellStyle();                  // fila Total
+            setBordersLegacy(totalStyle);
+            totalStyle.setAlignment(CellStyle.ALIGN_RIGHT);
+            totalStyle.setDataFormat(df.getFormat("#,##0"));
+            Font totalFont = wb.createFont(); totalFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            totalStyle.setFont(totalFont);
+
+            int r = 0;
+
+            // ===== NIVEL 1 =====
+            Row row1 = sheet.createRow(r++);
+            createTextCell(row1, 0, "Sales", headerMain);
+            createTextCell(row1, 1, "Settlement Reconciliation", headerMain);
+            // merges: A1:A1, B1:F1
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, 5));
+
+            // ===== NIVEL 2 =====
+            Row row2 = sheet.createRow(r++);
+            createTextCell(row2, 0, "Day", subHeader);
+            createTextCell(row2, 1, "Match", subHeader);
+            createTextCell(row2, 4, "Settlement", subHeader);
+            createTextCell(row2, 5, "Total", subHeader);
+
+            // merges: Day (rowspan), Match (colspan 3), Settlement (colspan 1), Total (rowspan)
+            sheet.addMergedRegion(new CellRangeAddress(1, 2, 0, 0)); // Day
+            sheet.addMergedRegion(new CellRangeAddress(1, 1, 1, 3)); // Match
+            sheet.addMergedRegion(new CellRangeAddress(1, 1, 4, 4)); // Settlement
+            sheet.addMergedRegion(new CellRangeAddress(1, 2, 5, 5)); // Total
+
+            // ===== NIVEL 3 =====
+            Row row3 = sheet.createRow(r++);
+            createTextCell(row3, 1, "Auto", subHeader);
+            createTextCell(row3, 2, "Manual", subHeader);
+            createTextCell(row3, 3, "Diff", subHeader);
+            createTextCell(row3, 4, "w/o Sales", subHeader);
+
+            // ===== Datos y acumuladores =====
+            double tAuto=0, tManual=0, tDiff=0, tWoSales=0, tTotal=0;
+
+            for (A2290Filter it : listaData) {
+                Row row = sheet.createRow(r++);
+                int c = 0;
+
+                // Day (texto)
+                createTextCell(row, c++, safeStr(it.SDATE), body);
+
+                // Match (verde con número)
+                createNumCell(row, c++, it.lngQMATCH, bodyGreenNum);  tAuto   += num(it.lngQMATCH);
+                createNumCell(row, c++, it.lngQMANUAL, bodyGreenNum); tManual += num(it.lngQMANUAL);
+                createNumCell(row, c++, it.lngQDIFF, bodyGreenNum);   tDiff   += num(it.lngQDIFF);
+
+                // Settlement -> w/o Sales (verde)
+                createNumCell(row, c++, it.lngQPEND, bodyGreenNum);   tWoSales+= num(it.lngQPEND);
+
+                // Total (verde)
+                createNumCell(row, c++, it.lngQSALES, bodyGreenNum);  tTotal  += num(it.lngQSALES);
+            }
+
+            // ===== Fila de totales =====
+            Row rowT = sheet.createRow(r++);
+            int cT = 0;
+            createTextCell(rowT, cT++, "", totalStyle);                        // Day vacío
+            createNumCell(rowT, cT++, tAuto, totalStyle);
+            createNumCell(rowT, cT++, tManual, totalStyle);
+            createNumCell(rowT, cT++, tDiff, totalStyle);
+            createNumCell(rowT, cT++, tWoSales, totalStyle);
+            createNumCell(rowT, cT++, tTotal, totalStyle);
+
+            // ===== UX: congelar headers y autofiltro =====
+            sheet.createFreezePane(0, 3); // congela títulos (3 primeras filas)
+            sheet.setAutoFilter(new CellRangeAddress(2, Math.max(2, r-1), 0, 5));
+
+            // Autosize
+            for (int i = 0; i <= 5; i++) sheet.autoSizeColumn(i, true);
+
+            // ===== Respuesta =====
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+            wb.write(response.getOutputStream());
+            wb.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SpringException(e);
+        }
+    }
+   
+
+    @RequestMapping(value = "getListDetalleCash")
+    public @ResponseBody void getXLSXDetalleCash(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("Report : getListDetalleCash");
+        String fileNameDownload = "Bank_Reconciliation_Report_" + Functions.getFechaActual() + ".xlsx";
+
+        try {
+            List<A2290Filter> listaData = this.getListDetalleCash(request, true);
+            System.out.println("Tamaño de lista devuelta : " + (listaData == null ? 0 : listaData.size()));
+
+            if (listaData != null && listaData.size() < 65000) {
+                XSSFWorkbook wb = new XSSFWorkbook();
+                XSSFSheet sheet = wb.createSheet("Report");
+                DataFormat df = wb.createDataFormat();
+
+                // ===== Estilos (POI 3.0) =====
+                Font hWhite = wb.createFont(); hWhite.setBoldweight(Font.BOLDWEIGHT_BOLD); hWhite.setColor(IndexedColors.WHITE.getIndex());
+                Font hBlack = wb.createFont(); hBlack.setBoldweight(Font.BOLDWEIGHT_BOLD); hBlack.setColor(IndexedColors.BLACK.getIndex());
+                Font bold = wb.createFont();   bold.setBoldweight(Font.BOLDWEIGHT_BOLD);
+
+                XSSFCellStyle headMain = wb.createCellStyle();
+                headMain.setAlignment(CellStyle.ALIGN_CENTER);
+                headMain.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+                headMain.setFillForegroundColor(IndexedColors.GREY_40_PERCENT.getIndex());
+                headMain.setFillPattern(CellStyle.SOLID_FOREGROUND);
+                setBordersLegacy(headMain);
+                headMain.setFont(hWhite);
+
+                XSSFCellStyle headSub = wb.createCellStyle();
+                headSub.cloneStyleFrom(headMain);
+                headSub.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
+                headSub.setFont(hBlack);
+
+                XSSFCellStyle body = wb.createCellStyle(); setBordersLegacy(body);
+                XSSFCellStyle bodyRight = wb.createCellStyle(); bodyRight.cloneStyleFrom(body); bodyRight.setAlignment(CellStyle.ALIGN_RIGHT);
+                XSSFCellStyle moneyBody = wb.createCellStyle(); moneyBody.cloneStyleFrom(bodyRight); moneyBody.setDataFormat(df.getFormat("#,##0.00"));
+                XSSFCellStyle intBody   = wb.createCellStyle(); intBody.cloneStyleFrom(bodyRight);   intBody.setDataFormat(df.getFormat("#,##0"));
+
+                XSSFCellStyle total = wb.createCellStyle(); setBordersLegacy(total);
+                total.setAlignment(CellStyle.ALIGN_RIGHT); total.setFont(bold);
+                total.setDataFormat(df.getFormat("#,##0.00"));
+
+                int r = 0;
+
+                // ===== Nivel 1 (encabezados principales) =====
+                Row row1 = sheet.createRow(r++);
+                createTextCell(row1, 0, "Status", headMain);
+                createTextCell(row1, 1, "Consol", headMain);
+                createTextCell(row1, 2, "Business", headMain);
+                createTextCell(row1, 3, "Abono Date", headMain);
+                createTextCell(row1, 4, "Source", headMain);
+                createTextCell(row1, 5, "Curr.", headMain);
+                createTextCell(row1, 6, "Amount", headMain);
+                createTextCell(row1, 7, "Bank Information", headMain);
+                createTextCell(row1, 9, "Qty", headMain);
+                createTextCell(row1, 11, "BANDOC", headMain);
+                createTextCell(row1, 12, "REFER", headMain);
+                createTextCell(row1, 13, "View Cash", headMain);
+
+                // Merges de nivel 1
+                sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));  // Status
+                sheet.addMergedRegion(new CellRangeAddress(0, 1, 1, 1));  // Consol
+                sheet.addMergedRegion(new CellRangeAddress(0, 1, 2, 2));  // Business
+                sheet.addMergedRegion(new CellRangeAddress(0, 1, 3, 3));  // Abono Date
+                sheet.addMergedRegion(new CellRangeAddress(0, 1, 4, 4));  // Source
+                sheet.addMergedRegion(new CellRangeAddress(0, 1, 5, 5));  // Curr.
+                sheet.addMergedRegion(new CellRangeAddress(0, 1, 6, 6));  // Amount
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, 7, 8));  // Bank Information
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, 9, 10)); // Qty
+                sheet.addMergedRegion(new CellRangeAddress(0, 1, 11, 11)); // BANDOC
+                sheet.addMergedRegion(new CellRangeAddress(0, 1, 12, 12)); // REFER
+                sheet.addMergedRegion(new CellRangeAddress(0, 1, 13, 13)); // View Cash
+
+                // ===== Nivel 2 (sub-encabezados) =====
+                Row row2 = sheet.createRow(r++);
+                createTextCell(row2, 0,  "", headSub); // ocupan merges
+                createTextCell(row2, 1,  "", headSub);
+                createTextCell(row2, 2,  "", headSub);
+                createTextCell(row2, 3,  "", headSub);
+                createTextCell(row2, 4,  "", headSub);
+                createTextCell(row2, 5,  "", headSub);
+                createTextCell(row2, 6,  "", headSub);
+                createTextCell(row2, 7,  "Pay. Date", headSub);
+                createTextCell(row2, 8,  "Account",  headSub);
+                createTextCell(row2, 9,  "Settl.",    headSub);
+                createTextCell(row2, 10, "Tkts",      headSub);
+                createTextCell(row2, 11, "", headSub);
+                createTextCell(row2, 12, "", headSub);
+                createTextCell(row2, 13, "", headSub);
+
+                // ===== Datos =====
+                double sumAmount = 0d;
+                double sumTkts   = 0d;
+                // (si quieres total de Settl. también)
+                double sumSettl  = 0d;
+
+                if (listaData != null) {
+                    for (A2290Filter it : listaData) {
+                        Row rd = sheet.createRow(r++);
+                        int c = 0;
+
+                        // Mapeo igual a tu grid
+                        createTextCell(rd, c++, safeStr(it.strDescStatus), body);       // Status
+                        createTextCell(rd, c++, safeStr(it.SCONSOL),       body);       // Consol
+                        createTextCell(rd, c++, "PASAJES",                 body);       // Business (texto fijo de la UI)
+                        createTextCell(rd, c++, safeStr(it.ADATE),         body);       // Abono Date
+                        createTextCell(rd, c++, mapSource(it.TINPUT),      body);       // Source (B/I/A -> BSP/ICCS/ARC)
+                        createTextCell(rd, c++, safeStr(it.SCURRENCY),         body);       // Curr. (fallback SCURR o SCURRENCY)
+                        createNumCell (rd, c++, it.SVFOP,                  moneyBody);  // Amount
+                        createTextCell(rd, c++, safeStr(it.PAYDATE),       body);       // Bank Info - Pay.Date
+                        createTextCell(rd, c++, safeStr(it.ACCNUMBER),     bodyRight);  // Bank Info - Account
+                        createNumCell (rd, c++, it.lngQTYDOC,              intBody);    // Qty - Settl.
+                        createNumCell (rd, c++, it.lngQTYTKT,              intBody);    // Qty - Tkts
+                        createTextCell(rd, c++, safeStr(it.BANDOC),        body);       // BANDOC
+                        createTextCell(rd, c++, safeStr(it.REFER),         body);       // REFER
+                        createTextCell(rd, c++, "",                        body);       // View Cash (no icono en Excel)
+
+                        sumAmount += num(it.SVFOP);
+                        sumTkts   += num(it.lngQTYTKT);
+                        sumSettl  += num(it.lngQTYDOC);
+                    }
+                }
+
+                // ===== Totales (muestra Amount y Tkts; Settl opcional) =====
+                Row rt = sheet.createRow(r++);
+                int ct = 0;
+                createTextCell(rt, ct++, "", body);
+                createTextCell(rt, ct++, "", body);
+                createTextCell(rt, ct++, "", body);
+                createTextCell(rt, ct++, "", body);
+                createTextCell(rt, ct++, "", body);
+                createTextCell(rt, ct++, "", body);
+                createNumCell (rt, ct++, sumAmount, total);           // Total Amount
+                createTextCell(rt, ct++, "", body);
+                createTextCell(rt, ct++, "", body);
+                createNumCell (rt, ct++, sumSettl, intBody);          // (si no quieres, pon "" y quita suma)
+                createNumCell (rt, ct++, sumTkts,  intBody);          // Total Tkts
+                createTextCell(rt, ct++, "", body);
+                createTextCell(rt, ct++, "", body);
+                createTextCell(rt, ct++, "", body);
+
+                // UX: congelar encabezados y autofiltro
+                sheet.createFreezePane(0, 2);
+                sheet.setAutoFilter(new CellRangeAddress(1, Math.max(1, r - 1), 0, 13));
+
+                // tamaños
+                int[] widths = {5000,3000,4000,4500,3500,3000,6500,4500,6000,3000,3000,5000,6000,4000};
+                for (int i = 0; i < widths.length; i++) sheet.setColumnWidth(i, widths[i]);
+
+                // Respuesta
+                response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+                wb.write(response.getOutputStream());
+                wb.close();
+
+            } else {
+                // ===== Rama TXT (igual a tu implementación existente) =====
+                int len = (listaData == null) ? 0 : listaData.size();
+                String rutaFile = serverSession.getServerSession().getPropertySession().get("RUTA_DOWNLOAD").toString();
+                String fileName = "Control_Liquidaciones_" + Functions.getFechaActual();
+                File fileA = new File(rutaFile + "\\" + fileName + ".txt");
+                if (fileA.exists()) fileA.delete();
+
+                PrintWriter writer = new PrintWriter(fileA, "UTF-8");
+                writer.println("STATUS|PROCESS|TDOC|SAGENT|NEGOC|SDATE|SCARCOD|SCARDN|SAUTHOC|CODEBANK|SMERCH|SCURRENCY|SVFOP|PAYDATE|ACCNUMBER|TERMI|BANDOC|STCON|FCONT|QTYDOC|QTYTKT|PEND_DAYS");
+                for (int i = 0; i < len; i++) {
+                    A2290Filter x = listaData.get(i);
+                    String cadena = (safeStr(x.strDescStatus)) + "|" + safeStr(x.COREP) + "|" + safeStr(x.descTDOC) + "|" +
+                            safeStr(x.SAGENT) + "|" + safeStr(x.NEGOC) + "|" + safeStr(x.SDATE) + "|" + safeStr(x.SCARCOD) + "|" +
+                            safeStr(x.SCARDN) + "|" + safeStr(x.SAUTHOC) + "|" + safeStr(x.CODEBANK) + "|" + safeStr(x.MERCHN) + "|" +
+                            safeStr(x.SCURRENCY) + "|" + safeStr(x.SVFOP) + "|" + safeStr(x.PAYDATE) + "|" + safeStr(x.ACCNUMBER) + "|" +
+                            safeStr(x.TERMI) + "|" + safeStr(x.BANDOC) + "|" + safeStr(x.STCON) + "|" + safeStr(x.FCONT) + "|" +
+                            safeStr(x.lngQTYDOC) + "|" + safeStr(x.lngQTYTKT) + "|" + safeStr(x.PENDINGDAYS);
+                    writer.println(cadena.replaceAll("null", ""));
+                }
+                writer.flush(); writer.close();
+
+                response.setContentType("application/text");
+                response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + ".txt\"");
+                InputStream is = new FileInputStream(rutaFile + "\\" + fileName + ".txt");
+                IOUtils.copy(is, response.getOutputStream());
+                response.flushBuffer();
+            }
+
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+    }
+
+    private static String mapSource(String tinput){
+        if ("B".equalsIgnoreCase(tinput)) return "BSP";
+        if ("I".equalsIgnoreCase(tinput)) return "ICCS";
+        if ("A".equalsIgnoreCase(tinput)) return "ARC";
+        return "Not Source";
+    }
+
+@RequestMapping(value = "getXLSXScanTicketCash", method = RequestMethod.POST)
+public void getXLSXScanTicketCash(HttpServletRequest request, HttpServletResponse response) {
+    try {
+        // 1) Lee el JSON desde el form field "json" o desde el cuerpo
+        String json = safeReadJson(request);
+        if (json == null || json.trim().isEmpty() || "{".equals(json.trim())) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "JSON vacío o inválido");
+            return;
+        }
+
+        // 2) Parseo lenient con Gson
+        Gson gson = new GsonBuilder().serializeNulls().create();
+        TicketPayload payload;
+        try {
+            payload = gson.fromJson(json, TicketPayload.class);
+        } catch (JsonSyntaxException ex) {
+            String decoded = tryUrlDecode(json);
+            payload = gson.fromJson(decoded, TicketPayload.class);
+        }
+
+        if (payload == null || payload.rows == null || payload.rows.isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Sin filas para exportar");
+            return;
+        }
+
+        // 3) Genera el Excel (.xlsx) con POI 3.0
+        XSSFWorkbook wb = new XSSFWorkbook();
+        Sheet sheet = wb.createSheet("Tickets");
+
+        // ===== Estilos (POI 3.0) =====
+        XSSFCellStyle head = (XSSFCellStyle) wb.createCellStyle();
+        Font headFont = wb.createFont();
+        headFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+        head.setFont(headFont);
+        head.setAlignment(CellStyle.ALIGN_CENTER);
+        head.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+        head.setFillForegroundColor(IndexedColors.GREY_40_PERCENT.getIndex());
+        head.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        setThinBorders_30(head);
+
+        XSSFCellStyle body = (XSSFCellStyle) wb.createCellStyle();
+        setThinBorders_30(body);
+
+        XSSFCellStyle money = (XSSFCellStyle) wb.createCellStyle();
+        money.cloneStyleFrom(body);
+        DataFormat df = wb.createDataFormat();
+        money.setDataFormat(df.getFormat("#,##0.00"));
+
+        // 4) Cabecera igual a la grilla
+        String[] cols = {
+            "N°","Status","Doc. Type","Agent","Consol.","Sales Date","Fpaymen",
+            "Country","Ticket","Amount","Curr","Invoice","CFUENTE","Del."
+        };
+        int r = 0;
+        Row h = sheet.createRow(r++);
+        for (int c = 0; c < cols.length; c++) {
+            Cell cell = h.createCell(c);
+            cell.setCellValue(cols[c]);
+            cell.setCellStyle(head);
+        }
+
+        // 5) Filas + total de Amount
+        double totalAmount = 0d;
+        int index = 1;
+        for (Map<String, Object> rowMap : payload.rows) {
+            Row row = sheet.createRow(r++);
+            int c = 0;
+
+            setCell(row, c++, index++, body); // N°
+            setCell(row, c++, s(rowMap, "STATUS"), body);
+            setCell(row, c++, s(rowMap, "DOCTYP"), body);
+            setCell(row, c++, s(rowMap, "AGENT"), body);
+            setCell(row, c++, s(rowMap, "CONSOL"), body);
+            setCell(row, c++, s(rowMap, "SALESDATE"), body);
+            setCell(row, c++, s(rowMap, "FPAYMEN"), body);
+            setCell(row, c++, s(rowMap, "COUNTRY"), body);
+            setCell(row, c++, s(rowMap, "TICKET"), body);
+
+            double amount = d(rowMap, "AMOUNT");
+            totalAmount += amount;
+            setMoneyCell(row, c++, amount, money);
+
+            setCell(row, c++, s(rowMap, "CURR"), body);
+            setCell(row, c++, s(rowMap, "INVOICE"), body);
+            setCell(row, c++, s(rowMap, "CFUENTE"), body);
+            setCell(row, c++, s(rowMap, "DEL"), body);
+        }
+
+        // 6) Fila de TOTAL (en Amount)
+        Row totalRow = sheet.createRow(r++);
+        Cell ct = totalRow.createCell(8);  // Columna antes del Amount
+        ct.setCellValue("Total");
+        ct.setCellStyle(head);
+        Cell mt = totalRow.createCell(9);
+        mt.setCellValue(totalAmount);
+        mt.setCellStyle(money);
+
+        // Autosize
+        for (int c = 0; c < cols.length; c++) {
+            sheet.autoSizeColumn(c, true);
+        }
+
+        // 7) Respuesta
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=\"Tickets_" + Functions.getFechaActual() + ".xlsx\"");
+        wb.write(response.getOutputStream());
+        wb.close();
+    } catch (Exception e) {
+        throw new SpringException(e);
+    }
+}
+
+/* ================= Helpers ================= */
+
+private static String safeReadJson(HttpServletRequest request) {
+    try {
+        // 1) Field de form
+        String json = request.getParameter("json");
+        if (json != null && !json.trim().isEmpty()) return json;
+
+        // 2) Cuerpo (application/json o urlencoded)
+        String body = request.getReader().lines().collect(java.util.stream.Collectors.joining());
+        if (body != null && !body.trim().isEmpty()) {
+            if (body.startsWith("json=")) return tryUrlDecode(body.substring(5));
+            return body;
+        }
+    } catch (IOException ignored) {}
+    return null;
+}
+
+private static String tryUrlDecode(String s) {
+    try {
+        return java.net.URLDecoder.decode(s, "UTF-8");
+    } catch (Exception ex) {
+        return s;
+    }
+}
+
+// DTO para Gson
+static class TicketPayload {
+    List<Map<String, Object>> rows;
+    Map<String, Object> meta;
+}
+
+/* Conversores seguros */
+private static String s(Map<String, Object> m, String k) {
+    Object v = m.get(k);
+    return v == null ? "" : String.valueOf(v);
+}
+private static double d(Map<String, Object> m, String k) {
+    Object v = m.get(k);
+    if (v == null) return 0d;
+    if (v instanceof Number) return ((Number) v).doubleValue();
+    try { return Double.parseDouble(String.valueOf(v).replace(",", "")); }
+    catch (Exception e) { return 0d; }
+}
+
+/* POI 3.0 helpers */
+private static void setCell(Row row, int col, Object val, CellStyle st) {
+    Cell c = row.createCell(col);
+    if (val instanceof Number) c.setCellValue(((Number) val).doubleValue());
+    else c.setCellValue(val == null ? "" : String.valueOf(val));
+    c.setCellStyle(st);
+}
+private static void setMoneyCell(Row row, int col, double val, CellStyle st) {
+    Cell c = row.createCell(col);
+    c.setCellValue(val);
+    c.setCellStyle(st);
+}
+private static void setThinBorders_30(CellStyle s) {
+    s.setBorderBottom(CellStyle.BORDER_THIN);
+    s.setBorderTop(CellStyle.BORDER_THIN);
+    s.setBorderLeft(CellStyle.BORDER_THIN);
+    s.setBorderRight(CellStyle.BORDER_THIN);
+}
 
     
 
