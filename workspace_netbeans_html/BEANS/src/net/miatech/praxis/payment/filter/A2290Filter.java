@@ -1082,6 +1082,7 @@ public class A2290Filter extends A2290 {
     public String O_TADJ = "";
     public String O_REFERENCE = "";
     public String O_COMMENTS = "";
+    public String O_PDATE = "";
     
     
     

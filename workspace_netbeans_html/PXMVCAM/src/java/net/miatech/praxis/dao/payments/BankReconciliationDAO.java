@@ -8492,6 +8492,7 @@ public class BankReconciliationDAO {
                 bean.O_TADJ = rst.getString("TADJ");
                 bean.O_REFERENCE = rst.getString("REFERENCE");
                 bean.O_COMMENTS = rst.getString("COMMENTS");
+                bean.O_PDATE = rst.getString("PDATE");
                 
 
                 // Copiar paginación en cada bean si es necesario

@@ -6032,7 +6032,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                             bodyStyle: 'background: transparent;',
                             border: false,
 //                            height: 'auto',
-                            width: 1478,
+                            width: 1528,
                             height:620,
 //                            scrollable: 'vertical',
                             
@@ -6080,7 +6080,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataMPF199',
-                                    width: 1454,
+                                    width: 1504,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -6155,17 +6155,17 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
 
                                                     const tadj = (record.get('O_TADJ') || '').trim();
                                                     if (value === 'N') {
-                                                        value = 'NON-REMITTANCE';
+                                                        value = 'Non Remmitance';
                                                     } else if (value === 'R') {
-                                                        value = 'RECOVERY';
+                                                        value = 'Recovery';
                                                      } else if (value === 'U') {
-                                                        value = 'UNCLEARED';
+                                                        value = 'Unclared';
                                                     } else if (value === 'E') {
-                                                        value = 'EXCESS';
+                                                        value = 'Excess';
                                                     } else if (value === 'S') {
-                                                        value = 'SHORT';
+                                                        value = 'Short';
                                                     }  else {
-                                                        value = 'OTROS';
+                                                        value = 'Otros';
                                                     }
 
                                                     return value;
@@ -6255,6 +6255,42 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 }
 
                                             },
+                                            {
+                                                text: 'Days',
+                                                dataIndex: 'O_ADATE',
+                                                width: 50,
+                                                align: 'center',
+                                                renderer: function (value, metaData, record) {
+                                                    const adateStr = record.get('O_ADATE');
+                                                    const pdateStr = record.get('O_PDATE');
+                                                    if (!adateStr || adateStr.length !== 8) return '';
+                                                    const toDate = function (str) {
+                                                        if (!str || str.length !== 8) return null;
+                                                        const y = parseInt(str.substring(0, 4), 10);
+                                                        const m = parseInt(str.substring(4, 6), 10) - 1;
+                                                        const d = parseInt(str.substring(6, 8), 10);
+                                                        return new Date(y, m, d);
+                                                    };
+
+                                                    const dateA = toDate(adateStr);
+                                                    let dateP = toDate(pdateStr);
+                                                    if (!dateP || isNaN(dateP.getTime())) {
+                                                        dateP = new Date();
+                                                    }
+
+                                                    dateA.setHours(0, 0, 0, 0);
+                                                    dateP.setHours(0, 0, 0, 0);
+
+                                                    const diffMs = dateP - dateA;
+                                                    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+                                                    if (isNaN(diffDays)) return '';
+
+                                                    return diffDays;
+                                                }
+                                            },
+
+
+
                                             
                                             
                                               {

@@ -283,6 +283,50 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                                 keypress: 'eventKey'
                             }
                         },
+                         {
+                            xtype: 'fieldcontainer',
+                            fieldLabel: 'Payment Date',
+                            id: prototype.id + '-datePayment',
+                            labelWidth: 90,
+                            margin: '10 10 0 0',
+                            
+                            
+//                                            labelStyle: 'font-weight: bold;',
+                            defaults: {
+                                xtype: 'datefield',
+                                format: 'd/m/Y', 
+                                submitFormat: 'Ymd', 
+                                editable: false,
+                                allowBlank: true,
+                                hidden: true,
+                                
+                                width: 140,
+                                fieldStyle: 'text-align:center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'datefield',
+                                    id: prototype.id + '-txtDATEPICKER',
+                                    name: 'IN_ADATE',
+                                    emptyText: 'Select a Date',
+                                    format: 'd/m/Y',
+                                    submitFormat: 'Ymd',
+                                    editable: false,
+                                    allowBlank: true,
+                                    width: 140,
+                                    fieldStyle: 'text-align:center',
+                                    triggers: {
+                                        clear: {
+                                            cls: 'x-form-clear-trigger', 
+                                            handler: function (field) {
+                                                field.reset(); 
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        {xtype: 'tbspacer', width: 20},
                         {
                             fieldLabel: 'Business',
                             hidden: false,
@@ -580,6 +624,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                         {
                             xtype: 'label',
                             text: 'Processor:',
+                            id: prototype.id + '-labelProcessor',
 //                            padding: '3 0 0 30 ',
                             width: 70,
                             //                    hidden:true
@@ -688,31 +733,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                         //////   datepicker
 
                       
-                        {
-                            xtype: 'fieldcontainer',
-                            fieldLabel: 'Payment Date',
-                            labelWidth: 90,
-                            
-//                                            labelStyle: 'font-weight: bold;',
-                            defaults: {
-                                xtype: 'datefield',
-                                format: 'd/m/Y', 
-                                submitFormat: 'Ymd', 
-                                editable: false,
-                                allowBlank: true,
-                                
-                                width: 140,
-                                fieldStyle: 'text-align:center'
-                            },
-                            items: [
-                                {
-                                    id: prototype.id + '-txtDATEPICKER',
-                                    name: 'IN_ADATE',
-                                    emptyText: 'Select a Date'
-                                }
-                            ]
-                        },
-                        {xtype: 'tbspacer', width: 20},
+                       
 
 
                                         
@@ -720,6 +741,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                         {
                             xtype: 'label',
                             text: 'Amount :',
+                            id: prototype.id + '-lblAmount',
                             padding: '3 0',
                             hidden: false,
                             width: 62,
@@ -810,6 +832,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             xtype: 'label',
 //                            style: 'font-weight:bold;color:#0B333C;',
                             padding: '3 0 0 0',
+                            id: prototype.id + '-lblBPOComment',
                             text: 'BPO Comment:',
                             width: 100
                         },
@@ -832,6 +855,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                         {
                             xtype: 'label',
                             text: 'Doc Sap Bank:',
+                            id: prototype.id + '-lblDocSapBank',
                             padding: '3 0 0 0',
                             width: 100,
                         },
