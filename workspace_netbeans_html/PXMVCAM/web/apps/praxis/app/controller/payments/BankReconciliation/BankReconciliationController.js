@@ -4594,4 +4594,5 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             global.getFile(url);
         }
     
+    
 });

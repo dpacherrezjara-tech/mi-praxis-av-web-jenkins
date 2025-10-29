@@ -864,46 +864,46 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         }
     },
     onGridViewTKTAgent: function (column, e, row, columnIndex, x, rowData) {
-        var value = x.record.data.QTYTKT;
-        if (!value || value <= 0) {
-            Ext.Msg.alert('Aviso', 'No se encuentran tickets.');
-            return;
-        }
-
-        var paramDetail = {};
-        this.beanCashAgent.IN_SAGENT = x.record.data.SAGENT;
-        this.beanCashAgent.IN_DATEC = x.record.data.DATEC;
-        this.beanCashAgent.IN_TRANC = x.record.data.TRANC;
-        paramDetail.beanString = JSON.stringify(this.beanCashAgent);
-
-        Ext.Ajax.request({
-            url: prototype.url + '/searchBeanTicketAgent',
-            method: 'POST',
-            timeout: 60000000,
-            params: paramDetail,
-            beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').mask('Loading...'),
-            success: function (response, opts) {
-                Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
-                var res = Ext.JSON.decode(response.responseText);
-                if (res.success) {
-                    meDe.bean_detail = res.result;
-                    var storeData = Ext.create('Ext.data.Store', {
-                        data: res.data,
-                        autoLoad: true
-                    });
-                    Ext.getCmp(prototype.id + '-panelDataInfoScanAgent').show();
-                    Ext.getCmp(prototype.id + '-labelScanAgent').show();
-                    Ext.getCmp(prototype.id + '-gridDataInfoScanAgent').bindStore(storeData);
-                } else {
-                    global.Msg({ msg: res.Mensaje });
-                }
-            },
-            failure: function (response, opts) {
-                console.log('server-side failure with status code ' + response.status);
-                Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
+            var value = x.record.data.QTYTKT;
+            if (!value || value <= 0) {
+                Ext.Msg.alert('Aviso', 'No se encuentran tickets.');
+                return;
             }
-        });
-    },
+
+            var paramDetail = {};
+            this.beanCashAgent.IN_SAGENT = x.record.data.SAGENT;
+            this.beanCashAgent.IN_DATEC = x.record.data.DATEC;
+            this.beanCashAgent.IN_TRANC = x.record.data.TRANC;
+            paramDetail.beanString = JSON.stringify(this.beanCashAgent);
+
+            Ext.Ajax.request({
+                url: prototype.url + '/searchBeanTicketAgent',
+                method: 'POST',
+                timeout: 60000000,
+                params: paramDetail,
+                beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').mask('Loading...'),
+                success: function (response, opts) {
+                    Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
+                    var res = Ext.JSON.decode(response.responseText);
+                    if (res.success) {
+                        meDe.bean_detail = res.result;
+                        var storeData = Ext.create('Ext.data.Store', {
+                            data: res.data,
+                            autoLoad: true
+                        });
+                        Ext.getCmp(prototype.id + '-panelDataInfoScanAgent').show();
+                        Ext.getCmp(prototype.id + '-labelScanAgent').show();
+                        Ext.getCmp(prototype.id + '-gridDataInfoScanAgent').bindStore(storeData);
+                    } else {
+                        global.Msg({ msg: res.Mensaje });
+                    }
+                },
+                failure: function (response, opts) {
+                    console.log('server-side failure with status code ' + response.status);
+                    Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
+                }
+            });
+        },
 
     highlightRow: function(value, meta, record) {
         meta.style = "text-align:center;";
@@ -1114,7 +1114,40 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
             console.log('Solicitando:', url);
 
             global.getFile(url);
-        }
+        },
+        
+        getExcelCashTicket: function () {
+            const grid = Ext.getCmp(prototype.id + '-gridDataInfoScanAgent');
+            if (!grid) {
+                Ext.Msg.alert('Error', 'No se encontró la grilla.');
+                 return;
+            }
+
+            const store = grid.getStore();
+            const data = [];
+            const visibleCols = grid.getColumnManager().getColumns().filter(c => !c.hidden && c.dataIndex);
+
+            store.each(function(rec) {
+            const row = {};
+            visibleCols.forEach(col => {
+                row[col.text] = rec.get(col.dataIndex);
+                });
+                data.push(row);
+            });
+
+                                if (data.length === 0) {
+                                    Ext.Msg.alert('Aviso', 'No hay datos para exportar.');
+                                    return;
+                                }
+                                const ws = XLSX.utils.json_to_sheet(data);
+                                const wb = XLSX.utils.book_new();
+                                XLSX.utils.book_append_sheet(wb, ws, "Datos");
+                                XLSX.writeFile(wb, "InfoScanAgent.xlsx");
+    }
+
+
+        
+        
 
 
 

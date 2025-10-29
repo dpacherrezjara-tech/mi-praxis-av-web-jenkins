@@ -20,9 +20,11 @@ import java.nio.file.Paths;
 
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import java.io.File;
 import java.io.FileInputStream;
@@ -6528,325 +6530,380 @@ public class BankReconciliationController extends BaseController {
             throw new SpringException(e);
         }
     }
-    
+   
+
     @RequestMapping(value = "getListDetalleCash")
-    public @ResponseBody
-    void getXLSXDetalleCash(HttpServletRequest request, HttpServletResponse response) {
+    public @ResponseBody void getXLSXDetalleCash(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("Report : getListDetalleCash");
-        String fileNameDownload = String.format("Bank Reconciliation Report - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
+        String fileNameDownload = "Bank_Reconciliation_Report_" + Functions.getFechaActual() + ".xlsx";
+
         try {
-            Workbook workbook;
-            File file = File.createTempFile(fileNameDownload, ".xlsx");
             List<A2290Filter> listaData = this.getListDetalleCash(request, true);
-            System.out.println("Tamaño de lista devuelta : " + listaData.size());
+            System.out.println("Tamaño de lista devuelta : " + (listaData == null ? 0 : listaData.size()));
 
-            if (listaData.size() < 65000) {
-                workbook = new XSSFWorkbook();
-                Sheet sheet = workbook.createSheet("Report");
-                XSSFCellStyle headerStyle = (XSSFCellStyle) workbook.createCellStyle();
-                XSSFCellStyle totalStyle = (XSSFCellStyle) workbook.createCellStyle();
-                XSSFCellStyle bodyStyle = (XSSFCellStyle) workbook.createCellStyle();
-                DataFormat dataFormat = workbook.createDataFormat();
-                Font headerFont = workbook.createFont();
-                headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
-                headerFont.setColor(IndexedColors.BLACK.getIndex());
-                headerStyle.setBorderRight(CellStyle.BORDER_THIN);
-                headerStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
-                headerStyle.setBorderBottom(CellStyle.BORDER_THIN);
-                headerStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-                headerStyle.setBorderLeft(CellStyle.BORDER_THIN);
-                headerStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
-                headerStyle.setBorderTop(CellStyle.BORDER_THIN);
-                headerStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
-                headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
-                headerStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(127, 152, 168)));
-                headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
-                headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-                headerStyle.setFont(headerFont);
-                totalStyle.setBorderRight(CellStyle.BORDER_THIN);
-                totalStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
-                totalStyle.setBorderBottom(CellStyle.BORDER_THIN);
-                totalStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-                totalStyle.setBorderLeft(CellStyle.BORDER_THIN);
-                totalStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
-                totalStyle.setBorderTop(CellStyle.BORDER_THIN);
-                totalStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
-                totalStyle.setAlignment(CellStyle.ALIGN_RIGHT);
-                totalStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(127, 152, 168)));
-                totalStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
-                totalStyle.setVerticalAlignment(CellStyle.ALIGN_RIGHT);
-                totalStyle.setFont(headerFont);
-                bodyStyle.setBorderRight(CellStyle.BORDER_THIN);
-                bodyStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
-                bodyStyle.setBorderBottom(CellStyle.BORDER_THIN);
-                bodyStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-                bodyStyle.setBorderLeft(CellStyle.BORDER_THIN);
-                bodyStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
-                bodyStyle.setBorderTop(CellStyle.BORDER_THIN);
-                bodyStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
-                XSSFCellStyle amountStyleBody = (XSSFCellStyle) workbook.createCellStyle();
-                XSSFCellStyle amountStyleTotal = (XSSFCellStyle) workbook.createCellStyle();
-                amountStyleBody.cloneStyleFrom(bodyStyle);
-                amountStyleBody.setDataFormat(dataFormat.getFormat("#,##0.00"));
-                amountStyleTotal.cloneStyleFrom(headerStyle);
-                amountStyleTotal.setDataFormat(dataFormat.getFormat("#,##0.00"));
-                Integer vi = 0;
-                Integer vj = 0; //Almacena el numero de fila
-                Iterator iter = listaData.iterator();
-                // ====== CREANDO TITULOS ======================================
+            if (listaData != null && listaData.size() < 65000) {
+                XSSFWorkbook wb = new XSSFWorkbook();
+                XSSFSheet sheet = wb.createSheet("Report");
+                DataFormat df = wb.createDataFormat();
 
-                // ====== Nivel 1: Encabezados principales ======
-                Row row1 = sheet.createRow(vj);
-                Row row2 = sheet.createRow(vj + 1);
+                // ===== Estilos (POI 3.0) =====
+                Font hWhite = wb.createFont(); hWhite.setBoldweight(Font.BOLDWEIGHT_BOLD); hWhite.setColor(IndexedColors.WHITE.getIndex());
+                Font hBlack = wb.createFont(); hBlack.setBoldweight(Font.BOLDWEIGHT_BOLD); hBlack.setColor(IndexedColors.BLACK.getIndex());
+                Font bold = wb.createFont();   bold.setBoldweight(Font.BOLDWEIGHT_BOLD);
 
-// Estilo aplicado en ambos niveles
-                int col = 0;
+                XSSFCellStyle headMain = wb.createCellStyle();
+                headMain.setAlignment(CellStyle.ALIGN_CENTER);
+                headMain.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+                headMain.setFillForegroundColor(IndexedColors.GREY_40_PERCENT.getIndex());
+                headMain.setFillPattern(CellStyle.SOLID_FOREGROUND);
+                setBordersLegacy(headMain);
+                headMain.setFont(hWhite);
 
-// Encabezados simples (una sola celda)
-                String[] headers1 = {
-                    "STATUS", "PROCESS", "DOC. TYPE", "AGENT", "BUSINESS", "SALES DATE", "CODE",
-                    "Credit Card", "", "Merchant", "", "RULE CONCILIATION", "CURR", "AMOUNT",
-                    "Bank Information", "", "", "Qty", "", "PEN DAY", "BANDOC", "REFER",
-                    "INTERFACE", "DAY SEND INTERFACE", "PEND_DAYS"
-                };
+                XSSFCellStyle headSub = wb.createCellStyle();
+                headSub.cloneStyleFrom(headMain);
+                headSub.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
+                headSub.setFont(hBlack);
 
-                String[] headers2 = {
-                    "", "", "", "", "", "", "",
-                    "Number", "Author. Code",
-                    "Number", "Bank",
-                    "", "", "",
-                    "Pay. Date", "Account", "Termi",
-                    "Settl.", "Tkts", "", "", "", "", "", ""
-                };
+                XSSFCellStyle body = wb.createCellStyle(); setBordersLegacy(body);
+                XSSFCellStyle bodyRight = wb.createCellStyle(); bodyRight.cloneStyleFrom(body); bodyRight.setAlignment(CellStyle.ALIGN_RIGHT);
+                XSSFCellStyle moneyBody = wb.createCellStyle(); moneyBody.cloneStyleFrom(bodyRight); moneyBody.setDataFormat(df.getFormat("#,##0.00"));
+                XSSFCellStyle intBody   = wb.createCellStyle(); intBody.cloneStyleFrom(bodyRight);   intBody.setDataFormat(df.getFormat("#,##0"));
 
-                int[] mergeInfo = {
-                    0, 1, 2, 3, 4, 5, 6, // Individual columns
-                    7, 8, // "Credit Card" span
-                    9, 10, // "Merchant" span
-                    11, 12, 13, // RULE CONC - AMOUNT (no merge)
-                    14, 15, 16, // "Bank Info"
-                    17, 18, // "Qty"
-                    19, 20, 21, 22, 23, 24 // Resto sin merge
-                };
+                XSSFCellStyle total = wb.createCellStyle(); setBordersLegacy(total);
+                total.setAlignment(CellStyle.ALIGN_RIGHT); total.setFont(bold);
+                total.setDataFormat(df.getFormat("#,##0.00"));
 
-// Crear celdas para el primer y segundo nivel
-                for (int i = 0; i < headers1.length; i++) {
-                    Cell cell1 = row1.createCell(i);
-                    cell1.setCellStyle(headerStyle);
-                    cell1.setCellValue(headers1[i]);
+                int r = 0;
 
-                    Cell cell2 = row2.createCell(i);
-                    cell2.setCellStyle(headerStyle);
-                    cell2.setCellValue(headers2[i]);
+                // ===== Nivel 1 (encabezados principales) =====
+                Row row1 = sheet.createRow(r++);
+                createTextCell(row1, 0, "Status", headMain);
+                createTextCell(row1, 1, "Consol", headMain);
+                createTextCell(row1, 2, "Business", headMain);
+                createTextCell(row1, 3, "Abono Date", headMain);
+                createTextCell(row1, 4, "Source", headMain);
+                createTextCell(row1, 5, "Curr.", headMain);
+                createTextCell(row1, 6, "Amount", headMain);
+                createTextCell(row1, 7, "Bank Information", headMain);
+                createTextCell(row1, 9, "Qty", headMain);
+                createTextCell(row1, 11, "BANDOC", headMain);
+                createTextCell(row1, 12, "REFER", headMain);
+                createTextCell(row1, 13, "View Cash", headMain);
+
+                // Merges de nivel 1
+                sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));  // Status
+                sheet.addMergedRegion(new CellRangeAddress(0, 1, 1, 1));  // Consol
+                sheet.addMergedRegion(new CellRangeAddress(0, 1, 2, 2));  // Business
+                sheet.addMergedRegion(new CellRangeAddress(0, 1, 3, 3));  // Abono Date
+                sheet.addMergedRegion(new CellRangeAddress(0, 1, 4, 4));  // Source
+                sheet.addMergedRegion(new CellRangeAddress(0, 1, 5, 5));  // Curr.
+                sheet.addMergedRegion(new CellRangeAddress(0, 1, 6, 6));  // Amount
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, 7, 8));  // Bank Information
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, 9, 10)); // Qty
+                sheet.addMergedRegion(new CellRangeAddress(0, 1, 11, 11)); // BANDOC
+                sheet.addMergedRegion(new CellRangeAddress(0, 1, 12, 12)); // REFER
+                sheet.addMergedRegion(new CellRangeAddress(0, 1, 13, 13)); // View Cash
+
+                // ===== Nivel 2 (sub-encabezados) =====
+                Row row2 = sheet.createRow(r++);
+                createTextCell(row2, 0,  "", headSub); // ocupan merges
+                createTextCell(row2, 1,  "", headSub);
+                createTextCell(row2, 2,  "", headSub);
+                createTextCell(row2, 3,  "", headSub);
+                createTextCell(row2, 4,  "", headSub);
+                createTextCell(row2, 5,  "", headSub);
+                createTextCell(row2, 6,  "", headSub);
+                createTextCell(row2, 7,  "Pay. Date", headSub);
+                createTextCell(row2, 8,  "Account",  headSub);
+                createTextCell(row2, 9,  "Settl.",    headSub);
+                createTextCell(row2, 10, "Tkts",      headSub);
+                createTextCell(row2, 11, "", headSub);
+                createTextCell(row2, 12, "", headSub);
+                createTextCell(row2, 13, "", headSub);
+
+                // ===== Datos =====
+                double sumAmount = 0d;
+                double sumTkts   = 0d;
+                // (si quieres total de Settl. también)
+                double sumSettl  = 0d;
+
+                if (listaData != null) {
+                    for (A2290Filter it : listaData) {
+                        Row rd = sheet.createRow(r++);
+                        int c = 0;
+
+                        // Mapeo igual a tu grid
+                        createTextCell(rd, c++, safeStr(it.strDescStatus), body);       // Status
+                        createTextCell(rd, c++, safeStr(it.SCONSOL),       body);       // Consol
+                        createTextCell(rd, c++, "PASAJES",                 body);       // Business (texto fijo de la UI)
+                        createTextCell(rd, c++, safeStr(it.ADATE),         body);       // Abono Date
+                        createTextCell(rd, c++, mapSource(it.TINPUT),      body);       // Source (B/I/A -> BSP/ICCS/ARC)
+                        createTextCell(rd, c++, safeStr(it.SCURRENCY),         body);       // Curr. (fallback SCURR o SCURRENCY)
+                        createNumCell (rd, c++, it.SVFOP,                  moneyBody);  // Amount
+                        createTextCell(rd, c++, safeStr(it.PAYDATE),       body);       // Bank Info - Pay.Date
+                        createTextCell(rd, c++, safeStr(it.ACCNUMBER),     bodyRight);  // Bank Info - Account
+                        createNumCell (rd, c++, it.lngQTYDOC,              intBody);    // Qty - Settl.
+                        createNumCell (rd, c++, it.lngQTYTKT,              intBody);    // Qty - Tkts
+                        createTextCell(rd, c++, safeStr(it.BANDOC),        body);       // BANDOC
+                        createTextCell(rd, c++, safeStr(it.REFER),         body);       // REFER
+                        createTextCell(rd, c++, "",                        body);       // View Cash (no icono en Excel)
+
+                        sumAmount += num(it.SVFOP);
+                        sumTkts   += num(it.lngQTYTKT);
+                        sumSettl  += num(it.lngQTYDOC);
+                    }
                 }
 
-// Realizar los merges necesarios para encabezados con subniveles
-                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 0, 0)); // STATUS
-                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 1, 1)); // PROCESS
-                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 2, 2)); // DOC TYPE
-                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 3, 3)); // AGENT
-                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 4, 4)); // BUSINESS
-                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 5, 5)); // SALES DATE
-                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 6, 6)); // CODE
+                // ===== Totales (muestra Amount y Tkts; Settl opcional) =====
+                Row rt = sheet.createRow(r++);
+                int ct = 0;
+                createTextCell(rt, ct++, "", body);
+                createTextCell(rt, ct++, "", body);
+                createTextCell(rt, ct++, "", body);
+                createTextCell(rt, ct++, "", body);
+                createTextCell(rt, ct++, "", body);
+                createTextCell(rt, ct++, "", body);
+                createNumCell (rt, ct++, sumAmount, total);           // Total Amount
+                createTextCell(rt, ct++, "", body);
+                createTextCell(rt, ct++, "", body);
+                createNumCell (rt, ct++, sumSettl, intBody);          // (si no quieres, pon "" y quita suma)
+                createNumCell (rt, ct++, sumTkts,  intBody);          // Total Tkts
+                createTextCell(rt, ct++, "", body);
+                createTextCell(rt, ct++, "", body);
+                createTextCell(rt, ct++, "", body);
 
-                sheet.addMergedRegion(new CellRangeAddress(vj, vj, 7, 8)); // CREDIT CARD
-                sheet.addMergedRegion(new CellRangeAddress(vj, vj, 9, 10)); // MERCHANT
-                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 11, 11)); // RULE CONCILIATION
-                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 12, 12)); // CURR
-                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 13, 13)); // AMOUNT
+                // UX: congelar encabezados y autofiltro
+                sheet.createFreezePane(0, 2);
+                sheet.setAutoFilter(new CellRangeAddress(1, Math.max(1, r - 1), 0, 13));
 
-                sheet.addMergedRegion(new CellRangeAddress(vj, vj, 14, 16)); // BANK INFORMATION
-                sheet.addMergedRegion(new CellRangeAddress(vj, vj, 17, 18)); // QTY
+                // tamaños
+                int[] widths = {5000,3000,4000,4500,3500,3000,6500,4500,6000,3000,3000,5000,6000,4000};
+                for (int i = 0; i < widths.length; i++) sheet.setColumnWidth(i, widths[i]);
 
-                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 19, 19)); // PEN DAY
-                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 20, 20)); // BANDOC
-                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 21, 21)); // REFER
-                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 22, 22)); // INTERFACE
-                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 23, 23)); // DAY SEND INTERFACE
-                sheet.addMergedRegion(new CellRangeAddress(vj, vj + 1, 24, 24)); // PEND_DAYS
-
-                vj += 2; // Aumentamos dos filas para los encabezados
-                //============================================
-                while (iter.hasNext()) {
-                    row1 = sheet.createRow(vj);
-                    Cell rcell0 = row1.createCell(0);
-                    Cell rcell1 = row1.createCell(1);
-                    Cell rcell2 = row1.createCell(2);
-                    Cell rcell3 = row1.createCell(3);
-                    Cell rcell4 = row1.createCell(4);
-                    Cell rcell5 = row1.createCell(5);
-                    Cell rcell6 = row1.createCell(6);
-                    Cell rcell7 = row1.createCell(7);
-                    Cell rcell8 = row1.createCell(8);
-                    Cell rcell9 = row1.createCell(9);
-                    Cell rcell10 = row1.createCell(10);
-                    Cell rcell11 = row1.createCell(11);
-                    Cell rcell12 = row1.createCell(12);
-                    Cell rcell13 = row1.createCell(13);
-                    Cell rcell14 = row1.createCell(14);
-                    Cell rcell15 = row1.createCell(15);
-                    Cell rcell16 = row1.createCell(16);
-                    Cell rcell17 = row1.createCell(17);
-                    Cell rcell18 = row1.createCell(18);
-                    Cell rcell19 = row1.createCell(19);
-                    Cell rcell20 = row1.createCell(20);
-                    Cell rcell21 = row1.createCell(21);
-                    Cell rcell22 = row1.createCell(22);
-                    Cell rcell23 = row1.createCell(23);
-                    Cell rcell24 = row1.createCell(24);
-
-                    rcell0.setCellValue(listaData.get(vi).strDescStatus);
-                    rcell1.setCellValue(listaData.get(vi).COREP);
-                    rcell2.setCellValue(listaData.get(vi).descTDOC);
-                    rcell3.setCellValue(listaData.get(vi).SAGENT);
-                    rcell4.setCellValue(listaData.get(vi).NEGOC);
-                    rcell5.setCellValue(listaData.get(vi).SDATE);
-                    rcell6.setCellValue(listaData.get(vi).SCARCOD);
-                    rcell7.setCellValue(listaData.get(vi).SCARDN);
-                    rcell8.setCellValue(listaData.get(vi).SAUTHOC);
-                    rcell9.setCellValue(listaData.get(vi).CODEBANK);
-                    rcell10.setCellValue(listaData.get(vi).MERCHN);
-                    rcell11.setCellValue(listaData.get(vi).FREGLA);
-                    rcell12.setCellValue(listaData.get(vi).SCURRENCY);
-                    rcell13.setCellValue(listaData.get(vi).SVFOP);
-                    rcell14.setCellValue(listaData.get(vi).PAYDATE);
-                    rcell15.setCellValue(listaData.get(vi).ACCNUMBER);
-                    rcell16.setCellValue(listaData.get(vi).TERMI);
-                    rcell17.setCellValue(listaData.get(vi).lngQTYDOC);
-                    rcell18.setCellValue(listaData.get(vi).lngQTYTKT);
-                    rcell19.setCellValue(listaData.get(vi).PENDINGDAYS);
-                    rcell20.setCellValue(listaData.get(vi).BANDOC);
-                    rcell21.setCellValue(listaData.get(vi).REFER);
-                    rcell22.setCellValue(listaData.get(vi).HEADEA4545);
-                    rcell23.setCellValue(listaData.get(vi).DCONTA4545);
-                    rcell24.setCellValue(listaData.get(vi).A4545DOCD);
-
-                    rcell0.setCellStyle(bodyStyle);
-                    rcell1.setCellStyle(bodyStyle);
-                    rcell2.setCellStyle(bodyStyle);
-                    rcell3.setCellStyle(bodyStyle);
-                    rcell4.setCellStyle(bodyStyle);
-                    rcell5.setCellStyle(bodyStyle);
-                    rcell6.setCellStyle(bodyStyle);
-                    rcell7.setCellStyle(bodyStyle);
-                    rcell8.setCellStyle(bodyStyle);
-                    rcell9.setCellStyle(bodyStyle);
-                    rcell10.setCellStyle(bodyStyle);
-                    rcell11.setCellStyle(bodyStyle);
-                    rcell12.setCellStyle(bodyStyle);
-                    rcell13.setCellStyle(bodyStyle);
-                    rcell14.setCellStyle(bodyStyle);
-                    rcell15.setCellStyle(bodyStyle);
-                    rcell16.setCellStyle(bodyStyle);
-                    rcell17.setCellStyle(bodyStyle);
-                    rcell18.setCellStyle(bodyStyle);
-                    rcell19.setCellStyle(bodyStyle);
-                    rcell20.setCellStyle(bodyStyle);
-                    rcell21.setCellStyle(bodyStyle);
-                    rcell22.setCellStyle(bodyStyle);
-                    rcell23.setCellStyle(bodyStyle);
-                    rcell24.setCellStyle(bodyStyle);
-
-                    iter.next();
-                    ++vi;
-                    ++vj;
-                }
-
-                sheet.autoSizeColumn(0, true);
-                sheet.autoSizeColumn(1, true);
-                sheet.autoSizeColumn(2, true);
-                sheet.autoSizeColumn(3, true);
-                sheet.autoSizeColumn(4, true);
-                sheet.autoSizeColumn(5, true);
-                sheet.autoSizeColumn(6, true);
-                sheet.autoSizeColumn(7, true);
-                sheet.autoSizeColumn(8, true);
-                sheet.autoSizeColumn(9, true);
-                sheet.autoSizeColumn(10, true);
-                sheet.autoSizeColumn(11, true);
-                sheet.autoSizeColumn(12, true);
-                sheet.autoSizeColumn(13, true);
-                sheet.autoSizeColumn(14, true);
-                sheet.autoSizeColumn(15, true);
-                sheet.autoSizeColumn(16, true);
-                sheet.autoSizeColumn(17, true);
-                sheet.autoSizeColumn(18, true);
-                sheet.autoSizeColumn(19, true);
-                sheet.autoSizeColumn(20, true);
-                sheet.autoSizeColumn(21, true);
-                sheet.autoSizeColumn(22, true);
-                sheet.autoSizeColumn(23, true);
-                sheet.autoSizeColumn(24, true);
-
-                //============================================
-                response.setContentType("application/vnd.openxml");
+                // Respuesta
+                response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
                 response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
-
-                FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
-                workbook.write(response.getOutputStream());
-                fos.close();
+                wb.write(response.getOutputStream());
+                wb.close();
 
             } else {
-                int len = listaData.size();
-
+                // ===== Rama TXT (igual a tu implementación existente) =====
+                int len = (listaData == null) ? 0 : listaData.size();
                 String rutaFile = serverSession.getServerSession().getPropertySession().get("RUTA_DOWNLOAD").toString();
-
-                Integer vi = 0;
-                String fileName = "Control_Liquidaciones_" + Functions.getFechaActual() + ".txt";
+                String fileName = "Control_Liquidaciones_" + Functions.getFechaActual();
                 File fileA = new File(rutaFile + "\\" + fileName + ".txt");
-
-                if (fileA.exists()) {
-                    fileA.delete();
-                }
+                if (fileA.exists()) fileA.delete();
 
                 PrintWriter writer = new PrintWriter(fileA, "UTF-8");
-                String cadena;
-                cadena = "STATUS|PROCESS|TDOC|SAGENT|NEGOC|SDATE|SCARCOD|SCARDN|SAUTHOC|CODEBANK|SMERCH|SCURRENCY|SVFOP|PAYDATE|ACCNUMBER|TERMI|BANDOC|STCON|FCONT|QTYDOC|QTYTKT|PEND_DAYS";
-                writer.println("" + cadena);
-
-                for (vi = 0; vi < len; vi++) {
-                    cadena = "";
-                    cadena += "" + listaData.get(vi).strDescStatus + "|";
-                    cadena += "" + listaData.get(vi).COREP + "|";
-                    cadena += "" + listaData.get(vi).descTDOC + "|";
-                    cadena += "" + listaData.get(vi).SAGENT + "|";
-                    cadena += "" + listaData.get(vi).NEGOC + "|";
-                    cadena += "" + listaData.get(vi).SDATE + "|";
-                    cadena += "" + listaData.get(vi).SCARCOD + "|";
-                    cadena += "" + listaData.get(vi).SCARDN + "|";
-                    cadena += "" + listaData.get(vi).SAUTHOC + "|";
-                    cadena += "" + listaData.get(vi).CODEBANK + "|";
-                    cadena += "" + listaData.get(vi).MERCHN + "|";
-                    cadena += "" + listaData.get(vi).SCURRENCY + "|";
-                    cadena += "" + listaData.get(vi).SVFOP + "|";
-                    cadena += "" + listaData.get(vi).PAYDATE + "|";
-                    cadena += "" + listaData.get(vi).ACCNUMBER + "|";
-                    cadena += "" + listaData.get(vi).TERMI + "|";
-                    cadena += "" + listaData.get(vi).BANDOC + "|";
-                    cadena += "" + listaData.get(vi).STCON + "|";
-                    cadena += "" + listaData.get(vi).FCONT + "|";
-                    cadena += "" + listaData.get(vi).lngQTYDOC + "|";
-                    cadena += "" + listaData.get(vi).lngQTYTKT + "|";
-                    cadena += "" + listaData.get(vi).PENDINGDAYS;
-                    cadena = cadena.replaceAll("null", "");
-                    writer.println("" + cadena);
+                writer.println("STATUS|PROCESS|TDOC|SAGENT|NEGOC|SDATE|SCARCOD|SCARDN|SAUTHOC|CODEBANK|SMERCH|SCURRENCY|SVFOP|PAYDATE|ACCNUMBER|TERMI|BANDOC|STCON|FCONT|QTYDOC|QTYTKT|PEND_DAYS");
+                for (int i = 0; i < len; i++) {
+                    A2290Filter x = listaData.get(i);
+                    String cadena = (safeStr(x.strDescStatus)) + "|" + safeStr(x.COREP) + "|" + safeStr(x.descTDOC) + "|" +
+                            safeStr(x.SAGENT) + "|" + safeStr(x.NEGOC) + "|" + safeStr(x.SDATE) + "|" + safeStr(x.SCARCOD) + "|" +
+                            safeStr(x.SCARDN) + "|" + safeStr(x.SAUTHOC) + "|" + safeStr(x.CODEBANK) + "|" + safeStr(x.MERCHN) + "|" +
+                            safeStr(x.SCURRENCY) + "|" + safeStr(x.SVFOP) + "|" + safeStr(x.PAYDATE) + "|" + safeStr(x.ACCNUMBER) + "|" +
+                            safeStr(x.TERMI) + "|" + safeStr(x.BANDOC) + "|" + safeStr(x.STCON) + "|" + safeStr(x.FCONT) + "|" +
+                            safeStr(x.lngQTYDOC) + "|" + safeStr(x.lngQTYTKT) + "|" + safeStr(x.PENDINGDAYS);
+                    writer.println(cadena.replaceAll("null", ""));
                 }
-                writer.flush();
-                writer.close();
+                writer.flush(); writer.close();
 
                 response.setContentType("application/text");
-                response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
+                response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + ".txt\"");
                 InputStream is = new FileInputStream(rutaFile + "\\" + fileName + ".txt");
                 IOUtils.copy(is, response.getOutputStream());
                 response.flushBuffer();
             }
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new SpringException(e);
         }
     }
 
+    private static String mapSource(String tinput){
+        if ("B".equalsIgnoreCase(tinput)) return "BSP";
+        if ("I".equalsIgnoreCase(tinput)) return "ICCS";
+        if ("A".equalsIgnoreCase(tinput)) return "ARC";
+        return "Not Source";
+    }
 
+@RequestMapping(value = "getXLSXScanTicketCash", method = RequestMethod.POST)
+public void getXLSXScanTicketCash(HttpServletRequest request, HttpServletResponse response) {
+    try {
+        // 1) Lee el JSON desde el form field "json" o desde el cuerpo
+        String json = safeReadJson(request);
+        if (json == null || json.trim().isEmpty() || "{".equals(json.trim())) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "JSON vacío o inválido");
+            return;
+        }
+
+        // 2) Parseo lenient con Gson
+        Gson gson = new GsonBuilder().serializeNulls().create();
+        TicketPayload payload;
+        try {
+            payload = gson.fromJson(json, TicketPayload.class);
+        } catch (JsonSyntaxException ex) {
+            String decoded = tryUrlDecode(json);
+            payload = gson.fromJson(decoded, TicketPayload.class);
+        }
+
+        if (payload == null || payload.rows == null || payload.rows.isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Sin filas para exportar");
+            return;
+        }
+
+        // 3) Genera el Excel (.xlsx) con POI 3.0
+        XSSFWorkbook wb = new XSSFWorkbook();
+        Sheet sheet = wb.createSheet("Tickets");
+
+        // ===== Estilos (POI 3.0) =====
+        XSSFCellStyle head = (XSSFCellStyle) wb.createCellStyle();
+        Font headFont = wb.createFont();
+        headFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+        head.setFont(headFont);
+        head.setAlignment(CellStyle.ALIGN_CENTER);
+        head.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+        head.setFillForegroundColor(IndexedColors.GREY_40_PERCENT.getIndex());
+        head.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        setThinBorders_30(head);
+
+        XSSFCellStyle body = (XSSFCellStyle) wb.createCellStyle();
+        setThinBorders_30(body);
+
+        XSSFCellStyle money = (XSSFCellStyle) wb.createCellStyle();
+        money.cloneStyleFrom(body);
+        DataFormat df = wb.createDataFormat();
+        money.setDataFormat(df.getFormat("#,##0.00"));
+
+        // 4) Cabecera igual a la grilla
+        String[] cols = {
+            "N°","Status","Doc. Type","Agent","Consol.","Sales Date","Fpaymen",
+            "Country","Ticket","Amount","Curr","Invoice","CFUENTE","Del."
+        };
+        int r = 0;
+        Row h = sheet.createRow(r++);
+        for (int c = 0; c < cols.length; c++) {
+            Cell cell = h.createCell(c);
+            cell.setCellValue(cols[c]);
+            cell.setCellStyle(head);
+        }
+
+        // 5) Filas + total de Amount
+        double totalAmount = 0d;
+        int index = 1;
+        for (Map<String, Object> rowMap : payload.rows) {
+            Row row = sheet.createRow(r++);
+            int c = 0;
+
+            setCell(row, c++, index++, body); // N°
+            setCell(row, c++, s(rowMap, "STATUS"), body);
+            setCell(row, c++, s(rowMap, "DOCTYP"), body);
+            setCell(row, c++, s(rowMap, "AGENT"), body);
+            setCell(row, c++, s(rowMap, "CONSOL"), body);
+            setCell(row, c++, s(rowMap, "SALESDATE"), body);
+            setCell(row, c++, s(rowMap, "FPAYMEN"), body);
+            setCell(row, c++, s(rowMap, "COUNTRY"), body);
+            setCell(row, c++, s(rowMap, "TICKET"), body);
+
+            double amount = d(rowMap, "AMOUNT");
+            totalAmount += amount;
+            setMoneyCell(row, c++, amount, money);
+
+            setCell(row, c++, s(rowMap, "CURR"), body);
+            setCell(row, c++, s(rowMap, "INVOICE"), body);
+            setCell(row, c++, s(rowMap, "CFUENTE"), body);
+            setCell(row, c++, s(rowMap, "DEL"), body);
+        }
+
+        // 6) Fila de TOTAL (en Amount)
+        Row totalRow = sheet.createRow(r++);
+        Cell ct = totalRow.createCell(8);  // Columna antes del Amount
+        ct.setCellValue("Total");
+        ct.setCellStyle(head);
+        Cell mt = totalRow.createCell(9);
+        mt.setCellValue(totalAmount);
+        mt.setCellStyle(money);
+
+        // Autosize
+        for (int c = 0; c < cols.length; c++) {
+            sheet.autoSizeColumn(c, true);
+        }
+
+        // 7) Respuesta
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=\"Tickets_" + Functions.getFechaActual() + ".xlsx\"");
+        wb.write(response.getOutputStream());
+        wb.close();
+    } catch (Exception e) {
+        throw new SpringException(e);
+    }
+}
+
+/* ================= Helpers ================= */
+
+private static String safeReadJson(HttpServletRequest request) {
+    try {
+        // 1) Field de form
+        String json = request.getParameter("json");
+        if (json != null && !json.trim().isEmpty()) return json;
+
+        // 2) Cuerpo (application/json o urlencoded)
+        String body = request.getReader().lines().collect(java.util.stream.Collectors.joining());
+        if (body != null && !body.trim().isEmpty()) {
+            if (body.startsWith("json=")) return tryUrlDecode(body.substring(5));
+            return body;
+        }
+    } catch (IOException ignored) {}
+    return null;
+}
+
+private static String tryUrlDecode(String s) {
+    try {
+        return java.net.URLDecoder.decode(s, "UTF-8");
+    } catch (Exception ex) {
+        return s;
+    }
+}
+
+// DTO para Gson
+static class TicketPayload {
+    List<Map<String, Object>> rows;
+    Map<String, Object> meta;
+}
+
+/* Conversores seguros */
+private static String s(Map<String, Object> m, String k) {
+    Object v = m.get(k);
+    return v == null ? "" : String.valueOf(v);
+}
+private static double d(Map<String, Object> m, String k) {
+    Object v = m.get(k);
+    if (v == null) return 0d;
+    if (v instanceof Number) return ((Number) v).doubleValue();
+    try { return Double.parseDouble(String.valueOf(v).replace(",", "")); }
+    catch (Exception e) { return 0d; }
+}
+
+/* POI 3.0 helpers */
+private static void setCell(Row row, int col, Object val, CellStyle st) {
+    Cell c = row.createCell(col);
+    if (val instanceof Number) c.setCellValue(((Number) val).doubleValue());
+    else c.setCellValue(val == null ? "" : String.valueOf(val));
+    c.setCellStyle(st);
+}
+private static void setMoneyCell(Row row, int col, double val, CellStyle st) {
+    Cell c = row.createCell(col);
+    c.setCellValue(val);
+    c.setCellStyle(st);
+}
+private static void setThinBorders_30(CellStyle s) {
+    s.setBorderBottom(CellStyle.BORDER_THIN);
+    s.setBorderTop(CellStyle.BORDER_THIN);
+    s.setBorderLeft(CellStyle.BORDER_THIN);
+    s.setBorderRight(CellStyle.BORDER_THIN);
+}
+
+    
 
 
 
