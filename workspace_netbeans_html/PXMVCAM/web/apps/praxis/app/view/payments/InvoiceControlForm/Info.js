@@ -50,7 +50,7 @@ Ext.define('Ext.Praxis.view.payments.InvoiceControlForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetail',
                                     height: 516,
-                                    width: 1003,
+                                    width: 1063,
                                     hidden: false,
                                     columnLines: true,
                                     viewConfig: {
@@ -65,7 +65,24 @@ Ext.define('Ext.Praxis.view.payments.InvoiceControlForm.Info', {
                                         },
                                         items: [
                                             
-                                            {text: '<span style="color:black;font-weight:bold;">Nbr</span>', dataIndex: 'RN', width: 40,style: 'padding:2px; background: #c9daf5;border-color:white',},
+                                            {text: '<span style="color:black;font-weight:bold;">Nbr</span>', dataIndex: 'RN', width: 40,style: 'padding:2px; background: #c9daf5;border-color:white'},
+                                            {text: '<span style="color:black;font-weight:bold;">Society</span>', dataIndex: 'SOCIETY', width: 60,style: 'padding:2px; background: #c9daf5;border-color:white',
+                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                var data = record.data;
+                                                metaData.style = "text-align:center;";
+                                                
+                                                if (value == 'TA01') {
+                                                    return  '202';
+                                                } else if (value == 'AV01') {
+                                                    return  '134';
+                                                } else if (value == 'LR01') {
+                                                    return  '133';
+                                                } else if (value == '2K01') {
+                                                    return  '547';
+                                                }
+                                                
+                                                return  value;
+                                            }},
                                             {text: '<span style="color:black;font-weight:bold;">Sale Date</span>', dataIndex: 'SDATE', width: 80,style: 'padding:2px; background: #c9daf5;border-color:white',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;

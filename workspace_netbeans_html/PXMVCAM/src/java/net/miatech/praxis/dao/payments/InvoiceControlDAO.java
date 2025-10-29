@@ -1918,6 +1918,7 @@ public class InvoiceControlDAO {
                 bean.INVOICE = rst.getString("INVOICE").trim();
                 bean.CURRENCY = rst.getString("CURRENCY").trim();
                 bean.SDATE = rst.getString("STRFORMATDATE").trim();
+                bean.SOCIETY = rst.getString("SOCIETY").trim();
                 bean.SVFOPL = rst.getDouble("SVFOPL");
                 bean.SUM_ACTIVE = rst.getDouble("SUM_ACTIVE");
                 bean.SUM_MPF100 = rst.getDouble("SUM_MPF100");

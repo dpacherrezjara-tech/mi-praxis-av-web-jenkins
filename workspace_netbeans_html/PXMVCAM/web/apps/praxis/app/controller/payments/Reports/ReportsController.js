@@ -680,7 +680,7 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                                         AMOUNT_REVERSE_CHGBACK_USD : V_AMOUNT_REVERSE_CHGBACK_USD ,
                                         AMOUNT_REVERSE_CHGBACK_SEND : V_AMOUNT_REVERSE_CHGBACK_SEND ,
                                         AMOUNT_REVERSE_CHGBACK_SAP : V_AMOUNT_REVERSE_CHGBACK_SAP ,
-                                        AMOUNT_REVERSE_PENDING_CHGBACK_SAP : V_AMOUNT_REVERSE_CHGBACK_SAP ,
+                                        AMOUNT_REVERSE_PENDING_CHGBACK_SAP : V_AMOUNT_REVERSE_PENDING_CHGBACK_SAP ,
                                         
                                         QTY_ACRED : V_QTY_ACRED ,
                                         AMOUNT_ACRED_USD : V_AMOUNT_ACRED_USD ,
@@ -1085,6 +1085,7 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                         obj.proxy.extraParams = me.paramsDetail;
                     },
                     load: function (obj) {
+                        console.log(obj,'objAAAA')
                         var pag = Ext.getCmp(prototype.id + '-paggin3');
                         var pagData = pag.getPageData();
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));

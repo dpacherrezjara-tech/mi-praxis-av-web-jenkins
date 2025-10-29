@@ -37,7 +37,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                         {
                             xtype: 'panel',
                            border: false,
-                            width: 1765,
+                            width: 1875,
                             id: prototype.id + '-boxMainData',
                            bodyStyle: 'background-color: #F4F7FD;',
                             padding: '1',
@@ -50,7 +50,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridMainData',
-                                    width: 1765,
+                                    width: 1875,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -204,7 +204,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: '<span style="color:black;font-weight:bold;">Total</span>', dataIndex: 'TOTAL', width: 110, align: 'center', menuDisabled: true,style:'background:#AFC6EE;border-color:white',
+                                                text: '<span style="color:black;font-weight:bold;">Amount USD</span>', dataIndex: 'TOTAL', width: 110, align: 'center', menuDisabled: true,style:'background:#AFC6EE;border-color:white',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;background-color:#d5f4d5;";
                                                     return Ext.util.Format.number(value, ',0,000.00');
@@ -223,6 +223,18 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                      metaData.style = 'background:#AFC6EE;border-right: 1px solid white ';
                                                     return '';
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Amount Local</span>', dataIndex: 'SVFOP', width: 110, align: 'center', menuDisabled: true,style:'background:#AFC6EE;border-color:white',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                    return Ext.util.Format.number(value, ',0,000.00');
+                                                },
+                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                    var data = Ext.getCmp(prototype.id + '-gridMainData').getStore().getData().items[0].data;
+                                                    metaData.style = 'text-align:right; margin-right:3px;background:#AFC6EE;border-color: 1px solid white !important';
+                                                    return '<b style="color:black;font-weight:bold;">' + Ext.util.Format.number(data.totSVFOP, ',0,000.00') + '<b>';
                                                 }
                                             },
                                             {
@@ -1023,7 +1035,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                         {
                             xtype: 'panel',
                             border: false,
-                            width: 1765,
+                            width: 1875 ,
                             id: prototype.id + '-boxDataDetail',
                             bodyStyle: 'background-color: #F4F7FD;',
                              padding: '1',
@@ -1036,7 +1048,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetail',
-                                    width: 1765,
+                                    width: 1875,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -1179,7 +1191,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: '<span style="color:black;font-weight:bold;">Total</span>', dataIndex: 'TOTAL', width: 110, align: 'center', menuDisabled: true,style:'background:#AFC6EE;border-color:white',
+                                                text: '<span style="color:black;font-weight:bold;">Amount USD</span>', dataIndex: 'TOTAL', width: 110, align: 'center', menuDisabled: true,style:'background:#AFC6EE;border-color:white',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;background-color:#d5f4d5;";
                                                     return Ext.util.Format.number(value, ',0,000.00');
@@ -1197,6 +1209,19 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                                 },summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                      metaData.style = 'background:#AFC6EE;border-right: 1px solid white ';
                                                     return '';
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Amount Local</span>', dataIndex: 'SVFOP', width: 110, align: 'center', menuDisabled: true,style:'background:#AFC6EE;border-color:white',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:right;background-color:#d5f4d5;";
+                                                    return Ext.util.Format.number(value, ',0,000.00');
+                                                },
+                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                    var data = Ext.getCmp(prototype.id + '-gridDataDetail').getStore().getData().items[0].data;
+                                                    console.log(data,'data')
+                                                    metaData.style = 'text-align:right; margin-right:3px;background:#AFC6EE;border-color: 1px solid white !important';
+                                                    return '<b style="color:black;font-weight:bold;">' + Ext.util.Format.number(data.totSVFOP, ',0,000.00') + '<b>';
                                                 }
                                             },
                                             {
