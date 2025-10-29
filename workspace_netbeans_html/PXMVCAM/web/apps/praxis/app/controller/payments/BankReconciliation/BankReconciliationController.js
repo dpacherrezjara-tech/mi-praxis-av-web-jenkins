@@ -3049,6 +3049,19 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 case '-panelGridDataMPF199':
                     global.getFile(prototype.url + '/panelGridDataMPF199?beanString=' + encodeURI(me.obJPADJ.beanString));
                     break;
+                case '-panelGridDataMainCASH':
+                    global.getFile(prototype.url + '/getXLSXDetMainCash?beanString=' + encodeURI(searchParams.beanString));
+//                    global.getFileExcelPost('searchMainCash', searchParams.beanString, Ext.getCmp(prototype.id + '-gridDataMainCASH').config.columns.items);
+                    break;
+                case '-panelGridDataCountryCash':
+                    global.getFile(prototype.url + '/getXLSXCountryCash?beanString=' + encodeURI(searchParams.beanString));
+                    break;
+                case '-panelGridDataDayCash':
+                    global.getFile(prototype.url + '/getXLSXDayCash?beanString=' + encodeURI(me.paramsDetail.beanString));
+                    break;
+                case '-panelGridDataDetalleCash':
+                    global.getFile(prototype.url + '/getXLSXDetalleCash?beanString=' + encodeURI(me.paramsDetail.beanString));
+                    break;
                 default:
                     global.Msg(
                             {msg: 'Under Construction'
