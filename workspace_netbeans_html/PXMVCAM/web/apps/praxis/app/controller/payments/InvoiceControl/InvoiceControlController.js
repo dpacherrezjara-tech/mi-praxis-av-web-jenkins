@@ -681,7 +681,7 @@ Ext.getCmp(prototype.id + '-QTY_NOT_FOUND').setText(Ext.util.Format.number(QTY_N
                  Ext.getCmp(prototype.id + '-cmbDateFromMonth').setDisabled(true);
                  Ext.getCmp(prototype.id + '-cmbDateToYear').setDisabled(true);
                  Ext.getCmp(prototype.id + '-cmbDateToMonth').setDisabled(true);
-                  Ext.getCmp(prototype.id + '-panelHeight').setHeight(590);
+                  Ext.getCmp(prototype.id + '-panelHeight').setHeight(600);
                 break;
             case  '-panelGridDataHistoric':
                 me.pagginActual = '-paggin';

@@ -299,6 +299,7 @@ public class ReportsController extends BaseController {
             Cell CH1_16 = row1.createCell(16);
             Cell CH1_17 = row1.createCell(17);
             Cell CH1_18 = row1.createCell(18);
+            Cell CH1_19 = row1.createCell(19);
 
             CH1_0.setCellValue("Nbr.");
             CH1_1.setCellValue("Society");
@@ -312,13 +313,14 @@ public class ReportsController extends BaseController {
             CH1_9.setCellValue("Card 4.dig");
             CH1_10.setCellValue("Auth. Code");
             CH1_11.setCellValue("Merchand");
-            CH1_12.setCellValue("Total");
-            CH1_13.setCellValue("Neto");
-            CH1_14.setCellValue("Curr.");
-            CH1_15.setCellValue("Sales Date");
-            CH1_16.setCellValue("Sales Status");
-            CH1_17.setCellValue("Type");
-            CH1_18.setCellValue("Settl.");
+            CH1_12.setCellValue("Amount USD");
+            CH1_13.setCellValue("Curr.");
+            CH1_14.setCellValue("Amount Local");
+            CH1_15.setCellValue("Neto");
+            CH1_16.setCellValue("Sales Date");
+            CH1_17.setCellValue("Sales Status");
+            CH1_18.setCellValue("Type");
+            CH1_19.setCellValue("Settl.");
 
             CH1_0.setCellStyle(headerStyle);
             CH1_1.setCellStyle(headerStyle);
@@ -339,6 +341,7 @@ public class ReportsController extends BaseController {
             CH1_16.setCellStyle(headerStyle);
             CH1_17.setCellStyle(headerStyle);
             CH1_18.setCellStyle(headerStyle);
+            CH1_19.setCellStyle(headerStyle);
 
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
@@ -360,6 +363,7 @@ public class ReportsController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 16, 16));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 17, 17));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 18, 18));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 19, 19));
             ++vj;
             //============================================
 
@@ -443,6 +447,7 @@ public class ReportsController extends BaseController {
                 Cell rcell16 = row1.createCell(16);
                 Cell rcell17 = row1.createCell(17);
                 Cell rcell18 = row1.createCell(18);
+                Cell rcell19 = row1.createCell(19);
 
                 rcell0.setCellValue(listaData.get(vi).RN);
                 rcell1.setCellValue(listaData.get(vi).CCUST);
@@ -457,12 +462,13 @@ public class ReportsController extends BaseController {
                 rcell10.setCellValue(listaData.get(vi).SAUTHOC);
                 rcell11.setCellValue(listaData.get(vi).MERCHAND);
                 rcell12.setCellValue(listaData.get(vi).TOTAL);
-                rcell13.setCellValue(listaData.get(vi).NETO);
-                rcell14.setCellValue(listaData.get(vi).SCURRENCY);
-                rcell15.setCellValue(listaData.get(vi).FTRAN);
-                rcell16.setCellValue(listaData.get(vi).DEBSTVAL);
-                rcell17.setCellValue(listaData.get(vi).TYPE);
-                rcell18.setCellValue(listaData.get(vi).STVAL);
+                rcell13.setCellValue(listaData.get(vi).SCURRENCY);
+                rcell14.setCellValue(listaData.get(vi).SVFOP);
+                rcell15.setCellValue(listaData.get(vi).NETO);
+                rcell16.setCellValue(listaData.get(vi).FTRAN);
+                rcell17.setCellValue(listaData.get(vi).DEBSTVAL);
+                rcell18.setCellValue(listaData.get(vi).TYPE);
+                rcell19.setCellValue(listaData.get(vi).STVAL);
                 iter.next();
                 ++vi;
                 ++vj;
@@ -487,6 +493,7 @@ public class ReportsController extends BaseController {
             sheet.autoSizeColumn(16, true);
             sheet.autoSizeColumn(17, true);
             sheet.autoSizeColumn(18, true);
+            sheet.autoSizeColumn(19, true);
 
             //============================================
             response.setContentType("application/vnd.openxml");
@@ -565,6 +572,7 @@ public class ReportsController extends BaseController {
             Cell CH1_16 = row1.createCell(16);
             Cell CH1_17 = row1.createCell(17);
             Cell CH1_18 = row1.createCell(18);
+            Cell CH1_19 = row1.createCell(19);
 
             CH1_0.setCellValue("Nbr.");
             CH1_1.setCellValue("Society");
@@ -578,13 +586,14 @@ public class ReportsController extends BaseController {
             CH1_9.setCellValue("Card 4.dig");
             CH1_10.setCellValue("Auth. Code");
             CH1_11.setCellValue("Merchand");
-            CH1_12.setCellValue("Total");
-            CH1_13.setCellValue("Neto");
-            CH1_14.setCellValue("Curr.");
-            CH1_15.setCellValue("Sales Date");
-            CH1_16.setCellValue("Sales Status");
-            CH1_17.setCellValue("Type");
-            CH1_18.setCellValue("Settl.");
+            CH1_12.setCellValue("Amount USD");
+            CH1_13.setCellValue("Curr.");
+            CH1_14.setCellValue("Amount Local");
+            CH1_15.setCellValue("Neto");
+            CH1_16.setCellValue("Sales Date");
+            CH1_17.setCellValue("Sales Status");
+            CH1_18.setCellValue("Type");
+            CH1_19.setCellValue("Settl.");
 
             CH1_0.setCellStyle(headerStyle);
             CH1_1.setCellStyle(headerStyle);
@@ -605,6 +614,7 @@ public class ReportsController extends BaseController {
             CH1_16.setCellStyle(headerStyle);
             CH1_17.setCellStyle(headerStyle);
             CH1_18.setCellStyle(headerStyle);
+            CH1_19.setCellStyle(headerStyle);
 
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
@@ -626,6 +636,7 @@ public class ReportsController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 16, 16));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 17, 17));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 18, 18));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 19, 19));
             ++vj;
           
             //============================================
@@ -651,6 +662,7 @@ public class ReportsController extends BaseController {
                 Cell rcell16 = row1.createCell(16);
                 Cell rcell17 = row1.createCell(17);
                 Cell rcell18 = row1.createCell(18);
+                Cell rcell19 = row1.createCell(19);
 
                 rcell0.setCellValue(listaData.get(vi).RN);
                 rcell1.setCellValue(listaData.get(vi).CCUST);
@@ -665,12 +677,13 @@ public class ReportsController extends BaseController {
                 rcell10.setCellValue(listaData.get(vi).SAUTHOC);
                 rcell11.setCellValue(listaData.get(vi).MERCHAND);
                 rcell12.setCellValue(listaData.get(vi).TOTAL);
-                rcell13.setCellValue(listaData.get(vi).NETO);
-                rcell14.setCellValue(listaData.get(vi).SCURRENCY);
-                rcell15.setCellValue(listaData.get(vi).FTRAN);
-                rcell16.setCellValue(listaData.get(vi).DEBSTVAL);
-                rcell17.setCellValue(listaData.get(vi).TYPE);
-                rcell18.setCellValue(listaData.get(vi).STVAL);
+                rcell13.setCellValue(listaData.get(vi).SCURRENCY);
+                rcell14.setCellValue(listaData.get(vi).SVFOP);
+                rcell15.setCellValue(listaData.get(vi).NETO);
+                rcell16.setCellValue(listaData.get(vi).FTRAN);
+                rcell17.setCellValue(listaData.get(vi).DEBSTVAL);
+                rcell18.setCellValue(listaData.get(vi).TYPE);
+                rcell19.setCellValue(listaData.get(vi).STVAL);
                 iter.next();
                 ++vi;
                 ++vj;
@@ -695,6 +708,7 @@ public class ReportsController extends BaseController {
             sheet.autoSizeColumn(16, true);
             sheet.autoSizeColumn(17, true);
             sheet.autoSizeColumn(18, true);
+            sheet.autoSizeColumn(19, true);
 
             //============================================
             response.setContentType("application/vnd.openxml");
