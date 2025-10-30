@@ -1597,7 +1597,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
 //                    beanTkt.lngQTYADJ = rst.getLong("QADJ");
                                     dataRoot.children.push({
                                         strFormatDate: value.strFormatDate,
-                                        
+                                        DATE: value.SDATE,
                                         lngQSALES: V_QSALES,
                                         lngQMATCH: V_QMATCH,
                                         lngQMANUAL: V_QMANUAL,
@@ -1617,6 +1617,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                                         if (value.strFormatDate === value01.strFormatDate) {
                                             dataRoot.children[a.indexOf(value.strFormatDate)].children.push({
                                                 strFormatDate: value01.strFormatDate,
+                                                DATE: value01.SDATE,
                                                 TINPUT: value01.TINPUT,
 //                                                FCHILD: value01.FCHILD,
                                                 
@@ -4372,12 +4373,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 cant = rowData.data.lngQTPEND;
                 break;
         }
-
+        console.log(rowData.data, 'rowData.data')
 //        this.beanDetDay.strFecFiltro = rowData.data.strFecFiltro;
-        this.beanDetDay.IN_SDATE = rowData.data.IN_SDATE;
+        this.beanDetDay.IN_SDATE = rowData.data.DATE;
         this.beanDetDay.IN_STVAL = rowData.data.IN_STVAL;
         this.beanDetDay.IN_TDOC = rowData.data.IN_TDOC;
-        this.beanDetDay.IN_TINPUT = rowData.data.IN_TDOC;
+        this.beanDetDay.IN_TINPUT = rowData.data.TINPUT;
         console.log(rowData.data.IN_TDOC, 'rowData.data.IN_TDOC');
         this.beanDetDay.IN_COUNTRY = rowData.data.IN_COUNTRY;
         this.beanDetDay.strFormatDate = rowData.data.strFormatDate;
