@@ -3416,10 +3416,28 @@ public class SalesReconciliationController extends BaseController {
                         String agent_name = ((MPF106Filter) listaDataCorreos.get(j)).NAMEA;
                         String contactos = ((MPF106Filter) listaDataCorreos.get(j)).CONTAC;
                         contactos_BPO = ((MPF106Filter) listaDataCorreos.get(j)).EMAILS5;
-
+                     
                         obj.IN_AGENT = agent;
                         //Obtiene la lista de aclaraciones de esa fecha
                         listaData = logic.loadPX263SQP00XXXJT(obj);
+                        
+                        String iata = "";
+                        if (listaData != null && !listaData.isEmpty()) {
+                            iata = listaData.get(0).SAGENT;   
+                         
+                        }
+                        
+                        String fventa = "";
+                        if (listaData != null && !listaData.isEmpty()) {
+                            fventa = listaData.get(0).SDATE;
+                            if (fventa != null && fventa.length() >= 6) {
+                                fventa = fventa.substring(0, 6); // toma los primeros 6 caracteres
+                            }
+                        }
+                        
+                        
+                        
+                        
 //                        listaData_ADJUST = logic.loadPX263SQP00XXXJT2(obj);
 
                         if (listaData.size() > 0) {
@@ -3481,7 +3499,7 @@ public class SalesReconciliationController extends BaseController {
                                     Ccp.add(parts[i]);
                                 }
                             }
-                            String asunto = "Gestión de inconsistencias en conciliación de ventas en Tarjetas de Crédito  " + Functions.getFechaActual();
+                            String asunto = "Gestión de inconsistencias en conciliación de ventas en Tarjetas de Crédito  "+iata+ " - " + fventa;
                             String mensaje = "<p>Estimados miembros de agencia de viajes:</p>\n"
                                     + "<p>Les brindamos inicialmente un cordial saludo</p>\n"
                                     + "<p>&nbsp;</p>\n"
@@ -3527,7 +3545,7 @@ public class SalesReconciliationController extends BaseController {
                                     + "tomar para cancelar tiquetes pendientes y por ende se genera la nota de cargo.</li>\n"
                                     + "<p>&nbsp;</p>\n"
                                     + "</ul>\n"
-                                    + "<p><strong><strong>\"Estimados Agentes de Viajes, informamos que a partir del 1 de octubre se reactivará el cobro del fee administrativo de USD 15 "
+                                    + "<p><strong><strong>\"Estimados Agentes de Viajes, informamos que a partir del 1 de Noviembre se reactivará el cobro del fee administrativo de USD 15 "
                                     + "por tiquete para aquellos que no estén pagados correctamente en la fecha de la venta, sin pagos, pagos parciales o pagos con datos que no coincidan.  "
                                     + "Adjuntamos el comunicado oficial con el detalle para su conocimiento.\"</strong></strong></p>\n"
                                     
@@ -3543,8 +3561,7 @@ public class SalesReconciliationController extends BaseController {
                                 msj += " Email Sent.";
 
                                 
-                                //AQUI SE MARCA LOS TICKETS ENVIADOS
-                                
+
                                 String msj_marca = logic.marcarTicketsEnviados(obj);
                                 if (!msj_marca.equals("OK")) {
                                     msjError = msjError + "-" + obj.IN_AGENT;
@@ -3590,7 +3607,7 @@ public class SalesReconciliationController extends BaseController {
             map.put("msj", msj);
             map.put("success", true);
         } catch (Exception ex) {
-            logError.error("An error ocurred, pleas try again later.");
+            logError.error("An error ocurred, please try again later.");
             map.put("success", false);
         }
         return new Gson().toJson(map);
