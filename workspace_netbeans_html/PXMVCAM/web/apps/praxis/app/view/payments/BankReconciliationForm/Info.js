@@ -6119,6 +6119,39 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 }
                                             },
                                             {
+                                                text: 'Days <br> More',
+                                                dataIndex: 'O_ADATE',
+                                                width: 50,
+                                                align: 'center',
+                                                renderer: function (value, metaData, record) {
+                                                    const adateStr = record.get('O_ADATE');
+                                                    const pdateStr = record.get('O_PDATE');
+                                                    if (!adateStr || adateStr.length !== 8) return '';
+                                                    const toDate = function (str) {
+                                                        if (!str || str.length !== 8) return null;
+                                                        const y = parseInt(str.substring(0, 4), 10);
+                                                        const m = parseInt(str.substring(4, 6), 10) - 1;
+                                                        const d = parseInt(str.substring(6, 8), 10);
+                                                        return new Date(y, m, d);
+                                                    };
+
+                                                    const dateA = toDate(adateStr);
+                                                    let dateP = toDate(pdateStr);
+                                                    if (!dateP || isNaN(dateP.getTime())) {
+                                                        dateP = new Date();
+                                                    }
+
+                                                    dateA.setHours(0, 0, 0, 0);
+                                                    dateP.setHours(0, 0, 0, 0);
+
+                                                    const diffMs = dateP - dateA;
+                                                    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+                                                    if (isNaN(diffDays)) return '';
+
+                                                    return diffDays;
+                                                }
+                                            },
+                                            {
                                                 text: 'Concept',
                                                 dataIndex: 'O_CONCEPT',
                                                 width: 100,
@@ -6255,39 +6288,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 }
 
                                             },
-                                            {
-                                                text: 'Days',
-                                                dataIndex: 'O_ADATE',
-                                                width: 50,
-                                                align: 'center',
-                                                renderer: function (value, metaData, record) {
-                                                    const adateStr = record.get('O_ADATE');
-                                                    const pdateStr = record.get('O_PDATE');
-                                                    if (!adateStr || adateStr.length !== 8) return '';
-                                                    const toDate = function (str) {
-                                                        if (!str || str.length !== 8) return null;
-                                                        const y = parseInt(str.substring(0, 4), 10);
-                                                        const m = parseInt(str.substring(4, 6), 10) - 1;
-                                                        const d = parseInt(str.substring(6, 8), 10);
-                                                        return new Date(y, m, d);
-                                                    };
-
-                                                    const dateA = toDate(adateStr);
-                                                    let dateP = toDate(pdateStr);
-                                                    if (!dateP || isNaN(dateP.getTime())) {
-                                                        dateP = new Date();
-                                                    }
-
-                                                    dateA.setHours(0, 0, 0, 0);
-                                                    dateP.setHours(0, 0, 0, 0);
-
-                                                    const diffMs = dateP - dateA;
-                                                    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-                                                    if (isNaN(diffDays)) return '';
-
-                                                    return diffDays;
-                                                }
-                                            },
+                                            
 
 
 
