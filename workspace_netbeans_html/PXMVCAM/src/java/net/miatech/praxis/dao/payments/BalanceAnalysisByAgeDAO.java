@@ -3335,6 +3335,8 @@ public class BalanceAnalysisByAgeDAO {
                     bean.F1_TOTAL = rst.getInt("F1_TOTAL");
                     bean.F1_TOTAL_STVAL3 = rst.getInt("F1_TOTAL_STVAL3");
                     bean.F1_TOTAL_STVAL1 = rst.getInt("F1_TOTAL_STVAL1");
+                    bean.F1_TOTAL_TAXES = rst.getInt("F1_TOTAL_TAXES");
+                    bean.F1_TOTAL_PENDING_TO_F2 = rst.getInt("F1_TOTAL_PENDING_TO_F2");
                     
                     bean.F2_F1_TOTAL_COMPLETED = rst.getInt("F2_F1_TOTAL_COMPLETED");
                     bean.F2_TOTAL_PENDING_OVER50 = rst.getInt("F2_TOTAL_PENDING_OVER50");

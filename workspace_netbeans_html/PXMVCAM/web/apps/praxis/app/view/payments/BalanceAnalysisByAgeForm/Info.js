@@ -8072,7 +8072,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                         {
                                     xtype: 'treepanel',
                                     id: prototype.id + '-gridSumaryMain',
-                                    width: 1248,
+                                    width: 1398,
                                     useArrows: true,
                                     rootVisible: false,
                                     multiSelect: true,
@@ -8107,7 +8107,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                 width: 85,
                                                 align: 'center', // centra a nivel de columna (por defecto)
                                                 renderer: function (value, metaData, record) {
-                                                    metaData.style = "text-align:center; color:#008FE3; text-decoration:underline; display:block; text-align:center;cursor:pointer";
+                                                    metaData.style = "text-align:center; color:#1A1A1A; display:block; text-align:center;cursor:pointer";
 
                                                     const strCCUST = {
                                                         '547': 'AEROGAL',
@@ -8132,7 +8132,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                              click: 'onGridDataDetail'
                                                          },
                                                          renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                             metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                             metaData.style = "color:#057ECB;text-align:right;color:#1A1A1A;cursor:pointer";
                                                              value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
                                                              return value;
                                                          },
@@ -8167,7 +8167,23 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                  click: 'onGridDataDetail'
                                                              },
                                                              renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#1A1A1A;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                         {
+                                                            text: '<span style="color:black;font-weight:bold;">Taxes</span>', dataIndex: 'F1_TOTAL_TAXES', width: 80, style:'background:#FBD2D1;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                             listeners: {
+                                                                 click: 'onGridDataDetail'
+                                                             },
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#1A1A1A;cursor:pointer";
                                                                  value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
                                                                  return value;
                                                              },
@@ -8188,7 +8204,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                      click: 'onGridDataDetail'
                                                                  },
                                                                  renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                     metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                     metaData.style = "color:#057ECB;text-align:right;color:#1A1A1A;cursor:pointer";
                                                                      return '<b>' + value + '</b>';
                                                                  },
                                                                  summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
@@ -8198,8 +8214,23 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                  }
                                                              }
                                                         ]
-                                                    }
-                                                     
+                                                    },
+                                                     {
+                                                        text: '<span style="color:black;font-weight:bold;align: center">Pending <br> to F2</span>', dataIndex: 'F1_TOTAL_PENDING_TO_F2', width: 70, style:'background:#FBD2D1;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                         listeners: {
+                                                             click: 'onGridDataDetail'
+                                                         },
+                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                             metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                             value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                             return value;
+                                                         },
+                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                             var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                             metaData.style = 'text-align:right; margin-right:3px ';
+                                                             return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                         }
+                                                     },
                                                 ]
                                             },
                                             {
@@ -8214,7 +8245,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                  click: 'onGridDataDetail'
                                                              },
                                                              renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#1A1A1A;cursor:pointer";
                                                                  value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
                                                                  return value;
                                                              },
@@ -8246,7 +8277,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                  click: 'onGridDataDetail'
                                                              },
                                                              renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#1A1A1A;cursor:pointer";
                                                                  value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
                                                                  return value;
                                                              },
@@ -8267,7 +8298,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                      click: 'onGridDataDetail'
                                                                  },
                                                                  renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                     metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                     metaData.style = "color:#057ECB;text-align:right;color:#1A1A1A;cursor:pointer";
                                                                      return '<b>' + value + '</b>';
                                                                  },
                                                                  summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
@@ -8492,7 +8523,9 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                             {width: 70, id: prototype.id + '-F1_TOTAL_GLOBAL',style:'background: #FBD2D1;text-align:right'},
                                             {width: 70, id: prototype.id + '-F1_TOTAL_STVAL3_GLOBAL',style:'background: #FBD2D1;text-align:right'},
                                             {width: 80, id: prototype.id + '-F1_TOTAL_STVAL1_GLOBAL',style:'background: #FBD2D1;text-align:right'},
+                                            {width: 80, id: prototype.id + '-F1_TOTAL_TAXES_GLOBAL',style:'background: #FBD2D1;text-align:right'},
                                             {width: 70, id: prototype.id + '-F1_PERCENT_GLOBAL',style:'background: #FBD2D1;text-align:right'},
+                                            {width: 70, id: prototype.id + '-F1_TOTAL_PENDING_TO_F2_GLOBAL',style:'background: #FBD2D1;text-align:right'},
                                             
                                             {width: 90, id: prototype.id + '-F2_TOTAL_GLOBAL',style:'background: #D1FBD2;text-align:right'},
                                             {width: 70, id: prototype.id + '-F2_TOTAL_STVAL3_GLOBAL',style:'background: #D1FBD2;text-align:right'},
@@ -8748,7 +8781,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                             border: false,
                             width: 1192,
                             height: 25,
-                            bodyStyle: 'background-color: #F4F7FD; border: 1px solid #81BEF7',
+                            bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
 //                                    defaults: {
 //                                        border: true,
 //                                        padding: '0px 5px 0px 5px'
@@ -8800,7 +8833,6 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                 }
                             ]
                         },
-                        
                     ]
                 },
                 {

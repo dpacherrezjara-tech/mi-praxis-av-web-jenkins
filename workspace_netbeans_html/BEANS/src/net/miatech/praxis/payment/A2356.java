@@ -65,6 +65,7 @@ public class A2356 {
         public String DIFFDAYS  = "";  
         public double TOTAL  = 0;  
         public double NETO  = 0;  
+        public double SVFOP  = 0;  
         public double SVFOPUSD  = 0;  
         public double SVFOPUSDP  = 0;  
         public double SVFOPUSDPENDING  = 0;  
@@ -78,6 +79,7 @@ public class A2356 {
         public double PERCPENDING  = 0;  
         public double totTOTAL  = 0;  
         public double totNETO  = 0;  
+        public double totSVFOP  = 0;  
         public double totQTYTKT10 = 0;
         public double totQTYTKT30 = 0;
         public double totQTYTKT60 = 0;
@@ -130,6 +132,8 @@ public class A2356 {
         public int F1_TOTAL  = 0;
         public int F1_TOTAL_STVAL3  = 0;
         public int F1_TOTAL_STVAL1  = 0;
+        public int F1_TOTAL_TAXES  = 0;
+        public int F1_TOTAL_PENDING_TO_F2  = 0;
         
         public int F2_F1_TOTAL_COMPLETED = 0;
         public int F2_TOTAL_PENDING_OVER50 = 0;
@@ -193,6 +197,73 @@ public class A2356 {
         public double totAPEND  = 0;  
         public double totAPOLIC  = 0;  
         public double totAPOLIPE  = 0;  
+        
+        
+        
+        public int QTY_REFUND  = 0;  
+        public double AMOUNT_REFUND_USD  = 0;  
+        public double AMOUNT_REFUND_PENDING_SAP  = 0;  
+        public double AMOUNT_REFUND_SEND  = 0;  
+        public double AMOUNT_REFUND_SAP  = 0;  
+        
+        public int QTY_CHGBACK  = 0;  
+        public double AMOUNT_CHGBACK_USD  = 0;  
+        public double AMOUNT_CHGBACK_PENDING_SAP  = 0;  
+        public double AMOUNT_CHGBACK_SEND  = 0;  
+        public double AMOUNT_CHGBACK_SAP  = 0;  
+        
+        public int QTY_REVERSE_CHGBACK  = 0;  
+        public double AMOUNT_REVERSE_CHGBACK_USD  = 0;  
+        public double AMOUNT_REVERSE_PENDING_CHGBACK_SAP  = 0;  
+        public double AMOUNT_REVERSE_CHGBACK_SEND  = 0;  
+        public double AMOUNT_REVERSE_CHGBACK_SAP  = 0;  
+        
+        public int QTY_ACRED  = 0;  
+        public double AMOUNT_ACRED_USD  = 0;  
+        public double AMOUNT_ACRED_PENDING_SAP  = 0;  
+        public double AMOUNT_ACRED_SEND  = 0;  
+        public double AMOUNT_ACRED_SAP  = 0;  
+        
+        public int QTY_PENDING  = 0;  
+        public double AMOUNT_PENDING_USD  = 0;  
+        public double AMOUNT_PENDING_SEND  = 0;  
+        public double AMOUNT_PENDING_SAP  = 0;  
+        
+        public int QTY_TOTAL_REFUND  = 0;  
+        public double AMOUNT_TOTAL_REFUND_USD  = 0;  
+        public double AMOUNT_TOTAL_REFUND_PENDING_USD  = 0;  
+        public double AMOUNT_TOTAL_REFUND_SEND  = 0;  
+        public double AMOUNT_TOTAL_REFUND_SAP  = 0;  
+        
+        public int QTY_TOTAL_CHGBACK  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_USD  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_PENDING_USD  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_SEND  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_SAP  = 0;  
+        
+        public int QTY_TOTAL_REVERSE_CHGBACK  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_CHGBACK_USD  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_CHGBACK_PENDING_USD  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_CHGBACK_SEND  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_CHGBACK_SAP  = 0;  
+        
+        public int QTY_TOTAL_ACRED  = 0;  
+        public double AMOUNT_TOTAL_ACRED_USD  = 0;  
+        public double AMOUNT_TOTAL_ACRED_PENDING_USD  = 0;  
+        public double AMOUNT_TOTAL_ACRED_SEND  = 0;  
+        public double AMOUNT_TOTAL_ACRED_SAP  = 0;  
+        
+        public int QTY_TOTAL_PENDING  = 0;  
+        public double AMOUNT_TOTAL_PENDING_USD  = 0;  
+        public double AMOUNT_TOTAL_PENDING_SEND  = 0;  
+        public double AMOUNT_TOTAL_PENDING_SAP  = 0;  
+        
+        public int QTY_GRANT  = 0;  
+        public double AMOUNT_GRANT  = 0;  
+        
+        public int QTY_TOTAL_GRANT  = 0;  
+        public double AMOUNT_TOTAL_GRANT_USD  = 0;  
+        
         public String USCR  = "";
         public String FECR  = "";
         public String HOCR  = "";

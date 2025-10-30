@@ -938,13 +938,6 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             Ext.getCmp(prototype.id + '-contentFilter2').hide();
             Ext.getCmp(prototype.id + '-contentFilter3').hide();
             
-        } else if (newValue === 'A') {
-            Ext.getCmp(prototype.id + '-pie').setVisible(false);
-            this.setFormatParameter2();
-//            this.setGridDataConciliation();
-            Ext.getCmp(prototype.id + '-contentFilter2').hide();
-            Ext.getCmp(prototype.id + '-contentFilter3').hide();
-            
         }
     },
     setGridData: function () {
@@ -3325,6 +3318,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                 let F1_TOTAL_GLOBAL = 0;
                                 let F1_TOTAL_STVAL3_GLOBAL = 0;
                                 let F1_TOTAL_STVAL1_GLOBAL = 0;
+                                let F1_TOTAL_TAXES_GLOBAL = 0;
+                                let F1_TOTAL_PENDING_TO_F2_GLOBAL = 0;
                                 
                                 let F2_F1_TOTAL_COMPLETED_GLOBAL = 0;
                                 let F2_TOTAL_PENDING_OVER50_GLOBAL = 0;
@@ -3343,7 +3338,9 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                         let V_F1_TOTAL = 0;
                                         let V_F1_TOTAL_STVAL3 = 0;
                                         let V_F1_TOTAL_STVAL1 = 0;
+                                        let V_F1_TOTAL_TAXES = 0;
                                         let V_F1_PERCENT = 0;
+                                        let V_F1_PENDING_TO_F2 = 0;
                                         
                                         let V_F2_F1_TOTAL_COMPLETED = 0;
                                         let V_F2_TOTAL_PENDING_OVER50 = 0;
@@ -3362,6 +3359,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                                 V_F1_TOTAL += valuex.F1_TOTAL;
                                                 V_F1_TOTAL_STVAL3 += valuex.F1_TOTAL_STVAL3;
                                                 V_F1_TOTAL_STVAL1 += valuex.F1_TOTAL_STVAL1;
+                                                V_F1_TOTAL_TAXES += valuex.F1_TOTAL_TAXES;
+                                                V_F1_PENDING_TO_F2 += valuex.F1_TOTAL_PENDING_TO_F2;
                                                 
                                                 V_F2_F1_TOTAL_COMPLETED += valuex.F2_F1_TOTAL_COMPLETED;
                                                 V_F2_TOTAL_PENDING_OVER50 += valuex.F2_TOTAL_PENDING_OVER50;
@@ -3394,6 +3393,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                             F1_TOTAL: V_F1_TOTAL,
                                             F1_TOTAL_STVAL3: V_F1_TOTAL_STVAL3,
                                             F1_TOTAL_STVAL1: V_F1_TOTAL_STVAL1,
+                                            F1_TOTAL_TAXES: V_F1_TOTAL_TAXES,
+                                            F1_TOTAL_PENDING_TO_F2: V_F1_PENDING_TO_F2,
                                             F1_PERCENT: V_F1_PERCENT.toFixed(2) + '%',
                                             
                                             F2_F1_TOTAL_COMPLETED: V_F2_F1_TOTAL_COMPLETED,
@@ -3436,6 +3437,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                                     F1_TOTAL: value01.F1_TOTAL,
                                                     F1_TOTAL_STVAL3: value01.F1_TOTAL_STVAL3,
                                                     F1_TOTAL_STVAL1: value01.F1_TOTAL_STVAL1,
+                                                    F1_TOTAL_TAXES: value01.F1_TOTAL_TAXES,
+                                                    F1_TOTAL_PENDING_TO_F2: value01.F1_TOTAL_PENDING_TO_F2,
                                                     F1_PERCENT: V_CHILD_PERCENT.toFixed(2) + '%',
                                                     
                                                     F2_F1_TOTAL_COMPLETED: value01.F2_F1_TOTAL_COMPLETED,
@@ -3458,6 +3461,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                         F1_TOTAL_GLOBAL += V_F1_TOTAL;
                                         F1_TOTAL_STVAL3_GLOBAL += V_F1_TOTAL_STVAL3;
                                         F1_TOTAL_STVAL1_GLOBAL += V_F1_TOTAL_STVAL1;
+                                        F1_TOTAL_TAXES_GLOBAL += V_F1_TOTAL_TAXES;
+                                        F1_TOTAL_PENDING_TO_F2_GLOBAL += V_F1_PENDING_TO_F2;
                                         
                                         F2_F1_TOTAL_COMPLETED_GLOBAL += V_F2_F1_TOTAL_COMPLETED;
                                         F2_TOTAL_PENDING_OVER50_GLOBAL += V_F2_TOTAL_PENDING_OVER50;
@@ -3496,7 +3501,9 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                 Ext.getCmp(prototype.id + '-F1_TOTAL_GLOBAL').setText(Ext.util.Format.number(F1_TOTAL_GLOBAL, '0'));
                                 Ext.getCmp(prototype.id + '-F1_TOTAL_STVAL3_GLOBAL').setText(Ext.util.Format.number(F1_TOTAL_STVAL3_GLOBAL, '0,000'));
                                 Ext.getCmp(prototype.id + '-F1_TOTAL_STVAL1_GLOBAL').setText(Ext.util.Format.number(F1_TOTAL_STVAL1_GLOBAL, '0,000'));
+                                Ext.getCmp(prototype.id + '-F1_TOTAL_TAXES_GLOBAL').setText(Ext.util.Format.number(F1_TOTAL_TAXES_GLOBAL, '0,000'));
                                 Ext.getCmp(prototype.id + '-F1_PERCENT_GLOBAL').setText(F1_PERCENT_GLOBAL.toFixed(2) + '%');
+                                 Ext.getCmp(prototype.id + '-F1_TOTAL_PENDING_TO_F2_GLOBAL').setText(Ext.util.Format.number(F1_TOTAL_PENDING_TO_F2_GLOBAL, '0,000'));
                                 
                                 Ext.getCmp(prototype.id + '-F2_TOTAL_GLOBAL').setText(Ext.util.Format.number(F2_F1_TOTAL_COMPLETED_GLOBAL, '0'));
                                 Ext.getCmp(prototype.id + '-F2_TOTAL_STVAL3_GLOBAL').setText(Ext.util.Format.number(F2_TOTAL_PENDING_OVER50_GLOBAL, '0,000'));
