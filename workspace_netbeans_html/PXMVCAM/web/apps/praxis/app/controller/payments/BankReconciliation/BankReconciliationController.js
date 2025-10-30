@@ -990,7 +990,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                         this.setFormatParameter();
 
                         if (isChecked) {
-                            this.setGridDataMainCASH(obj, e);
+//                            this.setGridDataMainCASH(obj, e);
+                            this.setGridDataMainCash_Sumary(obj, e);
 
 
                         } else {
@@ -1452,7 +1453,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
         }
     },
-     setGridDataMainCASH: function (obj, val) {
+    setGridDataMainCASH: function (obj, val) {
         win.lblUser_toolTip("Estructura: MPF193");
         if (me.panelActual !== '-panelGridDataMainCASH') {
             me.panelActual = '-panelGridDataMainCASH';
@@ -1494,6 +1495,161 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             global.clear();
             Ext.getCmp(prototype.id + '-gridDataMainCASH').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
+        }
+    },
+    setGridDataMainCash_Sumary: function (obj, val) {
+        win.lblUser_toolTip("Estructura: MPF193");
+        if (me.panelActual !== '-panelGridDataCash_Sumary') {
+            me.panelActual = '-panelGridDataCash_Sumary';
+            Ext.getCmp(prototype.id + '-gridDataCash_Sumary').setVisible(true);
+        }
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        this.setFormatParameter();
+        var msj = this.validateFields();
+        if (msj !== '') {
+            global.Msg({msg: msj
+            });
+        } else {
+
+            var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchMainCash'
+                }, listeners: {
+                    beforeload: function (obj) {
+                        obj.proxy.extraParams = searchParams;
+                        Ext.getCmp(prototype.id + '-panelGridDataCash_Sumary').mask('Loading...');
+                    },
+                    load: function (obj) {
+                        Ext.getCmp(prototype.id + '-panelGridDataCash_Sumary').unmask();
+                        var pag = Ext.getCmp(prototype.id + '-paggin');
+                        var pagData = pag.getPageData();
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        } else {
+                            
+                            
+                            let a = [];
+//                            var obj = obj.data.items[0].data;
+                            let lstData = []
+                            for (let value of obj.data.items) {
+                                lstData.push(value.data)
+                            }
+                            console.log(lstData, 'lstData')
+                            
+                            
+                            let dataRoot = {text: '.', expanded: false, children: []};
+
+                            Ext.Object.each(lstData, function (index, value) {
+                                if (a.indexOf(value.strFormatDate) < 0) {
+                                    let x = [];
+
+                                    let V_QSALES = 0;
+                                    let V_QMATCH = 0;
+                                    let V_QMANUAL = 0;
+                                    let V_QPEND = 0;
+                                    let V_QTICKET = 0;
+                                    let V_QTMATCH = 0;
+                                    let V_QTMANUAL = 0;
+                                    let V_QTPEND = 0;
+                                    let V_QEECC = 0;
+//                                    let V_QTMANUAL = 0;
+
+                                    Ext.Object.each(lstData, function (index, valuex) {
+                                        if (value.strFormatDate === valuex.strFormatDate) {
+                                            V_QSALES += valuex.lngQSALES;
+                                            V_QMATCH += valuex.lngQMATCH;
+                                            V_QMANUAL += valuex.lngQMANUAL;
+                                            V_QPEND += valuex.lngQPEND;
+                                            V_QTICKET += valuex.lngQTICKET;
+                                            V_QTMATCH += valuex.lngQTMATCH;
+                                            V_QTMANUAL += valuex.lngQTMANUAL;
+                                            V_QTPEND += valuex.lngQTPEND;
+                                            V_QEECC += valuex.lngQEECC;
+                                        }
+                                    });
+
+
+                                    a.push(value.strFormatDate);
+                                    
+//                                    let porcentajeVentas = (V_QSVFOPUSDS === 0)
+//                                        ? 0
+//                                        : Math.round((V_QSVFOPUSDC / V_QSVFOPUSDS) * 100 * 100) / 100;
+//                                    
+//                                    let porcentajeLiquidaciones = (V_SVFOPUSDLT === 0)
+//                                        ? 0
+//                                        : Math.round((V_SVFOPUSDL / V_SVFOPUSDLT) * 100 * 100) / 100;
+                                    
+                                    
+                                    //                    beanTkt.lngQSALES = rst.getLong("QSALES");
+//                    beanTkt.lngQMATCH = rst.getLong("QMATCH");
+//                    beanTkt.lngQMANUAL = rst.getLong("QMANUAL");
+//                    beanTkt.lngQPEND = rst.getLong("QPEND");
+//                    beanTkt.lngQTICKET = rst.getLong("QTICKET");
+//                    beanTkt.lngQTMATCH = rst.getLong("QTMATCH");
+//                    beanTkt.lngQTMANUAL = rst.getLong("QTMANUAL");
+//                    beanTkt.lngQTPEND = rst.getLong("QTPEND");
+//                    beanTkt.lngQEECC = rst.getLong("QEECC");
+//                    beanTkt.lngQTYADJ = rst.getLong("QADJ");
+                                    dataRoot.children.push({
+                                        strFormatDate: value.strFormatDate,
+                                        
+                                        lngQSALES: V_QSALES,
+                                        lngQMATCH: V_QMATCH,
+                                        lngQMANUAL: V_QMANUAL,
+                                        lngQPEND: V_QPEND,
+                                        lngQTICKET: V_QTICKET,
+                                        lngQTMATCH: V_QTMATCH,
+                                        lngQTMANUAL: V_QTMANUAL,
+                                        lngQTPEND: V_QTPEND,
+                                        lngQEECC: V_QEECC,
+
+
+
+                                        expanded: false, children: []
+                                    });
+                                    let b = [];
+                                    Ext.Object.each(lstData, function (index, value01) {
+                                        if (value.strFormatDate === value01.strFormatDate) {
+                                            dataRoot.children[a.indexOf(value.strFormatDate)].children.push({
+                                                strFormatDate: value01.strFormatDate,
+                                                TINPUT: value01.TINPUT,
+//                                                FCHILD: value01.FCHILD,
+                                                
+//                                                QSALES: value01.lngQSALES,
+                                                lngQSALES: value01.lngQSALES,
+                                                lngQMATCH: value01.lngQMATCH,
+                                                lngQMANUAL: value01.lngQMANUAL,
+                                                lngQPEND: value01.lngQPEND,
+                                                lngQTICKET: value01.lngQTICKET,
+                                                lngQTMATCH: value01.lngQTMATCH,
+                                                lngQTMANUAL: value01.lngQTMANUAL,
+                                                lngQTPEND: value01.lngQTPEND,
+                                                lngQEECC: value01.lngQEECC,
+                                                leaf: true
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                            var storeTree = Ext.create('Ext.data.TreeStore', {
+                                root: dataRoot
+                            });
+
+                            Ext.getCmp(prototype.id + '-gridDataCash_Sumary').setStore(storeTree);
+                        }
+                    }
+                }
+            });
+            
+            
+            global.clear();
+//            Ext.getCmp(prototype.id + '-gridDataCash_Sumary').bindStore(storeGridDatas);
+//            Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
         }
     },
     searchGrafLiqI: function (obj, val) {
@@ -4221,6 +4377,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         this.beanDetDay.IN_SDATE = rowData.data.IN_SDATE;
         this.beanDetDay.IN_STVAL = rowData.data.IN_STVAL;
         this.beanDetDay.IN_TDOC = rowData.data.IN_TDOC;
+        this.beanDetDay.IN_TINPUT = rowData.data.IN_TDOC;
         console.log(rowData.data.IN_TDOC, 'rowData.data.IN_TDOC');
         this.beanDetDay.IN_COUNTRY = rowData.data.IN_COUNTRY;
         this.beanDetDay.strFormatDate = rowData.data.strFormatDate;
