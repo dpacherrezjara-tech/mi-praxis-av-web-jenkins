@@ -118,4 +118,24 @@ public class SalesAgentControlLogic {
     public List<A2354Filter> load_MPS355(A2354Filter filter) throws SQLException, Exception {
         return SalesAgentControlDAO.load_MPS355(filter);
     }
+    
+    
+    
+    
+    //BAJES DE PEPA{
+    
+     public List<A2354Filter> loadLISTAR_IMF150(A2354Filter filter) throws SQLException, Exception {
+        return SalesAgentControlDAO.loadLISTAR_IMF150(filter);
+    }
+     
+     // A270
+     
+      public List<A2354Filter> loadLISTAR_A720(A2354Filter filter) throws SQLException, Exception {
+        return SalesAgentControlDAO.loadLISTAR_A720(filter);
+    }
+    
+    
+    
+    
+    
 }

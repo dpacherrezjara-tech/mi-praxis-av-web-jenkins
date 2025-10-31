@@ -41,6 +41,8 @@ public String IN_CMERCHAN = "";
 public String IN_SUCMERCH = "";
 public String IN_ACCNUMB = "";
 public String IN_SAGENT = "";
+public String IN_FPAYMENT = "";
+public String IN_DSALES = "";
 public String IN_BMERCHAN = "";
 public String IN_SCARCOD = "";
 public String IN_CTABANK = "";
@@ -131,6 +133,34 @@ public String BENCEN = "";
 public String DEUSAP = "";
 public String SAGENT = "";
 
+
+
+public String O_CCUST = "";
+public String O_SAGENT = "";
+public String O_FUENTE = "";
+public String O_PAIS_VENTA = "";
+public String O_MES = "";
+public String O_FORMAPAGO = "";
+public String O_VFOP = "";
+public String O_QTYTKTS = "";
+
+
+
+
+public String A_CCUST = "";
+public String A_TICKET = "";
+public String A_A720FECVTA = "";
+public String A_A720PAIVTA = "";
+public String A_A720TRNCU = "";
+public String A_A720TDOC = "";
+public String A_A720AGENTE = "";
+public String A_ORIGEN = "";
+public String A_A1531VFOPR = "";
+public String A_A1531MFOPR = "";
+
+
+
+
 public String CANALM = "";
 public String PROCES = "";
 
@@ -176,6 +206,13 @@ public int QTY_100_ALL = 0;
 public int QTY_100_PENDING = 0;
 public int QTY_NOT_FOUND = 0;
 public int QTY_TOTAL= 0;
+
+
+
+
+
+
+
 
 
 public List<A4202> lstDetalle = new ArrayList<A4202>(0);

@@ -122,8 +122,8 @@ Ext.define('Ext.Praxis.view.payments.SalesAgentControlForm.Info', {
                                                                                    '</a>';
                                                                         },
                                                                         listeners: {
-                                                                            click: 'onClickDetailMonth',
-                                                                            args: ['CH']
+                                                                            click: 'onClickDetailMonthIMF150',
+                                                                            args: ['CC']
                                                                         }},
                                                         {text: '<span style="color:black;font-weight:bold;">QTY</span>', dataIndex: 'QTYTKCRE', align: 'center',width: 70,style: 'background: #FBD2D1;border-color:white',
                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
@@ -174,8 +174,8 @@ Ext.define('Ext.Praxis.view.payments.SalesAgentControlForm.Info', {
                                                                                    '</a>';
                                                                         },
                                                                     listeners: {
-                                                                            click: 'onClickDetailMonth',
-                                                                            args: ['CH']
+                                                                            click: 'onClickDetailMonthIMF150',
+                                                                            args: ['CA']
                                                                         }},
                                                     {text:  '<span style="color:black;font-weight:bold;">QTY</span>' ,align: 'center', dataIndex: 'QTYTKCAS', width: 70,style: 'background: #D1FBD2;border-color:white',renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                         metaData.style = "color:#2B2B2B;text-align:right;";
@@ -513,7 +513,418 @@ Ext.define('Ext.Praxis.view.payments.SalesAgentControlForm.Info', {
 
 
                             ]
-                        }
+                        },
+                        
+                        ///AGREGAMOS PANEL MES
+                        
+                        
+                        /////////////PAE+NEL IMF150/////////////////////
+                        
+                        ////////////////////////////////////////////////
+                        ////////////////////////////////////////////////////
+                        
+                        
+                        
+                        
+                        {
+                            xtype: 'panel',
+                            id: prototype.id + '-panelGridDataIMF150',
+                            bodyStyle: 'background-color: #F4F7FD; overflow-x: hidden;',
+                            border: false,
+                            height: 'auto',
+                            width: 890,
+                            margin: '0 0 0 0 ',
+                            
+                            layout: {
+                                type: 'vbox',
+                                align: 'stretch'
+                            },
+                            bodyPadding: 10,
+                            
+                            items: [                        
+                                {
+                                    xtype: 'label',
+                                    id: prototype.id + '-labelIMF150',
+                                    labelAlign: 'center',
+                                    style: 'font-weight: bold; color: #231223; text-align: center; display: block;',
+                                    
+                                    align: 'center',
+                                    margin: '5 0 5 0'
+//                                    hidden: true
+                                },
+                                
+                                
+                                
+                                {
+                                    xtype: 'container',
+                                    layout: {
+                                        type: 'hbox',
+                                        align: 'middle',
+                                        pack: 'start' ,
+                                        margin: '15px 0 15px 15px'
+                                    },
+                                    margin: '10 0 10 10', // 🔹 margen: arriba, derecha, abajo, izquierda
+                                    items: [
+                                       
+                                         { xtype: 'tbspacer', width: 20 },
+                                    
+                                        
+                                        //fecha
+                                        
+                                        
+                                            ]
+                                        },
+         
+                                
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridDataIMF150',
+                                      xtype: 'grid',
+                                      flex: 1, // ocupa todo el espacio disponible del panel
+                                      width: '100%', 
+                                      bodyStyle: 'background-color: #F4F7FD;',
+                                    columnLines: true,
+//                                    features: [{
+//                                            ftype: 'summary'
+//                                        }],
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: false,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Client</span>', 
+                                                dataIndex: 'O_CCUST',
+                                                width: 80,
+                                                style: 'padding:2px; background: #c9daf5;border-color:white',
+                                                    renderer: function (value) {
+                                                    if (value === '134') return 'Avianca';
+                                                    if (value === '202') return 'Taca';
+                                                    if (value === '133') return 'Lacsa';
+                                                    if (value === '547') return 'Aerogal';
+                                                    return value; // por defecto muestra el código
+                                                }
+                                               },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Agent</span>', 
+                                                dataIndex: 'O_SAGENT',
+                                                width: 100,
+                                                textSelectable: true,
+                                                style: 'padding:2px; background: #c9daf5;border-color:white',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Fuente</span>', 
+                                                dataIndex: 'O_FUENTE',
+                                                width: 100,
+                                                style: 'padding:2px; background: #c9daf5;border-color:white',
+                                                renderer: function (value, metaData, record) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                    
+                                                }
+                                            },
+                                            
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Country</span>',
+                                                dataIndex: 'O_PAIS_VENTA',
+                                                width: 100,
+                                                style: 'padding:2px; background: #c9daf5;border-color:white',
+                                                renderer: function (value, metaData, record) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                 
+                                                }
+                                            },
+                                            
+                                            
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Month</span>',
+                                                dataIndex: 'O_MES',
+                                                width: 100,
+                                                style: 'padding:2px; background: #c9daf5;border-color:white',
+                                                 renderer: function (value, metaData, record) {
+                                                                            metaData.style = "text-align:center";
+                                                                            return '<a style="color:#004080; font-weight:bold; text-decoration:underline; cursor:pointer;">' 
+                                                                                   + Ext.String.htmlEncode(value) + 
+                                                                                   '</a>';
+                                                                        },
+                                                 listeners: {
+                                                                            click: 'onClickDetailA720'
+                                                                           
+                                                                        }
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Payment Type</span>',
+                                                dataIndex: 'O_FORMAPAGO',
+                                                width: 130,
+                                                style: 'padding:2px; background: #c9daf5;border-color:white',
+                                                   renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    if (value === 'CC') {
+                                                        return 'CREDIT CARD';
+                                                    } else if (value === 'CA') {
+                                                        return 'CASH';
+                                                    } else {
+                                                        return value; // si viene otro valor, lo muestra tal cual
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;"> Amount</span>',
+                                                dataIndex: 'O_VFOP',
+                                                width: 140,
+                                                style: 'padding:2px; background: #c9daf5;border-color:white',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Total Tickets </span>',
+                                                dataIndex: 'O_QTYTKTS',
+                                                width: 120,
+                                                xtype: 'numbercolumn',
+                                                style: 'padding:2px; background: #c9daf5; border-color:white; text-align: center;',
+                                                
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align: center";
+                                                    if (value == null)
+                                                        return '';
+                                                    return Ext.util.Format.number(value, '0,000'); // 🔹 sin decimales
+                                                }
+                                            }
+
+       
+                                        
+
+                                        ]
+                                        
+                                    }
+                                }
+                            ]
+                        },
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        ////////////////////////////////////////////////
+                        //////////////panelGridDataA270/////////////////////
+                        ////////////////////////////////////////////////
+                        
+                        
+                        
+                        //panelGridDataA270
+                        
+                        
+                        
+                        
+                        
+                        {
+                            xtype: 'panel',
+                            id: prototype.id + '-panelGridDataA270',
+                            bodyStyle: 'background-color: #F4F7FD; overflow-x: hidden;',
+                            border: false,
+                            height: 'auto',
+                            width: 1040,
+                            margin: '0 0 0 0 ',
+                            
+                            layout: {
+                                type: 'vbox',
+                                align: 'stretch'
+                            },
+                            bodyPadding: 10,
+                            
+                            items: [                        
+                                {
+                                    xtype: 'label',
+                                    id: prototype.id + '-labelA270',
+                                    labelAlign: 'center',
+                                    style: 'font-weight: bold; color: #231223; text-align: center; display: block;',
+                                    
+                                    align: 'center',
+                                    margin: '5 0 5 0',
+//                                    hidden: true
+                                },
+                                
+                                
+                                
+                                {
+                                    xtype: 'container',
+                                    layout: {
+                                        type: 'hbox',
+                                        align: 'middle',
+                                        pack: 'start' ,
+                                        margin: '15px 0 15px 15px'
+                                    },
+                                    margin: '10 0 10 10', // 🔹 margen: arriba, derecha, abajo, izquierda
+                                    items: [
+                                       
+                                         { xtype: 'tbspacer', width: 20 },
+                                    
+                                        
+                                        //fecha
+                                        
+                                        
+                                            ]
+                                        },
+         
+                                
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridDataA270',
+                                      xtype: 'grid',
+                                      flex: 1, // ocupa todo el espacio disponible del panel
+                                      width: '100%', 
+                                      bodyStyle: 'background-color: #F4F7FD;',
+                                    columnLines: true,
+//                                    features: [{
+//                                            ftype: 'summary'
+//                                        }],
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: false,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Client</span>', 
+                                                dataIndex: 'A_CCUST',
+                                                width: 80,
+                                                style: 'padding:2px; background: #c9daf5;border-color:white',
+                                                    renderer: function (value) {
+                                                    if (value === '134') return 'Avianca';
+                                                    if (value === '202') return 'Taca';
+                                                    if (value === '133') return 'Lacsa';
+                                                    if (value === '547') return 'Aerogal';
+                                                    return value; // por defecto muestra el código
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Ticket</span>', 
+                                                dataIndex: 'A_TICKET',
+                                                width: 120,
+                                                style: 'padding:2px; background: #c9daf5;border-color:white',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Sale Date</span>', 
+                                                dataIndex: 'A_A720FECVTA',
+                                                width: 100,
+                                                style: 'padding:2px; background: #c9daf5;border-color:white',
+                                                renderer: function (value, metaData, record) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                    
+                                                }
+                                            },
+                                            
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Country<br>of Sale</span>',
+                                                dataIndex: 'A_A720PAIVTA',
+                                                width: 100,
+                                                style: 'padding:2px; background: #c9daf5;border-color:white',
+                                                renderer: function (value, metaData, record) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                 
+                                                }
+                                            },
+                                            
+                                            
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Transaction</span>',
+                                                dataIndex: 'A_A720TRNCU',
+                                                width: 100,
+                                                style: 'padding:2px; background: #c9daf5;border-color:white',
+                                                
+                                                 
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Document<br> Type</span>',
+                                                dataIndex: 'A_A720TDOC',
+                                                width: 100,
+                                                style: 'padding:2px; background: #c9daf5;border-color:white',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;"> Agent</span>',
+                                                dataIndex: 'A_A720AGENTE',
+                                                width: 120,
+                                                style: 'padding:2px; background: #c9daf5;border-color:white',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                 text: '<span style="color:black;font-weight:bold;"> Origin<br>Of Sale</span>',
+                                                dataIndex: 'A_ORIGEN',
+                                                width: 80,
+                                                xtype: 'numbercolumn',
+                                                style: 'padding:2px; background: #c9daf5;border-color:white',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+
+                                            },
+                                             {
+                                                text: '<span style="color:black;font-weight:bold;"> Currency</span>',
+                                                dataIndex: 'A_A1531MFOPR',
+                                                width: 80,
+                                                style: 'padding:2px; background: #c9daf5;border-color:white',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Amount</span>',
+                                                dataIndex: 'A_A1531VFOPR',
+                                                width: 140,
+                                                style: 'padding:2px; background: #c9daf5; border-color:white; text-align: center;', // 🔹 también alinea el encabezado
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align: right; padding-right: 5px;"; // 🔹 alinea contenido de la celda
+                                                    return value;
+                                                }
+                                            }
+
+                                            
+       
+                                        
+
+                                        ]
+                                        
+                                    }
+                                }
+                            ]
+                        },
+                        
+                        
+                        
+                        ////////////////////////////////////////////////////
+                        ////////////////////////////////////////////////////
+                        ////////////////////////////////////////////////////
+                        ////////////////////////////////////////////////////
+                        
                     ]
                 },
             ]

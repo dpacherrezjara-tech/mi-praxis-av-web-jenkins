@@ -1929,6 +1929,214 @@ public class SalesAgentControlDAO {
 
         return lstData;
     }
+    
+    
+    
+    /////BAJES loadLISTAR_IMF150
+    
+    
+    public List<A2354Filter> loadLISTAR_IMF150(A2354Filter filter)throws SQLException, Exception {
+        
+        
+        
+        List<A2354Filter> listaData = new ArrayList<>();
+        A2354Filter bean;
+        
+        
+        String SQL = "{CALL PRAXISMP.LISTAR_IMF150(?, ?, ?, ?, ?, ?,?)}";
+        
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        Connection cnx = null;
+        
+        
+        
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQL);
+
+            // para la paginacion
+            cstmt.registerOutParameter(4, Types.INTEGER);
+            cstmt.registerOutParameter(5, Types.INTEGER);
+            cstmt.registerOutParameter(6, Types.INTEGER);
+            cstmt.registerOutParameter(7, Types.INTEGER);
+
+            // los de entrada
+    
+            cstmt.setString(1, filter.CCUST.trim());
+            cstmt.setString(2, filter.IN_SAGENT.trim());
+            cstmt.setString(3, filter.IN_FPAYMENT.trim());
+//            cstmt.setString(4, filter.IN_DSALES.trim());
+            cstmt.setInt(4, filter.page.PAGNUM);
+            cstmt.setInt(5, filter.page.PAGROW);
+            cstmt.setInt(6, filter.page.TOTPAG);
+            cstmt.setInt(7, filter.page.TOTROW);
+
+            cstmt.execute();
+
+            // se actualiza paginacion
+            filter.page.PAGNUM = cstmt.getInt(4);
+            filter.page.PAGROW = cstmt.getInt(5);
+            filter.page.TOTPAG = cstmt.getInt(6);
+            filter.page.TOTROW = cstmt.getInt(7);
+
+            rst = cstmt.getResultSet();
+
+            while (rst != null && rst.next()) {
+                bean = new A2354Filter();
+                
+                bean.O_CCUST = rst.getString("CCUST");
+                bean.O_SAGENT = rst.getString("AGENTE");
+                bean.O_FUENTE = rst.getString("FUENTE");
+                bean.O_PAIS_VENTA = rst.getString("PAIS_VENTA");
+                bean.O_MES = rst.getString("MES");
+                bean.O_FORMAPAGO = rst.getString("FORMAPAGO");
+
+                bean.O_VFOP = rst.getString("VFOP");
+                bean.O_QTYTKTS = rst.getString("QTYTKTS");
+
+
+
+
+                // Copiar paginación en cada bean si es necesario
+                bean.page.PAGNUM = filter.page.PAGNUM;
+                bean.page.PAGROW = filter.page.PAGROW;
+                bean.page.TOTPAG = filter.page.TOTPAG;
+                bean.page.TOTROW = filter.page.TOTROW;
+
+                listaData.add(bean);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (rst != null) try {
+                rst.close();
+            } catch (SQLException ignored) {
+            }
+            if (cstmt != null) try {
+                cstmt.close();
+            } catch (SQLException ignored) {
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+            pasarGarbageCollector();
+        }
+
+        return listaData;
+        
+     
+        
+    }
+    
+    
+      /////BAJES loadLISTAR_A270
+    
+    
+    public List<A2354Filter> loadLISTAR_A720(A2354Filter filter)throws SQLException, Exception {
+        
+        
+        
+        List<A2354Filter> listaData = new ArrayList<>();
+        A2354Filter bean;
+        
+        
+        String SQL = "{CALL PRAXISMP.LISTA_A720(?, ?, ?, ?, ?, ?,?)}";
+        
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        Connection cnx = null;
+        
+        
+        
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQL);
+
+            // para la paginacion
+            cstmt.registerOutParameter(4, Types.INTEGER);
+            cstmt.registerOutParameter(5, Types.INTEGER);
+            cstmt.registerOutParameter(6, Types.INTEGER);
+            cstmt.registerOutParameter(7, Types.INTEGER);
+
+            // los de entrada
+    
+            cstmt.setString(1, filter.O_CCUST.trim());
+            cstmt.setString(2, filter.O_MES.trim());
+            cstmt.setString(3, filter.O_SAGENT.trim());
+            cstmt.setInt(4, filter.page.PAGNUM);
+            cstmt.setInt(5, filter.page.PAGROW);
+            cstmt.setInt(6, filter.page.TOTPAG);
+            cstmt.setInt(7, filter.page.TOTROW);
+
+            cstmt.execute();
+
+            // se actualiza paginacion
+            filter.page.PAGNUM = cstmt.getInt(4);
+            filter.page.PAGROW = cstmt.getInt(5);
+            filter.page.TOTPAG = cstmt.getInt(6);
+            filter.page.TOTROW = cstmt.getInt(7);
+
+            rst = cstmt.getResultSet();
+
+            while (rst != null && rst.next()) {
+                bean = new A2354Filter();
+                
+                bean.A_CCUST = rst.getString("CCUST");
+                bean.A_TICKET = rst.getString("TICKET");
+                bean.A_A720FECVTA = rst.getString("A720FECVTA");
+                bean.A_A720PAIVTA = rst.getString("A720PAIVTA");
+                bean.A_A720TRNCU = rst.getString("A720TRNCU");
+                bean.A_A720TDOC = rst.getString("A720TDOC");
+
+                bean.A_A720AGENTE = rst.getString("A720AGENTE");
+                bean.A_ORIGEN = rst.getString("ORIGEN");
+                bean.A_A1531VFOPR = rst.getString("A1531VFOPR");
+                bean.A_A1531MFOPR = rst.getString("A1531MFOPR");
+            
+
+
+
+
+                // Copiar paginación en cada bean si es necesario
+                bean.page.PAGNUM = filter.page.PAGNUM;
+                bean.page.PAGROW = filter.page.PAGROW;
+                bean.page.TOTPAG = filter.page.TOTPAG;
+                bean.page.TOTROW = filter.page.TOTROW;
+
+                listaData.add(bean);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (rst != null) try {
+                rst.close();
+            } catch (SQLException ignored) {
+            }
+            if (cstmt != null) try {
+                cstmt.close();
+            } catch (SQLException ignored) {
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+            pasarGarbageCollector();
+        }
+
+        return listaData;
+        
+     
+        
+    }
+    
+    
+    
+    
+    
 
 
 }

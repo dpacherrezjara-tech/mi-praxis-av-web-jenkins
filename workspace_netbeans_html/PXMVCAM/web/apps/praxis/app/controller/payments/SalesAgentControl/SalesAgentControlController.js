@@ -10,6 +10,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesAgentControl.SalesAgentControlCo
     fecha: new Date(),
     childs: '5',
     bean: '',
+    obJPADJ:{},
     beanHistoric: '',
     paginActual: '',
     drillDown: [],
@@ -176,6 +177,7 @@ Ext.define('Ext.Praxis.controller.payments.SalesAgentControl.SalesAgentControlCo
     btnSearch_click: function (obj, e) {
             this.setFormatParameter();
             this.setGridData();
+            
     },
     setFormatParameter: function () {
         me.bean = {};
@@ -190,7 +192,11 @@ Ext.define('Ext.Praxis.controller.payments.SalesAgentControl.SalesAgentControlCo
             bean: me.bean,
             beanString: beanString
         };
-        console.log(searchParams, 'searchParams11111')
+        console.log(searchParams, 'searchParams11111');
+        console.log(me)
+        
+                
+               
     },
     setGridData: function () {
         win.lblUser_toolTip("Estructura: MPF214");
@@ -532,6 +538,198 @@ Ext.getCmp(prototype.id + '-QTY_NOT_FOUND').setText(Ext.util.Format.number(QTY_N
         me.getPaggin(); 
     },
     // </editor-fold>
+    
+    
+    
+    //BAJAR A MES
+    
+    
+    
+    /////////AGREGAMOS CONSLTA PARA LISTA IMF150
+    ///////////////////////////////////////////////////
+    
+    
+    onClickDetailMonthIMF150: function (arg, obj, metaData, rowNum, columnNum, obj2, rowData) {
+        me.drillDown.push(me.panelActual);
+        me.panelActual = '-panelGridDataIMF150';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        
+        
+        me.obJPADJ = {};
+        me.obJPADJ.IN_SAGENT = rowData.data.VENDOR;
+        me.obJPADJ.CCUST = rowData.data.CCUST;
+       
+        
+        me.obJPADJ.IN_FPAYMENT = arg;
+        
+        
+        me.obJPADJ.beanString = JSON.stringify(me.obJPADJ);
+        
+        
+        
+        this.setGridDataIMF150(rowData.data.VENDOR,rowData.data.NAGENT);
+        
+        
+        
+    },
+          
+     
+    setGridDataIMF150: function(agente,nombre_ag) {
+        win.lblUser_toolTip("Estructura: IMF150");
+
+        me.setWidthPie();
+        
+        
+        var lbl_ag = agente + " - " + nombre_ag;
+        console.log(lbl_ag);
+        Ext.getCmp(prototype.id + '-labelIMF150').setText(lbl_ag);
+        
+            var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchListIMF150'
+                }, listeners: {
+                    beforeload: function(obj) {
+                        Ext.getCmp(prototype.id + '-panelGridDataIMF150').mask('Loading...');
+                        obj.proxy.extraParams = me.obJPADJ;                                    
+                        
+                    },
+                    load: function(obj) {
+                        Ext.getCmp(prototype.id + '-panelGridDataIMF150').unmask();
+                        var pag = Ext.getCmp(prototype.id + '-pagginIMF150');
+                        var pagData = pag.getPageData();
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        }else {
+//                            var year = me.currentSDate.substring(0, 4);
+//                            var month = me.currentSDate.substring(4, 6);
+//
+//                            var monthNames = ["January", "February", "March", "April", "May", "June",
+//                                "July", "August", "September", "October", "November", "December"];
+//
+//                            title = " Sales Date : " + monthNames[parseInt(month) - 1] + " " + year;
+//                        console.log(title);
+//                        Ext.getCmp(prototype.id + '-labelIMF150').setText(title);
+//                        Ext.getCmp(prototype.id + '-labelIMF150').setVisible(true);
+                    }
+                    me.setWidthPie();
+                    }
+                }
+            });
+            
+            global.clear();
+            Ext.getCmp(prototype.id + '-gridDataIMF150').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-pagginIMF150').bindStore(storeGridDatas);
+        
+    },
+    
+    ///onClickDetailA720
+    
+    
+    onClickDetailA720: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
+        me.drillDown.push(me.panelActual);
+        me.panelActual = '-panelGridDataA270';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        
+        console.log("ESTAMOS AQUI");
+        console.log(obj);
+        console.log(rowData);
+        
+        me.obJPADJ = {};
+      
+        me.obJPADJ.O_CCUST = rowData.data.O_CCUST;
+        me.obJPADJ.O_MES = rowData.data.O_MES;
+        me.obJPADJ.O_SAGENT = rowData.data.O_SAGENT;
+        
+      
+        
+        
+        me.obJPADJ.beanString = JSON.stringify(me.obJPADJ);
+        
+        
+        
+        this.setGridDataIA720(rowData.data.O_SAGENT,rowData.data.O_MES);
+        
+        
+        
+    },
+          
+     
+    setGridDataIA720: function(agente,nombre_ag) {
+        win.lblUser_toolTip("Estructura: A720");
+
+        me.setWidthPie();
+        
+        // Extraer año y mes
+        var year = nombre_ag.substring(0, 4);   // "2025"
+        var month = nombre_ag.substring(4, 6);  // "10"
+
+        // Arreglo de nombres de meses
+        var monthNames = ["January", "February", "March", "April", "May", "June",
+                          "July", "August", "September", "October", "November", "December"];
+
+        // Convertir mes a índice (0-based)
+        var monthIndex = parseInt(month, 10) - 1;
+        
+        // Concatenar texto con nombre del mes
+        lbl_ag = agente + " - " + monthNames[monthIndex] + " " + year;
+
+        // Setear en el label
+        Ext.getCmp(prototype.id + '-labelA270').setText(lbl_ag);
+        
+            var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchListA720'
+                }, listeners: {
+                    beforeload: function(obj) {
+                        Ext.getCmp(prototype.id + '-panelGridDataA270').mask('Loading...');
+                        obj.proxy.extraParams = me.obJPADJ;                                    
+                        
+                    },
+                    load: function(obj) {
+                        Ext.getCmp(prototype.id + '-panelGridDataA270').unmask();
+                        var pag = Ext.getCmp(prototype.id + '-pagginA720');
+                        var pagData = pag.getPageData();
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        }else {
+//                            var year = me.currentSDate.substring(0, 4);
+//                            var month = me.currentSDate.substring(4, 6);
+//
+//                            var monthNames = ["January", "February", "March", "April", "May", "June",
+//                                "July", "August", "September", "October", "November", "December"];
+//
+//                            title = " Sales Date : " + monthNames[parseInt(month) - 1] + " " + year;
+//                        console.log(title);
+//                        Ext.getCmp(prototype.id + '-labelIMF150').setText(title);
+//                        Ext.getCmp(prototype.id + '-labelIMF150').setVisible(true);
+                    }
+                    me.setWidthPie();
+                    }
+                }
+            });
+            
+            global.clear();
+            Ext.getCmp(prototype.id + '-gridDataA270').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-pagginA720').bindStore(storeGridDatas);
+        
+    },
+    
+    
+    
+    
+    ///////////////////////
+    
+    
     onLoadClick: function () {
         var fileField = Ext.getCmp(prototype.id + '-file');
         var fileValue = fileField.getValue();
@@ -555,6 +753,11 @@ Ext.getCmp(prototype.id + '-QTY_NOT_FOUND').setText(Ext.util.Format.number(QTY_N
             }
         });
     },
+    
+    
+    
+    
+    
     onFileLoad: function () {
         let beanValidation = {};
         let value = "I";
@@ -607,6 +810,12 @@ Ext.getCmp(prototype.id + '-QTY_NOT_FOUND').setText(Ext.util.Format.number(QTY_N
              case  '-panelGridDataDetail':
                 global.getFile(prototype.url + '/getXLSXDetail?beanString=' + encodeURI(me.paramsDetail.beanString));
                 break;
+             case  '-panelGridDataIMF150':
+                global.getFile(prototype.url + '/getXLSXIMF150?beanString=' + encodeURI(me.obJPADJ.beanString));
+                break;
+             case  '-panelGridDataA270':
+                global.getFile(prototype.url + '/getXLSXA720?beanString=' + encodeURI(me.obJPADJ.beanString));
+                break;
             default:
                 global.Msg(
                         {msg: 'Under Construction'
@@ -639,6 +848,28 @@ Ext.getCmp(prototype.id + '-QTY_NOT_FOUND').setText(Ext.util.Format.number(QTY_N
         });
 
     },
+//    
+//    btnClear_click: function (obj, e) {
+//        this.initDate();
+//
+//        win.setValue('cmbCountry', '');
+//        win.setValue('cmbCardType', '');
+//        win.setValue('txtTicket', '');
+//        win.setValue('txtCard1', '');
+//        win.setValue('txtCard2', '');
+//        win.setValue('txtAUTHNBR', '');
+//        win.setValue('txtMERCHN', '');
+//        win.setValue('cmbSource', '');
+//        win.setValue('txtPNR', '');
+//        win.setValue('txtSAGENT', '');
+//        win.setValue('txtAMOUNT', '');
+//        win.setValue('cmbDebitType', '');
+//        win.setValue('cmbStatus', '');
+//    },
+//    
+    
+    
+    
     btnFilter_click: function (obj) {
 //        console.log('btnFilter_click');
         var option = Ext.getCmp(prototype.id + '-contentFilter');
@@ -677,6 +908,12 @@ Ext.getCmp(prototype.id + '-QTY_NOT_FOUND').setText(Ext.util.Format.number(QTY_N
                 break;
             case  '-panelGridDataHistoric':
                 me.pagginActual = '-paggin';
+                break;
+            case  '-panelGridDataIMF150':
+                me.pagginActual = '-pagginIMF150';
+                break;
+            case  '-panelGridDataA270':
+                me.pagginActual = '-pagginA720';
                 break;
         }
     },

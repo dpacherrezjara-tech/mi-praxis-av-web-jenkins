@@ -53,6 +53,23 @@ Ext.define('Ext.Praxis.view.payments.SalesAgentControlForm.Options', {
                             border: false,
                             displayInfo: false,
                             hidden: true
+                        },
+                        
+                        {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id + '-pagginIMF150',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
+                        },
+                         {
+                            xtype: 'pagingtoolbar',
+                            id: prototype.id + '-pagginA720',
+                            pageSize: 10,
+                            border: false,
+                            displayInfo: false,
+                            hidden: true
                         }
 
                     ]
