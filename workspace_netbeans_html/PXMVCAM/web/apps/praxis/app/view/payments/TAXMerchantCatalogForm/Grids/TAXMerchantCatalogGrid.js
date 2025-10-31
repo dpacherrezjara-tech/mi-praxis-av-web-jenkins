@@ -86,6 +86,10 @@ Ext.define('Ext.Praxis.view.payments.TAXMerchantCatalogForm.Grids.TAXMerchantCat
                 }
             }
         ]
+    },
+    bbar: {
+        xtype: 'pagingtoolbar',
+        displayInfo: true,
     }
 });
 
