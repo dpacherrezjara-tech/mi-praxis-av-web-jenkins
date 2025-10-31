@@ -27,7 +27,7 @@ Ext.define('Ext.Praxis.controller.payments.TAXMerchantCatalog.MaintenanceDataEnt
     bindInfo: function (obj) {
         
         global.cleanPXobj(obj);
-        console.log("obj: ", obj)
+//        console.log("obj: ", obj)
         const form = Ext.getCmp(prototype.idDE + '-mainForm').getForm();
         form.setValues(obj);
     },
@@ -83,7 +83,7 @@ Ext.define('Ext.Praxis.controller.payments.TAXMerchantCatalog.MaintenanceDataEnt
             me.view.setLoading(true);
             const params = me.formatParams(option)
             const res = await global.callStoreGet('PRAXISMP', 'MPS276', params);
-            console.log("res", res)
+//            console.log("res", res)
 //            if (res.status === 201) {
 //                me.notifier.success('Succesfully Save');
 //            } else {
@@ -127,7 +127,7 @@ Ext.define('Ext.Praxis.controller.payments.TAXMerchantCatalog.MaintenanceDataEnt
         IN_TIPOML: values.IN_TYPE_MEMOLINE || '',
         IN_TEXTML: values.IN_MEMOLINE || ''
     };
-    console.log("📤 Params enviados al backend:", params);
+//    console.log("📤 Params enviados al backend:", params);
     return params;
     },
     onDeleteRecord: function(btn){
