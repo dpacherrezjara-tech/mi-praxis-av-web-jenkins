@@ -55,21 +55,35 @@ Ext.define('Ext.Praxis.controller.payments.TAXMerchantCatalog.TAXMerchantCatalog
                 }
 
             const res = await global.callStoreGet('PRAXISMP', 'MPS276', params);
-            me.view.setStore(new Ext.data.Store({
-                data: res.lstRs.at(0)
-            }));
-            
-            const combos = await global.callStoreGet('PRAXISMP', 'SPMC001');
-            const cmbProcessor = Ext.getCmp(prototype.idDE + '-cmbProcessor');
-            if (cmbProcessor) cmbProcessor.getStore().loadData(combos.lstRs.at(0));
-                        
+
+  
+
+               
             if (res && res.lstRs && res.lstRs.length > 0 && res.lstRs.at(0).length > 0) {
-                    me.view.setStore(new Ext.data.Store({
-                        data: res.lstRs.at(0)
-                    }));
+                me.fullDataStore = Ext.create('Ext.data.Store', {
+                        data: res.lstRs.at(0),
+                        fields: me.view.store.getFields()
+                    });
+                    
+                let storeSettl = new Ext.data.Store({
+                    pageSize: 20, // Número de registros por página
+                    data: res.lstRs.at(0),
+                    proxy: {
+                        type: 'memory', // Los datos están cargados en memoria
+                        enablePaging: true // Habilitar la paginación en memoria
+                    }
+                });
+            
+                    me.view.setStore(storeSettl);
+                    
                 } else {
                     global.Msg({ msg: 'No Data' });
                 }
+                
+                const combos = await global.callStoreGet('PRAXISMP', 'SPMC001');
+                const cmbProcessor = Ext.getCmp(prototype.idDE + '-cmbProcessor');
+                if (cmbProcessor) cmbProcessor.getStore().loadData(combos.lstRs.at(0));
+            
         } catch (e) {
             console.error(e)  
         } finally {
@@ -78,8 +92,12 @@ Ext.define('Ext.Praxis.controller.payments.TAXMerchantCatalog.TAXMerchantCatalog
     },
     downloadExcel: function () {
         const me = this;
-        let params = me.view.store.getData().items.map(rec => rec.data);
-        console.log("downloadExcel :", params)
+        const date = new Date();
+        const formattedDate = `${String(date.getDate()).padStart(2, '0')}${String(date.getMonth()+1).padStart(2, '0')}${date.getFullYear()}`;
+        if (!me.fullDataStore) return;
+        let params = me.fullDataStore.getData().items.map(rec => rec.data);
+        //console.log("downloadExcel :", params)
+        //console.log("formattedDate :", formattedDate)
         Ext.Msg.show(
                 {
                     title: '.:PRAXIS:.',
@@ -90,7 +108,7 @@ Ext.define('Ext.Praxis.controller.payments.TAXMerchantCatalog.TAXMerchantCatalog
                     modal: true,
                     fn: function (btn) {
                         if (btn === 'yes') {
-                            global.writeExcelFromJson(params, 'Tax_Merchant_Catalog_From');
+                            global.writeExcelFromJson(params, `Tax_Merchant_Catalog_From_${formattedDate}`);
                         }
                     }
                 });
