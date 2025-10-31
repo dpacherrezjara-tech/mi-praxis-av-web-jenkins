@@ -1584,17 +1584,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
 //                                        ? 0
 //                                        : Math.round((V_SVFOPUSDL / V_SVFOPUSDLT) * 100 * 100) / 100;
                                     
-                                    
-                                    //                    beanTkt.lngQSALES = rst.getLong("QSALES");
-//                    beanTkt.lngQMATCH = rst.getLong("QMATCH");
-//                    beanTkt.lngQMANUAL = rst.getLong("QMANUAL");
-//                    beanTkt.lngQPEND = rst.getLong("QPEND");
-//                    beanTkt.lngQTICKET = rst.getLong("QTICKET");
-//                    beanTkt.lngQTMATCH = rst.getLong("QTMATCH");
-//                    beanTkt.lngQTMANUAL = rst.getLong("QTMANUAL");
-//                    beanTkt.lngQTPEND = rst.getLong("QTPEND");
-//                    beanTkt.lngQEECC = rst.getLong("QEECC");
-//                    beanTkt.lngQTYADJ = rst.getLong("QADJ");
+
                                     dataRoot.children.push({
                                         strFormatDate: value.strFormatDate,
                                         SDATE: value.SDATE,
@@ -1602,6 +1592,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                                         lngQMATCH: V_QMATCH,
                                         lngQMANUAL: V_QMANUAL,
                                         lngQPEND: V_QPEND,
+                                        lngQMATCHPercent: V_QSALES === 0 ? 0 : (V_QMATCH / V_QSALES) * 100,
                                         lngQTICKET: V_QTICKET,
                                         lngQTMATCH: V_QTMATCH,
                                         lngQTMANUAL: V_QTMANUAL,
@@ -1626,6 +1617,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                                                 lngQMATCH: value01.lngQMATCH,
                                                 lngQMANUAL: value01.lngQMANUAL,
                                                 lngQPEND: value01.lngQPEND,
+                                                lngQMATCHPercent: value01.lngQSALES === 0 ? 0 : (value01.lngQMATCH / value01.lngQSALES) * 100,
                                                 lngQTICKET: value01.lngQTICKET,
                                                 lngQTMATCH: value01.lngQTMATCH,
                                                 lngQTMANUAL: value01.lngQTMANUAL,
