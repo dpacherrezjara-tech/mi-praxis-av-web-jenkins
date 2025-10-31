@@ -1597,7 +1597,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
 //                    beanTkt.lngQTYADJ = rst.getLong("QADJ");
                                     dataRoot.children.push({
                                         strFormatDate: value.strFormatDate,
-                                        DATE: value.SDATE,
+                                        SDATE: value.SDATE,
                                         lngQSALES: V_QSALES,
                                         lngQMATCH: V_QMATCH,
                                         lngQMANUAL: V_QMANUAL,
@@ -1617,7 +1617,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                                         if (value.strFormatDate === value01.strFormatDate) {
                                             dataRoot.children[a.indexOf(value.strFormatDate)].children.push({
                                                 strFormatDate: value01.strFormatDate,
-                                                DATE: value01.SDATE,
+                                                SDATE: value01.SDATE,
                                                 TINPUT: value01.TINPUT,
 //                                                FCHILD: value01.FCHILD,
                                                 
@@ -4349,25 +4349,25 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         me.drillDown.push(me.panelActual);
         me.panelActual = '-panelGridDataCountryCash';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
-        
+        this.beanDetDay = {};
         var cant = 0;   
         switch (columnNum) {
-            case 0:
+            case 1:
                 console.log('ENTRA A FECHA');
                 rowData.data.IN_STVAL = "";
                 cant = rowData.data.lngQTMATCH;
                 break;
-            case 1:
+            case 3:
                 console.log('ENTRA A MATCH');
                 rowData.data.IN_STVAL = "1";
                 cant = rowData.data.lngQTMANUAL;
                 break;
-            case 3:
+            case 5:
                 console.log('ENTRA AL MANUAL');
                 rowData.data.IN_STVAL = "5";
                 cant = rowData.data.lngQTPEND;
                 break;
-            case 4:
+            case 6:
                 console.log('ENTRA AL MANUAL');
                 rowData.data.IN_STVAL = "3";
                 cant = rowData.data.lngQTPEND;
@@ -4375,7 +4375,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         }
         console.log(rowData.data, 'rowData.data')
 //        this.beanDetDay.strFecFiltro = rowData.data.strFecFiltro;
-        this.beanDetDay.IN_SDATE = rowData.data.DATE;
+        this.beanDetDay.IN_SDATE = rowData.data.SDATE;
         this.beanDetDay.IN_STVAL = rowData.data.IN_STVAL;
         this.beanDetDay.IN_TDOC = rowData.data.IN_TDOC;
         this.beanDetDay.IN_TINPUT = rowData.data.TINPUT;
@@ -4526,7 +4526,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         me.drillDown.push(me.panelActual);
         me.panelActual = '-panelGridDataDayCash';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
-        
+        let fuente = rowData.data.IN_TINPUT
         var cant = 0;   
         switch (columnNum) {
             case 0:
@@ -4556,10 +4556,14 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         this.beanDetDay.IN_STVAL = rowData.data.IN_STVAL;
         this.beanDetDay.IN_TDOC = rowData.data.IN_TDOC;
         this.beanDetDay.IN_COUNTRY = rowData.data.SCOUNTRY;
+        this.beanDetDay.IN_TINPUT = rowData.data.IN_TINPUT;
         this.beanDetDay.strFormatDate = rowData.data.strFormatDate;
 
         me.paramsDetail.beanString = JSON.stringify(this.beanDetDay);
+
         this.setGridDataDayCash();
+
+        
     },
     setGridDataDayCash: function (data) {
         win.lblUser_toolTip("Estructura: MPF191");
@@ -4597,17 +4601,56 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         Ext.getCmp(prototype.id + '-gridDataDayCash').bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-paggin20').bindStore(storeGridDatas);
     },
+    
+    setGridDataDayCashIccs: function (data) {
+        win.lblUser_toolTip("Estructura: MPF191");
+//        me.setWidthPie();
+        var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
+            proxy: {
+                url: prototype.url + '/searchDayCash'
+            }, listeners: {
+                beforeload: function (obj) {
+                    obj.proxy.extraParams = me.paramsDetail;
+                },
+                load: function (obj) {
+                    var pag = Ext.getCmp(prototype.id + '-paggin20');
+                    var pagData = pag.getPageData();
+                    Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                    Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                    Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                    if (obj.data.length === 0) {
+                        global.Msg({
+                            msg: 'Data not found.'
+                        });
+                    } else {
+                        var bean = obj.data.items[0].data;
+                        var title = '';
+                        title = " Sales Date : " + bean.IN_SDATE + " - Country : " + bean.IN_COUNTRY;
+                        console.log(title);
+                        Ext.getCmp(prototype.id + '-labelTitleCash2').setText(title);
+                        Ext.getCmp(prototype.id + '-labelTitleCash2').setVisible(true);
+                    }
+                    me.setWidthPie();
+                }
+            }
+        });
+        global.clear();
+        Ext.getCmp(prototype.id + '-gridDataDayCash').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin20').bindStore(storeGridDatas);
+    },
+    
     onGridDetalleCash: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
         me.drillDown.push(me.panelActual);
         me.panelActual = '-panelGridDataDetalleCash';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
-
+        let fuente = rowData.data.IN_TINPUT;
 //        this.beanDetDay.strFecFiltro = rowData.data.strFecFiltro;
         this.beanDetDay = {}
         this.beanDetDay.IN_SDATE = rowData.data.SDATE;
         this.beanDetDay.IN_TDOC = rowData.data.IN_TDOC;
         console.log(this.beanDetDay.IN_STVAL, 'this.beanDetDay.IN_STVAL')
         this.beanDetDay.IN_COUNTRY = rowData.data.IN_COUNTRY;
+        this.beanDetDay.IN_TINPUT = rowData.data.IN_TINPUT;
         this.beanDetDay.strFormatDate = rowData.data.strFormatDate;
         this.beanDetDay.IN_NEGOC = "1";
 
