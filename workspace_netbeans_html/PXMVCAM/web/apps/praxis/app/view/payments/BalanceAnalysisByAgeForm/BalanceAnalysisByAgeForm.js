@@ -76,7 +76,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.BalanceAnalysisByA
                                         },
                                         {
                                             xtype: 'panel',
-                                            height: 1100,
+                                            height: 1450,
                                             layout: 'fit', 
                                             id: prototype.id + '-panelHeight',
                                             items: [

@@ -3309,7 +3309,7 @@ public class BalanceAnalysisByAgeDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS390(?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS390(?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -3319,6 +3319,8 @@ public class BalanceAnalysisByAgeDAO {
             cstmt.setString(1, filter.IN_CCUST);
             cstmt.setString(2, filter.IN_FECHA_FROM);
             cstmt.setString(3, filter.IN_FECHA_TO);
+            cstmt.setString(4, filter.IN_BANDOC);
+            cstmt.setString(5, filter.IN_REFER);
 
             cstmt.execute();
 
@@ -3337,6 +3339,7 @@ public class BalanceAnalysisByAgeDAO {
                     bean.F1_TOTAL_STVAL1 = rst.getInt("F1_TOTAL_STVAL1");
                     bean.F1_TOTAL_TAXES = rst.getInt("F1_TOTAL_TAXES");
                     bean.F1_TOTAL_PENDING_TO_F2 = rst.getInt("F1_TOTAL_PENDING_TO_F2");
+                    bean.F1_TOTAL_ERROR = rst.getInt("F1_TOTAL_ERROR");
                     
                     bean.F2_F1_TOTAL_COMPLETED = rst.getInt("F2_F1_TOTAL_COMPLETED");
                     bean.F2_TOTAL_PENDING_OVER50 = rst.getInt("F2_TOTAL_PENDING_OVER50");
@@ -3345,6 +3348,7 @@ public class BalanceAnalysisByAgeDAO {
                     bean.F3_F2_TOTAL_COMPLETED = rst.getInt("F3_F2_TOTAL_COMPLETED");
                     bean.F3_TOTAL_WO_ACC = rst.getInt("F3_TOTAL_WO_ACC");
                     bean.F3_TOTAL_COMPLETED = rst.getInt("F3_TOTAL_COMPLETED");
+                    bean.F3_TOTAL_PENDING_SENT = rst.getInt("F3_TOTAL_PENDING_SENT");
                     bean.F3_TOTAL_COMPLETED_SAP = rst.getInt("F3_TOTAL_COMPLETED_SAP");   
 
                     lstData.add(bean);
@@ -3374,5 +3378,96 @@ public class BalanceAnalysisByAgeDAO {
 
         return lstData;
     }
+    
+     public List<A2356Filter> load_MPS400(A2356Filter filter) throws SQLException, Exception {
 
+        List<A2356Filter> lstData = new ArrayList<A2356Filter>(0);
+        A2356Filter bean;
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS400(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.registerOutParameter(12, Types.INTEGER);
+            cstmt.registerOutParameter(13, Types.INTEGER);
+            cstmt.registerOutParameter(14, Types.INTEGER);
+            cstmt.registerOutParameter(15, Types.INTEGER);
+            cstmt.setString(1, filter.IN_CCUST);
+            cstmt.setString(2, filter.IN_WSETT);
+            cstmt.setString(3, filter.IN_TAXES);
+            cstmt.setString(4, filter.IN_ERROR);
+            cstmt.setString(5, filter.IN_PENDING_F2);
+            cstmt.setString(6, filter.IN_WSALES);
+            cstmt.setString(7, filter.IN_PENDING_ACC);
+            cstmt.setString(8, filter.IN_PENDING_SENT);
+            cstmt.setString(9, filter.IN_DATE);
+            cstmt.setString(10, filter.IN_BANDOC);
+            cstmt.setString(11, filter.IN_REFER);
+            cstmt.setInt(12, filter.page.PAGNUM);
+            cstmt.setInt(13, filter.page.PAGROW);
+            cstmt.setInt(14, filter.page.TOTPAG);
+            cstmt.setInt(15, filter.page.TOTROW);
+
+            cstmt.execute();
+
+            filter.page.PAGNUM = cstmt.getInt(12);
+            filter.page.PAGROW = cstmt.getInt(13);
+            filter.page.TOTPAG = cstmt.getInt(14);
+            filter.page.TOTROW = cstmt.getInt(15);
+
+            rst = cstmt.getResultSet();
+            while (rst.next()) {
+                bean = new A2356Filter();
+                bean.RN = rst.getInt("RN");
+
+                bean.CCUST = rst.getString("CCUST").trim();
+                bean.BANDOC = rst.getString("BANDOC").trim();
+                bean.TRANCI = rst.getString("TRANCI").trim();
+                bean.DATECI = rst.getString("DATECI").trim();
+                bean.REFER = rst.getString("REFER").trim();
+                bean.NETO = rst.getDouble("NETO");
+                bean.SCURRENCY = rst.getString("SCURRENCY").trim();
+                bean.TEXTOLAR = rst.getString("TEXTOLAR").trim();
+                bean.COREP = rst.getString("COREP").trim();
+                bean.CODPRO = rst.getString("CODPRO").trim();
+                bean.IDCONT = rst.getString("IDCONT").trim();
+                bean.IDCDEB = rst.getString("IDCDEB").trim();
+                bean.A4545HEADE = rst.getString("A4545HEADE").trim();
+
+                bean.page.PAGNUM = filter.page.PAGNUM;
+                bean.page.PAGROW = filter.page.PAGROW;
+                bean.page.TOTPAG = filter.page.TOTPAG;
+                bean.page.TOTROW = filter.page.TOTROW;
+                lstData.add(bean);
+            }
+            rst.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstData;
+    }
 }

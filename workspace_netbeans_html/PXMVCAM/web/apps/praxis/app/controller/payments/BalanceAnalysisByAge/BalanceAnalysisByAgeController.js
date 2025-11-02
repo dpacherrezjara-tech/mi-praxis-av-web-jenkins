@@ -155,8 +155,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 
         Ext.getCmp(prototype.id + '-cmbDateFromYear').setValue(this.fecha.getFullYear());
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(this.fecha.getFullYear());
-        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue(month);
-        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue(month);
+        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue('10');
+        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('10');
 
         var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro');
         cmbFecFiltro.bindStore(Ext.create('Ext.data.ArrayStore', {
@@ -935,6 +935,13 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             Ext.getCmp(prototype.id + '-pie').setVisible(false);
             this.setFormatParameter2();
             this.setGridDataConciliation();
+            Ext.getCmp(prototype.id + '-contentFilter2').hide();
+            Ext.getCmp(prototype.id + '-contentFilter3').hide();
+            
+        } else if (newValue === 'A') {
+            Ext.getCmp(prototype.id + '-pie').setVisible(false);
+            this.setFormatParameterDashboard();
+            this.setGridDataDashboard();
             Ext.getCmp(prototype.id + '-contentFilter2').hide();
             Ext.getCmp(prototype.id + '-contentFilter3').hide();
             
@@ -2138,13 +2145,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 
     },
     btnExcel_click: function (obj, e) {
-        this.setFormatParameter();
-        var msj = this.validateFields();
-        if (msj !== '') {
-            global.Msg({msg: msj
-            });
-        } else {
-            Ext.Msg.show({
+          this.setFormatParameter();
+          Ext.Msg.show({
                 title: '.:PRAXIS:.',
                 msg: 'Download Excel ?',
                 buttons: Ext.MessageBox.OKCANCEL,
@@ -2157,13 +2159,18 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                     }
                 }
             });
-        }
     },
     exportExcel: function () {
 
         switch (me.panelActual) {
             case  '-boxPendingData':
                 global.getFile(prototype.url + '/getXLSX?beanString=' + encodeURI(searchParams.beanString));
+                break;
+            case  '-panelGridSumaryMain':
+                global.getFile(prototype.url + '/getXLSXDashboard?beanString=' + encodeURI(searchParams.beanString));
+                break;
+            case  '-panelGridSumaryDetail':
+                global.getFile(prototype.url + '/getXLSXDashboardDetail?beanString=' + encodeURI(me.paramsDetail.beanString));
                 break;
             default:
                 global.Msg(
@@ -2184,12 +2191,29 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         var ancho = Ext.getCmp(prototype.id + me.panelActual).getWidth();
         Ext.getCmp(prototype.id + '-pie').setWidth(ancho);
         Ext.getCmp(prototype.id + '-pie').setVisible(true);
+        
+        switch (me.panelActual) {
+            case  '-panelGridSumaryMain':
+                Ext.getCmp(prototype.id + '-panelHeight').setHeight(1450);
+                break;
+            case  '-panelGridSumaryDetail':
+                Ext.getCmp(prototype.id + '-panelHeight').setHeight(590);
+                break;
+            default:
+                console.log('n');
+        }
+        
+        
     },
     getPaggin: function () {
         me.pagginActual = '';
         this.toggleFiltersByPanel(me.panelActual, prototype);
         switch (me.panelActual) {
              case  '-panelGridSumaryMain':
+                Ext.getCmp(prototype.id + '-pie').setVisible(false);
+                me.pagginActual = '-paggin';
+                break;
+            case  '-panelGridSumaryDetail':
                 me.pagginActual = '-paggin';
                 break;
             case  '-boxMainData':
@@ -3249,7 +3273,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             prototype.id + '-rayita'
         ];
 
-        const hide = (panelId === '-panelGridSumaryMain');
+        const hide = (panelId === '-panelGridSumaryMain' ||  panelId === '-panelGridSumaryDetail');
         
         if (hide) {
             Ext.getCmp(prototype.id + '-panelHeight').setHeight(750);
@@ -3270,6 +3294,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         me.bean = {};
         me.bean.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue();
         me.bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue();
+        me.bean.IN_BANDOC = Ext.getCmp(prototype.id + '-txtBANDOC').getValue();
+        me.bean.IN_REFER = Ext.getCmp(prototype.id + '-txtREFER').getValue();
 //        me.bean.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
 //        me.bean.IN_SAGENT = Ext.getCmp(prototype.id + '-txtAGENCY').getValue();
 //        me.bean.IN_PERCENTAGE = Ext.getCmp(prototype.id + '-cmbPercentage').getValue();
@@ -3319,6 +3345,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                 let F1_TOTAL_STVAL3_GLOBAL = 0;
                                 let F1_TOTAL_STVAL1_GLOBAL = 0;
                                 let F1_TOTAL_TAXES_GLOBAL = 0;
+                                let F1_TOTAL_ERROR_GLOBAL = 0;
                                 let F1_TOTAL_PENDING_TO_F2_GLOBAL = 0;
                                 
                                 let F2_F1_TOTAL_COMPLETED_GLOBAL = 0;
@@ -3329,6 +3356,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                 let F3_TOTAL_WO_ACC_GLOBAL = 0;
                                 let F3_TOTAL_COMPLETED_GLOBAL = 0;
                                 let F3_TOTAL_COMPLETED_SAP_GLOBAL = 0;
+                                let F3_TOTAL_PENDING_SENT_GLOBAL = 0;
 
                                 let a = [];
                                 let dataRoot = { text: '.', expanded: false, children: [] };
@@ -3339,6 +3367,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                         let V_F1_TOTAL_STVAL3 = 0;
                                         let V_F1_TOTAL_STVAL1 = 0;
                                         let V_F1_TOTAL_TAXES = 0;
+                                        let V_F1_TOTAL_ERROR = 0;
                                         let V_F1_PERCENT = 0;
                                         let V_F1_PENDING_TO_F2 = 0;
                                         
@@ -3351,6 +3380,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                         let V_F3_TOTAL_WO_ACC = 0;
                                         let V_F3_TOTAL_COMPLETED = 0;
                                         let V_F3_TOTAL_COMPLETED_SAP = 0;
+                                        let V_F3_TOTAL_PENDING_SENT = 0;
                                         let V_F3_PERCENT = 0;
 
                                         // Agrupar por mes
@@ -3360,6 +3390,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                                 V_F1_TOTAL_STVAL3 += valuex.F1_TOTAL_STVAL3;
                                                 V_F1_TOTAL_STVAL1 += valuex.F1_TOTAL_STVAL1;
                                                 V_F1_TOTAL_TAXES += valuex.F1_TOTAL_TAXES;
+                                                V_F1_TOTAL_ERROR += valuex.F1_TOTAL_ERROR;
                                                 V_F1_PENDING_TO_F2 += valuex.F1_TOTAL_PENDING_TO_F2;
                                                 
                                                 V_F2_F1_TOTAL_COMPLETED += valuex.F2_F1_TOTAL_COMPLETED;
@@ -3369,6 +3400,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                                 V_F3_F2_TOTAL_COMPLETED += valuex.F3_F2_TOTAL_COMPLETED;
                                                 V_F3_TOTAL_WO_ACC += valuex.F3_TOTAL_WO_ACC;
                                                 V_F3_TOTAL_COMPLETED += valuex.F3_TOTAL_COMPLETED;
+                                                V_F3_TOTAL_PENDING_SENT += valuex.F3_TOTAL_PENDING_SENT;
                                                 V_F3_TOTAL_COMPLETED_SAP += valuex.F3_TOTAL_COMPLETED_SAP;
                                             }
                                         });
@@ -3390,10 +3422,12 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                         a.push(value.strFormatDate);
                                         dataRoot.children.push({
                                             strFormatDate: value.strFormatDate,
+                                            VALDATE: value.VALDATE,
                                             F1_TOTAL: V_F1_TOTAL,
                                             F1_TOTAL_STVAL3: V_F1_TOTAL_STVAL3,
                                             F1_TOTAL_STVAL1: V_F1_TOTAL_STVAL1,
                                             F1_TOTAL_TAXES: V_F1_TOTAL_TAXES,
+                                            F1_TOTAL_ERROR: V_F1_TOTAL_ERROR,
                                             F1_TOTAL_PENDING_TO_F2: V_F1_PENDING_TO_F2,
                                             F1_PERCENT: V_F1_PERCENT.toFixed(2) + '%',
                                             
@@ -3405,6 +3439,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                             F3_F2_TOTAL_COMPLETED: V_F3_F2_TOTAL_COMPLETED,
                                             F3_TOTAL_WO_ACC: V_F3_TOTAL_WO_ACC,
                                             F3_TOTAL_COMPLETED: V_F3_TOTAL_COMPLETED,
+                                            F3_TOTAL_PENDING_SENT: V_F3_TOTAL_PENDING_SENT,
                                             F3_TOTAL_COMPLETED_SAP: V_F3_TOTAL_COMPLETED_SAP,
                                             F3_PERCENT: V_F3_PERCENT.toFixed(2) + '%',
                                             
@@ -3433,11 +3468,13 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 
                                                 dataRoot.children[a.indexOf(value.strFormatDate)].children.push({
                                                     strFormatDate: value01.strFormatDate,
+                                                    VALDATE: value01.VALDATE,
                                                     CCUST: value01.CCUST,
                                                     F1_TOTAL: value01.F1_TOTAL,
                                                     F1_TOTAL_STVAL3: value01.F1_TOTAL_STVAL3,
                                                     F1_TOTAL_STVAL1: value01.F1_TOTAL_STVAL1,
                                                     F1_TOTAL_TAXES: value01.F1_TOTAL_TAXES,
+                                                    F1_TOTAL_ERROR: value01.F1_TOTAL_ERROR,
                                                     F1_TOTAL_PENDING_TO_F2: value01.F1_TOTAL_PENDING_TO_F2,
                                                     F1_PERCENT: V_CHILD_PERCENT.toFixed(2) + '%',
                                                     
@@ -3449,6 +3486,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                                     F3_F2_TOTAL_COMPLETED: value01.F3_F2_TOTAL_COMPLETED,
                                                     F3_TOTAL_WO_ACC: value01.F3_TOTAL_WO_ACC,
                                                     F3_TOTAL_COMPLETED: value01.F3_TOTAL_COMPLETED,
+                                                    F3_TOTAL_PENDING_SENT: value01.F3_TOTAL_PENDING_SENT,
                                                     F3_TOTAL_COMPLETED_SAP: value01.F3_TOTAL_COMPLETED_SAP,
                                                     F3_PERCENT: V_CHILD_PERCENT_F3.toFixed(2) + '%',
                                                     
@@ -3462,6 +3500,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                         F1_TOTAL_STVAL3_GLOBAL += V_F1_TOTAL_STVAL3;
                                         F1_TOTAL_STVAL1_GLOBAL += V_F1_TOTAL_STVAL1;
                                         F1_TOTAL_TAXES_GLOBAL += V_F1_TOTAL_TAXES;
+                                        F1_TOTAL_ERROR_GLOBAL += V_F1_TOTAL_ERROR;
                                         F1_TOTAL_PENDING_TO_F2_GLOBAL += V_F1_PENDING_TO_F2;
                                         
                                         F2_F1_TOTAL_COMPLETED_GLOBAL += V_F2_F1_TOTAL_COMPLETED;
@@ -3471,6 +3510,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                         F3_F2_TOTAL_COMPLETED_GLOBAL += V_F3_F2_TOTAL_COMPLETED;
                                         F3_TOTAL_WO_ACC_GLOBAL += V_F3_TOTAL_WO_ACC;
                                         F3_TOTAL_COMPLETED_GLOBAL += V_F3_TOTAL_COMPLETED;
+                                        F3_TOTAL_PENDING_SENT_GLOBAL += V_F3_TOTAL_PENDING_SENT;
                                         F3_TOTAL_COMPLETED_SAP_GLOBAL += V_F3_TOTAL_COMPLETED_SAP;
                                     }
                                 });
@@ -3502,6 +3542,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                 Ext.getCmp(prototype.id + '-F1_TOTAL_STVAL3_GLOBAL').setText(Ext.util.Format.number(F1_TOTAL_STVAL3_GLOBAL, '0,000'));
                                 Ext.getCmp(prototype.id + '-F1_TOTAL_STVAL1_GLOBAL').setText(Ext.util.Format.number(F1_TOTAL_STVAL1_GLOBAL, '0,000'));
                                 Ext.getCmp(prototype.id + '-F1_TOTAL_TAXES_GLOBAL').setText(Ext.util.Format.number(F1_TOTAL_TAXES_GLOBAL, '0,000'));
+                                Ext.getCmp(prototype.id + '-F1_TOTAL_ERROR_GLOBAL').setText(Ext.util.Format.number(F1_TOTAL_ERROR_GLOBAL, '0,000'));
                                 Ext.getCmp(prototype.id + '-F1_PERCENT_GLOBAL').setText(F1_PERCENT_GLOBAL.toFixed(2) + '%');
                                  Ext.getCmp(prototype.id + '-F1_TOTAL_PENDING_TO_F2_GLOBAL').setText(Ext.util.Format.number(F1_TOTAL_PENDING_TO_F2_GLOBAL, '0,000'));
                                 
@@ -3514,6 +3555,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                 Ext.getCmp(prototype.id + '-SENT_TOTAL_STVAL3_GLOBAL').setText(Ext.util.Format.number(F3_TOTAL_WO_ACC_GLOBAL, '0,000'));
                                 Ext.getCmp(prototype.id + '-SENT_TOTAL_STVAL1_GLOBAL').setText(Ext.util.Format.number(F3_TOTAL_COMPLETED_GLOBAL, '0,000'));
                                 Ext.getCmp(prototype.id + '-SENT_PERCENT_GLOBAL').setText(F1_PERCENT_GLOBAL_F3.toFixed(2) + '%');
+                                Ext.getCmp(prototype.id + '-SENT_TOTAL_SENT_GLOBAL').setText(Ext.util.Format.number(F3_TOTAL_PENDING_SENT_GLOBAL, '0,000'));
 
                                 Ext.getCmp(prototype.id + '-SAP_TOTAL_STVAL1_GLOBAL').setText(Ext.util.Format.number(F3_TOTAL_COMPLETED_SAP_GLOBAL, '0,000'));
                                 
@@ -3688,6 +3730,216 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         global.clear();
         this.getPaggin();
 
-    }
+    },
+    checkAndProceed: function (cantidad, label) {
+        if ((cantidad || 0) < 1) {
+            Ext.Msg.alert('No Detail Available', `There are no ${label} records to display.`);
+            return false;
+        }
+        console.log(`Proceeding to ${label} detail with count:`, cantidad);
+        return true;
+    },
+    onClickDetailAvianca: function (IN_FLAG, cmp, cpm2, numRow, numCol, cpm3, rowData) {
+        const me = this;
+        const data = rowData?.data || {};
+        const esPadre = !data.CCUST;
 
+        me.paramsDetail = {};
+        me.paramsDetail.IN_CCUST = esPadre ? "" : data.CCUST;
+        me.paramsDetail.IN_DATE = data.VALDATE;
+        me.paramsDetail.IN_BANDOC = Ext.getCmp(prototype.id + '-txtBANDOC').getValue();
+        me.paramsDetail.IN_REFER = Ext.getCmp(prototype.id + '-txtREFER').getValue();
+
+        console.log(data,'data')
+        console.log("IN_CCUST:", me.paramsDetail.IN_CCUST);
+
+        switch (IN_FLAG) {
+            case "IN_WSETT": {
+                const cantidad = data.F1_TOTAL_STVAL3;
+                if (!me.checkAndProceed(cantidad, 'liquidation')) return;
+
+                me.paramsDetail = {
+                    ...me.paramsDetail,
+                    IN_WSETT: "1",
+                    IN_TAXES: "",
+                    IN_ERROR: "",
+                    IN_PENDING_F2: "",
+                    IN_WSALES: "",
+                    IN_PENDING_ACC: "",
+                    IN_PENDING_SENT: ""
+                };
+                break;
+            }
+
+            case "IN_TAXES": {
+                const cantidad = data.F1_TOTAL_TAXES;
+                if (!me.checkAndProceed(cantidad, 'tax')) return;
+                
+                me.paramsDetail = {
+                    ...me.paramsDetail,
+                    IN_WSETT: "",
+                    IN_TAXES: "1",
+                    IN_ERROR: "",
+                    IN_PENDING_F2: "",
+                    IN_WSALES: "",
+                    IN_PENDING_ACC: "",
+                    IN_PENDING_SENT: ""
+                };
+                break;
+            }
+
+            case "IN_ERROR": {
+                const cantidad = data.F1_TOTAL_ERROR;
+                if (!me.checkAndProceed(cantidad, 'error')) return;
+                 me.paramsDetail = {
+                    ...me.paramsDetail,
+                    IN_WSETT: "",
+                    IN_TAXES: "",
+                    IN_ERROR: "1",
+                    IN_PENDING_F2: "",
+                    IN_WSALES: "",
+                    IN_PENDING_ACC: "",
+                    IN_PENDING_SENT: ""
+                };
+                break;
+            }
+
+            case "IN_PENDING_F2": {
+                const cantidad = data.F1_TOTAL_PENDING_TO_F2;
+                if (!me.checkAndProceed(cantidad, 'pending F2')) return;
+                me.paramsDetail = {
+                    ...me.paramsDetail,
+                    IN_WSETT: "",
+                    IN_TAXES: "",
+                    IN_ERROR: "",
+                    IN_PENDING_F2: "1",
+                    IN_WSALES: "",
+                    IN_PENDING_ACC: "",
+                    IN_PENDING_SENT: ""
+                };
+                break;
+            }
+
+            case "IN_WSALES": {
+                const cantidad = data.F2_TOTAL_PENDING_OVER50;
+                if (!me.checkAndProceed(cantidad, 'W/O Sales')) return;
+                me.paramsDetail = {
+                    ...me.paramsDetail,
+                    IN_WSETT: "",
+                    IN_TAXES: "",
+                    IN_ERROR: "",
+                    IN_PENDING_F2: "",
+                    IN_WSALES: "1",
+                    IN_PENDING_ACC: "",
+                    IN_PENDING_SENT: ""
+                };
+                break;
+            }
+
+            case "IN_PENDING_ACC": {
+                const cantidad = data.F3_TOTAL_WO_ACC;
+                if (!me.checkAndProceed(cantidad, 'Pending to Accounting')) return;
+                me.paramsDetail = {
+                    ...me.paramsDetail,
+                    IN_WSETT: "",
+                    IN_TAXES: "",
+                    IN_ERROR: "",
+                    IN_PENDING_F2: "",
+                    IN_WSALES: "",
+                    IN_PENDING_ACC: "1",
+                    IN_PENDING_SENT: ""
+                };
+                break;
+            }
+
+            case "IN_PENDING_SENT": {
+                const cantidad = data.F3_TOTAL_PENDING_SENT;
+                if (!me.checkAndProceed(cantidad, 'Pending to Send')) return;
+               me.paramsDetail = {
+                    ...me.paramsDetail,
+                    IN_WSETT: "",
+                    IN_TAXES: "",
+                    IN_ERROR: "",
+                    IN_PENDING_F2: "",
+                    IN_WSALES: "",
+                    IN_PENDING_ACC: "",
+                    IN_PENDING_SENT: "1"
+                };
+                break;
+            }
+
+            default:
+                Ext.Msg.alert('Invalid Option', 'This option is not recognized.');
+                return;
+        }
+        
+        me.paramsDetail.beanString = JSON.stringify(me.paramsDetail);
+        me.setGridDataDashboardDetail()
+    },
+    setGridDataDashboardDetail: function () {
+        win.lblUser_toolTip("Estructura: MPF102");
+        me.drillDown.push(me.panelActual);
+        me.panelActual = '-panelGridSumaryDetail';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        console.log("paramsDetail:", me.paramsDetail);
+     
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchSumaryMainDetail'
+                }, listeners: {
+                    beforeload: function (obj) {
+//                        Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
+                        obj.proxy.extraParams = me.paramsDetail;
+                    },
+                    load: function (obj) {
+//                        Ext.getCmp(prototype.id + '-contentInfo').unmask();
+                       
+                       var pag = Ext.getCmp(prototype.id + '-paggin');
+                        var pagData = pag.getPageData();
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        }
+                    }
+                }
+            });
+        global.clear();
+        Ext.getCmp(prototype.id + '-gridDataDetail').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
+         this.getPaggin();
+         this.setWidthPie();
+    },
+    goURLpost: function (method, parms, columns) {
+
+        var js_columns = JSON.stringify(columns);
+        var mapForm = document.createElement("form");
+        mapForm.target = "_blank";
+        mapForm.method = "POST"; // or "post" if appropriate
+        mapForm.action = prototype.url + '/' + method + '?dw_excel=true';
+        var mapInput = document.createElement("input");
+        mapInput.type = "text";
+        mapInput.name = "beanString";
+        mapInput.value = parms;
+        mapForm.appendChild(mapInput);
+        var mapInput = document.createElement("input");
+        mapInput.type = "text";
+        mapInput.name = "columns";
+        mapInput.value = js_columns;
+        mapForm.appendChild(mapInput);
+        var mapInput = document.createElement("input");
+        mapInput.type = "text";
+        mapInput.name = "columns";
+        mapInput.value = js_columns;
+        mapForm.appendChild(mapInput);
+        document.body.appendChild(mapForm);
+        mapForm.submit();
+    },
+    searchOption: function (e, eOpts) {
+        if (eOpts.getKey() !== 13) return false;
+        this.fetchBandocSales();
+    }
 });

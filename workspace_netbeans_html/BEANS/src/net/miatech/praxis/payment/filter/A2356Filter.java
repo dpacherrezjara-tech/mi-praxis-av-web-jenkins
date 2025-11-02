@@ -15,8 +15,17 @@ import net.miatech.praxis.payment.A2356;
 public class A2356Filter extends A2356 {
 
     public String IN_CCUST = "";
+    public String IN_WSETT = "";
+    public String IN_TAXES = "";
+    public String IN_ERROR = "";
+    public String IN_PENDING_F2 = "";
+    public String IN_WSALES = "";
+    public String IN_PENDING_ACC = "";
+    public String IN_PENDING_SENT = "";
     public String IN_FECHA_FROM = "";
     public String IN_FECHA_TO = "";
+    public String IN_BANDOC = "";
+    public String IN_REFER = "";
     public String IN_SDATE = "";
     public String IN_DATE = "";
     public String IN_TCOLUM = "";

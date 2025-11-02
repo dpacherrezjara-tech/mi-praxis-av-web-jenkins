@@ -80,7 +80,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                             ["C", "By Clarification"],
                             ["V", "Provisions"],
                             ["X", "Total by conciliation"],
-                            ["Y", "Total MDP"],
+//                            ["Y", "Total MDP"],
                             ["A", "Process Status"],
                         ]
                     }),
@@ -216,6 +216,40 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                     margin: '0 10 0 0' 
                 },
                  //</editor-fold>
+                 {
+                    fieldLabel: 'Bandoc',
+                    xtype: 'textfield',
+                    id: prototype.id + '-txtBANDOC',
+                    labelWidth: 45,
+                    labelStyle: 'text-align: left; font-size: 12px;',
+                    fieldStyle: 'text-align: center; font-size: 12px;',
+                    enforceMaxLength: true,
+                    maskRe: /[0-9]/,
+                    maxLength: 10,
+                    width: 130,
+                    enableKeyEvents: true,
+                    margin: '0 10 0 0',
+                    listeners: {
+                        keypress: 'eventKey'
+                    }
+                },
+                 {
+                    fieldLabel: 'Refer',
+                    xtype: 'textfield',
+                    id: prototype.id + '-txtREFER',
+                    labelWidth: 30,
+                    labelStyle: 'text-align: left; font-size: 12px;',
+                    fieldStyle: 'text-align: center; font-size: 12px;',
+                    enforceMaxLength: true,
+                   maskRe: /[0-9A-Za-z]/,
+                    maxLength: 20,
+                    width: 180,
+                    enableKeyEvents: true,
+                    margin: '0 10 0 0',
+                    listeners: {
+                        keypress: 'eventKey'
+                    }
+                },
                 {
                     xtype: 'combo',
                     id: prototype.id + '-cmbCountry',
