@@ -532,7 +532,7 @@ Ext.define('Ext.Praxis.view.payments.SalesAgentControlForm.Info', {
                             bodyStyle: 'background-color: #F4F7FD; overflow-x: hidden;',
                             border: false,
                             height: 'auto',
-                            width: 890,
+                            width: 897,
                             margin: '0 0 0 0 ',
                             
                             layout: {
@@ -552,9 +552,6 @@ Ext.define('Ext.Praxis.view.payments.SalesAgentControlForm.Info', {
                                     margin: '5 0 5 0'
 //                                    hidden: true
                                 },
-                                
-                                
-                                
                                 {
                                     xtype: 'container',
                                     layout: {
@@ -574,14 +571,12 @@ Ext.define('Ext.Praxis.view.payments.SalesAgentControlForm.Info', {
                                         
                                             ]
                                         },
-         
-                                
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataIMF150',
                                       xtype: 'grid',
-                                      flex: 1, // ocupa todo el espacio disponible del panel
-                                      width: '100%', 
+                                        height: 150,
+                                      width: 897, 
                                       bodyStyle: 'background-color: #F4F7FD;',
                                     columnLines: true,
 //                                    features: [{
@@ -607,6 +602,22 @@ Ext.define('Ext.Praxis.view.payments.SalesAgentControlForm.Info', {
                                                     return value; // por defecto muestra el código
                                                 }
                                                },
+                                               {
+                                                text: '<span style="color:black;font-weight:bold;">Month</span>',
+                                                dataIndex: 'O_MES',
+                                                width: 100,
+                                                style: 'padding:2px; background: #c9daf5;border-color:white',
+                                                 renderer: function (value, metaData, record) {
+                                                                            metaData.style = "text-align:center";
+                                                                            return '<a style="color:#004080; font-weight:bold; text-decoration:underline; cursor:pointer;">' 
+                                                                                   + Ext.String.htmlEncode(value) + 
+                                                                                   '</a>';
+                                                                        },
+                                                 listeners: {
+                                                                            click: 'onClickDetailA720'
+                                                                           
+                                                                        }
+                                            },
                                             {
                                                 text: '<span style="color:black;font-weight:bold;">Agent</span>', 
                                                 dataIndex: 'O_SAGENT',
@@ -643,22 +654,7 @@ Ext.define('Ext.Praxis.view.payments.SalesAgentControlForm.Info', {
                                             },
                                             
                                             
-                                            {
-                                                text: '<span style="color:black;font-weight:bold;">Month</span>',
-                                                dataIndex: 'O_MES',
-                                                width: 100,
-                                                style: 'padding:2px; background: #c9daf5;border-color:white',
-                                                 renderer: function (value, metaData, record) {
-                                                                            metaData.style = "text-align:center";
-                                                                            return '<a style="color:#004080; font-weight:bold; text-decoration:underline; cursor:pointer;">' 
-                                                                                   + Ext.String.htmlEncode(value) + 
-                                                                                   '</a>';
-                                                                        },
-                                                 listeners: {
-                                                                            click: 'onClickDetailA720'
-                                                                           
-                                                                        }
-                                            },
+                                            
                                             {
                                                 text: '<span style="color:black;font-weight:bold;">Payment Type</span>',
                                                 dataIndex: 'O_FORMAPAGO',
@@ -676,29 +672,42 @@ Ext.define('Ext.Praxis.view.payments.SalesAgentControlForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: '<span style="color:black;font-weight:bold;"> Amount</span>',
-                                                dataIndex: 'O_VFOP',
-                                                width: 140,
-                                                style: 'padding:2px; background: #c9daf5;border-color:white',
+                                                text: '<span style="color:black;font-weight:bold;">QTY Tickets</span>',
+                                                dataIndex: 'O_QTYTKTS',
+                                                width: 85,
+                                                xtype: 'numbercolumn',
+                                                style: 'padding:2px; background: #c9daf5; border-color:white; text-align: center;',
+                                                
                                                 renderer: function (value, metaData) {
-                                                    metaData.style = "text-align:center;";
-                                                    return value;
+                                                    metaData.style = "text-align: right";
+                                                    if (value == null)
+                                                        return '';
+                                                    return Ext.util.Format.number(value, '0,000'); // 🔹 sin decimales
                                                 }
                                             },
                                             {
-                                                text: '<span style="color:black;font-weight:bold;">Total Tickets </span>',
-                                                dataIndex: 'O_QTYTKTS',
-                                                width: 120,
+                                                text: '<span style="color:black;font-weight:bold;">Currency</span>',
+                                                dataIndex: 'CURRENCY',
+                                                width: 80,
                                                 xtype: 'numbercolumn',
                                                 style: 'padding:2px; background: #c9daf5; border-color:white; text-align: center;',
                                                 
                                                 renderer: function (value, metaData) {
                                                     metaData.style = "text-align: center";
-                                                    if (value == null)
-                                                        return '';
-                                                    return Ext.util.Format.number(value, '0,000'); // 🔹 sin decimales
+                                                    return 'USD';
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;"> Amount</span>',
+                                                dataIndex: 'O_VFOP',
+                                                width: 100,
+                                                style: 'padding:2px; background: #c9daf5;border-color:white',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:right;";
+                                                    return value;
                                                 }
                                             }
+                                            
 
        
                                         
@@ -709,34 +718,14 @@ Ext.define('Ext.Praxis.view.payments.SalesAgentControlForm.Info', {
                                 }
                             ]
                         },
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        ////////////////////////////////////////////////
                         //////////////panelGridDataA270/////////////////////
-                        ////////////////////////////////////////////////
-                        
-                        
-                        
-                        //panelGridDataA270
-                        
-                        
-                        
-                        
-                        
                         {
                             xtype: 'panel',
                             id: prototype.id + '-panelGridDataA270',
-                            bodyStyle: 'background-color: #F4F7FD; overflow-x: hidden;',
+                            bodyStyle: 'background-color: #F4F7FD;',
                             border: false,
-                            height: 'auto',
-                            width: 1040,
+//                            height: 'auto',
+                            width: 1042,
                             margin: '0 0 0 0 ',
                             
                             layout: {
@@ -753,21 +742,18 @@ Ext.define('Ext.Praxis.view.payments.SalesAgentControlForm.Info', {
                                     style: 'font-weight: bold; color: #231223; text-align: center; display: block;',
                                     
                                     align: 'center',
-                                    margin: '5 0 5 0',
+                                    margin: '0 0 5 0',
 //                                    hidden: true
                                 },
-                                
-                                
-                                
                                 {
                                     xtype: 'container',
                                     layout: {
                                         type: 'hbox',
                                         align: 'middle',
                                         pack: 'start' ,
-                                        margin: '15px 0 15px 15px'
+                                        margin: '10px 0 15px 15px'
                                     },
-                                    margin: '10 0 10 10', // 🔹 margen: arriba, derecha, abajo, izquierda
+                                    margin: '0 0 10 10', // 🔹 margen: arriba, derecha, abajo, izquierda
                                     items: [
                                        
                                          { xtype: 'tbspacer', width: 20 },
@@ -778,14 +764,11 @@ Ext.define('Ext.Praxis.view.payments.SalesAgentControlForm.Info', {
                                         
                                             ]
                                         },
-         
-                                
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataA270',
-                                      xtype: 'grid',
-                                      flex: 1, // ocupa todo el espacio disponible del panel
-                                      width: '100%', 
+                                      width: 1120, 
+                                      height: 510,
                                       bodyStyle: 'background-color: #F4F7FD;',
                                     columnLines: true,
 //                                    features: [{
@@ -832,7 +815,6 @@ Ext.define('Ext.Praxis.view.payments.SalesAgentControlForm.Info', {
                                                     
                                                 }
                                             },
-                                            
                                             {
                                                 text: '<span style="color:black;font-weight:bold;">Country<br>of Sale</span>',
                                                 dataIndex: 'A_A720PAIVTA',
@@ -844,8 +826,6 @@ Ext.define('Ext.Praxis.view.payments.SalesAgentControlForm.Info', {
                                                  
                                                 }
                                             },
-                                            
-                                            
                                             {
                                                 text: '<span style="color:black;font-weight:bold;">Transaction</span>',
                                                 dataIndex: 'A_A720TRNCU',
@@ -906,13 +886,7 @@ Ext.define('Ext.Praxis.view.payments.SalesAgentControlForm.Info', {
                                                     return value;
                                                 }
                                             }
-
-                                            
-       
-                                        
-
                                         ]
-                                        
                                     }
                                 }
                             ]

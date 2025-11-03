@@ -656,12 +656,12 @@ Ext.getCmp(prototype.id + '-QTY_NOT_FOUND').setText(Ext.util.Format.number(QTY_N
                     url: prototype.url + '/searchListIMF150'
                 }, listeners: {
                     beforeload: function(obj) {
-                        Ext.getCmp(prototype.id + '-panelGridDataIMF150').mask('Loading...');
+//                        Ext.getCmp(prototype.id + '-panelGridDataIMF150').mask('Loading...');
                         obj.proxy.extraParams = me.obJPADJ;                                    
                         
                     },
                     load: function(obj) {
-                        Ext.getCmp(prototype.id + '-panelGridDataIMF150').unmask();
+//                        Ext.getCmp(prototype.id + '-panelGridDataIMF150').unmask();
                         var pag = Ext.getCmp(prototype.id + '-pagginIMF150');
                         var pagData = pag.getPageData();
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
@@ -689,6 +689,7 @@ Ext.getCmp(prototype.id + '-QTY_NOT_FOUND').setText(Ext.util.Format.number(QTY_N
             });
             
             global.clear();
+            this.getPaggin();
             Ext.getCmp(prototype.id + '-gridDataIMF150').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-pagginIMF150').bindStore(storeGridDatas);
         
@@ -753,12 +754,12 @@ Ext.getCmp(prototype.id + '-QTY_NOT_FOUND').setText(Ext.util.Format.number(QTY_N
                     url: prototype.url + '/searchListA720'
                 }, listeners: {
                     beforeload: function(obj) {
-                        Ext.getCmp(prototype.id + '-panelGridDataA270').mask('Loading...');
+//                        Ext.getCmp(prototype.id + '-panelGridDataA270').mask('Loading...');
                         obj.proxy.extraParams = me.obJPADJ;                                    
                         
                     },
                     load: function(obj) {
-                        Ext.getCmp(prototype.id + '-panelGridDataA270').unmask();
+//                        Ext.getCmp(prototype.id + '-panelGridDataA270').unmask();
                         var pag = Ext.getCmp(prototype.id + '-pagginA720');
                         var pagData = pag.getPageData();
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
@@ -780,12 +781,13 @@ Ext.getCmp(prototype.id + '-QTY_NOT_FOUND').setText(Ext.util.Format.number(QTY_N
 //                        Ext.getCmp(prototype.id + '-labelIMF150').setText(title);
 //                        Ext.getCmp(prototype.id + '-labelIMF150').setVisible(true);
                     }
-                    me.setWidthPie();
+//                    me.setWidthPie();
                     }
                 }
             });
             
             global.clear();
+            this.getPaggin();
             Ext.getCmp(prototype.id + '-gridDataA270').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-pagginA720').bindStore(storeGridDatas);
         
@@ -950,28 +952,34 @@ Ext.getCmp(prototype.id + '-QTY_NOT_FOUND').setText(Ext.util.Format.number(QTY_N
         me.pagginActual = '';
         console.log(me.panelActual,'me.panelActual')
         switch (me.panelActual) {
-            case  '-panelGridSumaryMain':
-                console.log("WAFA?")
-                 Ext.getCmp(prototype.id + '-pie').setVisible(false);
-//                 Ext.getCmp(prototype.id + '-txtINVOICE').setDisabled(true);
-                 Ext.getCmp(prototype.id + '-typeSociety').setValue('');
-                 Ext.getCmp(prototype.id + '-cmbCountry').setDisabled(false);
-                 Ext.getCmp(prototype.id + '-cmbDateFromYear').setDisabled(false);
-                 Ext.getCmp(prototype.id + '-cmbDateFromMonth').setDisabled(false);
-                 Ext.getCmp(prototype.id + '-cmbDateToYear').setDisabled(false);
-                 Ext.getCmp(prototype.id + '-cmbDateToMonth').setDisabled(false);
-                  Ext.getCmp(prototype.id + '-panelHeight').setHeight(600);
-                break;
             case  '-panelGridDataDetail':
+                
+                 Ext.getCmp(prototype.id + '-typeSociety').setDisabled(false);
+                 Ext.getCmp(prototype.id + '-cmbCountry').setDisabled(false);
+                 Ext.getCmp(prototype.id + '-cmbSourceAgent').setDisabled(false);
+                 Ext.getCmp(prototype.id + '-cmbCanalAgent').setDisabled(false);
+                 Ext.getCmp(prototype.id + '-cmbAcreditacionAgent').setDisabled(false);
+                 Ext.getCmp(prototype.id + '-cmbRiesgoAgent').setDisabled(false);
+                 Ext.getCmp(prototype.id + '-txtINVOICE').setDisabled(false);
+                 Ext.getCmp(prototype.id + '-pie').setVisible(true);
+                 Ext.getCmp(prototype.id + '-panelHeight').setHeight(600);
                 me.pagginActual = '-paggin';
-                Ext.getCmp(prototype.id + '-pie').setVisible(true);
-//                Ext.getCmp(prototype.id + '-txtINVOICE').setDisabled(false);
-                Ext.getCmp(prototype.id + '-cmbCountry').setDisabled(true);
-                Ext.getCmp(prototype.id + '-cmbDateFromYear').setDisabled(true);
-                 Ext.getCmp(prototype.id + '-cmbDateFromMonth').setDisabled(true);
-                 Ext.getCmp(prototype.id + '-cmbDateToYear').setDisabled(true);
-                 Ext.getCmp(prototype.id + '-cmbDateToMonth').setDisabled(true);
+                break;
+            case  '-panelGridDataIMF150':
+                 Ext.getCmp(prototype.id + '-typeSociety').setDisabled(true);
+                 Ext.getCmp(prototype.id + '-cmbCountry').setDisabled(true);
+                 Ext.getCmp(prototype.id + '-cmbSourceAgent').setDisabled(true);
+                 Ext.getCmp(prototype.id + '-cmbCanalAgent').setDisabled(true);
+                 Ext.getCmp(prototype.id + '-cmbAcreditacionAgent').setDisabled(true);
+                 Ext.getCmp(prototype.id + '-cmbRiesgoAgent').setDisabled(true);
+                 Ext.getCmp(prototype.id + '-txtINVOICE').setDisabled(true);
+                 Ext.getCmp(prototype.id + '-pie').setVisible(true);
                   Ext.getCmp(prototype.id + '-panelHeight').setHeight(600);
+                me.pagginActual = '-pagginIMF150';
+                break;
+            case  '-panelGridDataA270':
+                 Ext.getCmp(prototype.id + '-panelHeight').setHeight(630);
+                me.pagginActual = '-pagginA720';
                 break;
             case  '-panelGridDataHistoric':
                 me.pagginActual = '-paggin';
@@ -979,9 +987,7 @@ Ext.getCmp(prototype.id + '-QTY_NOT_FOUND').setText(Ext.util.Format.number(QTY_N
             case  '-panelGridDataIMF150':
                 me.pagginActual = '-pagginIMF150';
                 break;
-            case  '-panelGridDataA270':
-                me.pagginActual = '-pagginA720';
-                break;
+            
         }
     },
     // <editor-fold defaultstate="collapsed" desc="Funciones para la paginacion ">
@@ -1111,7 +1117,7 @@ Ext.getCmp(prototype.id + '-QTY_NOT_FOUND').setText(Ext.util.Format.number(QTY_N
             me.panelActual = me.drillDown.pop();
             global.selectedChild(me.childs, prototype.id + me.panelActual);
             me.setWidthPie();
-
+            console.log(me.panelActual);
             this.getPaggin();
             if (me.pagginActual !== '') {
                 var pag = Ext.getCmp(prototype.id + me.pagginActual);
