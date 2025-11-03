@@ -5646,10 +5646,12 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                 align: 'center'
                             },
                             items: [
+                                
+                                
                                 {
                                     xtype: 'treepanel',
                                     id: prototype.id + '-gridDataCash_Sumary',
-                                    width: 1800,
+                                    width: 1435,
                                     reserveScrollbar: true,
                                     useArrows: true,
                                     rootVisible: false,
@@ -6090,6 +6092,42 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                             },
                                         ]
                                     }
+                                },
+                                {
+                                    xtype: 'panel',
+                                    id: prototype.id + '-panelSummaryCashlbl',
+                                    width: 1435,
+                                    align: 'right',
+                                    margin: '0 0 0 0 ',
+                                    layout: {
+                                        type: 'hbox',
+                                        align: 'right'
+                                    },
+                                    defaults: {
+                                        xtype: 'label',
+                                        align: 'center',
+                                        html: '' + '&nbsp',
+                                        height: 25,
+//                                        padding: '5 5 5 0',
+                                        style: 'background:#A0BFD3;text-align:right;border: 0.1px #4A6371 solid;font-size:12px'
+                                    },
+                                    items: [
+                                        {width: 150, id: prototype.id + '-lblSummaryCash_1'},
+                                        {width: 100, id: prototype.id + '-lblSummaryCash_2'},
+                                        {width: 100, id: prototype.id + '-lblSummaryCash_3'},
+                                        {width: 100, id: prototype.id + '-lblSummaryCash_4'},
+                                        {width: 60, id: prototype.id + '-lblSummaryCash_5'},
+                                        {width: 100, id: prototype.id + '-lblSummaryCash_6'},
+                                        {width: 100, id: prototype.id + '-lblSummaryCash_7'},
+                                        {width: 80, id: prototype.id + '-lblSummaryCash_8'},
+                                        {width: 80, id: prototype.id + '-lblSummaryCash_9'},
+                                        {width: 100, id: prototype.id + '-lblSummaryCash_10'},
+                                        {width: 100, id: prototype.id + '-lblSummaryCash_11'},
+                                        {width: 100, id: prototype.id + '-lblSummaryCash_12'},
+                                        {width: 100, id: prototype.id + '-lblSummaryCash_13'},
+                                        {width: 100, id: prototype.id + '-lblSummaryCash_14'},
+                                        {width: 60, id: prototype.id + '-lblSummaryCash_15'}
+                                    ]
                                 },
                             ]
                         },

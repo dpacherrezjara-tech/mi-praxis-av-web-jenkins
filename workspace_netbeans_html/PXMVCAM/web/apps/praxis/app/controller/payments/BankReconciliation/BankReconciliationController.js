@@ -1540,7 +1540,17 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                                 lstData.push(value.data)
                             }
                             console.log(lstData, 'lstData')
-                            
+                            let lngTotQSALES = lstData[0].lngTotQSALES
+                            let lngTotQMATCH = lstData[0].lngTotQMATCH
+                            let lngTotQMANUAL = lstData[0].lngTotQMANUAL
+                            let lngTotQPEND = lstData[0].lngTotQPEND
+                            let lngTotQTICKET = lstData[0].lngTotQTICKET
+
+                            let lngTotQTMATCH = lstData[0].lngTotQTMATCH
+                            let lngTotQTMANUAL = lstData[0].lngTotQTMANUAL
+                            let lngTotQTPEND = lstData[0].lngTotQTPEND
+                            let lngTotQTYECC = lstData[0].lngTotQTYECC
+                            let lngTotQTYADJ = lstData[0].lngTotQTYADJ
                             
                             let dataRoot = {text: '.', expanded: false, children: []};
 
@@ -1629,10 +1639,21 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                                     });
                                 }
                             });
+                            
+                            Ext.getCmp(prototype.id + '-lblSummaryCash_8').setText(Ext.util.Format.number(lngTotQSALES, '0,000'));
+                            Ext.getCmp(prototype.id + '-lblSummaryCash_4').setText(Ext.util.Format.number(lngTotQMATCH, '0,000'));
+                            Ext.getCmp(prototype.id + '-lblSummaryCash_6').setText(Ext.util.Format.number(lngTotQMANUAL, '0,000'));
+                            Ext.getCmp(prototype.id + '-lblSummaryCash_7').setText(Ext.util.Format.number(lngTotQPEND, '0,000'));
+                            Ext.getCmp(prototype.id + '-lblSummaryCash_11').setText(Ext.util.Format.number(lngTotQTICKET, '0,000'));
+                            Ext.getCmp(prototype.id + '-lblSummaryCash_12').setText(Ext.util.Format.number(lngTotQTMATCH, '0,000'));
+                            Ext.getCmp(prototype.id + '-lblSummaryCash_13').setText(Ext.util.Format.number(lngTotQTMANUAL, '0,000'));
+                            Ext.getCmp(prototype.id + '-lblSummaryCash_14').setText(Ext.util.Format.number(lngTotQTPEND, '0,000'));
+                            Ext.getCmp(prototype.id + '-lblSummaryCash_3').setText(Ext.util.Format.number(lngTotQTYECC, '0,000'));
+//                            Ext.getCmp(prototype.id + '-lblSummaryCash_1').setText(Ext.util.Format.number(lngTotQTYADJ, '0,000'));
                             var storeTree = Ext.create('Ext.data.TreeStore', {
                                 root: dataRoot
                             });
-
+                            
                             Ext.getCmp(prototype.id + '-gridDataCash_Sumary').setStore(storeTree);
                         }
                     }

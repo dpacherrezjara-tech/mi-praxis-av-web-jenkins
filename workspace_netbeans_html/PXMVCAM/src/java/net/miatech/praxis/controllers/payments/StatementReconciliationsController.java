@@ -3882,7 +3882,7 @@ public class StatementReconciliationsController extends BaseController {
     @RequestMapping(value = "/searchBean_LiquiCash")
     public @ResponseBody
     String searchBean_LiquiCash(ModelMap map, HttpServletRequest request) {
-        System.out.println("-------------- BankStatementReconciliation : searchBean_DETAIL_CO-------------");
+        System.out.println("-------------- BankStatementReconciliation : searchBean_LiquiCash-------------");
         try {
             Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
