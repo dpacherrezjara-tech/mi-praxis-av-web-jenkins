@@ -12,6 +12,7 @@ package net.miatech.praxis.payment;
  */
 public class A2356 {
         public String CCUST= "";  
+        public String VALDATE= "";  
         public String FCHILD= "";  
         public String NAME = "";  
         public String TYPE = "";  
@@ -49,6 +50,15 @@ public class A2356 {
         public String DATFIN  = "";  
         public String PAYDATE  = "";  
         public String BANDOC  = "";  
+        public String TRANCI  = "";  
+        public String DATECI  = "";  
+        public String REFER  = "";  
+        public String TEXTOLAR  = "";  
+        public String COREP  = "";  
+        public String CODPRO  = "";  
+        public String IDCONT  = "";  
+        public String IDCDEB  = "";  
+        public String A4545HEADE  = "";  
         public String REFERENCE  = "";  
         public String CAR6  = "";  
         public String CAR4  = "";  
@@ -127,6 +137,24 @@ public class A2356 {
         public int QSALES  = 0;
         public int QSALESC  = 0;
         public int QTYLIQ  = 0;
+        
+        public int F1_TOTAL  = 0;
+        public int F1_TOTAL_STVAL3  = 0;
+        public int F1_TOTAL_STVAL1  = 0;
+        public int F1_TOTAL_TAXES  = 0;
+        public int F1_TOTAL_PENDING_TO_F2  = 0;
+        public int F1_TOTAL_ERROR  = 0;
+        
+        public int F2_F1_TOTAL_COMPLETED = 0;
+        public int F2_TOTAL_PENDING_OVER50 = 0;
+        public int F2_TOTAL_MATCH_OVER50 = 0;
+        
+        public int F3_F2_TOTAL_COMPLETED = 0;
+        public int F3_TOTAL_WO_ACC = 0;
+        public int F3_TOTAL_COMPLETED = 0;
+        public int F3_TOTAL_PENDING_SENT = 0;
+        public int F3_TOTAL_COMPLETED_SAP = 0;
+        
         public int QTYLIQP  = 0;
         public int QTYACCO  = 0;
         public int QTYTACCOC  = 0;

@@ -32,7 +32,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         prototype.url = CONTEXTPATH + '/BalanceAnalysisByAge';
         prototype.urlMaster = CONTEXTPATH + '/MasterController';
         this.childs = Ext.getCmp(prototype.id + '-panelMain').items.items;
-        me.panelActual = '-panelGridConciliation';
+        me.panelActual = '-panelGridSumaryMain';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
 
 
@@ -155,8 +155,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 
         Ext.getCmp(prototype.id + '-cmbDateFromYear').setValue(this.fecha.getFullYear());
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(this.fecha.getFullYear());
-        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue("");
-        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue("");
+        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue('10');
+        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('10');
 
         var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro');
         cmbFecFiltro.bindStore(Ext.create('Ext.data.ArrayStore', {
@@ -335,9 +335,14 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         let panelGridData = Ext.getCmp(prototype.id + '-panelGridData')
         let panelGridConciliation = Ext.getCmp(prototype.id + '-panelGridConciliation')
         let panelGridConciliationMDP = Ext.getCmp(prototype.id + '-panelGridConciliationMDP')
+        let panelGridSumaryMain = Ext.getCmp(prototype.id + '-panelGridSumaryMain')
         console.log(panelGridData.isVisible(), 'VISIBILIDAD?')
         
-        if (panelGridConciliationMDP.isVisible()) {
+        if (panelGridSumaryMain.isVisible()) {
+            this.setFormatParameterDashboard();
+            this.setGridDataDashboard();
+        } 
+        else if (panelGridConciliationMDP.isVisible()) {
             this.setFormatParameter2();
             this.setGridDataConciliationMDP();
         } 
@@ -930,6 +935,13 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             Ext.getCmp(prototype.id + '-pie').setVisible(false);
             this.setFormatParameter2();
             this.setGridDataConciliation();
+            Ext.getCmp(prototype.id + '-contentFilter2').hide();
+            Ext.getCmp(prototype.id + '-contentFilter3').hide();
+            
+        } else if (newValue === 'A') {
+            Ext.getCmp(prototype.id + '-pie').setVisible(false);
+            this.setFormatParameterDashboard();
+            this.setGridDataDashboard();
             Ext.getCmp(prototype.id + '-contentFilter2').hide();
             Ext.getCmp(prototype.id + '-contentFilter3').hide();
             
@@ -2133,13 +2145,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 
     },
     btnExcel_click: function (obj, e) {
-        this.setFormatParameter();
-        var msj = this.validateFields();
-        if (msj !== '') {
-            global.Msg({msg: msj
-            });
-        } else {
-            Ext.Msg.show({
+          this.setFormatParameter();
+          Ext.Msg.show({
                 title: '.:PRAXIS:.',
                 msg: 'Download Excel ?',
                 buttons: Ext.MessageBox.OKCANCEL,
@@ -2152,13 +2159,18 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                     }
                 }
             });
-        }
     },
     exportExcel: function () {
 
         switch (me.panelActual) {
             case  '-boxPendingData':
                 global.getFile(prototype.url + '/getXLSX?beanString=' + encodeURI(searchParams.beanString));
+                break;
+            case  '-panelGridSumaryMain':
+                global.getFile(prototype.url + '/getXLSXDashboard?beanString=' + encodeURI(searchParams.beanString));
+                break;
+            case  '-panelGridSumaryDetail':
+                global.getFile(prototype.url + '/getXLSXDashboardDetail?beanString=' + encodeURI(me.paramsDetail.beanString));
                 break;
             default:
                 global.Msg(
@@ -2179,10 +2191,31 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         var ancho = Ext.getCmp(prototype.id + me.panelActual).getWidth();
         Ext.getCmp(prototype.id + '-pie').setWidth(ancho);
         Ext.getCmp(prototype.id + '-pie').setVisible(true);
+        
+        switch (me.panelActual) {
+            case  '-panelGridSumaryMain':
+                Ext.getCmp(prototype.id + '-panelHeight').setHeight(1450);
+                break;
+            case  '-panelGridSumaryDetail':
+                Ext.getCmp(prototype.id + '-panelHeight').setHeight(590);
+                break;
+            default:
+                console.log('n');
+        }
+        
+        
     },
     getPaggin: function () {
         me.pagginActual = '';
+        this.toggleFiltersByPanel(me.panelActual, prototype);
         switch (me.panelActual) {
+             case  '-panelGridSumaryMain':
+                Ext.getCmp(prototype.id + '-pie').setVisible(false);
+                me.pagginActual = '-paggin';
+                break;
+            case  '-panelGridSumaryDetail':
+                me.pagginActual = '-paggin';
+                break;
             case  '-boxMainData':
                 me.pagginActual = '-paggin';
                 break;
@@ -3226,5 +3259,687 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 
         }
     },
-}
-);
+    toggleFiltersByPanel: function (panelId, prototype) {
+        const filterIds = [
+            prototype.id + '-cmbCountry',
+            prototype.id + '-txtAGENCY',
+            prototype.id + '-cmbPercentage',
+            prototype.id + '-cmbSource',
+            prototype.id + '-txtCUTDAYS',
+            prototype.id + '-txtFECR',
+            prototype.id + '-txtHOCR',
+            prototype.id + '-chkboxTypeRecord',
+            prototype.id + '-chkboxSurplus',
+            prototype.id + '-rayita'
+        ];
+
+        const hide = (panelId === '-panelGridSumaryMain' ||  panelId === '-panelGridSumaryDetail');
+        
+        if (hide) {
+            Ext.getCmp(prototype.id + '-panelHeight').setHeight(750);
+        } else {
+            Ext.getCmp(prototype.id + '-panelHeight').setHeight(1100);
+        }
+
+        Ext.Array.each(filterIds, function (cmpId) {
+            const cmp = Ext.getCmp(cmpId);
+            if (cmp) {
+                cmp.setVisible(!hide); 
+            } else {
+                console.warn('No se encontró el componente con id:', cmpId);
+            }
+        });
+    },
+    setFormatParameterDashboard: function () {
+        me.bean = {};
+        me.bean.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue();
+        me.bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue();
+        me.bean.IN_BANDOC = Ext.getCmp(prototype.id + '-txtBANDOC').getValue();
+        me.bean.IN_REFER = Ext.getCmp(prototype.id + '-txtREFER').getValue();
+//        me.bean.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
+//        me.bean.IN_SAGENT = Ext.getCmp(prototype.id + '-txtAGENCY').getValue();
+//        me.bean.IN_PERCENTAGE = Ext.getCmp(prototype.id + '-cmbPercentage').getValue();
+//        me.bean.IN_CANAL = Ext.getCmp(prototype.id + '-cmbSource').getValue();
+//        me.bean.IN_CUTDAYS = Ext.getCmp(prototype.id + '-txtCUTDAYS').getValue();
+//        me.bean.IN_TOP = Ext.getCmp(prototype.id + '-cmbTOP').getValue();
+        me.bean.IN_CCUST = Ext.getCmp(prototype.id + '-cmbAviancaGroup').getValue();
+//        me.bean.IN_TREG = Ext.getCmp(prototype.id + '-chkboxTypeRecord').getValue() ? '1' : '2';
+//        me.bean.IN_SURPLUS = Ext.getCmp(prototype.id + '-chkboxSurplus').getValue() ? '1' : '2';
+
+        console.log(me.bean, 'setFormatParameterDashboard');
+        var beanString = JSON.stringify(me.bean);
+        searchParams = {
+            beanString: beanString,
+            bean: me.bean
+        };
+    },
+    setGridDataDashboard: function () {
+        win.lblUser_toolTip("Estructura: MPF102");
+        me.panelActual = '-panelGridSumaryMain';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+     
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchSumaryMain'
+                }, listeners: {
+                    beforeload: function (obj) {
+                        Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
+                        obj.proxy.extraParams = searchParams;
+                    },
+                    load: function (obj) {
+                        Ext.getCmp(prototype.id + '-contentInfo').unmask();
+                       
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        } else {
+                            
+                            let lstData = [];
+                                for (let value of obj.data.items) {
+                                    lstData.push(value.data);
+                                }
+
+                                // Totales generales
+                                let F1_TOTAL_GLOBAL = 0;
+                                let F1_TOTAL_STVAL3_GLOBAL = 0;
+                                let F1_TOTAL_STVAL1_GLOBAL = 0;
+                                let F1_TOTAL_TAXES_GLOBAL = 0;
+                                let F1_TOTAL_ERROR_GLOBAL = 0;
+                                let F1_TOTAL_PENDING_TO_F2_GLOBAL = 0;
+                                
+                                let F2_F1_TOTAL_COMPLETED_GLOBAL = 0;
+                                let F2_TOTAL_PENDING_OVER50_GLOBAL = 0;
+                                let F2_TOTAL_MATCH_OVER50_GLOBAL = 0;
+                                
+                                let F3_F2_TOTAL_COMPLETED_GLOBAL = 0;
+                                let F3_TOTAL_WO_ACC_GLOBAL = 0;
+                                let F3_TOTAL_COMPLETED_GLOBAL = 0;
+                                let F3_TOTAL_COMPLETED_SAP_GLOBAL = 0;
+                                let F3_TOTAL_PENDING_SENT_GLOBAL = 0;
+
+                                let a = [];
+                                let dataRoot = { text: '.', expanded: false, children: [] };
+
+                                Ext.Object.each(lstData, function (index, value) {
+                                    if (a.indexOf(value.strFormatDate) < 0) {
+                                        let V_F1_TOTAL = 0;
+                                        let V_F1_TOTAL_STVAL3 = 0;
+                                        let V_F1_TOTAL_STVAL1 = 0;
+                                        let V_F1_TOTAL_TAXES = 0;
+                                        let V_F1_TOTAL_ERROR = 0;
+                                        let V_F1_PERCENT = 0;
+                                        let V_F1_PENDING_TO_F2 = 0;
+                                        
+                                        let V_F2_F1_TOTAL_COMPLETED = 0;
+                                        let V_F2_TOTAL_PENDING_OVER50 = 0;
+                                        let V_F2_TOTAL_MATCH_OVER50 = 0;
+                                        let V_F2_PERCENT = 0;
+                                        
+                                        let V_F3_F2_TOTAL_COMPLETED = 0;
+                                        let V_F3_TOTAL_WO_ACC = 0;
+                                        let V_F3_TOTAL_COMPLETED = 0;
+                                        let V_F3_TOTAL_COMPLETED_SAP = 0;
+                                        let V_F3_TOTAL_PENDING_SENT = 0;
+                                        let V_F3_PERCENT = 0;
+
+                                        // Agrupar por mes
+                                        Ext.Object.each(lstData, function (index, valuex) {
+                                            if (value.strFormatDate === valuex.strFormatDate) {
+                                                V_F1_TOTAL += valuex.F1_TOTAL;
+                                                V_F1_TOTAL_STVAL3 += valuex.F1_TOTAL_STVAL3;
+                                                V_F1_TOTAL_STVAL1 += valuex.F1_TOTAL_STVAL1;
+                                                V_F1_TOTAL_TAXES += valuex.F1_TOTAL_TAXES;
+                                                V_F1_TOTAL_ERROR += valuex.F1_TOTAL_ERROR;
+                                                V_F1_PENDING_TO_F2 += valuex.F1_TOTAL_PENDING_TO_F2;
+                                                
+                                                V_F2_F1_TOTAL_COMPLETED += valuex.F2_F1_TOTAL_COMPLETED;
+                                                V_F2_TOTAL_PENDING_OVER50 += valuex.F2_TOTAL_PENDING_OVER50;
+                                                V_F2_TOTAL_MATCH_OVER50 += valuex.F2_TOTAL_MATCH_OVER50;
+                                                
+                                                V_F3_F2_TOTAL_COMPLETED += valuex.F3_F2_TOTAL_COMPLETED;
+                                                V_F3_TOTAL_WO_ACC += valuex.F3_TOTAL_WO_ACC;
+                                                V_F3_TOTAL_COMPLETED += valuex.F3_TOTAL_COMPLETED;
+                                                V_F3_TOTAL_PENDING_SENT += valuex.F3_TOTAL_PENDING_SENT;
+                                                V_F3_TOTAL_COMPLETED_SAP += valuex.F3_TOTAL_COMPLETED_SAP;
+                                            }
+                                        });
+
+                                        // Calcular porcentaje por mes
+                                        if (V_F1_TOTAL > 0) {
+                                            V_F1_PERCENT = (V_F1_TOTAL_STVAL1 * 100) / V_F1_TOTAL;
+                                        }
+                                        
+                                        if (V_F2_F1_TOTAL_COMPLETED > 0) {
+                                            V_F2_PERCENT = (V_F2_TOTAL_MATCH_OVER50 * 100) / V_F2_F1_TOTAL_COMPLETED;
+                                        }
+                                        
+                                        if (V_F3_F2_TOTAL_COMPLETED > 0) {
+                                            V_F3_PERCENT = (V_F3_TOTAL_COMPLETED * 100) / V_F3_F2_TOTAL_COMPLETED;
+                                        }
+
+                                        // Agregar al árbol
+                                        a.push(value.strFormatDate);
+                                        dataRoot.children.push({
+                                            strFormatDate: value.strFormatDate,
+                                            VALDATE: value.VALDATE,
+                                            F1_TOTAL: V_F1_TOTAL,
+                                            F1_TOTAL_STVAL3: V_F1_TOTAL_STVAL3,
+                                            F1_TOTAL_STVAL1: V_F1_TOTAL_STVAL1,
+                                            F1_TOTAL_TAXES: V_F1_TOTAL_TAXES,
+                                            F1_TOTAL_ERROR: V_F1_TOTAL_ERROR,
+                                            F1_TOTAL_PENDING_TO_F2: V_F1_PENDING_TO_F2,
+                                            F1_PERCENT: V_F1_PERCENT.toFixed(2) + '%',
+                                            
+                                            F2_F1_TOTAL_COMPLETED: V_F2_F1_TOTAL_COMPLETED,
+                                            F2_TOTAL_PENDING_OVER50: V_F2_TOTAL_PENDING_OVER50,
+                                            F2_TOTAL_MATCH_OVER50: V_F2_TOTAL_MATCH_OVER50,
+                                            F2_PERCENT: V_F2_PERCENT.toFixed(2) + '%',
+                                            
+                                            F3_F2_TOTAL_COMPLETED: V_F3_F2_TOTAL_COMPLETED,
+                                            F3_TOTAL_WO_ACC: V_F3_TOTAL_WO_ACC,
+                                            F3_TOTAL_COMPLETED: V_F3_TOTAL_COMPLETED,
+                                            F3_TOTAL_PENDING_SENT: V_F3_TOTAL_PENDING_SENT,
+                                            F3_TOTAL_COMPLETED_SAP: V_F3_TOTAL_COMPLETED_SAP,
+                                            F3_PERCENT: V_F3_PERCENT.toFixed(2) + '%',
+                                            
+                                            expanded: false,
+                                            children: []
+                                        });
+
+                                        // Agregar las filas hijas
+                                        Ext.Object.each(lstData, function (index, value01) {
+                                            if (value.strFormatDate === value01.strFormatDate) {
+                                                let V_CHILD_PERCENT = 0;
+                                                let V_CHILD_PERCENT_F2 = 0;
+                                                let V_CHILD_PERCENT_F3 = 0;
+                                                
+                                                if (value01.F1_TOTAL > 0) {
+                                                    V_CHILD_PERCENT = (value01.F1_TOTAL_STVAL1 * 100) / value01.F1_TOTAL;
+                                                }
+                                                
+                                                if (value01.F2_F1_TOTAL_COMPLETED > 0) {
+                                                    V_CHILD_PERCENT_F2 = (value01.F2_TOTAL_MATCH_OVER50 * 100) / value01.F2_F1_TOTAL_COMPLETED;
+                                                }
+                                                
+                                                if (value01.F3_F2_TOTAL_COMPLETED > 0) {
+                                                    V_CHILD_PERCENT_F3 = (value01.F3_TOTAL_COMPLETED * 100) / value01.F3_F2_TOTAL_COMPLETED;
+                                                }
+
+                                                dataRoot.children[a.indexOf(value.strFormatDate)].children.push({
+                                                    strFormatDate: value01.strFormatDate,
+                                                    VALDATE: value01.VALDATE,
+                                                    CCUST: value01.CCUST,
+                                                    F1_TOTAL: value01.F1_TOTAL,
+                                                    F1_TOTAL_STVAL3: value01.F1_TOTAL_STVAL3,
+                                                    F1_TOTAL_STVAL1: value01.F1_TOTAL_STVAL1,
+                                                    F1_TOTAL_TAXES: value01.F1_TOTAL_TAXES,
+                                                    F1_TOTAL_ERROR: value01.F1_TOTAL_ERROR,
+                                                    F1_TOTAL_PENDING_TO_F2: value01.F1_TOTAL_PENDING_TO_F2,
+                                                    F1_PERCENT: V_CHILD_PERCENT.toFixed(2) + '%',
+                                                    
+                                                    F2_F1_TOTAL_COMPLETED: value01.F2_F1_TOTAL_COMPLETED,
+                                                    F2_TOTAL_PENDING_OVER50: value01.F2_TOTAL_PENDING_OVER50,
+                                                    F2_TOTAL_MATCH_OVER50: value01.F2_TOTAL_MATCH_OVER50,
+                                                    F2_PERCENT: V_CHILD_PERCENT_F2.toFixed(2) + '%',
+                                                    
+                                                    F3_F2_TOTAL_COMPLETED: value01.F3_F2_TOTAL_COMPLETED,
+                                                    F3_TOTAL_WO_ACC: value01.F3_TOTAL_WO_ACC,
+                                                    F3_TOTAL_COMPLETED: value01.F3_TOTAL_COMPLETED,
+                                                    F3_TOTAL_PENDING_SENT: value01.F3_TOTAL_PENDING_SENT,
+                                                    F3_TOTAL_COMPLETED_SAP: value01.F3_TOTAL_COMPLETED_SAP,
+                                                    F3_PERCENT: V_CHILD_PERCENT_F3.toFixed(2) + '%',
+                                                    
+                                                    leaf: true
+                                                });
+                                            }
+                                        });
+
+                                        // Acumular global
+                                        F1_TOTAL_GLOBAL += V_F1_TOTAL;
+                                        F1_TOTAL_STVAL3_GLOBAL += V_F1_TOTAL_STVAL3;
+                                        F1_TOTAL_STVAL1_GLOBAL += V_F1_TOTAL_STVAL1;
+                                        F1_TOTAL_TAXES_GLOBAL += V_F1_TOTAL_TAXES;
+                                        F1_TOTAL_ERROR_GLOBAL += V_F1_TOTAL_ERROR;
+                                        F1_TOTAL_PENDING_TO_F2_GLOBAL += V_F1_PENDING_TO_F2;
+                                        
+                                        F2_F1_TOTAL_COMPLETED_GLOBAL += V_F2_F1_TOTAL_COMPLETED;
+                                        F2_TOTAL_PENDING_OVER50_GLOBAL += V_F2_TOTAL_PENDING_OVER50;
+                                        F2_TOTAL_MATCH_OVER50_GLOBAL += V_F2_TOTAL_MATCH_OVER50;
+                                        
+                                        F3_F2_TOTAL_COMPLETED_GLOBAL += V_F3_F2_TOTAL_COMPLETED;
+                                        F3_TOTAL_WO_ACC_GLOBAL += V_F3_TOTAL_WO_ACC;
+                                        F3_TOTAL_COMPLETED_GLOBAL += V_F3_TOTAL_COMPLETED;
+                                        F3_TOTAL_PENDING_SENT_GLOBAL += V_F3_TOTAL_PENDING_SENT;
+                                        F3_TOTAL_COMPLETED_SAP_GLOBAL += V_F3_TOTAL_COMPLETED_SAP;
+                                    }
+                                });
+
+                                // Calcular porcentaje global
+                                let F1_PERCENT_GLOBAL = 0;
+                                if (F1_TOTAL_GLOBAL > 0) {
+                                    F1_PERCENT_GLOBAL = (F1_TOTAL_STVAL1_GLOBAL * 100) / F1_TOTAL_GLOBAL;
+                                }
+                                
+                                let F1_PERCENT_GLOBAL_F2 = 0;
+                                if (F2_F1_TOTAL_COMPLETED_GLOBAL > 0) {
+                                    F1_PERCENT_GLOBAL_F2 = (F2_TOTAL_MATCH_OVER50_GLOBAL * 100) / F2_F1_TOTAL_COMPLETED_GLOBAL;
+                                }
+                                
+                                let F1_PERCENT_GLOBAL_F3 = 0;
+                                if (F3_F2_TOTAL_COMPLETED_GLOBAL > 0) {
+                                    F1_PERCENT_GLOBAL_F3 = (F3_TOTAL_COMPLETED_GLOBAL * 100) / F3_F2_TOTAL_COMPLETED_GLOBAL;
+                                }
+
+                                // Crear el store
+                                var storeTree = Ext.create('Ext.data.TreeStore', {
+                                    root: dataRoot
+                                });
+
+                                Ext.getCmp(prototype.id + '-gridSumaryMain').setStore(storeTree);
+
+                                Ext.getCmp(prototype.id + '-F1_TOTAL_GLOBAL').setText(Ext.util.Format.number(F1_TOTAL_GLOBAL, '0'));
+                                Ext.getCmp(prototype.id + '-F1_TOTAL_STVAL3_GLOBAL').setText(Ext.util.Format.number(F1_TOTAL_STVAL3_GLOBAL, '0,000'));
+                                Ext.getCmp(prototype.id + '-F1_TOTAL_STVAL1_GLOBAL').setText(Ext.util.Format.number(F1_TOTAL_STVAL1_GLOBAL, '0,000'));
+                                Ext.getCmp(prototype.id + '-F1_TOTAL_TAXES_GLOBAL').setText(Ext.util.Format.number(F1_TOTAL_TAXES_GLOBAL, '0,000'));
+                                Ext.getCmp(prototype.id + '-F1_TOTAL_ERROR_GLOBAL').setText(Ext.util.Format.number(F1_TOTAL_ERROR_GLOBAL, '0,000'));
+                                Ext.getCmp(prototype.id + '-F1_PERCENT_GLOBAL').setText(F1_PERCENT_GLOBAL.toFixed(2) + '%');
+                                 Ext.getCmp(prototype.id + '-F1_TOTAL_PENDING_TO_F2_GLOBAL').setText(Ext.util.Format.number(F1_TOTAL_PENDING_TO_F2_GLOBAL, '0,000'));
+                                
+                                Ext.getCmp(prototype.id + '-F2_TOTAL_GLOBAL').setText(Ext.util.Format.number(F2_F1_TOTAL_COMPLETED_GLOBAL, '0'));
+                                Ext.getCmp(prototype.id + '-F2_TOTAL_STVAL3_GLOBAL').setText(Ext.util.Format.number(F2_TOTAL_PENDING_OVER50_GLOBAL, '0,000'));
+                                Ext.getCmp(prototype.id + '-F2_TOTAL_STVAL1_GLOBAL').setText(Ext.util.Format.number(F2_TOTAL_MATCH_OVER50_GLOBAL, '0,000'));
+                                Ext.getCmp(prototype.id + '-F2_PERCENT_GLOBAL').setText(F1_PERCENT_GLOBAL_F2.toFixed(2) + '%');
+                                
+                                Ext.getCmp(prototype.id + '-SENT_TOTAL_GLOBAL').setText(Ext.util.Format.number(F3_F2_TOTAL_COMPLETED_GLOBAL, '0'));
+                                Ext.getCmp(prototype.id + '-SENT_TOTAL_STVAL3_GLOBAL').setText(Ext.util.Format.number(F3_TOTAL_WO_ACC_GLOBAL, '0,000'));
+                                Ext.getCmp(prototype.id + '-SENT_TOTAL_STVAL1_GLOBAL').setText(Ext.util.Format.number(F3_TOTAL_COMPLETED_GLOBAL, '0,000'));
+                                Ext.getCmp(prototype.id + '-SENT_PERCENT_GLOBAL').setText(F1_PERCENT_GLOBAL_F3.toFixed(2) + '%');
+                                Ext.getCmp(prototype.id + '-SENT_TOTAL_SENT_GLOBAL').setText(Ext.util.Format.number(F3_TOTAL_PENDING_SENT_GLOBAL, '0,000'));
+
+                                Ext.getCmp(prototype.id + '-SAP_TOTAL_STVAL1_GLOBAL').setText(Ext.util.Format.number(F3_TOTAL_COMPLETED_SAP_GLOBAL, '0,000'));
+                                
+                                // ==== F1 - Settlement ====
+                                var totalsF1 = [];
+                                if (typeof F1_PERCENT_GLOBAL !== 'undefined') {
+                                    totalsF1.push({
+                                        LABEL: 'Advance',
+                                        Perc2: F1_PERCENT_GLOBAL,
+                                        VENDOR: 'Advance:\n' + Ext.util.Format.number(F1_PERCENT_GLOBAL, '0.00') + '%'
+                                    });
+                                    totalsF1.push({
+                                        LABEL: 'Pending',
+                                        Perc2: 100 - F1_PERCENT_GLOBAL,
+                                        VENDOR: 'Pending:\n' + Ext.util.Format.number(100 - F1_PERCENT_GLOBAL, '0.00') + '%'
+                                    });
+                                }
+                                var storeF1 = Ext.create('Ext.data.Store', { fields: ['LABEL', 'Perc2', 'VENDOR'], data: totalsF1 });
+                                Ext.getCmp(prototype.id + '-displayPolarSM').bindStore(storeF1);
+
+
+                                // ==== F2 - Sales ====
+                                var totalsF2 = [];
+                                if (typeof F1_PERCENT_GLOBAL_F2 !== 'undefined') {
+                                    totalsF2.push({
+                                        LABEL: 'Advance',
+                                        Perc2: F1_PERCENT_GLOBAL_F2,
+                                        VENDOR: 'Advance:\n' + Ext.util.Format.number(F1_PERCENT_GLOBAL_F2, '0.00') + '%'
+                                    });
+                                    totalsF2.push({
+                                        LABEL: 'Pending',
+                                        Perc2: 100 - F1_PERCENT_GLOBAL_F2,
+                                        VENDOR: 'Pending:\n' + Ext.util.Format.number(100 - F1_PERCENT_GLOBAL_F2, '0.00') + '%'
+                                    });
+                                }
+                                var storeF2 = Ext.create('Ext.data.Store', { fields: ['LABEL', 'Perc2', 'VENDOR'], data: totalsF2 });
+                                Ext.getCmp(prototype.id + '-displayPolarF2').bindStore(storeF2);
+                                
+                                // ==== Accounted ====
+                                var totalsF3 = [];
+                                if (typeof F1_PERCENT_GLOBAL_F3 !== 'undefined') {
+                                    totalsF3.push({
+                                        LABEL: 'Advance',
+                                        Perc2: F1_PERCENT_GLOBAL_F3,
+                                        VENDOR: 'Advance:\n' + Ext.util.Format.number(F1_PERCENT_GLOBAL_F3, '0.00') + '%'
+                                    });
+                                    totalsF3.push({
+                                        LABEL: 'Pending',
+                                        Perc2: 100 - F1_PERCENT_GLOBAL_F3,
+                                        VENDOR: 'Pending:\n' + Ext.util.Format.number(100 - F1_PERCENT_GLOBAL_F3, '0.00') + '%'
+                                    });
+                                }
+                                var storeF3 = Ext.create('Ext.data.Store', { fields: ['LABEL', 'Perc2', 'VENDOR'], data: totalsF3 });
+                                Ext.getCmp(prototype.id + '-displayPolarF3').bindStore(storeF3);
+
+                                
+                                console.log({
+                                    F1_TOTAL_GLOBAL,
+                                    F1_TOTAL_STVAL3_GLOBAL,
+                                    F1_TOTAL_STVAL1_GLOBAL,
+                                    F1_PERCENT_GLOBAL
+                                }, 'totales globales');
+
+                            
+                            return;
+                            var data = lastRecord;
+                            console.log(lastRecord, 'datadata');
+                            console.log(obj, 'objobj');
+                            
+                            return;
+                            
+                            let item = {};
+                            let item2 = {};
+                            let item3 = {};
+                            let item4 = {};
+                            let item5 = {};
+                            let totals = [];
+                            let totalCantidad = lastRecord.QTY_TOTAL_REFUND +
+                                lastRecord.QTY_TOTAL_CHGBACK +
+                                lastRecord.QTY_TOTAL_REVERSE_CHGBACK +
+                                lastRecord.QTY_TOTAL_ACRED +
+                                lastRecord.QTY_TOTAL_PENDING;
+
+                            let refundMatch = (lastRecord.QTY_TOTAL_REFUND / totalCantidad) * 100;
+                            let chgbkMatch = (lastRecord.QTY_TOTAL_CHGBACK / totalCantidad) * 100;
+                            let reverseChgbkMatch = (lastRecord.QTY_TOTAL_REVERSE_CHGBACK / totalCantidad) * 100;
+                            let acreditMatch = (lastRecord.QTY_TOTAL_ACRED / totalCantidad) * 100;
+                            let othersPend = (lastRecord.QTY_TOTAL_PENDING / totalCantidad) * 100;
+
+                            if (obj.data.items.length > 0) {
+                                totals.push({
+                                    LABEL: 'Refund',
+                                    Perc2: lastRecord.QTY_TOTAL_REFUND,
+                                    VENDOR: 'Refund:\n' + Ext.util.Format.number(refundMatch, '0.00%')
+                                });
+
+                                totals.push({
+                                    LABEL: 'Pending',
+                                    Perc2: lastRecord.QTY_TOTAL_PENDING,
+                                    VENDOR: 'Pending:\n' + Ext.util.Format.number(othersPend, '0.00%')
+                                });
+                                totals.push({
+                                    LABEL: 'Chgback',
+                                    Perc2: lastRecord.QTY_TOTAL_CHGBACK,
+                                    VENDOR: 'Chgback:\n' + Ext.util.Format.number(chgbkMatch, '0.00%')
+                                });
+                                totals.push({
+                                    LABEL: 'Acredit',
+                                    Perc2: lastRecord.QTY_TOTAL_ACRED,
+                                    VENDOR: 'Acredit:\n'+ Ext.util.Format.number(acreditMatch, '0.00%')
+                                });
+                                totals.push({
+                                    LABEL: 'Chgback Reverse',
+                                    Perc2: lastRecord.QTY_TOTAL_REVERSE_CHGBACK,
+                                    VENDOR: 'Chgback Reverse:\n' + Ext.util.Format.number(reverseChgbkMatch, '0.00%')
+                                });
+                            }
+
+                            var storeData1er = Ext.create('Ext.data.Store', {
+                                data: totals,
+                                autoLoad: true
+                            });
+
+                            Ext.getCmp(prototype.id + '-displayPolarSM').bindStore(storeData1er);
+                            //Ext.getCmp(prototype.id + '-lblTittlePaidSumaryMain').setText('Totals Debits: ' + Ext.util.Format.number(totalCantidad, '0,000'));
+
+                            let dataBar = [
+                                {
+                                    category: 'Refund',
+                                    USD: lastRecord.AMOUNT_TOTAL_REFUND_USD,
+                                    SEND: lastRecord.AMOUNT_TOTAL_REFUND_SEND,
+                                    SAP: lastRecord.AMOUNT_TOTAL_REFUND_SAP
+                                },
+                                {
+                                    category: 'Chargeback',
+                                    USD: lastRecord.AMOUNT_TOTAL_CHGBACK_USD,
+                                    SEND: lastRecord.AMOUNT_TOTAL_CHGBACK_SEND,
+                                    SAP: lastRecord.AMOUNT_TOTAL_CHGBACK_SAP
+                                },
+                                {
+                                    category: 'Reverse ChgBck',
+                                    USD: lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_USD,
+                                    SEND: lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_SEND,
+                                    SAP: lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_SAP
+                                },
+                                {
+                                    category: 'Acreditaciones',
+                                    USD: lastRecord.AMOUNT_TOTAL_ACRED_USD,
+                                    SEND: lastRecord.AMOUNT_TOTAL_ACRED_SEND,
+                                    SAP: lastRecord.AMOUNT_TOTAL_ACRED_SAP
+                                },
+                                {
+                                    category: 'Pending',
+                                    USD: lastRecord.AMOUNT_TOTAL_PENDING_USD,
+                                    SEND: lastRecord.AMOUNT_TOTAL_PENDING_SEND,
+                                    SAP: lastRecord.AMOUNT_TOTAL_PENDING_SAP
+                                }
+                            ];
+
+                            let chart = Ext.getCmp(prototype.id + '-displayBarSM');
+                            chart.setStore({
+                                fields: ['category', 'USD', 'SEND', 'SAP'],
+                                data: dataBar
+                            });
+
+                            chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
+
+                        }
+                    }
+                }
+            });
+        global.clear();
+        this.getPaggin();
+
+    },
+    checkAndProceed: function (cantidad, label) {
+        if ((cantidad || 0) < 1) {
+            Ext.Msg.alert('No Detail Available', `There are no ${label} records to display.`);
+            return false;
+        }
+        console.log(`Proceeding to ${label} detail with count:`, cantidad);
+        return true;
+    },
+    onClickDetailAvianca: function (IN_FLAG, cmp, cpm2, numRow, numCol, cpm3, rowData) {
+        const me = this;
+        const data = rowData?.data || {};
+        const esPadre = !data.CCUST;
+
+        me.paramsDetail = {};
+        me.paramsDetail.IN_CCUST = esPadre ? "" : data.CCUST;
+        me.paramsDetail.IN_DATE = data.VALDATE;
+        me.paramsDetail.IN_BANDOC = Ext.getCmp(prototype.id + '-txtBANDOC').getValue();
+        me.paramsDetail.IN_REFER = Ext.getCmp(prototype.id + '-txtREFER').getValue();
+
+        console.log(data,'data')
+        console.log("IN_CCUST:", me.paramsDetail.IN_CCUST);
+
+        switch (IN_FLAG) {
+            case "IN_WSETT": {
+                const cantidad = data.F1_TOTAL_STVAL3;
+                if (!me.checkAndProceed(cantidad, 'liquidation')) return;
+
+                me.paramsDetail = {
+                    ...me.paramsDetail,
+                    IN_WSETT: "1",
+                    IN_TAXES: "",
+                    IN_ERROR: "",
+                    IN_PENDING_F2: "",
+                    IN_WSALES: "",
+                    IN_PENDING_ACC: "",
+                    IN_PENDING_SENT: ""
+                };
+                break;
+            }
+
+            case "IN_TAXES": {
+                const cantidad = data.F1_TOTAL_TAXES;
+                if (!me.checkAndProceed(cantidad, 'tax')) return;
+                
+                me.paramsDetail = {
+                    ...me.paramsDetail,
+                    IN_WSETT: "",
+                    IN_TAXES: "1",
+                    IN_ERROR: "",
+                    IN_PENDING_F2: "",
+                    IN_WSALES: "",
+                    IN_PENDING_ACC: "",
+                    IN_PENDING_SENT: ""
+                };
+                break;
+            }
+
+            case "IN_ERROR": {
+                const cantidad = data.F1_TOTAL_ERROR;
+                if (!me.checkAndProceed(cantidad, 'error')) return;
+                 me.paramsDetail = {
+                    ...me.paramsDetail,
+                    IN_WSETT: "",
+                    IN_TAXES: "",
+                    IN_ERROR: "1",
+                    IN_PENDING_F2: "",
+                    IN_WSALES: "",
+                    IN_PENDING_ACC: "",
+                    IN_PENDING_SENT: ""
+                };
+                break;
+            }
+
+            case "IN_PENDING_F2": {
+                const cantidad = data.F1_TOTAL_PENDING_TO_F2;
+                if (!me.checkAndProceed(cantidad, 'pending F2')) return;
+                me.paramsDetail = {
+                    ...me.paramsDetail,
+                    IN_WSETT: "",
+                    IN_TAXES: "",
+                    IN_ERROR: "",
+                    IN_PENDING_F2: "1",
+                    IN_WSALES: "",
+                    IN_PENDING_ACC: "",
+                    IN_PENDING_SENT: ""
+                };
+                break;
+            }
+
+            case "IN_WSALES": {
+                const cantidad = data.F2_TOTAL_PENDING_OVER50;
+                if (!me.checkAndProceed(cantidad, 'W/O Sales')) return;
+                me.paramsDetail = {
+                    ...me.paramsDetail,
+                    IN_WSETT: "",
+                    IN_TAXES: "",
+                    IN_ERROR: "",
+                    IN_PENDING_F2: "",
+                    IN_WSALES: "1",
+                    IN_PENDING_ACC: "",
+                    IN_PENDING_SENT: ""
+                };
+                break;
+            }
+
+            case "IN_PENDING_ACC": {
+                const cantidad = data.F3_TOTAL_WO_ACC;
+                if (!me.checkAndProceed(cantidad, 'Pending to Accounting')) return;
+                me.paramsDetail = {
+                    ...me.paramsDetail,
+                    IN_WSETT: "",
+                    IN_TAXES: "",
+                    IN_ERROR: "",
+                    IN_PENDING_F2: "",
+                    IN_WSALES: "",
+                    IN_PENDING_ACC: "1",
+                    IN_PENDING_SENT: ""
+                };
+                break;
+            }
+
+            case "IN_PENDING_SENT": {
+                const cantidad = data.F3_TOTAL_PENDING_SENT;
+                if (!me.checkAndProceed(cantidad, 'Pending to Send')) return;
+               me.paramsDetail = {
+                    ...me.paramsDetail,
+                    IN_WSETT: "",
+                    IN_TAXES: "",
+                    IN_ERROR: "",
+                    IN_PENDING_F2: "",
+                    IN_WSALES: "",
+                    IN_PENDING_ACC: "",
+                    IN_PENDING_SENT: "1"
+                };
+                break;
+            }
+
+            default:
+                Ext.Msg.alert('Invalid Option', 'This option is not recognized.');
+                return;
+        }
+        
+        me.paramsDetail.beanString = JSON.stringify(me.paramsDetail);
+        me.setGridDataDashboardDetail()
+    },
+    setGridDataDashboardDetail: function () {
+        win.lblUser_toolTip("Estructura: MPF102");
+        me.drillDown.push(me.panelActual);
+        me.panelActual = '-panelGridSumaryDetail';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        console.log("paramsDetail:", me.paramsDetail);
+     
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchSumaryMainDetail'
+                }, listeners: {
+                    beforeload: function (obj) {
+//                        Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
+                        obj.proxy.extraParams = me.paramsDetail;
+                    },
+                    load: function (obj) {
+//                        Ext.getCmp(prototype.id + '-contentInfo').unmask();
+                       
+                       var pag = Ext.getCmp(prototype.id + '-paggin');
+                        var pagData = pag.getPageData();
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        }
+                    }
+                }
+            });
+        global.clear();
+        Ext.getCmp(prototype.id + '-gridDataDetail').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
+         this.getPaggin();
+         this.setWidthPie();
+    },
+    goURLpost: function (method, parms, columns) {
+
+        var js_columns = JSON.stringify(columns);
+        var mapForm = document.createElement("form");
+        mapForm.target = "_blank";
+        mapForm.method = "POST"; // or "post" if appropriate
+        mapForm.action = prototype.url + '/' + method + '?dw_excel=true';
+        var mapInput = document.createElement("input");
+        mapInput.type = "text";
+        mapInput.name = "beanString";
+        mapInput.value = parms;
+        mapForm.appendChild(mapInput);
+        var mapInput = document.createElement("input");
+        mapInput.type = "text";
+        mapInput.name = "columns";
+        mapInput.value = js_columns;
+        mapForm.appendChild(mapInput);
+        var mapInput = document.createElement("input");
+        mapInput.type = "text";
+        mapInput.name = "columns";
+        mapInput.value = js_columns;
+        mapForm.appendChild(mapInput);
+        document.body.appendChild(mapForm);
+        mapForm.submit();
+    },
+    searchOption: function (e, eOpts) {
+        if (eOpts.getKey() !== 13) return false;
+        this.fetchBandocSales();
+    }
+});

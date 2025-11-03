@@ -4,7 +4,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
     alias: 'widget.' + prototype.id + '-info',
     layout: 'border',
     align: 'center',
-    bodyStyle: 'background-color: #E3EAEF;',
+    bodyStyle: 'background-color: #F4F7FD;',
     defaults: {
         bodyStyle: 'background: transparent;',
         border: false
@@ -27,7 +27,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                 {
                     xtype: 'panel',
                     id: prototype.id + '-panelMain',
-                    bodyStyle: 'background-color: #E3EAEF;',
+                    bodyStyle: 'background-color: #F4F7FD;',
                     layout: {
                         type: 'vbox',
                         align: 'center'
@@ -36,7 +36,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                         {
                             xtype: 'panel',
                             id: prototype.id + '-panelGridData',
-                            bodyStyle: 'background-color: #E3EAEF;',
+                            bodyStyle: 'background-color: #F4F7FD;',
                             border: false,
                             hidden: true,
                             width: 1800,
@@ -48,7 +48,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                             items: [
                                 {
                                     xtype: 'panel',
-                                    bodyStyle: 'background-color: #E3EAEF;',
+                                    bodyStyle: 'background-color: #F4F7FD;',
                                     border: false,
 //                            margin: '20 0 0 0 ',
                                     layout: {
@@ -733,7 +733,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                     items: [
                                         {
                                             xtype: 'panel',
-                                            bodyStyle: 'background-color: #E3EAEF;',
+                                            bodyStyle: 'background-color: #F4F7FD;',
                                             padding: '5 0 0 5',
                                             border: true,
                                             layout: {
@@ -760,7 +760,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     interactions: ['itemhighlight'],
                                                     legend: {
                                                         docked: 'bottom',
-                                                        background: '#E3EAEF'
+                                                        background: '#F4F7FD'
                                                     },
                                                     axes: [{
                                                             type: 'numeric3d',
@@ -842,7 +842,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     interactions: ['itemhighlight'],
                                                     legend: {
                                                         docked: 'bottom',
-                                                        background: '#E3EAEF'
+                                                        background: '#F4F7FD'
                                                     },
                                                     axes: [{
                                                             type: 'numeric3d',
@@ -910,7 +910,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                         },
                         {
                             xtype: 'panel',
-                            bodyStyle: 'background-color: #E3EAEF;',
+                            bodyStyle: 'background-color: #F4F7FD;',
                             id: prototype.id + '-panelGridCountryTotal',
                             border: false,
                             height: 'auto',
@@ -1212,7 +1212,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     interactions: ['itemhighlight'],
                                                     legend: {
                                                         docked: 'bottom',
-                                                        background: '#E3EAEF'
+                                                        background: '#F4F7FD'
 
                                                     },
                                                     axes: [{
@@ -1271,7 +1271,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                         {
                             xtype: 'panel',
                             id: prototype.id + '-boxMainData',
-                            bodyStyle: 'background-color: #E3EAEF;',
+                            bodyStyle: 'background-color: #F4F7FD;',
                             border: false,
                             height: 'auto',
                             width: 1672,
@@ -1591,7 +1591,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                         {
                             xtype: 'panel',
                             id: prototype.id + '-boxPendingData',
-                            bodyStyle: 'background-color: #E3EAEF;',
+                            bodyStyle: 'background-color: #F4F7FD;',
                             border: false,
                             height: 'auto',
 //                            width: 1222,
@@ -1987,7 +1987,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                         {
                             xtype: 'panel',
                             id: prototype.id + '-boxSumaryMonthData',
-                            bodyStyle: 'background-color: #E3EAEF;',
+                            bodyStyle: 'background-color: #F4F7FD;',
                             border: false,
                             height: 'auto',
 //                            width: 1222,
@@ -2303,7 +2303,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     interactions: ['itemhighlight'],
                                                     legend: {
                                                         docked: 'bottom',
-                                                        background: '#E3EAEF'
+                                                        background: '#F4F7FD'
 
                                                     },
                                                     axes: [{
@@ -2360,7 +2360,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                         {
                             xtype: 'panel',
                             id: prototype.id + '-boxSumaryCanalData',
-                            bodyStyle: 'background-color: #E3EAEF;',
+                            bodyStyle: 'background-color: #F4F7FD;',
                             border: false,
                             height: 'auto',
 //                            width: 1222,
@@ -2649,7 +2649,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     interactions: ['itemhighlight'],
                                                     legend: {
                                                         docked: 'bottom',
-                                                        background: '#E3EAEF'
+                                                        background: '#F4F7FD'
 
                                                     },
                                                     axes: [{
@@ -2706,7 +2706,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                         {
                             xtype: 'panel',
                             id: prototype.id + '-boxSumaryCompanyData',
-                            bodyStyle: 'background-color: #E3EAEF;',
+                            bodyStyle: 'background-color: #F4F7FD;',
                             border: false,
                             height: 'auto',
 //                            width: 1222,
@@ -2963,7 +2963,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     interactions: ['itemhighlight'],
                                                     legend: {
                                                         docked: 'bottom',
-                                                        background: '#E3EAEF'
+                                                        background: '#F4F7FD'
 
                                                     },
                                                     axes: [{
@@ -3725,7 +3725,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
 //                                                    interactions: ['itemhighlight'],
 //                                                    legend: {
 //                                                        docked: 'bottom',
-//                                                        background: '#E3EAEF'
+//                                                        background: '#F4F7FD'
 //
 //                                                    },
 //                                                    axes: [{
@@ -3782,7 +3782,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                         {
                             xtype: 'panel',
                             id: prototype.id + '-boxSumaryCountryData',
-                            bodyStyle: 'background-color: #E3EAEF;',
+                            bodyStyle: 'background-color: #F4F7FD;',
                             border: false,
                             height: 'auto',
 //                            width: 1222,
@@ -4078,7 +4078,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     interactions: ['itemhighlight'],
                                                     legend: {
                                                         docked: 'bottom',
-                                                        background: '#E3EAEF'
+                                                        background: '#F4F7FD'
 
                                                     },
                                                     axes: [{
@@ -4136,7 +4136,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                         {
                             xtype: 'panel',
                             id: prototype.id + '-boxMainDataCLAtot',
-                            bodyStyle: 'background-color: #E3EAEF;',
+                            bodyStyle: 'background-color: #F4F7FD;',
                             border: true,
 //                            height: 497,
                             width: 1282,
@@ -4417,7 +4417,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                     items: [
                                         {
                                             xtype: 'panel',
-                                            bodyStyle: 'background-color: #E3EAEF;',
+                                            bodyStyle: 'background-color: #F4F7FD;',
                                             padding: '5 0 0 5',
                                             border: true,
                                             layout: {
@@ -4444,7 +4444,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     interactions: ['itemhighlight'],
                                                     legend: {
                                                         docked: 'bottom',
-                                                        background: '#E3EAEF'
+                                                        background: '#F4F7FD'
                                                     },
                                                     axes: [{
                                                             type: 'numeric3d',
@@ -4538,7 +4538,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     interactions: ['rotate', 'itemhighlight'],
 //                                                    legend: {
 //                                                        docked: 'bottom',
-//                                                        background: '#E3EAEF'
+//                                                        background: '#F4F7FD'
 //                                                    },
                                                     series: [{
                                                             type: 'pie3d',
@@ -4578,7 +4578,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                         {
                             xtype: 'panel',
                             id: prototype.id + '-boxGroupDataCLAtot',
-                            bodyStyle: 'background-color: #E3EAEF;',
+                            bodyStyle: 'background-color: #F4F7FD;',
                             border: true,
                             height: 'auto',
                             width: 1237,
@@ -4847,7 +4847,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                         {
                             xtype: 'panel',
                             id: prototype.id + '-boxMainDataCLA',
-                            bodyStyle: 'background-color: #E3EAEF;',
+                            bodyStyle: 'background-color: #F4F7FD;',
                             border: true,
                             height: 'auto',
                             width: 1132,
@@ -5080,7 +5080,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                         {
                             xtype: 'panel',
                             id: prototype.id + '-boxGroupDataCLA',
-                            bodyStyle: 'background-color: #E3EAEF;',
+                            bodyStyle: 'background-color: #F4F7FD;',
                             border: true,
                             height: 'auto',
                             width: 1307,
@@ -5308,7 +5308,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                         {
                             xtype: 'panel',
                             id: prototype.id + '-boxDetailBank',
-                            bodyStyle: 'background-color: #E3EAEF;',
+                            bodyStyle: 'background-color: #F4F7FD;',
                             border: true,
                             height: 'auto',
                             width: 1307,
@@ -5535,7 +5535,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                         {
                             xtype: 'panel',
                             id: prototype.id + '-boxDataProvisions',
-                            bodyStyle: 'background-color: #E3EAEF;',
+                            bodyStyle: 'background-color: #F4F7FD;',
                             border: false,
                             height: 'auto',
                             width: 1800,
@@ -5547,7 +5547,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                 {
                                     xtype: 'panel',
                                     id: prototype.id + '-boxGrill',
-                                    bodyStyle: 'background-color: #E3EAEF;',
+                                    bodyStyle: 'background-color: #F4F7FD;',
                                     border: false,
                                     height: 'auto',
                                     margin: '0 0 0 0 ',
@@ -5559,7 +5559,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                             xtype: 'grid',
                                             id: prototype.id + '-gridDataProvisions',
                                             height: 400,
-                                            bodyStyle: 'background-color: #E3EAEF;',
+                                            bodyStyle: 'background-color: #F4F7FD;',
                                             width: 1722,
                                             border: false,
                                             hidden: false,
@@ -5989,7 +5989,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                 {
                                     xtype: 'panel',
                                     id: prototype.id + '-boxGraf',
-                                    bodyStyle: 'background-color: #E3EAEF;',
+                                    bodyStyle: 'background-color: #F4F7FD;',
                                     border: false,
                                     height: 'auto',
                                     hidden: true,
@@ -6094,7 +6094,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                         {
                             xtype: 'panel',
                             id: prototype.id + '-panelGridConciliation',
-                            bodyStyle: 'background-color: #E3EAEF;',
+                            bodyStyle: 'background-color: #F4F7FD;',
                             border: false,
                             hidden: true,
 //                            width: 1800,
@@ -6110,7 +6110,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                             items: [
                                 {
                                     xtype: 'panel',
-                                    bodyStyle: 'background-color: #E3EAEF;',
+                                    bodyStyle: 'background-color: #F4F7FD;',
                                     border: false,
                                     layout: {
                                         type: 'hbox',
@@ -6460,7 +6460,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                     items: [
                                         {
                                             xtype: 'panel',
-                                            bodyStyle: 'background-color: #E3EAEF;',
+                                            bodyStyle: 'background-color: #F4F7FD;',
                                             padding: '5 0 0 5',
                                             border: true,
                                             layout: {
@@ -6486,7 +6486,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
     interactions: ['itemhighlight'],
     legend: {
         docked: 'bottom',
-        background: '#E3EAEF'
+        background: '#F4F7FD'
     },
     axes: [{
         type: 'numeric3d',
@@ -6571,7 +6571,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     interactions: ['itemhighlight'],
                                                     legend: {
                                                         docked: 'bottom',
-                                                        background: '#E3EAEF'
+                                                        background: '#F4F7FD'
                                                     },
                                                     axes: [{
                                                             type: 'numeric3d',
@@ -6767,7 +6767,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                 },
                                 {
                                     xtype: 'panel',
-                                    bodyStyle: 'background-color: #E3EAEF;',
+                                    bodyStyle: 'background-color: #F4F7FD;',
                                     border: false,
                                     layout: {
                                         type: 'hbox',
@@ -7043,7 +7043,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                         {
                             xtype: 'panel',
                             id: prototype.id + '-panelGridConciliationMDP',
-                            bodyStyle: 'background-color: #E3EAEF;',
+                            bodyStyle: 'background-color: #F4F7FD;',
                             border: false,
                             hidden: false,
 //                            width: 1800,
@@ -7059,7 +7059,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                             items: [
                                 {
                                     xtype: 'panel',
-                                    bodyStyle: 'background-color: #E3EAEF;',
+                                    bodyStyle: 'background-color: #F4F7FD;',
                                     border: false,
                                     layout: {
                                         type: 'hbox',
@@ -7457,7 +7457,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     items: [
                                                         {
                                                             xtype: 'panel',
-                                                            bodyStyle: 'background-color: #E3EAEF;',
+                                                            bodyStyle: 'background-color: #F4F7FD;',
                                                             padding: '5 0 0 5',
                                                             border: true,
                                                             layout: {
@@ -7483,7 +7483,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                     interactions: ['itemhighlight'],
                                                                     legend: {
                                                                         docked: 'bottom',
-                                                                        background: '#E3EAEF'
+                                                                        background: '#F4F7FD'
                                                                     },
                                                                     axes: [{
                                                                         type: 'numeric3d',
@@ -7579,7 +7579,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                     interactions: ['itemhighlight'],
                                                                     legend: {
                                                                         docked: 'bottom',
-                                                                        background: '#E3EAEF'
+                                                                        background: '#F4F7FD'
                                                                     },
                                                                     axes: [{
                                                                             type: 'numeric3d',
@@ -7775,7 +7775,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                 },
                                 {
                                     xtype: 'panel',
-                                    bodyStyle: 'background-color: #E3EAEF;',
+                                    bodyStyle: 'background-color: #F4F7FD;',
                                     border: false,
                                     layout: {
                                         type: 'hbox',
@@ -8049,77 +8049,906 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                         // </editor-fold>
                         {
                             xtype: 'panel',
-                            id: prototype.id + '-pie',
+                            border: false,
+                            width: 1600,
+                            id: prototype.id + '-panelGridSumaryMain',
+                            bodyStyle: 'background-color: #F4F7FD;margin-top:20px',
+                            padding: '1',
+                            hidden: false,
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            items: [
+                                 {
+                                     xtype: 'panel',
+                                    bodyStyle: 'background-color: #F4F7FD;',
+                                    border: false,
+//                                    margin: '0 0 0 20',
+                                    layout: {
+                                        type: 'vbox'
+                                    },
+                                    items: [
+                                        {
+                                    xtype: 'treepanel',
+                                    id: prototype.id + '-gridSumaryMain',
+                                    width: 1527,
+                                    useArrows: true,
+                                    rootVisible: false,
+                                    multiSelect: true,
+                                    columnLines: true,
+                                    rowLines: true,
+                                    scrollable: true,
+                                    features: [{
+                                            ftype: 'summary'
+                                        }],
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: false,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Valdate</span>', style:'background:#c9daf5;color:black !important',
+                                                dataIndex: 'strFormatDate', width: 100, align: 'center', xtype: 'treecolumn',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:left;";
+                                                    value = '<b>' + value + '</b>';
+                                                    return  !record.data.children ? ' ' : value;
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">AV GROUP</span>', style:'background:#c9daf5;color:black !important',
+                                                dataIndex: 'CCUST',
+                                                width: 85,
+                                                align: 'center', // centra a nivel de columna (por defecto)
+                                                renderer: function (value, metaData, record) {
+                                                    metaData.style = "text-align:center; color:#1A1A1A; display:block; text-align:center;";
+
+                                                    const strCCUST = {
+                                                        '547': 'AEROGAL',
+                                                        '134': 'AVIANCA',
+                                                        '133': 'LACSA',
+                                                        '202': 'TACA'
+                                                    };
+
+                                                    const displayText = strCCUST[value] || 'AV GROUP';
+                                                    return displayText;
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">F1 - Settlement</span>', menuDisabled: true,style:'background:#FBD2D1;color:black !important',
+                                                columns: [
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Received</span>', dataIndex: 'F1_TOTAL', width: 70, style:'background:#FBD2D1;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                             metaData.style = "color:#057ECB;text-align:right;color:#1A1A1A";
+                                                             value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                             return value;
+                                                         },
+                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                             var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                             metaData.style = 'text-align:right; margin-right:3px ';
+                                                             return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                         }
+                                                     },
+                                                     {
+                                                        text: '<span style="color:black;font-weight:bold;">Total</span>', menuDisabled: true,style:'background:#FBD2D1;color:black !important',
+                                                        columns: [
+                                                                {
+                                                            text: '<span style="color:black;font-weight:bold;">W/O Settl</span>', dataIndex: 'F1_TOTAL_STVAL3', width: 70, style:'background:#FBD2D1;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                            listeners: {
+                                                                click: 'onClickDetailAvianca',
+                                                                args: ['IN_WSETT']
+                                                            },
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                                {
+                                                            text: '<span style="color:black;font-weight:bold;">Completed</span>', dataIndex: 'F1_TOTAL_STVAL1', width: 80, style:'background:#FBD2D1;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#1A1A1A";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                         {
+                                                            text: '<span style="color:black;font-weight:bold;">Taxes</span>', dataIndex: 'F1_TOTAL_TAXES', width: 80, style:'background:#FBD2D1;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                             listeners: {
+                                                                click: 'onClickDetailAvianca',
+                                                                args: ['IN_TAXES']
+                                                            },
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                         {
+                                                            text: '<span style="color:black;font-weight:bold;">Error</span>', dataIndex: 'F1_TOTAL_ERROR', width: 80, style:'background:#FBD2D1;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                               listeners: {
+                                                                click: 'onClickDetailAvianca',
+                                                                args: ['IN_ERROR']
+                                                            },
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                        ]
+                                                    },
+                                                     {
+                                                        text: '<span style="color:black;font-weight:bold;">%</span>', menuDisabled: true,style:'background:#FBD2D1;color:black !important',
+                                                        columns: [
+                                                            {
+                                                                text: '<span style="color:black;font-weight:bold;">Progress</span>', dataIndex: 'F1_PERCENT', width: 70, style:'background:#FBD2D1;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                               
+                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                      metaData.style = "color:#057ECB;text-align:right;color:#1A1A1A";
+                                                                     return '<b>' + value + '</b>';
+                                                                 },
+                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                     var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                     metaData.style = 'text-align:right; margin-right:3px ';
+                                                                     return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                                 }
+                                                             }
+                                                        ]
+                                                    },
+                                                     {
+                                                        text: '<span style="color:black;font-weight:bold;align: center">Pending <br> to F2</span>', dataIndex: 'F1_TOTAL_PENDING_TO_F2', width: 70, style:'background:#FBD2D1;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                            listeners: {
+                                                                click: 'onClickDetailAvianca',
+                                                                args: ['IN_PENDING_F2']
+                                                            },
+                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                             metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                             value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                             return value;
+                                                         },
+                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                             var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                             metaData.style = 'text-align:right; margin-right:3px ';
+                                                             return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                         }
+                                                     },
+                                                ]
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">F2 - Sales</span>', menuDisabled: true,style:'background:#D1FBD2;color:black !important',
+                                                columns: [
+                                                            {
+                                                            text: '<span style="color:black;font-weight:bold;">F1 Completed</span>', dataIndex: 'F2_F1_TOTAL_COMPLETED', width: 90, style:'background:#D1FBD2;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                            
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#1A1A1A";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Total</span>', menuDisabled: true,style:'background:#D1FBD2;color:black !important',
+                                                        columns: [
+                                                         {
+                                                            text: '<span style="color:black;font-weight:bold;">W/O Sales</span>', dataIndex: 'F2_TOTAL_PENDING_OVER50', width: 70, style:'background:#D1FBD2;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                                listeners: {
+                                                                click: 'onClickDetailAvianca',
+                                                                args: ['IN_WSALES']
+                                                            },
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                          {
+                                                            text: '<span style="color:black;font-weight:bold;">F2 Completed</span>', dataIndex: 'F2_TOTAL_MATCH_OVER50', width: 90, style:'background:#D1FBD2;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                           
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#1A1A1A";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">%</span>', menuDisabled: true,style:'background:#D1FBD2;color:black !important',
+                                                        columns: [
+                                                            {
+                                                                text: '<span style="color:black;font-weight:bold;">Progress</span>', dataIndex: 'F2_PERCENT', width: 70, style:'background:#D1FBD2;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                              
+                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                     metaData.style = "color:#057ECB;text-align:right;color:#1A1A1A;";
+                                                                     return '<b>' + value + '</b>';
+                                                                 },
+                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                     var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                     metaData.style = 'text-align:right; margin-right:3px ';
+                                                                     return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                                 }
+                                                             }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;align: center">Pending <br> to Acc</span>', dataIndex: 'F3_TOTAL_WO_ACC', width: 70, style:'background:#D1FBD2;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                           listeners: {
+                                                                click: 'onClickDetailAvianca',
+                                                                args: ['IN_PENDING_ACC']
+                                                            },
+                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                             metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                             value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                             return value;
+                                                         },
+                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                             var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                             metaData.style = 'text-align:right; margin-right:3px ';
+                                                             return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                         }
+                                                     },
+                                                ]
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Accounted</span>', menuDisabled: true,style:'background:#D6D6D6;color:black !important',
+                                                columns: [
+                                                    {
+                                                            text: '<span style="color:black;font-weight:bold;">F2 Completed</span>', dataIndex: 'F3_F2_TOTAL_COMPLETED', width: 100, style:'background:#D6D6D6;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                            
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#1A1A1A";
+                                                                return '<b>' + value + '</b>';
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Total</span>', menuDisabled: true,style:'background:#D6D6D6;color:black !important',
+                                                        columns: [
+                                                            
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;align: center">Pending <br> to Sent</span>', dataIndex: 'F3_TOTAL_PENDING_SENT', width: 70, style:'background:#D6D6D6;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                         listeners: {
+                                                                click: 'onClickDetailAvianca',
+                                                                args: ['IN_PENDING_SENT']
+                                                            },
+                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                             metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                             value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                             return value;
+                                                         },
+                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                             var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                             metaData.style = 'text-align:right; margin-right:3px ';
+                                                             return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                         }
+                                                     },
+                                                     
+                                                         {
+                                                            text: '<span style="color:black;font-weight:bold;">SENT</span>', dataIndex: 'F3_TOTAL_COMPLETED', width: 100, style:'background:#D6D6D6;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                             
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#1A1A1A";
+                                                                return '<b>' + value + '</b>';
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                          {
+                                                            text: '<span style="color:black;font-weight:bold;">W/O  Acc</span>', dataIndex: 'F3_TOTAL_WO_ACC', width: 90, style:'background:#D6D6D6;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                             listeners: {
+                                                                 click: 'onGridDataDetail'
+                                                             },
+                                                             hidden:true,
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                        ]
+                                                    },
+                                                    {
+                                                            text: '<span style="color:black;font-weight:bold;">SAP</span>', dataIndex: 'F3_TOTAL_COMPLETED_SAP', width: 90, style:'background:#D6D6D6;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                           
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#1A1A1A";
+                                                                 return '<b>' + value + '</b>';
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">%</span>', menuDisabled: true,style:'background:#D6D6D6;color:black !important',
+                                                        columns: [
+                                                            {
+                                                                text: '<span style="color:black;font-weight:bold;">Progress</span>', dataIndex: 'F3_PERCENT', width: 70, style:'background:#D6D6D6;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                               
+                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                     metaData.style = "color:#057ECB;text-align:right;color:#1A1A1A";
+                                                                     return '<b>' + value + '</b>';
+                                                                 },
+                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                     var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                     metaData.style = 'text-align:right; margin-right:3px ';
+                                                                     return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                                 }
+                                                             }
+                                                        ]
+                                                    },
+                                                ]
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Sent to AV</span>', menuDisabled: true,style:'background:#DCD1F7;color:black !important',
+                                                columns: [
+                                                    {
+                                                        hidden:true,text: '<span style="color:black;font-weight:bold;">Total</span>', menuDisabled: true,style:'background:#DCD1F7;color:black !important',
+                                                        columns: [
+                                                            {
+                                                            text: '<span style="color:black;font-weight:bold;">Completed Acc</span>', dataIndex: 'F1_TOTAL_STVAL3', width: 100, style:'background:#DCD1F7;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                             listeners: {
+                                                                 click: 'onGridDataDetail'
+                                                             },
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                        ]
+                                                    },
+                                                    {
+                                                        hidden:true,text: '<span style="color:black;font-weight:bold;">Pending</span>', menuDisabled: true,style:'background:#DCD1F7;color:black !important',
+                                                        columns: [
+                                                            {
+                                                            text: '<span style="color:black;font-weight:bold;">To Sent</span>', dataIndex: 'F3_TOTAL_PENDING_SENT', width: 90, style:'background:#DCD1F7;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                             listeners: {
+                                                                 click: 'onGridDataDetail'
+                                                             },
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Total</span>', menuDisabled: true,style:'background:#DCD1F7;color:black !important',
+                                                        columns: [
+                                                         {
+                                                            hidden:true,text: '<span style="color:black;font-weight:bold;">Return Error</span>', dataIndex: 'F1_TOTAL_STVAL3', width: 90, style:'background:#DCD1F7;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                             listeners: {
+                                                                 click: 'onGridDataDetail'
+                                                             },
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                        ]
+                                                    },
+                                                    {
+                                                        hidden:true,text: '<span style="color:black;font-weight:bold;">%</span>', menuDisabled: true,style:'background:#DCD1F7;color:black !important',
+                                                        columns: [
+                                                            {
+                                                                text: '<span style="color:black;font-weight:bold;">Progress</span>', dataIndex: 'F1_PERCENT', width: 70, style:'background:#DCD1F7;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                                 listeners: {
+                                                                     click: 'onGridDataDetail'
+                                                                 },
+                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                     metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                     return '<b>' + value + '</b>';
+                                                                 },
+                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                     var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                     metaData.style = 'text-align:right; margin-right:3px ';
+                                                                     return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                                 }
+                                                             }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                },
+                                        {
+                                        xtype: 'panel',
+                                        id: prototype.id + '-SummaryMainData',
+                                        align: 'left',
+                                        margin: '0 0 0 0 ',
+                                        layout: {
+                                            type: 'hbox',
+                                            align: 'left'
+                                        },
+                                        defaults: {
+                                            xtype: 'label',
+                                            align: 'left',
+                                            html: '' + '&nbsp',
+                                            height: 25,
+                                            padding: '5 5 5 0',
+                                            style: 'background:#A0BFD3;color:#244066;text-align:right;font-weight:bold;border: 0.3px #4A6371 solid;font-size:11px'
+                                        },
+                                        items: [
+                                            {
+                                                width: 185,
+                                                id: prototype.id + '-SPACE1',
+                                                style: 'background:#c9daf5; text-align:center; font-weight:bold; color:black;',
+                                                html: 'Totals'
+                                            },
+                                            {width: 70, id: prototype.id + '-F1_TOTAL_GLOBAL',style:'background: #FBD2D1;text-align:right'},
+                                            {width: 70, id: prototype.id + '-F1_TOTAL_STVAL3_GLOBAL',style:'background: #FBD2D1;text-align:right'},
+                                            {width: 80, id: prototype.id + '-F1_TOTAL_STVAL1_GLOBAL',style:'background: #FBD2D1;text-align:right'},
+                                            {width: 80, id: prototype.id + '-F1_TOTAL_TAXES_GLOBAL',style:'background: #FBD2D1;text-align:right'},
+                                            {width: 80, id: prototype.id + '-F1_TOTAL_ERROR_GLOBAL',style:'background: #FBD2D1;text-align:right'},
+                                            {width: 70, id: prototype.id + '-F1_PERCENT_GLOBAL',style:'background: #FBD2D1;text-align:right'},
+                                            {width: 70, id: prototype.id + '-F1_TOTAL_PENDING_TO_F2_GLOBAL',style:'background: #FBD2D1;text-align:right'},
+                                            
+                                            {width: 90, id: prototype.id + '-F2_TOTAL_GLOBAL',style:'background: #D1FBD2;text-align:right'},
+                                            {width: 70, id: prototype.id + '-F2_TOTAL_STVAL3_GLOBAL',style:'background: #D1FBD2;text-align:right'},
+                                            {width: 90, id: prototype.id + '-F2_TOTAL_STVAL1_GLOBAL',style:'background: #D1FBD2;text-align:right'},
+                                            {width: 70, id: prototype.id + '-F2_PERCENT_GLOBAL',style:'background: #D1FBD2;text-align:right'},
+                                            {width: 70, id: prototype.id + '-SENT_TOTAL_STVAL3_GLOBAL',style:'background: #D1FBD2;text-align:right'},
+                                            
+                                            {width: 100, id: prototype.id + '-SENT_TOTAL_GLOBAL',style:'background: #D6D6D6;text-align:right'},
+                                            {width: 70, id: prototype.id + '-SENT_TOTAL_SENT_GLOBAL',style:'background: #D6D6D6;text-align:right'},
+                                            {width: 100, id: prototype.id + '-SENT_TOTAL_STVAL1_GLOBAL',style:'background: #D6D6D6;text-align:right'},
+                                            {width: 90, id: prototype.id + '-SAP_TOTAL_STVAL1_GLOBAL',style:'background: #D6D6D6;text-align:right'},
+                                            {width: 70, id: prototype.id + '-SENT_PERCENT_GLOBAL',style:'background: #D6D6D6;text-align:right'},
+//                                            {width: 70, id: prototype.id + '-SENT_TOTAL_SENT_GLOBAL',style:'background: #D6D6D6;text-align:right'},
+                                            
+                                            
+                                            {hidden:true,width: 100, id: prototype.id + '-SAP_TOTAL_GLOBAL',style:'background: #DCD1F7;text-align:right'},
+                                            {hidden:true,width: 90, id: prototype.id + '-SAP_TOTAL_STVAL3_GLOBAL',style:'background: #DCD1F7;text-align:right'},
+                                            {hidden:true,width: 90, id: prototype.id + '-SAP_PERCENT_GLOBAL',style:'background: #DCD1F7;text-align:right'},
+                                            {hidden:true,width: 70, id: prototype.id + '-SAP_PERCENT_GLOBAL1',style:'background: #DCD1F7;text-align:right'},
+                                        ]
+                                    },
+                                    ]
+                                },
+                                  {
+                                        xtype: 'panel',
+                                        bodyStyle: 'background-color: #F4F7FD;',
+                                        border: false,
+                                        margin: '40 0 0 0',
+                                        height:400,
+                                        layout: {
+                                            type: 'hbox',
+                                            align: 'stretch',
+                                            pack: 'center'
+                                        },
+                                        items: [
+                                            // ==========================
+                                            // 🟢 PIE 1 - F1 Settlement
+                                            // ==========================
+                                            {
+                                                xtype: 'panel',
+                                                flex: 1,
+                                                bodyStyle: 'background-color: #F4F7FD;',
+                                                border: false,
+                                                layout: {
+                                                    type: 'vbox',
+                                                    align: 'center'
+                                                },
+                                                items: [
+                                                    {
+                                                        xtype: 'component',
+                                                        html: '<div style="font-size:18px; font-weight:600; color:#333; margin-bottom:10px;">F1 - Settlement</div>',
+                                                        style: { textAlign: 'center' }
+                                                    },
+                                                    {
+                                                        xtype: 'polar',
+                                                        id: prototype.id + '-displayPolarSM',
+                                                        width: 420,
+                                                        height: 320,
+                                                        innerPadding: 20,
+//                                                        insetPadding: { bottom: 40 },
+                                                        background: '#FFFFFF',
+                                                        border: false,
+                                                        bodyBorder: false,
+                                                        bodyStyle: { background: '#FFFFFF', border: 'none' },
+                                                        animation: { duration: 400, easing: 'easeOut' },
+                                                        interactions: ['rotate', 'itemhighlight'],
+
+                                                        legend: {
+                                                            docked: 'bottom',
+                                                            itemSpacing: 10,
+                                                            marker: { size: 14 },
+                                                            label: { fontSize: 13 }
+                                                        },
+
+                                                        series: [{
+                                                            type: 'pie3d',
+                                                            angleField: 'Perc2',
+                                                            legendField: 'LABEL',
+                                                            donut: 0, // sin hueco
+                                                            distortion: 0.5,
+                                                            highlightCfg: { margin: 8 },
+                                                            colors: ['#A3E4A6', '#F5B7B1'], // verde pastel = avance, rojo pastel = pendiente
+
+                                                            label: {
+                                                                field: 'VENDOR',
+                                                                display: 'rotate',
+                                                                contrast: true,
+                                                                font: '13px Arial',
+                                                                fontWeight: 'bold',
+                                                                calloutLine: { length: 25, width: 1 }
+                                                            },
+
+                                                            tooltip: {
+                                                                trackMouse: true,
+                                                                renderer: function (toolTip, record) {
+                                                                    toolTip.setHtml(record.get('VENDOR').replace(/\n/g, '<br>'));
+                                                                }
+                                                            }
+                                                        }]
+                                                    }
+                                                ]
+                                            },
+
+                                            // Espacio entre los dos gráficos
+                                            { xtype: 'container', width: 40 },
+
+                                            // ==========================
+                                            // 🔵 PIE 2 - F2 Sales
+                                            // ==========================
+                                            {
+                                                xtype: 'panel',
+                                                flex: 1,
+                                                bodyStyle: 'background-color: #F4F7FD;',
+                                                border: false,
+                                                layout: {
+                                                    type: 'vbox',
+                                                    align: 'center'
+                                                },
+                                                items: [
+                                                    {
+                                                        xtype: 'component',
+                                                        html: '<div style="font-size:18px; font-weight:600; color:#333; margin-bottom:10px;">F2 - Sales</div>',
+                                                        style: { textAlign: 'center' }
+                                                    },
+                                                    {
+                                                        xtype: 'polar',
+                                                        id: prototype.id + '-displayPolarF2',
+                                                        width: 420,
+                                                        height: 320,
+                                                        innerPadding: 20,
+                                                        background: '#FFFFFF',
+                                                        border: false,
+                                                        bodyBorder: false,
+                                                        bodyStyle: { background: '#FFFFFF', border: 'none' },
+                                                        animation: { duration: 400, easing: 'easeOut' },
+                                                        interactions: ['rotate', 'itemhighlight'],
+
+                                                        legend: {
+                                                            docked: 'bottom',
+                                                            itemSpacing: 10,
+                                                            marker: { size: 14 },
+                                                            label: { fontSize: 13 }
+                                                        },
+
+                                                        series: [{
+                                                            type: 'pie3d',
+                                                            angleField: 'Perc2',
+                                                            legendField: 'LABEL',
+                                                            donut: 0,
+                                                            distortion: 0.5,
+                                                            highlightCfg: { margin: 8 },
+                                                            colors: ['#A3E4A6', '#F5B7B1'], // mismos colores pastel
+
+                                                            label: {
+                                                                field: 'VENDOR',
+                                                                display: 'rotate',
+                                                                contrast: true,
+                                                                font: '13px Arial',
+                                                                fontWeight: 'bold',
+                                                                calloutLine: { length: 25, width: 1 }
+                                                            },
+
+                                                            tooltip: {
+                                                                trackMouse: true,
+                                                                renderer: function (toolTip, record) {
+                                                                    toolTip.setHtml(record.get('VENDOR').replace(/\n/g, '<br>'));
+                                                                }
+                                                            }
+                                                        }]
+                                                    }
+                                                ]
+                                            },
+                                             // Espacio entre los dos gráficos
+                                            { xtype: 'container', width: 40 },
+                                             // ==========================
+                                            // 🔵 PIE 3 - aCCOUNTED
+                                            // ==========================
+                                            {
+                                                xtype: 'panel',
+                                                flex: 1,
+                                                bodyStyle: 'background-color: #F4F7FD;',
+                                                border: false,
+                                                layout: {
+                                                    type: 'vbox',
+                                                    align: 'center'
+                                                },
+                                                items: [
+                                                    {
+                                                        xtype: 'component',
+                                                        html: '<div style="font-size:18px; font-weight:600; color:#333; margin-bottom:10px;">Accounted</div>',
+                                                        style: { textAlign: 'center' }
+                                                    },
+                                                    {
+                                                        xtype: 'polar',
+                                                        id: prototype.id + '-displayPolarF3',
+                                                        width: 420,
+                                                        height: 320,
+                                                        innerPadding: 20,
+                                                        background: '#FFFFFF',
+                                                        border: false,
+                                                        bodyBorder: false,
+                                                        bodyStyle: { background: '#FFFFFF', border: 'none' },
+                                                        animation: { duration: 400, easing: 'easeOut' },
+                                                        interactions: ['rotate', 'itemhighlight'],
+
+                                                        legend: {
+                                                            docked: 'bottom',
+                                                            itemSpacing: 10,
+                                                            marker: { size: 14 },
+                                                            label: { fontSize: 13 }
+                                                        },
+
+                                                        series: [{
+                                                            type: 'pie3d',
+                                                            angleField: 'Perc2',
+                                                            legendField: 'LABEL',
+                                                            donut: 0,
+                                                            distortion: 0.5,
+                                                            highlightCfg: { margin: 8 },
+                                                            colors: ['#A3E4A6', '#F5B7B1'], // mismos colores pastel
+
+                                                            label: {
+                                                                field: 'VENDOR',
+                                                                display: 'rotate',
+                                                                contrast: true,
+                                                                font: '13px Arial',
+                                                                fontWeight: 'bold',
+                                                                calloutLine: { length: 25, width: 1 }
+                                                            },
+
+                                                            tooltip: {
+                                                                trackMouse: true,
+                                                                renderer: function (toolTip, record) {
+                                                                    toolTip.setHtml(record.get('VENDOR').replace(/\n/g, '<br>'));
+                                                                }
+                                                            }
+                                                        }]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            border: false,
+                            width: 1600,
+                            id: prototype.id + '-panelGridSumaryDetail',
+                            bodyStyle: 'background-color: #F4F7FD;margin-top:20px',
+                            padding: '1',
+                            hidden: true,
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridDataDetail',
+//                                    title: '<span style="font-size:15px; font-weight:bold; color:#1a3e75;">📊 Grilla Detalle</span>',
+                                    height: 515,
+                                    width: 1200,
+                                    hidden: false,
+                                    columnLines: true,
+                                    viewConfig: {
+                                        enableTextSelection: true 
+                                    },
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: true,
+                                            align: 'center'
+
+                                        },
+                                        items: [
+                                            {text: '<span style="color:black;font-weight:bold;">Nbr</span>', dataIndex: 'RN', width: 40,style: 'padding:2px; background: #c9daf5;border-color:white'},
+                                            {text: '<span style="color:black;font-weight:bold;">Client</span>', dataIndex: 'CCUST', width: 60,style: 'padding:2px; background: #c9daf5;border-color:white',
+                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                var data = record.data;
+                                                metaData.style = "text-align:center;";
+                                                
+                                                if (value == 'TA01') {
+                                                    return  '202';
+                                                } else if (value == 'AV01') {
+                                                    return  '134';
+                                                } else if (value == 'LR01') {
+                                                    return  '133';
+                                                } else if (value == '2K01') {
+                                                    return  '547';
+                                                }
+                                                
+                                                return  value;
+                                            }},
+                                            {text: '<span style="color:black;font-weight:bold;">Bandoc</span>', dataIndex: 'BANDOC', width: 80,style: 'padding:2px; background: #c9daf5;border-color:white'},
+                                            {text: '<span style="color:black;font-weight:bold;">Tranci</span>', dataIndex: 'TRANCI', width: 80,style: 'padding:2px; background: #c9daf5;border-color:white'},
+                                            {text: '<span style="color:black;font-weight:bold;">Dateci</span>', dataIndex: 'DATECI', width: 80,style: 'padding:2px; background: #c9daf5;border-color:white'},
+                                            {text: '<span style="color:black;font-weight:bold;">Refer</span>', dataIndex: 'REFER', width: 140,style: 'padding:2px; background: #c9daf5;border-color:white'},
+                                            {text: '<span style="color:black;font-weight:bold;">Texto Largo</span>', dataIndex: 'TEXTOLAR', width: 200,style: 'padding:2px; background: #c9daf5;border-color:white',
+                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                var data = record.data;
+                                                metaData.style = "text-align:left;";
+                                                return  value;
+                                            }},
+                                            {text: '<span style="color:black;font-weight:bold;">Corep</span>', dataIndex: 'COREP', width: 60,style: 'padding:2px; background: #c9daf5;border-color:white'},
+                                            {text: '<span style="color:black;font-weight:bold;">Codpro</span>', dataIndex: 'CODPRO', width: 60,style: 'padding:2px; background: #c9daf5;border-color:white'},
+                                            {text: '<span style="color:black;font-weight:bold;">IDCDEB</span>', dataIndex: 'IDCDEB', width: 100,style: 'padding:2px; background: #c9daf5;border-color:white'},
+                                            {text: '<span style="color:black;font-weight:bold;">Header</span>', dataIndex: 'A4545HEADE', width: 100,style: 'padding:2px; background: #c9daf5;border-color:white'},
+                                            {text: '<span style="color:black;font-weight:bold;">Scurrency</span>', dataIndex: 'SCURRENCY', width: 80,style: 'padding:2px; background: #c9daf5;border-color:white'},
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Net</span>',
+                                                dataIndex: 'NETO',
+                                                width: 120,
+                                                style: 'padding:2px; background:#c9daf5; border-color:white;',
+                                                renderer: function (value, metaData, record) {
+                                                    metaData.style = "text-align:right;";
+                                                    // Si el valor es nulo o vacío, mostramos 0.00
+                                                    if (value == null || value === '') return '0.00';
+                                                    // Formatea con 2 decimales y separador de miles
+                                                    return Ext.util.Format.number(value, '0,0.00');
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                 {
+                    region: 'south',
+                    xtype: 'panel',
+                    id: prototype.id + '-pie',
+                    layout: {
+                        type: 'hbox',
+                        pack: 'center'
+                    },
+                    border: false,
+                    hidden: true,
+                    height: 30,
+                    margin: '15 0 18 0',
+                    defaults: {
+                        border: false
+                    },
+                    items: [
+                        {
+                            bodyStyle: 'background: #c9daf5; border-radius: 5px;',
+                            xtype: 'panel',
+                            width: '30%',
+                            height: '100%',
                             layout: {
                                 type: 'hbox',
                                 pack: 'center'
                             },
-                            border: false,
-                            width: 1192,
-                            height: 25,
-                            bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
-//                                    defaults: {
-//                                        border: true,
-//                                        padding: '0px 5px 0px 5px'
-//                                    },
-//                            padding: '10px 5px 1px 5px',
+                            defaults: {
+                                xtype: 'label'
+                            },
                             items: [
                                 {
-                                    xtype: 'panel',
-                                    width: 1192,
-                                    height: 25,
-                                    layout: {
-                                        type: 'hbox',
-                                        pack: 'center'
-                                    },
-                                    defaults: {
-                                        xtype: 'label',
-//                                                margin: '3px 0px 0px 5px'
-                                    },
-                                    items: [
-                                        {
-                                            text: 'Page',
-                                            width: 50
-                                        },
-                                        {
-                                            id: prototype.id + '-lbl-currentPage',
-                                            text: '1',
-                                            width: 50
-                                        },
-                                        {
-                                            text: 'Of',
-                                            width: 50
-                                        },
-                                        {
-                                            id: prototype.id + '-lbl-pageCount',
-                                            text: '0',
-                                            width: 50
-                                        },
-                                        {xtype: 'tbspacer', width: 100},
-                                        {
-                                            text: 'Total found',
-                                            width: 80
-                                        },
-                                        {
-                                            id: prototype.id + '-lbl-total',
-                                            text: '0',
-                                            width: 50
-                                        }
-                                    ]
+                                    text: 'Page',
+                                    width: 50,
+                                    style: 'margin-top: 7px;color:white;font-weight:bold;color:black'
+                                },
+                                {
+                                    id: prototype.id + '-lbl-currentPage',
+                                    text: '1',
+                                    width: 50,
+                                    style: 'margin-top: 7px;color:white;font-weight:bold;color:black'
+                                },
+                                {
+                                    text: 'OF',
+                                    width: 50,
+                                    style: 'margin-top: 7px;color:white;font-weight:bold;color:black'
+                                },
+                                {
+                                    id: prototype.id + '-lbl-pageCount',
+                                    text: '0',
+                                    width: 50,
+                                    style: 'margin-top: 7px;color:white;font-weight:bold;color:black'
+                                },
+                                {xtype: 'tbspacer', width: 50},
+                                {
+                                    text: 'Total Found',
+                                    width: 80,
+                                    style: 'margin-top: 7px;color:white;font-weight:bold;color:black'
+                                },
+                                {
+                                    id: prototype.id + '-lbl-total',
+                                    text: '0',
+                                    width: 40,
+                                    style: 'margin-top: 7px;color:white;font-weight:bold;color:black'
                                 }
                             ]
-                        },
+                        }
                     ]
-                },
-                {
-                    region: 'south',
-                    layout: 'border',
-                    height: 0,
-                    defaults: {
-                        style: 'margin: 1px;',
-                        bodyStyle: 'background: transparent;',
-                        border: false
-                    }
                 }
             ]
         }
