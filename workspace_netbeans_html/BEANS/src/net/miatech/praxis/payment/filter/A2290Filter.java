@@ -126,6 +126,7 @@ public class A2290Filter extends A2290 {
     public String IN_SPNR = "";
     public String IN_BSTVAL = "";
     public String IN_COUNTRY = "";
+    public String IN_TINPUT = "";
     public String IN_COREP = "";
     public String IN_PGRM = "";
     public String NAME = "";
@@ -1026,6 +1027,7 @@ public class A2290Filter extends A2290 {
     public double SVFOPNETRU    = 0; 
     public double SUM_NETO    = 0; 
     public double SUM_PAYAMOU    = 0; 
+    public double SUM_USDEQUI    = 0; 
     public double SUM_TKT    = 0; 
     
     //CASH
@@ -1071,6 +1073,8 @@ public class A2290Filter extends A2290 {
     public String O_ADATE ="";
     public String O_CONCEPT ="";
     public String O_SAGENT ="";
+    public String O_NSAGENT ="";
+    
     public String O_SCONSOL ="";
     public String O_SCURRENCY ="";
     public double O_NETO =0;
@@ -1083,6 +1087,18 @@ public class A2290Filter extends A2290 {
     public String O_REFERENCE = "";
     public String O_COMMENTS = "";
     public String O_PDATE = "";
+    public String O_CCUST = "";
+    public String O_SCOUNTRY = "";
+    public String O_CBATCH = "";
+    public String O_SEQ = "";
+    
+    
+    public String O_USCR = "";
+    public String O_FECR = "";
+    public String O_HOCR = "";
+    public String O_USUP = "";
+    public String O_FEUP = "";
+    public String O_HOUP = "";
     
     
     

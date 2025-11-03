@@ -991,7 +991,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                         this.setFormatParameter();
 
                         if (isChecked) {
-                            this.setGridDataMainCASH(obj, e);
+//                            this.setGridDataMainCASH(obj, e);
+                            this.setGridDataMainCash_Sumary(obj, e);
 
 
                         } else {
@@ -1453,7 +1454,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
         }
     },
-     setGridDataMainCASH: function (obj, val) {
+    setGridDataMainCASH: function (obj, val) {
         win.lblUser_toolTip("Estructura: MPF193");
         if (me.panelActual !== '-panelGridDataMainCASH') {
             me.panelActual = '-panelGridDataMainCASH';
@@ -1495,6 +1496,175 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             global.clear();
             Ext.getCmp(prototype.id + '-gridDataMainCASH').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
+        }
+    },
+    setGridDataMainCash_Sumary: function (obj, val) {
+        win.lblUser_toolTip("Estructura: MPF193");
+        if (me.panelActual !== '-panelGridDataCash_Sumary') {
+            me.panelActual = '-panelGridDataCash_Sumary';
+            Ext.getCmp(prototype.id + '-gridDataCash_Sumary').setVisible(true);
+        }
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        this.setFormatParameter();
+        var msj = this.validateFields();
+        if (msj !== '') {
+            global.Msg({msg: msj
+            });
+        } else {
+
+            var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchMainCash'
+                }, listeners: {
+                    beforeload: function (obj) {
+                        obj.proxy.extraParams = searchParams;
+                        Ext.getCmp(prototype.id + '-panelGridDataCash_Sumary').mask('Loading...');
+                    },
+                    load: function (obj) {
+                        Ext.getCmp(prototype.id + '-panelGridDataCash_Sumary').unmask();
+                        var pag = Ext.getCmp(prototype.id + '-paggin');
+                        var pagData = pag.getPageData();
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        } else {
+                            
+                            
+                            let a = [];
+//                            var obj = obj.data.items[0].data;
+                            let lstData = []
+                            for (let value of obj.data.items) {
+                                lstData.push(value.data)
+                            }
+                            console.log(lstData, 'lstData')
+                            let lngTotQSALES = lstData[0].lngTotQSALES
+                            let lngTotQMATCH = lstData[0].lngTotQMATCH
+                            let lngTotQMANUAL = lstData[0].lngTotQMANUAL
+                            let lngTotQPEND = lstData[0].lngTotQPEND
+                            let lngTotQTICKET = lstData[0].lngTotQTICKET
+
+                            let lngTotQTMATCH = lstData[0].lngTotQTMATCH
+                            let lngTotQTMANUAL = lstData[0].lngTotQTMANUAL
+                            let lngTotQTPEND = lstData[0].lngTotQTPEND
+                            let lngTotQTYECC = lstData[0].lngTotQTYECC
+                            let lngTotQTYADJ = lstData[0].lngTotQTYADJ
+                            
+                            let dataRoot = {text: '.', expanded: false, children: []};
+
+                            Ext.Object.each(lstData, function (index, value) {
+                                if (a.indexOf(value.strFormatDate) < 0) {
+                                    let x = [];
+
+                                    let V_QSALES = 0;
+                                    let V_QMATCH = 0;
+                                    let V_QMANUAL = 0;
+                                    let V_QPEND = 0;
+                                    let V_QTICKET = 0;
+                                    let V_QTMATCH = 0;
+                                    let V_QTMANUAL = 0;
+                                    let V_QTPEND = 0;
+                                    let V_QEECC = 0;
+//                                    let V_QTMANUAL = 0;
+
+                                    Ext.Object.each(lstData, function (index, valuex) {
+                                        if (value.strFormatDate === valuex.strFormatDate) {
+                                            V_QSALES += valuex.lngQSALES;
+                                            V_QMATCH += valuex.lngQMATCH;
+                                            V_QMANUAL += valuex.lngQMANUAL;
+                                            V_QPEND += valuex.lngQPEND;
+                                            V_QTICKET += valuex.lngQTICKET;
+                                            V_QTMATCH += valuex.lngQTMATCH;
+                                            V_QTMANUAL += valuex.lngQTMANUAL;
+                                            V_QTPEND += valuex.lngQTPEND;
+                                            V_QEECC += valuex.lngQEECC;
+                                        }
+                                    });
+
+
+                                    a.push(value.strFormatDate);
+                                    
+//                                    let porcentajeVentas = (V_QSVFOPUSDS === 0)
+//                                        ? 0
+//                                        : Math.round((V_QSVFOPUSDC / V_QSVFOPUSDS) * 100 * 100) / 100;
+//                                    
+//                                    let porcentajeLiquidaciones = (V_SVFOPUSDLT === 0)
+//                                        ? 0
+//                                        : Math.round((V_SVFOPUSDL / V_SVFOPUSDLT) * 100 * 100) / 100;
+                                    
+
+                                    dataRoot.children.push({
+                                        strFormatDate: value.strFormatDate,
+                                        SDATE: value.SDATE,
+                                        lngQSALES: V_QSALES,
+                                        lngQMATCH: V_QMATCH,
+                                        lngQMANUAL: V_QMANUAL,
+                                        lngQPEND: V_QPEND,
+                                        lngQMATCHPercent: V_QSALES === 0 ? 0 : (V_QMATCH / V_QSALES) * 100,
+                                        lngQTICKET: V_QTICKET,
+                                        lngQTMATCH: V_QTMATCH,
+                                        lngQTMANUAL: V_QTMANUAL,
+                                        lngQTPEND: V_QTPEND,
+                                        lngQEECC: V_QEECC,
+
+
+
+                                        expanded: false, children: []
+                                    });
+                                    let b = [];
+                                    Ext.Object.each(lstData, function (index, value01) {
+                                        if (value.strFormatDate === value01.strFormatDate) {
+                                            dataRoot.children[a.indexOf(value.strFormatDate)].children.push({
+                                                strFormatDate: value01.strFormatDate,
+                                                SDATE: value01.SDATE,
+                                                TINPUT: value01.TINPUT,
+//                                                FCHILD: value01.FCHILD,
+                                                
+//                                                QSALES: value01.lngQSALES,
+                                                lngQSALES: value01.lngQSALES,
+                                                lngQMATCH: value01.lngQMATCH,
+                                                lngQMANUAL: value01.lngQMANUAL,
+                                                lngQPEND: value01.lngQPEND,
+                                                lngQMATCHPercent: value01.lngQSALES === 0 ? 0 : (value01.lngQMATCH / value01.lngQSALES) * 100,
+                                                lngQTICKET: value01.lngQTICKET,
+                                                lngQTMATCH: value01.lngQTMATCH,
+                                                lngQTMANUAL: value01.lngQTMANUAL,
+                                                lngQTPEND: value01.lngQTPEND,
+                                                lngQEECC: value01.lngQEECC,
+                                                leaf: true
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                            
+                            Ext.getCmp(prototype.id + '-lblSummaryCash_8').setText(Ext.util.Format.number(lngTotQSALES, '0,000'));
+                            Ext.getCmp(prototype.id + '-lblSummaryCash_4').setText(Ext.util.Format.number(lngTotQMATCH, '0,000'));
+                            Ext.getCmp(prototype.id + '-lblSummaryCash_6').setText(Ext.util.Format.number(lngTotQMANUAL, '0,000'));
+                            Ext.getCmp(prototype.id + '-lblSummaryCash_7').setText(Ext.util.Format.number(lngTotQPEND, '0,000'));
+                            Ext.getCmp(prototype.id + '-lblSummaryCash_11').setText(Ext.util.Format.number(lngTotQTICKET, '0,000'));
+                            Ext.getCmp(prototype.id + '-lblSummaryCash_12').setText(Ext.util.Format.number(lngTotQTMATCH, '0,000'));
+                            Ext.getCmp(prototype.id + '-lblSummaryCash_13').setText(Ext.util.Format.number(lngTotQTMANUAL, '0,000'));
+                            Ext.getCmp(prototype.id + '-lblSummaryCash_14').setText(Ext.util.Format.number(lngTotQTPEND, '0,000'));
+                            Ext.getCmp(prototype.id + '-lblSummaryCash_3').setText(Ext.util.Format.number(lngTotQTYECC, '0,000'));
+//                            Ext.getCmp(prototype.id + '-lblSummaryCash_1').setText(Ext.util.Format.number(lngTotQTYADJ, '0,000'));
+                            var storeTree = Ext.create('Ext.data.TreeStore', {
+                                root: dataRoot
+                            });
+                            
+                            Ext.getCmp(prototype.id + '-gridDataCash_Sumary').setStore(storeTree);
+                        }
+                    }
+                }
+            });
+            
+            
+            global.clear();
+//            Ext.getCmp(prototype.id + '-gridDataCash_Sumary').bindStore(storeGridDatas);
+//            Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
         }
     },
     searchGrafLiqI: function (obj, val) {
@@ -4193,35 +4363,36 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         me.drillDown.push(me.panelActual);
         me.panelActual = '-panelGridDataCountryCash';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
-        
+        this.beanDetDay = {};
         var cant = 0;   
         switch (columnNum) {
-            case 0:
+            case 1:
                 console.log('ENTRA A FECHA');
                 rowData.data.IN_STVAL = "";
                 cant = rowData.data.lngQTMATCH;
                 break;
-            case 1:
+            case 3:
                 console.log('ENTRA A MATCH');
                 rowData.data.IN_STVAL = "1";
                 cant = rowData.data.lngQTMANUAL;
                 break;
-            case 3:
+            case 5:
                 console.log('ENTRA AL MANUAL');
                 rowData.data.IN_STVAL = "5";
                 cant = rowData.data.lngQTPEND;
                 break;
-            case 4:
+            case 6:
                 console.log('ENTRA AL MANUAL');
                 rowData.data.IN_STVAL = "3";
                 cant = rowData.data.lngQTPEND;
                 break;
         }
-
+        console.log(rowData.data, 'rowData.data')
 //        this.beanDetDay.strFecFiltro = rowData.data.strFecFiltro;
-        this.beanDetDay.IN_SDATE = rowData.data.IN_SDATE;
+        this.beanDetDay.IN_SDATE = rowData.data.SDATE;
         this.beanDetDay.IN_STVAL = rowData.data.IN_STVAL;
         this.beanDetDay.IN_TDOC = rowData.data.IN_TDOC;
+        this.beanDetDay.IN_TINPUT = rowData.data.TINPUT;
         console.log(rowData.data.IN_TDOC, 'rowData.data.IN_TDOC');
         this.beanDetDay.IN_COUNTRY = rowData.data.IN_COUNTRY;
         this.beanDetDay.strFormatDate = rowData.data.strFormatDate;
@@ -4272,8 +4443,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     
     /////////AGREGAMOS CONSLTA PARA LISTA MPF199
     ///////////////////////////////////////////////////
-    
-    
+ 
     onGridMPF199: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
         me.drillDown.push(me.panelActual);
         me.panelActual = '-panelGridDataMPF199';
@@ -4354,6 +4524,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             Ext.getCmp(prototype.id + '-gridDataMPF199').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-pagginMPF199').bindStore(storeGridDatas);
         }
+        
+        
+        
     },
     
     
@@ -4369,7 +4542,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         me.drillDown.push(me.panelActual);
         me.panelActual = '-panelGridDataDayCash';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
-        
+        let fuente = rowData.data.IN_TINPUT
         var cant = 0;   
         switch (columnNum) {
             case 0:
@@ -4399,10 +4572,14 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         this.beanDetDay.IN_STVAL = rowData.data.IN_STVAL;
         this.beanDetDay.IN_TDOC = rowData.data.IN_TDOC;
         this.beanDetDay.IN_COUNTRY = rowData.data.SCOUNTRY;
+        this.beanDetDay.IN_TINPUT = rowData.data.IN_TINPUT;
         this.beanDetDay.strFormatDate = rowData.data.strFormatDate;
 
         me.paramsDetail.beanString = JSON.stringify(this.beanDetDay);
+
         this.setGridDataDayCash();
+
+        
     },
     setGridDataDayCash: function (data) {
         win.lblUser_toolTip("Estructura: MPF191");
@@ -4440,17 +4617,56 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         Ext.getCmp(prototype.id + '-gridDataDayCash').bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-paggin20').bindStore(storeGridDatas);
     },
+    
+    setGridDataDayCashIccs: function (data) {
+        win.lblUser_toolTip("Estructura: MPF191");
+//        me.setWidthPie();
+        var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
+            proxy: {
+                url: prototype.url + '/searchDayCash'
+            }, listeners: {
+                beforeload: function (obj) {
+                    obj.proxy.extraParams = me.paramsDetail;
+                },
+                load: function (obj) {
+                    var pag = Ext.getCmp(prototype.id + '-paggin20');
+                    var pagData = pag.getPageData();
+                    Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                    Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                    Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                    if (obj.data.length === 0) {
+                        global.Msg({
+                            msg: 'Data not found.'
+                        });
+                    } else {
+                        var bean = obj.data.items[0].data;
+                        var title = '';
+                        title = " Sales Date : " + bean.IN_SDATE + " - Country : " + bean.IN_COUNTRY;
+                        console.log(title);
+                        Ext.getCmp(prototype.id + '-labelTitleCash2').setText(title);
+                        Ext.getCmp(prototype.id + '-labelTitleCash2').setVisible(true);
+                    }
+                    me.setWidthPie();
+                }
+            }
+        });
+        global.clear();
+        Ext.getCmp(prototype.id + '-gridDataDayCash').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin20').bindStore(storeGridDatas);
+    },
+    
     onGridDetalleCash: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
         me.drillDown.push(me.panelActual);
         me.panelActual = '-panelGridDataDetalleCash';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
-
+        let fuente = rowData.data.IN_TINPUT;
 //        this.beanDetDay.strFecFiltro = rowData.data.strFecFiltro;
         this.beanDetDay = {}
         this.beanDetDay.IN_SDATE = rowData.data.SDATE;
         this.beanDetDay.IN_TDOC = rowData.data.IN_TDOC;
         console.log(this.beanDetDay.IN_STVAL, 'this.beanDetDay.IN_STVAL')
         this.beanDetDay.IN_COUNTRY = rowData.data.IN_COUNTRY;
+        this.beanDetDay.IN_TINPUT = rowData.data.IN_TINPUT;
         this.beanDetDay.strFormatDate = rowData.data.strFormatDate;
         this.beanDetDay.IN_NEGOC = "1";
 
@@ -4575,6 +4791,40 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             }
         });
     },
+    
+    /////////DATAENTRY MPF199
+    
+    
+    
+    
+    onEditClickMPF199: function(grid, rowIndex, colIndex) {
+        
+        var rec = grid.getStore().getAt(rowIndex);
+        this.winDataEntryMPF199('U', rec);
+    },
+    winDataEntryMPF199: function(action, rec) {
+        action = action === null || action === undefined ? 'U' : action;
+        rec = rec === null || rec === undefined ? {} : rec;       
+        
+        console.log(rec,'PRUEBA MESAJE');
+        
+        Ext.create('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryPending', {
+            id: prototype.id + '-dataEntryPending',
+            params: {
+                action: action,
+                rec: rec.data,
+                
+                
+                lst:me.lst
+            }
+        }).show();
+    },
+    
+    
+    
+    
+    ///
+  
      ExportCSV: function () {
             console.log('Descargando CSV...');
 
