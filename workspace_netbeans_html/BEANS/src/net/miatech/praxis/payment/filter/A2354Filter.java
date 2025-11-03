@@ -146,6 +146,7 @@ public String O_MES = "";
 public String O_FORMAPAGO = "";
 public String O_VFOP = "";
 public String O_QTYTKTS = "";
+public String O_FPAYMENT = "";
 
 
 

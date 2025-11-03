@@ -1950,7 +1950,7 @@ public class SalesAgentControlDAO {
         A2354Filter bean;
         
         
-        String SQL = "{CALL PRAXISMP.LISTAR_IMF150(?, ?, ?, ?, ?, ?,?)}";
+        String SQL = "{CALL PRAXISMP.MPS348(?, ?, ?, ?, ?, ?,?)}";
         
         CallableStatement cstmt = null;
         ResultSet rst = null;
@@ -2001,6 +2001,7 @@ public class SalesAgentControlDAO {
 
                 bean.O_VFOP = rst.getString("VFOP");
                 bean.O_QTYTKTS = rst.getString("QTYTKTS");
+                bean.O_FPAYMENT = rst.getString("FPAYMENT");
 
 
 
@@ -2050,7 +2051,7 @@ public class SalesAgentControlDAO {
         A2354Filter bean;
         
         
-        String SQL = "{CALL PRAXISMP.LISTA_A720(?, ?, ?, ?, ?, ?,?)}";
+        String SQL = "{CALL PRAXISMP.MPS349(?, ?, ?, ?, ?, ?,?, ?)}";
         
         CallableStatement cstmt = null;
         ResultSet rst = null;
@@ -2063,28 +2064,29 @@ public class SalesAgentControlDAO {
             cstmt = cnx.prepareCall(SQL);
 
             // para la paginacion
-            cstmt.registerOutParameter(4, Types.INTEGER);
             cstmt.registerOutParameter(5, Types.INTEGER);
             cstmt.registerOutParameter(6, Types.INTEGER);
             cstmt.registerOutParameter(7, Types.INTEGER);
+            cstmt.registerOutParameter(8, Types.INTEGER);
 
             // los de entrada
     
             cstmt.setString(1, filter.O_CCUST.trim());
             cstmt.setString(2, filter.O_MES.trim());
             cstmt.setString(3, filter.O_SAGENT.trim());
-            cstmt.setInt(4, filter.page.PAGNUM);
-            cstmt.setInt(5, filter.page.PAGROW);
-            cstmt.setInt(6, filter.page.TOTPAG);
-            cstmt.setInt(7, filter.page.TOTROW);
+            cstmt.setString(4, filter.O_FPAYMENT.trim());
+            cstmt.setInt(5, filter.page.PAGNUM);
+            cstmt.setInt(6, filter.page.PAGROW);
+            cstmt.setInt(7, filter.page.TOTPAG);
+            cstmt.setInt(8, filter.page.TOTROW);
 
             cstmt.execute();
 
             // se actualiza paginacion
-            filter.page.PAGNUM = cstmt.getInt(4);
-            filter.page.PAGROW = cstmt.getInt(5);
-            filter.page.TOTPAG = cstmt.getInt(6);
-            filter.page.TOTROW = cstmt.getInt(7);
+            filter.page.PAGNUM = cstmt.getInt(5);
+            filter.page.PAGROW = cstmt.getInt(6);
+            filter.page.TOTPAG = cstmt.getInt(7);
+            filter.page.TOTROW = cstmt.getInt(8);
 
             rst = cstmt.getResultSet();
 

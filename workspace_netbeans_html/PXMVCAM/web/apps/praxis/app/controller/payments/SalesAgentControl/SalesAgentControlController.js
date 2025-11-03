@@ -712,6 +712,7 @@ Ext.getCmp(prototype.id + '-QTY_NOT_FOUND').setText(Ext.util.Format.number(QTY_N
         me.obJPADJ.O_CCUST = rowData.data.O_CCUST;
         me.obJPADJ.O_MES = rowData.data.O_MES;
         me.obJPADJ.O_SAGENT = rowData.data.O_SAGENT;
+        me.obJPADJ.O_FPAYMENT = rowData.data.O_FPAYMENT;
         
       
         
