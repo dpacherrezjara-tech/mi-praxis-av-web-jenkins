@@ -985,7 +985,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
                 let duplicados = 0;
 
                 Ext.Array.each(res.data, function (newRecord, index) {
-                    let key = newRecord.TKT + '#' + newRecord.SVFOPNETR + '#' + newRecord.SCURR;
+                    let key = newRecord.TKT + '#' + newRecord.SVFOPNETR + '#' + newRecord.SCURRENCY;
 
                     if (!existingKeys[key]) {
                         newRecord.id = key || Ext.id(null, 'rec-');
@@ -999,7 +999,6 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
 
                 console.log(`🟢 ${nuevos} registros nuevos agregados, ${duplicados} duplicados ignorados.`);
 
-                gridCmp.getView().refresh();
 
                 Ext.getCmp(prototype.id + '-panelDataInfoScanAgent').show();
                 meDe.calcularMontos();
