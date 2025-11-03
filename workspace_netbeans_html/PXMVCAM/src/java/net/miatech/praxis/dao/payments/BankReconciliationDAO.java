@@ -8440,7 +8440,20 @@ public class BankReconciliationDAO {
                 bean.O_REFERENCE = rst.getString("REFERENCE");
                 bean.O_COMMENTS = rst.getString("COMMENTS");
                 bean.O_PDATE = rst.getString("PDATE");
+                bean.O_CCUST = rst.getString("CCUST");
+                bean.O_SCOUNTRY = rst.getString("SCOUNTRY");
+                bean.O_CBATCH = rst.getString("CBATCH");
+                bean.O_SEQ = rst.getString("SEQ");
                 
+                
+                
+                
+                bean.O_USCR = rst.getString("USCR");
+                bean.O_FECR = rst.getString("FECR");
+                bean.O_HOCR = rst.getString("HOCR");
+                bean.O_USUP = rst.getString("USUP");
+                bean.O_FEUP = rst.getString("FEUP");
+                bean.O_HOUP = rst.getString("HOUP");
 
                 // Copiar paginación en cada bean si es necesario
                 bean.page.PAGNUM = filter.page.PAGNUM;
@@ -8477,6 +8490,66 @@ public class BankReconciliationDAO {
     }
     
     ////
+     /////UPDATE DATAENTRY MPF199
+     
+    public String MPF199Update(A2290Filter filter) throws SQLException, Exception {
+        String message = "Update successful.";
+        CallableStatement cstmt = null;
+        Connection cnx = null;
+
+        String SQL = "{CALL PRAXISMP.MPS358(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQL);
+
+            cstmt.registerOutParameter(10, Types.VARCHAR);
+
+//            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST.trim());
+            cstmt.setString(1, filter.O_CCUST.trim());
+            cstmt.setString(2, filter.O_ADATE.trim());
+            cstmt.setString(3, filter.O_SCOUNTRY.trim());
+            cstmt.setString(4, filter.O_SAGENT.trim());
+            cstmt.setString(5, filter.O_SCURRENCY.trim());
+            cstmt.setString(6, filter.O_CBATCH.trim());
+            cstmt.setString(7, filter.O_SEQ.trim());
+            cstmt.setString(8, filter.O_NSAGENT.trim());
+            
+
+            cstmt.setString(9, session.getUserView().getUserInfo().USR);
+            cstmt.setString(10, "");
+
+            cstmt.execute();
+
+            message = cstmt.getString(10);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            message = e.getMessage();
+        } finally {
+            if (cstmt != null) 
+            try {
+                cstmt.close();
+            } catch (SQLException e) {
+                logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return message;
+    }
+
+
+     
+     
+     
+     
+     
+     
+     
+     
+     ///////
     
     public List<A2290Filter> loadPX269SQP00698DayCash(A2290Filter filter) throws SQLException, Exception {
 

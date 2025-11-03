@@ -5446,6 +5446,47 @@ public class BankReconciliationController extends BaseController {
         }
     
     ///
+    
+    ////UPDATE DATAENTRYMPF199
+    
+     @RequestMapping(value = "MaintenanceMPF199")
+    public @ResponseBody
+    String MaintenanceMPF116(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- BANKRECONCILIATIONDATAENTRY : MaintenanceMPF199-------------");
+//        String option;
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String msj = "";
+        String beanString = "";
+
+        try {
+
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            
+            
+            msj = logic.MPF199Update(filter);
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+    
+    
+    
+    
+        ///    ///
     @RequestMapping(value = "searchDayCash")
     public @ResponseBody
     String searchDayCash(ModelMap map, HttpServletRequest request) {

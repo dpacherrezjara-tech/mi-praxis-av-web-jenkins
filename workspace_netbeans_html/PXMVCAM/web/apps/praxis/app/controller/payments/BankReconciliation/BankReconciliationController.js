@@ -4421,8 +4421,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     
     /////////AGREGAMOS CONSLTA PARA LISTA MPF199
     ///////////////////////////////////////////////////
-    
-    
+ 
     onGridMPF199: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
         me.drillDown.push(me.panelActual);
         me.panelActual = '-panelGridDataMPF199';
@@ -4503,6 +4502,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             Ext.getCmp(prototype.id + '-gridDataMPF199').bindStore(storeGridDatas);
             Ext.getCmp(prototype.id + '-pagginMPF199').bindStore(storeGridDatas);
         }
+        
+        
+        
     },
     
     
@@ -4767,6 +4769,40 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             }
         });
     },
+    
+    /////////DATAENTRY MPF199
+    
+    
+    
+    
+    onEditClickMPF199: function(grid, rowIndex, colIndex) {
+        
+        var rec = grid.getStore().getAt(rowIndex);
+        this.winDataEntryMPF199('U', rec);
+    },
+    winDataEntryMPF199: function(action, rec) {
+        action = action === null || action === undefined ? 'U' : action;
+        rec = rec === null || rec === undefined ? {} : rec;       
+        
+        console.log(rec,'PRUEBA MESAJE');
+        
+        Ext.create('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryPending', {
+            id: prototype.id + '-dataEntryPending',
+            params: {
+                action: action,
+                rec: rec.data,
+                
+                
+                lst:me.lst
+            }
+        }).show();
+    },
+    
+    
+    
+    
+    ///
+  
      ExportCSV: function () {
             console.log('Descargando CSV...');
 
