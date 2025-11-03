@@ -3582,7 +3582,7 @@ public class StatementReconciliationsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL PRAXISMP.MPS344(?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.MPS344(?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -3596,6 +3596,7 @@ public class StatementReconciliationsDAO {
             cstmt.setString(5, filter.IN_CBATCH.trim());
             cstmt.setString(6, filter.IN_FECR.trim());
             cstmt.setString(7, filter.IN_SCOUNTRY.trim());
+            cstmt.setString(8, filter.IN_TINPUT.trim());
             cstmt.execute();
 
             rst = cstmt.getResultSet();
@@ -3614,14 +3615,17 @@ public class StatementReconciliationsDAO {
                 beanTkt.ADATE = rst.getString("ADATE");
                 beanTkt.VALDATE = rst.getString("VALDATE");
                 beanTkt.SCOUNTRY = rst.getString("SCOUNTRY");
+                beanTkt.DESC_SCOUNTRY = rst.getString("DESC_SCOUNTRY");
                 beanTkt.CFUENTE = rst.getString("CFUENTE");
                 beanTkt.SAGENT = rst.getString("SAGENT");
                 beanTkt.SCONSOL = rst.getString("SCONSOL");
                 beanTkt.SCURRENCY = rst.getString("SCURRENCY");
                 beanTkt.NETO = rst.getDouble("NETO");
                 beanTkt.PAYAMOU = rst.getDouble("PAYAMOU");
+                beanTkt.USDEQUI = rst.getDouble("USDEQUI");
                 beanTkt.SUM_NETO = rst.getDouble("SUM_NETO");
                 beanTkt.SUM_PAYAMOU = rst.getDouble("SUM_PAYAMOU");
+                beanTkt.SUM_USDEQUI = rst.getDouble("SUM_USDEQUI");
                 
                 
                 

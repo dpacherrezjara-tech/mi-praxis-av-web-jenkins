@@ -194,24 +194,19 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
     },
     onSearchCompleteDetail: function () {
         console.log('onSearchCompleteDetail');
-        console.log(meDE.bean.data, 'BEAN DATA DE JOSUE');
+        console.log(meDE.bean.data, 'BEAN DATA');
+        console.log(meDE.beanResult, 'BEAN beanResult');
+        console.log(meDE.bean.data.TINPUT, 'BEAN DATA DE JOSUE');
         this.beanScan = {}
-        this.beanScan.IN_FROMADATE = meDE.bean.data.VALDATE;
-        this.beanScan.IN_CODEBANK = meDE.bean.data.CODEBANK;
-        this.beanScan.IN_MERCHAND = meDE.bean.data.MERCHAND;
         this.beanScan.IN_BANDOC = meDE.bean.data.BANDOC;
-        this.beanScan.IN_NETO = meDE.bean.data.NETO + "";
-        this.beanScan.IN_RED = meDE.bean.data.RED;
         this.beanScan.IN_STVAL = meDE.bean.data.STVAL;
         this.beanScan.IN_DATECI = meDE.beanResult.DATECI;
         this.beanScan.IN_TRANCI = meDE.beanResult.TRANCI;
-        this.beanScan.IN_ACCNUMBER = meDE.beanResult.ACCNUMBER;
-        this.beanScan.IN_TDOC = meDE.beanResult.TDOC;
+        this.beanScan.IN_TINPUT = meDE.bean.data.TINPUT;
         this.beanScan.IN_SCOUNTRY = meDE.beanResult.SCOUNTRY;
         this.beanScan.IN_CBATCH = meDE.beanResult.CBATCH;
         this.beanScan.IN_FECR = meDE.beanResult.FECR;
         
-
         if (this.beanScan.IN_STVAL === 'Match' ) {
             this.beanScan.IN_STVAL = '1';
         } else if ( this.beanScan.IN_STVAL === 'Match Manual' ){
@@ -256,6 +251,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
                         // si rec.NETO undefined => 0
                         var n = parseNumber(rec.NETO);
                         var p = parseNumber(rec.PAYAMOU);
+                        var p = parseNumber(rec.USDEQUI);
                         totalNeto += n;
                         totalPayamou += p;
                         // considera contar solo filas "normales" (no summary previas)
@@ -266,12 +262,16 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
                     var summaryRec = {
                         totalNeto: totalNeto,           // números reales
                         totalPayamou: totalPayamou,
+                        totalUsdEqui: totalPayamou,
                         _isSummary: true
                     };
 
                     // agregar al final de la data
                     data.push(summaryRec);
                     Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
+                    if(meDE.bean.data.TINPUT == 'I'){
+                        meDE.hiddenGridColumns();
+                    }
                     meDE.calcularMontos();
                     meDE.calcularDiferencias();
                 } else {
@@ -283,6 +283,15 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
     },
 
     //</editor-fold>
+    
+    hiddenGridColumns: function (){
+        Ext.getCmp(prototype.id + '-columnPAYAMOU').hide()
+        Ext.getCmp(prototype.id + '-columnSAGENT').hide()
+        Ext.getCmp(prototype.id + '-columnCONCEPT').hide()
+//        Ext.getCmp(prototype.id + '-gridDataInfoScan').hide()
+//        Ext.getCmp(prototype.id + '-gridDataInfoScan').hide()
+        
+    },
     calcularMontos: function () {
         console.log('calcularMontos');
         var grid = Ext.getCmp(prototype.id + '-gridDataInfoScan');
