@@ -21,6 +21,9 @@ public String IN_DESCR = "";
 public String IN_RSOCIAL = "";
 public String IN_UNIOPE = "";
 public String IN_CANAL = "";
+public String IN_SOURCE = "";
+public String IN_ACCREDITATION = "";
+public String IN_RISK = "";
 public String strFecha = "";
 public String strDescrip = "";
 public String A003CANAL = "";
@@ -222,4 +225,12 @@ public List<A4202> lstDetalle = new ArrayList<A4202>(0);
 //A003
 public String A003KEY1 = "";
 public Pagination page = new Pagination(); 
+
+    public String DSALES = "";
+    public String AGENT = "";
+    public String NAME_AGENT = "";
+    public String PSALF = "";
+     public double AMOUNT_SALE = 0;
+
+
 }

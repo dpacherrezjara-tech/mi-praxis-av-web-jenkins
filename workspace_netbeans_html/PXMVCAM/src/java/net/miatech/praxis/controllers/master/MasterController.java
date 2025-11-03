@@ -133,6 +133,26 @@ public class MasterController extends BaseController {
                 map.put("lstCardEquivalent", lstCardEquivalent);
             }
             
+            if (data.SOURCEAGENT != 0) {
+                List<A2280> lstsSourceAgent = masterDAO.loadSourceAgent();
+                map.put("lstsSourceAgent", lstsSourceAgent);
+            }
+            
+            if (data.CANALAGENT != 0) {
+                List<A2280> lstsCanalAgent = masterDAO.loadCanalAgent();
+                map.put("lstsCanalAgent", lstsCanalAgent);
+            }
+            
+            if (data.ACREDITACIONAGENT != 0) {
+                List<A2280> lstsAcreditacionAgent = masterDAO.loadAcreditacionAgent();
+                map.put("lstsAcreditacionAgent", lstsAcreditacionAgent);
+            }
+            
+            if (data.RIESGOAGENT != 0) {
+                List<A2280> lstsRiesgoAgent = masterDAO.loadRiesgoAgent();
+                map.put("lstsRiesgoAgent", lstsRiesgoAgent);
+            }
+            
             if (data.IN_PF122CODPR != 0) {
                 A4451Filter filter = new A4451Filter();
                 List<A4451Filter> lst;

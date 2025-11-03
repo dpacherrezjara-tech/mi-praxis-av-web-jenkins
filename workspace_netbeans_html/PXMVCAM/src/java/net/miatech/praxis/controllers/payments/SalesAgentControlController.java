@@ -25,6 +25,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.miatech.praxis.A003;
@@ -1935,11 +1936,118 @@ public class SalesAgentControlController extends BaseController {
         }
     }
     
+    public List<A2354Filter> getListPendingAgent(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2354Filter> lst = new ArrayList<>(0);
+        A2354Filter filter = new A2354Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new SalesAgentControlLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2354Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (false) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadMPS365(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
     
+    @RequestMapping(value = "getXLSXPendingAgent")
+    public void getXLSXPendingAgent(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String fileNameDownload = "Pending Agent Report - " + Functions.getFechaActual() + ".xlsx";
+
+            List<A2354Filter> listaData = this.getListPendingAgent(request, true);
+            Workbook workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Report");
+
+            // Crear header
+            Row row1 = sheet.createRow(0);
+            row1.createCell(0).setCellValue("CCUST");
+            row1.createCell(1).setCellValue("DSALES");
+            row1.createCell(2).setCellValue("AGENT");
+            row1.createCell(3).setCellValue("NAME AGENT");
+            row1.createCell(4).setCellValue("CANAL");
+            row1.createCell(5).setCellValue("COUNTRY");
+            row1.createCell(6).setCellValue("AMOUNT_SALE");
+
+            // Data
+            int rowIdx = 1;
+            for (A2354Filter data : listaData) {
+                Row row = sheet.createRow(rowIdx++);
+                row.createCell(0).setCellValue(data.CCUST);
+                row.createCell(1).setCellValue(data.DSALES);
+                row.createCell(2).setCellValue(data.AGENT);
+                row.createCell(3).setCellValue(data.NAME_AGENT);
+                row.createCell(4).setCellValue(data.CANAL);
+                row.createCell(5).setCellValue(data.PSALF);
+                row.createCell(6).setCellValue(data.AMOUNT_SALE);
+            }
+
+            // Ajustar ancho
+            for (int i = 0; i < 7; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            // Configuración de respuesta
+            response.setContentType(
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            );
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+
+            // Escribir al response
+            ServletOutputStream out = response.getOutputStream();
+            workbook.write(out);
+            out.flush();
+            workbook.close();
+
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+    }
     
-    
-    
-    
+    @RequestMapping(value = "updateSummarySales")
+    public @ResponseBody String loadIatas(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
+        try {
+            logic = new SalesAgentControlLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String resultSQP05572 = logic.SQP05572();
+            map.put("success", true);
+            map.put("msjResult", resultSQP05572);
+
+            String resultMPS363 = logic.MPS363();
+            map.put("success", true);
+            map.put("msjResult", resultMPS363);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            String errorMsg = "Error en updateSummarySales: " + e.getMessage();
+            map.put("success", false);
+            map.put("msjResult", errorMsg);
+        }
+        return new Gson().toJson(map);
+    }
     
     
     

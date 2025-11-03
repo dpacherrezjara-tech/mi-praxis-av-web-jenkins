@@ -135,7 +135,16 @@ public class SalesAgentControlLogic {
     }
     
     
+    public List<A2354Filter> loadMPS365(A2354Filter filter) throws SQLException, Exception {
+        return SalesAgentControlDAO.loadMPS365(filter);
+    }
     
+    public String SQP05572() throws Exception {
+        return SalesAgentControlDAO.SQP05572();
+    }
     
+    public String MPS363() throws Exception {
+        return SalesAgentControlDAO.MPS363();
+    }
     
 }

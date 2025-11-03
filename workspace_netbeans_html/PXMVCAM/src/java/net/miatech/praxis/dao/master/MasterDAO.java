@@ -1366,6 +1366,190 @@ public class MasterDAO {
 
     }
     
+    public List<A2280> loadSourceAgent() throws Exception {
+
+        Statement stmt = null;
+        ResultSet rst = null;
+        String strSQL = "";
+        List<A2280> listaFuenteAgentes = new ArrayList<>();
+        A2280 tarjetas;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS401(?)}";
+        
+        try {
+
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cs = cnx.prepareCall(SQLCLL01);
+
+            cs.setString(1, session.getUserView().getCustomerInfo().CCUST);
+
+            cs.execute();
+
+            rst = cs.getResultSet();
+            
+            tarjetas = new A2280();
+            tarjetas.CODE = "";
+            tarjetas.NAME = "All";
+            listaFuenteAgentes.add(tarjetas);
+
+            while (rst.next()) {
+
+                tarjetas = new A2280();
+                tarjetas.CODE = rst.getString("CANAV").trim();
+                tarjetas.NAME = tarjetas.CODE;
+
+                listaFuenteAgentes.add(tarjetas);
+                
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            setClose();
+        }
+
+        return listaFuenteAgentes;
+
+    }
+    
+    public List<A2280> loadCanalAgent() throws Exception {
+
+        Statement stmt = null;
+        ResultSet rst = null;
+        String strSQL = "";
+        List<A2280> listaCanalAgentes = new ArrayList<>();
+        A2280 tarjetas;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS402(?)}";
+        
+        try {
+
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cs = cnx.prepareCall(SQLCLL01);
+
+            cs.setString(1, session.getUserView().getCustomerInfo().CCUST);
+
+            cs.execute();
+
+            rst = cs.getResultSet();
+            
+            tarjetas = new A2280();
+            tarjetas.CODE = "";
+            tarjetas.NAME = "All";
+            listaCanalAgentes.add(tarjetas);
+
+            while (rst.next()) {
+
+                tarjetas = new A2280();
+                tarjetas.CODE = rst.getString("TYPEAG").trim();
+                tarjetas.NAME = tarjetas.CODE;
+
+                listaCanalAgentes.add(tarjetas);
+                
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            setClose();
+        }
+
+        return listaCanalAgentes;
+
+    }
+    
+    public List<A2280> loadAcreditacionAgent() throws Exception {
+
+        Statement stmt = null;
+        ResultSet rst = null;
+        String strSQL = "";
+        List<A2280> listaAcreditacionAgentes = new ArrayList<>();
+        A2280 tarjetas;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS403(?)}";
+        
+        try {
+
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cs = cnx.prepareCall(SQLCLL01);
+
+            cs.setString(1, session.getUserView().getCustomerInfo().CCUST);
+
+            cs.execute();
+
+            rst = cs.getResultSet();
+            
+            tarjetas = new A2280();
+            tarjetas.CODE = "";
+            tarjetas.NAME = "All";
+            listaAcreditacionAgentes.add(tarjetas);
+
+            while (rst.next()) {
+
+                tarjetas = new A2280();
+                tarjetas.CODE = rst.getString("ASTATUS").trim();
+                tarjetas.NAME = tarjetas.CODE;
+
+                listaAcreditacionAgentes.add(tarjetas);
+                
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            setClose();
+        }
+
+        return listaAcreditacionAgentes;
+
+    }
+    
+    public List<A2280> loadRiesgoAgent() throws Exception {
+
+        Statement stmt = null;
+        ResultSet rst = null;
+        String strSQL = "";
+        List<A2280> listaRiesgoAgentes = new ArrayList<>();
+        A2280 tarjetas;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS404(?)}";
+        
+        try {
+
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cs = cnx.prepareCall(SQLCLL01);
+
+            cs.setString(1, session.getUserView().getCustomerInfo().CCUST);
+
+            cs.execute();
+
+            rst = cs.getResultSet();
+            
+            tarjetas = new A2280();
+            tarjetas.CODE = "";
+            tarjetas.NAME = "All";
+            listaRiesgoAgentes.add(tarjetas);
+
+            while (rst.next()) {
+
+                tarjetas = new A2280();
+                tarjetas.CODE = rst.getString("RSTATUS").trim();
+                tarjetas.NAME = tarjetas.CODE;
+
+                listaRiesgoAgentes.add(tarjetas);
+                
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            setClose();
+        }
+
+        return listaRiesgoAgentes;
+
+    }
+    
     public List<CPF031Filter> loadUaudits() {
 
         //Connection con = null;

@@ -130,6 +130,11 @@ Ext.define('Ext.Praxis.controller.payments.SalesAgentControl.SalesAgentControlCo
         Ext.getCmp(prototype.id + '-cmbDateToDay').setValue("");
         
         this.paramsObtainData.COUNTRY = 2;
+        this.paramsObtainData.SOURCEAGENT = 2;
+        this.paramsObtainData.CANALAGENT = 2;
+        this.paramsObtainData.ACREDITACIONAGENT = 2;
+        this.paramsObtainData.RIESGOAGENT = 2;
+        
         Ext.Ajax.request({
             url: prototype.urlMaster + '/obtainData',
             method: 'POST',
@@ -140,14 +145,71 @@ Ext.define('Ext.Praxis.controller.payments.SalesAgentControl.SalesAgentControlCo
             success: function (response, options) {
                 
                 var res = Ext.JSON.decode(response.responseText);
+                
                 me.lstCountry = res.lstCountry;
+                me.lstsSourceAgent = res.lstsSourceAgent;
+                me.lstsCanalAgent = res.lstsCanalAgent;
+                me.lstsAcreditacionAgent = res.lstsAcreditacionAgent;
+                me.lstsRiesgoAgent = res.lstsRiesgoAgent;
 
                 var storeData3 = Ext.create('Ext.data.Store', {
                     data: me.lstCountry,
                     autoLoad: true
                 });
+                
                 Ext.getCmp(prototype.id + '-cmbCountry').bindStore(storeData3);
                 Ext.getCmp(prototype.id + '-cmbCountry').setValue('');
+                
+                var storeData4 = Ext.create('Ext.data.Store', {
+                    data: me.lstsSourceAgent,
+                    autoLoad: true
+                });
+                
+                Ext.getCmp(prototype.id + '-cmbSourceAgent').bindStore(storeData4);
+                Ext.getCmp(prototype.id + '-cmbSourceAgent').setValue('');
+                
+                var storeData5 = Ext.create('Ext.data.Store', {
+                    data: me.lstsCanalAgent,
+                    autoLoad: true
+                });
+                
+                Ext.getCmp(prototype.id + '-cmbCanalAgent').bindStore(storeData5);
+                Ext.getCmp(prototype.id + '-cmbCanalAgent').setValue('');
+                
+                var storeData6 = Ext.create('Ext.data.Store', {
+                    data: me.lstsAcreditacionAgent,
+                    autoLoad: true
+                });
+                
+                Ext.getCmp(prototype.id + '-cmbAcreditacionAgent').bindStore(storeData6);
+                Ext.getCmp(prototype.id + '-cmbAcreditacionAgent').setValue('');
+                
+                me.lstsRiesgoAgent = me.lstsRiesgoAgent.map(function(item) {
+                var cleanName = item.NAME;
+
+                cleanName = cleanName
+                    .replace(/â€“/g, '–')
+                    .replace(/â€”/g, '—')
+                    .replace(/â€™/g, "'")
+                    .replace(/â€œ|â€/g, '"')
+                    .replace(/\s+/g, ' ');
+
+                return Object.assign({}, item, { NAME: cleanName });
+            });
+
+            var storeData7 = Ext.create('Ext.data.Store', {
+                data: me.lstsRiesgoAgent,
+                autoLoad: true
+            });
+
+            var combo = Ext.getCmp(prototype.id + '-cmbRiesgoAgent');
+            combo.bindStore(storeData7);
+
+            combo.setValue('');
+
+                
+                
+                
                 global.clear();
             }
         });
@@ -186,6 +248,11 @@ Ext.define('Ext.Praxis.controller.payments.SalesAgentControl.SalesAgentControlCo
         me.bean.IN_SOCIETY = Ext.getCmp(prototype.id + '-typeSociety').getValue();
         me.bean.IN_INVOICE = Ext.getCmp(prototype.id + '-txtINVOICE').getValue();
         me.bean.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
+        
+        me.bean.IN_SOURCE = Ext.getCmp(prototype.id + '-cmbSourceAgent').getValue();
+        me.bean.IN_CANAL = Ext.getCmp(prototype.id + '-cmbCanalAgent').getValue();
+        me.bean.IN_ACCREDITATION = Ext.getCmp(prototype.id + '-cmbAcreditacionAgent').getValue();
+        me.bean.IN_RISK = Ext.getCmp(prototype.id + '-cmbRiesgoAgent').getValue();
         
         var beanString = JSON.stringify(me.bean);
         searchParams = {
@@ -1062,6 +1129,56 @@ Ext.getCmp(prototype.id + '-QTY_NOT_FOUND').setText(Ext.util.Format.number(QTY_N
         if (eOpts.getKey() === 13) {
             this.btnSearch_click();
         }
-    }
+    },
+    updateSummarySales: function(bean) {
+        
+        var tabMain = Ext.getCmp(prototype.id + '-panelMain');
+       
+        tabMain.setLoading('Cargando...');
+       Ext.Ajax.request({
+            url: prototype.url + '/updateSummarySales',
+            method: 'POST',
+            timeout: 600000, // 10 minutos en milisegundos
+            params: bean,
+            success: function(response) {
+                tabMain.setLoading(false);
+                var result = Ext.decode(response.responseText);
+                if (result.success) {
+                    win.lblUser_toolTip("Estructura: IMF151");
+                    console.log(result)
+                    global.Msg({ msg: result.msjResult });
+                    me.btnSearch_click();
+                } else {
+                    global.Msg({ msg: result.msjResult });
+                }
+            },
+            failure: function(response) {
+                tabMain.setLoading(false);
+                global.Msg({ msg: 'Error en la comunicación con el servidor: ' + response.status });
+            }
+        });
+
+    },
+    btnExcel_clickPending: function (obj, e) {
+        console.log('WAAAAAA')
+        this.setFormatParameter();
+        Ext.Msg.show({
+                title: '.:PRAXIS:.',
+                msg: 'Download Excel ?..',
+                buttons: Ext.MessageBox.OKCANCEL,
+                scope: this,
+                icon: Ext.MessageBox.QUESTION,
+                modal: true,
+                fn: function (btn) {
+                    if (btn === 'ok') {
+                        this.exportExcelPending();
+                    }
+                }
+            });
+    },
+    exportExcelPending: function () {
+        this.setFormatParameter();
+        global.getFile(prototype.url + '/getXLSXPendingAgent?beanString=' + encodeURI(searchParams.beanString));
+    },
 }
 );
