@@ -874,6 +874,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
             this.beanCashAgent.IN_SAGENT = x.record.data.SAGENT;
             this.beanCashAgent.IN_DATEC = x.record.data.DATEC;
             this.beanCashAgent.IN_TRANC = x.record.data.TRANC;
+            
+            this.beanCashAgent.IN_SPAYMENT = (x.record.data.TPERIOD === 'E') ? 'EP' : 'CA';
             paramDetail.beanString = JSON.stringify(this.beanCashAgent);
 
             Ext.Ajax.request({
@@ -917,16 +919,20 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         this.bean_scan.TICKET = Ext.getCmp(prototype.id + '-input-txtTKTScanCash').getValue();
         let fechaFrom = Ext.getCmp(prototype.id + '-txtFromDateCash').getValue() || fecha_a_validar;
         let fechato = Ext.getCmp(prototype.id + '-txtToDateCash').getValue() || fecha_a_validar;
+        let fechaClos = Ext.getCmp(prototype.id + '-txtMclos').getValue() || fecha_a_validar;
+        
 
         // --- Fechas ---
-        if (fechaFrom || fechato) {
+        if (fechaFrom || fechato || fechaClos) {
             let fechaBaseFrom = Ext.isDate(fechaFrom) ? fechaFrom : Ext.Date.parse(fechaFrom, 'Y-m-d');
             let fechaBaseTo = Ext.isDate(fechato) ? fechato : Ext.Date.parse(fechato, 'Y-m-d');
+            let fechaBaseClos = Ext.isDate(fechaClos) ? fechaClos : Ext.Date.parse(fechaClos, 'Y-m-d');
 
-            if (fechaBaseFrom || fechaBaseTo) {
+            if (fechaBaseFrom || fechaBaseTo || fechaClos) {
                 this.bean_scan.SDATE = Ext.Date.format(fechaBaseFrom, 'Ymd');
                 this.bean_scan.SDATE_MIN = Ext.Date.format(fechaBaseFrom, 'Ymd');
                 this.bean_scan.SDATE_MAX = Ext.Date.format(fechaBaseTo, 'Ymd');
+                this.bean_scan.MCLOS = Ext.Date.format(fechaBaseClos, 'Ymd');
             } else {
                 console.warn('La fecha ingresada no es válida.');
             }

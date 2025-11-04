@@ -6115,7 +6115,7 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS326_AGENTTKT(?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS326_AGENTTKT(?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -6127,7 +6127,7 @@ public class BankReconciliationDAO {
             cstmt.setString(3, filter.IN_TRANC.trim());
             cstmt.setString(4, filter.IN_DATEC.trim());
             cstmt.setString(5, filter.IN_SAGENT.trim());
-
+            cstmt.setString(6, filter.IN_SPAYMENT.trim());
             cstmt.execute();
 
             rst = cstmt.getResultSet();
@@ -6153,9 +6153,11 @@ public class BankReconciliationDAO {
                 beanTkt.SERIE = rst.getString("SERIE").trim();
                 beanTkt.TKT = beanTkt.CCIA + beanTkt.FORMA + beanTkt.SERIE;
                 beanTkt.SVFOPNETR = rst.getDouble("SVFOPNETR");
+                beanTkt.SVFOP = rst.getDouble("SVFOP");
                 beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
                 beanTkt.INVOICE = rst.getString("INVOICE").trim();
                 beanTkt.CFUENTE = rst.getString("CFUENTE").trim();
+                beanTkt.SPAYMENT = rst.getString("SPAYMENT").trim();
                 beanTkt.tot_VFOP = rst.getDouble("SUM_SVFOPNETR");
 
                 lstData.add(beanTkt);
@@ -9015,7 +9017,6 @@ public class BankReconciliationDAO {
                 objRtn.STVALS = rs01.getString("STVALS");
                 objRtn.CHARNBR = rs01.getString("CHARNBR");
                 objRtn.SVFOP = rs01.getDouble("SVFOP");
-
                 objRtn.COMMAMO = rs01.getDouble("COMMAMO");
                 objRtn.COMMAMOC = rs01.getDouble("COMMAMOC");
 //                objRtn.DIFF_COMMAMO = rs01.getDouble("COMMDIFFC"); //CAMBIO SOLICITADO PARA UTILIZAR CAMPO EN LA BD
@@ -9189,6 +9190,8 @@ public class BankReconciliationDAO {
                 beanTkt.COMMENTS = rst.getString("COMMENTS");
                 beanTkt.BANDOC = rst.getString("BANDOC");
                 beanTkt.CBATCH = rst.getString("CBATCH");
+                beanTkt.TPERIOD = rst.getString("TPERIOD");
+                beanTkt.DPERIOD = rst.getString("DPERIOD");
                 beanTkt.FECR = rst.getString("FECR");
                 beanTkt.DCYCLE = rst.getString("DCYCLE");
                 lstData.add(beanTkt);
