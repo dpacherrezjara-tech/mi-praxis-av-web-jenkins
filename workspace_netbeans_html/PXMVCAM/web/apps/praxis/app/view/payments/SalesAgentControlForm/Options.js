@@ -95,14 +95,22 @@ Ext.define('Ext.Praxis.view.payments.SalesAgentControlForm.Options', {
                             id: prototype.id + '-btnFilter',
                             iconCls: 'prx-icon-filter',
                             tooltip: 'Display filter'
-
                         },
                         {
-                            xtype: 'button',
-                            id: prototype.id + '-btnAdd',
-                            iconCls: 'prx-icon-add',
-                            tooltip: 'New'
+                            xtype:'button',
+                            id: prototype.id+'-btnDisplay',
+                            icon: 'resources/img/botones/FalseChart.png',
+                            tooltip: 'Display Charts',
+                            listeners: {
+                                click: 'btnDisplay_click'
+                            }
                         },
+//                        {
+//                            xtype: 'button',
+//                            id: prototype.id + '-btnAdd',
+//                            iconCls: 'prx-icon-add',
+//                            tooltip: 'New'
+//                        },
 //                        {
 //                            xtype:'button',
 //                            id: prototype.id+'-btnDisplay',

@@ -1,3 +1,29 @@
+Ext.create('Ext.Component', {
+    renderTo: Ext.getBody(),
+    html: '<style type="text/css">' +
+            '.button-off {' +
+            '  background-color: #f44336;' + // Red color for OFF
+            '  color: white;' +
+            '  border-radius: 50%;' +
+            '  border: none;' +
+            '  font-size: 12px;' +
+            '  cursor: pointer;' +
+            '  text-align: center;' +
+            '  line-height: 50px;' + // Ensure text is vertically centered
+            '}' +
+            '.button-on {' +
+            '  background-color: #4CAF50;' + // Green color for ON
+            '  color: white;' +
+            '  border-radius: 50%;' +
+            '  border: none;' +
+            '  font-size: 12px;' +
+            '  cursor: pointer;' +
+            '  text-align: center;' +
+            '  line-height: 50px;' + // Ensure text is vertically centered
+            '}' +
+            '</style>'
+});
+
 Ext.define('Ext.Praxis.view.payments.SalesAgentControlForm.Filters', {
     extend: 'Ext.form.Panel',
     alias: 'widget.' + prototype.id + '-filters',
@@ -330,6 +356,101 @@ Ext.define('Ext.Praxis.view.payments.SalesAgentControlForm.Filters', {
                         keyup: 'onUpperValue',
                         keypress: 'eventKey'
                     }
+                },
+                {
+                    xtype: 'textfield',
+                    id: prototype.id + '-txtProcess',
+                    fieldLabel: 'Process Date',
+                    labelStyle: 'text-align: left; font-size: 12px;',
+                    fieldStyle: 'text-align: center; font-size: 12px;',
+                    labelWidth: 75,
+                    disabled: true,
+                    enforceMaxLength: true,
+                    hidden: false, 
+                    maskRe: /[0-9]/,
+                    maxLength: 8, 
+                    width: 220,
+                    enableKeyEvents: true,
+                    margin: '0 10 0 0'
+                },
+                 {
+                    xtype: 'panel',
+                    layout: 'fit',
+                    border: false,
+                    hidden: true,
+                     margin: '0 10 0 0',
+                     id: prototype.id + '-panelRbtDetail',
+                    background: '#E3EAF9',
+                    style: {
+                        backgroundColor: '#E3EAF9'
+                    },
+//                    style: 'margin-right:5px;',
+                    items: [
+                        {
+                            xtype: 'radiogroup',
+                            id: prototype.id + '-rbtDetail',
+                            fieldLabel: '',
+                            horizontal: true,
+                            hidden: false,
+                            items: [
+                                {boxLabel: '<span>Cash</span>', name: 'rbD', inputValue: 'CASH', width: 50, checked: true},
+                                {boxLabel: '<span>Credit Card</span>', name: 'rbD', inputValue: 'CREDIT', width: 85}
+                            ],
+                            listeners: {
+                                change: 'btnDisplay_click'
+                            },
+                            style: {
+                                backgroundColor: '#e0f0ff',   // azul claro
+                                borderRadius: '5px',
+                                border: '1px solid #99ccff'
+                            }
+                        }
+                    ]
+                },
+                {
+                    xtype: 'container',
+                    layout: {
+                        type: 'hbox',
+                        align: 'middle'
+                    },
+                    id: prototype.id + '-filterChange',
+                    hidden: true,
+                    padding: '2 10 5 0',
+                    items: [
+                        {
+                            xtype: 'label',
+                            text: 'Quantity',
+                            margin: '0 5 0 0',
+                            width: 50,
+                            id: prototype.id + '-COL'
+                        },
+                        {
+                            xtype: 'component',
+                            id: prototype.id + '-btnToggleSwitchSalesAgent',
+                            margin: '0 5 0 0',
+                            html: `<style>
+                                .toggle-container{display:inline-block;position:relative;width:30px;height:16px;vertical-align:middle;}
+                                .toggle-input{opacity:0;width:0;height:0;}
+                                .toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#72e34f;transition:.4s;border-radius:16px;}
+                                .toggle-slider::before{position:absolute;content:"";height:12px;width:12px;border-radius:50%;left:2px;bottom:2px;background-color:white;transition:.4s;}
+                                .toggle-input:checked+.toggle-slider{background-color:#4c7daf;}
+                                .toggle-input:checked+.toggle-slider::before{transform:translateX(16px);}
+                            </style>
+                            <label class="toggle-container"><input type="checkbox" class="toggle-input"><span class="toggle-slider"></span></label>`,
+                            tooltip: 'Export to Report',
+                            listeners: {
+                                change: 'chgBash',
+                                click: 'chgBash'
+                            }
+                        },
+                        {
+                            xtype: 'label',
+                            text: 'Amount',
+                            margin: '0 0 0 5',
+                            width: 60,
+                            id: prototype.id + '-EXT'
+                        },
+                    ]
                 },
                 {
                     xtype: 'form',

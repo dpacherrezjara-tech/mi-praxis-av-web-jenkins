@@ -147,4 +147,12 @@ public class SalesAgentControlLogic {
         return SalesAgentControlDAO.MPS363();
     }
     
+    public List<A2354Filter> load_MPS405(A2354Filter filter) throws SQLException, Exception {
+        return SalesAgentControlDAO.load_MPS405(filter);
+    }
+    
+    public String getProcessDate() throws SQLException, Exception {
+        return SalesAgentControlDAO.getProcessDate();
+    }
+
 }

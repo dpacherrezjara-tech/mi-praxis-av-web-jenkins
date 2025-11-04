@@ -510,22 +510,10 @@ Ext.define('Ext.Praxis.view.payments.SalesAgentControlForm.Info', {
                                                 }
                                     ]
                                 }
-
-
                             ]
                         },
-                        
                         ///AGREGAMOS PANEL MES
-                        
-                        
                         /////////////PAE+NEL IMF150/////////////////////
-                        
-                        ////////////////////////////////////////////////
-                        ////////////////////////////////////////////////////
-                        
-                        
-                        
-                        
                         {
                             xtype: 'panel',
                             id: prototype.id + '-panelGridDataIMF150',
@@ -891,7 +879,278 @@ Ext.define('Ext.Praxis.view.payments.SalesAgentControlForm.Info', {
                                 }
                             ]
                         },
-                        
+                    {
+    xtype: 'panel',
+    border: false,
+    width: 1200,
+    id: prototype.id + '-panelDashboardSales',
+    bodyStyle: 'background-color: #F4F7FD;',
+    layout: {
+        type: 'vbox',
+        align: 'center'
+    },
+    items: [
+        // 🔹 FILTROS ARRIBA
+        {
+            xtype: 'container',
+            id: prototype.id + '-filterMain2',
+            layout: {
+                type: 'hbox',
+                pack: 'center',
+                align: 'middle'
+            },
+            style: 'padding: 15px 0 10px 0;',
+            items: [
+                {
+                    xtype: 'radiogroup',
+                    id: prototype.id + '-radiogroupType',
+                    layout: {
+                        type: 'hbox',
+                        pack: 'center'
+                    },
+                    defaults: {
+                        style: {
+                            whiteSpace: 'nowrap',
+                            marginRight: '25px',
+                            'font-size': '15px'
+                        }
+                    },
+                    items: [
+                        { boxLabel: '<b style="color:#148D28;">Client</b>', inputValue: 'CL', name: 'rbgType', checked: true },
+                        { boxLabel: '<b style="color:#148D28;">Country</b>', inputValue: 'CO', name: 'rbgType' },
+                        { boxLabel: '<b style="color:#148D28;">Source</b>', inputValue: 'SO', name: 'rbgType' },
+                        { boxLabel: '<b style="color:#148D28;">Channel</b>', inputValue: 'CA', name: 'rbgType' },
+                        { boxLabel: '<b style="color:#148D28;">Accreditation</b>', inputValue: 'AC', name: 'rbgType' },
+                        { boxLabel: '<b style="color:#148D28;">Risk</b>', inputValue: 'RI', name: 'rbgType' }
+                    ],
+                    listeners: {
+                        change: 'rbChangeType'
+                    }
+                }
+            ]
+        },
+
+        // 🔹 CONTENEDOR PRINCIPAL DE LOS GRÁFICOS
+        {
+            xtype: 'container',
+            layout: {
+                type: 'hbox',
+                align: 'stretch'
+            },
+            width: '100%',
+            defaults: {
+                flex: 1,
+                margin: '10 15 10 15'
+            },
+            items: [
+                // 🔸 IZQUIERDA - BARRAS ELEGANTES
+                {
+    xtype: 'cartesian',
+    id: prototype.id + '-chartElegant',
+    height: 490,
+    width: 700,
+    background: '#FFFFFF',
+    insetPadding: { top: 20, left: 40, right: 20, bottom: 40 },
+
+    // 🔹 Borde y sombra tipo “tarjeta”
+    style: {
+        border: '1px solid #E5E8EB',      // 🔸 borde suave
+        borderRadius: '8px',              // 🔸 esquinas redondeadas
+        boxShadow: '2px 2px 10px rgba(0,0,0,0.08)', // 🔸 sombra ligera
+    },
+
+    legend: false,
+    axes: [
+        {
+            type: 'numeric',
+            position: 'left',
+            title: {
+                text: 'Tickets (Qty)',
+                fontSize: 14,
+                fontWeight: 'bold',
+                color: '#2C3E50'
+            },
+            grid: false,
+            style: {
+                strokeStyle: '#CCD1D1',
+                lineWidth: 1
+            },
+            minimum: 0
+        },
+        {
+            type: 'category',
+            position: 'bottom',
+            title: {
+                text: 'Code',
+                fontSize: 14,
+                fontWeight: 'bold',
+                color: '#2C3E50'
+            },
+            label: {
+                fontSize: 12,
+                fontWeight: '600',
+                color: '#2E4053'
+            }
+        }
+    ],
+    series: [{
+        type: 'bar',
+        xField: 'CODE',
+        yField: 'QTY_TICKETS_SALES_AGENT',
+        title: 'Tickets by Code',
+        style: {
+            // 🎨 Degradado elegante
+            fillStyle: {
+                type: 'linear',
+                degrees: 90,
+                stops: [
+                    { offset: 0, color: '#2980B9' },
+                    { offset: 1, color: '#85C1E9' }
+                ]
+            },
+            strokeStyle: '#1A5276',
+            lineWidth: 1.2,  // 🔸 define el borde del contorno de cada barra
+            opacity: 0.95,
+            shadowColor: 'rgba(0,0,0,0.15)',
+            shadowBlur: 6,
+            shadowOffsetX: 2,
+            shadowOffsetY: 3,
+            radius: 6
+        },
+        highlightCfg: {
+            opacity: 1,
+            fillStyle: '#1ABC9C'
+        },
+        label: {
+            field: 'QTY_TICKETS_SALES_AGENT',
+            display: 'outside',
+            fontSize: 13,
+            fontWeight: 'bold',
+            color: '#1B2631',
+            renderer: val => Ext.util.Format.number(val, '0,0')
+        },
+        tooltip: {
+            trackMouse: true,
+            renderer: function (tooltip, record) {
+                tooltip.setHtml(
+                    `<div style="font-size:13px;line-height:1.4;">
+                        <b>Code:</b> ${record.get('CODE')}<br>
+                        <b>Tickets:</b> ${Ext.util.Format.number(record.get('QTY_TICKETS_SALES_AGENT'), '0,0')}
+                    </div>`
+                );
+            }
+        },
+        animation: {
+            easing: 'easeOut',
+            duration: 900
+        }
+    }]
+},
+
+                // 🔸 DERECHA - PIE / DONUT
+              {
+    xtype: 'polar',
+    id: prototype.id + '-chartDonut',
+    height: 450,
+    width: 700, // ⬆️ más ancho para dejar espacio al costado
+    insetPadding: 40,
+    innerPadding: 25,
+    background: '#FFFFFF',
+    interactions: ['rotate', 'itemhighlight'],
+
+    store: { fields: ['CODE', 'QTY_TICKETS_SALES_AGENT'] },
+
+   legend: {
+    docked: 'right',
+    width: 190,
+    itemSpacing: 10,
+    marker: { size: 14 },
+    label: {
+        fontSize: 13,
+        fontWeight: '600',
+        color: '#2E4053',
+        renderer: function (text, sprite, config, data, index) {
+            const chart = Ext.getCmp(prototype.id + '-chartDonut');
+            if (!chart || !chart.getStore()) return text;
+
+            const rec = chart.getStore().getAt(index);
+            if (!rec) return text;
+
+            const code = rec.get('CODE');
+            const qty = Ext.util.Format.number(rec.get('QTY_TICKETS_SALES_AGENT'), '0,0');
+
+            // 🔹 mostramos: “CODE — cantidad”
+            return `${code}: ${qty} tickets`;
+
+        }
+    }
+}
+,
+
+    series: [{
+        type: 'pie',
+        angleField: 'QTY_TICKETS_SALES_AGENT',
+        donut: 35,
+        highlight: true,
+        colors: [
+            '#004E89', '#0077B6', '#00B4D8', '#90E0EF',
+            '#CAF0F8', '#F1C40F', '#E67E22', '#E74C3C'
+        ],
+
+        label: {
+            field: 'CODE',
+            display: 'outside',
+            calloutLine: { length: 25, width: 1.2, color: '#333' },
+            fontSize: 14,
+            fontWeight: '600',
+            color: '#2C3E50',
+            renderer: function (text, sprite, config, data, index) {
+                const rec = data.store.getAt(index);
+                const val = rec.get('QTY_TICKETS_SALES_AGENT');
+                return `${rec.get('CODE')} (${Ext.util.Format.number(val, '0,0')})`;
+            }
+        },
+
+        tooltip: {
+            trackMouse: true,
+            renderer: function (tooltip, record) {
+                tooltip.setHtml(`
+                    <div style="font-size:13px;line-height:1.5;">
+                        <b>Code:</b> ${record.get('CODE')}<br>
+                        <b>Tickets:</b> ${Ext.util.Format.number(record.get('QTY_TICKETS_SALES_AGENT'), '0,0')}
+                    </div>
+                `);
+            }
+        },
+
+        style: {
+            strokeStyle: '#F4F4F4',  // 👈 borde suave
+            lineWidth: 1,
+            shadowColor: 'rgba(0,0,0,0.08)',
+            shadowBlur: 6,
+            shadowOffsetX: 2,
+            shadowOffsetY: 3
+        },
+
+        animation: {
+            easing: 'easeOut',
+            duration: 900
+        }
+    }]
+}
+
+
+
+            ]
+        }
+    ]
+}
+
+
+
+
+
+
                         
                         
                         ////////////////////////////////////////////////////

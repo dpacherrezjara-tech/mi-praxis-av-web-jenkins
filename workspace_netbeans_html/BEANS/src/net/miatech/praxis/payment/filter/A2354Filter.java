@@ -17,6 +17,9 @@ import net.miatech.praxis.payment.A4202;
 public class A2354Filter extends A2354 {
 
 public String IN_MERCHN = "";
+public String IN_OPTION = "";
+public String IN_QTY_OR_AMOUNT = "";
+public String IN_DETAIL_TYPE = "";
 public String IN_DESCR = "";
 public String IN_RSOCIAL = "";
 public String IN_UNIOPE = "";
@@ -203,6 +206,7 @@ public double AMOUNT_TOTAL_DIFFERENCE = 0;
 public double AMOUNT_TOTAL_MPF100 = 0;
 public double AMOUNT_TOTAL_DIFFERENCE_100 = 0;
 public double AMOUNT_TOTAL_PENDING_MPF100 = 0;
+public double QTY_TICKETS_SALES_AGENT = 0;
 
 public int QTY = 0;
 public int QTY_INVOICES = 0;

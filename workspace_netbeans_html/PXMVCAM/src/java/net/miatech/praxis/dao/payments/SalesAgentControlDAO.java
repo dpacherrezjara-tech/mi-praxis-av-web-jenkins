@@ -2280,5 +2280,85 @@ public class SalesAgentControlDAO {
         }
         return msg;
     }
+    
+    public List<A2354Filter> load_MPS405(A2354Filter filter) throws SQLException, Exception {
+
+        A2354Filter objRtn = new A2354Filter();
+        CallableStatement cstmt01 = null;
+        ResultSet rs01 = null;
+        List<A2354Filter> lstRtn = new ArrayList<A2354Filter>(0);
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS405(?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt01 = cnx.prepareCall(SQLCLL01);
+
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt01.setString(2, filter.IN_OPTION);
+            cstmt01.setString(3, filter.IN_QTY_OR_AMOUNT);
+            cstmt01.setString(4, filter.IN_DETAIL_TYPE);
+
+            cstmt01.execute();
+
+            rs01 = cstmt01.getResultSet();
+            while (rs01.next()) {
+                objRtn = new A2354Filter();
+                objRtn.CODE = rs01.getString("CODE").trim();
+                objRtn.QTY_TICKETS_SALES_AGENT = rs01.getDouble("QTY_TICKETS");
+                lstRtn.add(objRtn);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rs01 != null) {
+                try {
+                    rs01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt01 != null) {
+                try {
+                    cstmt01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstRtn;
+    }
+    
+    public String getProcessDate() throws SQLException, Exception {
+        String processDate = "";
+        String sql = "SELECT FECR || '-' || HOCR AS PROCESS_DATE FROM PRAXISMP.IMF151 FETCH FIRST 1 ROWS ONLY";
+
+        Connection cnx = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            ps = cnx.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                processDate = rs.getString("PROCESS_DATE").trim();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {}
+            if (ps != null) try { ps.close(); } catch (SQLException e) {}
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+        }
+
+        return processDate;
+    }
+
 
 }

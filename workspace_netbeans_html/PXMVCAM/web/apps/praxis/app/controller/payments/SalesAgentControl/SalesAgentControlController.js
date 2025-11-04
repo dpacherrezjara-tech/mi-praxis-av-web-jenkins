@@ -90,6 +90,11 @@ Ext.define('Ext.Praxis.controller.payments.SalesAgentControl.SalesAgentControlCo
         });
     },
     xpanel_afterrender: function () {
+        
+        $('#SalesAgentControlForm-btnToggleSwitchSalesAgent').change(function () {
+            me.btnDisplay_click();
+        });
+        
         me.obtainData();
         me.btnSearch_click();
     },
@@ -214,6 +219,30 @@ Ext.define('Ext.Praxis.controller.payments.SalesAgentControl.SalesAgentControlCo
             }
         });
         
+        Ext.Ajax.request({
+            url: prototype.url + '/getProcessDate',
+            method: 'GET',
+            success: function (response) {
+                const res = Ext.decode(response.responseText);
+                if (res.success && res.processDate) {
+                    let val = res.processDate; 
+
+                    const [datePart, timePart] = val.split('-');
+                    if (datePart && timePart) {
+                        const formattedDate = `${datePart.substring(0,4)}-${datePart.substring(4,6)}-${datePart.substring(6,8)}`;
+                        const formattedTime = `${timePart.substring(0,2)}:${timePart.substring(2,4)}:${timePart.substring(4,6)}`;
+                        val = `${formattedDate} ${formattedTime}`;
+                    }
+
+                    Ext.getCmp(prototype.id + '-txtProcess').setValue(val);
+                }
+            },
+            failure: function () {
+                console.error('❌ Error al obtener la fecha de proceso');
+            }
+        });
+
+
         
     },
     obtainDataBKP: function () {
@@ -239,7 +268,6 @@ Ext.define('Ext.Praxis.controller.payments.SalesAgentControl.SalesAgentControlCo
     btnSearch_click: function (obj, e) {
             this.setFormatParameter();
             this.setGridData();
-            
     },
     setFormatParameter: function () {
         me.bean = {};
@@ -964,6 +992,8 @@ Ext.getCmp(prototype.id + '-QTY_NOT_FOUND').setText(Ext.util.Format.number(QTY_N
                  Ext.getCmp(prototype.id + '-txtINVOICE').setDisabled(false);
                  Ext.getCmp(prototype.id + '-pie').setVisible(true);
                  Ext.getCmp(prototype.id + '-panelHeight').setHeight(600);
+                 Ext.getCmp(prototype.id + '-filterChange').setVisible(false);
+                 Ext.getCmp(prototype.id + '-panelRbtDetail').setVisible(false);
                 me.pagginActual = '-paggin';
                 break;
             case  '-panelGridDataIMF150':
@@ -975,11 +1005,29 @@ Ext.getCmp(prototype.id + '-QTY_NOT_FOUND').setText(Ext.util.Format.number(QTY_N
                  Ext.getCmp(prototype.id + '-cmbRiesgoAgent').setDisabled(true);
                  Ext.getCmp(prototype.id + '-txtINVOICE').setDisabled(true);
                  Ext.getCmp(prototype.id + '-pie').setVisible(true);
+                 Ext.getCmp(prototype.id + '-filterChange').setVisible(false);
+                 Ext.getCmp(prototype.id + '-panelRbtDetail').setVisible(false);
+                  Ext.getCmp(prototype.id + '-panelHeight').setHeight(600);
+                me.pagginActual = '-pagginIMF150';
+                break;
+             case  '-panelDashboardSales':
+                 Ext.getCmp(prototype.id + '-typeSociety').setDisabled(true);
+                 Ext.getCmp(prototype.id + '-cmbCountry').setDisabled(true);
+                 Ext.getCmp(prototype.id + '-cmbSourceAgent').setDisabled(true);
+                 Ext.getCmp(prototype.id + '-cmbCanalAgent').setDisabled(true);
+                 Ext.getCmp(prototype.id + '-cmbAcreditacionAgent').setDisabled(true);
+                 Ext.getCmp(prototype.id + '-cmbRiesgoAgent').setDisabled(true);
+                 Ext.getCmp(prototype.id + '-txtINVOICE').setDisabled(true);
+                 Ext.getCmp(prototype.id + '-pie').setVisible(false);
+                 Ext.getCmp(prototype.id + '-filterChange').setVisible(true);
+                 Ext.getCmp(prototype.id + '-panelRbtDetail').setVisible(true);
                   Ext.getCmp(prototype.id + '-panelHeight').setHeight(600);
                 me.pagginActual = '-pagginIMF150';
                 break;
             case  '-panelGridDataA270':
                  Ext.getCmp(prototype.id + '-panelHeight').setHeight(630);
+                 Ext.getCmp(prototype.id + '-filterChange').setVisible(false);
+                 Ext.getCmp(prototype.id + '-panelRbtDetail').setVisible(false);
                 me.pagginActual = '-pagginA720';
                 break;
             case  '-panelGridDataHistoric':
@@ -1187,5 +1235,198 @@ Ext.getCmp(prototype.id + '-QTY_NOT_FOUND').setText(Ext.util.Format.number(QTY_N
         this.setFormatParameter();
         global.getFile(prototype.url + '/getXLSXPendingAgent?beanString=' + encodeURI(searchParams.beanString));
     },
+    rbChangeType: function (field, newvalue, oldvalue) {
+        me.v_consulta = newvalue.rbgType;
+        console.log(me.v_consulta);
+        this.setFormatParameterDashboardSales(me.v_consulta);
+        this.setGridDataDashbaordSales();
+//        me.btnDisplay_click();
+    },
+    btnDisplay_click: function() {
+       this.setFormatParameterDashboardSales();
+       this.setGridDataDashbaordSales();
+    },
+   setFormatParameterDashboardSales: function () {
+        me.bean = {};
+
+        var cmp = Ext.getCmp(prototype.id + '-btnToggleSwitchSalesAgent');
+        var isChecked = false;
+
+        if (cmp && cmp.getEl()) {
+            var inputEl = cmp.getEl().dom.querySelector('.toggle-input');
+            isChecked = inputEl ? inputEl.checked : false;
+        }
+
+        var IN_QTY_OR_AMOUNT = isChecked ? 'AMOUNT' : 'QUANTITY';
+
+        var rbtGroup = Ext.getCmp(prototype.id + '-rbtDetail');
+        var selectedValue = null;
+        if (rbtGroup) {
+            var selected = rbtGroup.getValue();
+            selectedValue = selected ? selected.rbD : null;
+        }
+        
+        var rbg = Ext.getCmp(prototype.id + '-radiogroupType');
+        var selected = rbg.getValue();      // devuelve algo como { rbgType: 'CL' }
+        var selectedOption = selected ? selected.rbgType : null;
+
+        me.bean.IN_OPTION = selectedOption;
+        me.bean.IN_QTY_OR_AMOUNT = IN_QTY_OR_AMOUNT;
+        me.bean.IN_DETAIL_TYPE = selectedValue;
+
+        var beanString = JSON.stringify(me.bean);
+        searchParams = {
+            bean: me.bean,
+            beanString: beanString
+        };
+
+        console.log("searchParams:", searchParams);
+    },
+
+    setGridDataDashbaordSales: function () {
+    const me = this;
+
+    if (me.panelActual != '-panelDashboardSales') {
+        me.drillDown.push(me.panelActual);
+        me.panelActual = '-panelDashboardSales';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+    }
+
+    const panel = Ext.getCmp(prototype.id + '-panelDashboardSales');
+
+    // 🌀 Mostrar loading
+    const mask = new Ext.LoadMask({
+        msg: 'Loading dashboard data...',
+        target: panel
+    });
+    mask.show();
+
+    // 🧩 Detectar estado del toggle (Quantity ↔ Amount)
+    const toggleCmp = Ext.getCmp(prototype.id + '-btnToggleSwitchSalesAgent');
+    const labelLeft = Ext.getCmp(prototype.id + '-COL');
+    const labelRight = Ext.getCmp(prototype.id + '-EXT');
+    const input = toggleCmp?.getEl()?.down('.toggle-input');
+    const isChecked = input?.dom?.checked;
+
+    // 🔹 Ajustar etiquetas según estado
+    const labelText = isChecked ? 'USD' : 'Tickets';
+    if (labelLeft) labelLeft.setText(labelText);
+    if (labelRight) labelRight.setText(isChecked ? 'Tickets' : 'USD');
+
+    // 🧭 Detectar radio button seleccionado
+    const rbGroup = Ext.getCmp(prototype.id + '-radiogroupType');
+    let selectedValue = rbGroup?.getValue()?.rbgType || 'CL'; // default Client
+    let selectedLabel = 'Client'; // valor por defecto
+
+    switch (selectedValue) {
+        case 'CO': selectedLabel = 'Country'; break;
+        case 'SO': selectedLabel = 'Source'; break;
+        case 'CA': selectedLabel = 'Channel'; break;
+        case 'AC': selectedLabel = 'Accreditation'; break;
+        case 'RI': selectedLabel = 'Risk'; break;
+        default: selectedLabel = 'Client';
+    }
+
+    // Crear el store remoto
+    const storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
+        proxy: {
+            url: prototype.url + '/searchSalesDashboard'
+        },
+        listeners: {
+            beforeload: function (obj) {
+                obj.proxy.extraParams = searchParams;
+            },
+            load: function (store) {
+                mask.hide();
+
+                // 🔹 Convertir el store a arreglo simple
+                const data = [];
+                store.each(function (rec) {
+                    data.push({
+                        CODE: rec.get('CODE'),
+                        QTY_TICKETS_SALES_AGENT: rec.get('QTY_TICKETS_SALES_AGENT')
+                    });
+                });
+
+                data.sort((a, b) => a.QTY_TICKETS_SALES_AGENT - b.QTY_TICKETS_SALES_AGENT);
+
+                // 🔹 Referenciar gráficos
+                const chartBar = Ext.getCmp(prototype.id + '-chartElegant');
+                const chartDonut = Ext.getCmp(prototype.id + '-chartDonut');
+
+                if (!chartBar && !chartDonut) {
+                    console.warn("⚠️ No se encontraron gráficos para actualizar.");
+                    return;
+                }
+
+                // 🧠 🔸 Lógica: si es Country, solo mostramos el donut
+                if (selectedValue === 'CO') {
+                    chartBar.setHidden(true);
+                    chartDonut.setHidden(false);
+                } else {
+                    chartBar.setHidden(false);
+                    chartDonut.setHidden(false);
+                }
+
+                // 🔹 Gráfico de barras
+                if (chartBar && !chartBar.hidden) {
+                    chartBar.setStore({
+                        fields: ['CODE', 'QTY_TICKETS_SALES_AGENT'],
+                        data: data
+                    });
+
+                    const axes = chartBar.getAxes();
+                    if (axes && axes.length > 0) {
+                        axes[0].setTitle(isChecked ? 'Amount (USD)' : 'Tickets (Qty)');
+                    }
+                    if (axes && axes.length > 1) {
+                        axes[1].setTitle(selectedLabel + ' (' + data.length + ')');
+                    }
+
+                    chartBar.redraw();
+                }
+
+                // 🔹 Gráfico de pastel / donut
+                if (chartDonut) {
+                    chartDonut.setStore({
+                        fields: ['CODE', 'QTY_TICKETS_SALES_AGENT'],
+                        data: data
+                    });
+                    chartDonut.redraw();
+
+                    const storeDonut = chartDonut.getStore();
+                    const legend = chartDonut.getLegend();
+                    if (legend && storeDonut) {
+                        const labels = [];
+                        storeDonut.each(function (rec) {
+                            const code = rec.get('CODE');
+                            const qty = Ext.util.Format.number(rec.get('QTY_TICKETS_SALES_AGENT'), '0,0');
+                            labels.push(`${code}: ${qty} ${isChecked ? 'USD' : 'tickets'}`);
+                        });
+
+                        const legendStore = legend.getStore ? legend.getStore() : null;
+                        if (legendStore) {
+                            legendStore.each(function (item, index) {
+                                if (labels[index]) item.set('name', labels[index]);
+                            });
+                        }
+                    }
+                }
+
+                console.log(`✅ Dashboard updated (${selectedLabel}) [${isChecked ? 'USD' : 'Tickets'} mode]`);
+            }
+        }
+    });
+
+    // Ejecutar carga
+    storeGridDatas.load();
+
+    // Paginador
+    this.getPaggin();
+}
+
+
+
+
 }
 );

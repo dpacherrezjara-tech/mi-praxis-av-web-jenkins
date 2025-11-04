@@ -19,6 +19,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -2049,6 +2050,76 @@ public class SalesAgentControlController extends BaseController {
         return new Gson().toJson(map);
     }
     
-    
-    
+    @RequestMapping(value = "searchSalesDashboard")
+    public @ResponseBody
+    String searchSalesDashboard(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- SalesAgentControl : searchSalesDashboard-------------");
+        map.put("success", true);
+        List<A2354Filter> lst = this.getListSalesDashboard(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<A2354Filter> getListSalesDashboard(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2354Filter> lst = new ArrayList<>(0);
+        A2354Filter filter = new A2354Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new SalesAgentControlLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2354Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.load_MPS405(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+
+    @RequestMapping(value = "getProcessDate")
+    public @ResponseBody String getProcessDate(HttpServletRequest request) {
+        System.out.println("-------------- SalesAgentControl : getProcessDate -------------");
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("success", false);
+
+        try {
+            logic = new SalesAgentControlLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String processDate = logic.getProcessDate();
+
+            map.put("processDate", processDate);
+            map.put("success", true);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("error", e.getMessage());
+        }
+
+        return new Gson().toJson(map);
+    }
+
 }
