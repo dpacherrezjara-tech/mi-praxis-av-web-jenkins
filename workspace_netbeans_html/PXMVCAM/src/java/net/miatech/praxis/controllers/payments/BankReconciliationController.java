@@ -6083,9 +6083,9 @@ public class BankReconciliationController extends BaseController {
             createHeaderCell(row1, 1, "Settlement Reconciliation", headerStyle);
             createHeaderCell(row1, 9, "Sales Reconciliation", headerStyle);
 
-            sheet.addMergedRegion(new CellRangeAddress(0,0,0,0));    // Sales
-            sheet.addMergedRegion(new CellRangeAddress(0,0,1,8));    // Settlement Reconciliation
-            sheet.addMergedRegion(new CellRangeAddress(0,0,9,12));   // Sales Reconciliation
+//            sheet.addMergedRegion(new CellRangeAddress(0,0,0,0));    // Sales
+//            sheet.addMergedRegion(new CellRangeAddress(0,0,1,8));    // Settlement Reconciliation
+//            sheet.addMergedRegion(new CellRangeAddress(0,0,9,12));   // Sales Reconciliation
 
             // ====== NIVEL 2 ======
             HSSFRow row2 = sheet.createRow(r++);
@@ -6099,15 +6099,15 @@ public class BankReconciliationController extends BaseController {
             createHeaderCell(row2, 10, "Match", subHeaderStyle);
             createHeaderCell(row2, 12, "Sales", subHeaderStyle);
 
-            sheet.addMergedRegion(new CellRangeAddress(1,2,0,0));
-            sheet.addMergedRegion(new CellRangeAddress(1,1,1,1));
-            sheet.addMergedRegion(new CellRangeAddress(1,1,2,4));
-            sheet.addMergedRegion(new CellRangeAddress(1,1,5,5));
-            sheet.addMergedRegion(new CellRangeAddress(1,2,6,6));
-            sheet.addMergedRegion(new CellRangeAddress(1,1,7,8));
-            sheet.addMergedRegion(new CellRangeAddress(1,1,9,9));
-            sheet.addMergedRegion(new CellRangeAddress(1,1,10,11));
-            sheet.addMergedRegion(new CellRangeAddress(1,1,12,12));
+//            sheet.addMergedRegion(new CellRangeAddress(1,2,0,0));
+//            sheet.addMergedRegion(new CellRangeAddress(1,1,1,1));
+//            sheet.addMergedRegion(new CellRangeAddress(1,1,2,4));
+//            sheet.addMergedRegion(new CellRangeAddress(1,1,5,5));
+//            sheet.addMergedRegion(new CellRangeAddress(1,2,6,6));
+//            sheet.addMergedRegion(new CellRangeAddress(1,1,7,8));
+//            sheet.addMergedRegion(new CellRangeAddress(1,1,9,9));
+//            sheet.addMergedRegion(new CellRangeAddress(1,1,10,11));
+//            sheet.addMergedRegion(new CellRangeAddress(1,1,12,12));
 
             // ====== NIVEL 3 ======
             HSSFRow row3 = sheet.createRow(r++);
@@ -6185,12 +6185,12 @@ public class BankReconciliationController extends BaseController {
             createNumericCell(rowTotal, cT++, tSalesWO, totalStyle);
 
             // ====== Ajustes ======
-            for (int i = 0; i <= 12; i++) sheet.autoSizeColumn(i);
-
-            response.setContentType("application/vnd.ms-excel");
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
-            workbook.write(response.getOutputStream());
-            workbook.close();
+//            for (int i = 0; i <= 12; i++) sheet.autoSizeColumn(i);
+//
+//            response.setContentType("application/vnd.ms-excel");
+//            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+//            workbook.write(response.getOutputStream());
+//            workbook.close();
 
         } catch (Exception e) {
             e.printStackTrace();
