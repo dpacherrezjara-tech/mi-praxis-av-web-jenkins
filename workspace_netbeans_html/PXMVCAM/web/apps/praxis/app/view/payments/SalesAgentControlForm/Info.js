@@ -843,7 +843,7 @@ Ext.define('Ext.Praxis.view.payments.SalesAgentControlForm.Info', {
                                                 }
                                             },
                                             {
-                                                 text: '<span style="color:black;font-weight:bold;"> Origin<br>Of Sale</span>',
+                                                 text: '<span style="color:black;font-weight:bold;"> Sale<br>Origin</span>',
                                                 dataIndex: 'A_ORIGEN',
                                                 width: 80,
                                                 xtype: 'numbercolumn',
