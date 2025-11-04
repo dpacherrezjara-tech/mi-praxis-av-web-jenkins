@@ -36,6 +36,7 @@ public class A2290Filter extends A2290 {
     public String IN_DATETO = "";
     public String IN_MERCHANT = "";
     public String IN_LIQUIDATION = "";
+    public String IN_SPAYMENT = "";
     public String SDATE_MIN = "";
     public String SDATE_MAX = "";
     //===============================
@@ -1099,6 +1100,8 @@ public class A2290Filter extends A2290 {
     public String O_USUP = "";
     public String O_FEUP = "";
     public String O_HOUP = "";
+    public String DPERIOD = "";
+    public String TPERIOD = "";
     
     
     

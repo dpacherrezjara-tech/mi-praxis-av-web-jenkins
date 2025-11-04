@@ -1319,7 +1319,7 @@
                                                                     {
                                                                         text: 'Value <br> Date',
                                                                         dataIndex: 'VALDATE',
-                                                                        width: 120  ,
+                                                                        width: 110  ,
                                                                         renderer: function (value, metaData) {
                                                                             metaData.style = "text-align:center;";
                                                                             return value;
@@ -1328,7 +1328,7 @@
                                                                     {
                                                                         text: 'Concept',
                                                                         dataIndex: 'CONCEPT',
-                                                                        width: 175,
+                                                                        width: 155,
                                                                         renderer: function (value, metaData, record) {
                                                                             metaData.style = "text-align:center;";
 
@@ -1337,10 +1337,10 @@
                                                                                 value = 'Positive Billing';
                                                                             } else if (value === 'N') {
                                                                                 value = 'Negative Billing';
-                                                                            } else if (value === 'Z') {
-                                                                                value = 'No Billing';
-                                                                            } else if (value === 'S') {
-                                                                                value = 'Settlement Adjustment';
+                                                                            } else if (value === 'A') {
+                                                                                value = 'Adjustment';
+                                                                            } else if (value === 'C') {
+                                                                                value = 'Compensation';
                                                                             } else {
                                                                                 value = 'Billing';
                                                                             }
@@ -1351,7 +1351,7 @@
                                                                     {
                                                                         text: 'Agent',
                                                                         dataIndex: 'SAGENT',
-                                                                        width: 100,
+                                                                        width: 80,
                                                                         renderer: function (value, metaData) {
                                                                             metaData.style = "text-align:center;";
                                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -1362,7 +1362,7 @@
                                                                     {
                                                                         text: 'Consol.',
                                                                         dataIndex: 'SCONSOL',
-                                                                        width: 90,
+                                                                        width: 80,
                                                                         renderer: function (value, metaData) {
                                                                             metaData.style = "text-align:center;";
                                                                             return value;
@@ -1434,7 +1434,7 @@
                                                                     {
                                                                         text: 'QTYTKT',
                                                                         dataIndex: 'QTYTKT',
-                                                                        width: 80,
+                                                                        width: 70,
                                                                         renderer: function (value, metaData) {
                                                                             metaData.style = "text-align:center;color:#057ECB;text-decoration:underline;;";
                                                                              return value;
@@ -1447,6 +1447,22 @@
                                                                         listeners: {
                                                                             click: 'onGridViewTKTAgent'
                                                                         },
+                                                                    },
+                                                                    {
+                                                                        text: 'Type <br> Payment',
+                                                                        dataIndex: 'TPERIOD',
+                                                                        width: 70,
+                                                                        renderer: function (value, metaData) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            if(value == 'E') {
+                                                                                value = 'EP'
+                                                                            } else {
+                                                                                value = 'CA'
+                                                                            }
+                                                                                
+                                                                            return value;
+                                                                        }
+                                                                        
                                                                     },
                                                                     {
                                                                             xtype: 'checkcolumn',
@@ -1827,6 +1843,9 @@
                 { xtype: 'label', text: 'To Date', width: 60, style: 'font-weight:bold;color:#0B333C;' },
                 { xtype: 'datefield', id: prototype.id + '-txtToDateCash', fieldStyle: 'text-align:center;', format: 'Y/m/d', width: 110, editable: false },
                 { xtype: 'tbspacer', width: 30 },
+                { xtype: 'label', text: 'Mclos', width: 60, style: 'font-weight:bold;color:#0B333C;' },
+                { xtype: 'datefield', id: prototype.id + '-txtMclos', fieldStyle: 'text-align:center;', format: 'Y/m/d', width: 110, editable: false },
+                { xtype: 'tbspacer', width: 30 },
                 {
                     xtype: 'button',
                     width: 28,
@@ -1995,7 +2014,7 @@
                                                                                             return value;
                                                                                         }
                                                                                     },
-                                                                                    {text: 'Country', dataIndex: 'DESC_SCOUNTRY', width: 90,
+                                                                                    {text: 'Country', dataIndex: 'SCOUNTRY', width: 80,
                                                                                         editor: {xtype: 'textfield', editable: false},
                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                             metaData.style = "text-align:center;";
@@ -2005,7 +2024,7 @@
                                                                                             return value;
                                                                                         }
                                                                                     },
-                                                                                    {text: 'Ticket', dataIndex: 'TKT', width: 155,
+                                                                                    {text: 'Ticket', dataIndex: 'TKT', width: 135,
                                                                                         editor: {xtype: 'textfield', editable: false},
                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                             metaData.style = "text-align:center;";
@@ -2019,24 +2038,7 @@
                                                                                         //                                                                                },
                                                                                         //editor: {xtype: 'textfield', editable: false},
                                                                                     },
-                                                                                    {text: 'Amount', dataIndex: 'SVFOPNETR', width: 100,
-                                                                                        editor: {xtype: 'textfield', editable: false},
-                                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                                            metaData.style = "text-align:right;";
-                                                                                            if (record.data.TDOC === 'A') {
-                                                                                                metaData.style += "background-color:#bff5bf;";
-                                                                                            }
-                                                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                                                            return value;
-                                                                                        },
-                                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                                            let grid = Ext.getCmp(prototype.id + '-gridDataInfoScanAgent');
-                                                                                            let total = grid.getStore().sum('SVFOPNETR');
-                                                                                            metaData.style = 'text-align:right; margin-right:3px;';
-                                                                                            return '<b>' + Ext.util.Format.number(total, '0,000.00') + '</b>';
-                                                                                        }
-                                                                                    },
-                                                                                    {text: 'Curr', dataIndex: 'SCURRENCY', width: 65,
+                                                                                    {text: 'Curr', dataIndex: 'SCURRENCY', width: 55,
                                                                                         editor: {xtype: 'textfield', editable: false},
                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                             metaData.style = "text-align:center;";
@@ -2046,7 +2048,49 @@
                                                                                             return value;
                                                                                         }
                                                                                     },
-                                                                                    {text: 'Invoice', dataIndex: 'INVOICE', width: 122, id: prototype.id + '-columnINVOICE',
+                                                                                    {
+                                                                                        text: 'Amount',
+                                                                                        dataIndex: 'SVFOPNETR', // puedes dejar cualquiera, el renderer controla el valor mostrado
+                                                                                        width: 90,
+                                                                                        editor: { xtype: 'textfield', editable: false },
+                                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                            metaData.style = "text-align:right;";
+
+                                                                                            if (record.data.TDOC === 'A') {
+                                                                                                metaData.style += "background-color:#bff5bf;";
+                                                                                            }
+
+                                                                                            // lógica principal: mostrar según SPAYMENT
+                                                                                            let amount = 0;
+                                                                                            if (record.data.SPAYMENT === 'CA') {
+                                                                                                amount = record.data.SVFOPNETR || 0;
+                                                                                            } else {
+                                                                                                amount = record.data.SVFOP || 0;
+                                                                                            }
+
+                                                                                            // Formatear número
+                                                                                            return Ext.util.Format.number(amount, '0,000.00');
+                                                                                        },
+                                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                            let grid = Ext.getCmp(prototype.id + '-gridDataInfoScanAgent');
+                                                                                            let store = grid.getStore();
+
+                                                                                            // calcular suma según SPAYMENT
+                                                                                            let total = 0;
+                                                                                            store.each(function (rec) {
+                                                                                                if (rec.get('SPAYMENT') === 'CA') {
+                                                                                                    total += rec.get('SVFOPNETR') || 0;
+                                                                                                } else {
+                                                                                                    total += rec.get('SVFOP') || 0;
+                                                                                                }
+                                                                                            });
+
+                                                                                            metaData.style = 'text-align:right; margin-right:3px;';
+                                                                                            return '<b>' + Ext.util.Format.number(total, '0,000.00') + '</b>';
+                                                                                        }
+                                                                                    },
+                                                                                    
+                                                                                    {text: 'Invoice', dataIndex: 'INVOICE', width: 132, id: prototype.id + '-columnINVOICE',
                                                                                         editor: {xtype: 'textfield', editable: false},
                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                             metaData.style = "text-align:center;";
@@ -2057,7 +2101,17 @@
                                                                                         },
                                                                                     },
 
-                                                                                    {text: 'CFUENTE', dataIndex: 'CFUENTE', width: 75,
+                                                                                    {text: 'Source', dataIndex: 'CFUENTE', width: 55,
+                                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                            metaData.style = "text-align:center;";
+                                                                                            if (record.data.TDOC === 'A') {
+                                                                                                metaData.style += "background-color:#bff5bf;";
+                                                                                            }
+                                                                                            return value;
+                                                                                        }
+                                                                                    },
+                                                                                    
+                                                                                    {text: 'Type <br> Payment', dataIndex: 'SPAYMENT', width: 80,
                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                             metaData.style = "text-align:center;";
                                                                                             if (record.data.TDOC === 'A') {
