@@ -123,8 +123,9 @@ Ext.define('Ext.Praxis.view.payments.SalesAgentControlForm.Options', {
                         {
                             xtype: 'button',
                             id: prototype.id + '-btnExcel',
-                            iconCls: 'prx-icon-excel',
-                            tooltip: 'Export to Excel'
+                            icon: 'resources/img/botones/1400209639_24.png',
+//                            iconCls: 'prx-icon-excel',
+                            tooltip: 'Export to Excel file'
                         },
                         {
                             xtype: 'button',

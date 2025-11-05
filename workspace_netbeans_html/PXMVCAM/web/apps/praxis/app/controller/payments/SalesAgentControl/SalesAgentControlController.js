@@ -907,7 +907,7 @@ Ext.getCmp(prototype.id + '-QTY_NOT_FOUND').setText(Ext.util.Format.number(QTY_N
                 global.getFile(prototype.url + '/getXLSXDashboard?beanString=' + encodeURI(searchParams.beanString));
                 break;
              case  '-panelGridDataDetail':
-                global.getFile(prototype.url + '/getXLSXDetail?beanString=' + encodeURI(searchParams.beanString));
+                global.getFile(prototype.url + '/getXLSXDetailMain?beanString=' + encodeURI(searchParams.beanString));
                 break;
              case  '-panelGridDataIMF150':
                 global.getFile(prototype.url + '/getXLSXIMF150?beanString=' + encodeURI(me.obJPADJ.beanString));
