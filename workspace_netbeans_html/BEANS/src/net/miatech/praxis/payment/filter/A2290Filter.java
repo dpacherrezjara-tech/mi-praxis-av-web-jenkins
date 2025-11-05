@@ -75,6 +75,7 @@ public class A2290Filter extends A2290 {
     public String ACCNUMA = "";
     public String COSTCEN = "";
     public String SCONSOL = "";
+    public String SCONSOL_TABLE = "";
     public String IN_SAUTHOC = "";
     public String IN_FTE = "";
     public String IN_PAYMENT = "";

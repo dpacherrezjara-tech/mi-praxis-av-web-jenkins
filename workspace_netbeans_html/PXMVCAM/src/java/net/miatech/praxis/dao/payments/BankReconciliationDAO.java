@@ -9113,6 +9113,7 @@ public class BankReconciliationDAO {
                 beanTkt.CFUENTE = rst.getString("CFUENTE");
                 beanTkt.SAGENT = rst.getString("SAGENT");
                 beanTkt.SCONSOL = rst.getString("SCONSOL");
+                beanTkt.SCONSOL_TABLE = rst.getString("SCONSOL_TABLE");
                 beanTkt.SCURRENCY = rst.getString("SCURRENCY");
                 beanTkt.NETO = rst.getDouble("NETO");
                 beanTkt.PAYAMOU = rst.getDouble("PAYAMOU");
