@@ -1915,10 +1915,10 @@ public class SalesAgentControlController extends BaseController {
     ////////////////////////////////////////////////////////////////7
     ////////////////////////    HACEMOS EL EXCEL DETAILMAIN  /////////////////
  
-    @RequestMapping(value = "getXLSXDetail")
+    @RequestMapping(value = "getXLSXDetailMain")
     public @ResponseBody
-    void getXLSXDetail(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        System.out.println("Report : getXLSXDetail");
+    void getXLSXDetailMain(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        System.out.println("Report : getXLSXDetailMain");
         A2354Filter filter = new A2354Filter();
         String fileNameDownload = String.format("Sales Agent Control MainDetail-" + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
         try {
