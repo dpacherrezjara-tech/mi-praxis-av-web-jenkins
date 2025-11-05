@@ -944,6 +944,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         this.bean_scan.SCURRENCY = Ext.getCmp(prototype.id + '-txtScanScurrency').getValue();
         this.bean_scan.SCOUNTRY = Ext.getCmp(prototype.id + '-txtScanScountry').getValue();
         this.bean_scan.CCUST = Ext.getCmp(prototype.id + '-cmbCLIENT').getValue();
+        this.bean_scan.SPAYMENT = Ext.getCmp(prototype.id + '-cmbTypePayment').getValue();
 
         if (!this.bean_scan.TICKET && !this.bean_scan.SDATE && !this.bean_scan.SAGENT && !this.bean_scan.SCONSOL) {
             global.Msg({ msg: 'Fields to Scan must be filled out' });
