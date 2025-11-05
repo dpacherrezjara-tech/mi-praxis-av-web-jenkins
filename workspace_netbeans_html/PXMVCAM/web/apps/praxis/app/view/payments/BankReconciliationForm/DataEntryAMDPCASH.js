@@ -1341,6 +1341,10 @@
                                                                                 value = 'Adjustment';
                                                                             } else if (value === 'C') {
                                                                                 value = 'Compensation';
+                                                                            } else if (value === 'M') {
+                                                                                value = 'Automatic';
+                                                                            }else if (value === 'X') {
+                                                                                value = 'No Billing';
                                                                             } else {
                                                                                 value = 'Billing';
                                                                             }
@@ -1407,32 +1411,36 @@
                                                                         },
                                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                             var data = Ext.getCmp(prototype.id + '-gridDataInfoScan').getStore().getData().items[0].data;
-                                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                                                metaData.style = 'text-align:right; margin-right:3px ';
                                                                             return '<b>' + Ext.util.Format.number(data.SUM_PAYAMOU, '0,000.00') + '<b>';
                                                                         }
                                                                     },
                                                                     {
-                                                                        text: 'Star <br> Date',
-                                                                        dataIndex: 'STRDATE',
-                                                                        width: 80,
-                                                                        renderer: function (value, metaData) {
-                                                                            metaData.style = "text-align:center;";
-                                                                            return value;
+                                                                    text: 'Period',
+                                                                    columns: [
+                                                                        {
+                                                                            text: 'Start',
+                                                                            dataIndex: 'STRDATE',
+                                                                            width: 80,
+                                                                            renderer: function (value, metaData) {
+                                                                                metaData.style = "text-align:center;";
+                                                                                return value;
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            text: 'End',
+                                                                            dataIndex: 'ENDDATE',
+                                                                            width: 80,
+                                                                            renderer: function (value, metaData) {
+                                                                                metaData.style = "text-align:center;";
+                                                                                return value;
+                                                                            }
                                                                         }
-                                                                    },
-                                                                    {
-                                                                        text: 'End <br> Date',
-                                                                        dataIndex: 'ENDDATE',
-                                                                        width: 80,
-                                                                        renderer: function (value, metaData) {
-                                                                            metaData.style = "text-align:center;";
-                                                                            return value;
-                                                                        }
-                                                                        
-                                                                    },
+                                                                    ]
+                                                                },
                                                                     
                                                                     {
-                                                                        text: 'QTYTKT',
+                                                                        text: 'Qty. Tkt.',
                                                                         dataIndex: 'QTYTKT',
                                                                         width: 70,
                                                                         renderer: function (value, metaData) {
@@ -1814,6 +1822,7 @@
                     displayField: 'NAME',
                     queryMode: 'local',
                     triggerAction: 'all',
+                    value: '134',
                     editable: false,
                     width: 120,
                     store: Ext.create('Ext.data.Store', {
@@ -1846,6 +1855,26 @@
                 { xtype: 'label', text: 'Mclos', width: 60, style: 'font-weight:bold;color:#0B333C;' },
                 { xtype: 'datefield', id: prototype.id + '-txtMclos', fieldStyle: 'text-align:center;', format: 'Y/m/d', width: 110, editable: false },
                 { xtype: 'tbspacer', width: 30 },
+                { xtype: 'label', text: 'Type Payment', width: 80, style: 'font-weight:bold;color:#0B333C;' },
+                {
+                    xtype: 'combo',
+                    id: prototype.id + '-cmbTypePayment',
+                    fieldStyle: 'text-align:left;',
+                    valueField: 'CODE',
+                    displayField: 'NAME',
+                    queryMode: 'local',
+                    triggerAction: 'all',
+                    editable: false,
+                    value: 'CA',
+                    width: 60,
+                    store: Ext.create('Ext.data.Store', {
+                        fields: ['CODE', 'NAME'],
+                        data: [
+                            { CODE: 'CA', NAME: 'CA' },
+                            { CODE: 'EP', NAME: 'EP' }
+                        ]
+                    })
+                },
                 {
                     xtype: 'button',
                     width: 28,
@@ -2060,7 +2089,6 @@
                                                                                                 metaData.style += "background-color:#bff5bf;";
                                                                                             }
 
-                                                                                            // lógica principal: mostrar según SPAYMENT
                                                                                             let amount = 0;
                                                                                             if (record.data.SPAYMENT === 'CA') {
                                                                                                 amount = record.data.SVFOPNETR || 0;
@@ -2068,14 +2096,12 @@
                                                                                                 amount = record.data.SVFOP || 0;
                                                                                             }
 
-                                                                                            // Formatear número
                                                                                             return Ext.util.Format.number(amount, '0,000.00');
                                                                                         },
                                                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                                             let grid = Ext.getCmp(prototype.id + '-gridDataInfoScanAgent');
                                                                                             let store = grid.getStore();
 
-                                                                                            // calcular suma según SPAYMENT
                                                                                             let total = 0;
                                                                                             store.each(function (rec) {
                                                                                                 if (rec.get('SPAYMENT') === 'CA') {
@@ -2111,7 +2137,7 @@
                                                                                         }
                                                                                     },
                                                                                     
-                                                                                    {text: 'Type <br> Payment', dataIndex: 'SPAYMENT', width: 80,
+                                                                                    {text: 'Type <br> Payment', dataIndex: 'SPAYMENT', width: 60    ,
                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                             metaData.style = "text-align:center;";
                                                                                             if (record.data.TDOC === 'A') {
