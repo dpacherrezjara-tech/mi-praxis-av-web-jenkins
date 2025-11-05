@@ -3309,7 +3309,7 @@ public class BalanceAnalysisByAgeDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS390(?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS390(?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -3321,6 +3321,7 @@ public class BalanceAnalysisByAgeDAO {
             cstmt.setString(3, filter.IN_FECHA_TO);
             cstmt.setString(4, filter.IN_BANDOC);
             cstmt.setString(5, filter.IN_REFER);
+            cstmt.setString(6, filter.IN_CODPRO);
 
             cstmt.execute();
 

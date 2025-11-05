@@ -251,6 +251,29 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                     }
                 },
                 {
+                        xtype: 'combo',
+                        fieldLabel: 'Processor',
+                        id: prototype.id + '-cmbProcessor',
+                        labelStyle: 'text-align: left; font-size: 12px;',
+                        fieldStyle: 'text-align: left; font-size: 12px;',
+                        queryMode: 'local',
+                        allowBlank: false,
+                        forceSelection: true,
+                        selectOnFocus: true,
+                        caseSensitive: false,
+                        autoSelect: true,
+                        editable: true,
+                        width: 180,
+                        labelWidth: 60,
+                        typeAhead: true,
+                        valueField: 'A4451KEY2',
+                        displayField: 'A4451KEY3',
+                        listConfig: {minWidth: 130},
+                        enableKeyEvents: true,
+                        triggerAction: 'all',
+                        margin: '0 10 0 0' 
+                    },
+                {
                     xtype: 'combo',
                     id: prototype.id + '-cmbCountry',
                     fieldLabel: 'Country',
@@ -262,6 +285,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                     selectOnFocus: true,
                     caseSensitive: false,
                     autoSelect: true,
+                    hidden:true,
                     editable: true,
                     width: 219,
                     labelWidth: 50,
@@ -276,6 +300,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                 {
                     fieldLabel: 'Agent',
                     xtype: 'textfield',
+                    hidden:true,
                     id: prototype.id + '-txtAGENCY',
                     labelWidth: 40,
                     labelStyle: 'text-align: left; font-size: 12px;',
@@ -290,6 +315,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                 {
                     fieldLabel: 'Percentage',
                     xtype: 'combo',
+                    hidden:true,
                     id: prototype.id + '-cmbPercentage',
                     queryMode: 'local',
                     labelStyle: 'text-align: left; font-size: 12px;',
@@ -320,6 +346,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                 {
                     fieldLabel: 'Canal',
                     xtype: 'combo',
+                    hidden:true,
                     id: prototype.id + '-cmbSource',
                     labelStyle: 'text-align: left; font-size: 12px;',
                     fieldStyle: 'text-align: left; font-size: 12px;',
@@ -348,6 +375,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                 {
                     fieldLabel: 'Cut.Days',
                     xtype: 'textfield',
+                    hidden:true,
                     id: prototype.id + '-txtCUTDAYS',
                     labelStyle: 'text-align: left; font-size: 12px;',
                     fieldStyle: 'text-align: center; font-size: 12px;',
@@ -362,6 +390,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                 {
                     fieldLabel: 'Process',
                     xtype: 'textfield',
+                    hidden:true,
                     id: prototype.id + '-txtFECR',
                     labelStyle: 'text-align: left; font-size: 12px;',
                     fieldStyle: 'text-align: center; font-size: 12px;',
@@ -376,6 +405,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                 {
                     xtype: 'label',
                     text: '-',
+                    hidden:true,
                     id: prototype.id + '-rayita',
                     width: 5,
                     style: {
@@ -386,6 +416,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                 {
                     xtype: 'textfield',
                     id: prototype.id + '-txtHOCR',
+                    hidden:true,
                     labelStyle: 'text-align: left; font-size: 12px;',
                     fieldStyle: 'text-align: center; font-size: 12px;',
                     enforceMaxLength: true,
@@ -399,6 +430,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                 {
                     xtype: 'checkbox',
                     boxLabel: 'Pending',
+                    hidden:true,
                     id: prototype.id + '-chkboxTypeRecord',
 ////                            inputValue: '1', 
 //                            uncheckedValue: '0', 
@@ -410,6 +442,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                 {
                     xtype: 'checkbox',
                     boxLabel: 'Surplus',
+                    hidden:true,
                     id: prototype.id + '-chkboxSurplus',
 ////                            inputValue: '1', 
 //                            uncheckedValue: '0', 

@@ -209,6 +209,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         this.paramsObtainData.BANK = 2;
         this.paramsObtainData.COUNTRY = 2;
         this.paramsObtainData.CARD = 2;
+        this.paramsObtainData.IN_PF122CODPR = 2;
 
         Ext.Ajax.request({
             url: prototype.urlMaster + '/obtainData',
@@ -222,10 +223,11 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                 Ext.getBody().unmask('Loading...');
                 var res = Ext.JSON.decode(response.responseText);
 
-
+                console.log(res,'res')
                 me.lstBank = res.lstBank;
                 me.lstCard = res.lstCard;
                 me.lstCountry = res.lstCountry;
+                me.lstProcessor = res.listaProcesadores;
 
                 var storeData = Ext.create('Ext.data.Store', {
                     data: me.lstBank,
@@ -236,8 +238,18 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                     data: me.lstCountry,
                     autoLoad: true
                 });
+                
+                var storeData4 = Ext.create('Ext.data.Store', {
+                    data: me.lstProcessor,
+                    autoLoad: true
+                });
+                
                 Ext.getCmp(prototype.id + '-cmbCountry').bindStore(storeData3);
                 Ext.getCmp(prototype.id + '-cmbCountry').setValue('');
+                
+                Ext.getCmp(prototype.id + '-cmbProcessor').bindStore(storeData4);
+                Ext.getCmp(prototype.id + '-cmbProcessor').setValue('');
+                
                 global.clear();
                 me.btnSearch_click();
             }
@@ -946,6 +958,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             Ext.getCmp(prototype.id + '-contentFilter3').hide();
             
         }
+        this.toggleFiltersByPanel(me.panelActual, prototype);
     },
     setGridData: function () {
         win.lblUser_toolTip("Estructura: MPF117");
@@ -3273,20 +3286,38 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             prototype.id + '-rayita'
         ];
 
-        const hide = (panelId === '-panelGridSumaryMain' ||  panelId === '-panelGridSumaryDetail');
-        
-        if (hide) {
-            Ext.getCmp(prototype.id + '-panelHeight').setHeight(750);
-        } else {
-            Ext.getCmp(prototype.id + '-panelHeight').setHeight(1100);
+        // === NUEVO: campos que se deben mostrar cuando los anteriores se ocultan ===
+        const extraFilterIds = [
+            prototype.id + '-txtBANDOC',
+            prototype.id + '-txtREFER',
+            prototype.id + '-cmbProcessor'
+        ];
+
+        const hide = (panelId === '-panelGridSumaryMain' || panelId === '-panelGridSumaryDetail');
+
+        // Ajustar altura del panel
+        const panelHeight = Ext.getCmp(prototype.id + '-panelHeight');
+        if (panelHeight) {
+            panelHeight.setHeight(hide ? 750 : 1100);
         }
 
+        // Grupo principal: se ocultan si hide = true
         Ext.Array.each(filterIds, function (cmpId) {
             const cmp = Ext.getCmp(cmpId);
             if (cmp) {
-                cmp.setVisible(!hide); 
+                cmp.setVisible(!hide);
             } else {
                 console.warn('No se encontró el componente con id:', cmpId);
+            }
+        });
+
+        // Grupo secundario (extra): se muestran si hide = true
+        Ext.Array.each(extraFilterIds, function (cmpId) {
+            const cmp = Ext.getCmp(cmpId);
+            if (cmp) {
+                cmp.setVisible(hide);
+            } else {
+                console.warn('No se encontró el componente con id (extra):', cmpId);
             }
         });
     },
@@ -3296,6 +3327,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         me.bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue();
         me.bean.IN_BANDOC = Ext.getCmp(prototype.id + '-txtBANDOC').getValue();
         me.bean.IN_REFER = Ext.getCmp(prototype.id + '-txtREFER').getValue();
+        me.bean.IN_CODPRO = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
+        me.bean.IN_CODPRO = "CO";
 //        me.bean.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
 //        me.bean.IN_SAGENT = Ext.getCmp(prototype.id + '-txtAGENCY').getValue();
 //        me.bean.IN_PERCENTAGE = Ext.getCmp(prototype.id + '-cmbPercentage').getValue();
