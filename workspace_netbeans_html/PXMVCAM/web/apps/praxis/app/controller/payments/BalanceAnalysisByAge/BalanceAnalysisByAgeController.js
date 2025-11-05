@@ -3328,7 +3328,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         me.bean.IN_BANDOC = Ext.getCmp(prototype.id + '-txtBANDOC').getValue();
         me.bean.IN_REFER = Ext.getCmp(prototype.id + '-txtREFER').getValue();
         me.bean.IN_CODPRO = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
-        me.bean.IN_CODPRO = "CO";
+//        me.bean.IN_CODPRO = "BD";
 //        me.bean.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
 //        me.bean.IN_SAGENT = Ext.getCmp(prototype.id + '-txtAGENCY').getValue();
 //        me.bean.IN_PERCENTAGE = Ext.getCmp(prototype.id + '-cmbPercentage').getValue();
@@ -3782,7 +3782,9 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         me.paramsDetail.IN_DATE = data.VALDATE;
         me.paramsDetail.IN_BANDOC = Ext.getCmp(prototype.id + '-txtBANDOC').getValue();
         me.paramsDetail.IN_REFER = Ext.getCmp(prototype.id + '-txtREFER').getValue();
-
+        me.paramsDetail.IN_CODPRO = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
+//        me.paramsDetail.IN_CODPRO = "BD";
+        
         console.log(data,'data')
         console.log("IN_CCUST:", me.paramsDetail.IN_CCUST);
 
