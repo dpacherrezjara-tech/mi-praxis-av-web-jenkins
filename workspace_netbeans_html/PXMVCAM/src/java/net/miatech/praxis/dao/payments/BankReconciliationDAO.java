@@ -9241,7 +9241,7 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-            String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS306_AMDP_SCANCASH(?,?,?,?,?,?,?,?)}";
+            String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS306_AMDP_SCANCASH(?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -9256,6 +9256,8 @@ public class BankReconciliationDAO {
             cstmt.setString(6, filter.SCOUNTRY.trim());
             cstmt.setString(7, filter.SCURRENCY.trim());
             cstmt.setString(8, filter.SCONSOL.trim());
+            cstmt.setString(9, filter.MCLOS.trim());
+            cstmt.setString(10, filter.SPAYMENT.trim());
 
             cstmt.execute();
 
@@ -9278,11 +9280,17 @@ public class BankReconciliationDAO {
                     beanTkt.descTDOC = "Refund";
                 } else if (rst.getString("TDOC").trim().equals("A")) {
                     beanTkt.descTDOC = "Adjust.";
+                } else if (rst.getString("TDOC").trim().equals("C")) {
+                    beanTkt.descTDOC = "ACM.";
+                } else if (rst.getString("TDOC").trim().equals("D")) {
+                    beanTkt.descTDOC = "ADM.";
                 } else {
                     beanTkt.descTDOC = "Sales";
                 }
                 beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
                 beanTkt.SVFOPNETR = rst.getDouble("SVFOPNETR");
+                beanTkt.SVFOP = rst.getDouble("SVFOP");
+                beanTkt.SPAYMENT = rst.getString("SPAYMENT");
                 beanTkt.tot_VFOP = rst.getDouble("SUM_SVFOPNETR");
                 beanTkt.A720FECVTA = rst.getString("SDATE").trim();
                 beanTkt.A720PNR = rst.getString("SPNR").trim();
