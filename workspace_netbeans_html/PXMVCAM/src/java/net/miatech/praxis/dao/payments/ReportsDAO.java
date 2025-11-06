@@ -316,6 +316,135 @@ public class ReportsDAO {
         return lstData;
     }
     
+    public List<A2356Filter> loadSQP05120_DETAILChgbck(A2356Filter filter) throws SQLException, Exception {
+
+        List<A2356Filter> lstData = new ArrayList<A2356Filter>(0);
+        A2356Filter bean;
+        double totTOTAL = 0, totNETO = 0,totSVFOP = 0;
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS407(?,?,?,?,?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.registerOutParameter(9, Types.INTEGER);
+            cstmt.registerOutParameter(10, Types.INTEGER);
+            cstmt.registerOutParameter(11, Types.INTEGER);
+            cstmt.registerOutParameter(12, Types.INTEGER);
+
+            cstmt.setString(1, filter.IN_CCUST);
+            cstmt.setString(2, filter.IN_DATE);
+            cstmt.setString(3, filter.IN_TDOC);
+            cstmt.setString(4, filter.IN_FECFILTRO);
+            cstmt.setString(5, filter.IN_CONT);
+            cstmt.setString(6, filter.IN_CODPRO);
+            cstmt.setString(7, filter.IN_HEADER);
+            cstmt.setString(8, filter.IN_CONTABLE);
+
+
+            cstmt.setInt(9, filter.page.PAGNUM);
+            cstmt.setInt(10, filter.page.PAGROW);
+            cstmt.setInt(11, filter.page.TOTPAG);
+            cstmt.setInt(12, filter.page.TOTROW);
+
+            cstmt.execute();
+
+            filter.page.PAGNUM = cstmt.getInt(9);
+            filter.page.PAGROW = cstmt.getInt(10);
+            filter.page.TOTPAG = cstmt.getInt(11);
+            filter.page.TOTROW = cstmt.getInt(12);
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+                totTOTAL = rst.getDouble("TOTAL");
+                totNETO = rst.getDouble("NETO");
+                totSVFOP = rst.getDouble("SVFOP");
+            }
+            rst.close();
+
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+                while (rst.next()) {
+
+                    bean = new A2356Filter();
+                    bean.RN = rst.getInt("RN");
+
+                    bean.CCUST = rst.getString("CCUST").trim();
+                    bean.NAME = rst.getString("NAME").trim();
+                    bean.SCOUNTRY = rst.getString("SCOUNTRY").trim();
+                    bean.ACCNUMBER = rst.getString("ACCNUMBER").trim();
+                    bean.PAYDATE = rst.getString("PAYDATE").trim();
+                    bean.BANDOC = rst.getString("BANDOC").trim();
+                    bean.REFERENCE = rst.getString("REFER").trim();
+                    bean.CAR6 = rst.getString("CAR6").trim();
+                    bean.CAR4 = rst.getString("CAR4").trim();
+                    bean.SAUTHOC = rst.getString("SAUTHOC").trim();
+                    bean.FTRAN = rst.getString("FTRAN").trim();
+                    bean.MERCHAND = rst.getString("MERCHNC").trim();
+                    bean.TOTAL = rst.getDouble("TOTAL");
+                    bean.NETO = rst.getDouble("NETO");
+                    bean.SVFOP = rst.getDouble("SVFOP");
+                    bean.SCURRENCY = rst.getString("SCURRENCY").trim();
+                    bean.TYPE = rst.getString("TYPE").trim();
+                    bean.STVAL = rst.getString("STVAL").trim();
+                    if (bean.STVAL.equals("1")) {
+                        bean.STVAL = "Match";
+                    }else if (bean.STVAL.equals("5")) {
+                        bean.STVAL = "Match Manual";
+                    } else {
+                        bean.STVAL = "Pend.";
+                    }
+                    bean.DEBSTVAL = rst.getString("DEBSTVAL").trim();
+                    if (bean.DEBSTVAL.equals("1")) {
+                        bean.DEBSTVAL = "Match";
+                    }else if (bean.DEBSTVAL.equals("5")) {
+                        bean.DEBSTVAL = "Manual";
+                    } else {
+                        bean.DEBSTVAL = "Pend.";
+                    }
+
+                    bean.totTOTAL = totTOTAL;
+                    bean.totNETO = totNETO;
+                    bean.totSVFOP = totSVFOP;
+
+                    bean.page.PAGNUM = filter.page.PAGNUM;
+                    bean.page.PAGROW = filter.page.PAGROW;
+                    bean.page.TOTPAG = filter.page.TOTPAG;
+                    bean.page.TOTROW = filter.page.TOTROW;
+                    lstData.add(bean);
+                }
+                rst.close();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstData;
+    }
+    
     private double round2(double value) {
         return Math.round(value * 100.0) / 100.0;
     }
@@ -477,6 +606,141 @@ public class ReportsDAO {
                     
                     bean.QTY_TOTAL_GRANT = QTY_TOTAL_GRANT;
                     bean.AMOUNT_TOTAL_GRANT_USD = AMOUNT_TOTAL_GRANT_USD;
+
+                    bean.page.PAGNUM = filter.page.PAGNUM;
+                    bean.page.PAGROW = filter.page.PAGROW;
+                    bean.page.TOTPAG = filter.page.TOTPAG;
+                    bean.page.TOTROW = filter.page.TOTROW;
+                    lstData.add(bean);
+                }
+                rst.close();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstData;
+    }
+    
+     public List<A2356Filter> loadSQP05120_SMChgbck(A2356Filter filter) throws SQLException, Exception {
+
+        List<A2356Filter> lstData = new ArrayList<A2356Filter>(0);
+        A2356Filter bean;
+        int QTY_TOTAL_CHGBACK_TOTAL = 0; double AMOUNT_TOTAL_CHGBACK_USD_TOTAL = 0, AMOUNT_TOTAL_CHGBACK_SEND_TOTAL = 0, AMOUNT_TOTAL_CHGBACK_SAP_TOTAL = 0,AMOUNT_TOTAL_CHGBACK_PENDING_USD_TOTAL = 0;
+        int QTY_TOTAL_CHGBACK_ID = 0; double AMOUNT_TOTAL_CHGBACK_USD_ID = 0, AMOUNT_TOTAL_CHGBACK_SEND_ID = 0, AMOUNT_TOTAL_CHGBACK_SAP_ID = 0,AMOUNT_TOTAL_CHGBACK_PENDING_USD_ID = 0;
+        int QTY_TOTAL_CHGBACK_IDM = 0; double AMOUNT_TOTAL_CHGBACK_USD_IDM = 0, AMOUNT_TOTAL_CHGBACK_SEND_IDM = 0, AMOUNT_TOTAL_CHGBACK_SAP_IDM = 0,AMOUNT_TOTAL_CHGBACK_PENDING_USD_IDM = 0;
+        
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS406(?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.IN_FECHA_FROM);
+            cstmt.setString(3, filter.IN_FECHA_TO);
+            cstmt.setString(4, filter.IN_FECFILTRO);
+            cstmt.setString(5, filter.IN_CODPRO);
+            cstmt.setString(6, filter.IN_HEADER);
+            cstmt.setString(7, filter.IN_CONTABLE);
+ 
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+//            while (rst.next()) {
+//                
+//            }
+//            rst.close();
+
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+                while (rst.next()) {
+
+                    bean = new A2356Filter();
+                    bean.RN = rst.getInt("RN");
+
+                    bean.CCUST = rst.getString("CCUST").trim();
+                    bean.strFormatDate = Functions.getMonthConvertCbas(rst.getString("STRFORMATDATE").trim());
+                    bean.IN_FECFILTRO = filter.IN_FECFILTRO;
+                    bean.CURRENCY = rst.getString("CURRENCY").trim();
+                    
+                   
+                    bean.QTY_CHGBACK_TOTAL = rst.getInt("QTY_CHGBACK");
+                    bean.AMOUNT_CHGBACK_USD_TOTAL = rst.getDouble("AMOUNT_CHGBACK_USD");
+                    bean.AMOUNT_CHGBACK_SEND_TOTAL = rst.getDouble("AMOUNT_CHGBACK_SEND");
+                    bean.AMOUNT_CHGBACK_SAP_TOTAL = rst.getDouble("AMOUNT_CHGBACK_SAP");
+                    bean.AMOUNT_CHGBACK_PENDING_SAP_TOTAL = rst.getDouble("AMOUNT_CHGBACK_PENDING_SAP");
+                    
+                    bean.QTY_CHGBACK_ID = rst.getInt("QTY_CHGBACK_ID");
+                    bean.AMOUNT_CHGBACK_USD_ID = rst.getDouble("AMOUNT_CHGBACK_USD_ID");
+                    bean.AMOUNT_CHGBACK_SEND_ID = rst.getDouble("AMOUNT_CHGBACK_SEND_ID");
+                    bean.AMOUNT_CHGBACK_SAP_ID = rst.getDouble("AMOUNT_CHGBACK_SAP_ID");
+                    bean.AMOUNT_CHGBACK_PENDING_SAP_ID = rst.getDouble("AMOUNT_CHGBACK_PENDING_SAP_ID");
+                    
+                    bean.QTY_CHGBACK_IDM = rst.getInt("QTY_CHGBACK_IDM");
+                    bean.AMOUNT_CHGBACK_USD_IDM = rst.getDouble("AMOUNT_CHGBACK_USD_IDM");
+                    bean.AMOUNT_CHGBACK_SEND_IDM = rst.getDouble("AMOUNT_CHGBACK_SEND_IDM");
+                    bean.AMOUNT_CHGBACK_SAP_IDM = rst.getDouble("AMOUNT_CHGBACK_SAP_IDM");
+                    bean.AMOUNT_CHGBACK_PENDING_SAP_IDM = rst.getDouble("AMOUNT_CHGBACK_PENDING_SAP_IDM");
+      
+                    QTY_TOTAL_CHGBACK_TOTAL += rst.getInt("QTY_CHGBACK");
+                    AMOUNT_TOTAL_CHGBACK_USD_TOTAL += rst.getDouble("AMOUNT_CHGBACK_USD");
+                    AMOUNT_TOTAL_CHGBACK_SEND_TOTAL += rst.getDouble("AMOUNT_CHGBACK_SEND");
+                    AMOUNT_TOTAL_CHGBACK_SAP_TOTAL += rst.getDouble("AMOUNT_CHGBACK_SAP");
+                    AMOUNT_TOTAL_CHGBACK_PENDING_USD_TOTAL += rst.getDouble("AMOUNT_CHGBACK_PENDING_SAP");
+                    
+                    QTY_TOTAL_CHGBACK_ID += rst.getInt("QTY_CHGBACK_ID");
+                    AMOUNT_TOTAL_CHGBACK_USD_ID += rst.getDouble("AMOUNT_CHGBACK_USD_ID");
+                    AMOUNT_TOTAL_CHGBACK_SEND_ID += rst.getDouble("AMOUNT_CHGBACK_SEND_ID");
+                    AMOUNT_TOTAL_CHGBACK_SAP_ID += rst.getDouble("AMOUNT_CHGBACK_SAP_ID");
+                    AMOUNT_TOTAL_CHGBACK_PENDING_USD_ID += rst.getDouble("AMOUNT_CHGBACK_PENDING_SAP_ID");
+                    
+                    QTY_TOTAL_CHGBACK_IDM += rst.getInt("QTY_CHGBACK_IDM");
+                    AMOUNT_TOTAL_CHGBACK_USD_IDM += rst.getDouble("AMOUNT_CHGBACK_USD_IDM");
+                    AMOUNT_TOTAL_CHGBACK_SEND_IDM += rst.getDouble("AMOUNT_CHGBACK_SEND_IDM");
+                    AMOUNT_TOTAL_CHGBACK_SAP_IDM += rst.getDouble("AMOUNT_CHGBACK_SAP_IDM");
+                    AMOUNT_TOTAL_CHGBACK_PENDING_USD_IDM += rst.getDouble("AMOUNT_CHGBACK_PENDING_SAP_IDM");
+        
+                    bean.QTY_TOTAL_CHGBACK_TOTAL = QTY_TOTAL_CHGBACK_TOTAL;
+                    bean.AMOUNT_TOTAL_CHGBACK_USD_TOTAL = AMOUNT_TOTAL_CHGBACK_USD_TOTAL;
+                    bean.AMOUNT_TOTAL_CHGBACK_SEND_TOTAL = AMOUNT_TOTAL_CHGBACK_SEND_TOTAL;
+                    bean.AMOUNT_TOTAL_CHGBACK_SAP_TOTAL = AMOUNT_TOTAL_CHGBACK_SAP_TOTAL;
+                    bean.AMOUNT_TOTAL_CHGBACK_PENDING_USD_TOTAL = AMOUNT_TOTAL_CHGBACK_PENDING_USD_TOTAL;
+                    
+                     bean.QTY_TOTAL_CHGBACK_ID = QTY_TOTAL_CHGBACK_ID;
+                    bean.AMOUNT_TOTAL_CHGBACK_USD_ID = AMOUNT_TOTAL_CHGBACK_USD_ID;
+                    bean.AMOUNT_TOTAL_CHGBACK_SEND_ID = AMOUNT_TOTAL_CHGBACK_SEND_ID;
+                    bean.AMOUNT_TOTAL_CHGBACK_SAP_ID = AMOUNT_TOTAL_CHGBACK_SAP_ID;
+                    bean.AMOUNT_TOTAL_CHGBACK_PENDING_USD_ID = AMOUNT_TOTAL_CHGBACK_PENDING_USD_ID;
+                    
+                     bean.QTY_TOTAL_CHGBACK_IDM = QTY_TOTAL_CHGBACK_IDM;
+                    bean.AMOUNT_TOTAL_CHGBACK_USD_IDM = AMOUNT_TOTAL_CHGBACK_USD_IDM;
+                    bean.AMOUNT_TOTAL_CHGBACK_SEND_IDM = AMOUNT_TOTAL_CHGBACK_SEND_IDM;
+                    bean.AMOUNT_TOTAL_CHGBACK_SAP_IDM = AMOUNT_TOTAL_CHGBACK_SAP_IDM;
+                    bean.AMOUNT_TOTAL_CHGBACK_PENDING_USD_IDM = AMOUNT_TOTAL_CHGBACK_PENDING_USD_IDM;
 
                     bean.page.PAGNUM = filter.page.PAGNUM;
                     bean.page.PAGROW = filter.page.PAGROW;

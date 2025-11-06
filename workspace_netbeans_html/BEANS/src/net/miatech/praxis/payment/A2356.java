@@ -247,6 +247,42 @@ public class A2356 {
         public int QTY_TOTAL_GRANT  = 0;  
         public double AMOUNT_TOTAL_GRANT_USD  = 0;  
         
+         public int QTY_CHGBACK_TOTAL  = 0;  
+        public double AMOUNT_CHGBACK_USD_TOTAL  = 0;  
+        public double AMOUNT_CHGBACK_SEND_TOTAL  = 0;  
+        public double AMOUNT_CHGBACK_SAP_TOTAL  = 0;  
+        public double AMOUNT_CHGBACK_PENDING_SAP_TOTAL  = 0;  
+        
+         public int QTY_CHGBACK_ID  = 0;  
+        public double AMOUNT_CHGBACK_USD_ID  = 0;  
+        public double AMOUNT_CHGBACK_SEND_ID  = 0;  
+        public double AMOUNT_CHGBACK_SAP_ID  = 0;  
+        public double AMOUNT_CHGBACK_PENDING_SAP_ID  = 0;  
+        
+         public int QTY_CHGBACK_IDM  = 0;  
+        public double AMOUNT_CHGBACK_USD_IDM  = 0;  
+        public double AMOUNT_CHGBACK_SEND_IDM  = 0;  
+        public double AMOUNT_CHGBACK_SAP_IDM  = 0;  
+        public double AMOUNT_CHGBACK_PENDING_SAP_IDM  = 0;  
+        
+        public double QTY_TOTAL_CHGBACK_TOTAL  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_USD_TOTAL  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_SEND_TOTAL  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_SAP_TOTAL  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_PENDING_USD_TOTAL  = 0;  
+        
+         public double QTY_TOTAL_CHGBACK_ID  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_USD_ID  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_SEND_ID  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_SAP_ID  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_PENDING_USD_ID  = 0;  
+        
+        public double QTY_TOTAL_CHGBACK_IDM  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_USD_IDM  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_SEND_IDM  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_SAP_IDM  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_PENDING_USD_IDM  = 0;  
+        
         public String USCR  = "";
         public String FECR  = "";
         public String HOCR  = "";
