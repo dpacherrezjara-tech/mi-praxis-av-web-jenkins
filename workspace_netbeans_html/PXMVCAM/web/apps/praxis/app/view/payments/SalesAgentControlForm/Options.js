@@ -131,7 +131,7 @@ Ext.define('Ext.Praxis.view.payments.SalesAgentControlForm.Options', {
                             xtype: 'button',
                             id: prototype.id + '-btnExcelMeses',                            
                             iconCls: 'prx-icon-excel',
-                            tooltip: 'Export to Excel per Month',
+                            tooltip: 'Export Excel Last 5 Months',
                             listeners: {
                                 click: 'btnExcel_click5MAIN'
                             }
