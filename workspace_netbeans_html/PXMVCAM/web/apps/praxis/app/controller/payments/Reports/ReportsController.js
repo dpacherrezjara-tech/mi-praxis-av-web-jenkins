@@ -183,8 +183,8 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
 
         Ext.getCmp(prototype.id + '-cmbDateFromYear').setValue(this.fecha.getFullYear());
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(this.fecha.getFullYear());
-        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue('10');
-        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('10');
+        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue(month);
+        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue(month);
         Ext.getCmp(prototype.id + '-cmbDateDay').setValue("");
         Ext.getCmp(prototype.id + '-cmbDateDay').setValue("");
 
@@ -396,9 +396,15 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
     btnSearch_click: function (obj, e) {
         console.log(me.panelActual,'me.panelActual')
         if ( me.panelActual == '-panelGridSumaryMain' ){
+            console.log(1)
+            this.setFormatParameter2();
+            this.setGridSumaryMain()
+        } else if ( me.panelActual == '-panelGridSumaryMainChgbck' ){
+             console.log(2)
             this.setFormatParameter2();
             this.setGridSumaryMain()
         }else{
+             console.log(3)
             this.setFormatParameter();
             this.setGridData();
         }
