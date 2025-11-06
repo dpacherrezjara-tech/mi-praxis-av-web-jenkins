@@ -177,12 +177,12 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             url: prototype.url + '/getDataAudit',
             method: 'POST',
             timeout: 60000000,
-            beforerequest: Ext.getBody().mask('Loading...'),
+//            beforerequest: Ext.getBody().mask('Loading...'),
             params: {
                 beanString: JSON.stringify({})
             },
             success: function (response, options) {
-                Ext.getBody().unmask('Loading...');
+//                Ext.getBody().unmask('Loading...');
                 var res = Ext.JSON.decode(response.responseText);
                 console.log(res.result, 'res.result')
                 console.log(res.result.MESSAGE, 'res.result.MESSAGE')
@@ -3388,8 +3388,9 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                 let F3_F2_TOTAL_COMPLETED_GLOBAL = 0;
                                 let F3_TOTAL_WO_ACC_GLOBAL = 0;
                                 let F3_TOTAL_COMPLETED_GLOBAL = 0;
-                                let F3_TOTAL_COMPLETED_SAP_GLOBAL = 0;
                                 let F3_TOTAL_PENDING_SENT_GLOBAL = 0;
+                                let F3_TOTAL_COMPLETED_SAP_GLOBAL = 0;
+                                let F3_TOTAL_ERROR_GLOBAL = 0;
 
                                 let a = [];
                                 let dataRoot = { text: '.', expanded: false, children: [] };
@@ -3412,9 +3413,10 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                         let V_F3_F2_TOTAL_COMPLETED = 0;
                                         let V_F3_TOTAL_WO_ACC = 0;
                                         let V_F3_TOTAL_COMPLETED = 0;
-                                        let V_F3_TOTAL_COMPLETED_SAP = 0;
                                         let V_F3_TOTAL_PENDING_SENT = 0;
                                         let V_F3_PERCENT = 0;
+                                        let V_F3_TOTAL_COMPLETED_SAP = 0;
+                                        let V_F3_TOTAL_ERROR = 0;
 
                                         // Agrupar por mes
                                         Ext.Object.each(lstData, function (index, valuex) {
@@ -3435,6 +3437,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                                 V_F3_TOTAL_COMPLETED += valuex.F3_TOTAL_COMPLETED;
                                                 V_F3_TOTAL_PENDING_SENT += valuex.F3_TOTAL_PENDING_SENT;
                                                 V_F3_TOTAL_COMPLETED_SAP += valuex.F3_TOTAL_COMPLETED_SAP;
+                                                V_F3_TOTAL_ERROR += valuex.F3_TOTAL_ERROR;
                                             }
                                         });
 
@@ -3475,6 +3478,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                             F3_TOTAL_PENDING_SENT: V_F3_TOTAL_PENDING_SENT,
                                             F3_TOTAL_COMPLETED_SAP: V_F3_TOTAL_COMPLETED_SAP,
                                             F3_PERCENT: V_F3_PERCENT.toFixed(2) + '%',
+                                            F3_TOTAL_ERROR: V_F3_TOTAL_ERROR,
                                             
                                             expanded: false,
                                             children: []
@@ -3521,6 +3525,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                                     F3_TOTAL_COMPLETED: value01.F3_TOTAL_COMPLETED,
                                                     F3_TOTAL_PENDING_SENT: value01.F3_TOTAL_PENDING_SENT,
                                                     F3_TOTAL_COMPLETED_SAP: value01.F3_TOTAL_COMPLETED_SAP,
+                                                    F3_TOTAL_ERROR: value01.F3_TOTAL_ERROR,
                                                     F3_PERCENT: V_CHILD_PERCENT_F3.toFixed(2) + '%',
                                                     
                                                     leaf: true
@@ -3545,6 +3550,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                         F3_TOTAL_COMPLETED_GLOBAL += V_F3_TOTAL_COMPLETED;
                                         F3_TOTAL_PENDING_SENT_GLOBAL += V_F3_TOTAL_PENDING_SENT;
                                         F3_TOTAL_COMPLETED_SAP_GLOBAL += V_F3_TOTAL_COMPLETED_SAP;
+                                        F3_TOTAL_ERROR_GLOBAL += V_F3_TOTAL_ERROR;
                                     }
                                 });
 
@@ -3591,6 +3597,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                 Ext.getCmp(prototype.id + '-SENT_TOTAL_SENT_GLOBAL').setText(Ext.util.Format.number(F3_TOTAL_PENDING_SENT_GLOBAL, '0,000'));
 
                                 Ext.getCmp(prototype.id + '-SAP_TOTAL_STVAL1_GLOBAL').setText(Ext.util.Format.number(F3_TOTAL_COMPLETED_SAP_GLOBAL, '0,000'));
+                                Ext.getCmp(prototype.id + '-RETURN_ERROR_GLOBAL').setText(Ext.util.Format.number(F3_TOTAL_ERROR_GLOBAL, '0,000'));
                                 
                                 // ==== F1 - Settlement ====
                                 var totalsF1 = [];

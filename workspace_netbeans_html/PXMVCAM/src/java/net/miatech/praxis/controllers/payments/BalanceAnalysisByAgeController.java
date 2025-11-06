@@ -1538,14 +1538,14 @@ public class BalanceAnalysisByAgeController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(0, 2, 1, 1));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 8));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 9, 13));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 14, 18));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 14, 19));
             ++vj;
 
             // ====== NIVEL 2 ======
             Row row2 = sheet.createRow(vj);
             String[] headers2 = {"", "", "Received", "Total", "", "", "", "%", "Pending To F2", 
                                  "F1 Completed", "Total", "", "%", "Pending To Acc", "F2 Completed", 
-                                 "Total", "", "SAP", "%"};
+                                 "Total", "", "SAP", "%","Return Error"};
             for (int c = 0; c < headers2.length; c++) {
                 Cell ch = row2.createCell(c);
                 ch.setCellValue(headers2[c]);
@@ -1569,13 +1569,14 @@ public class BalanceAnalysisByAgeController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(1, 1, 15, 16));
             sheet.addMergedRegion(new CellRangeAddress(1, 2, 17, 17));
             sheet.addMergedRegion(new CellRangeAddress(1, 1, 18, 18));
+            sheet.addMergedRegion(new CellRangeAddress(1, 2, 19, 19));
             ++vj;
 
             // ====== NIVEL 3 ======
             Row row3 = sheet.createRow(vj);
             String[] headers3 = {"", "", "", "W/O Settl", "Completed", "Taxes", "Error", "Progress",
                                  "", "", "W/O Sales", "F2 Completed", "Progress", "", "", 
-                                 "Pending To Sent", "SENT", "", "Progress"};
+                                 "Pending To Sent", "SENT", "", "Progress",""};
             for (int c = 0; c < headers3.length; c++) {
                 Cell ch = row3.createCell(c);
                 ch.setCellValue(headers3[c]);
@@ -1627,6 +1628,7 @@ public class BalanceAnalysisByAgeController extends BaseController {
                 Cell rcell16 = row1.createCell(16);
                 Cell rcell17 = row1.createCell(17);
                 Cell rcell18 = row1.createCell(18); // % F3
+                Cell rcell19 = row1.createCell(19); // % F3
 
                 A2356Filter item = listaData.get(vi);
 
@@ -1675,12 +1677,13 @@ public class BalanceAnalysisByAgeController extends BaseController {
 
                 rcell18.setCellValue(percentF3);
                 rcell18.setCellStyle(bodyStylePercent);
+                
+                rcell19.setCellValue(item.F3_TOTAL_ERROR);
 
                 iter.next();
                 ++vi;
                 ++vj;
             }
-
 
 
 
@@ -1703,6 +1706,7 @@ public class BalanceAnalysisByAgeController extends BaseController {
             sheet.autoSizeColumn(16, true);
             sheet.autoSizeColumn(17, true);
             sheet.autoSizeColumn(18, true);
+            sheet.autoSizeColumn(19, true);
 
             //============================================
             response.setContentType("application/vnd.openxml");

@@ -3351,6 +3351,7 @@ public class BalanceAnalysisByAgeDAO {
                     bean.F3_TOTAL_COMPLETED = rst.getInt("F3_TOTAL_COMPLETED");
                     bean.F3_TOTAL_PENDING_SENT = rst.getInt("F3_TOTAL_PENDING_SENT");
                     bean.F3_TOTAL_COMPLETED_SAP = rst.getInt("F3_TOTAL_COMPLETED_SAP");   
+                    bean.F3_TOTAL_ERROR = rst.getInt("F3_TOTAL_ERROR");   
 
                     lstData.add(bean);
             }
@@ -3440,6 +3441,10 @@ public class BalanceAnalysisByAgeDAO {
                 bean.IDCONT = rst.getString("IDCONT").trim();
                 bean.IDCDEB = rst.getString("IDCDEB").trim();
                 bean.A4545HEADE = rst.getString("A4545HEADE").trim();
+                
+                bean.QTY100_TOTAL = rst.getInt("QTY100_TOTAL");
+                bean.QTY100_PENDING = rst.getInt("QTY100_PENDING");
+                bean.QTY100_MATCH = rst.getInt("QTY100_MATCH");
 
                 bean.page.PAGNUM = filter.page.PAGNUM;
                 bean.page.PAGROW = filter.page.PAGROW;
