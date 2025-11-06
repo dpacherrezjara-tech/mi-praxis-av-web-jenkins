@@ -909,6 +909,7 @@ Ext.getCmp(prototype.id + '-QTY_NOT_FOUND').setText(Ext.util.Format.number(QTY_N
              case  '-panelGridDataDetail':
                 global.getFile(prototype.url + '/getXLSXDetailMain?beanString=' + encodeURI(searchParams.beanString));
                 break;
+             
              case  '-panelGridDataIMF150':
                 global.getFile(prototype.url + '/getXLSXIMF150?beanString=' + encodeURI(me.obJPADJ.beanString));
                 break;
@@ -1215,6 +1216,39 @@ Ext.getCmp(prototype.id + '-QTY_NOT_FOUND').setText(Ext.util.Format.number(QTY_N
         });
 
     },
+    
+       btnExcel_click5MAIN: function (obj, e) {
+       
+//        this.setFormatParameter();
+//        me.obJPADJ.beanString;
+        Ext.Msg.show({
+                title: '.:PRAXIS:.',
+                msg: 'Download Excel ?',
+                buttons: Ext.MessageBox.OKCANCEL,
+                scope: this,
+                icon: Ext.MessageBox.QUESTION,
+                modal: true,
+                fn: function (btn) {
+                    if (btn === 'ok') {
+                        this.exportExcel5Main();
+                    }
+                }
+            });
+    },
+    exportExcel5Main: function () {
+//        this.setFormatParameter();
+            console.log("ULTIMAS PRUEBAS");
+            console.log(me.obJPADJ);
+        global.getFile(prototype.url + '/getXLSXIMF150MAIN?beanString=' + encodeURIComponent(JSON.stringify(me.obJPADJ)));
+
+    },
+    
+    
+    
+    
+    
+    
+    
     btnExcel_clickPending: function (obj, e) {
         console.log('WAAAAAA')
         this.setFormatParameter();

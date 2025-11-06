@@ -133,7 +133,13 @@ public class SalesAgentControlLogic {
       public List<A2354Filter> loadLISTAR_A720(A2354Filter filter) throws SQLException, Exception {
         return SalesAgentControlDAO.loadLISTAR_A720(filter);
     }
-    
+      
+      
+      public List<A2354Filter> loadLISTAR_IMF150MAIN(A2354Filter filter) throws SQLException, Exception {
+        return SalesAgentControlDAO.loadLISTAR_IMF150MAIN(filter);
+    }  
+      
+      
     
     public List<A2354Filter> loadMPS365(A2354Filter filter) throws SQLException, Exception {
         return SalesAgentControlDAO.loadMPS365(filter);

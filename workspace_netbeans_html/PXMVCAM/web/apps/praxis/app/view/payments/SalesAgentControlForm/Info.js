@@ -125,7 +125,7 @@ Ext.define('Ext.Praxis.view.payments.SalesAgentControlForm.Info', {
                                                                             click: 'onClickDetailMonthIMF150',
                                                                             args: ['CC']
                                                                         }},
-                                                        {text: '<span style="color:black;font-weight:bold;">QTY</span>', dataIndex: 'QTYTKCRE', align: 'center',width: 70,style: 'background: #FBD2D1;border-color:white',
+                                                        {text: '<span style="color:black;font-weight:bold;">Qty<br>Tickets</span>', dataIndex: 'QTYTKCRE', align: 'center',width: 70,style: 'background: #FBD2D1;border-color:white',
                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                 metaData.style = "color:#2B2B2B;text-align:right;";
                                                                 value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
@@ -177,7 +177,7 @@ Ext.define('Ext.Praxis.view.payments.SalesAgentControlForm.Info', {
                                                                             click: 'onClickDetailMonthIMF150',
                                                                             args: ['CA']
                                                                         }},
-                                                    {text:  '<span style="color:black;font-weight:bold;">QTY</span>' ,align: 'center', dataIndex: 'QTYTKCAS', width: 70,style: 'background: #D1FBD2;border-color:white',renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    {text:  '<span style="color:black;font-weight:bold;">Qty<br>Tickets</span>' ,align: 'center', dataIndex: 'QTYTKCAS', width: 70,style: 'background: #D1FBD2;border-color:white',renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                         metaData.style = "color:#2B2B2B;text-align:right;";
                                                         value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
                                                         return  value;
