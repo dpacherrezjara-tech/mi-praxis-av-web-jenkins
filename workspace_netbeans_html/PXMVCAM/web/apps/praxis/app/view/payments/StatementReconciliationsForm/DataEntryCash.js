@@ -1064,11 +1064,11 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                                 }
                                                             ],
                                                             features: [{
-                                                                ftype: 'summary' // 👈 activa el totalizador en el footer
+                                                                ftype: 'summary' 
                                                             }],
                                                             viewConfig: {
                                                                 getRowClass: function (record) {
-                                                                    // Si hay comentario -> aplicar clase
+                                                                    
                                                                     if (record.get('REFERENCE') && record.get('REFERENCE').trim() !== '') {
                                                                         return 'row-with-comments';
                                                                     }
@@ -1109,7 +1109,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                                         text: 'Concept',
                                                                         dataIndex: 'CONCEPT',
                                                                         id: prototype.id + '-columnCONCEPT',
-                                                                        width: 175,
+                                                                        width: 125,
                                                                         renderer: function (value, metaData, record) {
                                                                             metaData.style = "text-align:center;";
 
@@ -1118,11 +1118,15 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                                                 value = 'Positive Billing';
                                                                             } else if (value === 'N') {
                                                                                 value = 'Negative Billing';
-                                                                            } else if (value === 'Z') {
+                                                                            } else if (value === 'X') {
                                                                                 value = 'No Billing';
-                                                                            } else if (value === 'S') {
-                                                                                value = 'Settlement Adjustment';
-                                                                            } else {
+                                                                            } else if (value === 'A') {
+                                                                                value = 'Adjusment';
+                                                                            } else if (value === 'M') {
+                                                                                value = 'Automatic';
+                                                                            } else if (value === 'C') {
+                                                                                value = 'Compensation';
+                                                                            }else {
                                                                                 value = 'Billing';
                                                                             }
 
@@ -1912,7 +1916,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                 {
                     text: 'Reverse Match',
                     id: prototype.id + '-btn-reverse',
-                    hidden: false,
+                    hidden: true,
                     iconCls: 'prx-icon-delete',
                     listeners: {
                         click: 'onReverseClick'

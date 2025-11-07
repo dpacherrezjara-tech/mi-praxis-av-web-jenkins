@@ -78,7 +78,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
         
         // STATEMENT INFORMATION 
         let  cfuente = '';
-        if (this.bean.data.TINPUT === 'B'){
+        if (this.bean.data.TINPUT === 'B' || this.bean.data.TINPUT === 'A'){
             cfuente = 'BSP';
         } else {
             cfuente = 'ISC';
@@ -271,6 +271,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
                     Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
                     if(meDE.bean.data.TINPUT == 'I'){
                         meDE.hiddenGridColumns();
+                    } else if (meDE.bean.data.TINPUT == 'B' || meDE.bean.data.TINPUT == 'A') {
+                        meDE.hiddenGridColumnsBSP();
                     }
                     meDE.calcularMontos();
                     meDE.calcularDiferencias();
@@ -291,6 +293,13 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
 //        Ext.getCmp(prototype.id + '-gridDataInfoScan').hide()
 //        Ext.getCmp(prototype.id + '-gridDataInfoScan').hide()
         
+    },
+    hiddenGridColumnsBSP: function (){
+        Ext.getCmp(prototype.id + '-columnUSDEQUI').hide();
+        Ext.getCmp(prototype.id + '-columnDESC_SCOUNTRY').setWidth(130);
+        Ext.getCmp(prototype.id + '-columnSAGENT').setWidth(80);
+        Ext.getCmp(prototype.id + '-columnSCONSOL').setWidth(85);
+        console.log("Entra aqui");
     },
     calcularMontos: function () {
         console.log('calcularMontos');

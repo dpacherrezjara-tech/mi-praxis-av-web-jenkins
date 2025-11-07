@@ -466,6 +466,7 @@ public class A2290Filter extends A2290 {
 
     public String strIN_FTE = "";
     public String strIN_AFTE = "";
+    public String ADJUST = "";
     public double perSale = 0;
     public double TotperSale = 0;
 
@@ -1093,6 +1094,9 @@ public class A2290Filter extends A2290 {
     public String O_SCOUNTRY = "";
     public String O_CBATCH = "";
     public String O_SEQ = "";
+    public String O_BANDOC = "";
+    public String O_DATEA = "";
+    public String O_TRANA = "";
     
     
     public String O_USCR = "";

@@ -1257,32 +1257,34 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                                 {
                                                                                     ptype: 'cellediting',
                                                                                     clicksToEdit: 1
+                                                                                },
+                                                                                {
+                                                                                    ptype: 'gridfilters' // ✅ Filtros locales activados
                                                                                 }
                                                                             ],
                                                                             features: [{
-                                                                                    ftype: 'summary' // 👈 activa el totalizador en el footer
-                                                                                }],
+                                                                                ftype: 'summary'
+                                                                            }],
                                                                             viewConfig: {
                                                                                 getRowClass: function (record) {
-                                                                                    // Si hay comentario -> aplicar clase
                                                                                     if ((record.get('REFERENCE') && record.get('REFERENCE').trim() !== '') ||
-                                                                                            (record.get('COMMENTS') && record.get('COMMENTS').trim() !== '')) {
+                                                                                        (record.get('COMMENTS') && record.get('COMMENTS').trim() !== '')) {
                                                                                         return 'row-with-comments';
                                                                                     }
                                                                                     return '';
                                                                                 },
                                                                                 selModel: {
-                                                                                    mode: 'SINGLE', // ✅ solo una fila seleccionada a la vez
-                                                                                    allowDeselect: true // permite deseleccionar
+                                                                                    mode: 'SINGLE',
+                                                                                    allowDeselect: true
                                                                                 },
                                                                                 listeners: {
                                                                                     itemmouseenter: function (view, record, item) {
                                                                                         if ((record.get('REFERENCE') && record.get('REFERENCE').trim() !== '') ||
-                                                                                                (record.get('COMMENTS') && record.get('COMMENTS').trim() !== '')) {
+                                                                                            (record.get('COMMENTS') && record.get('COMMENTS').trim() !== '')) {
                                                                                             Ext.tip.QuickTipManager.register({
-                                                                                                target: item, // fila
+                                                                                                target: item,
                                                                                                 text: `<b>Reference:</b> ${record.get('REFERENCE') || ''}<br>
-                                                                                       <b>Comments:</b> ${record.get('COMMENTS') || ''}`
+                                                                                                       <b>Comments:</b> ${record.get('COMMENTS') || ''}`
                                                                                             });
                                                                                         }
                                                                                     },
@@ -1291,12 +1293,10 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                                     },
                                                                                     select: function (rowModel, record) {
                                                                                         console.log('Seleccionado:', record.data);
-                                                                                        // Aquí puedes guardar el registro seleccionado en una variable global o pasarlo a tu lógica
                                                                                     },
                                                                                     deselect: function (rowModel, record) {
                                                                                         console.log('Deseleccionado:', record.data);
                                                                                     }
-
                                                                                 }
                                                                             },
                                                                             columns: {
@@ -1310,6 +1310,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                                         text: 'Status',
                                                                                         dataIndex: 'descSTVAL',
                                                                                         width: 100,
+                                                                                        filter: 'string', // 🔹 Filtro por texto
                                                                                         renderer: function (value, metaData) {
                                                                                             metaData.style = "text-align:center;";
                                                                                             return value;
@@ -1319,6 +1320,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                                         text: 'Value <br> Date',
                                                                                         dataIndex: 'VALDATE',
                                                                                         width: 110,
+                                                                                        filter: 'date', // 🔹 Filtro de rango de fechas
                                                                                         renderer: function (value, metaData) {
                                                                                             metaData.style = "text-align:center;";
                                                                                             return value;
@@ -1328,37 +1330,30 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                                         text: 'Concept',
                                                                                         dataIndex: 'CONCEPT',
                                                                                         width: 155,
-                                                                                        renderer: function (value, metaData, record) {
+                                                                                        filter: {
+                                                                                            type: 'list', // 🔹 Lista desplegable con opciones
+                                                                                            options: ['P', 'N', 'A', 'C', 'M', 'X']
+                                                                                        },
+                                                                                        renderer: function (value, metaData) {
                                                                                             metaData.style = "text-align:center;";
-
-                                                                                            const agent = (record.get('AGENT') || '').trim();
-                                                                                            if (value === 'P') {
-                                                                                                value = 'Positive Billing';
-                                                                                            } else if (value === 'N') {
-                                                                                                value = 'Negative Billing';
-                                                                                            } else if (value === 'A') {
-                                                                                                value = 'Adjustment';
-                                                                                            } else if (value === 'C') {
-                                                                                                value = 'Compensation';
-                                                                                            } else if (value === 'M') {
-                                                                                                value = 'Automatic';
-                                                                                            } else if (value === 'X') {
-                                                                                                value = 'No Billing';
-                                                                                            } else {
-                                                                                                value = 'Billing';
-                                                                                            }
-
-                                                                                            return value;
+                                                                                            const map = {
+                                                                                                P: 'Positive Billing',
+                                                                                                N: 'Negative Billing',
+                                                                                                A: 'Adjustment',
+                                                                                                C: 'Compensation',
+                                                                                                M: 'Automatic',
+                                                                                                X: 'No Billing'
+                                                                                            };
+                                                                                            return map[value] || 'Billing';
                                                                                         }
                                                                                     },
                                                                                     {
                                                                                         text: 'Agent',
                                                                                         dataIndex: 'SAGENT',
                                                                                         width: 80,
+                                                                                        filter: 'string',
                                                                                         renderer: function (value, metaData) {
                                                                                             metaData.style = "text-align:center;";
-                                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                                            metaData.unselectableAttr = "unselectable='off'";
                                                                                             return value;
                                                                                         }
                                                                                     },
@@ -1366,6 +1361,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                                         text: 'Consol.',
                                                                                         dataIndex: 'SCONSOL',
                                                                                         width: 80,
+                                                                                        filter: 'string',
                                                                                         renderer: function (value, metaData) {
                                                                                             metaData.style = "text-align:center;";
                                                                                             return value;
@@ -1375,6 +1371,10 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                                         text: 'Currency',
                                                                                         dataIndex: 'SCURRENCY',
                                                                                         width: 80,
+                                                                                        filter: {
+                                                                                            type: 'list',
+                                                                                            options: ['USD', 'EUR', 'PEN', 'GBP'] // 💰 puedes ajustar tus monedas reales
+                                                                                        },
                                                                                         renderer: function (value, metaData) {
                                                                                             metaData.style = "text-align:center;";
                                                                                             return value;
@@ -1385,8 +1385,8 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                                         dataIndex: 'NETO',
                                                                                         width: 115,
                                                                                         xtype: 'numbercolumn',
-                                                                                        summaryType: 'sum', // 🔥 suma automático
-
+                                                                                        summaryType: 'sum',
+                                                                                        filter: 'number',
                                                                                         renderer: function (value, metaData) {
                                                                                             metaData.style = "text-align:right;";
                                                                                             return Ext.util.Format.number(value, '0,000.00');
@@ -1396,14 +1396,14 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                                             metaData.style = 'text-align:right; margin-right:3px ';
                                                                                             return '<b>' + Ext.util.Format.number(data.SUM_NETO, '0,000.00') + '<b>';
                                                                                         }
-
                                                                                     },
                                                                                     {
                                                                                         text: 'Issued Payment',
                                                                                         dataIndex: 'PAYAMOU',
                                                                                         width: 115,
                                                                                         xtype: 'numbercolumn',
-                                                                                        summaryType: 'sum', // 🔥 suma automático
+                                                                                        summaryType: 'sum',
+                                                                                        filter: 'number',
                                                                                         renderer: function (value, metaData) {
                                                                                             metaData.style = "text-align:right;";
                                                                                             return Ext.util.Format.number(value, '0,000.00');
@@ -1421,6 +1421,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                                                 text: 'Start',
                                                                                                 dataIndex: 'STRDATE',
                                                                                                 width: 80,
+                                                                                                filter: 'string',
                                                                                                 renderer: function (value, metaData) {
                                                                                                     metaData.style = "text-align:center;";
                                                                                                     return value;
@@ -1430,6 +1431,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                                                 text: 'End',
                                                                                                 dataIndex: 'ENDDATE',
                                                                                                 width: 80,
+                                                                                                filter: 'string',
                                                                                                 renderer: function (value, metaData) {
                                                                                                     metaData.style = "text-align:center;";
                                                                                                     return value;
@@ -1437,13 +1439,13 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                                             }
                                                                                         ]
                                                                                     },
-
                                                                                     {
                                                                                         text: 'Qty. Tkt.',
                                                                                         dataIndex: 'QTYTKT',
                                                                                         width: 70,
+                                                                                        filter: 'number',
                                                                                         renderer: function (value, metaData) {
-                                                                                            metaData.style = "text-align:center;color:#057ECB;text-decoration:underline;;";
+                                                                                            metaData.style = "text-align:center;color:#057ECB;text-decoration:underline;";
                                                                                             return value;
                                                                                         },
                                                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
@@ -1453,56 +1455,34 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                                         },
                                                                                         listeners: {
                                                                                             click: 'onGridViewTKTAgent'
-                                                                                        },
+                                                                                        }
                                                                                     },
                                                                                     {
                                                                                         text: 'Type <br> Payment',
                                                                                         dataIndex: 'TPERIOD',
                                                                                         width: 70,
+                                                                                        filter: {
+                                                                                            type: 'list',
+                                                                                            options: ['E', 'C']
+                                                                                        },
                                                                                         renderer: function (value, metaData) {
                                                                                             metaData.style = "text-align:center;";
-                                                                                            if (value == 'E') {
-                                                                                                value = 'EP'
-                                                                                            } else {
-                                                                                                value = 'CA'
-                                                                                            }
-
-                                                                                            return value;
+                                                                                            return (value == 'E') ? 'EP' : 'CA';
                                                                                         }
-
                                                                                     },
                                                                                     {
                                                                                         xtype: 'checkcolumn',
                                                                                         text: 'Select',
                                                                                         dataIndex: 'selected',
                                                                                         width: 70,
-                                                                                        stopSelection: false,
-                                                                                        listeners: {
-                                                                                            beforecheckchange: function (checkColumn, rowIndex, checked, record, e, eOpts) {
-                                                                                                // Obtener el grid
-                                                                                                const grid = checkColumn.up('grid');
-                                                                                                const store = grid.getStore();
-
-                                                                                                // Desmarcar todos los demás registros
-                                                                                                store.each(function (rec) {
-                                                                                                    if (rec !== record && rec.get('selected')) {
-                                                                                                        rec.set('selected', false);
-                                                                                                    }
-                                                                                                });
-
-                                                                                                // Permitir marcar solo uno
-                                                                                                record.set('selected', checked);
-                                                                                                return false; // Evita que el valor se duplique
-                                                                                            }
-                                                                                        }
+                                                                                        stopSelection: false
                                                                                     }
-
-
                                                                                 ]
                                                                             }
                                                                         }
                                                                     ]
                                                                 },
+
                                                                 {
                                                                     xtype: 'panel',
                                                                     id: prototype.id + '-panelDataInfoScanICCS',

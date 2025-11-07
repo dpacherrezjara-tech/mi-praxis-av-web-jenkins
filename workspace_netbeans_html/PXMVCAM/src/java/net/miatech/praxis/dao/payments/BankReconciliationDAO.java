@@ -8446,6 +8446,9 @@ public class BankReconciliationDAO {
                 bean.O_SCOUNTRY = rst.getString("SCOUNTRY");
                 bean.O_CBATCH = rst.getString("CBATCH");
                 bean.O_SEQ = rst.getString("SEQ");
+                bean.O_BANDOC = rst.getString("BANDOC");
+                bean.O_DATEA = rst.getString("DATEA");
+                bean.O_TRANA = rst.getString("TRANA");
                 
                 
                 
