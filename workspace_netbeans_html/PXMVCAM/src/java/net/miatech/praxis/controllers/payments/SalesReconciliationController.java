@@ -3421,19 +3421,21 @@ public class SalesReconciliationController extends BaseController {
                         //Obtiene la lista de aclaraciones de esa fecha
                         listaData = logic.loadPX263SQP00XXXJT(obj);
                         
+                        
                         String iata = "";
                         if (listaData != null && !listaData.isEmpty()) {
-                            iata = listaData.get(0).SAGENT;   
-                         
+                            iata = listaData.get(0).SAGENT;                           
                         }
+                        
                         
                         String fventa = "";
                         if (listaData != null && !listaData.isEmpty()) {
                             fventa = listaData.get(0).SDATE;
                             if (fventa != null && fventa.length() >= 6) {
-                                fventa = fventa.substring(0, 6); // toma los primeros 6 caracteres
+                                fventa = fventa.substring(0, 6); 
                             }
                         }
+                        
                         
                         
                         
@@ -3499,7 +3501,7 @@ public class SalesReconciliationController extends BaseController {
                                     Ccp.add(parts[i]);
                                 }
                             }
-                            String asunto = "Gestión de inconsistencias en conciliación de ventas en Tarjetas de Crédito  "+iata+ " - " + fventa;
+                            String asunto = "Gestión de inconsistencias en conciliación de ventas en Tarjetas de Crédito  "+iata+"-"+ fventa;
                             String mensaje = "<p>Estimados miembros de agencia de viajes:</p>\n"
                                     + "<p>Les brindamos inicialmente un cordial saludo</p>\n"
                                     + "<p>&nbsp;</p>\n"
@@ -3545,7 +3547,7 @@ public class SalesReconciliationController extends BaseController {
                                     + "tomar para cancelar tiquetes pendientes y por ende se genera la nota de cargo.</li>\n"
                                     + "<p>&nbsp;</p>\n"
                                     + "</ul>\n"
-                                    + "<p><strong><strong>\"Estimados Agentes de Viajes, informamos que a partir del 1 de Noviembre se reactivará el cobro del fee administrativo de USD 15 "
+                                    + "<p><strong><strong>\"Estimados Agentes de Viajes, informamos que a partir del 1 de Diciembre se reactivará el cobro del fee administrativo de 15 USD "
                                     + "por tiquete para aquellos que no estén pagados correctamente en la fecha de la venta, sin pagos, pagos parciales o pagos con datos que no coincidan.  "
                                     + "Adjuntamos el comunicado oficial con el detalle para su conocimiento.\"</strong></strong></p>\n"
                                     
