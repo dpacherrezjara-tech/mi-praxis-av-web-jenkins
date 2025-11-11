@@ -283,6 +283,38 @@ public class A2356 {
         public double AMOUNT_TOTAL_CHGBACK_SAP_IDM  = 0;  
         public double AMOUNT_TOTAL_CHGBACK_PENDING_USD_IDM  = 0;  
         
+        public double QTY_TOTAL_REVERSE  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_USD  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_SEND  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_SAP  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_PENDING_USD  = 0;  
+        
+         public int QTY_ACRED_UN  = 0;  
+        public double AMOUNT_ACRED_UN_USD  = 0;  
+        public double AMOUNT_ACRED_UN_SEND  = 0;  
+        public double AMOUNT_ACRED_UN_SAP  = 0;  
+        public double AMOUNT_ACRED_UN_PENDING_SAP  = 0;  
+        
+         public int QTY_PENDING_REAL  = 0;  
+        public double AMOUNT_PENDING_REAL_USD  = 0;  
+        public double AMOUNT_PENDING_REAL_SEND  = 0;  
+        public double AMOUNT_PENDING_REAL_SAP  = 0;  
+        public double AMOUNT_PENDING_REAL_PENDING_SAP  = 0;  
+        
+          public double AMOUNT_TOTAL_PENDING_USD_TOTAL  = 0;  
+          
+        public int QTY_TOTAL_ACRED_UN_TOTAL  = 0;  
+        public double AMOUNT_TOTAL_ACRED_UN_USD_TOTAL  = 0;  
+        public double AMOUNT_TOTAL_ACRED_UN_SEND_TOTAL  = 0;  
+        public double AMOUNT_TOTAL_ACRED_UN_SAP_TOTAL  = 0;  
+        public double AMOUNT_TOTAL_ACRED_UN_PENDING_USD_TOTAL  = 0;  
+        
+        public int QTY_TOTAL_PENDING_REAL  = 0;  
+        public double AMOUNT_TOTAL_PENDING_REAL_USD  = 0;  
+        public double AMOUNT_TOTAL_PENDING_REAL_SEND  = 0;  
+        public double AMOUNT_TOTAL_PENDING_REAL_SAP  = 0;  
+        public double AMOUNT_TOTAL_PENDING_REAL_PENDING_USD  = 0;  
+        
         public String USCR  = "";
         public String FECR  = "";
         public String HOCR  = "";
