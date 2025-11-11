@@ -45,6 +45,10 @@ public class ReportsLogic {
         return banksCatalogDAO.loadSQP05120_SMChgbck(filter);
     }
     
+    public List<A2356Filter> loadSQP05120_SMPending(A2356Filter filter) throws SQLException, Exception {
+        return banksCatalogDAO.loadSQP05120_SMPending(filter);
+    }
+    
     public A2356Filter loadSQP02856(A2356Filter filter) throws SQLException, Exception {
         return banksCatalogDAO.loadSQP02856(filter);
     }
@@ -60,5 +64,7 @@ public class ReportsLogic {
         return banksCatalogDAO.load_MPS350(filter);
     }
     
-    
+    public List<A2356Filter> loadSQP05120_DETAILPending(A2356Filter filter) throws SQLException, Exception {
+        return banksCatalogDAO.loadSQP05120_DETAILPending(filter);
+    }
 }

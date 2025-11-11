@@ -53,7 +53,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.ReportsForm', {
                                     border: true,
                                     autoScroll: true,
                                     defaults: {
-                                        width: 2120,
+                                        width: 2210,
                                         align: 'center'
                                     },
                                     items: [
