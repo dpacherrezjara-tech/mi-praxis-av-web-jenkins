@@ -1143,7 +1143,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                     obj.proxy.extraParams = params;
                 },
                 load: function(obj) {
-                    console.log(obj.data);
+                    console.log(obj.data,'VENTASSS');
                     if (obj.data.length === 0) {
                         global.Msg({
                             msg: 'Data not found.'
@@ -1471,6 +1471,8 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
     updateGridTotalSale: function () {
         let recordBandoc = me.getGridRecords(prototype.id + '-gridData212');
         let recordSales = me.getGridRecords(prototype.id + '-gridDataVentas');
+        
+        console.log(recordSales,'recordSales')
 
         this.esIgual = 0;
         let totalBandoc = 0;
@@ -1490,13 +1492,26 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             }
         }
 
+         let valueProccesor = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
+         let baseValue = (valueProccesor === 'AB') ? totalSales : totalSalesConverted;
+         
         let formattedBandoc = Ext.util.Format.number(totalBandoc, '0,000.00');
-        let formattedSale = Ext.util.Format.number(totalSalesConverted, '0,000.00');
+        let formattedSale = Ext.util.Format.number(baseValue, '0,000.00');
 
-        let calculo = totalSalesConverted - totalBandoc;
-        let porcentaje = calculo > 0 ? (calculo / totalSalesConverted) * 100 : 0;
+        
+        let calculo = baseValue - totalBandoc;
+        let porcentaje = calculo > 0 ? (calculo / baseValue) * 100 : 0;
+        
         let formattedDiff = Ext.util.Format.number(calculo, '0,000.00');
         let formattedPorcentaje = Ext.util.Format.number(porcentaje, '0.00') + '%';
+        
+        
+        //
+        
+        
+        
+        //
+        
         
         let cmpDeposito = Ext.getCmp(prototype.id + '-txtTotalDeposito');
         let cmpVenta = Ext.getCmp(prototype.id + '-txtVentas');
