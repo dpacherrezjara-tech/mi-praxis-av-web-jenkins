@@ -103,6 +103,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -5488,7 +5489,39 @@ public class BankReconciliationController extends BaseController {
         return new Gson().toJson(map);
     }
     
-    
+    @RequestMapping(value = "ConciliationAdjust")
+    public @ResponseBody
+    String ConciliationAdjust(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- BANKRECONCILIATIONDATAENTRY : MaintenanceMPF199-------------");
+//        String option;
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String msj = "";
+        String beanString = "";
+
+        try {
+
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            
+            
+            msj = logic.ConciliacionAdjust(filter);
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
     
     
         ///    ///
@@ -5689,25 +5722,18 @@ public class BankReconciliationController extends BaseController {
         return lst;
     }
     
-    @RequestMapping(value = "/ManualConciliacionCash")
-    public @ResponseBody
-    String ManualConciliacionCash(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "/ManualConciliacionCash", method = RequestMethod.POST)
+    @ResponseBody
+    public String ManualConciliacionCash(@RequestBody MPF100Filter filter) {
         System.out.println("-------------- BankReconciliation : ManualConciliacionCash -------------");
 
-        Gson gson = new Gson();
-        MPF100Filter mainRecord = new MPF100Filter();          
-        List<MPF100Filter> agentTkt = new ArrayList<>(); 
-        MPF100Filter filter = new MPF100Filter();
-
+        ModelMap map = new ModelMap();
         try {
             logic = new BankReconciliationLogic();
             logic.setSession(this.serverSession.getServerSession());
-
-            String beanString = request.getParameter("beanString");
-            filter = gson.fromJson(beanString, MPF100Filter.class);
-            
             logic.ConciliationManualCash(filter);
-            
+
+            map.put("success", true);
         } catch (Exception e) {
             e.printStackTrace();
             map.put("success", false);
@@ -5716,6 +5742,7 @@ public class BankReconciliationController extends BaseController {
 
         return new Gson().toJson(map);
     }
+
     
     @RequestMapping(value = "getCSV")
     public @ResponseBody void getCSV(HttpServletRequest request, HttpServletResponse response) throws Exception {

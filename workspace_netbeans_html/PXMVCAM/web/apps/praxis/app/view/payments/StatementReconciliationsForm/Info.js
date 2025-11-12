@@ -1701,8 +1701,8 @@
                                                             value = 'BSP';
                                                         }  else if (value === 'I'){
                                                             value = 'ICCS';
-                                                        }  else if  (value === 'a') {
-                                                            value = 'ARC';
+                                                        }  else if  (value === 'A') {
+                                                            value = 'BSP';
                                                         }
                                                         return value;
                                                     }

@@ -1526,7 +1526,21 @@ public class StatementReconciliationsDAO {
                     beanTkt.BANDOC = rst.getString("BANDOC").trim();  
                     beanTkt.NETO = rst.getDouble("NETO");
                     beanTkt.NETOC = rst.getDouble("NETOC");
-                    beanTkt.TINPUT = rst.getString("TINPUT");
+                    String tinput = rst.getString("TINPUT");
+
+                    if (tinput == null || tinput.trim().isEmpty()) {
+                        String cfuente = rst.getString("CFUENTE");
+                        String Adjust = "1";
+                        tinput = (cfuente != null && !cfuente.isEmpty()) ? cfuente.substring(0, 1) : "";
+                        beanTkt.TINPUT = "A";
+                        beanTkt.ADJUST = Adjust;
+                        
+                    } else {
+                        tinput = tinput.substring(0, 1);
+                        beanTkt.TINPUT = tinput;
+                        
+                    }
+                    
                     beanTkt.QTYTRAN1 = rst.getLong("QTYTRAN1");
                     beanTkt.totNETOEECC = totNETOEECC;
                     beanTkt.totNETOSETLEMENT = totNETOSETLEMENT;
@@ -3605,7 +3619,7 @@ public class StatementReconciliationsDAO {
 
                 beanTkt = new A2290Filter();
                 beanTkt.CCUST = rst.getString("CCUST");
-                beanTkt.TINPUT = rst.getString("TINPUT");
+                beanTkt.TINPUT = (rst.getString("TINPUT") != null) ? rst.getString("TINPUT") : "";
                 beanTkt.STVAL = rst.getString("STVAL");
                 if (hmDescEstados.containsKey(rst.getString("STVAL").trim())) {
                     beanTkt.descSTVAL = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
@@ -3613,7 +3627,7 @@ public class StatementReconciliationsDAO {
                     beanTkt.descSTVAL = rst.getString("STVAL").trim();
                 }
                 beanTkt.ADATE = rst.getString("ADATE");
-                beanTkt.VALDATE = rst.getString("VALDATE");
+                beanTkt.VALDATE = (rst.getString("VALDATE") != null) ? rst.getString("VALDATE") : "";
                 beanTkt.SCOUNTRY = rst.getString("SCOUNTRY");
                 beanTkt.DESC_SCOUNTRY = rst.getString("DESC_SCOUNTRY");
                 beanTkt.CFUENTE = rst.getString("CFUENTE");
