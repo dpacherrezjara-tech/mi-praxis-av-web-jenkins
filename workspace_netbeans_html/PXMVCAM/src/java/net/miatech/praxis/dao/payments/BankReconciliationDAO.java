@@ -8519,7 +8519,7 @@ public class BankReconciliationDAO {
             cstmt.setString(6, filter.O_CBATCH.trim());
             cstmt.setString(7, filter.O_SEQ.trim());
             cstmt.setString(8, filter.O_NSAGENT.trim());
-            
+
 
             cstmt.setString(9, session.getUserView().getUserInfo().USR);
             cstmt.setString(10, "");
@@ -8527,6 +8527,56 @@ public class BankReconciliationDAO {
             cstmt.execute();
 
             message = cstmt.getString(10);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            message = e.getMessage();
+        } finally {
+            if (cstmt != null) 
+            try {
+                cstmt.close();
+            } catch (SQLException e) {
+                logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return message;
+    }
+    
+    public String ConciliacionAdjust(A2290Filter filter) throws SQLException, Exception {
+        String message = "Update successful.";
+        CallableStatement cstmt = null;
+        Connection cnx = null;
+        int sqlCode = -1;
+
+        String SQL = "{CALL PRAXISMP.MPS382(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQL);
+
+            cstmt.registerOutParameter(10, Types.INTEGER);
+            cstmt.registerOutParameter(11, Types.VARCHAR);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST.trim());
+            cstmt.setString(2, filter.SAGENT.trim());
+            cstmt.setString(3, filter.SCOUNTRY.trim());
+            cstmt.setString(4, filter.SCURRENCY.trim());
+            cstmt.setString(5, filter.SPAYMENT.trim());
+            cstmt.setString(6, filter.ADATE.trim());
+            cstmt.setString(7, filter.STRDATE.trim());
+            cstmt.setString(8, filter.ENDDATE.trim());
+            cstmt.setString(9, filter.CBATCH.trim());
+            cstmt.setInt(10, sqlCode);
+            cstmt.setString(11, message);
+            
+
+            cstmt.execute();
+
+            sqlCode = cstmt.getInt(10);
+            message = cstmt.getString(11);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -8561,6 +8611,7 @@ public class BankReconciliationDAO {
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
         long lngTotQSALES = 0, lngTotQMATCH = 0, lngTotQMANUAL = 0, lngTotQDIFF = 0, lngTotQPEND = 0, lngTotQTICKET = 0, lngTotQTMATCH = 0, lngTotQTMANUAL = 0, lngTotQTPEND = 0;
+        long lngTotHMatch = 0, lngTotHManual = 0, lngTotHDiff = 0, lngTotHSales = 0, lngTotHAll = 0;
 
         // <editor-fold defaultstate="collapsed" desc=" 'DATE' ">
         filter.strYearFrom = Functions.fillZeros(4, filter.strYearFrom).replace("00", "");//YYYY
@@ -8613,6 +8664,15 @@ public class BankReconciliationDAO {
                 lngTotQTMATCH = rst.getLong("QTMATCH");
                 lngTotQTMANUAL = rst.getLong("QTMANUAL");
                 lngTotQTPEND = rst.getLong("QTPEND");
+                
+                // Header
+                lngTotHMatch = rst.getLong("QHMATCH");
+                lngTotHManual = rst.getLong("QHMANUAL");
+                lngTotHDiff = rst.getLong("QHDIFF");
+                lngTotHSales = rst.getLong("QHSALES");
+                lngTotHAll = rst.getLong("QHALL");
+                        
+                
             }
             rst.close();
 
@@ -8642,7 +8702,7 @@ public class BankReconciliationDAO {
                     beanTkt.lngQTMATCH = rst.getLong("QTMATCH");
                     beanTkt.lngQTMANUAL = rst.getLong("QTMANUAL");
                     beanTkt.lngQTPEND = rst.getLong("QTPEND");
-
+                    
                     beanTkt.lngTotQSALES = lngTotQSALES;
                     beanTkt.lngTotQMATCH = lngTotQMATCH;
                     beanTkt.lngTotQMANUAL = lngTotQMANUAL;
@@ -8652,6 +8712,20 @@ public class BankReconciliationDAO {
                     beanTkt.lngTotQTMATCH = lngTotQTMATCH;
                     beanTkt.lngTotQTMANUAL = lngTotQTMANUAL;
                     beanTkt.lngTotQTPEND = lngTotQTPEND;
+                    
+                    // Header
+                    
+                    beanTkt.lngQHMatch = rst.getLong("HMATCH");
+                    beanTkt.lngQHManual = rst.getLong("HMANUAL");
+                    beanTkt.lngQHDiff = rst.getLong("HDIFF");
+                    beanTkt.lngQHSales = rst.getLong("HSALES");
+                    beanTkt.lngQHAll = rst.getLong("HALL");
+                    
+                    beanTkt.lngTotHMatch = lngTotHMatch;
+                    beanTkt.lngTotHManual = lngTotHManual;
+                    beanTkt.lngTotHDiff = lngTotHDiff;
+                    beanTkt.lngTotHSales = lngTotHSales;
+                    beanTkt.lngTotHAll = lngTotHAll;
 
                     beanTkt.page.PAGNUM = filter.page.PAGNUM;
                     beanTkt.page.PAGROW = filter.page.PAGROW;
@@ -9301,7 +9375,7 @@ public class BankReconciliationDAO {
             ResultSet rst = null;
             Connection cnx = null;
 
-            String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS321(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+            String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS321(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
             try {
                 cnx = session.getCNXIBMDB2().getIBMDB2Connection();
                 for (MPF100Filter agent : listaAgent) {
@@ -9320,6 +9394,8 @@ public class BankReconciliationDAO {
                     cstmt.setString(11, main.BANDOC != null ? main.BANDOC.trim() : "");
                     cstmt.setString(12, main.SCOUNTRY != null ? main.SCOUNTRY.trim() : "");
                     cstmt.setString(13, agent.TKT != null ? agent.TKT.trim() : "");
+                    cstmt.setString(14, agent.TDOC != null ? agent.TDOC.trim() : "");
+                    cstmt.setDouble(15,agent.SVFOPNETR);
                     cstmt.execute();
                     rst = cstmt.getResultSet();
 

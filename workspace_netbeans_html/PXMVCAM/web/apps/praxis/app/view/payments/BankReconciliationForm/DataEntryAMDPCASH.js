@@ -1898,6 +1898,13 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                     listeners: {click: 'getExcelCashTicket'},
 
                                                 },
+                                                {
+                                                    xtype: 'button',
+                                                    width: 28,
+                                                    iconCls: 'prx-icon-add',
+                                                    tooltip: 'Add Adjustment',
+                                                    listeners: {click: 'AddAdjustCash'}
+                                                },
                                                 {xtype: 'tbspacer', width: 3},
                                             ]
                                         }
@@ -1916,242 +1923,243 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                     height: 15,
                                     margin: '0 0 0 20'
                                 },
-                                {
-                                    xtype: 'panel',
-                                    hidden: true,
-                                    id: prototype.id + '-panelDataInfoScanAgent',
-                                    layout: 'vbox',
-                                    border: false,
-                                    width: 1209,
-                                    margin: '0 0 0 20',
-                                    //                                                            height: 180,
-                                    autoScroll: true,
-                                    items: [
-                                        {
-                                            xtype: 'grid',
-                                            id: prototype.id + '-gridDataInfoScanAgent',
-                                            width: 1207,
-                                            height: 200,
-                                            columnLines: true,
-                                            plugins: [
-                                                {
-                                                    ptype: 'cellediting',
-                                                    clicksToEdit: 1
-                                                }
-                                            ],
-                                            features: [{
-                                                    ftype: 'summary'
-                                                }],
-                                            columns: {
-                                                defaults: {
-                                                    menuDisabled: true,
-                                                    sortable: true,
-                                                    align: 'center'
-                                                },
-                                                items: [
+                                    {
+                                        xtype: 'panel',
+                                        hidden: true,
+                                        id: prototype.id + '-panelDataInfoScanAgent',
+                                        layout: 'vbox',
+                                        border: false,
+                                        width: 1209,
+                                        margin: '0 0 0 20',
+                                        //                                                            height: 180,
+                                        autoScroll: true,
+                                        items: [
+                                            {
+                                                xtype: 'grid',
+                                                id: prototype.id + '-gridDataInfoScanAgent',
+                                                width: 1207,
+                                                height: 200,
+                                                columnLines: true,
+                                                plugins: [
                                                     {
-                                                        xtype: 'rownumberer',
-                                                        text: 'N°',
-                                                        width: 50,
-                                                        align: 'center',
-                                                        renderer: function (value, metaData, record, rowIndex) {
-                                                            metaData.style = "text-align:center;";
-                                                            return rowIndex + 1;
-                                                        }
+                                                        ptype: 'cellediting',
+                                                        clicksToEdit: 1
+                                                    }
+                                                ],
+                                                features: [{
+                                                        ftype: 'summary'
+                                                    }],
+                                                columns: {
+                                                    defaults: {
+                                                        menuDisabled: true,
+                                                        sortable: true,
+                                                        align: 'center'
                                                     },
-                                                    {text: 'Status', dataIndex: 'STVAL', width: 90,
-                                                        editor: {xtype: 'textfield', editable: false},
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            value = 'Match';
-                                                            if (record.data.TDOC === 'A') {
-                                                                metaData.style += "background-color:#bff5bf;";
+                                                    items: [
+                                                        {
+                                                            xtype: 'rownumberer',
+                                                            text: 'N°',
+                                                            width: 50,
+                                                            align: 'center',
+                                                            renderer: function (value, metaData, record, rowIndex) {
+                                                                metaData.style = "text-align:center;";
+                                                                return rowIndex + 1;
                                                             }
-                                                            if (record.data.STVAL === '1') {
-                                                                value = 'Match'
-                                                            } else if (record.data.STVAL === '5') {
-                                                                value = 'Match manual.'
-                                                            } else {
-                                                                value = 'Open'
-                                                            }
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {text: 'Doc.<br>Type', dataIndex: 'descTDOC', width: 80,
-                                                        editor: {xtype: 'textfield', editable: false},
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            if (record.data.TDOC === 'A') {
-                                                                metaData.style += "background-color:#bff5bf;";
-                                                            }
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {text: 'Agent', dataIndex: 'SAGENT', width: 80,
-                                                        editor: {xtype: 'textfield', editable: false},
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            if (record.data.TDOC === 'A') {
-                                                                metaData.style += "background-color:#bff5bf;";
-                                                            }
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {text: 'Consol.', dataIndex: 'SCONSOL', width: 80,
-                                                        editor: {xtype: 'textfield', editable: false},
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            if (record.data.TDOC === 'A') {
-                                                                metaData.style += "background-color:#bff5bf;";
-                                                            }
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {text: 'Sales<br>Date', dataIndex: 'SDATE', width: 80, id: prototype.id + '-gridA720FECVTA',
-                                                        editor: {xtype: 'textfield', editable: false},
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            if (record.data.TDOC === 'A') {
-                                                                metaData.style += "background-color:#bff5bf;";
-                                                            }
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {text: 'Fpaymen', dataIndex: 'MCLOS', width: 80,
-                                                        editor: {xtype: 'textfield', editable: false},
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            if (record.data.TDOC === 'A') {
-                                                                metaData.style += "background-color:#bff5bf;";
-                                                            }
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {text: 'Country', dataIndex: 'SCOUNTRY', width: 80,
-                                                        editor: {xtype: 'textfield', editable: false},
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            if (record.data.TDOC === 'A') {
-                                                                metaData.style += "background-color:#bff5bf;";
-                                                            }
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {text: 'Ticket', dataIndex: 'TKT', width: 135,
-                                                        editor: {xtype: 'textfield', editable: false},
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            if (record.data.TDOC === 'A') {
-                                                                metaData.style += "background-color:#bff5bf;";
-                                                            }
-                                                            return value;
                                                         },
-                                                        //                                                                                listeners: {
-                                                        //                                                                                    click: 'onGridDataViewTktFinal'
-                                                        //                                                                                },
-                                                        //editor: {xtype: 'textfield', editable: false},
-                                                    },
-                                                    {text: 'Curr', dataIndex: 'SCURRENCY', width: 55,
-                                                        editor: {xtype: 'textfield', editable: false},
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            if (record.data.TDOC === 'A') {
-                                                                metaData.style += "background-color:#bff5bf;";
-                                                            }
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {
-                                                        text: 'Amount',
-                                                        dataIndex: 'SVFOPNETR', // puedes dejar cualquiera, el renderer controla el valor mostrado
-                                                        width: 90,
-                                                        editor: {xtype: 'textfield', editable: false},
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:right;";
-
-                                                            if (record.data.TDOC === 'A') {
-                                                                metaData.style += "background-color:#bff5bf;";
-                                                            }
-
-                                                            let amount = 0;
-                                                            if (record.data.SPAYMENT === 'CA') {
-                                                                amount = record.data.SVFOPNETR || 0;
-                                                            } else {
-                                                                amount = record.data.SVFOP || 0;
-                                                            }
-
-                                                            return Ext.util.Format.number(amount, '0,000.00');
-                                                        },
-                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                            let grid = Ext.getCmp(prototype.id + '-gridDataInfoScanAgent');
-                                                            let store = grid.getStore();
-
-                                                            let total = 0;
-                                                            store.each(function (rec) {
-                                                                if (rec.get('SPAYMENT') === 'CA') {
-                                                                    total += rec.get('SVFOPNETR') || 0;
-                                                                } else {
-                                                                    total += rec.get('SVFOP') || 0;
+                                                        {text: 'Status', dataIndex: 'STVAL', width: 90,
+                                                            editor: {xtype: 'textfield', editable: false},
+                                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                metaData.style = "text-align:center;";
+                                                                value = 'Match';
+                                                                if (record.data.TDOC === 'A') {
+                                                                    metaData.style += "background-color:#bff5bf;";
                                                                 }
-                                                            });
-
-                                                            metaData.style = 'text-align:right; margin-right:3px;';
-                                                            return '<b>' + Ext.util.Format.number(total, '0,000.00') + '</b>';
-                                                        }
-                                                    },
-
-                                                    {text: 'Invoice', dataIndex: 'INVOICE', width: 132, id: prototype.id + '-columnINVOICE',
-                                                        editor: {xtype: 'textfield', editable: false},
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            if (record.data.TDOC === 'A') {
-                                                                metaData.style += "background-color:#bff5bf;";
+                                                                if (record.data.STVAL === '1') {
+                                                                    value = 'Match'
+                                                                } else if (record.data.STVAL === '5') {
+                                                                    value = 'Match manual.'
+                                                                } else {
+                                                                    value = 'Open'
+                                                                }
+                                                                return value;
                                                             }
-                                                            return value;
                                                         },
-                                                    },
-
-                                                    {text: 'Source', dataIndex: 'CFUENTE', width: 55,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            if (record.data.TDOC === 'A') {
-                                                                metaData.style += "background-color:#bff5bf;";
+                                                        {text: 'Doc.<br>Type', dataIndex: 'descTDOC', width: 80,
+                                                            editor: {xtype: 'textfield', editable: false},
+                                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                metaData.style = "text-align:center;";
+                                                                if (record.data.TDOC === 'A') {
+                                                                    metaData.style += "background-color:#bff5bf;";
+                                                                    value = 'Adjust'
+                                                                }
+                                                                return value;
                                                             }
-                                                            return value;
-                                                        }
-                                                    },
-
-                                                    {text: 'Type <br> Payment', dataIndex: 'SPAYMENT', width: 60,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "text-align:center;";
-                                                            if (record.data.TDOC === 'A') {
-                                                                metaData.style += "background-color:#bff5bf;";
+                                                        },
+                                                        {text: 'Agent', dataIndex: 'SAGENT', width: 80,
+                                                            editor: {xtype: 'textfield', editable: false},
+                                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                metaData.style = "text-align:center;";
+                                                                if (record.data.TDOC === 'A') {
+                                                                    metaData.style += "background-color:#bff5bf;";
+                                                                }
+                                                                return value;
                                                             }
-                                                            return value;
-                                                        }
-                                                    },
-
-                                                    {
-                                                        sortable: false,
-                                                        xtype: 'actioncolumn',
-                                                        width: 40,
-                                                        text: 'Del.',
-                                                        id: prototype.id + '-gridColumnDelete',
-                                                        align: 'center',
-                                                        items: [
-                                                            {
-                                                                iconCls: 'prx-icon-image-trash',
-                                                                tooltip: 'Delete',
-                                                                handler: 'removeTKT'
+                                                        },
+                                                        {text: 'Consol.', dataIndex: 'SCONSOL', width: 80,
+                                                            editor: {xtype: 'textfield', editable: false},
+                                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                metaData.style = "text-align:center;";
+                                                                if (record.data.TDOC === 'A') {
+                                                                    metaData.style += "background-color:#bff5bf;";
+                                                                }
+                                                                return value;
                                                             }
-                                                        ]
-                                                    },
-                                                ]
-                                            }
-                                        },
-                                    ],
+                                                        },
+                                                        {text: 'Sales<br>Date', dataIndex: 'SDATE', width: 80, id: prototype.id + '-gridA720FECVTA',
+                                                            editor: {xtype: 'textfield', editable: false},
+                                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                metaData.style = "text-align:center;";
+                                                                if (record.data.TDOC === 'A') {
+                                                                    metaData.style += "background-color:#bff5bf;";
+                                                                }
+                                                                return value;
+                                                            }
+                                                        },
+                                                        {text: 'Fpaymen', dataIndex: 'MCLOS', width: 80,
+                                                            editor: {xtype: 'textfield', editable: false},
+                                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                metaData.style = "text-align:center;";
+                                                                if (record.data.TDOC === 'A') {
+                                                                    metaData.style += "background-color:#bff5bf;";
+                                                                }
+                                                                return value;
+                                                            }
+                                                        },
+                                                        {text: 'Country', dataIndex: 'SCOUNTRY', width: 80,
+                                                            editor: {xtype: 'textfield', editable: false},
+                                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                metaData.style = "text-align:center;";
+                                                                if (record.data.TDOC === 'A') {
+                                                                    metaData.style += "background-color:#bff5bf;";
+                                                                }
+                                                                return value;
+                                                            }
+                                                        },
+                                                        {text: 'Ticket', dataIndex: 'TKT', width: 135,
+                                                            editor: {xtype: 'textfield', editable: false},
+                                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                metaData.style = "text-align:center;";
+                                                                if (record.data.TDOC === 'A') {
+                                                                    metaData.style += "background-color:#bff5bf;";
+                                                                }
+                                                                return value;
+                                                            },
+                                                            //                                                                                listeners: {
+                                                            //                                                                                    click: 'onGridDataViewTktFinal'
+                                                            //                                                                                },
+                                                            //editor: {xtype: 'textfield', editable: false},
+                                                        },
+                                                        {text: 'Curr', dataIndex: 'SCURRENCY', width: 55,
+                                                            editor: {xtype: 'textfield', editable: false},
+                                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                metaData.style = "text-align:center;";
+                                                                if (record.data.TDOC === 'A') {
+                                                                    metaData.style += "background-color:#bff5bf;";
+                                                                }
+                                                                return value;
+                                                            }
+                                                        },
+                                                        {
+                                                            text: 'Amount',
+                                                            dataIndex: 'SVFOPNETR', // puedes dejar cualquiera, el renderer controla el valor mostrado
+                                                            width: 90,
+                                                            editor: {xtype: 'textfield', editable: false},
+                                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                metaData.style = "text-align:right;";
 
-                                },
+                                                                if (record.data.TDOC === 'A') {
+                                                                    metaData.style += "background-color:#bff5bf;";
+                                                                }
+
+                                                                let amount = 0;
+                                                                if (record.data.SPAYMENT === 'CA') {
+                                                                    amount = record.data.SVFOPNETR || 0;
+                                                                } else {
+                                                                    amount = record.data.SVFOP || 0;
+                                                                }
+
+                                                                return Ext.util.Format.number(amount, '0,000.00');
+                                                            },
+                                                            summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                let grid = Ext.getCmp(prototype.id + '-gridDataInfoScanAgent');
+                                                                let store = grid.getStore();
+
+                                                                let total = 0;
+                                                                store.each(function (rec) {
+                                                                    if (rec.get('SPAYMENT') === 'CA') {
+                                                                        total += rec.get('SVFOPNETR') || 0;
+                                                                    } else {
+                                                                        total += rec.get('SVFOP') || 0;
+                                                                    }
+                                                                });
+
+                                                                metaData.style = 'text-align:right; margin-right:3px;';
+                                                                return '<b>' + Ext.util.Format.number(total, '0,000.00') + '</b>';
+                                                            }
+                                                        },
+
+                                                        {text: 'Invoice', dataIndex: 'INVOICE', width: 132, id: prototype.id + '-columnINVOICE',
+                                                            editor: {xtype: 'textfield', editable: false},
+                                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                metaData.style = "text-align:center;";
+                                                                if (record.data.TDOC === 'A') {
+                                                                    metaData.style += "background-color:#bff5bf;";
+                                                                }
+                                                                return value;
+                                                            },
+                                                        },
+
+                                                        {text: 'Source', dataIndex: 'CFUENTE', width: 55,
+                                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                metaData.style = "text-align:center;";
+                                                                if (record.data.TDOC === 'A') {
+                                                                    metaData.style += "background-color:#bff5bf;";
+                                                                }
+                                                                return value;
+                                                            }
+                                                        },
+
+                                                        {text: 'Type <br> Payment', dataIndex: 'SPAYMENT', width: 60,
+                                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                metaData.style = "text-align:center;";
+                                                                if (record.data.TDOC === 'A') {
+                                                                    metaData.style += "background-color:#bff5bf;";
+                                                                }
+                                                                return value;
+                                                            }
+                                                        },
+
+                                                        {
+                                                            sortable: false,
+                                                            xtype: 'actioncolumn',
+                                                            width: 40,
+                                                            text: 'Del.',
+                                                            id: prototype.id + '-gridColumnDelete',
+                                                            align: 'center',
+                                                            items: [
+                                                                {
+                                                                    iconCls: 'prx-icon-image-trash',
+                                                                    tooltip: 'Delete',
+                                                                    handler: 'removeTKT'
+                                                                }
+                                                            ]
+                                                        },
+                                                    ]
+                                                }
+                                            },
+                                        ],
+
+                                    },
                             ]
                         },
                     ]
@@ -2330,6 +2338,14 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                     iconCls: 'prx-icon-update',
                     listeners: {
                         click: 'onConciliationCash'
+                    }
+                },
+                {
+                    text: 'Conciliacion <br> Adjust',
+                    id: prototype.id + '-btn-Adjust',
+                    iconCls: 'prx-icon-update',
+                    listeners: {
+                        click: 'onConciliationCashAdjust'
                     }
                 },
 //                        {

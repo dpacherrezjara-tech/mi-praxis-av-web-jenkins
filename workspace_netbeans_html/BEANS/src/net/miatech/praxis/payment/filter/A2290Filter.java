@@ -994,6 +994,20 @@ public class A2290Filter extends A2290 {
     public long lngQEECC  = 0; 
     public long lngQTYADJ  = 0; 
     
+    // header
+    
+    public long lngTotHMatch  = 0; 
+    public long lngTotHManual  = 0; 
+    public long lngTotHDiff  = 0; 
+    public long lngTotHSales  = 0; 
+    public long lngTotHAll  = 0; 
+    public long lngQHMatch  = 0; 
+    public long lngQHManual  = 0; 
+    public long lngQHDiff  = 0; 
+    public long lngQHSales  = 0; 
+    public long lngQHAll  = 0; 
+    
+    
     
     public long lngTotQTKTAUTO  = 0; 
     public long lngTotQTKTPENDING  = 0; 
