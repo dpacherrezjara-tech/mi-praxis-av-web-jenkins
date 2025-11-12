@@ -14,7 +14,13 @@ Ext.util.CSS.createStyleSheet(`
         background-color: #B3E5FC !important; /* celeste pastel */
         color: #004D66 !important; /* texto azul oscuro */
     }
-`, 'customRowStyles');
+        .row-blue-light-1 .x-grid-cell {
+        background-color: #C7D8FF !important;
+    }
+    .row-blue-light-2 .x-grid-cell {
+        background-color: #45B547 !important;
+    }
+`, 'customRowStyles');  
 
 Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliationController', {
     extend: 'Ext.app.ViewController',
@@ -4475,59 +4481,103 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
           
      
     setGridDataMPF199: function(data) {
-        win.lblUser_toolTip("Estructura: MPF199");
-//        me.panelActual = '-panelGridDataMPF199';
-//        global.selectedChild(me.childs, prototype.id + me.panelActual);
-        me.setWidthPie();
-        var msj = this.validateFields();
-        
-        if (msj !== '') {
-            global.Msg({msg: msj
-            });
-        } else {
-            var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
-                proxy: {
-                    url: prototype.url + '/searchListMPF199'
-                }, listeners: {
-                    beforeload: function(obj) {
-                        obj.proxy.extraParams = me.obJPADJ;                                    
-                        
-                    },
-                    load: function(obj) {
-                        var pag = Ext.getCmp(prototype.id + '-pagginMPF199');
-                        var pagData = pag.getPageData();
-                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
-                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
-                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
-                        if (obj.data.length === 0) {
-                            global.Msg({
-                                msg: 'Data not found.'
-                            });
-                        }else {
-                            var year = me.currentSDate.substring(0, 4);
-                            var month = me.currentSDate.substring(4, 6);
+    win.lblUser_toolTip("Estructura: MPF199");
+    me.setWidthPie();
+    var msj = this.validateFields();
 
-                            var monthNames = ["January", "February", "March", "April", "May", "June",
-                                "July", "August", "September", "October", "November", "December"];
+    if (msj !== '') {
+        global.Msg({ msg: msj });
+    } else {
 
-                            title = " Sales Date : " + monthNames[parseInt(month) - 1] + " " + year;
-                        console.log(title);
+        // 🔹 Mover variables fuera del load para mantener consistencia
+        var groupMap = {};
+        var groupId = 0;
+
+        var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
+            proxy: {
+                url: prototype.url + '/searchListMPF199'
+            },
+            listeners: {
+                beforeload: function(obj) {
+                    obj.proxy.extraParams = me.obJPADJ;                                    
+                },
+                load: function (obj) {
+                    var pag = Ext.getCmp(prototype.id + '-pagginMPF199');
+                    var pagData = pag.getPageData();
+                    Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                    Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                    Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+
+                    if (obj.data.length === 0) {
+                        global.Msg({ msg: 'Data not found.' });
+                    } else {
+                        var year = me.currentSDate.substring(0, 4);
+                        var month = me.currentSDate.substring(4, 6);
+                        var monthNames = [
+                            "January", "February", "March", "April", "May", "June",
+                            "July", "August", "September", "October", "November", "December"
+                        ];
+
+                        title = " Sales Date : " + monthNames[parseInt(month) - 1] + " " + year;
                         Ext.getCmp(prototype.id + '-labelMPF199').setText(title);
                         Ext.getCmp(prototype.id + '-labelMPF199').setVisible(true);
+
+                        // 🔹 Agrupar manualmente por combinación DATEA + TRANA
+                        var records = obj.getRange();
+                        var groupMap = {};    // key → array de registros
+                        var groupIdMap = {};  // key → id de grupo
+                        var groupId = 0;
+
+                        // 1️⃣ Crear los grupos
+                        Ext.Array.each(records, function (rec, idx) {
+                            var datea = (rec.get('O_DATEA') || '').trim();
+                            var trana = (rec.get('O_TRANA') || '').trim();
+
+                            console.log(`[DEBUG BLOQUE ${idx}] O_DATEA=${datea} | O_TRANA=${trana}`);
+
+                            if (datea && trana) {
+                                var key = datea + '|' + trana;
+
+                                if (!groupMap[key]) {
+                                    groupMap[key] = [];
+                                }
+                                groupMap[key].push(rec);
+                            } else {
+                                console.warn(`[NO BLOQUE] Registro ${idx} sin clave válida → O_DATEA='${datea}' | O_TRANA='${trana}'`);
+                            }
+                        });
+
+                        // 2️⃣ Asignar colores por grupo
+                        Ext.Object.each(groupMap, function (key, groupRecords) {
+                            if (key === '' || !groupRecords || groupRecords.length === 0) return;
+
+                            console.log(`[🎨 GRUPO ${groupId}] Clave=${key} → ${groupRecords.length} registros`);
+
+                            Ext.Array.each(groupRecords, function (rec) {
+                                rec.set('groupColorId', groupId);
+                            });
+
+                            groupIdMap[key] = groupId;
+                            groupId++;
+                        });
+
+                        console.log(`[✅ TOTAL DE GRUPOS DETECTADOS: ${groupId}]`);
                     }
+
                     me.setWidthPie();
-                    }
                 }
-            });
-            
-            global.clear();
-            Ext.getCmp(prototype.id + '-gridDataMPF199').bindStore(storeGridDatas);
-            Ext.getCmp(prototype.id + '-pagginMPF199').bindStore(storeGridDatas);
-        }
-        
-        
-        
-    },
+
+
+            }
+        });
+
+        global.clear();
+        Ext.getCmp(prototype.id + '-gridDataMPF199').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-pagginMPF199').bindStore(storeGridDatas);
+    }
+},
+    
+
     
     
     

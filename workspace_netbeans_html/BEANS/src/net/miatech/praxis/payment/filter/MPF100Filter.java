@@ -14,6 +14,9 @@ import net.miatech.utils.Functions;
  *
  * @author claudia
  */
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MPF100Filter extends MPF100 {
 
     //Campos clave originales =======
@@ -57,6 +60,7 @@ public class MPF100Filter extends MPF100 {
     public String IN_CARDN2 = "";
     public String IN_SAUTHOC = "";
     public String IN_FTE = "";
+    public String IN_CCUST = "";
     public String IN_PAYMENT = "";
     public String IN_TDOC = "";
     public String IN_CARDC = "";
