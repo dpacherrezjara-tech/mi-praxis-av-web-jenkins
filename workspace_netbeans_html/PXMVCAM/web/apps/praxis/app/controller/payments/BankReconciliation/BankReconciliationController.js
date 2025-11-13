@@ -9,6 +9,11 @@ Ext.util.CSS.createStyleSheet(`
         background-color: #1AB092 !important; /* pastel amarillito */
         color: #856404 !important;
     }
+
+    .row-with-cerror .x-grid-cell {
+        background-color: #1AB092 !important; /* pastel amarillito */
+        color: #856404 !important;
+    }
 /* Nueva fila con celeste suave */
     .row-with-blue .x-grid-cell {
         background-color: #B3E5FC !important; /* celeste pastel */

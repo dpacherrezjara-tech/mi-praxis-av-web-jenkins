@@ -8449,6 +8449,7 @@ public class BankReconciliationDAO {
                 bean.O_BANDOC = rst.getString("BANDOC");
                 bean.O_DATEA = rst.getString("DATEA");
                 bean.O_TRANA = rst.getString("TRANA");
+                bean.O_INVOICE = rst.getString("INVOICE");
                 
                 
                 
@@ -9216,6 +9217,8 @@ public class BankReconciliationDAO {
                 beanTkt.DPERIOD = rst.getString("DPERIOD");
                 beanTkt.FECR = rst.getString("FECR");
                 beanTkt.DCYCLE = rst.getString("DCYCLE");
+                beanTkt.CERROR = rst.getString("CERROR");
+                beanTkt.DES_CERROR = rst.getString("DES_CERROR");
                 lstData.add(beanTkt);
             }
             rst.close();
