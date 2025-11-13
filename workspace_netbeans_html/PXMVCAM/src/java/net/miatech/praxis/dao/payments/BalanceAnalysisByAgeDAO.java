@@ -3309,7 +3309,7 @@ public class BalanceAnalysisByAgeDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS390(?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS390(?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -3321,6 +3321,7 @@ public class BalanceAnalysisByAgeDAO {
             cstmt.setString(3, filter.IN_FECHA_TO);
             cstmt.setString(4, filter.IN_BANDOC);
             cstmt.setString(5, filter.IN_REFER);
+            cstmt.setString(6, filter.IN_CODPRO);
 
             cstmt.execute();
 
@@ -3350,6 +3351,7 @@ public class BalanceAnalysisByAgeDAO {
                     bean.F3_TOTAL_COMPLETED = rst.getInt("F3_TOTAL_COMPLETED");
                     bean.F3_TOTAL_PENDING_SENT = rst.getInt("F3_TOTAL_PENDING_SENT");
                     bean.F3_TOTAL_COMPLETED_SAP = rst.getInt("F3_TOTAL_COMPLETED_SAP");   
+                    bean.F3_TOTAL_ERROR = rst.getInt("F3_TOTAL_ERROR");   
 
                     lstData.add(bean);
             }
@@ -3386,17 +3388,17 @@ public class BalanceAnalysisByAgeDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS400(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS400(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(12, Types.INTEGER);
             cstmt.registerOutParameter(13, Types.INTEGER);
             cstmt.registerOutParameter(14, Types.INTEGER);
             cstmt.registerOutParameter(15, Types.INTEGER);
+            cstmt.registerOutParameter(16, Types.INTEGER);
             cstmt.setString(1, filter.IN_CCUST);
             cstmt.setString(2, filter.IN_WSETT);
             cstmt.setString(3, filter.IN_TAXES);
@@ -3408,17 +3410,18 @@ public class BalanceAnalysisByAgeDAO {
             cstmt.setString(9, filter.IN_DATE);
             cstmt.setString(10, filter.IN_BANDOC);
             cstmt.setString(11, filter.IN_REFER);
-            cstmt.setInt(12, filter.page.PAGNUM);
-            cstmt.setInt(13, filter.page.PAGROW);
-            cstmt.setInt(14, filter.page.TOTPAG);
-            cstmt.setInt(15, filter.page.TOTROW);
+            cstmt.setString(12, filter.IN_CODPRO);
+            cstmt.setInt(13, filter.page.PAGNUM);
+            cstmt.setInt(14, filter.page.PAGROW);
+            cstmt.setInt(15, filter.page.TOTPAG);
+            cstmt.setInt(16, filter.page.TOTROW);
 
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(12);
-            filter.page.PAGROW = cstmt.getInt(13);
-            filter.page.TOTPAG = cstmt.getInt(14);
-            filter.page.TOTROW = cstmt.getInt(15);
+            filter.page.PAGNUM = cstmt.getInt(13);
+            filter.page.PAGROW = cstmt.getInt(14);
+            filter.page.TOTPAG = cstmt.getInt(15);
+            filter.page.TOTROW = cstmt.getInt(16);
 
             rst = cstmt.getResultSet();
             while (rst.next()) {
@@ -3438,6 +3441,10 @@ public class BalanceAnalysisByAgeDAO {
                 bean.IDCONT = rst.getString("IDCONT").trim();
                 bean.IDCDEB = rst.getString("IDCDEB").trim();
                 bean.A4545HEADE = rst.getString("A4545HEADE").trim();
+                
+                bean.QTY100_TOTAL = rst.getInt("QTY100_TOTAL");
+                bean.QTY100_PENDING = rst.getInt("QTY100_PENDING");
+                bean.QTY100_MATCH = rst.getInt("QTY100_MATCH");
 
                 bean.page.PAGNUM = filter.page.PAGNUM;
                 bean.page.PAGROW = filter.page.PAGROW;

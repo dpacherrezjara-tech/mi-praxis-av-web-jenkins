@@ -8050,7 +8050,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                         {
                             xtype: 'panel',
                             border: false,
-                            width: 1600,
+                            width: 1617,
                             id: prototype.id + '-panelGridSumaryMain',
                             bodyStyle: 'background-color: #F4F7FD;margin-top:20px',
                             padding: '1',
@@ -8072,7 +8072,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                         {
                                     xtype: 'treepanel',
                                     id: prototype.id + '-gridSumaryMain',
-                                    width: 1527,
+                                    width: 1617,
                                     useArrows: true,
                                     rootVisible: false,
                                     multiSelect: true,
@@ -8412,6 +8412,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                                  return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
                                                              }
                                                          },
+                                                         
                                                     {
                                                         text: '<span style="color:black;font-weight:bold;">%</span>', menuDisabled: true,style:'background:#D6D6D6;color:black !important',
                                                         columns: [
@@ -8430,6 +8431,22 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                              }
                                                         ]
                                                     },
+                                                     {
+                                                            text: '<span style="color:black;font-weight:bold;">Return Error</span>', dataIndex: 'F3_TOTAL_ERROR', width: 90, style:'background:#D6D6D6;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                             listeners: {
+                                                                 click: 'onGridDataDetail'
+                                                             },
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
                                                 ]
                                             },
                                             {
@@ -8478,24 +8495,9 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                         ]
                                                     },
                                                     {
-                                                        text: '<span style="color:black;font-weight:bold;">Total</span>', menuDisabled: true,style:'background:#DCD1F7;color:black !important',
+                                                        hidde:true,text: '<span style="color:black;font-weight:bold;">Total</span>', menuDisabled: true,style:'background:#DCD1F7;color:black !important',
                                                         columns: [
-                                                         {
-                                                            hidden:true,text: '<span style="color:black;font-weight:bold;">Return Error</span>', dataIndex: 'F1_TOTAL_STVAL3', width: 90, style:'background:#DCD1F7;color:black !important',align: 'center', menuDisabled: true, //flex: 1
-                                                             listeners: {
-                                                                 click: 'onGridDataDetail'
-                                                             },
-                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
-                                                                 value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
-                                                                 return value;
-                                                             },
-                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
-                                                                 metaData.style = 'text-align:right; margin-right:3px ';
-                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
-                                                             }
-                                                         },
+                                                        
                                                         ]
                                                     },
                                                     {
@@ -8566,7 +8568,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                             {width: 100, id: prototype.id + '-SENT_TOTAL_STVAL1_GLOBAL',style:'background: #D6D6D6;text-align:right'},
                                             {width: 90, id: prototype.id + '-SAP_TOTAL_STVAL1_GLOBAL',style:'background: #D6D6D6;text-align:right'},
                                             {width: 70, id: prototype.id + '-SENT_PERCENT_GLOBAL',style:'background: #D6D6D6;text-align:right'},
-//                                            {width: 70, id: prototype.id + '-SENT_TOTAL_SENT_GLOBAL',style:'background: #D6D6D6;text-align:right'},
+                                            {width: 90, id: prototype.id + '-RETURN_ERROR_GLOBAL',style:'background: #D6D6D6;text-align:right'},
                                             
                                             
                                             {hidden:true,width: 100, id: prototype.id + '-SAP_TOTAL_GLOBAL',style:'background: #DCD1F7;text-align:right'},
@@ -8816,7 +8818,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                     id: prototype.id + '-gridDataDetail',
 //                                    title: '<span style="font-size:15px; font-weight:bold; color:#1a3e75;">📊 Grilla Detalle</span>',
                                     height: 515,
-                                    width: 1200,
+                                    width: 1450,
                                     hidden: false,
                                     columnLines: true,
                                     viewConfig: {
@@ -8860,6 +8862,9 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                             }},
                                             {text: '<span style="color:black;font-weight:bold;">Corep</span>', dataIndex: 'COREP', width: 60,style: 'padding:2px; background: #c9daf5;border-color:white'},
                                             {text: '<span style="color:black;font-weight:bold;">Codpro</span>', dataIndex: 'CODPRO', width: 60,style: 'padding:2px; background: #c9daf5;border-color:white'},
+                                            {text: '<span style="color:black;font-weight:bold;">Qty Total</span>', dataIndex: 'QTY100_TOTAL', width: 80,style: 'padding:2px; background: #c9daf5;border-color:white'},
+                                            {text: '<span style="color:black;font-weight:bold;">QTY Match</span>', dataIndex: 'QTY100_MATCH', width: 80,style: 'padding:2px; background: #c9daf5;border-color:white'},
+                                            {text: '<span style="color:black;font-weight:bold;">QTY Pending</span>', dataIndex: 'QTY100_PENDING', width: 90,style: 'padding:2px; background: #c9daf5;border-color:white'},
                                             {text: '<span style="color:black;font-weight:bold;">IDCDEB</span>', dataIndex: 'IDCDEB', width: 100,style: 'padding:2px; background: #c9daf5;border-color:white'},
                                             {text: '<span style="color:black;font-weight:bold;">Header</span>', dataIndex: 'A4545HEADE', width: 100,style: 'padding:2px; background: #c9daf5;border-color:white'},
                                             {text: '<span style="color:black;font-weight:bold;">Scurrency</span>', dataIndex: 'SCURRENCY', width: 80,style: 'padding:2px; background: #c9daf5;border-color:white'},

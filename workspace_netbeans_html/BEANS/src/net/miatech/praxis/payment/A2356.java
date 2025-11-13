@@ -154,6 +154,7 @@ public class A2356 {
         public int F3_TOTAL_COMPLETED = 0;
         public int F3_TOTAL_PENDING_SENT = 0;
         public int F3_TOTAL_COMPLETED_SAP = 0;
+        public int F3_TOTAL_ERROR = 0;
         
         public int QTYLIQP  = 0;
         public int QTYACCO  = 0;
@@ -274,6 +275,10 @@ public class A2356 {
         
         public int QTY_TOTAL_GRANT  = 0;  
         public double AMOUNT_TOTAL_GRANT_USD  = 0;  
+        
+        public int QTY100_TOTAL  = 0;  
+        public int QTY100_PENDING  = 0;  
+        public int QTY100_MATCH  = 0;  
         
         public String USCR  = "";
         public String FECR  = "";

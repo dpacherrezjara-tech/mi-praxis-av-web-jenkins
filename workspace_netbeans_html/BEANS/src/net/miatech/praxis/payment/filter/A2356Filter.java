@@ -26,6 +26,7 @@ public class A2356Filter extends A2356 {
     public String IN_FECHA_TO = "";
     public String IN_BANDOC = "";
     public String IN_REFER = "";
+    public String IN_CODPRO = "";
     public String IN_SDATE = "";
     public String IN_DATE = "";
     public String IN_TCOLUM = "";

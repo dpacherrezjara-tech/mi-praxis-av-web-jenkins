@@ -177,12 +177,12 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             url: prototype.url + '/getDataAudit',
             method: 'POST',
             timeout: 60000000,
-            beforerequest: Ext.getBody().mask('Loading...'),
+//            beforerequest: Ext.getBody().mask('Loading...'),
             params: {
                 beanString: JSON.stringify({})
             },
             success: function (response, options) {
-                Ext.getBody().unmask('Loading...');
+//                Ext.getBody().unmask('Loading...');
                 var res = Ext.JSON.decode(response.responseText);
                 console.log(res.result, 'res.result')
                 console.log(res.result.MESSAGE, 'res.result.MESSAGE')
@@ -209,6 +209,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         this.paramsObtainData.BANK = 2;
         this.paramsObtainData.COUNTRY = 2;
         this.paramsObtainData.CARD = 2;
+        this.paramsObtainData.IN_PF122CODPR = 2;
 
         Ext.Ajax.request({
             url: prototype.urlMaster + '/obtainData',
@@ -222,10 +223,11 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                 Ext.getBody().unmask('Loading...');
                 var res = Ext.JSON.decode(response.responseText);
 
-
+                console.log(res,'res')
                 me.lstBank = res.lstBank;
                 me.lstCard = res.lstCard;
                 me.lstCountry = res.lstCountry;
+                me.lstProcessor = res.listaProcesadores;
 
                 var storeData = Ext.create('Ext.data.Store', {
                     data: me.lstBank,
@@ -236,8 +238,18 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                     data: me.lstCountry,
                     autoLoad: true
                 });
+                
+                var storeData4 = Ext.create('Ext.data.Store', {
+                    data: me.lstProcessor,
+                    autoLoad: true
+                });
+                
                 Ext.getCmp(prototype.id + '-cmbCountry').bindStore(storeData3);
                 Ext.getCmp(prototype.id + '-cmbCountry').setValue('');
+                
+                Ext.getCmp(prototype.id + '-cmbProcessor').bindStore(storeData4);
+                Ext.getCmp(prototype.id + '-cmbProcessor').setValue('');
+                
                 global.clear();
                 me.btnSearch_click();
             }
@@ -946,6 +958,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             Ext.getCmp(prototype.id + '-contentFilter3').hide();
             
         }
+        this.toggleFiltersByPanel(me.panelActual, prototype);
     },
     setGridData: function () {
         win.lblUser_toolTip("Estructura: MPF117");
@@ -3273,20 +3286,38 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             prototype.id + '-rayita'
         ];
 
-        const hide = (panelId === '-panelGridSumaryMain' ||  panelId === '-panelGridSumaryDetail');
-        
-        if (hide) {
-            Ext.getCmp(prototype.id + '-panelHeight').setHeight(750);
-        } else {
-            Ext.getCmp(prototype.id + '-panelHeight').setHeight(1100);
+        // === NUEVO: campos que se deben mostrar cuando los anteriores se ocultan ===
+        const extraFilterIds = [
+            prototype.id + '-txtBANDOC',
+            prototype.id + '-txtREFER',
+            prototype.id + '-cmbProcessor'
+        ];
+
+        const hide = (panelId === '-panelGridSumaryMain' || panelId === '-panelGridSumaryDetail');
+
+        // Ajustar altura del panel
+        const panelHeight = Ext.getCmp(prototype.id + '-panelHeight');
+        if (panelHeight) {
+            panelHeight.setHeight(hide ? 750 : 1100);
         }
 
+        // Grupo principal: se ocultan si hide = true
         Ext.Array.each(filterIds, function (cmpId) {
             const cmp = Ext.getCmp(cmpId);
             if (cmp) {
-                cmp.setVisible(!hide); 
+                cmp.setVisible(!hide);
             } else {
                 console.warn('No se encontró el componente con id:', cmpId);
+            }
+        });
+
+        // Grupo secundario (extra): se muestran si hide = true
+        Ext.Array.each(extraFilterIds, function (cmpId) {
+            const cmp = Ext.getCmp(cmpId);
+            if (cmp) {
+                cmp.setVisible(hide);
+            } else {
+                console.warn('No se encontró el componente con id (extra):', cmpId);
             }
         });
     },
@@ -3296,6 +3327,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         me.bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue();
         me.bean.IN_BANDOC = Ext.getCmp(prototype.id + '-txtBANDOC').getValue();
         me.bean.IN_REFER = Ext.getCmp(prototype.id + '-txtREFER').getValue();
+        me.bean.IN_CODPRO = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
+//        me.bean.IN_CODPRO = "CO";
 //        me.bean.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
 //        me.bean.IN_SAGENT = Ext.getCmp(prototype.id + '-txtAGENCY').getValue();
 //        me.bean.IN_PERCENTAGE = Ext.getCmp(prototype.id + '-cmbPercentage').getValue();
@@ -3355,8 +3388,9 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                 let F3_F2_TOTAL_COMPLETED_GLOBAL = 0;
                                 let F3_TOTAL_WO_ACC_GLOBAL = 0;
                                 let F3_TOTAL_COMPLETED_GLOBAL = 0;
-                                let F3_TOTAL_COMPLETED_SAP_GLOBAL = 0;
                                 let F3_TOTAL_PENDING_SENT_GLOBAL = 0;
+                                let F3_TOTAL_COMPLETED_SAP_GLOBAL = 0;
+                                let F3_TOTAL_ERROR_GLOBAL = 0;
 
                                 let a = [];
                                 let dataRoot = { text: '.', expanded: false, children: [] };
@@ -3379,9 +3413,10 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                         let V_F3_F2_TOTAL_COMPLETED = 0;
                                         let V_F3_TOTAL_WO_ACC = 0;
                                         let V_F3_TOTAL_COMPLETED = 0;
-                                        let V_F3_TOTAL_COMPLETED_SAP = 0;
                                         let V_F3_TOTAL_PENDING_SENT = 0;
                                         let V_F3_PERCENT = 0;
+                                        let V_F3_TOTAL_COMPLETED_SAP = 0;
+                                        let V_F3_TOTAL_ERROR = 0;
 
                                         // Agrupar por mes
                                         Ext.Object.each(lstData, function (index, valuex) {
@@ -3402,6 +3437,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                                 V_F3_TOTAL_COMPLETED += valuex.F3_TOTAL_COMPLETED;
                                                 V_F3_TOTAL_PENDING_SENT += valuex.F3_TOTAL_PENDING_SENT;
                                                 V_F3_TOTAL_COMPLETED_SAP += valuex.F3_TOTAL_COMPLETED_SAP;
+                                                V_F3_TOTAL_ERROR += valuex.F3_TOTAL_ERROR;
                                             }
                                         });
 
@@ -3442,6 +3478,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                             F3_TOTAL_PENDING_SENT: V_F3_TOTAL_PENDING_SENT,
                                             F3_TOTAL_COMPLETED_SAP: V_F3_TOTAL_COMPLETED_SAP,
                                             F3_PERCENT: V_F3_PERCENT.toFixed(2) + '%',
+                                            F3_TOTAL_ERROR: V_F3_TOTAL_ERROR,
                                             
                                             expanded: false,
                                             children: []
@@ -3488,6 +3525,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                                     F3_TOTAL_COMPLETED: value01.F3_TOTAL_COMPLETED,
                                                     F3_TOTAL_PENDING_SENT: value01.F3_TOTAL_PENDING_SENT,
                                                     F3_TOTAL_COMPLETED_SAP: value01.F3_TOTAL_COMPLETED_SAP,
+                                                    F3_TOTAL_ERROR: value01.F3_TOTAL_ERROR,
                                                     F3_PERCENT: V_CHILD_PERCENT_F3.toFixed(2) + '%',
                                                     
                                                     leaf: true
@@ -3512,6 +3550,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                         F3_TOTAL_COMPLETED_GLOBAL += V_F3_TOTAL_COMPLETED;
                                         F3_TOTAL_PENDING_SENT_GLOBAL += V_F3_TOTAL_PENDING_SENT;
                                         F3_TOTAL_COMPLETED_SAP_GLOBAL += V_F3_TOTAL_COMPLETED_SAP;
+                                        F3_TOTAL_ERROR_GLOBAL += V_F3_TOTAL_ERROR;
                                     }
                                 });
 
@@ -3558,6 +3597,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                 Ext.getCmp(prototype.id + '-SENT_TOTAL_SENT_GLOBAL').setText(Ext.util.Format.number(F3_TOTAL_PENDING_SENT_GLOBAL, '0,000'));
 
                                 Ext.getCmp(prototype.id + '-SAP_TOTAL_STVAL1_GLOBAL').setText(Ext.util.Format.number(F3_TOTAL_COMPLETED_SAP_GLOBAL, '0,000'));
+                                Ext.getCmp(prototype.id + '-RETURN_ERROR_GLOBAL').setText(Ext.util.Format.number(F3_TOTAL_ERROR_GLOBAL, '0,000'));
                                 
                                 // ==== F1 - Settlement ====
                                 var totalsF1 = [];
@@ -3749,7 +3789,9 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         me.paramsDetail.IN_DATE = data.VALDATE;
         me.paramsDetail.IN_BANDOC = Ext.getCmp(prototype.id + '-txtBANDOC').getValue();
         me.paramsDetail.IN_REFER = Ext.getCmp(prototype.id + '-txtREFER').getValue();
-
+        me.paramsDetail.IN_CODPRO = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
+//        me.paramsDetail.IN_CODPRO = "CO";
+        
         console.log(data,'data')
         console.log("IN_CCUST:", me.paramsDetail.IN_CCUST);
 
