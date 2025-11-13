@@ -923,6 +923,7 @@ public class TemplateReconciliationDAO {
                     record.SVFOP = rst.getDouble("SVFOP");
                     record.TOTAL = rst.getDouble("TOTAL");
                     record.SVFOPCON = rst.getDouble("SVFOPCON");
+                    record.SCURREVENCONVERT = rst.getString("SCURREVENCONVERT");
                     record.SDATE = rst.getString("SDATE");
                     
                     record.SCOUNTRY = rst.getString("SCOUNTRY");
