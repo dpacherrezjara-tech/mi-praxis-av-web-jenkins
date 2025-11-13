@@ -1268,7 +1268,8 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                             viewConfig: {
                                                                                 getRowClass: function (record) {
                                                                                     if ((record.get('REFERENCE') && record.get('REFERENCE').trim() !== '') ||
-                                                                                        (record.get('COMMENTS') && record.get('COMMENTS').trim() !== '')) {
+                                                                                        (record.get('COMMENTS') && record.get('COMMENTS').trim() !== '') || 
+                                                                                        (record.get('DES_CERROR') && record.get('DES_CERROR').trim() !== '')) {
                                                                                         return 'row-with-comments';
                                                                                     }
                                                                                     return '';
@@ -1285,6 +1286,12 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                                                 target: item,
                                                                                                 text: `<b>Reference:</b> ${record.get('REFERENCE') || ''}<br>
                                                                                                        <b>Comments:</b> ${record.get('COMMENTS') || ''}`
+                                                                                            });
+                                                                                        }
+                                                                                        if (record.get('DES_CERROR') && record.get('DES_CERROR').trim() !== '')  {
+                                                                                            Ext.tip.QuickTipManager.register({
+                                                                                                target: item,
+                                                                                                text: `<b>Codigo:</b> ${record.get('DES_CERROR') || ''}`
                                                                                             });
                                                                                         }
                                                                                     },
