@@ -955,7 +955,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
             SCOUNTRY: ultimoRegistro.get('SCOUNTRY'),
             TKT: ultimoRegistro.get('TKT'),
             SCURRENCY: ultimoRegistro.get('SCURRENCY'),
-            INVOICE: ultimoRegistro.get('INVOICE'),
+            INVOICE: ultimoRegistro.get('INVOICE') + 'PP',
             CFUENTE: ultimoRegistro.get('CFUENTE'),
             SPAYMENT: ultimoRegistro.get('SPAYMENT'),
             SVFOPNETR: diferencia,

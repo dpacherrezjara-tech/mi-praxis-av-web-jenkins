@@ -6529,7 +6529,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                             bodyStyle: 'background: transparent;',
                             border: false,
 //                            height: 'auto',
-                            width: 1648,
+                            width: 1778,
                             height: 620,
 //                            scrollable: 'vertical',
 
@@ -6568,7 +6568,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataMPF199',
-                                    width: 1624,
+                                    width: 1754,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -6806,7 +6806,19 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                             {
                                                 text: 'BANDOC',
                                                 dataIndex: 'O_BANDOC',
-                                                width: 140,
+                                                width: 100,
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
+                                            },
+                                            
+                                            {
+                                                text: 'Invoice',
+                                                dataIndex: 'O_INVOICE',
+                                                width: 170,
                                                 renderer: function (value, metaData) {
                                                     metaData.style = "text-align:center;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";

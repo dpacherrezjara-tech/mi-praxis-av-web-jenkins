@@ -1111,6 +1111,7 @@ public class A2290Filter extends A2290 {
     public String O_BANDOC = "";
     public String O_DATEA = "";
     public String O_TRANA = "";
+    public String O_INVOICE = "";
     
     
     public String O_USCR = "";
