@@ -14,6 +14,10 @@ import net.miatech.praxis.payment.A2356;
 
 public class A2356Filter extends A2356 {
 
+    public String OPTION = "";
+    public String CUSTOMER_ERROR = "";
+    public String REFER_ERROR = "";
+    public String CODE_ERROR = "";
     public String IN_CCUST = "";
     public String IN_WSETT = "";
     public String IN_TAXES = "";
@@ -27,6 +31,10 @@ public class A2356Filter extends A2356 {
     public String IN_BANDOC = "";
     public String IN_REFER = "";
     public String IN_CODPRO = "";
+    public String IN_IDCONT = "";
+    public String IN_HEADER = "";
+    public String IN_PROVISION = "";
+    public String IN_SENT = "";
     public String IN_SDATE = "";
     public String IN_DATE = "";
     public String IN_TCOLUM = "";

@@ -90,6 +90,35 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         this.setStoreData();
         this.getDataAudit();
         this.obtainData();
+        
+        $('#BalanceAnalysisByAgeForm-btnToggleSwitchPending').on('change', function () {
+            
+            var toggleCmp = Ext.getCmp(prototype.id + '-btnToggleSwitchPending');
+            var isChecked = toggleCmp.getEl().down('input.toggle-input').dom.checked;
+
+            if (isChecked) {
+                Ext.getCmp(prototype.id + '-pieF1').setVisible(false);
+                Ext.getCmp(prototype.id + '-pieF2').setVisible(false);
+                Ext.getCmp(prototype.id + '-pieAcc').setVisible(false);
+                Ext.getCmp(prototype.id + '-spacef1').setVisible(false);
+                Ext.getCmp(prototype.id + '-spacef2').setVisible(false);
+
+                Ext.getCmp(prototype.id + '-codeF1').setVisible(true);
+                console.log('Pending View activo');
+            } else {
+                console.log('All View activo');
+                Ext.getCmp(prototype.id + '-pieF1').setVisible(true);
+                Ext.getCmp(prototype.id + '-pieF2').setVisible(true);
+                Ext.getCmp(prototype.id + '-pieAcc').setVisible(true);
+                Ext.getCmp(prototype.id + '-spacef1').setVisible(true);
+                Ext.getCmp(prototype.id + '-spacef2').setVisible(true);
+                
+                Ext.getCmp(prototype.id + '-codeF1').setVisible(false);
+            }
+
+            
+        });
+        
     },
     eventKey: function (e, eOpts) {
         if (eOpts.getKey() === 13) {
@@ -155,8 +184,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 
         Ext.getCmp(prototype.id + '-cmbDateFromYear').setValue(this.fecha.getFullYear());
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(this.fecha.getFullYear());
-        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue('10');
-        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('10');
+        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue('09');
+        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('09');
 
         var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro');
         cmbFecFiltro.bindStore(Ext.create('Ext.data.ArrayStore', {
@@ -199,7 +228,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                 global.clear();
             },
             failure: function (response, opts) {
-                Ext.getBody().unmask();
+//                Ext.getBody().unmask();
                 console.log('server-side failure with status code ' + response.status);
             }
         });
@@ -215,12 +244,12 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             url: prototype.urlMaster + '/obtainData',
             method: 'POST',
             timeout: 60000000,
-            beforerequest: Ext.getBody().mask('Loading...'),
+//            beforerequest: Ext.getBody().mask('Loading...'),
             params: {
                 beanString: JSON.stringify(this.paramsObtainData)
             },
             success: function (response, options) {
-                Ext.getBody().unmask('Loading...');
+//                Ext.getBody().unmask('Loading...');
                 var res = Ext.JSON.decode(response.responseText);
 
                 console.log(res,'res')
@@ -2112,9 +2141,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 
         return msj;
     },
-    btnAdd_click: function () {
-        this.winDataEntry('I');
-    },
+    
 
     onEditClick: function (grid, rowIndex, colIndex) {
         var rec = grid.getStore().getAt(rowIndex);
@@ -2207,7 +2234,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         
         switch (me.panelActual) {
             case  '-panelGridSumaryMain':
-                Ext.getCmp(prototype.id + '-panelHeight').setHeight(1450);
+                Ext.getCmp(prototype.id + '-panelHeight').setHeight(830);
                 break;
             case  '-panelGridSumaryDetail':
                 Ext.getCmp(prototype.id + '-panelHeight').setHeight(590);
@@ -3290,7 +3317,11 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         const extraFilterIds = [
             prototype.id + '-txtBANDOC',
             prototype.id + '-txtREFER',
-            prototype.id + '-cmbProcessor'
+            prototype.id + '-cmbProcessor',
+            prototype.id + '-txtIDCONT',
+            prototype.id + '-txtHeaderText',
+            prototype.id + '-txtAccprov',
+            prototype.id + '-cargaMerchant'
         ];
 
         const hide = (panelId === '-panelGridSumaryMain' || panelId === '-panelGridSumaryDetail');
@@ -3298,7 +3329,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         // Ajustar altura del panel
         const panelHeight = Ext.getCmp(prototype.id + '-panelHeight');
         if (panelHeight) {
-            panelHeight.setHeight(hide ? 750 : 1100);
+            panelHeight.setHeight(hide ? 750 : 830);
         }
 
         // Grupo principal: se ocultan si hide = true
@@ -3328,6 +3359,9 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         me.bean.IN_BANDOC = Ext.getCmp(prototype.id + '-txtBANDOC').getValue();
         me.bean.IN_REFER = Ext.getCmp(prototype.id + '-txtREFER').getValue();
         me.bean.IN_CODPRO = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
+        me.bean.IN_IDCONT = Ext.getCmp(prototype.id + '-txtIDCONT').getValue();
+        me.bean.IN_HEADER = Ext.getCmp(prototype.id + '-txtHeaderText').getValue();
+        me.bean.IN_PROVISION = Ext.getCmp(prototype.id + '-txtAccprov').getValue();
 //        me.bean.IN_CODPRO = "CO";
 //        me.bean.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
 //        me.bean.IN_SAGENT = Ext.getCmp(prototype.id + '-txtAGENCY').getValue();
@@ -3577,7 +3611,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 
                                 Ext.getCmp(prototype.id + '-gridSumaryMain').setStore(storeTree);
 
-                                Ext.getCmp(prototype.id + '-F1_TOTAL_GLOBAL').setText(Ext.util.Format.number(F1_TOTAL_GLOBAL, '0'));
+                                Ext.getCmp(prototype.id + '-F1_TOTAL_GLOBAL').setText(Ext.util.Format.number(F1_TOTAL_GLOBAL, '0,000'));
                                 Ext.getCmp(prototype.id + '-F1_TOTAL_STVAL3_GLOBAL').setText(Ext.util.Format.number(F1_TOTAL_STVAL3_GLOBAL, '0,000'));
                                 Ext.getCmp(prototype.id + '-F1_TOTAL_STVAL1_GLOBAL').setText(Ext.util.Format.number(F1_TOTAL_STVAL1_GLOBAL, '0,000'));
                                 Ext.getCmp(prototype.id + '-F1_TOTAL_TAXES_GLOBAL').setText(Ext.util.Format.number(F1_TOTAL_TAXES_GLOBAL, '0,000'));
@@ -3585,12 +3619,12 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                 Ext.getCmp(prototype.id + '-F1_PERCENT_GLOBAL').setText(F1_PERCENT_GLOBAL.toFixed(2) + '%');
                                  Ext.getCmp(prototype.id + '-F1_TOTAL_PENDING_TO_F2_GLOBAL').setText(Ext.util.Format.number(F1_TOTAL_PENDING_TO_F2_GLOBAL, '0,000'));
                                 
-                                Ext.getCmp(prototype.id + '-F2_TOTAL_GLOBAL').setText(Ext.util.Format.number(F2_F1_TOTAL_COMPLETED_GLOBAL, '0'));
+                                Ext.getCmp(prototype.id + '-F2_TOTAL_GLOBAL').setText(Ext.util.Format.number(F2_F1_TOTAL_COMPLETED_GLOBAL, '0,000'));
                                 Ext.getCmp(prototype.id + '-F2_TOTAL_STVAL3_GLOBAL').setText(Ext.util.Format.number(F2_TOTAL_PENDING_OVER50_GLOBAL, '0,000'));
                                 Ext.getCmp(prototype.id + '-F2_TOTAL_STVAL1_GLOBAL').setText(Ext.util.Format.number(F2_TOTAL_MATCH_OVER50_GLOBAL, '0,000'));
                                 Ext.getCmp(prototype.id + '-F2_PERCENT_GLOBAL').setText(F1_PERCENT_GLOBAL_F2.toFixed(2) + '%');
                                 
-                                Ext.getCmp(prototype.id + '-SENT_TOTAL_GLOBAL').setText(Ext.util.Format.number(F3_F2_TOTAL_COMPLETED_GLOBAL, '0'));
+                                Ext.getCmp(prototype.id + '-SENT_TOTAL_GLOBAL').setText(Ext.util.Format.number(F3_F2_TOTAL_COMPLETED_GLOBAL, '0,000'));
                                 Ext.getCmp(prototype.id + '-SENT_TOTAL_STVAL3_GLOBAL').setText(Ext.util.Format.number(F3_TOTAL_WO_ACC_GLOBAL, '0,000'));
                                 Ext.getCmp(prototype.id + '-SENT_TOTAL_STVAL1_GLOBAL').setText(Ext.util.Format.number(F3_TOTAL_COMPLETED_GLOBAL, '0,000'));
                                 Ext.getCmp(prototype.id + '-SENT_PERCENT_GLOBAL').setText(F1_PERCENT_GLOBAL_F3.toFixed(2) + '%');
@@ -3769,6 +3803,51 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             });
         global.clear();
         this.getPaggin();
+        
+        var storeGridDatasPending = Ext.create('Ext.Praxis.store.payments.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchSumaryMainPendingGraf'
+                }, listeners: {
+                    beforeload: function (obj) {
+                        obj.proxy.extraParams = searchParams;
+                    },
+                    load: function (obj) {
+                            if (obj.data.length === 0) return;
+
+                            let lstData = obj.data.items.map(v => v.data);
+                            let dataRoot = { text: '.', expanded: true, children: [] };
+
+                            Ext.Array.each(lstData, function (value) {
+                                dataRoot.children.push({
+                                    CERROR: value.CERROR,
+                                    DESCRIPTION_CERROR: value.DESCRIPTION_CERROR,
+                                    F1_TOTAL_STVAL3: value.F1_TOTAL_STVAL3,
+                                    F2_TOTAL_PENDING_OVER50: value.F2_TOTAL_PENDING_OVER50,
+                                    F3_TOTAL_PENDING_SENT: value.F3_TOTAL_PENDING_SENT,
+                                    leaf: true
+                                });
+                            });
+
+                            let storeTree = Ext.create('Ext.data.TreeStore', { root: dataRoot });
+
+                            // gráfico
+                            let chartData = lstData.map(v => ({
+                                strDescription: v.DESCRIPTION_CERROR,
+                                QUANTITY_OF_DEPOSITS: v.F1_TOTAL_STVAL3
+                            }));
+
+                            if (chartData.length === 0) {
+                                chartData.push({ strDescription: 'Not found', QUANTITY: 1 });
+                            }
+                            
+                            console.log(chartData,'chartData')
+
+                            let storeGraf3 = Ext.create('Ext.data.Store', { data: chartData });
+                            Ext.getCmp(prototype.id + '-displayF1').bindStore(storeGraf3);
+                        }
+
+                }
+            });
 
     },
     checkAndProceed: function (cantidad, label) {
@@ -3790,6 +3869,9 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         me.paramsDetail.IN_BANDOC = Ext.getCmp(prototype.id + '-txtBANDOC').getValue();
         me.paramsDetail.IN_REFER = Ext.getCmp(prototype.id + '-txtREFER').getValue();
         me.paramsDetail.IN_CODPRO = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
+        me.paramsDetail.IN_IDCONT = Ext.getCmp(prototype.id + '-txtIDCONT').getValue();
+        me.paramsDetail.IN_HEADER = Ext.getCmp(prototype.id + '-txtHeaderText').getValue();
+        me.paramsDetail.IN_PROVISION = Ext.getCmp(prototype.id + '-txtAccprov').getValue();
 //        me.paramsDetail.IN_CODPRO = "CO";
         
         console.log(data,'data')
@@ -3808,7 +3890,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                     IN_PENDING_F2: "",
                     IN_WSALES: "",
                     IN_PENDING_ACC: "",
-                    IN_PENDING_SENT: ""
+                    IN_PENDING_SENT: "",
+                    IN_SENT: ""
                 };
                 break;
             }
@@ -3825,7 +3908,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                     IN_PENDING_F2: "",
                     IN_WSALES: "",
                     IN_PENDING_ACC: "",
-                    IN_PENDING_SENT: ""
+                    IN_PENDING_SENT: "",
+                    IN_SENT: ""
                 };
                 break;
             }
@@ -3841,7 +3925,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                     IN_PENDING_F2: "",
                     IN_WSALES: "",
                     IN_PENDING_ACC: "",
-                    IN_PENDING_SENT: ""
+                    IN_PENDING_SENT: "",
+                    IN_SENT: ""
                 };
                 break;
             }
@@ -3857,7 +3942,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                     IN_PENDING_F2: "1",
                     IN_WSALES: "",
                     IN_PENDING_ACC: "",
-                    IN_PENDING_SENT: ""
+                    IN_PENDING_SENT: "",
+                    IN_SENT: ""
                 };
                 break;
             }
@@ -3873,7 +3959,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                     IN_PENDING_F2: "",
                     IN_WSALES: "1",
                     IN_PENDING_ACC: "",
-                    IN_PENDING_SENT: ""
+                    IN_PENDING_SENT: "",
+                    IN_SENT: ""
                 };
                 break;
             }
@@ -3889,7 +3976,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                     IN_PENDING_F2: "",
                     IN_WSALES: "",
                     IN_PENDING_ACC: "1",
-                    IN_PENDING_SENT: ""
+                    IN_PENDING_SENT: "",
+                    IN_SENT: ""
                 };
                 break;
             }
@@ -3905,7 +3993,25 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                     IN_PENDING_F2: "",
                     IN_WSALES: "",
                     IN_PENDING_ACC: "",
-                    IN_PENDING_SENT: "1"
+                    IN_PENDING_SENT: "1",
+                    IN_SENT: ""
+                };
+                break;
+            }
+            
+            case "IN_SENT": {
+                const cantidad = data.F3_TOTAL_PENDING_SENT;
+                if (!me.checkAndProceed(cantidad, 'Send')) return;
+               me.paramsDetail = {
+                    ...me.paramsDetail,
+                    IN_WSETT: "",
+                    IN_TAXES: "",
+                    IN_ERROR: "",
+                    IN_PENDING_F2: "",
+                    IN_WSALES: "",
+                    IN_PENDING_ACC: "",
+                    IN_PENDING_SENT: "",
+                    IN_SENT: "1"
                 };
                 break;
             }
@@ -3983,5 +4089,169 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
     searchOption: function (e, eOpts) {
         if (eOpts.getKey() !== 13) return false;
         this.fetchBandocSales();
-    }
+    },
+    onLoadClick: function () {
+        var fileField = Ext.getCmp(prototype.id + '-file');
+        var fileValue = fileField.getValue();
+
+        if (!fileValue) {
+            Ext.Msg.alert('Validation', 'Please select a TXT file before loading.');
+            return;
+        }
+
+        var msjPregunta = 'Sure to load file?';
+
+        Ext.MessageBox.show({
+            title: 'Load Merchants',
+            msg: msjPregunta,
+            buttons: Ext.MessageBox.OKCANCEL,
+            icon: Ext.MessageBox.WARNING,
+            fn: function (btn) {
+                if (btn === 'ok') {
+                    me.onFileLoad();
+                }
+            }
+        });
+    },
+    onFileLoad: function () {
+        let beanValidation = {};
+        let value = "U";
+        beanValidation.OPTION = value;
+        console.log(beanValidation.OPTION);
+        var file = Ext.getCmp(prototype.id + '-file').getValue();
+        let beanString = JSON.stringify(beanValidation);
+
+        var form = Ext.getCmp(prototype.id + '-formMerchant').getForm();
+        
+        console.log(beanString,'beanString')
+
+        
+        form.submit({
+            url: prototype.url + '/setUploadInvoice',
+            waitMsg: 'Uploading your file...',
+            params: {fileName: file, beanString: beanString},
+            success: function (f, o) {
+                var res = Ext.decode(o.response.responseText);
+                var msjResult = res.msjResult || 'No message returned.';
+                global.Msg({msg: msjResult.replace(/\n/g, '<br>')}); // 👈 para mostrar saltos de línea
+//                Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+            },
+            failure: function (response) {
+                console.log('server-side failure with status code ' + response.status);
+            }
+        });
+
+
+    },
+    btnAdd_click: function () {
+        this.showUploadPopup();
+    },
+    showUploadPopup: function () {
+        let win = Ext.create('Ext.window.Window', {
+            title: 'Mark Reviewed',
+            modal: true,
+            width: 450,
+            layout: 'fit',
+            bodyPadding: 10,
+            items: [
+                {
+                    xtype: 'form',
+                    border: false,
+                    id: prototype.id + '-popupMerchant',
+                    bodyStyle: 'background: transparent',
+                    layout: 'column',
+                    defaults: {
+                        fieldStyle: 'text-align: center;',
+                        anchor: '100%',
+                        hiddenLabel: false,
+                        labelAlign: 'right',
+                        xtype: 'textfield',
+                        hidden: false,
+                        selectOnFocus: true
+                    },
+                    items: [
+                        {
+                            xtype: 'form',
+                            id: prototype.id + '-popupFormMerchant',
+                            border: false,
+                            bodyStyle: 'background-color: #E3EAF9;',
+                            items: [{
+                                xtype: 'filefield',
+                                id: prototype.id + '-popupFile',
+                                name: 'txtfile',
+                                allowBlank: true,
+                                accept: '.xlsx, .xls',
+                                labelWidth: 85,
+                                width: 300,
+                                buttonAlign: 'left',
+                                buttonText: 'Select excel...',
+                                regex: /(.)+(\.txt)$/i,
+                                regexText: 'Only TXT format is accepted',
+                                buttonConfig: {
+                                    text: '<strong>Select</strong>',
+                                    width: 80,
+                                }
+                            }]
+                        },
+                        {
+                            xtype: 'button',
+                            margin: '1 0 0 15',
+                            html: '<strong style="color:white;">Load</strong>',
+                            style: 'background:#24678D;color:white;font-weight:bold;',
+                            width: 100,
+                            border: false,
+                            handler: () => this.onLoadClickPopup()
+                        }
+                    ]
+                }
+            ]
+        });
+
+        win.show();
+    },
+    onLoadClickPopup: function () {
+        var me = this;
+        var fileField = Ext.getCmp(prototype.id + '-popupFile');
+        var fileValue = fileField.getValue();
+
+        if (!fileValue) {
+            Ext.Msg.alert('Validation', 'Please select a TXT file before loading.');
+            return;
+        }
+
+        Ext.MessageBox.show({
+            title: 'Load Merchants',
+            msg: 'Sure to load file?',
+            buttons: Ext.MessageBox.OKCANCEL,
+            icon: Ext.MessageBox.WARNING,
+            fn: function (btn) {
+                if (btn === 'ok') {
+                    me.onFileLoadPopup();
+                }
+            }
+        });
+    },
+    onFileLoadPopup: function () {
+        let beanValidation = { OPTION: 'U' };
+        let file = Ext.getCmp(prototype.id + '-popupFile').getValue();
+        let form = Ext.getCmp(prototype.id + '-popupFormMerchant').getForm();
+
+        form.submit({
+            url: prototype.url + '/setUploadInvoice',
+            waitMsg: 'Uploading your file...',
+            params: {
+                fileName: file,
+                beanString: JSON.stringify(beanValidation)
+            },
+            success: function (f, o) {
+                var res = Ext.decode(o.response.responseText);
+                var msjResult = res.msjResult || 'No message returned.';
+                global.Msg({ msg: msjResult.replace(/\n/g, '<br>') });
+            },
+            failure: function (response) {
+                console.log('server failure ' + response.status);
+            }
+        });
+    },
+
 });

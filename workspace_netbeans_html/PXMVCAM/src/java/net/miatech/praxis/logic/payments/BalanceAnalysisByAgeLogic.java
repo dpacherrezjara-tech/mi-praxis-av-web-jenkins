@@ -7,6 +7,7 @@ package net.miatech.praxis.logic.payments;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.praxis.dao.payments.BalanceAnalysisByAgeDAO;
 import net.miatech.praxis.payment.filter.A2290Filter;
@@ -138,7 +139,19 @@ public class BalanceAnalysisByAgeLogic {
         return balanceAnalysisByAge.getListsearchDashboardMDP(filter);
     }
     
+    public List<A2356Filter> getListsearchSumaryMainPendingGraf(A2356Filter filter) throws SQLException, Exception {
+        return balanceAnalysisByAge.getListsearchSumaryMainPendingGraf(filter);
+    }
+    
     public List<A2356Filter> load_MPS400(A2356Filter filter) throws SQLException, Exception {
         return balanceAnalysisByAge.load_MPS400(filter);
+    }
+    
+    public Map<String, Integer> loadMPS351(List<A2356Filter> lst,int contador,String option) throws SQLException, Exception {
+        return balanceAnalysisByAge.loadMPS351(lst,contador,option);
+    }
+    
+    public String validateErrorCodes(List<A2356Filter> lstData) throws Exception {
+        return balanceAnalysisByAge.validateErrorCodes(lstData);
     }
 }

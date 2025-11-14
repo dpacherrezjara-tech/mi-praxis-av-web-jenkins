@@ -10,7 +10,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
             id: prototype.id + '-contFilter',
             border: false,
             bodyStyle: 'background: transparent',
-            margin: '8px 0 12px 15px',
+            margin: '12px 0 8px 15px',
             layout: 'column',
             defaults: {
                 fieldStyle: 'text-align: center;',
@@ -38,7 +38,8 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                     caseSensitive: false,
                     autoSelect: true,
                     editable: true,
-                    width: 150,
+                    disabled:true,
+                    width: 140,
                     labelWidth: 55,
                     value: "",
                     typeAhead: true,
@@ -50,10 +51,10 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                 {
                     fieldLabel: 'Select by',
                     xtype: 'combo',
-                    width: 200,
+                    width: 170,
                     labelWidth: 55,
                     labelStyle: 'text-align: left; font-size: 12px;',
-                    fieldStyle: 'text-align: left; font-size: 12px;',
+                    fieldStyle: 'text-align: center; font-size: 12px;',
                     id: prototype.id + '-cmbSelectBy',
                     queryMode: 'local',
                     allowBlank: false,
@@ -216,6 +217,29 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                     margin: '0 10 0 0' 
                 },
                  //</editor-fold>
+                {
+                    xtype: 'combo',
+                    fieldLabel: 'Processor',
+                    id: prototype.id + '-cmbProcessor',
+                    labelStyle: 'text-align: left; font-size: 12px;',
+                    fieldStyle: 'text-align: left; font-size: 12px;',
+                    queryMode: 'local',
+                    allowBlank: false,
+                    forceSelection: true,
+                    selectOnFocus: true,
+                    caseSensitive: false,
+                    autoSelect: true,
+                    editable: true,
+                    width: 180,
+                    labelWidth: 55,
+                    typeAhead: true,
+                    valueField: 'A4451KEY2',
+                    displayField: 'A4451KEY3',
+                    listConfig: {minWidth: 130},
+                    enableKeyEvents: true,
+                    triggerAction: 'all',
+                    margin: '0 10 0 0' 
+                },
                  {
                     fieldLabel: 'Bandoc',
                     xtype: 'textfield',
@@ -237,7 +261,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                     fieldLabel: 'Refer',
                     xtype: 'textfield',
                     id: prototype.id + '-txtREFER',
-                    labelWidth: 30,
+                    labelWidth: 35,
                     labelStyle: 'text-align: left; font-size: 12px;',
                     fieldStyle: 'text-align: center; font-size: 12px;',
                     enforceMaxLength: true,
@@ -251,28 +275,129 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                     }
                 },
                 {
-                        xtype: 'combo',
-                        fieldLabel: 'Processor',
-                        id: prototype.id + '-cmbProcessor',
-                        labelStyle: 'text-align: left; font-size: 12px;',
-                        fieldStyle: 'text-align: left; font-size: 12px;',
-                        queryMode: 'local',
-                        allowBlank: false,
-                        forceSelection: true,
-                        selectOnFocus: true,
-                        caseSensitive: false,
-                        autoSelect: true,
-                        editable: true,
-                        width: 180,
-                        labelWidth: 60,
-                        typeAhead: true,
-                        valueField: 'A4451KEY2',
-                        displayField: 'A4451KEY3',
-                        listConfig: {minWidth: 130},
-                        enableKeyEvents: true,
-                        triggerAction: 'all',
-                        margin: '0 10 0 0' 
-                    },
+                    fieldLabel: 'ID Cont',
+                    xtype: 'textfield',
+                    id: prototype.id + '-txtIDCONT',
+                    labelWidth: 48,
+                    labelStyle: 'text-align: left; font-size: 12px;',
+                    fieldStyle: 'text-align: center; font-size: 12px;',
+                    enforceMaxLength: true,
+                   maskRe: /[0-9A-Za-z]/,
+                    maxLength: 25,
+                    width: 180,
+                    enableKeyEvents: true,
+                    margin: '0 10 0 0',
+                    listeners: {
+                        keypress: 'eventKey'
+                    }
+                },
+                {
+                    fieldLabel: 'Header',
+                    xtype: 'textfield',
+                    id: prototype.id + '-txtHeaderText',
+                    labelWidth: 40,
+                    labelStyle: 'text-align: left; font-size: 12px;',
+                    fieldStyle: 'text-align: center; font-size: 12px;',
+                    enforceMaxLength: true,
+                   maskRe: /[0-9A-Za-z]/,
+                    maxLength: 20,
+                    width: 180,
+                    enableKeyEvents: true,
+                    margin: '0 10 0 0',
+                    listeners: {
+                        keypress: 'eventKey'
+                    }
+                },
+                {
+                    fieldLabel: 'Header',
+                    xtype: 'textfield',
+                    id: prototype.id + '-txtHeaderText',
+                    labelWidth: 40,
+                    labelStyle: 'text-align: left; font-size: 12px;',
+                    fieldStyle: 'text-align: center; font-size: 12px;',
+                    enforceMaxLength: true,
+                   maskRe: /[0-9A-Za-z]/,
+                    maxLength: 20,
+                    width: 180,
+                    enableKeyEvents: true,
+                    margin: '0 10 0 0',
+                    listeners: {
+                        keypress: 'eventKey'
+                    }
+                },
+                {
+                    fieldLabel: 'Acc Prov',
+                    xtype: 'textfield',
+                    id: prototype.id + '-txtAccprov',
+                    labelWidth: 50,
+                    labelStyle: 'text-align: left; font-size: 12px;',
+                    fieldStyle: 'text-align: center; font-size: 12px;',
+                    enforceMaxLength: true,
+                   maskRe: /[0-9A-Za-z]/,
+                    maxLength: 6,
+                    width: 130,
+                    enableKeyEvents: true,
+                    margin: '0 10 0 0',
+                    listeners: {
+                        keypress: 'eventKey'
+                    }
+                },
+//                {
+//                    xtype: 'form',
+//                    border: false,
+//                    id: prototype.id + '-cargaMerchant',
+//                    bodyStyle: 'background: transparent',
+//                    layout: 'column',
+//                     margin: '0 10 0 0' ,
+//                    defaults: {
+//                        fieldStyle: 'text-align: center;',
+//                        anchor: '100%',
+//                        hiddenLabel: false,
+//                        labelAlign: 'right',
+//                        xtype: 'textfield',
+//                        hidden: false,
+//                        selectOnFocus: true
+//                    },
+//                    items: [
+//                        {
+//                            xtype: 'form',
+//                            id: prototype.id + '-formMerchant',
+//                            border: false,
+//                            bodyStyle: 'background-color: #E3EAF9;',
+//                            items: [{
+//                                    xtype: 'filefield',
+//                                    id: prototype.id + '-file',
+//                                    name: 'txtfile',
+//                                    allowBlank: true,
+//                                    accept: '.xlsx, .xls',
+//                                    labelWidth: 85,
+//                                    width: 200,
+//                                    buttonAlign: 'left',
+//                                    buttonText: 'Select excel...',
+//                                    regex: /(.)+(\.txt)$/i,
+//                                    regexText: 'Only TXT format is accepted',
+//                                    buttonConfig: {
+//                                        text: '<strong>Select</strong>',
+//                                        width: 80,
+//                                    },
+//                                    listeners: {
+//                                        //change: 'onUploadChange'
+//                                    }
+//                                }]
+//                        },
+//                        {
+//                            xtype: 'button',
+//                            id: prototype.id + '-btn_CargaError',
+//                            margin: '1 0 0 0',
+//                            html: '<strong style="color:white;">Mark Reviewed</strong>',
+//                            style: 'background:#24678D;color:white;font-weight:bold;',
+//                            border: false,
+//                            listeners: {
+//                                click: 'onLoadClick'
+//                            }
+//                        },
+//                    ]
+//                },
                 {
                     xtype: 'combo',
                     id: prototype.id + '-cmbCountry',

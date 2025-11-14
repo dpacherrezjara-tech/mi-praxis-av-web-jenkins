@@ -24,6 +24,9 @@ public class A2356 {
         public String CODEBANK  = ""; 
         public String NROPOLIZ  = ""; 
         public String SCURRENCY  = "";    
+        public String DAYS_PENDING  = "";    
+        public String CERROR  = "";    
+        public String DESCRIPTION_CERROR  = "";    
         public String SCOUNTRY  = "";       
         public String SOCIETYL  = "";       
         public String CODCLIT  = ""; 
