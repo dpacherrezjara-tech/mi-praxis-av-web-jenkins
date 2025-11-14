@@ -11,7 +11,7 @@ import java.util.List;
 import net.miatech.praxis.classes.CurrentSession;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.entity.ContentType;
-//import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,18 +24,12 @@ import org.springframework.web.multipart.MultipartFile;
 @Scope("request")
 public class SpringWS {
 
-    //@Autowired
+    @Autowired
     private CurrentSession cs;
-    
-    private String configSpring;
-
-    public SpringWS(CurrentSession cs) {
-        this.cs = cs;
-        String environment = this.cs.getPropertySession().get("DB_SERVER_DEFAULT_TYPE").toString();
-        configSpring = "RUTA_REST_"+ environment + "_SPRING";
-    }
 
     public Boolean postAsync(String body, String endpoint) throws Exception {
+        String environment = this.cs.getPropertySession().get("DB_SERVER_DEFAULT_TYPE").toString();
+        String configSpring = "RUTA_REST_"+ environment + "_SPRING";
         String url = cs.getPropertySession().get(configSpring).toString();
         Unirest.setTimeouts(600000, 300000);
         HttpResponse<JsonNode> response = Unirest.post(url + endpoint)
@@ -52,6 +46,8 @@ public class SpringWS {
     }
 
     public String postFileAsync(MultipartFile file, String body, String endpoint) throws Exception {
+        String environment = this.cs.getPropertySession().get("DB_SERVER_DEFAULT_TYPE").toString();
+        String configSpring = "RUTA_REST_"+ environment + "_SPRING";
         String url = cs.getPropertySession().get(configSpring).toString();
         Unirest.setTimeouts(600000, 300000);
         HttpResponse<String> response = Unirest.post(url + endpoint)
@@ -67,6 +63,8 @@ public class SpringWS {
     }
 
     public Boolean postFilesAsync(String body, List<MultipartFile> files, String endpoint) throws Exception {
+        String environment = this.cs.getPropertySession().get("DB_SERVER_DEFAULT_TYPE").toString();
+        String configSpring = "RUTA_REST_"+ environment + "_SPRING";
         String url = cs.getPropertySession().get(configSpring).toString();
         Unirest.setTimeouts(600000, 300000);
         HttpRequestWithBody request = Unirest.post(url + endpoint);
@@ -92,6 +90,8 @@ public class SpringWS {
     }
 
     public byte[] getFile(String body, String endpoint) throws Exception {
+        String environment = this.cs.getPropertySession().get("DB_SERVER_DEFAULT_TYPE").toString();
+        String configSpring = "RUTA_REST_"+ environment + "_SPRING";
         String url = cs.getPropertySession().get(configSpring).toString();
         Unirest.setTimeouts(600000, 300000);
         HttpResponse<InputStream> response = Unirest.post(url + endpoint)
