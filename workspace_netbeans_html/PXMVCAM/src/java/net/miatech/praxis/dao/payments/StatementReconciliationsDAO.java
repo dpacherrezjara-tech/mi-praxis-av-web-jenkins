@@ -1454,40 +1454,34 @@ public class StatementReconciliationsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL PRAXISMP.MPS305_EECCFASE1 (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.MPS393 (?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(12, Types.INTEGER);
-            cstmt.registerOutParameter(13, Types.INTEGER);
-            cstmt.registerOutParameter(14, Types.INTEGER);
-            cstmt.registerOutParameter(15, Types.INTEGER);
+            cstmt.registerOutParameter(6, Types.INTEGER);
+            cstmt.registerOutParameter(7, Types.INTEGER);
+            cstmt.registerOutParameter(8, Types.INTEGER);
+            cstmt.registerOutParameter(9, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_ADATE);
-            cstmt.setString(3, filter.IN_DATE);
-            cstmt.setString(4, filter.IN_SDATE);
-            cstmt.setString(5, filter.IN_CBANK);
-            cstmt.setString(6, filter.IN_SCURRENCY);
-            cstmt.setString(7, filter.IN_STVAL);
-            cstmt.setString(8, filter.IN_TTRAN.trim());
-            cstmt.setString(9, filter.IN_COUNTRY.trim());
-            cstmt.setString(10, filter.IN_COREP.trim());
-            cstmt.setString(11, filter.IN_EXT.trim());
+            cstmt.setString(3, filter.IN_SCURRENCY);
+            cstmt.setString(4, filter.IN_STVAL);
+            cstmt.setString(5, filter.IN_COUNTRY.trim());
 
-            cstmt.setInt(12, filter.page.PAGNUM);
-            cstmt.setInt(13, filter.page.PAGROW);
-            cstmt.setInt(14, filter.page.TOTPAG);
-            cstmt.setInt(15, filter.page.TOTROW);
+            cstmt.setInt(6, filter.page.PAGNUM);
+            cstmt.setInt(7, filter.page.PAGROW);
+            cstmt.setInt(8, filter.page.TOTPAG);
+            cstmt.setInt(9, filter.page.TOTROW);
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(12);
-            filter.page.PAGROW = cstmt.getInt(13);
-            filter.page.TOTPAG = cstmt.getInt(14);
-            filter.page.TOTROW = cstmt.getInt(15);
+            filter.page.PAGNUM = cstmt.getInt(6);
+            filter.page.PAGROW = cstmt.getInt(7);
+            filter.page.TOTPAG = cstmt.getInt(8);
+            filter.page.TOTROW = cstmt.getInt(9);
 
             rst = cstmt.getResultSet();
 
@@ -2656,7 +2650,7 @@ public class StatementReconciliationsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL PRAXISMP.SQP005CASH(?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.MPS399(?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -2665,14 +2659,10 @@ public class StatementReconciliationsDAO {
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_VALDATE.trim());
-            cstmt.setString(3, filter.IN_CODEBANK.trim());
-            cstmt.setString(4, filter.IN_MERCHAND.trim());
-            cstmt.setString(5, filter.IN_BANDOC.trim());
-            cstmt.setString(6, filter.IN_STVAL.trim());
-            cstmt.setString(7, filter.IN_RED.trim());
-            cstmt.setDouble(8, filter.IN_NETO);
-            cstmt.setString(9, filter.IN_DATECI.trim());
-            cstmt.setString(10, filter.IN_TRANCI.trim());
+            cstmt.setString(3, filter.IN_BANDOC.trim());
+            cstmt.setString(4, filter.IN_STVAL.trim());
+            cstmt.setString(5, filter.IN_DATECI.trim());
+            cstmt.setString(6, filter.IN_TRANCI.trim());
             
             cstmt.execute();
 
@@ -4664,7 +4654,7 @@ public class StatementReconciliationsDAO {
     filter.strYearTo = Functions.fillZeros(4, filter.strYearTo).replace("00", "");
     filter.strMonthTo = Functions.fillZeros(2, filter.strMonthTo).replace("00", "");
 
-    String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS305_SUMMARY(?,?,?,?,?,?,?,?,?)}";
+    String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS398(?,?,?,?,?,?,?,?,?)}";
 
     Connection cnx = null;
     CallableStatement cstmt = null;
