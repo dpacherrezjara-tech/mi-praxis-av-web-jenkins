@@ -11,7 +11,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,13 +43,18 @@ import net.miatech.praxis.payment.filter.MPF100Filter;
 import net.miatech.utils.Functions;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
@@ -3872,7 +3882,7 @@ public class StatementReconciliationsController extends BaseController {
     @RequestMapping(value = "/searchBean_LiquiCash")
     public @ResponseBody
     String searchBean_LiquiCash(ModelMap map, HttpServletRequest request) {
-        System.out.println("-------------- BankStatementReconciliation : searchBean_DETAIL_CO-------------");
+        System.out.println("-------------- BankStatementReconciliation : searchBean_LiquiCash-------------");
         try {
             Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
@@ -4536,5 +4546,378 @@ public class StatementReconciliationsController extends BaseController {
         }
         return lst;
     }
+    @RequestMapping(value = "getCSV")
+    public @ResponseBody void getCSV(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        System.out.println("Report : getCSV");
+
+        String country = request.getParameter("country");
+        String date = request.getParameter("date");
+
+        if (country == null || date == null || country.isEmpty() || date.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("Parámetros 'country' y 'date' son obligatorios");
+            return;
+        }
+
+        // Carpeta base donde buscar los archivos CSV
+        Path folderPath = Paths.get("\\\\10.0.0.87\\av\\Efectivo\\prod\\process\\BSP\\CO\\2025");
+
+        System.out.println("Buscando archivos para country=" + country + " y date=" + date);
+
+        // Buscar el archivo que cumpla con el patrón: "CO*20250731*.csv"
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(folderPath, "*.csv")) {
+            Path matchedFile = null;
+            for (Path path : stream) {
+                String fileName = path.getFileName().toString();
+                if (fileName.startsWith(country) && fileName.contains(date)) {
+                    matchedFile = path;
+                    break;
+                }
+            }
+
+            if (matchedFile == null) {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                response.getWriter().write("No se encontró ningún archivo para " + country + " y fecha " + date);
+                return;
+            }
+
+            System.out.println("Archivo encontrado: " + matchedFile);
+
+            // Configurar cabeceras
+            response.setContentType("text/csv");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + matchedFile.getFileName().toString() + "\"");
+
+            try (FileInputStream fis = new FileInputStream(matchedFile.toFile());
+                 OutputStream out = response.getOutputStream()) {
+
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+
+                while ((bytesRead = fis.read(buffer)) != -1) {
+                    out.write(buffer, 0, bytesRead);
+                }
+
+                out.flush();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("Error al buscar o descargar el archivo CSV");
+        }
+    }
+    
+    // EXCEL DE CASH 
+    
+    @RequestMapping(value = "getXLSXDetCashMain")
+    public @ResponseBody void getXLSXDetCashMain(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("Report : getXLSXDetCashMain");
+        String fileNameDownload = String.format("Control_Estados_de_Cuenta_%s.xlsx", Functions.getFechaActual());
+
+        try {
+            // --- Crear archivo temporal y workbook ---
+            File file = File.createTempFile("CashMain_", ".xlsx");
+            Workbook workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Resumen Cash");
+
+            // --- Obtener datos ---
+            List<MPF100Filter> listaData = this.getListCash(request, true);
+            System.out.println("Tamaño de lista devuelta : " + listaData.size());
+
+            // --- Estilos ---
+            CellStyle headerStyle = workbook.createCellStyle();
+            Font headerFont = workbook.createFont();
+            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD); // En POI 3.x se usa setBoldweight
+            headerStyle.setFont(headerFont);
+
+            // Alineación centrada (versión antigua usa short)
+            headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+
+            // Fondo gris y bordes
+            headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+            headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            headerStyle.setBorderBottom(CellStyle.BORDER_THIN);
+            headerStyle.setBorderTop(CellStyle.BORDER_THIN);
+            headerStyle.setBorderLeft(CellStyle.BORDER_THIN);
+            headerStyle.setBorderRight(CellStyle.BORDER_THIN);
+
+            // ---- Estilo de datos ----
+            CellStyle dataStyle = workbook.createCellStyle();
+            dataStyle.setBorderBottom(CellStyle.BORDER_THIN);
+            dataStyle.setBorderTop(CellStyle.BORDER_THIN);
+            dataStyle.setBorderLeft(CellStyle.BORDER_THIN);
+            dataStyle.setBorderRight(CellStyle.BORDER_THIN);
+
+            // --- Crear cabeceras ---
+            String[] headers = {
+                "Date", "Automatic", "Match %", "Manual",
+                "Statement w/o Settlement", "Statement Total",
+                "Payment Auto", "Payment Match %", "Payment Manual",
+                "Settlement w/o Sales", "Settlement Total",
+                "Sales Direct", "Total"
+            };
+
+            Row headerRow = sheet.createRow(0);
+            for (int i = 0; i < headers.length; i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(headers[i]);
+                cell.setCellStyle(headerStyle);
+            }
+
+            // --- Llenar datos ---
+            int rowNum = 1;
+
+            // --- Variables acumuladoras ---
+            long totalQMATCH = 0;
+            double totalQMATCHPercent = 0;
+            long totalQMANUAL = 0;
+            long totalQPEND = 0;
+            long totalTOTALE = 0;
+            long totalQTMATCH = 0;
+            double totalQTMATCHPercent = 0;
+            long totalQTMANUAL = 0;
+            long totalQTPEND = 0;
+            long totalQSALES = 0;
+            long totalQSALESDIRECT = 0;
+            long totalTOTALL = 0;
+
+            // --- Llenar datos fila por fila ---
+            for (MPF100Filter row : listaData) {
+                Row excelRow = sheet.createRow(rowNum++);
+
+                int col = 0;
+                excelRow.createCell(col++).setCellValue(row.strFormatDate != null ? row.strFormatDate : "");
+                excelRow.createCell(col++).setCellValue(row.lngQMATCH);
+                excelRow.createCell(col++).setCellValue(row.lngQMATCHPercent);
+                excelRow.createCell(col++).setCellValue(row.lngQMANUAL);
+                excelRow.createCell(col++).setCellValue(row.lngQPEND);
+                excelRow.createCell(col++).setCellValue(row.lngTOTALE);
+                excelRow.createCell(col++).setCellValue(row.lngQTMATCH);
+                excelRow.createCell(col++).setCellValue(row.lngQTMATCHPercent);
+                excelRow.createCell(col++).setCellValue(row.lngQTMANUAL);
+                excelRow.createCell(col++).setCellValue(row.lngQTPEND);
+                excelRow.createCell(col++).setCellValue(row.lngQSALES);
+                excelRow.createCell(col++).setCellValue(row.lngQSALESDIRECT);
+                excelRow.createCell(col++).setCellValue(row.lngTOTALL);
+
+                // Aplicar estilo
+                for (int j = 0; j < headers.length; j++) {
+                    excelRow.getCell(j).setCellStyle(dataStyle);
+                }
+
+                // Acumular totales (solo columnas numéricas)
+                totalQMATCH += row.lngQMATCH;
+                totalQMATCHPercent += row.lngQMATCHPercent;
+                totalQMANUAL += row.lngQMANUAL;
+                totalQPEND += row.lngQPEND;
+                totalTOTALE += row.lngTOTALE;
+                totalQTMATCH += row.lngQTMATCH;
+                totalQTMATCHPercent += row.lngQTMATCHPercent;
+                totalQTMANUAL += row.lngQTMANUAL;
+                totalQTPEND += row.lngQTPEND;
+                totalQSALES += row.lngQSALES;
+                totalQSALESDIRECT += row.lngQSALESDIRECT;
+                totalTOTALL += row.lngTOTALL;
+            }
+
+            // --- Crear fila de sumario ---
+            Row totalRow = sheet.createRow(rowNum++);
+            int c = 0;
+
+            // Estilo para la fila total
+            CellStyle totalStyle = workbook.createCellStyle();
+            Font totalFont = workbook.createFont();
+            totalFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            totalStyle.setFont(totalFont);
+            totalStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            totalStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            totalStyle.setBorderBottom(CellStyle.BORDER_THIN);
+            totalStyle.setBorderTop(CellStyle.BORDER_THIN);
+            totalStyle.setBorderLeft(CellStyle.BORDER_THIN);
+            totalStyle.setBorderRight(CellStyle.BORDER_THIN);
+
+            // Texto "Total"
+            Cell totalLabel = totalRow.createCell(c++);
+            totalLabel.setCellValue("Total");
+            totalLabel.setCellStyle(totalStyle);
+
+            // Llenar totales
+            totalRow.createCell(c++).setCellValue(totalQMATCH);
+            totalRow.createCell(c++).setCellValue(totalQMATCHPercent);
+            totalRow.createCell(c++).setCellValue(totalQMANUAL);
+            totalRow.createCell(c++).setCellValue(totalQPEND);
+            totalRow.createCell(c++).setCellValue(totalTOTALE);
+            totalRow.createCell(c++).setCellValue(totalQTMATCH);
+            totalRow.createCell(c++).setCellValue(totalQTMATCHPercent);
+            totalRow.createCell(c++).setCellValue(totalQTMANUAL);
+            totalRow.createCell(c++).setCellValue(totalQTPEND);
+            totalRow.createCell(c++).setCellValue(totalQSALES);
+            totalRow.createCell(c++).setCellValue(totalQSALESDIRECT);
+            totalRow.createCell(c++).setCellValue(totalTOTALL);
+
+            // Aplicar estilo a todas las celdas del total
+            for (int j = 0; j < headers.length; j++) {
+                if (totalRow.getCell(j) == null) {
+                    totalRow.createCell(j);
+                }
+                totalRow.getCell(j).setCellStyle(totalStyle);
+            }
+
+            // --- Escribir y enviar respuesta ---
+            FileOutputStream fos = new FileOutputStream(file);
+            workbook.write(fos);
+            fos.close();
+
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+
+            Files.copy(file.toPath(), response.getOutputStream());
+            response.getOutputStream().flush();
+
+            workbook.close();
+            file.delete();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SpringException(e);
+        }
+    }
+    @RequestMapping(value = "getXLSXDetCashMainExtract")
+    public @ResponseBody void getXLSXDetCashMainExtract(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("Report : getXLSXDetCashMainExtract");
+
+        String fileNameDownload = String.format("Detalle_Cash_Main_%s.xlsx", Functions.getFechaActual());
+
+        try {
+            // --- Crear archivo temporal y workbook ---
+            File file = File.createTempFile("DetCashMain_", ".xlsx");
+            Workbook workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Detalle Cash Main");
+
+            // --- Obtener datos ---
+            List<A2290Filter> listaData = this.getListDetLiquidCash(request, true);
+            System.out.println("Tamaño de lista devuelta : " + listaData.size());
+
+            // --- Estilos ---
+            CellStyle headerStyle = workbook.createCellStyle();
+            Font headerFont = workbook.createFont();
+            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD); // En POI 3.x se usa setBoldweight
+            headerStyle.setFont(headerFont);
+
+            // Alineación centrada (versión antigua usa short)
+            headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+
+            // Fondo gris y bordes
+            headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+            headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            headerStyle.setBorderBottom(CellStyle.BORDER_THIN);
+            headerStyle.setBorderTop(CellStyle.BORDER_THIN);
+            headerStyle.setBorderLeft(CellStyle.BORDER_THIN);
+            headerStyle.setBorderRight(CellStyle.BORDER_THIN);
+
+            // ---- Estilo de datos ----
+            CellStyle dataStyle = workbook.createCellStyle();
+            dataStyle.setBorderBottom(CellStyle.BORDER_THIN);
+            dataStyle.setBorderTop(CellStyle.BORDER_THIN);
+            dataStyle.setBorderLeft(CellStyle.BORDER_THIN);
+            dataStyle.setBorderRight(CellStyle.BORDER_THIN);
+
+            // --- Estilo para montos numéricos ---
+            CellStyle numberStyle = workbook.createCellStyle();
+            numberStyle.cloneStyleFrom(dataStyle);
+            DataFormat format = workbook.createDataFormat();
+            numberStyle.setDataFormat(format.getFormat("#,##0.00"));
+
+            // --- Crear cabeceras ---
+            String[] headers = {
+                "Country", "Doc. Type", "Status", "Merchant", 
+                "Doc SAP BANK", "Abono Date", "Currency", 
+                "Neto EECC", "Neto Settlement", "Source"
+            };
+
+            Row headerRow = sheet.createRow(0);
+            for (int i = 0; i < headers.length; i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(headers[i]);
+                cell.setCellStyle(headerStyle);
+            }
+
+            // --- Llenar datos ---
+            int rowNum = 1;
+            for (A2290Filter row : listaData) {
+                Row excelRow = sheet.createRow(rowNum++);
+                int col = 0;
+
+                excelRow.createCell(col++).setCellValue(row.DESC_SCOUNTRY);
+                String docType = "";
+                if ("S".equals(row.TDOC)) {
+                    docType = "Sales";
+                }  else {
+                    docType = row.TDOC != null ? row.TDOC : "";
+                }
+                excelRow.createCell(col++).setCellValue(docType);
+                String Stval = "";
+                if ("1".equals(row.STVAL)) {
+                    Stval = "Match";
+                }  else if ("3".equals(row.STVAL)) {
+                    Stval = "Pending";
+                } else if ("4".equals(row.STVAL)) {
+                    Stval = "Match Manual";
+                } else {
+                    docType = row.STVAL != null ? row.STVAL : "";
+                }
+                excelRow.createCell(col++).setCellValue(Stval);
+                excelRow.createCell(col++).setCellValue(row.MERCHAND);
+                excelRow.createCell(col++).setCellValue(row.BANDOC);
+                excelRow.createCell(col++).setCellValue(row.ADATE);
+                excelRow.createCell(col++).setCellValue(row.SCURRENCY);
+
+                Cell cellNetoEECC = excelRow.createCell(col++);
+                cellNetoEECC.setCellValue(row.NETO);
+                cellNetoEECC.setCellStyle(numberStyle);
+
+                Cell cellNetoSettlement = excelRow.createCell(col++);
+                cellNetoSettlement.setCellValue(row.NETOC);
+                cellNetoSettlement.setCellStyle(numberStyle);
+
+                excelRow.createCell(col++).setCellValue(row.TINPUT);
+
+                // Aplicar estilo general
+                for (int j = 0; j < headers.length; j++) {
+                    if (j < 7 || j == 9) {
+                        excelRow.getCell(j).setCellStyle(dataStyle);
+                    }
+                }
+            }
+
+            // --- Autoajuste de columnas ---
+            for (int i = 0; i < headers.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            // --- Escribir y enviar respuesta ---
+            FileOutputStream fos = new FileOutputStream(file);
+            workbook.write(fos);
+            fos.close();
+
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+
+            Files.copy(file.toPath(), response.getOutputStream());
+            response.getOutputStream().flush();
+
+            workbook.close();
+            file.delete();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SpringException(e);
+        }
+    }
+
+
 
 }

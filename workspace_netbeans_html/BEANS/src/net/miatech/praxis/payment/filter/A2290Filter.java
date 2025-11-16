@@ -36,11 +36,13 @@ public class A2290Filter extends A2290 {
     public String IN_DATETO = "";
     public String IN_MERCHANT = "";
     public String IN_LIQUIDATION = "";
+    public String IN_SPAYMENT = "";
     public String SDATE_MIN = "";
     public String SDATE_MAX = "";
     //===============================
     public String IN_FECHA_FROM = "";
     public String IN_ADATE = "";
+    public String IN_STATUS = "";
     public String IN_FECHA_TO = "";
     public String IN_FECFILTRO = "";
     public String strFecFiltro = "";
@@ -62,6 +64,8 @@ public class A2290Filter extends A2290 {
     public String IN_LIQUIDACIO = "";
     public String IN_TYPER = "";
     public String INTERCOMPANY = "";
+    public String IN_CBATCH = "";
+    public String IN_FECR = "";
 
     public String IN_FROMADATE = "";
     public String IN_TOADATE = "";
@@ -72,6 +76,7 @@ public class A2290Filter extends A2290 {
     public String ACCNUMA = "";
     public String COSTCEN = "";
     public String SCONSOL = "";
+    public String SCONSOL_TABLE = "";
     public String IN_SAUTHOC = "";
     public String IN_FTE = "";
     public String IN_PAYMENT = "";
@@ -124,6 +129,7 @@ public class A2290Filter extends A2290 {
     public String IN_SPNR = "";
     public String IN_BSTVAL = "";
     public String IN_COUNTRY = "";
+    public String IN_TINPUT = "";
     public String IN_COREP = "";
     public String IN_PGRM = "";
     public String NAME = "";
@@ -461,6 +467,7 @@ public class A2290Filter extends A2290 {
 
     public String strIN_FTE = "";
     public String strIN_AFTE = "";
+    public String ADJUST = "";
     public double perSale = 0;
     public double TotperSale = 0;
 
@@ -985,6 +992,24 @@ public class A2290Filter extends A2290 {
     public long lngTotQMANUALARC = 0; 
     public long lngTotQMANUALISC  = 0; 
     public long lngTotQ  = 0; 
+    public long lngQEECC  = 0; 
+    public long lngQTYADJ  = 0; 
+    
+    // header
+    
+    public long lngTotHMatch  = 0; 
+    public long lngTotHManual  = 0; 
+    public long lngTotHDiff  = 0; 
+    public long lngTotHSales  = 0; 
+    public long lngTotHAll  = 0; 
+    public long lngQHMatch  = 0; 
+    public long lngQHManual  = 0; 
+    public long lngQHDiff  = 0; 
+    public long lngQHSales  = 0; 
+    public long lngQHAll  = 0; 
+    
+    
+    
     public long lngTotQTKTAUTO  = 0; 
     public long lngTotQTKTPENDING  = 0; 
     public long lngTotQTKTMANUAL  = 0; 
@@ -1005,6 +1030,14 @@ public class A2290Filter extends A2290 {
     public long lngMANUALTKT    = 0; 
     public long lngTOTALTKT    = 0; 
     public long lngTotQSALESDIRECT    = 0; 
+    public long lngTotQTYECC    = 0; 
+    public long lngTotQTYADJ    = 0; 
+    public long lngPayamou    = 0; 
+    public long lngPayamouPending    = 0; 
+    public long lngPayamouMatch    = 0; 
+    
+    
+    
     public double totNETOEECC    = 0; 
     public double totNETOSETLEMENT    = 0; 
     public double SVFOPOT    = 0; 
@@ -1012,6 +1045,7 @@ public class A2290Filter extends A2290 {
     public double SVFOPNETRU    = 0; 
     public double SUM_NETO    = 0; 
     public double SUM_PAYAMOU    = 0; 
+    public double SUM_USDEQUI    = 0; 
     public double SUM_TKT    = 0; 
     
     //CASH
@@ -1044,12 +1078,56 @@ public class A2290Filter extends A2290 {
     public String STARDATE_191 = "";
     public String ENDDATE_191 = "";
     public String QTYTKT_191 = "";
+    public String NINPUT = "";
     public double NETO_191 = 0;
     public double PAYAMOU_191 = 0;
     public double COMISION_191 = 0;
     public double USDEQUI = 0;
     public String DCYCLE = "";
 
+    
+    
+    public String O_STVAL ="";
+    public String O_ADATE ="";
+    public String O_CONCEPT ="";
+    public String O_SAGENT ="";
+    public String O_NSAGENT ="";
+    
+    public String O_SCONSOL ="";
+    public String O_SCURRENCY ="";
+    public double O_NETO =0;
+    public double O_PAYAMOU =0;
+    public String O_STRDATE ="";
+    public String O_ENDDATE ="";
+    public double O_SUM_NETO = 0;
+    public double O_SUM_PAYAMOU = 0;
+    public String O_TADJ = "";
+    public String O_REFERENCE = "";
+    public String O_COMMENTS = "";
+    public String O_PDATE = "";
+    public String O_CCUST = "";
+    public String O_SCOUNTRY = "";
+    public String O_CBATCH = "";
+    public String O_SEQ = "";
+    public String O_BANDOC = "";
+    public String O_DATEA = "";
+    public String O_TRANA = "";
+    public String O_INVOICE = "";
+    
+    
+    public String O_USCR = "";
+    public String O_FECR = "";
+    public String O_HOCR = "";
+    public String O_USUP = "";
+    public String O_FEUP = "";
+    public String O_HOUP = "";
+    public String DPERIOD = "";
+    public String TPERIOD = "";
+    
+    
+    
+    
+    
     
     //Update
     public String MENSA = "";       

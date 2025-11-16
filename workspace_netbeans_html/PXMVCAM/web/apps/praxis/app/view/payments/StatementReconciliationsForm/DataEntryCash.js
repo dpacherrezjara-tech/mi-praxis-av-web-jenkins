@@ -17,7 +17,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
         'Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCashStatementReconciliationsController'
     ],
     controller: 'DataEntryCashStatementReconciliationsController',
-    title: 'Statement Reconciliation - Data Entry Form',
+    title: 'Statement Reconciliation - Agency Sales - Data Entry Form',
     header: true,
     height: 780,
     width: 1200,
@@ -174,7 +174,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                     hidden: true,
                                                     width: 160
                                                 },
-                                                {xtype: 'tbspacer', width: 335}
+                                                {xtype: 'tbspacer', width: 440}
                                             ]
                                         },
                                         {
@@ -1028,6 +1028,14 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                             width: 280,
                                             margin: '10 2 10 8'
                                         },
+                                         {xtype: 'tbspacer', width: 1000},
+                                        {
+                                                                            xtype: 'button',
+                                                                            id: prototype.id + '-btnExcelCash',
+                                                                            iconCls: 'prx-icon-excel',
+                                                                            tooltip: 'Export to csv',
+                                                                            handler: 'ExportCSV'
+                                                                        },
                                         {
                                             xtype: 'panel',
                                             layout: 'hbox',
@@ -1056,11 +1064,11 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                                 }
                                                             ],
                                                             features: [{
-                                                                ftype: 'summary' // 👈 activa el totalizador en el footer
+                                                                ftype: 'summary' 
                                                             }],
                                                             viewConfig: {
                                                                 getRowClass: function (record) {
-                                                                    // Si hay comentario -> aplicar clase
+                                                                    
                                                                     if (record.get('REFERENCE') && record.get('REFERENCE').trim() !== '') {
                                                                         return 'row-with-comments';
                                                                     }
@@ -1100,7 +1108,8 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                                     {
                                                                         text: 'Concept',
                                                                         dataIndex: 'CONCEPT',
-                                                                        width: 175,
+                                                                        id: prototype.id + '-columnCONCEPT',
+                                                                        width: 125,
                                                                         renderer: function (value, metaData, record) {
                                                                             metaData.style = "text-align:center;";
 
@@ -1109,11 +1118,15 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                                                 value = 'Positive Billing';
                                                                             } else if (value === 'N') {
                                                                                 value = 'Negative Billing';
-                                                                            } else if (value === 'Z') {
+                                                                            } else if (value === 'X') {
                                                                                 value = 'No Billing';
-                                                                            } else if (value === 'S') {
-                                                                                value = 'Settlement Adjustment';
-                                                                            } else {
+                                                                            } else if (value === 'A') {
+                                                                                value = 'Adjusment';
+                                                                            } else if (value === 'M') {
+                                                                                value = 'Automatic';
+                                                                            } else if (value === 'C') {
+                                                                                value = 'Compensation';
+                                                                            }else {
                                                                                 value = 'Billing';
                                                                             }
 
@@ -1121,8 +1134,21 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                                         }
                                                                     },
                                                                     {
+                                                                        text: 'Country',
+                                                                        dataIndex: 'DESC_SCOUNTRY',
+                                                                        id: prototype.id + '-columnDESC_SCOUNTRY',
+                                                                        width: 295,
+                                                                        renderer: function (value, metaData, record) {
+                                                                            var data = record.data;
+                                                                            metaData.style = "text-align:center;";
+                                                                            metaData.tdAttr = 'data-qtip="' + data.SCOUNTRY + '"';
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {
                                                                         text: 'Agent',
                                                                         dataIndex: 'SAGENT',
+                                                                        id: prototype.id + '-columnSAGENT',
                                                                         width: 120,
                                                                         renderer: function (value, metaData) {
                                                                             metaData.style = "text-align:center;";
@@ -1134,6 +1160,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                                     {
                                                                         text: 'Sconsol',
                                                                         dataIndex: 'SCONSOL',
+                                                                        id: prototype.id + '-columnSCONSOL',
                                                                         width: 120,
                                                                         renderer: function (value, metaData) {
                                                                             metaData.style = "text-align:center;";
@@ -1171,6 +1198,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                                         text: 'Issued Payment',
                                                                         dataIndex: 'PAYAMOU',
                                                                         width: 130,
+                                                                        id: prototype.id + '-columnPAYAMOU',
                                                                         xtype: 'numbercolumn',
                                                                         summaryType: 'sum',   // 🔥 suma automático
                                                                         renderer: function (value, metaData) {
@@ -1181,6 +1209,23 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                                             var data = Ext.getCmp(prototype.id + '-gridDataInfoScan').getStore().getData().items[0].data;
                                                                             metaData.style = 'text-align:right; margin-right:3px ';
                                                                             return '<b>' + Ext.util.Format.number(data.SUM_PAYAMOU, '0,000.00') + '<b>';
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Amount USD',
+                                                                        dataIndex: 'USDEQUI',
+                                                                        width: 130,
+                                                                        id: prototype.id + '-columnUSDEQUI',
+                                                                        xtype: 'numbercolumn',
+                                                                        summaryType: 'sum',   // 🔥 suma automático
+                                                                        renderer: function (value, metaData) {
+                                                                            metaData.style = "text-align:right;";
+                                                                            return Ext.util.Format.number(value, '0,000.00');
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            var data = Ext.getCmp(prototype.id + '-gridDataInfoScan').getStore().getData().items[0].data;
+                                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                                            return '<b>' + Ext.util.Format.number(data.SUM_USDEQUI, '0,000.00') + '<b>';
                                                                         }
                                                                     },
                                                                     {
@@ -1217,13 +1262,13 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                             border: false,
                                             margin: '0 0 0 180',
                                             items: [
-                                                {xtype: 'tbspacer', width: 170},
+                                                {xtype: 'tbspacer', width: 500},
                                                 
                                                 {
                                                     xtype: 'label',
                                                     text: 'Sum Amount:',
                                                     style: 'font-weight:bold;color:#0B333C;',
-                                                    hidden: true,
+                                                    hidden: false,
                                                     width: 90
                                                 },
                                                 {xtype: 'tbspacer', width: 10},
@@ -1232,7 +1277,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                     id: prototype.id + '-de-txtSumAmount',
                                                     fieldStyle: 'text-align:right',
                                                     enforceMaxLength: true,
-                                                    hidden: true,
+                                                    hidden: false,
                                                     readOnly: true,
                                                     width: 100
                                                 },
@@ -1871,7 +1916,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                 {
                     text: 'Reverse Match',
                     id: prototype.id + '-btn-reverse',
-                    hidden: false,
+                    hidden: true,
                     iconCls: 'prx-icon-delete',
                     listeners: {
                         click: 'onReverseClick'

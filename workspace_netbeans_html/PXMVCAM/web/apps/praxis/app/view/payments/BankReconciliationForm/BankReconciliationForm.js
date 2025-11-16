@@ -77,7 +77,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.BankReconciliationFo
                                         {
                                             xtype: 'panel',
                                             id: prototype.id + '-heigGraf',
-                                            height: 630,
+                                            height: 670,
                                             width: 1900,
                                             layout: 'fit',
                                             items: [

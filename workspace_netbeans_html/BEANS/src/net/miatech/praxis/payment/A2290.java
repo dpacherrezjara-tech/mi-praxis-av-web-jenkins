@@ -44,6 +44,7 @@ public class A2290 {
     
     public String SEQ = "";
     public String STVAL = "";
+    public String CHEADER = "";
     public String FSTVAL = "";
     public String VALDATE = "";
     public String VALDATEL = "";

@@ -108,17 +108,21 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                                                             click: 'searchDetAll_clickHandler'
                                                         },
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;';
-                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
+                                                            metaData.style = 'text-align:right;';
+                                                            return value;
+//                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;';
+//                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
                                                         }
                                                     },
                                                     {text: 'Error', width: 70, dataIndex: 'QRECE',
-                                                        listeners: {
-                                                            click: 'searchDetAll_clickHandler'
-                                                        },
+//                                                        listeners: {
+//                                                            click: 'searchDetAll_clickHandler'
+//                                                        },
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;';
-                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
+                                                            metaData.style = 'text-align:right;';
+                                                            return value;
+//                                                            metaData.style = 'color:#057ECB;text-align:right;text-decoration:none;font-weight:bold;';
+//                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
                                                         }
                                                     }
                                                 ]
@@ -222,7 +226,7 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                             border: true,
                             hidden: false,
                             height: 516,
-                            width: 1265,
+                            width: 1335,
                             margin: '10 0 0 80',
                             layout: {
                                 type: 'vbox',
@@ -232,7 +236,7 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridMainData',
-                                    width: 1265,
+                                    width: 1335,
                                     hidden: false,
                                     columnLines: true,
                                     height: 516,
@@ -254,11 +258,12 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                                                 columns: [
                                                     {text: 'Date', width: 100, flex: 1, dataIndex: 'strFormatDate',
                                                         listeners: {
-                                                            click: 'searchDataDetalle_clickHandler'
+//                                                            click: 'searchDataDetalle_clickHandler'
                                                         },
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = 'color:#057ECB;text-align:center;text-decoration:none;font-weight:bold;';
-                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
+//                                                            metaData.style = 'color:#057ECB;text-align:center;text-decoration:none;font-weight:bold;';
+//                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
+                                                            return  value ;
                                                         }
                                                     },
                                                     {text: 'Start', dataIndex: 'strDescripcion1', width: 70},
@@ -276,7 +281,7 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                                                     {text: 'Creator', dataIndex: 'USCR', width: 100},
                                                 ]
                                             },
-                                            {text: 'Generation',
+                                            {text: 'Input',
                                                 defaults: {
                                                     menuDisabled: true,
                                                     sortable: true,
@@ -284,7 +289,15 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                                                     border: true
                                                 },
                                                 columns: [
-                                                    {text: 'Date', dataIndex: 'strFormatDate3', width: 100},
+                                                    {text: 'Date', dataIndex: 'strFormatDate3', width: 100,
+                                                        listeners: {
+                                                            click: 'searchDelivery_clickHandler'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = 'color:#057ECB;text-align:center;text-decoration:none;font-weight:bold;';
+                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
+                                                        }
+                                                    },
                                                 ]
                                             },
                                             {text: 'Source', dataIndex: 'FUENTE', width: 100},
@@ -306,16 +319,28 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                                                             metaData.style = 'color:#057ECB;text-align:center;text-decoration:none;font-weight:bold;';
                                                             return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
                                                         }
+                                                    },
+                                                    {text: 'Exonerated', width: 70, flex: 1, dataIndex: 'QTYDELET',
+//                                                        listeners: {
+//                                                            click: 'searchDelivery_clickHandler'
+//                                                        },
+//                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+//                                                            metaData.style = 'color:#057ECB;text-align:center;text-decoration:none;font-weight:bold;';
+//                                                            return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
+//                                                        }
                                                     }
                                                 ]
                                             },
                                             {
                                                 text: 'Details / error Message', dataIndex: 'MENSA', width: 380,
+                                                listeners: {
+                                                    click: 'searchCalendar_clickHandler'
+                                                },
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
-                                                    metaData.style = "text-align:left;";
+                                                    metaData.style = 'color:#057ECB;text-align:center;text-decoration:none;font-weight:bold;';
                                                     metaData.tdAttr = 'data-qtip="' + data.MENSA + '"';
-                                                    return value;
+                                                    return '<a href="#payments-inputs-form" style="color:#057ECB;text-decoration:none;font-weight:bold;">' + value + '</a>';
                                                 }
                                             }
                                         ]
