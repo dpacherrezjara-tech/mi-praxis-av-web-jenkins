@@ -4898,7 +4898,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             console.log('Solicitando:', url);
 
             global.getFile(url);
-        }
+        },
+        
+        
+        
     
     
 });
