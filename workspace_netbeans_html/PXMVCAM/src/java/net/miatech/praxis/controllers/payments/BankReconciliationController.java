@@ -5758,7 +5758,7 @@ public class BankReconciliationController extends BaseController {
         }
 
         // Carpeta base donde buscar los archivos CSV
-        Path folderPath = Paths.get("\\\\10.0.0.87\\av\\Efectivo\\test\\process\\BSP\\CO\\2025");
+        Path folderPath = Paths.get("\\\\10.0.0.87\\av\\Efectivo\\prod\\process\\BSP\\CO\\2025");
 
         System.out.println("Buscando archivos para country=" + country + " y date=" + date);
 
