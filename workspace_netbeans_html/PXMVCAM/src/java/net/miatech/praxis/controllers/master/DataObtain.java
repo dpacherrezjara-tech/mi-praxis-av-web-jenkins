@@ -31,4 +31,5 @@ public class DataObtain {
     public byte USERPERMIS = 0;
     public String NPROG = "";
     public byte IN_PF122CODPR = 0;
+    public byte IN_ACC_CHGBK = 0;
 }

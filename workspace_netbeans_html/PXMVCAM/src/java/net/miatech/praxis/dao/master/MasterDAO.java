@@ -2250,6 +2250,44 @@ public class MasterDAO {
     
     }
     
-    
+    public List<A4451Filter> listarCuentasChargeback(A4451Filter filter) throws SQLException, Exception {
+
+        List<A4451Filter> lstProcesador = new ArrayList<>(0);
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        Connection cnx = null;
+
+        String SQLCLL01 = "{CALL PRAXISMP.MPS410()}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+            cstmt.execute();
+            rst = cstmt.getResultSet();
+
+            if (rst.next()) {
+                A4451Filter item1 = new A4451Filter();
+                item1.A4451KEY2 = "CBCK-ID";
+                item1.A4451KEY3 = rst.getString("CUENTA_CBCK_ID");
+                lstProcesador.add(item1);
+
+                A4451Filter item2 = new A4451Filter();
+                item2.A4451KEY2 = "CBCK-IDM";
+                item2.A4451KEY3 = rst.getString("CUENTA_CBCK_IDM");
+                lstProcesador.add(item2);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (rst != null) try { rst.close(); } catch (SQLException e) {}
+            if (cstmt != null) try { cstmt.close(); } catch (SQLException e) {}
+            if (cnx != null) session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+        }
+
+        return lstProcesador;
+    }
+
     
 }

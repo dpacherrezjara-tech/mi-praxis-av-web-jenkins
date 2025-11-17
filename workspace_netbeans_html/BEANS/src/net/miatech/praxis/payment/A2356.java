@@ -278,6 +278,104 @@ public class A2356 {
         
         public int QTY_TOTAL_GRANT  = 0;  
         public double AMOUNT_TOTAL_GRANT_USD  = 0;  
+		
+		         public int QTY_CHGBACK_TOTAL  = 0;  
+        public double AMOUNT_CHGBACK_USD_TOTAL  = 0;  
+        public double AMOUNT_CHGBACK_SEND_TOTAL  = 0;  
+        public double AMOUNT_CHGBACK_SAP_TOTAL  = 0;  
+        public double AMOUNT_CHGBACK_PENDING_SAP_TOTAL  = 0;  
+        
+         public int QTY_CHGBACK_ID  = 0;  
+        public double AMOUNT_CHGBACK_USD_ID  = 0;  
+        public double AMOUNT_CHGBACK_SEND_ID  = 0;  
+        public double AMOUNT_CHGBACK_SAP_ID  = 0;  
+        public double AMOUNT_CHGBACK_PENDING_SAP_ID  = 0;  
+        
+         public int QTY_CHGBACK_IDM  = 0;  
+        public double AMOUNT_CHGBACK_USD_IDM  = 0;  
+        public double AMOUNT_CHGBACK_SEND_IDM  = 0;  
+        public double AMOUNT_CHGBACK_SAP_IDM  = 0;  
+        public double AMOUNT_CHGBACK_PENDING_SAP_IDM  = 0;  
+        
+        public double QTY_TOTAL_CHGBACK_TOTAL  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_USD_TOTAL  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_SEND_TOTAL  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_SAP_TOTAL  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_PENDING_USD_TOTAL  = 0;  
+        
+         public double QTY_TOTAL_CHGBACK_ID  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_USD_ID  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_SEND_ID  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_SAP_ID  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_PENDING_USD_ID  = 0;  
+        
+        public double QTY_TOTAL_CHGBACK_IDM  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_USD_IDM  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_SEND_IDM  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_SAP_IDM  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_PENDING_USD_IDM  = 0;  
+        
+        public double QTY_TOTAL_REVERSE  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_USD  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_SEND  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_SAP  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_PENDING_USD  = 0;  
+        
+        public double QTY_TOTAL_CHGBACK_TOTAL_DIFF  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_USD_TOTAL_DIFF  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_SEND_TOTAL_DIFF  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_SAP_TOTAL_DIFF  = 0;  
+        public double AMOUNT_TOTAL_CHGBACK_PENDING_USD_TOTAL_DIFF  = 0;  
+        
+        public double QTY_TOTAL_REVERSE_TOTAL  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_USD_TOTAL  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_SEND_TOTAL  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_SAP_TOTAL  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_PENDING_USD_TOTAL  = 0;  
+        
+        public double QTY_TOTAL_REVERSE_CHGBACK_ID  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_CHGBACK_USD_ID  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_CHGBACK_SEND_ID  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_CHGBACK_SAP_ID  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_CHGBACK_PENDING_USD_ID  = 0;  
+        
+        public double QTY_TOTAL_REVERSE_CHGBACK_IDM  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_CHGBACK_USD_IDM  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_CHGBACK_SEND_IDM  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_CHGBACK_SAP_IDM  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_CHGBACK_PENDING_USD_IDM  = 0;  
+        
+        public double QTY_TOTAL_REVERSE_CHGBACK_TOTAL_DIFF  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_CHGBACK_USD_TOTAL_DIFF  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_CHGBACK_SEND_TOTAL_DIFF  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_CHGBACK_SAP_TOTAL_DIFF  = 0;  
+        public double AMOUNT_TOTAL_REVERSE_CHGBACK_PENDING_USD_TOTAL_DIFF  = 0;  
+        
+         public int QTY_ACRED_UN  = 0;  
+        public double AMOUNT_ACRED_UN_USD  = 0;  
+        public double AMOUNT_ACRED_UN_SEND  = 0;  
+        public double AMOUNT_ACRED_UN_SAP  = 0;  
+        public double AMOUNT_ACRED_UN_PENDING_SAP  = 0;  
+        
+         public int QTY_PENDING_REAL  = 0;  
+        public double AMOUNT_PENDING_REAL_USD  = 0;  
+        public double AMOUNT_PENDING_REAL_SEND  = 0;  
+        public double AMOUNT_PENDING_REAL_SAP  = 0;  
+        public double AMOUNT_PENDING_REAL_PENDING_SAP  = 0;  
+        
+          public double AMOUNT_TOTAL_PENDING_USD_TOTAL  = 0;  
+          
+        public int QTY_TOTAL_ACRED_UN_TOTAL  = 0;  
+        public double AMOUNT_TOTAL_ACRED_UN_USD_TOTAL  = 0;  
+        public double AMOUNT_TOTAL_ACRED_UN_SEND_TOTAL  = 0;  
+        public double AMOUNT_TOTAL_ACRED_UN_SAP_TOTAL  = 0;  
+        public double AMOUNT_TOTAL_ACRED_UN_PENDING_USD_TOTAL  = 0;  
+        
+        public int QTY_TOTAL_PENDING_REAL  = 0;  
+        public double AMOUNT_TOTAL_PENDING_REAL_USD  = 0;  
+        public double AMOUNT_TOTAL_PENDING_REAL_SEND  = 0;  
+        public double AMOUNT_TOTAL_PENDING_REAL_SAP  = 0;  
+        public double AMOUNT_TOTAL_PENDING_REAL_PENDING_USD  = 0;  
         
         public int QTY100_TOTAL  = 0;  
         public int QTY100_PENDING  = 0;  
@@ -291,5 +389,28 @@ public class A2356 {
         public String HOUP  = "";
         public String MESSAGE  = "";
        
+	           public int QTY_CHGBACK_DIFF  = 0;  
+        public double AMOUNT_CHGBACK_USD_DIFF  = 0;  
+        public double AMOUNT_CHGBACK_SEND_DIFF  = 0;  
+        public double AMOUNT_CHGBACK_SAP_DIFF  = 0;  
+        public double AMOUNT_CHGBACK_PENDING_SAP_DIFF  = 0;  
+        
+        public int QTY_REVERSE_CHGBACK_ID  = 0;  
+        public double AMOUNT_REVERSE_CHGBACK_USD_ID  = 0;  
+        public double AMOUNT_REVERSE_CHGBACK_SEND_ID  = 0;  
+        public double AMOUNT_REVERSE_CHGBACK_SAP_ID  = 0;  
+        public double AMOUNT_REVERSE_PENDING_CHGBACK_SAP_ID  = 0;  
+        
+        public int QTY_REVERSE_CHGBACK_DIFF  = 0;  
+        public double AMOUNT_REVERSE_CHGBACK_USD_DIFF  = 0;  
+        public double AMOUNT_REVERSE_CHGBACK_SEND_DIFF  = 0;  
+        public double AMOUNT_REVERSE_CHGBACK_SAP_DIFF  = 0;  
+        public double AMOUNT_REVERSE_PENDING_CHGBACK_SAP_DIFF  = 0;  
+        
+        public int QTY_REVERSE_CHGBACK_IDM  = 0;  
+        public double AMOUNT_REVERSE_CHGBACK_USD_IDM  = 0;  
+        public double AMOUNT_REVERSE_CHGBACK_SEND_IDM  = 0;  
+        public double AMOUNT_REVERSE_CHGBACK_SAP_IDM  = 0;  
+        public double AMOUNT_REVERSE_PENDING_CHGBACK_SAP_IDM  = 0;  
     
 }
