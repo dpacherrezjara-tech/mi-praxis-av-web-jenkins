@@ -149,6 +149,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryPendingBa
         this.setValue('txtSTARTMPF199', this.bean.O_STRDATE);
         this.setValue('txtENDMPF199', this.bean.O_ENDDATE);
         this.setValue('txtREFEMPF199', this.bean.O_REFERENCE);
+        this.setValue('txtCOMMENTSMPF199', this.bean.O_COMMENTS);
         
       
         
