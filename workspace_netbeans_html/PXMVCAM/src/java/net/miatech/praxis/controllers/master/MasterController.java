@@ -160,6 +160,13 @@ public class MasterController extends BaseController {
                 map.put("listaProcesadores", lst);
             }
             
+            if (data.IN_ACC_CHGBK != 0) {
+                A4451Filter filter = new A4451Filter();
+                List<A4451Filter> lst;
+                lst = masterDAO.listarCuentasChargeback(filter);
+                map.put("listarCuentasChargeback", lst);
+            }
+            
         } catch (NumberFormatException | SQLException ex) {
             map.put("success", false);
             map.put("sesion", ex.getMessage());
