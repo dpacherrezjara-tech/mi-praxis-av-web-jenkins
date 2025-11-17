@@ -17,10 +17,16 @@ import net.miatech.praxis.payment.A4202;
 public class A2354Filter extends A2354 {
 
 public String IN_MERCHN = "";
+public String IN_OPTION = "";
+public String IN_QTY_OR_AMOUNT = "";
+public String IN_DETAIL_TYPE = "";
 public String IN_DESCR = "";
 public String IN_RSOCIAL = "";
 public String IN_UNIOPE = "";
 public String IN_CANAL = "";
+public String IN_SOURCE = "";
+public String IN_ACCREDITATION = "";
+public String IN_RISK = "";
 public String strFecha = "";
 public String strDescrip = "";
 public String A003CANAL = "";
@@ -32,6 +38,7 @@ public String STATUS = "";
 public String desSTATUS = "";
 public String IN_STATUS = "";
 public String IN_COUNTRY = "";
+public String IN_NOTFOUND = "";
 public String IN_COREP = "";
 public String CODE = "";
 public String COREP = "";
@@ -40,6 +47,8 @@ public String IN_CMERCHAN = "";
 public String IN_SUCMERCH = "";
 public String IN_ACCNUMB = "";
 public String IN_SAGENT = "";
+public String IN_FPAYMENT = "";
+public String IN_DSALES = "";
 public String IN_BMERCHAN = "";
 public String IN_SCARCOD = "";
 public String IN_CTABANK = "";
@@ -65,6 +74,8 @@ public String IN_DEUSAP = "";
 public String IN_PROCES = "";
 public String IN_SCOUNTRY = "";
 public String IN_SOCIETY = "";
+public String IN_DATE = "";
+public String IN_INVOICE = "";
 public String IN_SCURRENCY = "";
 public String IN_SBENCEN = "";
 public String IN_COSTCEN = "";
@@ -80,6 +91,9 @@ public String IN_EQUIVA6 = "";
 public String IN_EQUIVA7 = "";
 public String IN_EQUIVA8 = "";
 public String IN_EQUIVA9 = "";
+
+public String IN_FECHA_FROM = "";
+public String IN_FECHA_TO = "";
 
 public String OPTION = "";
 public String NEGOC = "";
@@ -125,6 +139,35 @@ public String BENCEN = "";
 public String DEUSAP = "";
 public String SAGENT = "";
 
+
+
+public String O_CCUST = "";
+public String O_SAGENT = "";
+public String O_FUENTE = "";
+public String O_PAIS_VENTA = "";
+public String O_MES = "";
+public String O_FORMAPAGO = "";
+public String O_VFOP = "";
+public String O_QTYTKTS = "";
+public String O_FPAYMENT = "";
+
+
+
+
+public String A_CCUST = "";
+public String A_TICKET = "";
+public String A_A720FECVTA = "";
+public String A_A720PAIVTA = "";
+public String A_A720TRNCU = "";
+public String A_A720TDOC = "";
+public String A_A720AGENTE = "";
+public String A_ORIGEN = "";
+public String A_A1531VFOPR = "";
+public String A_A1531MFOPR = "";
+
+
+
+
 public String CANALM = "";
 public String PROCES = "";
 
@@ -137,6 +180,48 @@ public String DEFFEC = "";
 public String DFINAL = "";
 public String SEQ = "";
 
+public String PAIS = "";
+public String IATA = "";
+public String IATANAME = "";
+public String INVOICE = "";
+public String CLASEDOC = "";
+public String SDATE = "";
+public String SCURRENCYL = "";
+public String CURUSD = "";
+public String strFormatDate = "";
+public String CURRENCY = "";
+
+public double SVFOPUSD = 0;
+public double SVFOPL = 0;
+public double SUM_ACTIVE = 0;
+public double SUM_MPF100 = 0;
+public double DIFFERENCE = 0;
+public double DIFFERENCE_100 = 0;
+public double PENDING_MPF100 = 0;
+public double SUM_GENCON = 0;
+
+public double AMOUNT_TOTAL_USD = 0;
+public double AMOUNT_TOTAL_ACTIVE = 0;
+public double AMOUNT_TOTAL_DIFFERENCE = 0;
+public double AMOUNT_TOTAL_MPF100 = 0;
+public double AMOUNT_TOTAL_DIFFERENCE_100 = 0;
+public double AMOUNT_TOTAL_PENDING_MPF100 = 0;
+public double QTY_TICKETS_SALES_AGENT = 0;
+
+public int QTY = 0;
+public int QTY_INVOICES = 0;
+public int QTY_100_ALL = 0;
+public int QTY_100_PENDING = 0;
+public int QTY_NOT_FOUND = 0;
+public int QTY_TOTAL= 0;
+
+
+
+
+
+
+
+
 
 public List<A4202> lstDetalle = new ArrayList<A4202>(0);
 //public List lstBank = new ArrayList<>(0);
@@ -145,4 +230,12 @@ public List<A4202> lstDetalle = new ArrayList<A4202>(0);
 //A003
 public String A003KEY1 = "";
 public Pagination page = new Pagination(); 
+
+    public String DSALES = "";
+    public String AGENT = "";
+    public String NAME_AGENT = "";
+    public String PSALF = "";
+     public double AMOUNT_SALE = 0;
+
+
 }

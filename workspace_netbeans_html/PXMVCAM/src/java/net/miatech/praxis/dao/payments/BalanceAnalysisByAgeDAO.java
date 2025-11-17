@@ -7,11 +7,14 @@ package net.miatech.praxis.dao.payments;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.praxis.payment.filter.A2290Filter;
@@ -3023,4 +3026,632 @@ public class BalanceAnalysisByAgeDAO {
         return lstData;
     }
     
+    public List<A2356Filter> getListTotalConciliationMDP(A2356Filter filter) throws SQLException, Exception {
+
+        List<A2356Filter> lstData = new ArrayList<A2356Filter>(0);
+        A2356Filter bean;
+
+        int totQSALES = 0, totQSALESC = 0, totQTYLIQ = 0, totQTYLIQP = 0, totQTYTACCOC = 0,  totQTYACCO = 0;
+        double totSVFOPUSDS = 0, totSVFOPUSDC = 0, totSVFOPUSDL = 0, totSVFOPUSDP = 0, 
+                totRATECON = 0, totRATECONL = 0, totSVFOPUSDLT = 0,totCOMISION = 0, totRTEIVA = 0, totNETO = 0,
+                totSVFOPACCO = 0, totSVFOPACCC = 0, totRATEACCOU = 0;
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS300(?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, filter.IN_CCUST);
+            cstmt.setString(2, filter.IN_FECHA_FROM);
+            cstmt.setString(3, filter.IN_FECHA_TO);
+            cstmt.setString(4, filter.IN_SCOUNTRY);
+
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+                totQSALES = rst.getInt("QSALES");
+                totQSALESC = rst.getInt("QSALESC");
+                totQTYLIQ = rst.getInt("QTYLIQ");
+                totQTYLIQP = rst.getInt("QTYLIQP");
+                totQTYTACCOC = rst.getInt("QTYTACCOC");
+                totQTYACCO = rst.getInt("QTYACCO");
+                
+                totSVFOPUSDS = rst.getDouble("QSVFOPUSDS");
+                totSVFOPUSDC = rst.getDouble("QSVFOPUSDC");
+                totSVFOPUSDL = rst.getDouble("QSVFOPUSDL");
+                totSVFOPUSDP = rst.getDouble("QSVFOPUSDP");
+                totSVFOPACCO = rst.getDouble("SVFOPACCO");
+                totSVFOPACCC = rst.getDouble("SVFOPACCC");
+                totSVFOPUSDLT = rst.getDouble("SVFOPUSDLT");
+                totRATECON = rst.getDouble("RATECON");
+                totRATECONL = rst.getDouble("RATELT");
+                totRATEACCOU = rst.getDouble("RATEACCOU");
+                totCOMISION = rst.getDouble("COMISION");
+                totRTEIVA = rst.getDouble("RTEIVA");
+                totNETO = rst.getDouble("NETO");
+
+            }
+            rst.close();
+
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+                while (rst.next()) {
+
+                    bean = new A2356Filter();
+                    bean.RN = rst.getInt("RN");
+
+                    bean.SDATE = rst.getString("SDATE").trim();
+                    bean.strFormatDate = Functions.getMonthConvert(rst.getString("SDATE").trim());
+
+                    bean.CCUST = rst.getString("CCUST").trim();
+                    bean.FCHILD = rst.getString("FCHILD").trim();
+                    
+                    bean.QSALES = rst.getInt("QSALES");
+                    bean.QSALESC = rst.getInt("QSALESC");
+                    bean.QTYLIQ = rst.getInt("QTYLIQ");
+                    bean.QTYLIQP = rst.getInt("QTYLIQP");
+                    bean.QTYACCO = rst.getInt("QTYACCO");
+                    bean.QTYTACCOC = rst.getInt("QTYTACCOC");
+                    
+                    
+                    bean.QSVFOPUSDS = rst.getDouble("QSVFOPUSDS");
+                    bean.QSVFOPUSDC = rst.getDouble("QSVFOPUSDC");
+                    bean.QSVFOPUSDL = rst.getDouble("QSVFOPUSDL");
+                    bean.QSVFOPUSDP = rst.getDouble("QSVFOPUSDP");
+                    bean.SVFOPUSDLT = rst.getDouble("SVFOPUSDLT");
+                    bean.SVFOPACCO = rst.getDouble("SVFOPACCO");
+                    bean.SVFOPACCC = rst.getDouble("SVFOPACCC");
+                    bean.RATECON = rst.getDouble("RATECON");
+                    bean.RATECONL = rst.getDouble("RATELT");
+                    bean.RATEACCOU = rst.getDouble("RATEACCOU");
+                    bean.COMISION = rst.getDouble("COMISION");
+                    bean.RTEIVA = rst.getDouble("RTEIVA");
+                    bean.NETO = rst.getDouble("NETO");
+
+                    bean.totQSALES = totQSALES;
+                    bean.totQSALESC = totQSALESC;
+                    bean.totQTYLIQ = totQTYLIQ;
+                    bean.totQTYLIQP = totQTYLIQP;
+                    bean.totQTYTACCOC = totQTYTACCOC;
+                    bean.totQTYACCO = totQTYACCO;
+                    
+                    bean.totSVFOPUSDS = totSVFOPUSDS;
+                    bean.totSVFOPUSDC = totSVFOPUSDC;
+                    bean.totSVFOPUSDL = totSVFOPUSDL;
+                    bean.totSVFOPUSDP = totSVFOPUSDP;
+                    bean.totSVFOPUSDLT = totSVFOPUSDLT;
+                    bean.totSVFOPACCO = totSVFOPACCO;
+                    bean.totSVFOPACCC = totSVFOPACCC;
+                    bean.totRATECON = totRATECON;
+                    bean.totRATECONL = totRATECONL;
+                    bean.totRATEACCOU = totRATEACCOU;
+                    bean.totCOMISION = totCOMISION;
+                    bean.totRTEIVA = totRTEIVA;
+                    bean.totNETO = totNETO;
+
+                    lstData.add(bean);
+                }
+                rst.close();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstData;
+    }
+
+    public List<A2356Filter> getListTotalConciliation_BardMDP(A2356Filter filter) throws SQLException, Exception {
+
+        List<A2356Filter> lstData = new ArrayList<A2356Filter>(0);
+        A2356Filter bean;
+
+        int totQSALES = 0, totQSALESC = 0, totQTYLIQ = 0, totQTYLIQP = 0, totQTYTACCOC = 0,  totQTYACCO = 0;
+        double totSVFOPUSDS = 0, totSVFOPUSDC = 0, totSVFOPUSDL = 0, totSVFOPUSDP = 0, 
+                totRATECON = 0, totRATECONL = 0, totSVFOPUSDLT = 0,totCOMISION = 0, totRTEIVA = 0, totNETO = 0,
+                totSVFOPACCO = 0, totSVFOPACCC = 0, totRATEACCOU = 0;
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS301(?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, filter.IN_CCUST);
+            cstmt.setString(2, filter.IN_FECHA_FROM);
+            cstmt.setString(3, filter.IN_FECHA_TO);
+            cstmt.setString(4, filter.IN_SCOUNTRY);
+
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+                totQSALES = rst.getInt("QSALES");
+                totQSALESC = rst.getInt("QSALESC");
+                totQTYLIQ = rst.getInt("QTYLIQ");
+                totQTYLIQP = rst.getInt("QTYLIQP");
+                totQTYTACCOC = rst.getInt("QTYTACCOC");
+                totQTYACCO = rst.getInt("QTYACCO");
+                
+                totSVFOPUSDS = rst.getDouble("QSVFOPUSDS");
+                totSVFOPUSDC = rst.getDouble("QSVFOPUSDC");
+                totSVFOPUSDL = rst.getDouble("QSVFOPUSDL");
+                totSVFOPUSDP = rst.getDouble("QSVFOPUSDP");
+                totSVFOPACCO = rst.getDouble("SVFOPACCO");
+                totSVFOPACCC = rst.getDouble("SVFOPACCC");
+                totSVFOPUSDLT = rst.getDouble("SVFOPUSDLT");
+                totRATECON = rst.getDouble("RATECON");
+                totRATECONL = rst.getDouble("RATELT");
+                totRATEACCOU = rst.getDouble("RATEACCOU");
+                totCOMISION = rst.getDouble("COMISION");
+                totRTEIVA = rst.getDouble("RTEIVA");
+                totNETO = rst.getDouble("NETO");
+
+            }
+            rst.close();
+
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+                while (rst.next()) {
+
+                   bean = new A2356Filter();
+                    bean.RN = rst.getInt("RN");
+
+                    bean.SDATE = rst.getString("SDATE").trim();
+                    bean.strFormatDate = Functions.getMonthConvert(rst.getString("SDATE").trim());
+
+//                    bean.CCUST = rst.getString("CCUST").trim();
+//                    bean.FCHILD = rst.getString("FCHILD").trim();
+                    
+                    bean.QSALES = rst.getInt("QSALES");
+                    bean.QSALESC = rst.getInt("QSALESC");
+                    bean.QTYLIQ = rst.getInt("QTYLIQ");
+                    bean.QTYLIQP = rst.getInt("QTYLIQP");
+                     bean.QTYACCO = rst.getInt("QTYACCO");
+                    bean.QTYTACCOC = rst.getInt("QTYTACCOC");
+                    
+                    bean.QSVFOPUSDS = rst.getDouble("QSVFOPUSDS");
+                    bean.QSVFOPUSDC = rst.getDouble("QSVFOPUSDC");
+                    bean.QSVFOPUSDL = rst.getDouble("QSVFOPUSDL");
+                    bean.QSVFOPUSDP = rst.getDouble("QSVFOPUSDP");
+                    bean.SVFOPUSDLT = rst.getDouble("SVFOPUSDLT");
+                     bean.SVFOPACCO = rst.getDouble("SVFOPACCO");
+                    bean.SVFOPACCC = rst.getDouble("SVFOPACCC");
+                    bean.RATECON = rst.getDouble("RATECON");
+                    bean.RATECONL = rst.getDouble("RATELT");
+                    bean.RATEACCOU = rst.getDouble("RATEACCOU");
+                    bean.COMISION = rst.getDouble("COMISION");
+                    bean.RTEIVA = rst.getDouble("RTEIVA");
+                    bean.NETO = rst.getDouble("NETO");
+
+                    bean.totQSALES = totQSALES;
+                    bean.totQSALESC = totQSALESC;
+                    bean.totQTYLIQ = totQTYLIQ;
+                    bean.totQTYLIQP = totQTYLIQP;
+                    bean.totQTYTACCOC = totQTYTACCOC;
+                    bean.totQTYACCO = totQTYACCO;
+                    
+                    bean.totSVFOPUSDS = totSVFOPUSDS;
+                    bean.totSVFOPUSDC = totSVFOPUSDC;
+                    bean.totSVFOPUSDL = totSVFOPUSDL;
+                    bean.totSVFOPUSDP = totSVFOPUSDP;
+                    bean.totSVFOPUSDLT = totSVFOPUSDLT;
+                    bean.totSVFOPACCO = totSVFOPACCO;
+                    bean.totSVFOPACCC = totSVFOPACCC;
+                    bean.totRATECON = totRATECON;
+                    bean.totRATECONL = totRATECONL;
+                    bean.totRATEACCOU = totRATEACCOU;
+                    bean.totCOMISION = totCOMISION;
+                    bean.totRTEIVA = totRTEIVA;
+                    bean.totNETO = totNETO;
+                    
+                    
+
+                    lstData.add(bean);
+
+                }
+                rst.close();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstData;
+    }
+
+    public List<A2356Filter> getListsearchDashboardMDP(A2356Filter filter) throws SQLException, Exception {
+
+        List<A2356Filter> lstData = new ArrayList<A2356Filter>(0);
+        A2356Filter bean;
+       
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS390(?,?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, filter.IN_CCUST);
+            cstmt.setString(2, filter.IN_FECHA_FROM);
+            cstmt.setString(3, filter.IN_FECHA_TO);
+            cstmt.setString(4, filter.IN_BANDOC);
+            cstmt.setString(5, filter.IN_REFER);
+            cstmt.setString(6, filter.IN_CODPRO);
+            cstmt.setString(7, filter.IN_IDCONT);
+            cstmt.setString(8, filter.IN_HEADER);
+            cstmt.setString(9, filter.IN_PROVISION);
+
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+                bean = new A2356Filter();
+                    bean.RN = rst.getInt("RN");
+
+                    bean.VALDATE = rst.getString("VALDATE").trim();
+                    bean.strFormatDate = Functions.getMonthConvert(rst.getString("VALDATE").trim());
+                    bean.CCUST = rst.getString("CCUST").trim();
+                    
+                    bean.F1_TOTAL = rst.getInt("F1_TOTAL");
+                    bean.F1_TOTAL_STVAL3 = rst.getInt("F1_TOTAL_STVAL3");
+                    bean.F1_TOTAL_STVAL1 = rst.getInt("F1_TOTAL_STVAL1");
+                    bean.F1_TOTAL_TAXES = rst.getInt("F1_TOTAL_TAXES");
+                    bean.F1_TOTAL_PENDING_TO_F2 = rst.getInt("F1_TOTAL_PENDING_TO_F2");
+                    bean.F1_TOTAL_ERROR = rst.getInt("F1_TOTAL_ERROR");
+                    
+                    bean.F2_F1_TOTAL_COMPLETED = rst.getInt("F2_F1_TOTAL_COMPLETED");
+                    bean.F2_TOTAL_PENDING_OVER50 = rst.getInt("F2_TOTAL_PENDING_OVER50");
+                    bean.F2_TOTAL_MATCH_OVER50 = rst.getInt("F2_TOTAL_MATCH_OVER50");
+                    
+                    bean.F3_F2_TOTAL_COMPLETED = rst.getInt("F3_F2_TOTAL_COMPLETED");
+                    bean.F3_TOTAL_WO_ACC = rst.getInt("F3_TOTAL_WO_ACC");
+                    bean.F3_TOTAL_COMPLETED = rst.getInt("F3_TOTAL_COMPLETED");
+                    bean.F3_TOTAL_PENDING_SENT = rst.getInt("F3_TOTAL_PENDING_SENT");
+                    bean.F3_TOTAL_COMPLETED_SAP = rst.getInt("F3_TOTAL_COMPLETED_SAP");   
+                    bean.F3_TOTAL_ERROR = rst.getInt("F3_TOTAL_ERROR");   
+
+                    lstData.add(bean);
+            }
+            rst.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstData;
+    }
+    
+     public List<A2356Filter> load_MPS400(A2356Filter filter) throws SQLException, Exception {
+
+        List<A2356Filter> lstData = new ArrayList<A2356Filter>(0);
+        A2356Filter bean;
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS400(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.registerOutParameter(17, Types.INTEGER);
+            cstmt.registerOutParameter(18, Types.INTEGER);
+            cstmt.registerOutParameter(19, Types.INTEGER);
+            cstmt.registerOutParameter(20, Types.INTEGER);
+            cstmt.setString(1, filter.IN_CCUST);
+            cstmt.setString(2, filter.IN_WSETT);
+            cstmt.setString(3, filter.IN_TAXES);
+            cstmt.setString(4, filter.IN_ERROR);
+            cstmt.setString(5, filter.IN_PENDING_F2);
+            cstmt.setString(6, filter.IN_WSALES);
+            cstmt.setString(7, filter.IN_PENDING_ACC);
+            cstmt.setString(8, filter.IN_PENDING_SENT);
+            cstmt.setString(9, filter.IN_DATE);
+            cstmt.setString(10, filter.IN_BANDOC);
+            cstmt.setString(11, filter.IN_REFER);
+            cstmt.setString(12, filter.IN_CODPRO);
+            cstmt.setString(13, filter.IN_IDCONT);
+            cstmt.setString(14, filter.IN_HEADER);
+            cstmt.setString(15, filter.IN_SENT);
+            cstmt.setString(16, filter.IN_PROVISION);
+            cstmt.setInt(17, filter.page.PAGNUM);
+            cstmt.setInt(18, filter.page.PAGROW);
+            cstmt.setInt(19, filter.page.TOTPAG);
+            cstmt.setInt(20, filter.page.TOTROW);
+
+            cstmt.execute();
+
+            filter.page.PAGNUM = cstmt.getInt(17);
+            filter.page.PAGROW = cstmt.getInt(18);
+            filter.page.TOTPAG = cstmt.getInt(19);
+            filter.page.TOTROW = cstmt.getInt(20);
+
+            rst = cstmt.getResultSet();
+            while (rst.next()) {
+                bean = new A2356Filter();
+                bean.RN = rst.getInt("RN");
+
+                bean.CCUST = rst.getString("CCUST").trim();
+                bean.BANDOC = rst.getString("BANDOC").trim();
+                bean.VALDATE = rst.getString("VALDATE").trim();
+                bean.SCOUNTRY = rst.getString("SCOUNTRY").trim();
+                bean.SCURRENCY = rst.getString("SCURRENCY").trim();
+                bean.DAYS_PENDING = rst.getString("DAYS_PENDING").trim();
+                bean.CERROR = rst.getString("CERROR").trim();
+                bean.DESCRIPTION_CERROR = rst.getString("DESCRIPTION_CERROR").trim();
+                bean.TRANCI = rst.getString("TRANCI").trim();
+                bean.DATECI = rst.getString("DATECI").trim();
+                bean.REFER = rst.getString("REFER").trim();
+                bean.NETO = rst.getDouble("NETO");
+                bean.SCURRENCY = rst.getString("SCURRENCY").trim();
+                bean.TEXTOLAR = rst.getString("TEXTOLAR").trim();
+                bean.COREP = rst.getString("COREP").trim();
+                bean.CODPRO = rst.getString("CODPRO").trim();
+                bean.IDCONT = rst.getString("IDCONT").trim();
+                bean.IDCDEB = rst.getString("IDCDEB").trim();
+                bean.A4545HEADE = rst.getString("A4545HEADE").trim();
+                
+                bean.QTY100_TOTAL = rst.getInt("QTY100_TOTAL");
+                bean.QTY100_PENDING = rst.getInt("QTY100_PENDING");
+                bean.QTY100_MATCH = rst.getInt("QTY100_MATCH");
+
+                bean.page.PAGNUM = filter.page.PAGNUM;
+                bean.page.PAGROW = filter.page.PAGROW;
+                bean.page.TOTPAG = filter.page.TOTPAG;
+                bean.page.TOTROW = filter.page.TOTROW;
+                lstData.add(bean);
+            }
+            rst.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstData;
+    }
+     
+      public Map<String, Integer> loadMPS351(List<A2356Filter> filter, int contador, String option) throws Exception {
+
+            Map<String, Integer> result = new HashMap<>();
+            int actualizados = 0;
+            int noActualizados = 0;
+
+            Connection cnx = null;
+            CallableStatement cs = null;
+
+            String SQLCALL = "{CALL PRAXISMP.MPS412(?, ?, ?, ?)}";
+
+            try {
+                cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+                cs = cnx.prepareCall(SQLCALL);
+
+                for (A2356Filter f : filter) {
+                    try {
+                        cs.setString(1, f.CUSTOMER_ERROR.trim());
+                        cs.setString(2, f.REFER_ERROR.trim());
+                        cs.setString(3, f.CODE_ERROR.trim());
+
+                        cs.registerOutParameter(4, Types.INTEGER);
+
+                        cs.execute();
+
+                        int updated = cs.getInt(4);
+                        if (updated == 1) {
+                            actualizados++;
+                        } else {
+                            noActualizados++;
+                        }
+
+                    } catch (Exception e) {
+                        noActualizados++;
+                        System.err.println("⚠️ Error procesando registro: " + e.getMessage());
+                    }
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (cs != null) cs.close();
+                if (cnx != null) cnx.close();
+            }
+
+            result.put("actualizados", actualizados);
+            result.put("no_actualizados", noActualizados);
+
+            return result;
+        }
+
+      
+      public String validateErrorCodes(List<A2356Filter> lstData) throws Exception {
+            Connection cnx = null;
+            PreparedStatement ps = null;
+            ResultSet rs = null;
+
+            String sql = "SELECT 1 FROM PRAXISMP.A4169 WHERE TTABLA = '90' AND CODETB = ?";
+            StringBuilder errors = new StringBuilder();
+
+            try {
+                cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+                ps = cnx.prepareStatement(sql);
+
+                for (A2356Filter f : lstData) {
+                    ps.setString(1, f.CODE_ERROR);
+                    rs = ps.executeQuery();
+
+                    if (!rs.next()) {
+                        errors.append("Error code not found in catalog: ").append(f.CODE_ERROR).append("\n");
+                    }
+
+                    rs.close();
+                }
+
+                if (errors.length() > 0) {
+                    return "Validation failed:\n" + errors.toString();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new Exception("Error validating error codes: " + e.getMessage());
+            } finally {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+                if (cnx != null) cnx.close();
+            }
+
+            return "";
+        }
+
+      public List<A2356Filter> getListsearchSumaryMainPendingGraf(A2356Filter filter) throws SQLException, Exception {
+
+        List<A2356Filter> lstData = new ArrayList<A2356Filter>(0);
+        A2356Filter bean;
+       
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS413(?,?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, filter.IN_CCUST);
+            cstmt.setString(2, filter.IN_FECHA_FROM);
+            cstmt.setString(3, filter.IN_FECHA_TO);
+            cstmt.setString(4, filter.IN_BANDOC);
+            cstmt.setString(5, filter.IN_REFER);
+            cstmt.setString(6, filter.IN_CODPRO);
+            cstmt.setString(7, filter.IN_IDCONT);
+            cstmt.setString(8, filter.IN_HEADER);
+            cstmt.setString(9, filter.IN_PROVISION);
+
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+                bean = new A2356Filter();
+                    bean.RN = rst.getInt("RN");
+
+                    bean.CERROR = rst.getString("CERROR");
+                    bean.DESCRIPTION_CERROR = rst.getString("DESCRIPTION_ERROR");
+                    bean.F1_TOTAL_STVAL3 = rst.getInt("F1_TOTAL_STVAL3");
+                    bean.F2_TOTAL_PENDING_OVER50 = rst.getInt("F2_TOTAL_PENDING_OVER50");
+                    bean.F3_TOTAL_PENDING_SENT = rst.getInt("F3_TOTAL_PENDING_SENT");
+
+                    lstData.add(bean);
+            }
+            rst.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstData;
+    }
+      
+      
+      
 }

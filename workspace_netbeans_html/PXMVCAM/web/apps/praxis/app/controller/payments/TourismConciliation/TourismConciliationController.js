@@ -287,7 +287,8 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.TourismConciliati
 //        me.bean.SDATE = Ext.getCmp(prototype.id + '-txtDate').getValue();
         me.bean.SAGENT = Ext.getCmp(prototype.id + '-txtAGENTE').getValue( );
         me.bean.REFER = Ext.getCmp(prototype.id + '-txtReferTur').getValue( );
-        me.bean.CERROR = Ext.getCmp(prototype.id + '-cmbStatus').getValue( );
+        me.bean.STVAL = Ext.getCmp(prototype.id + '-cmbStatus').getValue( );
+        me.bean.CERROR = Ext.getCmp(prototype.id + '-cmbComment').getValue( );
 //        me.bean.TRANSTYPE = Ext.getCmp(prototype.id + '-cmbTRANSTYPE').getValue();
         console.log(me.bean, 'me.bean')
         var beanString = JSON.stringify(me.bean);
@@ -353,45 +354,17 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.TourismConciliati
         }
     },
 
-    detailMPF100: function () {
-        const columnName = grid.getHeaderCt().getHeaderAtIndex(cellIndex).dataIndex;
-        if (columnName === 'REFER' || columnName === 'SAGENT') {
-
-            const filaData = record.data; // toda la fila
-            const value = record.get(columnName);
-
-            Ext.Ajax.request({
-                url: prototype.url + '/loadDetallePorReferencia',
-                method: 'POST',
-                params: {
-                    valorSeleccionado: value,
-                    tipoCampo: columnName,
-                    filaJSON: Ext.encode(filaData)  // <--- aquí va toda la fila
-                },
-                success: function (response) {
-                    const data = Ext.decode(response.responseText);
-                    const gridDetalle = Ext.getCmp(prototype.id + '-gridDetalle');
-                    gridDetalle.getStore().loadData(data);
-                    gridDetalle.show();
-                },
-                failure: function () {
-                    Ext.Msg.alert('Error', 'No se pudo cargar la información del detalle.');
-                }
-            });
-        }
-
-    },
-
     onEditClick: function (grid, rowIndex, colIndex, item, e, record, actionItem) {
         item.disable();
 
         const rec = record;
 
-        // Llama a la ventana con alias y le pasas los datos
+//         Llama a la ventana con alias y le pasas los datos
         const win = Ext.widget('DataEntryTourismConciliationForm', {
-            recordData: rec
-        });
-
+            recordData: rec,
+            id: prototype.id + '-dataEntryTourismConciliation'
+        }); 
+        
         win.show();
 
         setTimeout(function () {

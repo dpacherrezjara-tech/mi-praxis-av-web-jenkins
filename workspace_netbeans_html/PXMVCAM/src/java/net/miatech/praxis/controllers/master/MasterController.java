@@ -21,6 +21,7 @@ import net.miatech.praxis.payment.A2280;
 import net.miatech.praxis.payment.A2287;
 import net.miatech.praxis.payment.filter.A2280Filter;
 import net.miatech.praxis.payment.filter.A2357Filter;
+import net.miatech.praxis.payment.filter.A4451Filter;
 import net.miatech.praxis.persistence.facade.UserFacade;
 import net.miatech.praxis.persistence.facadeimpl.UserFacadeImpl;
 import net.miatech.praxis.spring.INF020;
@@ -130,6 +131,40 @@ public class MasterController extends BaseController {
             if (data.CARDEQUIVALENT != 0) {
                 List<A2280> lstCardEquivalent = masterDAO.loadTarjetasEquivalent();
                 map.put("lstCardEquivalent", lstCardEquivalent);
+            }
+            
+            if (data.SOURCEAGENT != 0) {
+                List<A2280> lstsSourceAgent = masterDAO.loadSourceAgent();
+                map.put("lstsSourceAgent", lstsSourceAgent);
+            }
+            
+            if (data.CANALAGENT != 0) {
+                List<A2280> lstsCanalAgent = masterDAO.loadCanalAgent();
+                map.put("lstsCanalAgent", lstsCanalAgent);
+            }
+            
+            if (data.ACREDITACIONAGENT != 0) {
+                List<A2280> lstsAcreditacionAgent = masterDAO.loadAcreditacionAgent();
+                map.put("lstsAcreditacionAgent", lstsAcreditacionAgent);
+            }
+            
+            if (data.RIESGOAGENT != 0) {
+                List<A2280> lstsRiesgoAgent = masterDAO.loadRiesgoAgent();
+                map.put("lstsRiesgoAgent", lstsRiesgoAgent);
+            }
+            
+            if (data.IN_PF122CODPR != 0) {
+                A4451Filter filter = new A4451Filter();
+                List<A4451Filter> lst;
+                lst = masterDAO.listarProcesadoresCBO(filter);
+                map.put("listaProcesadores", lst);
+            }
+            
+            if (data.IN_ACC_CHGBK != 0) {
+                A4451Filter filter = new A4451Filter();
+                List<A4451Filter> lst;
+                lst = masterDAO.listarCuentasChargeback(filter);
+                map.put("listarCuentasChargeback", lst);
             }
             
         } catch (NumberFormatException | SQLException ex) {

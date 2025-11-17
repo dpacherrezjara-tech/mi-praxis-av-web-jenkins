@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.Map;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.miatech.beans.spring.UserView;
 import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.dao.master.MasterDAO;
 import net.miatech.praxis.exceptions.SpringException;
@@ -175,7 +177,93 @@ public class TourismConciliationController extends BaseController {
         return lst;
     }
 
+    @RequestMapping(value = "searchDataPending")
+    public @ResponseBody String searchDataPending(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- Tourism Conciliation : Search data Entry -------------");
 
+        try {
+            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+            
+            Map<String, List<A2282Filter>> data = this.getListPending(request, false);
+
+            map.put("success", true);
+            map.put("data",  data.get("lista1"));
+            map.put("data2",  data.get("lista2"));
+//            map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        } catch (SQLException e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        }
+
+        return new Gson().toJson(map);
+    }
+    
+    public Map<String, List<A2282Filter>> getListPending(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2282Filter> lst = new ArrayList<>();
+        Map<String, List<A2282Filter>> data = new HashMap();
+        A2282Filter filter;
+        Gson gson = new Gson();
+
+        try {
+            String beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2282Filter.class);
+
+            logic = new TourismConciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            data = logic.loadMPF101SQP00910(filter);
+
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+
+        return data;
+    }
+    
+    @RequestMapping(value = "executeOption")
+    public @ResponseBody
+    String executeOption(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- Tourism Conciliation : executeOption-------------");
+        String option;
+        A2282Filter filter = new A2282Filter();
+        A2282Filter RespObj = new A2282Filter();
+        String msj = "";
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+
+//            option = request.getParameter("option");
+            beanString = request.getParameter("beanString");
+            System.out.println("JSON recibido en el servidor: " + beanString);
+            // Parsear directamente a JsonArray
+            // Deserializar directamente a una lista de A2290Filter
+            filter = gson.fromJson(beanString, A2282Filter.class);
+//            A2282Filter filter = Arrays.asList(filters);
+
+            UserView user = this.serverSession.getServerSession().getUserView();
+            logic = new TourismConciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            RespObj = logic.loadMPF101SQP00911(filter);
+            // ... (código existente)
+
+            map.put("success", true);
+            map.put("data", RespObj);
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+    
     @RequestMapping(value = "searchTKT")
     public @ResponseBody
     String searchTKT(ModelMap map, HttpServletRequest request) {

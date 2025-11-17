@@ -160,8 +160,8 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Options', {
                         {
                             xtype: 'button',
                             id: prototype.id + '-btnAdd',
-                            iconCls: 'prx-icon-add',
-                            tooltip: 'New'
+                            icon: 'resources/img/botones/16x16/txt.png',
+                            tooltip: 'Assign Code'
                         },
                         {
                             xtype: 'button',

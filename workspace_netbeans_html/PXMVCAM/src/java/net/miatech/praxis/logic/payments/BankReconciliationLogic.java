@@ -105,6 +105,10 @@ public class BankReconciliationLogic {
         return bankReconciliationDAO.loadPX269SQP05117(filters, user);
     }
     
+    public String loadPX269MPS287(A2290Filter filters, UserView user) throws SQLException, Exception {
+        return bankReconciliationDAO.loadPX269MPS287(filters, user);
+    }
+    
     public String loadPX269SQP05117_REFND(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP05117_REFND(filters, user);
     }

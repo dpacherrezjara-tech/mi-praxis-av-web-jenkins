@@ -265,7 +265,7 @@ public class ForecastPaymentDAO {
         CallableStatement cstmt = null;
         ResultSet rs01 = null;
 
-        String SQLCLL01 = "{CALL PRAXIS.MPS074_V4(?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.MPS074_V4(?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
