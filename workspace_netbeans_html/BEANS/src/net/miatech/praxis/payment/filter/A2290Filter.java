@@ -718,6 +718,7 @@ public class A2290Filter extends A2290 {
     public double SINSAMOUC = 0;
     public String CERRORHST = "";
     public String DES_CERROR = "";
+    public String DES_CERROR_COMMENT = "";
     public String CERROIN = "";
     public String DES_CERROIN = "";
     public String CODADJU = "";

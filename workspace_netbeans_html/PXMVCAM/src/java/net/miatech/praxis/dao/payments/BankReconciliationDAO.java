@@ -9183,6 +9183,7 @@ public class BankReconciliationDAO {
                 beanTkt.FECR = rst.getString("FECR");
                 beanTkt.DCYCLE = rst.getString("DCYCLE");
                 beanTkt.CERROR = rst.getString("CERROR");
+                beanTkt.DES_CERROR_COMMENT = rst.getString("DES_CERROR_COMMENT");
                 beanTkt.DES_CERROR = rst.getString("DES_CERROR");
                 lstData.add(beanTkt);
             }
@@ -9385,6 +9386,49 @@ public class BankReconciliationDAO {
             return bean;
         }
     
+        public MPF100Filter AssignCashComment(MPF100Filter filter) throws SQLException, Exception {
 
+            MPF100Filter bean = new MPF100Filter();
+            List<MPF100Filter> listaMain = filter.getMainRecords();
+            if (listaMain == null || listaMain.isEmpty()) {
+                throw new Exception("No se encontró información en la lista principal (mainRecords)");
+            }
+
+            CallableStatement cstmt = null;
+            ResultSet rst = null;
+            Connection cnx = null;
+
+            String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS414(?,?,?,?,?,?,?)}";
+            try {
+                cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+                for (MPF100Filter mainC : listaMain) {
+
+                    cstmt = cnx.prepareCall(SQLCLL01);
+                    cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+                    cstmt.setString(2, mainC.CBATCH != null ? mainC.CBATCH.trim() : "");
+                    cstmt.setString(3, mainC.SAGENT != null ? mainC.SAGENT.trim() : "");
+                    cstmt.setString(4, mainC.STRDATE != null ? mainC.STRDATE.trim() : "");
+                    cstmt.setString(5, mainC.ENDDATE != null ? mainC.ENDDATE.trim() : "");
+                    cstmt.setString(6, mainC.SCOUNTRY != null ? mainC.SCOUNTRY.trim() : "");
+                    cstmt.setString(7, filter.codeComment);
+                    cstmt.execute();
+                    rst = cstmt.getResultSet();
+
+                    if (rst != null) rst.close();
+                    if (cstmt != null) cstmt.close();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new SQLException("Error al asignar comentario: " + e.getMessage(), e);
+            } finally {
+                if (rst != null) try { rst.close(); } catch (SQLException ignored) {}
+                if (cstmt != null) try { cstmt.close(); } catch (SQLException ignored) {}
+                if (cnx != null) session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+                pasarGarbageCollector();
+            }
+
+            return bean;
+        }
 
 }

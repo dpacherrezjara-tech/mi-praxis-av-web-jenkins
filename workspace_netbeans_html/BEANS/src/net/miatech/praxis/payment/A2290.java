@@ -108,6 +108,7 @@ public class A2290 {
     public String CECO = "";
     public String MERCHAND = "";
     public String ACCNUMBERL = "";
+    public String SCURREVENCONVERT = "";
     public double SVFOP = 0;
     public double SVFOPADJ = 0;
     public double SVFOPC = 0;

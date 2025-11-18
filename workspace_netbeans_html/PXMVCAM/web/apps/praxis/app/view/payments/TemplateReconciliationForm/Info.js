@@ -1688,7 +1688,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                                 text: 'CURR',
                                                 width: 54,
                                                 menuDisabled: true,
-                                                dataIndex: 'SCURREVEN',
+                                                dataIndex: 'SCURREVENCONVERT',
                                                 align: 'center',
                                                 style: 'padding:2px; background: #3F5675;border-color:white',
                                                 summaryType: 'sum',
