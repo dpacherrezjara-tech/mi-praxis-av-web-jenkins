@@ -398,10 +398,29 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryPending',{
                                     enforceMaxLength: true
 
                                 },
+                                {xtype: 'tbspacer', width: 7},
+                                {
+                                    xtype: 'label',
+                                    text: 'Comment',
+                                    hidden: false,
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    width: 65
+
+                                },
+
+                                {xtype: 'tbspacer', width: 7},
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-txtCOMMENTSMPF199',
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    fieldStyle: 'text-align:center;',
+                                    editable: false,
+                                    width: 240,
+                                    enforceMaxLength: true
+
+                                },
                                 
-                                
-                                {xtype: 'tbspacer', width: 20}
-                                
+                                                                
 
                                 
                                 

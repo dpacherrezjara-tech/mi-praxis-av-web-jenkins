@@ -6663,14 +6663,19 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                             
 
                                             {
-                                                text: 'Reference',
+                                                text: 'Reference / Comment',
                                                 dataIndex: 'O_REFERENCE',
                                                 width: 280,
-                                                renderer: function (value, metaData) {
+                                                renderer: function (value, metaData, record) {
                                                     metaData.style = "text-align:center;";
+
+                                                    // Si O_REFERENCE es null, vacío o solo espacios → usar O_COMMENTS
+                                                    if (!value || value.trim() === '') {
+                                                        return record.get('O_COMMENTS') || '';
+                                                    }
+
                                                     return value;
                                                 }
-
                                             },
                                             {
                                                 text: 'BANDOC',
