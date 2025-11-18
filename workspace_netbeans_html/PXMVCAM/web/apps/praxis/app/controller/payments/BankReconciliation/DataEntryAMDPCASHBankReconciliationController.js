@@ -4,6 +4,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
     // <editor-fold defaultstate="collapsed" desc="Variables Globales">
     meDe: '',
     actionCode: '',
+    storeDataCash:{},
+    showOnlyPending: false,
     bean: {},
     beanCashAgent: {},
     beanCashCsv: {},
@@ -53,7 +55,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
 //            
 //        });
 
-        
+        this.obtainData();
         this.mostrarData();
         Ext.getCmp(prototype.id + '-btn-save').hide();
         Ext.getCmp(prototype.id + '-btn-cancel').show();
@@ -79,6 +81,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         return comboBox.join('|');
     },
     onSearchCompleteDetail: function () {
+        meDe.showOnlyPending= false;
         var paramDetail = {};
         paramDetail.beanString = JSON.stringify(this.bean);
         Ext.Ajax.request({
@@ -99,6 +102,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
                     });
                     
                         Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
+                        meDe.storeDataCash = storeData;
                         Ext.getCmp(prototype.id + '-gridDataInfoScanICCS').bindStore(storeData);
 //                    meDe.calcularSumAmount();
                     meDe.calcularMontos();
@@ -191,9 +195,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
 //        this.setValue('de-txtSumAmount', Ext.util.Format.number(this.sumAmount, '0,000.00'));
         Ext.getCmp(prototype.id + '-gridDataInfoScan').getView().refresh();
     },
-    mostrarComment: function () {
+    mostrarCommentCash: function () {
 
-        var txtCOMENT = Ext.getCmp(prototype.id + '-PanelComments');
+        var txtCOMENT = Ext.getCmp(prototype.id + '-PanelCommentsCash');
         var comentVisible = txtCOMENT.isVisible();
         if (comentVisible) {
             txtCOMENT.hide();
@@ -342,7 +346,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
     updateComent: function (){
         
         
-        let valorComent = Ext.getCmp(prototype.id + '-cmbCOMENT').getValue();
+        let valorComent = Ext.getCmp(prototype.id + '-cmbCOMENTCASH').getValue();
          meDe.bean.CERROR = valorComent;
         console.log("CERROR enviado:", meDe.bean.CERROR); 
         
@@ -394,7 +398,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
     onUpdateClick: async function (btn) {
         
 // 
-        let valorComent = Ext.getCmp(prototype.id + '-cmbCOMENT').getValue();
+        let valorComent = Ext.getCmp(prototype.id + '-cmbCOMENTCASH').getValue();
         console.log(valorComent,"visualkizar xxx");
         
         if (valorComent == "75" ||valorComent== "76" ||  valorComent==  "77" || valorComent==  "78"){
@@ -485,7 +489,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         var BSVFOP = parseFloat(Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue().replace(/,/g, '').replace('.00', ''));
         if (ASVFOP == BSVFOP) {
 
-            var comment = Ext.getCmp(prototype.id + '-cmbCOMENT').getValue();
+            var comment = Ext.getCmp(prototype.id + '-cmbCOMENTCASH').getValue();
             if (comment !== '' && comment !== null) {
                 let miGrilla = Ext.getCmp(prototype.id + '-gridDataInfoScan');
                 let miGrillaAdj = Ext.getCmp(prototype.id + '-gridDataAdjustment');
@@ -501,8 +505,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
                 }
             } else {
                 global.Msg({msg: 'Select the Manual Reconciliation reason "BPO Comment" '});
-                Ext.getCmp(prototype.id + '-PanelComments').show();
-                Ext.getCmp(prototype.id + '-COMENT_Forced').show();
+                Ext.getCmp(prototype.id + '-PanelCommentsCash').show();
+                Ext.getCmp(prototype.id + '-COMENT_ForcedCash').show();
             }
 
         } else {
@@ -1273,11 +1277,131 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
     
     
 
+ obtainData: function () {
+        Ext.Ajax.request({
+            url: prototype.url + '/obtainMessages',
+            method: 'POST',
+            timeout: 60000000,
+            params: {},
+            success: function (response, opts) {
+                var res = Ext.JSON.decode(response.responseText);
+                if (res.success) {
+//                    meDe.bean_detail = res.result;
+                    var storeData = Ext.create('Ext.data.Store', {
+                        data: res.data,
+                        autoLoad: true
+                    });
+                    Ext.getCmp(prototype.id + '-cmbCOMENTCASH').bindStore(storeData);
+                    Ext.getCmp(prototype.id + '-cmbCOMENTCASH').setValue('');
+                } else {
+                    global.Msg({msg: res.Mensaje});
+                }
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+//                Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+            }
+        });
 
+    },
         
         
+onUpdateCommentsCash: function () {
+    const getCommentCash = Ext.getCmp(prototype.id + '-cmbCOMENTCASH');
+    const commentValue = getCommentCash.getValue();
+    var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+    var storeScan = gridScan.getStore(); 
 
+    if (!commentValue) {
+        Ext.Msg.alert('Alert', 'No valid comment has been selected.');
+        return;
+    }
+    
+    var seleccionados = storeScan.getRange().filter(function (r) {
+        return r.get('selected') === true;
+    });
 
+    if (seleccionados.length === 0) {
+        Ext.Msg.alert('Alert', 'Please select at least one record to assign a comment.');
+        return;
+    }
+    
+     var invalid = seleccionados.find(function (r) {
+        return r.get('STVAL') !== "3";
+    });
+
+    if (invalid) {
+        Ext.Msg.alert(
+            'Alert',
+            'No puede asignar comentario a un registro MATCH.'
+        );
+        return; 
+    }
+    
+    var beanConciliacion = {
+        mainRecords: seleccionados.map(function (r) { return r.getData(); }),
+        codeComment: commentValue
+    };
+
+    console.log(beanConciliacion,'beanConciliacion')
+    var paramDetail = {};
+    paramDetail.beanString = JSON.stringify(beanConciliacion);
+    
+    
+    Ext.Ajax.request({
+        url: prototype.url + '/AssignCashComment',
+        method: 'POST',
+        jsonData: beanConciliacion,
+        timeout: 60000000,
+        headers: { 'Content-Type': 'application/json' },
+        beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').mask('Assigning Comment...'),
+        success: function (response) {
+            Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
+            var res = Ext.JSON.decode(response.responseText);
+            if (res.success) {
+                Ext.Msg.alert('Success', 'Code Assigned Successfully.');
+                meDe.onSearchCompleteDetail();
+            } else {
+                global.Msg({ msg: res.Mensaje || 'Code Assigned Successfully.' });
+            }
+        },
+        failure: function (response) {
+            Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
+            Ext.Msg.alert('Error', 'The comment could not be assigned');
+        }
+    });
+    
+    
+},
+
+onShowWOSales: function () {
+    var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+    var storeScan = gridScan.getStore();
+
+    meDe.showOnlyPending = !meDe.showOnlyPending;
+
+    if (meDe.showOnlyPending) {
+  
+        var filteredData = meDe.storeDataCash.getRange().filter(function (r) {
+            return r.get('STVAL') === "3";
+        });
+
+        var newStore = Ext.create('Ext.data.Store', {
+            data: filteredData
+        });
+
+        gridScan.bindStore(newStore);
+//        Ext.Msg.alert('Info', 'Mostrando solo registros Pending (STVAL = 3)');
+    } else {
+       
+        var newStore = Ext.create('Ext.data.Store', {
+            data: meDe.storeDataCash.getRange()
+        });
+
+        gridScan.bindStore(newStore);
+//        Ext.Msg.alert('Info', 'Mostrando todos los registros');
+    }
+}
 
              
 

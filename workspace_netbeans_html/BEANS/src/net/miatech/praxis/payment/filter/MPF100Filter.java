@@ -587,6 +587,7 @@ public class MPF100Filter extends MPF100 {
     public String DESC_SCOUNTRY = "";
     public String MERCHAND = "";
     public String TINPUT = "";
+    public String codeComment = "";
     public double SVFOPNETR = 0;
     public double NETO = 0;
     public double NETOC = 0;

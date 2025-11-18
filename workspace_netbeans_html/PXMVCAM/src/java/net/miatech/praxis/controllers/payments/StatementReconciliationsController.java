@@ -4559,8 +4559,23 @@ public class StatementReconciliationsController extends BaseController {
             return;
         }
 
+        String ruta = this.serverSession.propertySession.get("DB_SERVER_DEFAULT_TYPE").toString();
+        String rutaCarpeta;
+
+        if ("ATT".equals(ruta)) {
+            rutaCarpeta = "test";
+        } else if ("DEV".equals(ruta)) {
+            rutaCarpeta = "dev";
+        } else if ("PRO".equals(ruta)) {
+            rutaCarpeta = "prod";
+        } else {
+            rutaCarpeta = ""; 
+        }
+
+        System.out.println("esta es mi ruta" + ruta);
+
         // Carpeta base donde buscar los archivos CSV
-        Path folderPath = Paths.get("\\\\10.0.0.87\\av\\Efectivo\\prod\\process\\BSP\\CO\\2025");
+        Path folderPath = Paths.get("\\\\10.0.0.87\\av\\Efectivo\\"+rutaCarpeta+"\\process\\BSP\\"+country+"\\2025");
 
         System.out.println("Buscando archivos para country=" + country + " y date=" + date);
 
