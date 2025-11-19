@@ -340,4 +340,8 @@ public class BankReconciliationLogic {
     public MPF100Filter ConciliationManualCash(MPF100Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.ConciliationManualCash(filter);
     }
+    
+    public MPF100Filter AssignCashComment(MPF100Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.AssignCashComment(filter);
+    }
 }

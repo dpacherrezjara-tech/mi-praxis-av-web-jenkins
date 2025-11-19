@@ -5,7 +5,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
         'Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHBankReconciliationController'
     ],
     controller: 'DataEntryAMDPCASHBankReconciliationController',
-    title: 'Bank Reconciliation - Data Entry Form',
+    title: 'Bank Reconciliation - Data Entry Form 2',
     header: true,
     height: 920,
     width: 1310,
@@ -1199,13 +1199,101 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
 //                                                },
 //                                            ]
 //                                        },
-                                        {xtype: 'tbspacer', width: 1000},
                                         {
-                                            xtype: 'button',
-                                            id: prototype.id + '-btnExcelCash',
-                                            iconCls: 'prx-icon-excel',
-                                            tooltip: 'Export to csv',
-                                            handler: 'ExportCSV'
+                                            xtype: 'panel',
+                                            layout: 'hbox',
+                                            border: false,
+                                            margin: '8 0 8 0',
+                                            width: 1225,
+                                            //bodyStyle: 'background:#efe5e5;',
+                                            items: [
+                                                {xtype: 'tbspacer', width: 40},
+                                                {
+                                                    xtype: 'button',
+                                                    id: prototype.id + '-btnExcelCash',
+                                                    iconCls: 'prx-icon-excel',
+                                                    tooltip: 'Export to csv',
+                                                    handler: 'ExportCSV'
+                                                },
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'button',
+                                                    id: prototype.id + '-btnShowWOSales',
+                                                    text: 'Show W/O Sales',
+                                                    margin: '0 5 0 5',
+                                                    width: 130,
+                                                    handler: 'onShowWOSales'
+                                                },
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'button',
+                                                    width: 30,
+//                                                    margin: '30 30 0 30',
+                                                    id: prototype.id + '-mostrarCommentCash',
+                                                    icon: 'resources/img/botones/Comment.png',
+                                                    tooltip: 'BPO Comment',
+                                                    listeners: {
+                                                        click: 'mostrarCommentCash'
+                                                    }
+                                                },
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'panel',
+                                                    layout: 'hbox',
+                                                    border: false,
+                                                    margin: '0 0 0 0',
+                                                    id: prototype.id + '-PanelCommentsCash',
+                                                    hidden: true,
+                                                    height: 30,
+                                                    width: 592,
+                                                    bodyStyle: 'background:#efe5e5;',
+                                                    items: [
+                                                        {
+                                                            xtype: 'label',
+//                                                            style: 'font-weight:bold;color:#0B333C;',
+                                                            margin: '5 0 0 10',
+                                                            text: 'BPO Comment:',
+                                                            width: 90
+                                                        },
+                                                        {xtype: 'tbspacer', width: 5},
+                                                        {
+                                                            xtype: 'label',
+                                                            text: '(*)',
+                                                            margin: '5 2 0 0',
+                                                            id: prototype.id + '-COMENT_ForcedCash',
+                                                            hidden: true,
+                                                            style: 'font-weight:bold;color:red;',
+                                                            width: 20
+                                                        },
+                                                        {
+                                                            xtype: 'combo',
+                                                            id: prototype.id + '-cmbCOMENTCASH',
+                                                            margin: '5 0 0 0',
+                                                            style: 'font-weight:bold;color:#0B333C;',
+                                                            fieldStyle: 'text-align:left;',
+                                                            queryMode: 'local',
+                                                            triggerAction: 'all',
+                                                            valueField: 'CODE',
+                                                            displayField: 'NAME',
+                                                            width: 300,
+                                                            labelWidth: 10,
+                                                            hidden: false,
+                                                            hiddenLabel: false
+                                                        },
+                                                        {xtype: 'tbspacer', width: 5},
+                                                        {
+                                                            xtype: 'button',
+                                                            id: prototype.id + '-btnUpdateCommentsCash',
+                                                            iconCls: 'prx-icon-update',
+                                                            text: 'Update Comments',
+                                                            margin: '4 10 0 10',
+                                                            width: 130,
+//                                                            style: 'font-weight:bold;background:#6A95AF;color:white;',
+                                                            handler: 'onUpdateCommentsCash'
+                                                        }
+                                                    ]
+                                                },
+                                            ]
                                         },
                                         {
                                             xtype: 'panel',
@@ -1267,10 +1355,15 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                             }],
                                                                             viewConfig: {
                                                                                 getRowClass: function (record) {
+                                                                                    
+                                                                                    if (record.get('DES_CERROR_COMMENT') && record.get('DES_CERROR_COMMENT').trim() !== '' ) {
+                                                                                        return 'row-with-cerrorC'; 
+                                                                                    }
+                                                                                    
                                                                                     if ((record.get('REFERENCE') && record.get('REFERENCE').trim() !== '') ||
                                                                                         (record.get('COMMENTS') && record.get('COMMENTS').trim() !== '') || 
                                                                                         (record.get('DES_CERROR') && record.get('DES_CERROR').trim() !== '')) {
-                                                                                        return 'row-with-comments';
+                                                                                        return 'row-with-comments'; 
                                                                                     }
                                                                                     return '';
                                                                                 },
@@ -1292,6 +1385,12 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                                             Ext.tip.QuickTipManager.register({
                                                                                                 target: item,
                                                                                                 text: `<b>Codigo:</b> ${record.get('DES_CERROR') || ''}`
+                                                                                            });
+                                                                                        }
+                                                                                        if (record.get('CERROR') && record.get('CERROR').trim() !== '')  {
+                                                                                            Ext.tip.QuickTipManager.register({
+                                                                                                target: item,
+                                                                                                text: `<b>Comment:</b> ${record.get('DES_CERROR_COMMENT') || ''}`
                                                                                             });
                                                                                         }
                                                                                     },

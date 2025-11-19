@@ -5742,6 +5742,27 @@ public class BankReconciliationController extends BaseController {
 
         return new Gson().toJson(map);
     }
+    
+     @RequestMapping(value = "/AssignCashComment", method = RequestMethod.POST)
+    @ResponseBody
+    public String AssignCashComment(@RequestBody MPF100Filter filter) {
+        System.out.println("-------------- BankReconciliation : ManualConciliacionCash -------------");
+
+        ModelMap map = new ModelMap();
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            logic.AssignCashComment(filter);
+
+            map.put("success", true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("success", false);
+            map.put("message", "Error al procesar la conciliación: " + e.getMessage());
+        }
+
+        return new Gson().toJson(map);
+    }
 
     
     @RequestMapping(value = "getCSV")
@@ -5756,9 +5777,25 @@ public class BankReconciliationController extends BaseController {
             response.getWriter().write("Parámetros 'country' y 'date' son obligatorios");
             return;
         }
+        
+
+        String ruta = this.serverSession.propertySession.get("DB_SERVER_DEFAULT_TYPE").toString();
+        String rutaCarpeta;
+
+        if ("ATT".equals(ruta)) {
+            rutaCarpeta = "test";
+        } else if ("DEV".equals(ruta)) {
+            rutaCarpeta = "dev";
+        } else if ("PRO".equals(ruta)) {
+            rutaCarpeta = "prod";
+        } else {
+            rutaCarpeta = ""; 
+        }
+
+        System.out.println("esta es mi ruta" + ruta);
 
         // Carpeta base donde buscar los archivos CSV
-        Path folderPath = Paths.get("\\\\10.0.0.87\\av\\Efectivo\\prod\\process\\BSP\\CO\\2025");
+        Path folderPath = Paths.get("\\\\10.0.0.87\\av\\Efectivo\\"+rutaCarpeta+"\\process\\BSP\\"+country+"\\2025");
 
         System.out.println("Buscando archivos para country=" + country + " y date=" + date);
 
