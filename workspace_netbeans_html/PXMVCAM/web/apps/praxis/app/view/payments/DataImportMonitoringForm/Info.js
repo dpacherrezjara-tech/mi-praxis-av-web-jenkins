@@ -52,7 +52,7 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataImport',
-                                    width: 1344,
+                                    width: 1034,
                                     hidden: false,
                                     columnLines: true,
                                     height: 490,
@@ -102,9 +102,43 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Info', {
 
                                             {text: 'DATE', dataIndex: 'PROCDATE', width: 80, align: 'center'},
 
-                                            {text: 'BEGIN', dataIndex: 'PROCINI', width: 80, align: 'center'},
+                                            {
+                                                text: 'BEGIN',
+                                                dataIndex: 'PROCINI',
+                                                width: 80,
+                                                align: 'center',
+                                                renderer: function (value) {
+                                                    if (!value)
+                                                        return '';
 
-                                            {text: 'END', dataIndex: 'PROCFIN', width: 80, align: 'center'}
+                                                    value = value.toString().padStart(6, '0');  // Rellena a HHMMSS
+
+                                                    const hh = value.substring(0, 2);
+                                                    const mm = value.substring(2, 4);
+                                                    const ss = value.substring(4, 6);
+
+                                                    return `${hh}:${mm}:${ss}`;
+                                                }
+                                            },
+                                            {
+                                                text: 'END',
+                                                dataIndex: 'PROCFIN',
+                                                width: 80,
+                                                align: 'center',
+                                                renderer: function (value) {
+                                                    if (!value)
+                                                        return '';
+
+                                                    value = value.toString().padStart(6, '0');
+
+                                                    const hh = value.substring(0, 2);
+                                                    const mm = value.substring(2, 4);
+                                                    const ss = value.substring(4, 6);
+
+                                                    return `${hh}:${mm}:${ss}`;
+                                                }
+                                            }
+
 
 
 
@@ -151,55 +185,55 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Info', {
                                     bodyStyle: 'background-color: #E1E6EC; border-radius: 5px;',
 //                            margin: '15px 0 0px 0px',
                                     items: [
-                                        {
-                                            xtype: 'panel',
-                                            width: 850,
-                                            height: 25,
-                                            bodyStyle: 'background-color: #6A8BAA; border: 1px solid #81BEF7; border-radius: 5px',
-                                            layout: {
-                                                type: 'hbox',
-                                                pack: 'center'
-                                            },
-                                            defaults: {
-                                                xtype: 'label'
-                                            },
-                                            items: [
-                                                {
-                                                    text: 'Page',
-                                                    width: 50,
-                                                    style: 'margin-top: 3px;color:white;font-weight:bold'
-                                                },
-                                                {
-                                                    id: prototype.id + '-lbl-currentPage',
-                                                    text: '1',
-                                                    width: 50,
-                                                    style: 'margin-top: 3px;color:white;font-weight:bold'
-                                                },
-                                                {
-                                                    text: 'OF',
-                                                    width: 50,
-                                                    style: 'margin-top: 3px;color:white;font-weight:bold'
-                                                },
-                                                {
-                                                    id: prototype.id + '-lbl-pageCount',
-                                                    text: '0',
-                                                    width: 50,
-                                                    style: 'margin-top: 3px;color:white;font-weight:bold'
-                                                },
-                                                {xtype: 'tbspacer', width: 50},
-                                                {
-                                                    text: 'Total Found',
-                                                    width: 80,
-                                                    style: 'margin-top: 3px;color:white;font-weight:bold'
-                                                },
-                                                {
-                                                    id: prototype.id + '-lbl-total',
-                                                    text: '0',
-                                                    width: 40,
-                                                    style: 'margin-top: 3px;color:white;font-weight:bold'
-                                                }
-                                            ]
-                                        }
+//                                        {
+//                                            xtype: 'panel',
+//                                            width: 850,
+//                                            height: 25,
+//                                            bodyStyle: 'background-color: #6A8BAA; border: 1px solid #81BEF7; border-radius: 5px',
+//                                            layout: {
+//                                                type: 'hbox',
+//                                                pack: 'center'
+//                                            },
+//                                            defaults: {
+//                                                xtype: 'label'
+//                                            },
+//                                            items: [
+//                                                {
+//                                                    text: 'Page',
+//                                                    width: 50,
+//                                                    style: 'margin-top: 3px;color:white;font-weight:bold'
+//                                                },
+//                                                {
+//                                                    id: prototype.id + '-lbl-currentPage',
+//                                                    text: '1',
+//                                                    width: 50,
+//                                                    style: 'margin-top: 3px;color:white;font-weight:bold'
+//                                                },
+//                                                {
+//                                                    text: 'OF',
+//                                                    width: 50,
+//                                                    style: 'margin-top: 3px;color:white;font-weight:bold'
+//                                                },
+//                                                {
+//                                                    id: prototype.id + '-lbl-pageCount',
+//                                                    text: '0',
+//                                                    width: 50,
+//                                                    style: 'margin-top: 3px;color:white;font-weight:bold'
+//                                                },
+//                                                {xtype: 'tbspacer', width: 50},
+//                                                {
+//                                                    text: 'Total Found',
+//                                                    width: 80,
+//                                                    style: 'margin-top: 3px;color:white;font-weight:bold'
+//                                                },
+//                                                {
+//                                                    id: prototype.id + '-lbl-total',
+//                                                    text: '0',
+//                                                    width: 40,
+//                                                    style: 'margin-top: 3px;color:white;font-weight:bold'
+//                                                }
+//                                            ]
+//                                        }
                                     ]
                                 }
                             ]

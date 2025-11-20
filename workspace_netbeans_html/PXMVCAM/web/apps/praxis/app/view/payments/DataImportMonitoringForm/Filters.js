@@ -28,24 +28,23 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Filters', {
                     width: 90
                 },
                  
-                {
-                    xtype: 'combo',
-                    id: prototype.id + '-cmbIN_COUNTRY',
-                    disabled: false,
-                    width: 130,
-                    queryMode: 'local',
-                    triggerAction: 'all',
-                    valueField: 'A006PAIS',
-                    displayField: 'A006NOMBRE',
-                    hidden: false,
-                    editable: false,
-                    hiddenLabel: false,
-                    margin: '0 10 0 0',
-//                    listeners: {
-//                        change: 'btnSearch_click'
-//                    }
-                },
-                
+               {
+    xtype: 'combo',
+    id: prototype.id + '-cmbIN_COUNTRY',
+    width: 130,
+    queryMode: 'local',
+    triggerAction: 'all',
+    valueField: 'A006PAIS',
+    displayField: 'A006NOMBRE',
+    editable: true,          // <-- necesario para escribir
+    typeAhead: true,         // <-- autocompleta
+    minChars: 1,             // <-- desde la primera letra filtra
+    forceSelection: false,   // <-- permite escribir sin seleccionar
+    enableKeyEvents: true,
+    margin: '0 10 0 0'
+},
+{ xtype: 'tbspacer', width: 40 },
+
                 { xtype: 'tbspacer', width: 40 }
 
 

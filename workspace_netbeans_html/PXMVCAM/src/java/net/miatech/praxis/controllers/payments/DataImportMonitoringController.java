@@ -13,12 +13,17 @@ import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.exceptions.SpringException;
 import net.miatech.praxis.payment.MPFER90;
 import net.miatech.praxis.utils.SpringWS;
+import net.miatech.utils.Functions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
 
-@RestController
+
+
+
+@Controller
 @Scope("request")
 @RequestMapping("/DataImportMonitoring")
 public class DataImportMonitoringController extends BaseController {
@@ -26,45 +31,27 @@ public class DataImportMonitoringController extends BaseController {
     @Autowired
     private DataImportMonitoringLogic logic;
 
-    @Autowired
-    private Gson gson;
+  
 
     @Autowired
     private SpringWS ws;
 
     @Autowired
     private CurrentSession cs;
-    /**
-     * Endpoint para obtener todos los procesos de importación
-     */
-//    
-//    @RequestMapping(value = "getMonitoringData")
-//    public @ResponseBody
-//    String getMonitoringData(ModelMap map, HttpServletRequest request) {
-//        System.out.println("-------------- DataImportMonitoring : Buscar -------------");
-//        map.put("success", true);
-//
-//        
-//        
-//        List<MPFER90> lst = new ArrayList<>();
-//        map.put("data", lst);
-//        return new Gson().toJson(map);
-//        try {
-//            // Inicializamos la lógica y seteamos la sesión
-//            logic = new DataImportMonitoringLogic();
-//            logic.setSession(this.serverSession.getServerSession());
-//
-//            // Llamamos al método que retorna todos los registros
-//            lst = logic.listProcesses(new MPFER90()); // bean vacío, ya que no usamos filtros
-//
-//        } catch (Exception e) {
-//            throw new SpringException(e);
-//        }
-//
-//        map.put("data", lst);
-//        System.out.println("Total : " + lst.size());
-//        return new Gson().toJson(map);
-//    }
+    
+    
+        
+       @RequestMapping(method = RequestMethod.POST)
+    public String index(ModelMap map) {
+        map.put("vp_serverDate", Functions.getFechaActual());
+        map.put("vp_serverTime", Functions.getHoraActual());
+        
+        
+        System.out.println("xxxxx");
+        return "payments/DataImportMonitoring/form_index";
+    }
+    
+    
 
 
     

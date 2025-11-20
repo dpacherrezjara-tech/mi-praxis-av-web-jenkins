@@ -29,37 +29,37 @@ Ext.define('Ext.Praxis.controller.payments.DataImportMonitoring.DataImportMonito
 
         this.control({
             //   -------------------Eventos Genericos --------------------
-            'DataImportMonitoringForm-xpanel': {
+            '#DataImportMonitoringForm-xpanel': {
                 afterrender: this.xpanel_afterrender            
             },
-            'DataImportMonitoringForm-btnSearch': {
+            '#DataImportMonitoringForm-btnSearch': {
                 click: this.btnSearch_click
             },
-            'DataImportMonitoringForm-btnClear': {
+            '#DataImportMonitoringForm-btnClear': {
                 click: this.btnClear_click
             },
-            'DataImportMonitoringForm-btnExcel': {
+            '#DataImportMonitoringForm-btnExcel': {
                 click: this.btnExcel_click
             },
-            'DataImportMonitoringForm-btnFilter': {
+            '#DataImportMonitoringForm-btnFilter': {
                 click: this.btnFilter_click
             },
-            'DataImportMonitoringForm-btnAdd': {
+            '#DataImportMonitoringForm-btnAdd': {
                 click: this.btnAdd_click
             },
-            'DataImportMonitoringForm-btnBack': {
+            '#DataImportMonitoringForm-btnBack': {
                 click: this.btnBack_click
             },
-            'DataImportMonitoringForm-btn-pag-first': {
+            '#DataImportMonitoringForm-btn-pag-first': {
                 click: this.pagFirst
             },
-            'DataImportMonitoringForm-btn-pag-previous': {
+            '#DataImportMonitoringForm-btn-pag-previous': {
                 click: this.pagPrevious
             },
-            'DataImportMonitoringForm-btn-pag-next': {
+            '#DataImportMonitoringForm-btn-pag-next': {
                 click: this.pagNext
             },
-            'DataImportMonitoringForm-btn-pag-last': {
+            '#DataImportMonitoringForm-btn-pag-last': {
                 click: this.pagLast
             }
 //            //-----------------Eventos Especificos -------------------    
@@ -132,7 +132,7 @@ Ext.define('Ext.Praxis.controller.payments.DataImportMonitoring.DataImportMonito
 
         me.bean = {};
         
-         me.bean.PROCPAIS = Ext.getCmp(prototype.id + '-cmbIN_COUNTRY').getValue()|| '';
+         me.bean.IN_PROCPAIS = Ext.getCmp(prototype.id + '-cmbIN_COUNTRY').getValue()|| '';
 
         var beanString = JSON.stringify(me.bean);
         
@@ -172,18 +172,18 @@ Ext.define('Ext.Praxis.controller.payments.DataImportMonitoring.DataImportMonito
                         obj.proxy.extraParams =searchParams   ;                                    
                         
                     },
-                    load: function(obj) {
-                        var pag = Ext.getCmp(prototype.id + '-paggin');
-                        var pagData = pag.getPageData();
-                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
-                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
-                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
-                        if (obj.data.length === 0) {
-                            global.Msg({
-                                msg: 'Data not found.'
-                            });
-                        }
-                    }
+//                    load: function(obj) {
+//                        var pag = Ext.getCmp(prototype.id + '-paggin');
+//                        var pagData = pag.getPageData();
+//                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+//                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+//                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+//                        if (obj.data.length === 0) {
+//                            global.Msg({
+//                                msg: 'Data not found.'
+//                            });
+//                        }
+//                    }
                 }
             });
             

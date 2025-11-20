@@ -51,7 +51,7 @@ public class DataImportMonitoringDAO {
         List<MPFER90> listaData = new ArrayList<>();
         MPFER90 bean;
         
-        String SQL = "{CALL PRAXISMP.LISTA_MPFER90(?)}";
+        String SQL = "{CALL PRAXISMP.LISTAR_MPFER90(?)}";
         Connection cnx = null;
         CallableStatement cstmt = null;
         ResultSet rst = null;
@@ -63,7 +63,7 @@ public class DataImportMonitoringDAO {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQL);
             
-            cstmt.setString(1, filter.PROCPAIS.trim());
+            cstmt.setString(1, filter.IN_PROCPAIS.trim());
 
 
             cstmt.execute();

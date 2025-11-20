@@ -30,6 +30,7 @@ import org.codehaus.jackson.annotate.JsonAutoDetect;
     public String PROCINI ="";
     public String PROCFIN ="";
     public String CPROGRAM ="";
+    public String IN_PROCPAIS ="";
 
     
 
