@@ -32,92 +32,97 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Info', {
                     title: 'PROCESADOS DEL DÍA',
                     itemId: prototype.id + '-tabProcessed',
 
-                    items: [
+                    listeners: {
+                        activate: function (tab) {
+                            const grid = tab.down('grid');
+                            if (grid)
+                                grid.getStore().load();
+                        }
+                    },
 
+                    items: [
                         {
                             xtype: 'grid',
                             id: prototype.id + '-gridDataImport',
-                            width: 1100,
-                            height: 520,
+                            width: 1445,
+                            height: 560,
                             columnLines: true,
                             cls: 'modern-grid',
-
                             store: Ext.data.StoreManager.lookup(prototype.id + '-store'),
 
-                            style: 'border-radius:10px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,0.18);',
+                            style: 'border-radius:12px; overflow:hidden; box-shadow:0 4px 18px rgba(0,0,0,0.12);',
+
+                            scrollable: true,
 
                             viewConfig: {
                                 enableTextSelection: true,
                                 stripeRows: true,
                                 getRowClass: function (record) {
                                     const st = record.get('PROCSTATUS');
-                                    if (st === 'F') return 'row-green';
-                                    if (st === 'I') return 'row-yellow';
-                                    if (st === 'E') return 'row-red';
+                                    if (st === 'F')
+                                        return 'row-green';
+                                    if (st === 'I')
+                                        return 'row-yellow';
+                                    if (st === 'E')
+                                        return 'row-red';
                                 }
                             },
 
-                            columns: {
-                                defaults: {
-                                    menuDisabled: true,
-                                    sortable: true,
+                            columns: [
+                                {text: 'ID', dataIndex: 'PROCID', width: 70, align: 'center'},
+                                {text: 'PROCESS NAME', dataIndex: 'PROCNAME', width: 150, align: 'left'},
+                                {text: 'DESCRIPTION', dataIndex: 'PROCDESC', width: 280, align: 'left'},
+                                {
+                                    text: 'STATUS',
+                                    dataIndex: 'PROCSTATUS',
+                                    width: 120,
                                     align: 'center',
-                                    style: 'font-weight:bold; font-size:13px; background:#F8FAFB;'
-                                },
-                                items: [
-
-                                    { text: 'ID', dataIndex: 'PROCID', width: 70 },
-
-                                    { text: 'PROCESS NAME', dataIndex: 'PROCNAME', width: 140, align: 'left' },
-
-                                    { text: 'DESCRIPTION', dataIndex: 'PROCDESC', width: 260, align: 'left' },
-
-                                    {
-                                        text: 'STATUS',
-                                        dataIndex: 'PROCSTATUS',
-                                        width: 110,
-                                        renderer: function (v) {
-                                            let color = '#555';
-                                            let text = v;
-
-                                            if (v === 'I') { color = '#F1C40F'; text = 'Iniciado'; }
-                                            if (v === 'F') { color = '#2ECC71'; text = 'Finalizado'; }
-                                            if (v === 'E') { color = '#E74C3C'; text = 'Error'; }
-
-                                            return `<span style="font-weight:bold;color:${color};">${text}</span>`;
+                                    renderer: function (v) {
+                                        let color = '#555', text = v;
+                                        if (v === 'I') {
+                                            color = '#F1C40F';
+                                            text = 'Iniciado';
                                         }
-                                    },
-
-                                    { text: 'COUNTRY', dataIndex: 'PROCPAIS', width: 80 },
-
-                                    { text: 'MESSAGE', dataIndex: 'PROCMESSAG', width: 300, align: 'left' },
-
-                                    { text: 'PROGRAM', dataIndex: 'CPROGRAM', width: 90 },
-
-                                    { text: 'DATE', dataIndex: 'PROCDATE', width: 90 },
-
-                                    {
-                                        text: 'BEGIN',
-                                        dataIndex: 'PROCINI',
-                                        width: 90,
-                                        renderer: function (value) {
-                                            if (!value) return '';
-                                            value = value.toString().padStart(6, '0');
-                                            return `${value.substring(0, 2)}:${value.substring(2, 4)}:${value.substring(4, 6)}`;
+                                        if (v === 'F') {
+                                            color = '#2ECC71';
+                                            text = 'Finalizado';
                                         }
-                                    },
-                                    {
-                                        text: 'END',
-                                        dataIndex: 'PROCFIN',
-                                        width: 90,
-                                        renderer: function (value) {
-                                            if (!value) return '';
-                                            value = value.toString().padStart(6, '0');
-                                            return `${value.substring(0, 2)}:${value.substring(2, 4)}:${value.substring(4, 6)}`;
+                                        if (v === 'E') {
+                                            color = '#E74C3C';
+                                            text = 'Error';
                                         }
+                                        return `<span style="font-weight:bold;color:${color};">${text}</span>`;
                                     }
-                                ]
-                            }
+                                },
+                                {text: 'COUNTRY', dataIndex: 'PROCPAIS', width: 90, align: 'center'},
+                                {text: 'MESSAGE', dataIndex: 'PROCMESSAG', width: 350, align: 'left'},
+                                {text: 'PROGRAM', dataIndex: 'CPROGRAM', width: 100, align: 'center'},
+                                {text: 'DATE', dataIndex: 'PROCDATE', width: 100, align: 'center'},
+                                {
+                                    text: 'BEGIN',
+                                    dataIndex: 'PROCINI',
+                                    width: 90,
+                                    align: 'center',
+                                    renderer: function (value) {
+                                        if (!value)
+                                            return '';
+                                        value = value.toString().padStart(6, '0');
+                                        return `${value.substring(0, 2)}:${value.substring(2, 4)}:${value.substring(4, 6)}`;
+                                    }
+                                },
+                                {
+                                    text: 'END',
+                                    dataIndex: 'PROCFIN',
+                                    width: 90,
+                                    align: 'center',
+                                    renderer: function (value) {
+                                        if (!value)
+                                            return '';
+                                        value = value.toString().padStart(6, '0');
+                                        return `${value.substring(0, 2)}:${value.substring(2, 4)}:${value.substring(4, 6)}`;
+                                    }
+                                }
+                            ]
                         }
                     ]
                 },
@@ -154,6 +159,15 @@ Ext.util.CSS.createStyleSheet(`
     .modern-grid .x-grid-header-ct {
         background: #F8FAFB !important;
         font-weight: bold;
+        font-size: 14px;
+        color: #333;
+        border-bottom: 1px solid #DDD;
+    }
+
+    .modern-grid .x-grid-cell {
         font-size: 13px;
+        padding: 6px 8px;
+        border-right: 1px solid #E0E0E0;
     }
 `, 'modern-grid-style');
+
