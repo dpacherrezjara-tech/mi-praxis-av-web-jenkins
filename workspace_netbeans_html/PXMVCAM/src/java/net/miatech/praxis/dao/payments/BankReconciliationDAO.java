@@ -8484,6 +8484,7 @@ public class BankReconciliationDAO {
 
                 bean.O_STVAL = rst.getString("STVAL");
                 bean.O_ADATE = rst.getString("ADATE");
+                bean.O_TINPUT = rst.getString("TINPUT");
                 bean.O_CONCEPT = rst.getString("CONCEPT");
                 bean.O_SAGENT = rst.getString("SAGENT");
                 bean.O_SCONSOL = rst.getString("SCONSOL");
@@ -9143,6 +9144,7 @@ public class BankReconciliationDAO {
                 beanTkt = new A2290Filter();
                 beanTkt.CCUST = rst.getString("CCUST");
                 beanTkt.TINPUT = rst.getString("TINPUT");
+                beanTkt.TREG = rst.getString("TREG");
                 beanTkt.STVAL = rst.getString("STVAL");
                 if (hmDescEstados.containsKey(rst.getString("STVAL").trim())) {
                     beanTkt.descSTVAL = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
@@ -9178,6 +9180,7 @@ public class BankReconciliationDAO {
                 beanTkt.COMMENTS = rst.getString("COMMENTS");
                 beanTkt.BANDOC = rst.getString("BANDOC");
                 beanTkt.CBATCH = rst.getString("CBATCH");
+                beanTkt.SEQ = rst.getString("SEQ");
                 beanTkt.TPERIOD = rst.getString("TPERIOD");
                 beanTkt.DPERIOD = rst.getString("DPERIOD");
                 beanTkt.FECR = rst.getString("FECR");
@@ -9257,11 +9260,17 @@ public class BankReconciliationDAO {
             while (rst.next()) {
 
                 beanTkt = new MPF100Filter();
-
+                
+                beanTkt.CCUST = rst.getString("CCUST").trim();
                 beanTkt.CCIA = rst.getString("CCIA").trim();
                 beanTkt.FORMA = rst.getString("FORMA").trim();
                 beanTkt.SERIE = rst.getString("SERIE").trim();
                 beanTkt.TKT = beanTkt.CCIA + beanTkt.FORMA + beanTkt.SERIE;
+                beanTkt.TDOC = rst.getString("TDOC").trim();
+                beanTkt.SCARDNCOR = rst.getString("SCARDNCOR").trim();
+                beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
+                beanTkt.SEQ = rst.getString("SEQ").trim();
+                beanTkt.CORRL = rst.getString("CORRL").trim();
                 beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
                 beanTkt.SDATE = rst.getString("SDATE").trim();
                 beanTkt.STVAL = rst.getString("STVAL").trim();
@@ -9344,27 +9353,38 @@ public class BankReconciliationDAO {
             ResultSet rst = null;
             Connection cnx = null;
 
-            String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS321(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+            String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS321(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
             try {
                 cnx = session.getCNXIBMDB2().getIBMDB2Connection();
                 for (MPF100Filter agent : listaAgent) {
 
                     cstmt = cnx.prepareCall(SQLCLL01);
-                    cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+                    cstmt.setString(1, main.CCUST);
                     cstmt.setString(2, main.CBATCH != null ? main.CBATCH.trim() : "");
                     cstmt.setString(3, main.SAGENT != null ? main.SAGENT.trim() : "");
                     cstmt.setString(4, main.STRDATE != null ? main.STRDATE.trim() : "");
                     cstmt.setString(5, main.ENDDATE != null ? main.ENDDATE.trim() : "");
-                    cstmt.setInt(6, totalTkt);
-                    cstmt.setString(7, main.DATECI != null ? main.DATECI.trim() : "");
-                    cstmt.setString(8, main.TRANCI != null ? main.TRANCI.trim() : "");
-                    cstmt.setString(9, main.DATEC != null ? main.DATEC.trim() : "");
-                    cstmt.setString(10, main.TRANC != null ? main.TRANC.trim() : "");
-                    cstmt.setString(11, main.BANDOC != null ? main.BANDOC.trim() : "");
-                    cstmt.setString(12, main.SCOUNTRY != null ? main.SCOUNTRY.trim() : "");
-                    cstmt.setString(13, agent.TKT != null ? agent.TKT.trim() : "");
-                    cstmt.setString(14, agent.TDOC != null ? agent.TDOC.trim() : "");
-                    cstmt.setDouble(15,agent.SVFOPNETR);
+                    cstmt.setString(6, main.TREG != null ? main.TREG.trim() : "");
+                    cstmt.setString(7, main.ADATE != null ? main.ADATE.trim() : "");
+                    cstmt.setString(8, main.SCOUNTRY != null ? main.SCOUNTRY.trim() : "");
+                    cstmt.setString(9, main.SCURRENCY != null ? main.SCURRENCY.trim() : "");
+                    cstmt.setString(10, main.SEQ != null ? main.SEQ.trim() : "");
+                    cstmt.setInt(11, totalTkt);
+                    cstmt.setString(12, main.DATECI != null ? main.DATECI.trim() : "");
+                    cstmt.setString(13, main.TRANCI != null ? main.TRANCI.trim() : "");
+                    cstmt.setString(14, main.DATEC != null ? main.DATEC.trim() : "");
+                    cstmt.setString(15, main.TRANC != null ? main.TRANC.trim() : "");
+                    cstmt.setString(16, main.BANDOC != null ? main.BANDOC.trim() : "");
+                    cstmt.setString(17, agent.CCUST != null ? agent.CCUST.trim() : "");
+                    cstmt.setString(18, agent.TKT != null ? agent.TKT.trim() : "");
+                    cstmt.setString(19, agent.TDOC != null ? agent.TDOC.trim() : "");
+                    cstmt.setString(20, agent.SCARDNCOR != null ? agent.SCARDNCOR.trim() : "");
+                    cstmt.setString(21, agent.SAUTHOC != null ? agent.SAUTHOC.trim() : "");
+                    cstmt.setString(22, agent.SEQ != null ? agent.SEQ.trim() : "");
+                    cstmt.setString(23, agent.CORRL != null ? agent.CORRL.trim() : "");
+                    cstmt.setDouble(24, filter.SVFOPNETR);
+//                    cstmt.setString(14, agent.TDOC != null ? agent.TDOC.trim() : "");
+//                    cstmt.setDouble(15,agent.SVFOPNETR);
                     cstmt.execute();
                     rst = cstmt.getResultSet();
 
@@ -9410,6 +9430,7 @@ public class BankReconciliationDAO {
                     cstmt.setString(4, mainC.STRDATE != null ? mainC.STRDATE.trim() : "");
                     cstmt.setString(5, mainC.ENDDATE != null ? mainC.ENDDATE.trim() : "");
                     cstmt.setString(6, mainC.SCOUNTRY != null ? mainC.SCOUNTRY.trim() : "");
+//                    cstmt.setString(6, mainC.SCOUNTRY != null ? mainC.SCOUNTRY.trim() : "");
                     cstmt.setString(7, filter.codeComment);
                     cstmt.execute();
                     rst = cstmt.getResultSet();

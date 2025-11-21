@@ -6398,7 +6398,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                             bodyStyle: 'background: transparent;',
                             border: false,
 //                            height: 'auto',
-                            width: 1778,
+                            width: 1858,
                             height: 620,
 //                            scrollable: 'vertical',
 
@@ -6437,7 +6437,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataMPF199',
-                                    width: 1754,
+                                    width: 1834,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -6458,14 +6458,14 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                     columns: {
                                         defaults: {
                                             menuDisabled: true,
-                                            sortable: false,
+                                            sortable: true,
                                             align: 'center'
                                         },
                                         items: [
                                             {
                                                 text: 'Status',
                                                 dataIndex: 'O_STVAL',
-                                                width: 100,
+                                                width: 90,
                                                 renderer: function (value, metaData) {
                                                     metaData.style = "text-align:center;";
 
@@ -6480,9 +6480,24 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 }
                                             },
                                             {
+                                                text: 'Source',
+                                                dataIndex: 'O_TINPUT',
+                                                width: 80,
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    if(value == 'B'){
+                                                        return 'BSP'
+                                                    }else if(value == 'I'){
+                                                        return 'ICCS'
+                                                    }else{
+                                                        return value
+                                                    }
+                                                }
+                                            },
+                                            {
                                                 text: 'Value <br> Date',
                                                 dataIndex: 'O_ADATE',
-                                                width: 120,
+                                                width: 90,
                                                 renderer: function (value, metaData) {
                                                     metaData.style = "text-align:center;";
                                                     return value;
@@ -6544,6 +6559,8 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         value = 'Automatic';
                                                     } else if (value === 'C') {
                                                         value = 'Compensantion';
+                                                    } else if (value === 'B') {
+                                                        value = 'Bank Charge';
                                                     } else {
                                                         value = '';
                                                     }
@@ -6555,7 +6572,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                             {
                                                 text: 'Type<br>Adjusment',
                                                 dataIndex: 'O_TADJ',
-                                                width: 150,
+                                                width: 130,
                                                 renderer: function (value, metaData, record) {
                                                     metaData.style = "text-align:center;";
 
@@ -6570,6 +6587,10 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         value = 'Excess';
                                                     } else if (value === 'S') {
                                                         value = 'Short';
+                                                    } else if (value === 'C') {
+                                                        value = 'Credit Note';
+                                                    } else if (value === 'D') {
+                                                        value = 'Debit Note';
                                                     } else {
                                                         value = 'Otros';
                                                     }
@@ -6581,7 +6602,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                             {
                                                 text: 'Agent',
                                                 dataIndex: 'O_SAGENT',
-                                                width: 90,
+                                                width: 80,
                                                 renderer: function (value, metaData) {
                                                     metaData.style = "text-align:center;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -6592,7 +6613,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                             {
                                                 text: 'Consol.',
                                                 dataIndex: 'O_SCONSOL',
-                                                width: 90,
+                                                width: 80,
                                                 renderer: function (value, metaData) {
                                                     metaData.style = "text-align:center;";
                                                     return value;
@@ -6665,7 +6686,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                             {
                                                 text: 'Reference / Comment',
                                                 dataIndex: 'O_REFERENCE',
-                                                width: 280,
+                                                width: 330,
                                                 renderer: function (value, metaData, record) {
                                                     metaData.style = "text-align:center;";
 
