@@ -617,19 +617,25 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'Doc.<br>Type', dataIndex: 'TDOC', width: 95,
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    if (record.data.TDOC === 'A'){
-                                                        value = "Adjustment. ";
-                                                    }else {
-                                                        value = "Dispute";
-                                                    }
-                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                text: 'Doc.<br>Type',
+                                                dataIndex: 'TDOC',
+                                                width: 95,
+                                                renderer: function (value, metaData, record) {
+
+                                                    // Texto según TDOC
+                                                    value = record.data.TDOC === 'A' ? 'Adjustment' : 'Dispute';
+
+                                                    // Color según strPEM
+                                                    var color = record.data.strPEM === 'SALES' ? '#64418c' : '#244066';
                                                     metaData.style = "text-align:center;color:" + color + ";";
-                                                    metaData.tdAttr = 'data-qtip="' + data.strFlagStat + '"';
+
+                                                    // Tooltip según strFlagStat
+                                                    metaData.tdAttr = 'data-qtip="' + record.data.strFlagStat + '"';
+
                                                     return value;
                                                 }
                                             },
+
                                             {
                                                 text: 'Number',  width: 120, dataIndex: 'strTicket', //enableTextSelection :true,
                                                 listeners: {

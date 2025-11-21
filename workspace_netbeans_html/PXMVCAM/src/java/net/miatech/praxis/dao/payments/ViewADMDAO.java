@@ -974,7 +974,7 @@ public class ViewADMDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF100ADM_BEANTKT_V1(?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".MPS386(?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1216,7 +1216,7 @@ public class ViewADMDAO {
             
 //            A2290Filter filter = filters.get(0);
 //            A2290Filter filter = filter;
-            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100CLEAN_TKT_V1(?,?,?,?,?,?,?,?,?,?,?)}";
+            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".MPS383(?,?,?,?,?,?,?,?,?,?,?)}";
             cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt2 = cnx2.prepareCall(SQLCLL02);
             
@@ -1296,7 +1296,7 @@ public class ViewADMDAO {
         try {
 //            A2290Filter filter = filter;
 //            A2290Filter filter = filters.get(0);    
-            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100GENERATE_SECOND_ADM_V1(?,?,?,?,?,?,?,?,?,?,?,?)}";
+            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".MPS384(?,?,?,?,?,?,?,?,?,?,?,?)}";
             cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt2 = cnx2.prepareCall(SQLCLL02);
             
@@ -1365,7 +1365,7 @@ public class ViewADMDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF100ADM_DETAIL_V1(?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".MPS387(?,?,?,?,?,?,?,?,?)}";
         
         Connection cnx = null;
         try {

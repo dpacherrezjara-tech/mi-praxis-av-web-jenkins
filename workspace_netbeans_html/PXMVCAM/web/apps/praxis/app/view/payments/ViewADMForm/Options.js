@@ -159,7 +159,7 @@ Ext.define('Ext.Praxis.view.payments.ViewADMForm.Options', {
                             xtype: 'button',
                             id: prototype.id + '-btnAdd',
                             iconCls: 'prx-icon-add',
-                            tooltip: 'New'
+                            tooltip: 'New Reg'
                         },
                         {
                             xtype: 'button',
