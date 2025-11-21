@@ -13,14 +13,17 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Info', {
             xtype: 'tabpanel',
             region: 'center',
             margin: '15 0 0 0',
+//            bodyStyle: 'background-color: #1A237E;',
             tabPosition: 'top',
             bodyStyle: 'background-color: transparent;',
             defaults: {
                 padding: 10,
                 layout: {
                     type: 'vbox',
-                    align: 'center'
-                }
+                    align: 'center' 
+//                    bodyStyle: 'background-color: #1A237E;' // fondo azul oscuro de cada tab
+                },
+                 bodyStyle: 'background-color: transparent;' // transparente
             },
 
             items: [
@@ -44,62 +47,58 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Info', {
                         {
                             xtype: 'grid',
                             id: prototype.id + '-gridDataImport',
-                            width: 1445,
-                            height: 560,
+                            width: 1065,
+                            height: 540,
                             columnLines: true,
                             cls: 'modern-grid',
                             store: Ext.data.StoreManager.lookup(prototype.id + '-store'),
 
-                            style: 'border-radius:12px; overflow:hidden; box-shadow:0 4px 18px rgba(0,0,0,0.12);',
+                            style: 'overflow:hidden;',
 
                             scrollable: true,
 
                             viewConfig: {
                                 enableTextSelection: true,
-                                stripeRows: true,
-                                getRowClass: function (record) {
-                                    const st = record.get('PROCSTATUS');
-                                    if (st === 'F')
-                                        return 'row-green';
-                                    if (st === 'I')
-                                        return 'row-yellow';
-                                    if (st === 'E')
-                                        return 'row-red';
-                                }
+                                stripeRows: true
+
                             },
 
                             columns: [
-                                {text: 'ID', dataIndex: 'PROCID', width: 70, align: 'center'},
-                                {text: 'PROCESS NAME', dataIndex: 'PROCNAME', width: 150, align: 'left'},
-                                {text: 'DESCRIPTION', dataIndex: 'PROCDESC', width: 280, align: 'left'},
+
+//                                {text: 'ID', dataIndex: 'PROCID', width: 70, align: 'center'},
+
+                                {text: 'Description', dataIndex: 'PROCDESC', width: 220, align: 'left'},
+
+                                {text: 'COUNTRY', dataIndex: 'PROCPAIS', width: 90, align: 'center'},
+
+                                {text: 'PROGRAM', dataIndex: 'CPROGRAM', width: 100, align: 'center'},
+//                                {text: 'DATE', dataIndex: 'PROCDATE', width: 100, align: 'center'},
                                 {
-                                    text: 'STATUS',
+                                    text: 'Status',
                                     dataIndex: 'PROCSTATUS',
                                     width: 120,
                                     align: 'center',
-                                    renderer: function (v) {
+                                    renderer: function (v, metaData) {
                                         let color = '#555', text = v;
                                         if (v === 'I') {
-                                            color = '#F1C40F';
+                                            color = '#F1C40F'; // amarillo
                                             text = 'Iniciado';
                                         }
                                         if (v === 'F') {
-                                            color = '#2ECC71';
+                                            color = '#2ECC71'; // verde
                                             text = 'Finalizado';
                                         }
                                         if (v === 'E') {
-                                            color = '#E74C3C';
+                                            color = '#E74C3C'; // rojo
                                             text = 'Error';
                                         }
-                                        return `<span style="font-weight:bold;color:${color};">${text}</span>`;
+                                        metaData.style = `background-color:${color}; color:white; font-weight:bold;`;
+                                        return text;
                                     }
                                 },
-                                {text: 'COUNTRY', dataIndex: 'PROCPAIS', width: 90, align: 'center'},
                                 {text: 'MESSAGE', dataIndex: 'PROCMESSAG', width: 350, align: 'left'},
-                                {text: 'PROGRAM', dataIndex: 'CPROGRAM', width: 100, align: 'center'},
-                                {text: 'DATE', dataIndex: 'PROCDATE', width: 100, align: 'center'},
                                 {
-                                    text: 'BEGIN',
+                                    text: 'Begin',
                                     dataIndex: 'PROCINI',
                                     width: 90,
                                     align: 'center',
@@ -111,7 +110,7 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Info', {
                                     }
                                 },
                                 {
-                                    text: 'END',
+                                    text: 'End',
                                     dataIndex: 'PROCFIN',
                                     width: 90,
                                     align: 'center',
@@ -122,6 +121,7 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Info', {
                                         return `${value.substring(0, 2)}:${value.substring(2, 4)}:${value.substring(4, 6)}`;
                                     }
                                 }
+
                             ]
                         }
                     ]
@@ -137,7 +137,7 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Info', {
                     items: [
                         {
                             xtype: 'panel',
-                            html: '<h3 style="color:#777;">En desarrollo — esta sección se usará más adelante</h3>',
+                            html: '<h3 style="color:#777;">En Construccion — usuuu</h3>',
                             border: false
                         }
                     ]
@@ -152,17 +152,17 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Info', {
 // CSS PARA COLOREAR LAS FILAS
 // 
 Ext.util.CSS.createStyleSheet(`
+
+
     .row-green .x-grid-cell { background-color:#D4EFDF !important; }
     .row-yellow .x-grid-cell { background-color:#FCF3CF !important; }
     .row-red .x-grid-cell { background-color:#F5B7B1 !important; }
 
-    .modern-grid .x-grid-header-ct {
-        background: #F8FAFB !important;
-        font-weight: bold;
-        font-size: 14px;
-        color: #333;
-        border-bottom: 1px solid #DDD;
-    }
+    .modern-grid .x-grid-cell {
+    border: none !important;
+    background-color: #E0F7FA !important; /* celeste claro */
+}
+
 
     .modern-grid .x-grid-cell {
         font-size: 13px;

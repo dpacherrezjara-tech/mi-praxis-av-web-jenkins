@@ -51,7 +51,7 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.DataImportMonitori
                                     border: false,
                                     autoScroll: true,
                                     defaults: {
-                                        width: 1650,
+                                        width: 1250,
                                         align: 'center'
                                     },
                                     items: [
@@ -65,7 +65,7 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.DataImportMonitori
                                         {
                                             xtype: 'panel',
                                             height: 650,
-                                            width: 1650,
+                                            width: 1250,
                                             bodyStyle: 'background-color: #E3EAEF;border: none;',
                                             layout: 'fit',
                                             items: [

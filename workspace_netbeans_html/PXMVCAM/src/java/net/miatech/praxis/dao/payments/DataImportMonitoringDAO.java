@@ -51,7 +51,7 @@ public class DataImportMonitoringDAO {
         List<MPFER90> listaData = new ArrayList<>();
         MPFER90 bean;
         
-        String SQL = "{CALL PRAXISMP.LISTAR_MPFER90(?)}";
+        String SQL = "{CALL PRAXISMP.MPS388(?)}";
         Connection cnx = null;
         CallableStatement cstmt = null;
         ResultSet rst = null;
