@@ -453,7 +453,26 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                             readOnly: true,
                                             width: 200
                                         },
-                                        {xtype: 'tbspacer', width: 290},
+                                        {xtype: 'tbspacer', width: 50},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Deb. Type',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 70
+                                        },
+                                        {xtype: 'tbspacer', width: 30},
+                                        {
+                                        xtype: 'textfield',
+                                        id: prototype.id + '-de-txtDebType',
+                                        fieldStyle: 'text-align:center',
+                                        enforceMaxLength: true,
+                                        
+                                        readOnly: true,
+                                        width: 130
+                                  
+                                    },
+
+                                        {xtype: 'tbspacer', width: 10}
                                     ]
                                 },
                                 {
