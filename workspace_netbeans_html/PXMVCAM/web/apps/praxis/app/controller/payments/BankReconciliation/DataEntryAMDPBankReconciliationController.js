@@ -542,7 +542,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                 text: this.bean.descDEBTYPE   // aquí va el tooltip real
             });
 
-        
+        this.setValue('de-txtDescDebType', this.bean.descDEBTYPE);
         this.setValue('de-txtDES_CERROIN', this.bean.DES_CERROIN);
         this.setValue('de-txtFLAG', this.bean.FLAG);
         this.setValue('de-txtCERROR', this.bean.CERROR);
