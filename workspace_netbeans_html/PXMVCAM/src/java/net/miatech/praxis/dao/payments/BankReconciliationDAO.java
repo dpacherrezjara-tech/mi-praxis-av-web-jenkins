@@ -9030,7 +9030,6 @@ public class BankReconciliationDAO {
 
             objRtn.ADATE = rs01.getString("ADATE");
             objRtn.NEGOC = rs01.getString("NEGOC");
-            objRtn.NINPUT = rs01.getString("NINPUT");
             objRtn.BANDOC = rs01.getString("BANDOC");
 
             objRtn.ACCNUMB = rs01.getString("ACCNUMBER").trim();
