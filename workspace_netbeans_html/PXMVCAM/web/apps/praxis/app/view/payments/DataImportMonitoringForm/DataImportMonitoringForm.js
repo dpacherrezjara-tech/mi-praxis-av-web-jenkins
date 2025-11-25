@@ -71,7 +71,7 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.DataImportMonitori
                                             items: [
                                                 {
                                                     xtype: 'panel',
-                                                    width: 1650,
+                                                    width: 1250,
                                                     id: prototype.id + '-centerC-panel01',
                                                     layout: 'border',
                                                     align: 'center',
