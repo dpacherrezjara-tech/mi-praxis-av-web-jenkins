@@ -528,6 +528,21 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.setValue('de-txtIDCON', this.bean.BANDOC);
         this.setValue('de-txtCERRORHST', this.bean.CERRORHST);
         this.setValue('de-txtCERROIN', this.bean.CERROIN);
+        
+        
+        this.setValue('de-txtDebType', this.bean.DEBTYPE);
+        
+//        this.setValue('de-txtDebType', this.bean.descDEBTYPE);
+        // aplicar el tooltip dinámico
+            var cmp = Ext.getCmp(prototype.id + '-de-txtDebType');
+            cmp.setValue(this.bean.DEBTYPE);
+
+            Ext.tip.QuickTipManager.register({
+                target: cmp.getEl(),
+                text: this.bean.descDEBTYPE   // aquí va el tooltip real
+            });
+
+        this.setValue('de-txtDescDebType', this.bean.descDEBTYPE);
         this.setValue('de-txtDES_CERROIN', this.bean.DES_CERROIN);
         this.setValue('de-txtFLAG', this.bean.FLAG);
         this.setValue('de-txtCERROR', this.bean.CERROR);
