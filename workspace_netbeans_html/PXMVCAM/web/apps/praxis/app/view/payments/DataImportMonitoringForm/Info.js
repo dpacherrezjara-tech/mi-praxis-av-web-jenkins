@@ -210,7 +210,7 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Info', {
                                             metaData.style = "text-align:center;";
                                             return value === 'A'
                                                     ? '<span class="badge badge-active">ACTIVE</span>'
-                                                    : '<span class="badge badge-inactive">INACTIVE</span>';
+                                                    : '<span class="badge badge-stopped">INACTIVE</span>';
                                         }
                                     },
                                     {
@@ -244,7 +244,7 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Info', {
                                                 renderer: function (value) {
                                                     const map = {
                                                         RUNNING: {text: "Running", cls: "badge-status badge-running"},
-                                                        ERROR: {text: "Error", cls: "badge-status badge-error"},
+                                                        ERROR: {text: "Stopped", cls: "badge-status badge-stopped"},
                                                         STOPPED: {text: "Stopped", cls: "badge-status badge-stopped"},
                                                         FINISHED: {text: "Finished", cls: "badge-status badge-finished"},
                                                         WAITING: {text: "Waiting", cls: "badge-status badge-waiting"},
