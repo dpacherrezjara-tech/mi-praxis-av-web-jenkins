@@ -7359,6 +7359,259 @@ public class LoadConciliationDAO {
         return strMsj;
     }
     
+    
+    ///////CORREO PUNTOS DIRECTOS
+    /////////////////////////////////////
+    
+    
+    
+    
+    public List<MPF106Filter> getCorreosAvPD(MPF100Filter filter) throws SQLException, Exception {
+
+        List<MPF106Filter> lstCorreos = new ArrayList<MPF106Filter>(0);
+        MPF106Filter beanTkt;
+        
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".MPS421(?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.IN_FECHA);
+            cstmt.setString(3, session.getUserView().getCustomerInfo().USR);
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+                beanTkt = new MPF106Filter();
+                beanTkt.O_EMAILS = rst.getString("EMAILS");
+                beanTkt.O_CAGENCY = rst.getString("CAGENCY");
+                beanTkt.O_NAMEA = rst.getString("NAMEA");
+                beanTkt.O_CONTAC = rst.getString("CONTACTOS");
+                beanTkt.O_EMAILS5 = rst.getString("CONTACTOS_BPO");
+
+                lstCorreos.add(beanTkt);
+
+            }
+            rst.close();
+            
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstCorreos;
+    }
+
+    
+    
+    
+    
+    public List<MPF100Filter> puntosDirectosList(MPF100Filter filter) throws SQLException, Exception {
+
+        List<MPF100Filter> lstTkts = new ArrayList<MPF100Filter>(0);
+        MPF100Filter beanTkt;
+        
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".MPS422(?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, session.getUserView().getCustomerInfo().USR);
+            cstmt.setString(3, filter.IN_AGENT);
+            cstmt.setString(4, filter.IN_FECHA);
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+                beanTkt = new MPF100Filter();
+                beanTkt.O_STVAL = rst.getString("STVAL");
+                beanTkt.O_SAGENT = rst.getString("SAGENT");
+                beanTkt.O_DIG_AGENT = rst.getString("DIG");
+                beanTkt.O_strDescripcion = rst.getString("DESCAGT");
+                beanTkt.O_CCIA = rst.getString("CCIA");
+                beanTkt.O_FORMA = rst.getString("FORMA");
+                beanTkt.O_SERIE = rst.getString("SERIE");
+                beanTkt.O_SDATE = rst.getString("SDATE");
+                beanTkt.O_SCARDN = rst.getString("SCARDN");
+                beanTkt.O_SAUTHOC = rst.getString("SAUTHOC");
+                beanTkt.O_SVFOP = rst.getDouble("SVFOP");
+
+                lstTkts.add(beanTkt);
+
+            }
+            rst.close();
+            
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstTkts;
+    }
+    
+    //marcar tickets
+    
+    public String marcarTicketsPuntosDirectos(MPF100Filter filter) throws SQLException, Exception {
+        //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A1702.
+        String strMsj = "An Unexpected Error Ocurred.";
+
+        CallableStatement cstmt = null;
+        String SQLCLL01="";
+        SQLCLL01 = "{CALL " + session.getMainLibrary() + ".MPS423(?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+            cstmt.registerOutParameter(6, Types.VARCHAR);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, session.getUserView().getCustomerInfo().USR);
+            cstmt.setString(3, filter.IN_AGENT);
+            cstmt.setString(4, filter.IN_FECHA);
+            cstmt.setString(5, Functions.getFechaActual());
+            cstmt.setString(6, "");
+            cstmt.execute();
+
+            strMsj = cstmt.getString(6);
+
+        } catch (Exception e) {
+            strMsj = e.getMessage();
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return strMsj;
+    }
+    
+    //correo bpo
+    
+    
+    
+    public List<MPF100Filter> correoBPOpuntosDirectos(MPF100Filter filter) throws SQLException, Exception {
+
+        List<MPF100Filter> lstTkts = new ArrayList<MPF100Filter>(0);
+        MPF100Filter beanTkt;
+        
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".MPS424(?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, session.getUserView().getCustomerInfo().USR);
+            cstmt.setString(3, filter.IN_AGENT);
+            cstmt.setString(4, filter.IN_FECHA);
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+                beanTkt = new MPF100Filter();
+                beanTkt.O_SAGENT = rst.getString("CAGENCY");
+                beanTkt.O_NAMEA = rst.getString("NAMEA");
+                beanTkt.SDATE = filter.IN_FECHA;
+
+                lstTkts.add(beanTkt);
+
+            }
+            rst.close();
+            
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstTkts;
+    }
+    
+    
+    
+    
+    //////////////////////////////////////////////////////7
+    //////////////////////////////////////////////////////7
+    
     public String loadPX263loadADM(List<MPF100Filter> filter) throws SQLException, Exception {
 
         String message = "";
