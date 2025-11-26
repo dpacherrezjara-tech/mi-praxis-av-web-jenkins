@@ -4070,7 +4070,7 @@ public class SalesReconciliationController extends BaseController {
                                     + "<a href=\"mailto:jose.higuera@avianca.com\"><u>jose.higuera@avianca.com</u></a>&nbsp;<a href=\"mailto:monica.zuluaga@avianca.com\"><u>monica.zuluaga@avianca.com</u></a>"
                                     + "&nbsp;<a href=\"mailto:carlos.jaimes@avianca.com\"><u>carlos.jaimes@avianca.com</u></a>. <strong><strong>De encontrar tiquetes los cuales no hayan "
                                     + "sido cancelados, solicitamos su legalizaci&oacute;n de forma inmediata respondiendo en este mismo correo. "
-                                    + "mismo correo.</strong></strong></p>\n"
+                                    + "</strong></strong></p>\n"
                                     + "<p>&nbsp;</p>\n"
                                     + "<p>&nbsp;</p>\n"
                                     + "<p>Muchas gracias y quedamos atentos a su respuesta,&nbsp;la cual agradezco sea <strong><strong>enviada dentro de los pr&oacute;ximos 5 "
