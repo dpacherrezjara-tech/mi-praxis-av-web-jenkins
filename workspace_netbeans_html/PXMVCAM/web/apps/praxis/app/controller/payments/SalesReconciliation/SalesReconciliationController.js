@@ -3426,6 +3426,112 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         });
 
     },
+    
+    
+    
+    ///CORREO PUNTOS DIRECTOS
+    //////////////////////////////////////////////////////
+    
+    sendMail_clickHandler2: function () {
+
+        console.log('sendMail_clickHandler2');
+
+        me.dpick = win = Ext.create('Ext.window.Window', {
+            title: 'Seleccionar Fecha',
+            modal: true,
+            width: 280,
+            height: 200,
+            layout: 'hbox',
+//            align: 'center',
+            items: [
+                {
+                    xtype: 'monthpicker',
+                    id: prototype.id + '-monthPicker'
+//                    listeners: {
+////                        cancelclick: 'cancelarSeleccionFecha',
+//                        monthdblclick: 'aceptarSeleccionFecha'
+//                    }
+                },
+                {
+                    xtype: 'button',
+                    padding: '10px 10px 10px 10px',
+                    margin: '60px 0px 0px 0px',
+                    text: 'Enviar Correo',
+                    handler: this.aceptarSeleccionFecha2
+                }
+            ]
+        });
+        me.dpick.show();
+
+    },
+    
+       aceptarSeleccionFecha2: function (button) {
+
+        var monthpicker = Ext.getCmp(prototype.id + '-monthPicker'); // Obtener el componente MonthPicker
+        var selectedDate = monthpicker.getValue(); // Obtener la fecha seleccionada
+//        console.log('Año xxxxxxx:', selectedDate);
+        if (selectedDate) {
+            var year = selectedDate[1]; // Obtener el año seleccionado
+            var month = selectedDate[0] + 1; // Obtener el mes seleccionado (los meses son base 0)
+            month = Ext.String.leftPad(month, 2, '0');
+
+            console.log('Año seleccionado:', year);
+            console.log('Mes seleccionado:', month);
+
+  
+            me.enviarCorreo2(year + '' + month);
+        } else {
+            console.error('No se ha seleccionado ninguna fecha');
+        }
+//        this.enviarFechaSeleccionada(fechaSeleccionada);
+    },
+    enviarCorreo2: function (fecha) {
+        me.dpick.close();
+        console.log('enviarCorreo');
+        console.log(fecha);
+        var msj = '¿Estás seguro de enviar Correo para canal directo con fecha : ' + fecha + ' ?';
+
+        Ext.Msg.show({
+            title: '.:Confirmation:.',
+            msg: msj,
+            buttons: Ext.MessageBox.OKCANCEL,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'ok') {
+//                            this.sendEmailtoIATA(me.lstSendIata);
+                    console.log(me.lstSendIata);
+
+                    var listaCadena = [];
+//                            console.log(listaCadena);
+
+                    Ext.Ajax.request({
+                        url: prototype.url + '/sendEmailDirecto',
+                        method: 'POST',
+                        timeout: 60000000,
+                        beforerequest: Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...'),
+                        params: {v_fecha: fecha},
+                        success: function (response, options) {
+                            Ext.getCmp(prototype.id + '-contentInfo').unmask('Loading...');
+                            var res = Ext.JSON.decode(response.responseText);
+                            console.log(res);
+                            var msj = String(res.msj);
+
+                            global.Msg({msg: msj});
+
+                        }
+                    });
+                }
+            }
+        });
+
+    },
+    
+    
+    
+    //////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////
 
     onLoadClick: function () {
 

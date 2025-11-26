@@ -24,6 +24,24 @@ public class MPF106Filter extends MPF106 {
     public String NAMEA = "";
     public String CAGENCY = "";
 //    public String CIACOME = "";
+    
+    
+    
+    
+    //PUNTOS DIRECTOS
+    
+            
+    public String O_EMAILS = "";
+    public String O_CAGENCY = "";
+    public String O_NAMEA = "";
+    public String O_CONTAC = "";
+    public String O_EMAILS5 = "";
+    
+    
+    
+    
+    
+    
 
     public Pagination page = new Pagination();
 }
