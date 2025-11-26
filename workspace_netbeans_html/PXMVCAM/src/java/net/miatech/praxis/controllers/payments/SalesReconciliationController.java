@@ -4051,7 +4051,7 @@ public class SalesReconciliationController extends BaseController {
                                 }
                             }
                             String asunto = "Gestión de inconsistencias en conciliación de ventas en Tarjetas de Crédito  "+iata+"-"+ fventa;
-                            String mensaje = "<p>Estimados Punto de venta::</p>\n"
+                            String mensaje = "<p>Estimados Punto de venta:</p>\n"
                                     + "<p>Les brindamos inicialmente un cordial saludo</p>\n"
                                     + "<p>&nbsp;</p>\n"
                                     + "<p>Continuando con nuestro proceso de conciliaci&oacute;n de pagos de tiquetes con forma de pago tarjeta de cr&eacute;dito, adjuntamos los tiquetes "
@@ -4069,14 +4069,14 @@ public class SalesReconciliationController extends BaseController {
                                     + "a: <a href=\"mailto:cheryd.quintero@avianca.com\"><u>cheryd.quintero@avianca.com</u></a>&nbsp;"
                                     + "<a href=\"mailto:jose.higuera@avianca.com\"><u>jose.higuera@avianca.com</u></a>&nbsp;<a href=\"mailto:monica.zuluaga@avianca.com\"><u>monica.zuluaga@avianca.com</u></a>"
                                     + "&nbsp;<a href=\"mailto:carlos.jaimes@avianca.com\"><u>carlos.jaimes@avianca.com</u></a>. <strong><strong>De encontrar tiquetes los cuales no hayan "
-                                    + "sido cancelados, solicitamos su legalizaci&oacute;n de forma inmediata mediante&nbsp;la confirmaci&oacute;n del cobro mediante BSP - nota de cargo respondiendo en este "
-                                    + "mismo correo.</strong></strong></p>\n"
+                                    + "sido cancelados, solicitamos su legalizaci&oacute;n de forma inmediata respondiendo en este mismo correo. "
+                                    + "</strong></strong></p>\n"
                                     + "<p>&nbsp;</p>\n"
                                     + "<p>&nbsp;</p>\n"
                                     + "<p>Muchas gracias y quedamos atentos a su respuesta,&nbsp;la cual agradezco sea <strong><strong>enviada dentro de los pr&oacute;ximos 5 "
                                     + "d&iacute;as h&aacute;biles</strong></strong><strong><strong>,</strong></strong><strong><strong>&nbsp;</strong></strong>esto con el fin de estar al "
-                                    + "d&iacute;a con las auditor&iacute;as, caso contrario se entender&aacute; que las transacciones est&aacute;n <strong><strong>pendientes de pago y se "
-                                    + "elaborar&aacute; la respectiva nota de cargo.&nbsp;</strong></strong></p>\n"
+                                    + "d&iacute;a con las auditor&iacute;as, caso contrario se entender&aacute; que las transacciones est&aacute;n <strong><strong>pendientes de pago y  "
+                                    + "solicitar&aacute; cuenta y centro de costos para realizar el cierre de la cartera.&nbsp;</strong></strong></p>\n"
                                     + "<p>&nbsp;</p>\n"
                                     + "<p>Como informaci&oacute;n general y con el fin de evitar reprocesos de ambas partes,&nbsp;antes de enviar la respuesta definitiva&nbsp;en cuanto a los "
                                     + "soportes&nbsp;de pago de los tiquetes solicitados, agradecemos que la agencia tenga en cuenta las siguientes recomendaciones:</p>\n"
