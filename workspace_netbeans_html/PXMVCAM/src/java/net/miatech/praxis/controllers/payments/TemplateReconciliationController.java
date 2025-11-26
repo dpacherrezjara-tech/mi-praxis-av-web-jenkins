@@ -789,7 +789,7 @@ public class TemplateReconciliationController extends BaseController {
                     System.out.print("sucesssssssssssssssssss");
                     StatementReconciliationsLogic logicStatement = new StatementReconciliationsLogic();
                     logicStatement.setSession(this.serverSession.getServerSession());
-                    message = logicStatement.loadPX287MPS106(lstData);
+                    message = logicStatement.loadPX287MPS100(lstData);
 
                 }
             } else {
