@@ -4321,7 +4321,7 @@ public class SalesReconciliationController extends BaseController {
                 cell51.setCellValue(listaData.get(vi).O_SAGENT);
                 cell52.setCellValue(listaData.get(vi).O_DIG_AGENT);
                 cell53.setCellValue(listaData.get(vi).O_strDescripcion);
-                cell54.setCellValue(listaData.get(vi).O_CCIA + listaData.get(vi).O_FORMA + listaData.get(vi).SERIE);
+                cell54.setCellValue(listaData.get(vi).O_CCIA + listaData.get(vi).O_FORMA + listaData.get(vi).O_SERIE);
                 cell55.setCellValue("");
                 cell56.setCellValue(listaData.get(vi).O_SDATE);
                 cell57.setCellValue(listaData.get(vi).O_SCARDN);
