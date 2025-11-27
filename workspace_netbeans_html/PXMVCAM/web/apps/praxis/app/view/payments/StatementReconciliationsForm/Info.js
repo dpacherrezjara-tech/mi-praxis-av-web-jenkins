@@ -1692,18 +1692,18 @@
                                                 },
                                                 {
                                                     text: 'Source',
-                                                    dataIndex: 'TINPUT',
+                                                    dataIndex: 'CCUSTPRO',
                                                     width: 100,
                                                     renderer: function (value, metaData) {
                                                         metaData.style = "text-align:center;";
                                                         metaData.tdCls = "x-grid-cell x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                        if (value === 'B') {
+                                                        if (value === '00') {
                                                             value = 'BSP';
-                                                        }  else if (value === 'I'){
+                                                        }  else if (value === '01'){
                                                             value = 'ICCS';
-                                                        }  else if  (value === 'A') {
-                                                            value = 'BSP';
-                                                        }
+                                                        }  else if (value === '02'){
+                                                            value = 'ARC';
+                                                        }  
                                                         return value;
                                                     }
                                                 },

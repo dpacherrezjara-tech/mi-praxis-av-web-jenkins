@@ -1520,20 +1520,22 @@ public class StatementReconciliationsDAO {
                     beanTkt.BANDOC = rst.getString("BANDOC").trim();  
                     beanTkt.NETO = rst.getDouble("NETO");
                     beanTkt.NETOC = rst.getDouble("NETOC");
-                    String tinput = rst.getString("TINPUT");
+                    beanTkt.CODPRO = rst.getString("CODPRO");
+                    beanTkt.CCUSTPRO = rst.getString("CCUSTPRO");
+                    beanTkt.FREGLA = rst.getString("FREGLA");
 
-                    if (tinput == null || tinput.trim().isEmpty()) {
-                        String cfuente = rst.getString("CFUENTE");
-                        String Adjust = "1";
-                        tinput = (cfuente != null && !cfuente.isEmpty()) ? cfuente.substring(0, 1) : "";
-                        beanTkt.TINPUT = "A";
-                        beanTkt.ADJUST = Adjust;
-                        
-                    } else {
-                        tinput = tinput.substring(0, 1);
-                        beanTkt.TINPUT = tinput;
-                        
-                    }
+//                    if (tinput == null || tinput.trim().isEmpty()) {
+//                        String cfuente = rst.getString("CFUENTE");
+//                        String Adjust = "1";
+//                        tinput = (cfuente != null && !cfuente.isEmpty()) ? cfuente.substring(0, 1) : "";
+//                        beanTkt.TINPUT = "A";
+//                        beanTkt.ADJUST = Adjust;
+//                        
+//                    } else {
+//                        tinput = tinput.substring(0, 1);
+//                        beanTkt.TINPUT = tinput;
+//                        
+//                    }
                     
                     beanTkt.QTYTRAN1 = rst.getLong("QTYTRAN1");
                     beanTkt.totNETOEECC = totNETOEECC;
