@@ -208,6 +208,30 @@ public class LoadConciliationLogic {
         return loadConciliationDAO.loadPX263getCorreosAV(filter);
     }
     
+    ///CORREOS PUNTOS DIRECTOS
+    
+            
+     public List<MPF106Filter> getCorreosAvPD(MPF100Filter filter) throws SQLException, Exception {
+        return loadConciliationDAO.getCorreosAvPD(filter);
+    }       
+     
+       public List<MPF100Filter> puntosDirectosList(MPF100Filter filter) throws SQLException, Exception {
+        return loadConciliationDAO.puntosDirectosList(filter);
+    }
+       
+      public String marcarTicketsPuntosDirectos(MPF100Filter filter) throws SQLException, Exception {
+        return loadConciliationDAO.marcarTicketsPuntosDirectos(filter);
+    }
+      
+     public List<MPF100Filter> correoBPOpuntosDirectos(MPF100Filter filter) throws SQLException, Exception {
+        return loadConciliationDAO.correoBPOpuntosDirectos(filter);
+    }
+     
+     
+            
+            
+    ///////
+    
     public String marcarTicketsEnviados(MPF100Filter filter) throws SQLException, Exception {
         return loadConciliationDAO.marcarTicketsEnviados(filter);
     }

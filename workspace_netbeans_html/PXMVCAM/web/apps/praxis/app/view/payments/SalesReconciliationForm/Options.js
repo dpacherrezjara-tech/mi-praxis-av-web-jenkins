@@ -279,6 +279,16 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Options', {
                                 click: 'sendMail_clickHandler'
                             }
                         },
+                        
+                         {
+                            xtype: 'button',
+                            id: prototype.id + '-imgMail2',
+                            icon: 'resources/img/botones/24x24/SEND_MAIL4.png',
+                            tooltip: 'Send Mail Canal Directo',
+                            listeners: {
+                                click: 'sendMail_clickHandler2'
+                            }
+                        },
                         {
                             xtype: 'button',
                             id: prototype.id+'-btnExcel',
