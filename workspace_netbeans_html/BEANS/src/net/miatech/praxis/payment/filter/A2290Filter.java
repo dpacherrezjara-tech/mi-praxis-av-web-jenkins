@@ -1089,6 +1089,7 @@ public class A2290Filter extends A2290 {
     
     public String O_STVAL ="";
     public String O_ADATE ="";
+    public String O_TINPUT ="";
     public String O_CONCEPT ="";
     public String O_SAGENT ="";
     public String O_NSAGENT ="";

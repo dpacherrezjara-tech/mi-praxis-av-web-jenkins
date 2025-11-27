@@ -42,6 +42,8 @@ public class MPF100 {
     public String SCURRENCY = "";
     public String SCARDN = "";
     public String SDATEXP = "";
+    public String SCARDNCOR = "";
+    public String CORRL = "";
     public String SAUTHOC = "";
     public String SINVN = "";
     public String SIDATE = "";

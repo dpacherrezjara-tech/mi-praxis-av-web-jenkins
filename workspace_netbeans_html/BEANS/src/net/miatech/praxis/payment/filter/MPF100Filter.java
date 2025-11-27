@@ -578,6 +578,7 @@ public class MPF100Filter extends MPF100 {
     public String CBATCH = "";
     public String STRDATE = "";
     public String ENDDATE = "";
+    public String TREG = "";
     public String DATECI = "";
     public String TRANCI = "";
     public String TRANC = "";
