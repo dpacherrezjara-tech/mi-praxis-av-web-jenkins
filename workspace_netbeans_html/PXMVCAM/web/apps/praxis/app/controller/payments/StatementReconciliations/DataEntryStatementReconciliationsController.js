@@ -96,6 +96,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.setValue('de-txtCODEBANK', this.beanResult.CODEBANK);
         this.setValue('de-txtNAME', this.beanResult.NAME);
         this.setValue('de-txtNAMEP', this.beanResult.NAMEP);
+        this.setValue('de-txtACCOUNT', this.beanResult.ACCOUNT);
         this.setValue('de-txtCOREP', this.beanResult.COREP);
         this.setValue('de-txtSTVAL', this.beanResult.descSTVAL);
         this.setValue('de-txtSCOUNTRY', this.beanResult.DESC_SCOUNTRY);

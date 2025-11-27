@@ -5,7 +5,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
         'Ext.Praxis.controller.payments.StatementReconciliations.DataEntryStatementReconciliationsController'
     ],
     controller: 'DataEntryStatementReconciliationsController',
-    title: 'Statement Reconciliation - Data Entry Form',
+    title: 'Statement Reconciliation - Data Entry Form ',
     header: true,
     height: 780,
     width: 1200,
@@ -160,7 +160,21 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                     readOnly: true,
                                                     width: 160
                                                 },
-                                                {xtype: 'tbspacer', width: 275}
+                                                 {xtype: 'tbspacer', width: 50},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Account',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    width: 60
+                                                },
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtACCOUNT',
+                                                    enforceMaxLength: true,
+                                                    readOnly: true,
+                                                    width: 160
+                                                },
+//                                                {xtype: 'tbspacer', width: 275}
                                             ]
                                         },
                                         {
