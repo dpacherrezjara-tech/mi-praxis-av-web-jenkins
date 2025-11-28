@@ -29,6 +29,7 @@ import net.miatech.praxis.logic.payments.StatementReconciliationsLogic;
 import net.miatech.praxis.logic.payments.TemplateReconciliationLogic;
 import net.miatech.praxis.payment.MPF101;
 import net.miatech.praxis.payment.filter.A2290Filter;
+import net.miatech.praxis.payment.response.MPS419Response;
 import net.miatech.utils.Functions;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -47,6 +48,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 /**
  *
  * @author singa
@@ -55,6 +57,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Scope("request")
 @RequestMapping("/TemplateReconciliation")
 public class TemplateReconciliationController extends BaseController {
+
     private TemplateReconciliationLogic logic;
 
     @RequestMapping(value = "/searchAccountingInterfaces")
@@ -63,7 +66,7 @@ public class TemplateReconciliationController extends BaseController {
         List<SQP04091Filter> listaData;
         Gson gson = new Gson();
         SQP04091Filter filter;
-        
+
         String beanString = "";
         System.out.println("-------------- TemplateReconciliation : search-------------");
         try {
@@ -75,13 +78,13 @@ public class TemplateReconciliationController extends BaseController {
             int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
             filter.page.PAGROW = 20;
             start = (start != 0 ? start : 0);
-            filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;            
+            filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
             logic = new TemplateReconciliationLogic();
             logic.setSession((IServerSession) serverSession.getServerSession());
             listaData = logic.searchAccountingInterfaces(filter);
 
             map.put("success", true);
-            map.put("total", listaData.size() > 0 ? listaData.get(0).page.TOTROW : 0);            
+            map.put("total", listaData.size() > 0 ? listaData.get(0).page.TOTROW : 0);
             map.put("data", listaData);
         } catch (NumberFormatException ex) {
             map.put("success", false);
@@ -92,7 +95,7 @@ public class TemplateReconciliationController extends BaseController {
         }
         return new Gson().toJson(map);
     }
-    
+
     @RequestMapping(value = "/excelAccountingInterfaces")
     public @ResponseBody
     void excelAccountingInterfaces(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -102,7 +105,7 @@ public class TemplateReconciliationController extends BaseController {
         Workbook workbook;
         String fileNameDownload = String.format("Validation Interfaces Report - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
         File file = File.createTempFile(fileNameDownload, ".xlsx");
-        
+
         String beanString = "";
         System.out.println("======");
         try {
@@ -114,12 +117,11 @@ public class TemplateReconciliationController extends BaseController {
             int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
             filter.page.PAGROW = 20;
             start = (start != 0 ? start : 0);
-            filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;            
+            filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
             logic = new TemplateReconciliationLogic();
             logic.setSession((IServerSession) serverSession.getServerSession());
             listaData = logic.searchAccountingInterfaces(filter);
 
-            
             try {
 
                 workbook = new XSSFWorkbook();
@@ -156,110 +158,110 @@ public class TemplateReconciliationController extends BaseController {
 
                 Row row1 = sheet.createRow(vj);
 
-                    Cell CH1_0 = row1.createCell(0);
-                    Cell CH1_1 = row1.createCell(1);
-                    Cell CH1_2 = row1.createCell(2);
-                    Cell CH1_3 = row1.createCell(3);
-                    Cell CH1_4 = row1.createCell(4);
-                    Cell CH1_5 = row1.createCell(5);
-                    Cell CH1_6 = row1.createCell(6);
-                    Cell CH1_7 = row1.createCell(7);
-                    Cell CH1_8 = row1.createCell(8);
-                    Cell CH1_9 = row1.createCell(9);
-                    Cell CH1_10 = row1.createCell(10);
-                    Cell CH1_11 = row1.createCell(11);
-                    Cell CH1_12 = row1.createCell(12);
-                    Cell CH1_13 = row1.createCell(13);
-                    Cell CH1_14 = row1.createCell(14);
+                Cell CH1_0 = row1.createCell(0);
+                Cell CH1_1 = row1.createCell(1);
+                Cell CH1_2 = row1.createCell(2);
+                Cell CH1_3 = row1.createCell(3);
+                Cell CH1_4 = row1.createCell(4);
+                Cell CH1_5 = row1.createCell(5);
+                Cell CH1_6 = row1.createCell(6);
+                Cell CH1_7 = row1.createCell(7);
+                Cell CH1_8 = row1.createCell(8);
+                Cell CH1_9 = row1.createCell(9);
+                Cell CH1_10 = row1.createCell(10);
+                Cell CH1_11 = row1.createCell(11);
+                Cell CH1_12 = row1.createCell(12);
+                Cell CH1_13 = row1.createCell(13);
+                Cell CH1_14 = row1.createCell(14);
 
-                    CH1_0.setCellValue("IDCONT");
-                    CH1_1.setCellValue("INTERFACE");
-                    CH1_2.setCellValue("BANDOC");
-                    CH1_3.setCellValue("PROCESADOR");
-                    CH1_4.setCellValue("REFERENCIA");
-                    CH1_5.setCellValue("MONEDA_LIQ");
-                    CH1_6.setCellValue("VALOR_LIQ");
-                    CH1_7.setCellValue("COMISION");
-                    CH1_8.setCellValue("RTEFUE");
-                    CH1_9.setCellValue("RTEIVA");
-                    CH1_10.setCellValue("RTEICA");
-                    CH1_11.setCellValue("NETO");
-                    CH1_12.setCellValue("MONEDAPAGO");
-                    CH1_13.setCellValue("LIQ_IMPORTEPAG");
-                    CH1_14.setCellValue("TAX_IMPORTEPAG");
+                CH1_0.setCellValue("IDCONT");
+                CH1_1.setCellValue("INTERFACE");
+                CH1_2.setCellValue("BANDOC");
+                CH1_3.setCellValue("PROCESADOR");
+                CH1_4.setCellValue("REFERENCIA");
+                CH1_5.setCellValue("MONEDA_LIQ");
+                CH1_6.setCellValue("VALOR_LIQ");
+                CH1_7.setCellValue("COMISION");
+                CH1_8.setCellValue("RTEFUE");
+                CH1_9.setCellValue("RTEIVA");
+                CH1_10.setCellValue("RTEICA");
+                CH1_11.setCellValue("NETO");
+                CH1_12.setCellValue("MONEDAPAGO");
+                CH1_13.setCellValue("LIQ_IMPORTEPAG");
+                CH1_14.setCellValue("TAX_IMPORTEPAG");
 
-                    CH1_0.setCellStyle(headerStyle);
-                    CH1_1.setCellStyle(headerStyle);
-                    CH1_2.setCellStyle(headerStyle);
-                    CH1_3.setCellStyle(headerStyle);
-                    CH1_4.setCellStyle(headerStyle);
-                    CH1_5.setCellStyle(headerStyle);
-                    CH1_6.setCellStyle(headerStyle);
-                    CH1_7.setCellStyle(headerStyle);
-                    CH1_8.setCellStyle(headerStyle);
-                    CH1_9.setCellStyle(headerStyle);
-                    CH1_10.setCellStyle(headerStyle);
-                    CH1_11.setCellStyle(headerStyle);
-                    CH1_12.setCellStyle(headerStyle);
-                    CH1_13.setCellStyle(headerStyle);
-                    CH1_14.setCellStyle(headerStyle);
+                CH1_0.setCellStyle(headerStyle);
+                CH1_1.setCellStyle(headerStyle);
+                CH1_2.setCellStyle(headerStyle);
+                CH1_3.setCellStyle(headerStyle);
+                CH1_4.setCellStyle(headerStyle);
+                CH1_5.setCellStyle(headerStyle);
+                CH1_6.setCellStyle(headerStyle);
+                CH1_7.setCellStyle(headerStyle);
+                CH1_8.setCellStyle(headerStyle);
+                CH1_9.setCellStyle(headerStyle);
+                CH1_10.setCellStyle(headerStyle);
+                CH1_11.setCellStyle(headerStyle);
+                CH1_12.setCellStyle(headerStyle);
+                CH1_13.setCellStyle(headerStyle);
+                CH1_14.setCellStyle(headerStyle);
 
+                ++vj;
+
+                while (iter.hasNext()) {
+                    row1 = sheet.createRow(vj);
+                    Cell rcell0 = row1.createCell(0);
+                    Cell rcell1 = row1.createCell(1);
+                    Cell rcell2 = row1.createCell(2);
+                    Cell rcell3 = row1.createCell(3);
+                    Cell rcell4 = row1.createCell(4);
+                    Cell rcell5 = row1.createCell(5);
+                    Cell rcell6 = row1.createCell(6);
+                    Cell rcell7 = row1.createCell(7);
+                    Cell rcell8 = row1.createCell(8);
+                    Cell rcell9 = row1.createCell(9);
+                    Cell rcell10 = row1.createCell(10);
+                    Cell rcell11 = row1.createCell(11);
+                    Cell rcell12 = row1.createCell(12);
+                    Cell rcell13 = row1.createCell(13);
+                    Cell rcell14 = row1.createCell(14);
+
+                    rcell0.setCellValue(listaData.get(vi).IDCONT);
+                    rcell1.setCellValue(listaData.get(vi).INTERFACE);
+                    rcell2.setCellValue(listaData.get(vi).BANDOC);
+                    rcell3.setCellValue(listaData.get(vi).PROCESADOR);
+                    rcell4.setCellValue(listaData.get(vi).REFERENCIA);
+                    rcell5.setCellValue(listaData.get(vi).MONEDA_LIQ);
+                    rcell6.setCellValue(listaData.get(vi).VALOR_LIQ);
+                    rcell7.setCellValue(listaData.get(vi).COMISION);
+                    rcell8.setCellValue(listaData.get(vi).RTEFUE);
+                    rcell9.setCellValue(listaData.get(vi).RTEIVA);
+                    rcell10.setCellValue(listaData.get(vi).RTEICA);
+                    rcell11.setCellValue(listaData.get(vi).NETO);
+                    rcell12.setCellValue(listaData.get(vi).MONEDA_PAGO);
+                    rcell13.setCellValue(listaData.get(vi).LIQ_IMPORTE_PAG);
+                    rcell14.setCellValue(listaData.get(vi).TAX_IMPORTE_PAG);
+                    iter.next();
+                    ++vi;
                     ++vj;
+                }
 
-                    while (iter.hasNext()) {
-                        row1 = sheet.createRow(vj);
-                        Cell rcell0 = row1.createCell(0);
-                        Cell rcell1 = row1.createCell(1);
-                        Cell rcell2 = row1.createCell(2);
-                        Cell rcell3 = row1.createCell(3);
-                        Cell rcell4 = row1.createCell(4);
-                        Cell rcell5 = row1.createCell(5);
-                        Cell rcell6 = row1.createCell(6);
-                        Cell rcell7 = row1.createCell(7);
-                        Cell rcell8 = row1.createCell(8);
-                        Cell rcell9 = row1.createCell(9);
-                        Cell rcell10 = row1.createCell(10);
-                        Cell rcell11 = row1.createCell(11);
-                        Cell rcell12 = row1.createCell(12);
-                        Cell rcell13 = row1.createCell(13);
-                        Cell rcell14 = row1.createCell(14);
+                sheet.autoSizeColumn(0, true);
+                sheet.autoSizeColumn(1, true);
+                sheet.autoSizeColumn(2, true);
+                sheet.autoSizeColumn(3, true);
+                sheet.autoSizeColumn(4, true);
+                sheet.autoSizeColumn(5, true);
+                sheet.autoSizeColumn(6, true);
+                sheet.autoSizeColumn(7, true);
+                sheet.autoSizeColumn(8, true);
+                sheet.autoSizeColumn(9, true);
+                sheet.autoSizeColumn(10, true);
+                sheet.autoSizeColumn(11, true);
+                sheet.autoSizeColumn(12, true);
+                sheet.autoSizeColumn(13, true);
+                sheet.autoSizeColumn(14, true);
 
-                        rcell0.setCellValue(listaData.get(vi).IDCONT);
-                        rcell1.setCellValue(listaData.get(vi).INTERFACE);
-                        rcell2.setCellValue(listaData.get(vi).BANDOC);
-                        rcell3.setCellValue(listaData.get(vi).PROCESADOR);
-                        rcell4.setCellValue(listaData.get(vi).REFERENCIA);
-                        rcell5.setCellValue(listaData.get(vi).MONEDA_LIQ);
-                        rcell6.setCellValue(listaData.get(vi).VALOR_LIQ);
-                        rcell7.setCellValue(listaData.get(vi).COMISION);
-                        rcell8.setCellValue(listaData.get(vi).RTEFUE);
-                        rcell9.setCellValue(listaData.get(vi).RTEIVA);
-                        rcell10.setCellValue(listaData.get(vi).RTEICA);
-                        rcell11.setCellValue(listaData.get(vi).NETO);
-                        rcell12.setCellValue(listaData.get(vi).MONEDA_PAGO);
-                        rcell13.setCellValue(listaData.get(vi).LIQ_IMPORTE_PAG);
-                        rcell14.setCellValue(listaData.get(vi).TAX_IMPORTE_PAG);
-                        iter.next();
-                        ++vi;
-                        ++vj;
-                    }
-
-                    sheet.autoSizeColumn(0, true);
-                    sheet.autoSizeColumn(1, true);
-                    sheet.autoSizeColumn(2, true);
-                    sheet.autoSizeColumn(3, true);
-                    sheet.autoSizeColumn(4, true);
-                    sheet.autoSizeColumn(5, true);
-                    sheet.autoSizeColumn(6, true);
-                    sheet.autoSizeColumn(7, true);
-                    sheet.autoSizeColumn(8, true);
-                    sheet.autoSizeColumn(9, true);
-                    sheet.autoSizeColumn(10, true);
-                    sheet.autoSizeColumn(11, true);
-                    sheet.autoSizeColumn(12, true);
-                    sheet.autoSizeColumn(13, true);
-                    sheet.autoSizeColumn(14, true);
-                    
                 //============================================
                 response.setContentType("application/vnd.openxml");
                 response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
@@ -270,16 +272,15 @@ public class TemplateReconciliationController extends BaseController {
             } catch (IOException e) {
                 throw new SpringException(e);
             }
-            
+
         } catch (NumberFormatException ex) {
             System.out.println(ex.getMessage());
         } catch (Exception ex) {
-             System.out.println(ex.getMessage());
+            System.out.println(ex.getMessage());
         }
-        
-        
+
     }
-    
+
     @RequestMapping(value = "searchDetalle")
     public @ResponseBody
     String searchDetalle(ModelMap map, HttpServletRequest request) {
@@ -293,7 +294,7 @@ public class TemplateReconciliationController extends BaseController {
         map.put("data", lst);
         return new Gson().toJson(map);
     }
-    
+
     public List<A2290Filter> getListDetalle(HttpServletRequest request, Boolean bExcel) {
 
         List<A2290Filter> lst = new ArrayList<>(0);
@@ -329,7 +330,7 @@ public class TemplateReconciliationController extends BaseController {
         }
         return lst;
     }
-    
+
     @RequestMapping(value = "getPendingSettlements")
     public @ResponseBody
     String fetchPendingSettlements(ModelMap map, HttpServletRequest request) {
@@ -343,7 +344,7 @@ public class TemplateReconciliationController extends BaseController {
         map.put("data", lst);
         return new Gson().toJson(map);
     }
-    
+
     public List<A2290Filter> searchPendingSettlements(HttpServletRequest request, Boolean bExcel) {
 
         List<A2290Filter> lst = new ArrayList<>(0);
@@ -379,7 +380,7 @@ public class TemplateReconciliationController extends BaseController {
         }
         return lst;
     }
-    
+
     @RequestMapping(value = "getPendingDiscounts")
     public @ResponseBody
     String fetchPendingDiscounts(ModelMap map, HttpServletRequest request) {
@@ -393,7 +394,7 @@ public class TemplateReconciliationController extends BaseController {
         map.put("data", lst);
         return new Gson().toJson(map);
     }
-    
+
     public List<A2290Filter> searchPendingDiscounts(HttpServletRequest request, Boolean bExcel) {
 
         List<A2290Filter> lst = new ArrayList<>(0);
@@ -413,30 +414,30 @@ public class TemplateReconciliationController extends BaseController {
             filter = gson.fromJson(beanString, A2290Filter.class);
             beanMerchand = request.getParameter("beanMerchand");
             beanLiquidation = request.getParameter("beanLiquidation");
-            
+
             JSONArray merchandArray = new JSONArray(beanMerchand);
             JSONArray liquidationArray = new JSONArray(beanLiquidation);
-            
+
             for (int i = 0; i < merchandArray.length(); i++) {
                 String merchand = merchandArray.getString(i);
                 merchandIn += merchand + "|";
                 System.out.println("Merchand: " + merchand);
             }
-            
+
             if (merchandIn.length() > 0) {
                 merchandIn = merchandIn.substring(0, merchandIn.length() - 1);
             }
-            
+
             for (int i = 0; i < liquidationArray.length(); i++) {
                 String liquidation = liquidationArray.getString(i);
                 liquidationIn += liquidation + "|";
                 System.out.println("liquidation: " + liquidation);
             }
-            
+
             if (liquidationIn.length() > 0) {
                 liquidationIn = liquidationIn.substring(0, liquidationIn.length() - 1);
             }
-            
+
             filter.merchandIn = merchandIn;
             filter.liquidationIn = liquidationIn;
             filter.page.TOTROW = -1;
@@ -461,7 +462,7 @@ public class TemplateReconciliationController extends BaseController {
         }
         return lst;
     }
-    
+
     @RequestMapping(value = "getPendingDeposits")
     public @ResponseBody
     String fetchPendingDeposits(ModelMap map, HttpServletRequest request) {
@@ -475,7 +476,7 @@ public class TemplateReconciliationController extends BaseController {
         map.put("data", lst);
         return new Gson().toJson(map);
     }
-    
+
     public List<A2290Filter> searchPendingDeposits(HttpServletRequest request, Boolean bExcel) {
 
         List<A2290Filter> lst = new ArrayList<>(0);
@@ -511,7 +512,7 @@ public class TemplateReconciliationController extends BaseController {
         }
         return lst;
     }
-    
+
     @RequestMapping(value = "getPendingHeads")
     public @ResponseBody
     String fetchPendingHeads(ModelMap map, HttpServletRequest request) {
@@ -525,7 +526,7 @@ public class TemplateReconciliationController extends BaseController {
         map.put("data", lst);
         return new Gson().toJson(map);
     }
-    
+
     public List<A2290Filter> searchPendingHeads(HttpServletRequest request, Boolean bExcel) {
 
         List<A2290Filter> lst = new ArrayList<>(0);
@@ -575,7 +576,7 @@ public class TemplateReconciliationController extends BaseController {
         map.put("data", lst);
         return new Gson().toJson(map);
     }
-    
+
     public List<A2290Filter> searchPendingDepositsSales(HttpServletRequest request, Boolean bExcel) {
 
         List<A2290Filter> lst = new ArrayList<>(0);
@@ -611,7 +612,7 @@ public class TemplateReconciliationController extends BaseController {
         }
         return lst;
     }
-    
+
     @RequestMapping(value = "getPendingSales")
     public @ResponseBody
     String fetchPendingSales(ModelMap map, HttpServletRequest request) {
@@ -625,7 +626,7 @@ public class TemplateReconciliationController extends BaseController {
         map.put("data", lst);
         return new Gson().toJson(map);
     }
-    
+
     public List<A2290Filter> searchPendingSales(HttpServletRequest request, Boolean bExcel) {
 
         List<A2290Filter> lst = new ArrayList<>(0);
@@ -661,7 +662,7 @@ public class TemplateReconciliationController extends BaseController {
         }
         return lst;
     }
-    
+
     @RequestMapping(value = "executeConciliation")
     public @ResponseBody
     String assignTickets(HttpServletRequest request) throws Exception {
@@ -677,11 +678,11 @@ public class TemplateReconciliationController extends BaseController {
         String listSettlements = "";
         String listSales = "";
         String regs = "", regsEC = "", message = "";
-        
+
         try {
             logic = new TemplateReconciliationLogic();
             logic.setSession(this.serverSession.getServerSession());
-            
+
             beanString = request.getParameter("beanString");
             filter = gson.fromJson(beanString, A2290Filter.class);
             listDiscounts = request.getParameter("beanDiscounts");
@@ -689,28 +690,28 @@ public class TemplateReconciliationController extends BaseController {
             listHead = request.getParameter("beanHead");
             listSettlements = request.getParameter("beanSettlements");
             listSales = request.getParameter("beanSales");
-            
-            Type listType = new TypeToken<List<A2290Filter>>() {}.getType();
+
+            Type listType = new TypeToken<List<A2290Filter>>() {
+            }.getType();
             List<A2290Filter> bandocList = gson.fromJson(listBandoc, listType);
             List<A2290Filter> headList = gson.fromJson(listHead, listType);
             List<A2290Filter> settlementsList = gson.fromJson(listSettlements, listType);
             List<A2290Filter> discountsList = gson.fromJson(listDiscounts, listType);
             List<A2290Filter> salesList = gson.fromJson(listSales, listType);
-            
+
             String headGroup = "";
             String bandocGroup = "";
             String settlementGroup = "";
             String discountsGroup = "";
             String salesGroup = "";
-            
-            
+
             List<MPF101> lstData = new ArrayList<>();
             MPF101 obj = new MPF101();
             obj = new MPF101();
 
-            if (!filter.IN_CODPRO.equals("VN") && 
-                !filter.IN_CODPRO.equals("BM") &&
-                    !filter.IN_CODPRO.equals("AB")) {
+            if (!filter.IN_CODPRO.equals("VN")
+                    && !filter.IN_CODPRO.equals("BM")
+                    && !filter.IN_CODPRO.equals("AB")) {
                 boolean firstSettlement = true;
                 boolean firstConcat = true;
 
@@ -751,16 +752,16 @@ public class TemplateReconciliationController extends BaseController {
 
                     if (firstConcat) {
                         regs = regs + "|" + obj.CCUST.trim() + ";" + obj.SDATE.trim() + ";" + obj.SCOUNTRY.trim() + ";" + obj.TDOC.trim() + ";"
-                            + obj.CODEBANK.trim() + ";" + obj.SCARCOD.trim() + ";" + obj.SCARDN.trim()
-                            + ";" + obj.SAUTHOC.trim() + ";" + obj.SEQ.trim() + ";" + obj.SVFOP + ";" + obj.TOTAL + ";" + obj.NETO + ";" + obj.CODPRO.trim()
-                            + ";" + obj.CCUSTPRO.trim() + ";" + obj.PRDA.trim() + ";" + obj.FLIQUI.trim() + ";" + obj.NLIQUI.trim() + ";" + obj.MERCHAND.trim() + ";" + obj.TIPOL.trim() + ";";
+                                + obj.CODEBANK.trim() + ";" + obj.SCARCOD.trim() + ";" + obj.SCARDN.trim()
+                                + ";" + obj.SAUTHOC.trim() + ";" + obj.SEQ.trim() + ";" + obj.SVFOP + ";" + obj.TOTAL + ";" + obj.NETO + ";" + obj.CODPRO.trim()
+                                + ";" + obj.CCUSTPRO.trim() + ";" + obj.PRDA.trim() + ";" + obj.FLIQUI.trim() + ";" + obj.NLIQUI.trim() + ";" + obj.MERCHAND.trim() + ";" + obj.TIPOL.trim() + ";";
                         regs = regs + regsEC; // Concatenación solo una vez al inicio
                         firstConcat = false;
                     } else {
                         regs = regs + "|" + obj.CCUST.trim() + ";" + obj.SDATE.trim() + ";" + obj.SCOUNTRY.trim() + ";" + obj.TDOC.trim() + ";"
-                            + obj.CODEBANK.trim() + ";" + obj.SCARCOD.trim() + ";" + obj.SCARDN.trim()
-                            + ";" + obj.SAUTHOC.trim() + ";" + obj.SEQ.trim() + ";" + obj.SVFOP + ";" + obj.TOTAL + ";" + obj.NETO + ";" + obj.CODPRO.trim()
-                            + ";" + obj.CCUSTPRO.trim() + ";" + obj.PRDA.trim() + ";" + obj.FLIQUI.trim() + ";" + obj.NLIQUI.trim() + ";" + obj.MERCHAND.trim() + ";" + obj.TIPOL.trim();
+                                + obj.CODEBANK.trim() + ";" + obj.SCARCOD.trim() + ";" + obj.SCARDN.trim()
+                                + ";" + obj.SAUTHOC.trim() + ";" + obj.SEQ.trim() + ";" + obj.SVFOP + ";" + obj.TOTAL + ";" + obj.NETO + ";" + obj.CODPRO.trim()
+                                + ";" + obj.CCUSTPRO.trim() + ";" + obj.PRDA.trim() + ";" + obj.FLIQUI.trim() + ";" + obj.NLIQUI.trim() + ";" + obj.MERCHAND.trim() + ";" + obj.TIPOL.trim();
                     }
 
                 }
@@ -768,9 +769,9 @@ public class TemplateReconciliationController extends BaseController {
                 for (A2290Filter discount : discountsList) {
 
                     regs = regs + "|" + "134" + ";" + "" + ";" + "" + ";" + "" + ";"
-                    + "" + ";" + "" + ";" + ""
-                    + ";" + "" + ";" + "" + ";" + obj.SVFOP + ";" + discount.IMPORTECeba + ";" + discount.IMPORTEPAG + ";" + discount.CODPRO.trim()
-                    + ";" + discount.CCUSTPRO.trim() + ";" + discount.PRDA.trim() + ";" + discount.FLIQUIDACI.trim() + ";" + discount.LIQUIDACIO.trim() + ";" + discount.MERCHAND.trim() + ";" + "D";
+                            + "" + ";" + "" + ";" + ""
+                            + ";" + "" + ";" + "" + ";" + obj.SVFOP + ";" + discount.IMPORTECeba + ";" + discount.IMPORTEPAG + ";" + discount.CODPRO.trim()
+                            + ";" + discount.CCUSTPRO.trim() + ";" + discount.PRDA.trim() + ";" + discount.FLIQUIDACI.trim() + ";" + discount.LIQUIDACIO.trim() + ";" + discount.MERCHAND.trim() + ";" + "D";
 
                 }
 
@@ -793,50 +794,47 @@ public class TemplateReconciliationController extends BaseController {
 
                 }
             } else {
-                
-                    List<String> salesParts = new ArrayList<>();
-                    for (A2290Filter sale : salesList) {
-                        salesParts.add(
-                            sale.CCUST.trim() + ";" + sale.CCIA.trim() + ";" + sale.FORMA.trim() + ";" 
-                            + sale.SERIE.trim() + ";" + sale.TDOC.trim() + ";" + sale.SCARDNCOR.trim() + ";" 
-                            + sale.SAUTHOC.trim() + ";" + sale.SEQ.trim() + ";" + sale.CORRL.trim() + ";" 
+
+                List<String> salesParts = new ArrayList<>();
+                for (A2290Filter sale : salesList) {
+                    salesParts.add(
+                            sale.CCUST.trim() + ";" + sale.CCIA.trim() + ";" + sale.FORMA.trim() + ";"
+                            + sale.SERIE.trim() + ";" + sale.TDOC.trim() + ";" + sale.SCARDNCOR.trim() + ";"
+                            + sale.SAUTHOC.trim() + ";" + sale.SEQ.trim() + ";" + sale.CORRL.trim() + ";"
                             + sale.SVFOP + ";" + sale.TOTAL
-                        );
-                    }
-                    salesGroup = String.join("|", salesParts);
+                    );
+                }
+                salesGroup = String.join("|", salesParts);
 
-
-                   List<String> bandocParts = new ArrayList<>();
-                    for (A2290Filter bandoc : bandocList) {
-                        bandocParts.add(
-                            bandoc.CCUST.trim() + ";" + bandoc.ADATE.trim() + ";" + bandoc.SOCIETY.trim() + ";" 
+                List<String> bandocParts = new ArrayList<>();
+                for (A2290Filter bandoc : bandocList) {
+                    bandocParts.add(
+                            bandoc.CCUST.trim() + ";" + bandoc.ADATE.trim() + ";" + bandoc.SOCIETY.trim() + ";"
                             + bandoc.CODEBANK.trim() + ";" + bandoc.BANDOC.trim()
-                        );
-                    }
+                    );
+                }
 
-                    bandocGroup = String.join("|", bandocParts);
+                bandocGroup = String.join("|", bandocParts);
 
+                System.out.print("sucesssssssssssssssssss");
 
+                obj.liq = salesGroup;
+                obj.ec = bandocGroup;
+                obj.processR = filter.IN_CODPRO;
+                regs = "";
+                regsEC = "";
+                lstData.add(obj);
+
+                if (message.equals("")) {
                     System.out.print("sucesssssssssssssssssss");
+                    StatementReconciliationsLogic logicStatement = new StatementReconciliationsLogic();
+                    logicStatement.setSession(this.serverSession.getServerSession());
+                    message = logicStatement.loadPX287MPS106(lstData);
 
-                    obj.liq = salesGroup;
-                    obj.ec = bandocGroup;
-                    obj.processR = filter.IN_CODPRO;
-                    regs = "";
-                    regsEC = "";
-                    lstData.add(obj);
-
-                    if (message.equals("")) {
-                        System.out.print("sucesssssssssssssssssss");
-                        StatementReconciliationsLogic logicStatement = new StatementReconciliationsLogic();
-                        logicStatement.setSession(this.serverSession.getServerSession());
-                            message = logicStatement.loadPX287MPS106(lstData);
-
-                    }
+                }
             }
-            
+
 //            lst = logic.searchPendingHeads(filter);
-            
         } catch (Exception e) {
             e.printStackTrace();
             message = e.getMessage();
@@ -844,7 +842,7 @@ public class TemplateReconciliationController extends BaseController {
             m.put("success", false);
             m.put("result", message);
         }
-        
+
         if (message != null) {
             m.put("success", true);
             m.put("result", message);
@@ -854,7 +852,115 @@ public class TemplateReconciliationController extends BaseController {
         }
 
         return gson.toJson(m);
-        
+
     }
-    
+
+    @RequestMapping(value = "getPendingDepositsSalesReview")
+    public @ResponseBody
+    String fetchPendingDepositsSalesReview(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- TemplateReconciliation : getPendingDepositsSalesReview -----------");
+
+        map.put("success", true);
+
+        MPS419Response response = this.searchPendingDepositsSalesReview(request, false);
+
+        // total = tamaño de depósitos (o tamaño de invoices si deseas)
+        int total = response.deposits != null ? response.deposits.size() : 0;
+
+        System.out.println("Total : " + total);
+        map.put("total", total);
+        map.put("data", response);
+
+        return new Gson().toJson(map);
+    }
+
+    public MPS419Response searchPendingDepositsSalesReview(HttpServletRequest request, Boolean bExcel) {
+
+        A2290Filter filter = new A2290Filter();
+        MPS419Response response = new MPS419Response();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new TemplateReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit"));
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
+
+            if (false) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            response = logic.searchPendingDepositsSalesReview(filter);
+
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+
+        return response;
+    }
+
+    @RequestMapping(value = "MaintenanceA2280")
+    public @ResponseBody
+    String MaintenanceA2280(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- TemplateReconciliation : MaintenanceA2280 -----------");
+
+        map.put("success", true);
+        String beanString = request.getParameter("beanString");
+        Gson gson = new Gson();
+        A2290Filter bean = gson.fromJson(beanString, A2290Filter.class);
+
+        try {
+            logic = new TemplateReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            String mensaje = logic.MaintenanceA2280(bean);
+            map.put("Mensaje", mensaje);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("success", false);
+            map.put("Mensaje", e.getMessage());
+        }
+
+        return new Gson().toJson(map);
+    }
+
+    @RequestMapping(value = "addDiscountInternacional")
+    public @ResponseBody
+    String addDiscountInternacional(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- TemplateReconciliation : addDiscountInternacional -----------");
+        map.put("success", true);
+
+        try {
+            String beanString = request.getParameter("beanString");
+            Gson gson = new Gson();
+            A2290Filter bean = gson.fromJson(beanString, A2290Filter.class);
+
+            logic = new TemplateReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String mensaje = logic.addDiscountInternacional(bean);
+            map.put("Mensaje", mensaje);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("success", false);
+            map.put("Mensaje", e.getMessage());
+        }
+
+        return new Gson().toJson(map);
+    }
+
 }

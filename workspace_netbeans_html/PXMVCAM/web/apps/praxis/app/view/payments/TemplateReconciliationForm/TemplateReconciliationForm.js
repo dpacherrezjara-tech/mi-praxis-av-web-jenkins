@@ -1,3 +1,29 @@
+Ext.create('Ext.Component', {
+    renderTo: Ext.getBody(),
+    html: '<style type="text/css">' +
+            '.button-off {' +
+            '  background-color: #f44336;' + // Red color for OFF
+            '  color: white;' +
+            '  border-radius: 50%;' +
+            '  border: none;' +
+            '  font-size: 12px;' +
+            '  cursor: pointer;' +
+            '  text-align: center;' +
+            '  line-height: 50px;' + // Ensure text is vertically centered
+            '}' +
+            '.button-on {' +
+            '  background-color: #4CAF50;' + // Green color for ON
+            '  color: white;' +
+            '  border-radius: 50%;' +
+            '  border: none;' +
+            '  font-size: 12px;' +
+            '  cursor: pointer;' +
+            '  text-align: center;' +
+            '  line-height: 50px;' + // Ensure text is vertically centered
+            '}' +
+            '</style>'
+});
+
 Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconciliationForm', {
     id: prototype.id,
     url: prototype.url,
@@ -10,7 +36,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
         'Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconciliationController'
     ],
     controller: 'TemplateReconciliationController',
-    layout: { type: 'fit' },
+    layout: {type: 'fit'},
     border: false,
     defaults: {
         border: false
@@ -71,26 +97,79 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                     border: false,
                                                     items: [
                                                         {
-                                                            xtype: 'combo',
-                                                            id: prototype.id + '-cmbCOREP',
-                                                            fieldLabel: 'Processor',
-                                                            labelStyle: 'text-align: left; font-size: 12px;',
-                                                            fieldStyle: 'text-align: left; font-size: 12px;',
-                                                            width: 225,
-                                                            labelWidth: 60,
-                                                            emptyText: 'All',
-                                                            value: [],
-                                                            displayField: 'NAME',
-                                                            valueField: 'VALUE',
-                                                            queryMode: 'local',
-                                                            filterPickList: true,
-                                                            editable: true,
-                                                            forceSelection: true,
-                                                            margin: '0 10 0 0', // Margen a la derecha para separar de la grilla
-                                                            listeners: {
-                                                                change: 'changeProcessor'
-                                                            }
+                                                            xtype: 'fieldset',
+                                                            title: '<span style="color:#1a4d8f;font-weight:bold;">FILTERS</span>',
+                                                            width: 440,
+                                                            style: 'border: 1px solid #1a4d8f; padding: 8px; margin: 5px;',
+                                                            layout: 'hbox',
+                                                            items: [
+                                                                {
+                                                                    xtype: 'combo',
+                                                                    id: prototype.id + '-cmbCOREP',
+                                                                    fieldLabel: 'Processor',
+                                                                    labelStyle: 'text-align: left; font-size: 12px;',
+                                                                    fieldStyle: 'text-align: left; font-size: 12px;',
+                                                                    width: 225,
+                                                                    labelWidth: 60,
+                                                                    emptyText: 'All',
+                                                                    value: [],
+                                                                    displayField: 'NAME',
+                                                                    valueField: 'VALUE',
+                                                                    queryMode: 'local',
+                                                                    filterPickList: true,
+                                                                    editable: true,
+                                                                    forceSelection: true,
+                                                                    margin: '0 10 0 0',
+                                                                    listeners: {
+                                                                        change: 'changeProcessor'
+                                                                    }
+                                                                },
+                                                                {
+                                                                    xtype: 'container',
+                                                                    layout: {
+                                                                        type: 'hbox',
+                                                                        align: 'middle'
+                                                                    },
+                                                                    padding: '0 10 5 10',
+                                                                    items: [
+                                                                        {
+                                                                            xtype: 'label',
+                                                                            text: 'Work Mode',
+                                                                            margin: '0 5 0 0',
+                                                                            width: 60,
+                                                                            id: prototype.id + '-WorkMode'
+                                                                        },
+                                                                        {
+                                                                            xtype: 'component',
+                                                                            id: prototype.id + '-btnToggleSwitch',
+                                                                            margin: '0 5 0 0',
+                                                                            html: `<style>
+                                                                                .toggle-container{display:inline-block;position:relative;width:30px;height:16px;vertical-align:middle;}
+                                                                                .toggle-input{opacity:0;width:0;height:0;}
+                                                                                .toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#72e34f;transition:.4s;border-radius:16px;}
+                                                                                .toggle-slider::before{position:absolute;content:"";height:12px;width:12px;border-radius:50%;left:2px;bottom:2px;background-color:white;transition:.4s;}
+                                                                                .toggle-input:checked+.toggle-slider{background-color:#4c7daf;}
+                                                                                .toggle-input:checked+.toggle-slider::before{transform:translateX(16px);}
+                                                                            </style>
+                                                                            <label class="toggle-container"><input type="checkbox" class="toggle-input"><span class="toggle-slider"></span></label>`,
+                                                                            tooltip: 'Export to Report',
+                                                                            listeners: {
+                                                                                change: 'chgBash',
+                                                                                click: 'chgBash'
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            xtype: 'label',
+                                                                            text: 'Review Mode',
+                                                                            margin: '0 0 0 5',
+                                                                            width: 70,
+                                                                            id: prototype.id + '-ReviewMode'
+                                                                        },
+                                                                    ]
+                                                                },
+                                                            ]
                                                         },
+
                                                         {
                                                             xtype: 'textfield',
                                                             fieldLabel: "Bandoc <span style='color:#B8A189 ; font-size: 16px; font-weight: bold;'>(*)</span>",
@@ -119,7 +198,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                     dock: 'bottom',
                                                                     ftype: 'summary'
                                                                 }
-                                                            ], 
+                                                            ],
                                                             margin: '0 10 0 0', // Margen a la derecha para separar de la grilla
                                                             columns: {
                                                                 items: [
@@ -210,7 +289,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                         dataIndex: 'SOCIETY',
                                                                         align: 'center',
                                                                         style: 'padding: 6px; background: #B8A189 ;border-color:white',
-                                                                        renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                                             return value;
                                                                         },
@@ -226,15 +305,15 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                         dataIndex: 'NETO',
                                                                         align: 'center',
                                                                         style: 'padding: 6px; background: #B8A189 ;border-color:white',
-                                                                        renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:right;";
                                                                             value = Ext.util.Format.number(value, '0,000.00');
                                                                             return '<b>' + value + '</b>';
                                                                         },
                                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                             var tam = Ext.getCmp(prototype.id + '-gridData21').getStore().getData().items.length;
-                                                                            var data = Ext.getCmp(prototype.id + '-gridData21').getStore().getData().items[tam-1].data;
-                                                                            console.log(data,'data')
+                                                                            var data = Ext.getCmp(prototype.id + '-gridData21').getStore().getData().items[tam - 1].data;
+                                                                            console.log(data, 'data')
                                                                             metaData.style = "text-align:right;background: #B8A189;color:white";
                                                                             value = Ext.util.Format.number(data.TOTAL_NETO, '0,000.00');
                                                                             return '<b>' + value + '</b>';
@@ -242,7 +321,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                     }
                                                                 ]
                                                             },
-                                                             defaults: {
+                                                            defaults: {
                                                                 sortable: true,
                                                                 menuDisabled: false,
                                                                 align: 'center'
@@ -296,7 +375,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                         }
                                                                     ]
                                                                 },
-                                                                 // Panel para la Total de Ventas
+                                                                // Panel para la Total de Ventas
                                                                 {
                                                                     xtype: 'panel',
                                                                     layout: 'hbox',
@@ -363,7 +442,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                             xtype: 'panel',
                                                             layout: 'vbox',
                                                             id: 'panelResumenBandocMenosCalculo',
-                                                            width: 258,
+                                                            width: 198,
                                                             style: 'background: #ffffff; border: 1px solid #d1d1d1;',
                                                             margin: '0 10 0 0', // Margen a la derecha para separar de la grilla
                                                             items: [
@@ -378,7 +457,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                         {
                                                                             xtype: 'displayfield',
                                                                             value: 'Diferencia',
-                                                                            style: 'font-size:14px; font-weight: bold; color:#333; width: 150px; border-right: 1px solid #d1d1d1; padding: 4px 10px;'
+                                                                            style: 'font-size:14px; font-weight: bold; color:#333; width: 90px; border-right: 1px solid #d1d1d1; padding: 4px 10px;'
                                                                         },
                                                                         {
                                                                             xtype: 'displayfield',
@@ -387,9 +466,8 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                             style: 'font-size:14px; color:white; font-weight: bold; width: 106px; text-align: right; padding: 4px 10px;'
                                                                         }
                                                                     ]
-                                                                }
-                                                            ]
-                                                        },
+                                                                },
+                                                                
                                                         {
                                                             xtype: 'button',
                                                             id: prototype.id + '-btnExecute',
@@ -401,9 +479,11 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                 click: 'verifyConciliation'
                                                             }
                                                         }
+                                                            ]
+                                                        },
                                                     ]
                                                 },
-                                                {xtype: 'tbspacer', width: 30, height:20},
+                                                {xtype: 'tbspacer', width: 30, height: 20},
                                                 {
                                                     xtype: 'panel', // Columna derecha
                                                     hidden: true,
@@ -419,7 +499,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
 //                                                        'border': '1px solid #ddd' // Borde sutil
 //                                                    },
                                                     items: [
-                                                        { xtype: 'tbspacer', height: 10 },
+                                                        {xtype: 'tbspacer', height: 10},
                                                         /* Fila 1: Desde y Hasta (Desc) */
                                                         {
                                                             xtype: 'panel',
@@ -466,7 +546,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                     triggerAction: 'all',
                                                                     valueField: 'code',
                                                                     displayField: 'name',
-                                                                    listConfig: { minWidth: 60 },
+                                                                    listConfig: {minWidth: 60},
                                                                     maxLength: 3,
                                                                     enforceMaxLength: true,
                                                                     listeners: {
@@ -492,7 +572,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                     width: 45,
                                                                     anchor: '100%',
                                                                 },
-                                                                { xtype: 'tbspacer', width: 10 },
+                                                                {xtype: 'tbspacer', width: 10},
                                                                 {
                                                                     xtype: 'combo',
                                                                     id: prototype.id + '-cmbDateToYearDesc',
@@ -508,7 +588,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                     triggerAction: 'all',
                                                                     valueField: 'code',
                                                                     displayField: 'name',
-                                                                    listConfig: { maxHeight: 111, minWidth: 70 },
+                                                                    listConfig: {maxHeight: 111, minWidth: 70},
                                                                     maxLength: 4,
                                                                     enforceMaxLength: true,
                                                                     maskRe: /[0-9]/
@@ -527,7 +607,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                     triggerAction: 'all',
                                                                     valueField: 'code',
                                                                     displayField: 'name',
-                                                                    listConfig: { minWidth: 60 },
+                                                                    listConfig: {minWidth: 60},
                                                                     maxLength: 3,
                                                                     enforceMaxLength: true
                                                                 },
@@ -553,7 +633,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                         change: 'searchDiscounts'
                                                                     }
                                                                 },
-                                                                { xtype: 'tbspacer', width: 10 },
+                                                                {xtype: 'tbspacer', width: 10},
                                                                 {
                                                                     xtype: 'combo',
                                                                     id: prototype.id + '-cmbDateFromYear',
@@ -591,7 +671,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                     triggerAction: 'all',
                                                                     valueField: 'code',
                                                                     displayField: 'name',
-                                                                    listConfig: { minWidth: 60 },
+                                                                    listConfig: {minWidth: 60},
                                                                     maxLength: 3,
                                                                     enforceMaxLength: true,
                                                                     listeners: {
@@ -617,7 +697,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                     width: 45,
                                                                     anchor: '100%'
                                                                 },
-                                                                { xtype: 'tbspacer', width: 10 }, // Espacio entre "Desde" y "Hasta"
+                                                                {xtype: 'tbspacer', width: 10}, // Espacio entre "Desde" y "Hasta"
                                                                 {
                                                                     xtype: 'combo',
                                                                     id: prototype.id + '-cmbDateToYear',
@@ -633,7 +713,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                     triggerAction: 'all',
                                                                     valueField: 'code',
                                                                     displayField: 'name',
-                                                                    listConfig: { maxHeight: 111, minWidth: 70 },
+                                                                    listConfig: {maxHeight: 111, minWidth: 70},
                                                                     maxLength: 4,
                                                                     enforceMaxLength: true,
                                                                     maskRe: /[0-9]/
@@ -652,7 +732,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                     triggerAction: 'all',
                                                                     valueField: 'code',
                                                                     displayField: 'name',
-                                                                    listConfig: { minWidth: 60 },
+                                                                    listConfig: {minWidth: 60},
                                                                     maxLength: 3,
                                                                     enforceMaxLength: true
                                                                 },
@@ -680,7 +760,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                 }
                                                             ]
                                                         },
-                                                        { xtype: 'tbspacer', height: 10 },
+                                                        {xtype: 'tbspacer', height: 10},
                                                         /* Fila 3: Desde y Hasta (Normal) */
                                                         {
                                                             xtype: 'panel',
@@ -727,7 +807,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                     triggerAction: 'all',
                                                                     valueField: 'code',
                                                                     displayField: 'name',
-                                                                    listConfig: { minWidth: 60 },
+                                                                    listConfig: {minWidth: 60},
                                                                     maxLength: 3,
                                                                     enforceMaxLength: true,
                                                                     listeners: {
@@ -753,7 +833,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                     width: 45,
                                                                     anchor: '100%'
                                                                 },
-                                                                { xtype: 'tbspacer', width: 10 }, // Espacio entre "Desde" y "Hasta"
+                                                                {xtype: 'tbspacer', width: 10}, // Espacio entre "Desde" y "Hasta"
                                                                 {
                                                                     xtype: 'combo',
                                                                     id: prototype.id + '-cmbDateToYearHead',
@@ -769,7 +849,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                     triggerAction: 'all',
                                                                     valueField: 'code',
                                                                     displayField: 'name',
-                                                                    listConfig: { maxHeight: 111, minWidth: 70 },
+                                                                    listConfig: {maxHeight: 111, minWidth: 70},
                                                                     maxLength: 4,
                                                                     enforceMaxLength: true,
                                                                     maskRe: /[0-9]/
@@ -788,7 +868,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                     triggerAction: 'all',
                                                                     valueField: 'code',
                                                                     displayField: 'name',
-                                                                    listConfig: { minWidth: 60 },
+                                                                    listConfig: {minWidth: 60},
                                                                     maxLength: 3,
                                                                     enforceMaxLength: true
                                                                 },

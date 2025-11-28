@@ -19,7 +19,12 @@ import java.util.Set;
 import net.miatech.beans.AccountingInterfacesResult;
 import net.miatech.beans.SQP04091Filter;
 import net.miatech.beans.spring.implement.IServerSession;
+import net.miatech.praxis.exceptions.SpringException;
+import net.miatech.praxis.payment.MPF091DTO;
+import net.miatech.praxis.payment.MPF102DTO;
 import net.miatech.praxis.payment.filter.A2290Filter;
+import net.miatech.praxis.payment.response.MPS419Response;
+import static net.miatech.praxis.utils.CommonUtils.trimOrEmpty;
 import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
 
@@ -437,12 +442,11 @@ public class TemplateReconciliationDAO {
                     record.PRDA = rst2.getString("PRDA");
                     record.ADATE = rst2.getString("ADATE");
                     record.MERCHAND = rst2.getString("MERCHAND");
-                    
-                    
+
                     record.LIQUIDACIO = rst2.getString("LIQUIDACIO");
                     record.SCURRENCY = rst2.getString("SCURRENCY");
                     record.IMPORTEPAG = rst2.getDouble("IMPORTEPAG");
-                    
+
                     record.COMISION = rst2.getDouble("COMISION");
                     record.COMISTOTA = rst2.getDouble("COMISTOTA");
                     record.STVAL = rst2.getString("STVAL");
@@ -641,16 +645,24 @@ public class TemplateReconciliationDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (rst != null) try { rst.close(); } catch (SQLException e) {
+            if (rst != null) try {
+                rst.close();
+            } catch (SQLException e) {
                 logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
             }
-            if (rst2 != null) try { rst2.close(); } catch (SQLException e) {
+            if (rst2 != null) try {
+                rst2.close();
+            } catch (SQLException e) {
                 logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
             }
-            if (rst3 != null) try { rst3.close(); } catch (SQLException e) {
+            if (rst3 != null) try {
+                rst3.close();
+            } catch (SQLException e) {
                 logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
             }
-            if (cstmt != null) try { cstmt.close(); } catch (SQLException e) {
+            if (cstmt != null) try {
+                cstmt.close();
+            } catch (SQLException e) {
                 logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
             }
             session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
@@ -700,11 +712,11 @@ public class TemplateReconciliationDAO {
             filter.page.TOTROW = cstmt.getInt(9);
 
             rst = cstmt.getResultSet();
-            
+
             if (rst.next()) {
                 TOTAL_NETO = rst.getDouble("SUM_NETO");
             }
-            
+
             // Segunda lista
             if (cstmt.getMoreResults()) {
                 rst = cstmt.getResultSet();
@@ -723,7 +735,7 @@ public class TemplateReconciliationDAO {
                     record.page.PAGROW = filter.page.PAGROW;
                     record.page.TOTPAG = filter.page.TOTPAG;
                     record.page.TOTROW = filter.page.TOTROW;
-                    
+
                     record.TOTAL_NETO = TOTAL_NETO;
 
                     lstTkts.add(record);
@@ -754,7 +766,7 @@ public class TemplateReconciliationDAO {
 
         return lstTkts;
     }
-    
+
     public List<A2290Filter> searchPendingDepositsSales(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
@@ -795,11 +807,11 @@ public class TemplateReconciliationDAO {
             filter.page.TOTROW = cstmt.getInt(9);
 
             rst = cstmt.getResultSet();
-            
+
             if (rst.next()) {
                 TOTAL_NETO = rst.getDouble("SUM_NETO");
             }
-            
+
             // Segunda lista
             if (cstmt.getMoreResults()) {
                 rst = cstmt.getResultSet();
@@ -821,7 +833,7 @@ public class TemplateReconciliationDAO {
                     record.page.PAGROW = filter.page.PAGROW;
                     record.page.TOTPAG = filter.page.TOTPAG;
                     record.page.TOTROW = filter.page.TOTROW;
-                    
+
                     record.TOTAL_NETO = 0;
 
                     lstTkts.add(record);
@@ -852,7 +864,7 @@ public class TemplateReconciliationDAO {
 
         return lstTkts;
     }
-    
+
     public List<A2290Filter> searchPendingSales(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
@@ -895,12 +907,12 @@ public class TemplateReconciliationDAO {
             filter.page.TOTROW = cstmt.getInt(10);
 
             rst = cstmt.getResultSet();
-            
+
             if (rst.next()) {
                 TOTAL_SVFOP = rst.getDouble("SUM_SVFOP");
                 TOTAL_SVFOP_CONVERTED = rst.getDouble("SUM_SVFOP");
             }
-            
+
             // Segunda lista
             if (cstmt.getMoreResults()) {
                 rst = cstmt.getResultSet();
@@ -925,7 +937,7 @@ public class TemplateReconciliationDAO {
                     record.SVFOPCON = rst.getDouble("SVFOPCON");
                     record.SCURREVENCONVERT = rst.getString("SCURREVENCONVERT");
                     record.SDATE = rst.getString("SDATE");
-                    
+
                     record.SCOUNTRY = rst.getString("SCOUNTRY");
                     record.SAUTHOC = rst.getString("SAUTHOC");
                     record.SCARDN = rst.getString("SCARDN");
@@ -943,7 +955,7 @@ public class TemplateReconciliationDAO {
                     record.page.PAGROW = filter.page.PAGROW;
                     record.page.TOTPAG = filter.page.TOTPAG;
                     record.page.TOTROW = filter.page.TOTROW;
-                    
+
                     record.TOTAL_SVFOP = 0;
                     record.TOTAL_SVFOP_CONVERTED = 0;
 
@@ -985,7 +997,7 @@ public class TemplateReconciliationDAO {
         ResultSet rst2 = null;
         A2290Filter record = null;
         List<A2290Filter> lista = new ArrayList<A2290Filter>();
-        
+
         double TOTAL_LIQ = 0;
         double TOTAL_NETO = 0;
         double TOTAL_IMPORTEPAG = 0;
@@ -1021,13 +1033,13 @@ public class TemplateReconciliationDAO {
             filter.page.TOTROW = cstmt.getInt(10);
 
             rst = cstmt.getResultSet();
-            
+
             if (rst.next()) {
                 TOTAL_LIQ = rst.getDouble("SUM_TOTAL");
                 TOTAL_NETO = rst.getDouble("SUM_NETO");
                 TOTAL_IMPORTEPAG = rst.getDouble("SUM_IMPORTEPAG");
             }
-            
+
             if (cstmt.getMoreResults()) {
                 rst2 = cstmt.getResultSet();
                 while (rst2.next()) {
@@ -1087,6 +1099,195 @@ public class TemplateReconciliationDAO {
         }
 
         return lstTkts;
+    }
+
+    public MPS419Response searchPendingDepositsSalesReview(A2290Filter filter) throws SQLException, Exception {
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        Connection cnx = null;
+
+        // OBJETO DE RESPUESTA FINAL
+        MPS419Response response = new MPS419Response();
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+
+            String SQL = "{CALL " + session.getMainLibrary() + "MP.MPS419(?,?,?)}";
+            cstmt = cnx.prepareCall(SQL);
+
+            cstmt.setString(1, filter.IN_CCUST);
+            cstmt.setString(2, filter.IN_BANDOC);
+            cstmt.setString(3, filter.IN_CODPRO);
+
+            cstmt.execute();
+
+            // ==============================
+            //  RESULT SET 1 → MPF102 (Deposits)
+            // ==============================
+            rst = cstmt.getResultSet();
+            while (rst.next()) {
+                MPF102DTO dto = new MPF102DTO();
+                dto.CCUST = rst.getString("CCUST");
+                dto.RN = rst.getLong("RN");
+                dto.REFER = rst.getString("REFER");
+                dto.VALDATE = rst.getString("VALDATE");
+                dto.ADATE = rst.getString("ADATE");
+                dto.ACCOUNT = rst.getString("ACCOUNT");
+                dto.SOCIETY = rst.getString("SOCIETY");
+                dto.SCURRENCY = rst.getString("SCURRENCY");
+                dto.BANDOC = rst.getString("BANDOC");
+                dto.DATECI = rst.getString("DATECI");
+                dto.TRANCI = rst.getString("TRANCI");
+                dto.NETO = rst.getDouble("NETO");
+
+                response.deposits.add(dto);
+            }
+
+            // ==============================
+            //  RESULT SET 2 → MPF091 (Invoices)
+            // ==============================
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+                while (rst.next()) {
+                    MPF091DTO dto = new MPF091DTO();
+                    dto.RN = rst.getLong("RN");
+                    dto.CCUST = rst.getString("CCUST");
+                    dto.PRDA = rst.getString("PRDA");
+                    dto.CODPRO = rst.getString("CODPRO");
+                    dto.CCUSTPRO = rst.getString("CCUSTPRO");
+                    dto.FLIQUIDACI = rst.getString("FLIQUIDACI");
+                    dto.LIQUIDACIO = rst.getString("LIQUIDACIO");
+                    dto.MERCHAND = rst.getString("MERCHAND");
+                    dto.MONEDA = rst.getString("MONEDA");
+                    dto.MONEDALIQ = rst.getString("MONEDALIQ");
+                    dto.PAISLIQ = rst.getString("PAISLIQ");
+                    dto.VALDATE = rst.getString("VALDATE");
+                    dto.BANDOC = rst.getString("BANDOC");
+                    dto.DATECI = rst.getString("DATECI");
+                    dto.TRANCI = rst.getString("TRANCI");
+                    dto.ADATE = rst.getString("ADATE");
+                    dto.ACCCOMP = rst.getString("ACCCOMP");
+                    dto.FSELEC = rst.getString("FSELEC");
+                    dto.FECSELEC = rst.getString("FECSELEC");
+                    dto.USCR = rst.getString("USCR");
+                    dto.FECR = rst.getString("FECR");
+                    dto.HOCR = rst.getString("HOCR");
+                    dto.PGMCR = rst.getString("PGMCR");
+                    dto.USUP = rst.getString("USUP");
+                    dto.FEUP = rst.getString("FEUP");
+                    dto.HOUP = rst.getString("HOUP");
+                    dto.PGMUP = rst.getString("PGMUP");
+                    dto.CODE = rst.getString("CODE");
+                    dto.CORRL = rst.getString("CORRL");
+                    dto.CODIGO = rst.getString("CODIGO");
+                    dto.TIPOARCH = rst.getString("TIPOARCH");
+                    dto.MONEDAPAGO = rst.getString("MONEDAPAGO");
+                    dto.IMPORTE = rst.getDouble("IMPORTE");
+                    dto.IMPORTEPAG = rst.getDouble("IMPORTEPAG");
+
+                    response.invoices.add(dto);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SpringException(e);
+        } finally {
+            if (rst != null) try {
+                rst.close();
+            } catch (SQLException ex) {
+            }
+            if (cstmt != null) try {
+                cstmt.close();
+            } catch (SQLException ex) {
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return response;
+    }
+
+    public String MaintenanceA2280(A2290Filter bean) throws SQLException, Exception {
+
+        CallableStatement cstmt = null;
+        Connection cnx = null;
+        String outMensaje = "";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+
+            String SQL = "{CALL " + session.getMainLibrary() + "MP.MPS420(?,?,?,?,?,?,?,?,?,?,?,?)}";
+            cstmt = cnx.prepareCall(SQL);
+
+            cstmt.setString(1, trimOrEmpty(bean.IN_CCUST));
+            cstmt.setString(2, trimOrEmpty(bean.IN_PRDA));
+            cstmt.setString(3, trimOrEmpty(bean.IN_CODPRO));
+            cstmt.setString(4, trimOrEmpty(bean.IN_CCUSTPRO));
+            cstmt.setString(5, trimOrEmpty(bean.IN_FLIQUIDACI));
+            cstmt.setString(6, trimOrEmpty(bean.IN_LIQUIDACIO));
+            cstmt.setString(7, trimOrEmpty(bean.IN_MERCHAND));
+            cstmt.setString(8, trimOrEmpty(bean.IN_MONEDA));
+            cstmt.setString(9, trimOrEmpty(bean.IN_CORRL));
+            cstmt.setString(10, trimOrEmpty(bean.IN_CODIGO));
+            cstmt.setDouble(11, bean.IN_IMPORTE);
+
+            cstmt.registerOutParameter(12, java.sql.Types.VARCHAR);
+
+            cstmt.execute();
+
+            outMensaje = cstmt.getString(12);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SpringException(e);
+        } finally {
+            if (cstmt != null) try {
+                cstmt.close();
+            } catch (SQLException e) {
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+        }
+
+        return outMensaje;
+    }
+
+    public String addDiscountInternacional(A2290Filter bean) throws SQLException, Exception {
+
+        CallableStatement cstmt = null;
+        Connection cnx = null;
+        String outMensaje = "";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+
+            String SQL = "{CALL " + session.getMainLibrary() + "MP.MPS426(?,?,?,?,?)}";
+            cstmt = cnx.prepareCall(SQL);
+
+            cstmt.setString(1, bean.IN_CCUST);
+            cstmt.setString(2, bean.IN_BANDOC);
+            cstmt.setString(3, bean.IN_DATECI);
+            cstmt.setString(4, bean.IN_TRANCI);
+
+            cstmt.registerOutParameter(5, java.sql.Types.VARCHAR);
+
+            cstmt.execute();
+
+            outMensaje = cstmt.getString(5);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SpringException(e);
+        } finally {
+            if (cstmt != null) try {
+                cstmt.close();
+            } catch (SQLException ex) {
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+        }
+
+        return outMensaje;
     }
 
 }
