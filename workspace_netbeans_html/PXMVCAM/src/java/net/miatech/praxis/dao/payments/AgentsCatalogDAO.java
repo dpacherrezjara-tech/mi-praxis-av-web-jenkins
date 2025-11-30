@@ -51,7 +51,7 @@ public class AgentsCatalogDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP04941_V85(?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.SQP04941_V85(?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
