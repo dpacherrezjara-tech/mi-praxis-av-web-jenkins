@@ -1578,6 +1578,149 @@ public class StatementReconciliationsDAO {
         return lstTkts;
     }
     
+    
+    ////
+    //// FER CASH
+    
+    
+    
+    
+    public List<A2290Filter> loadDetalleCASH(A2290Filter filter) throws SQLException, Exception {
+
+        List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
+        A2290Filter beanTkt;
+        double totNETOEECC = 0, totNETOSETLEMENT = 0;
+        HashMap<String, String> hmDescEstados = new HashMap<String, String>();
+        hmDescEstados.put("1", "Match");
+        hmDescEstados.put("3", "Pending");
+        hmDescEstados.put("5", "Match Manual");
+
+        HashMap<String, String> hmDescDocType = new HashMap<String, String>();
+        hmDescDocType.put("S", "Sales");
+        hmDescDocType.put("D", "Debits");
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL PRAXISMP.MPS392 (?,?,?,?,?,?,?,?,?, ?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.registerOutParameter(7, Types.INTEGER);
+            cstmt.registerOutParameter(8, Types.INTEGER);
+            cstmt.registerOutParameter(9, Types.INTEGER);
+            cstmt.registerOutParameter(10, Types.INTEGER);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.IN_ADATE_FROM);
+            cstmt.setString(3, filter.IN_ADATE_TO);
+            cstmt.setString(4, filter.IN_BANDOC);
+            cstmt.setString(5, filter.IN_STVAL);
+            cstmt.setString(6, filter.IN_COUNTRY.trim());
+
+            cstmt.setInt(7, filter.page.PAGNUM);
+            cstmt.setInt(8, filter.page.PAGROW);
+            cstmt.setInt(9, filter.page.TOTPAG);
+            cstmt.setInt(10, filter.page.TOTROW);
+            cstmt.execute();
+
+            filter.page.PAGNUM = cstmt.getInt(7);
+            filter.page.PAGROW = cstmt.getInt(8);
+            filter.page.TOTPAG = cstmt.getInt(9);
+            filter.page.TOTROW = cstmt.getInt(10);
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+                totNETOEECC = rst.getDouble("NETO");
+                totNETOSETLEMENT = rst.getDouble("NETOC");
+            }
+            rst.close();
+
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+
+                while (rst.next()) {
+
+                    beanTkt = new A2290Filter();
+                    beanTkt.IN_TDOC = filter.IN_TDOC.trim();
+                    beanTkt.IN_ADATE_FROM = filter.IN_ADATE_FROM.trim();
+                    beanTkt.IN_ADATE_TO = filter.IN_ADATE_TO.trim();
+                    beanTkt.IN_CBANK = filter.IN_CBANK.trim();
+                    beanTkt.strCREJEC = filter.strCREJEC.trim();
+                    beanTkt.IN_SDATEE = filter.IN_SDATEE.trim();
+                    beanTkt.IN_COUNTRY = filter.IN_COUNTRY.trim();
+                    beanTkt.DESC_SCOUNTRY = rst.getString("DES_COUNTRY").trim();
+                    beanTkt.IN_EXT = filter.IN_EXT.trim();
+                    beanTkt.strFormatDate = rst.getString("VALDATE").trim();
+
+                    if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {
+                        beanTkt.STVAL = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
+                    } else {
+                        beanTkt.STVAL = rst.getString("STVAL").trim();
+                    }
+                    beanTkt.F_SCOUNTRY = rst.getString("SCOUNTRY").trim();
+                    beanTkt.F_TDOC = rst.getString("TDOC").trim();
+                    beanTkt.F_ADATE = rst.getString("ADATE").trim();
+                    beanTkt.F_SCURRENCY = rst.getString("SCURRENCY").trim();  
+                    beanTkt.F_MERCHAND = rst.getString("MERCHAND").trim();  
+                    beanTkt.F_BANDOC = rst.getString("BANDOC").trim();  
+                    beanTkt.F_NETO = rst.getDouble("NETO");
+                    beanTkt.F_NETOC = rst.getDouble("NETOC");
+                    beanTkt.F_CODPRO = rst.getString("CODPRO");
+                    beanTkt.F_CCUSTPRO = rst.getString("CCUSTPRO");
+                    beanTkt.F_FREGLA = rst.getString("FREGLA");
+
+
+                    
+                    beanTkt.QTYTRAN1 = rst.getLong("QTYTRAN1");
+                    beanTkt.totNETOEECC = totNETOEECC;
+                    beanTkt.totNETOSETLEMENT = totNETOSETLEMENT;
+                    beanTkt.DATECI = rst.getString("DATECI").trim();
+                    beanTkt.TRANCI = rst.getString("TRANCI").trim();
+
+                    beanTkt.page.PAGNUM = filter.page.PAGNUM;
+                    beanTkt.page.PAGROW = filter.page.PAGROW;
+                    beanTkt.page.TOTPAG = filter.page.TOTPAG;
+                    beanTkt.page.TOTROW = filter.page.TOTROW;
+
+                    lstTkts.add(beanTkt);
+                }
+                rst.close();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getMessage();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstTkts;
+    }
+    
+    
+    
+    
+    ///
+    
     public List<A2290Filter> loadPXSalesDirect(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);

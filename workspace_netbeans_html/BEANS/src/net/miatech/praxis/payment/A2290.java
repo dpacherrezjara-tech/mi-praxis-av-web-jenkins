@@ -297,4 +297,23 @@ public class A2290 {
     public Boolean checkActiveViewADM = false;
     public Boolean blockChange = false;
     
+    
+    
+        //DETALLE
+    
+    public String F_SCOUNTRY = "";
+    public String F_TDOC = "";
+    public String F_ADATE = "";
+    public String F_SCURRENCY = "";
+    public String F_MERCHAND = "";
+    public String F_BANDOC = "";
+    public double F_NETO = 0;
+    public double F_NETOC = 0;
+    public String F_CODPRO = "";
+    public String F_CCUSTPRO = "";
+    public String F_FREGLA = "";
+    
+    
+    
+    
 }

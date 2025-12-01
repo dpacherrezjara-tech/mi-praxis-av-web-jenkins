@@ -768,6 +768,8 @@ public class A2290Filter extends A2290 {
     public String DATECI = "";
     public String TRANCI = "";
     public String TDOC_E = "";
+    public String IN_ADATE_FROM = "";
+    public String IN_ADATE_TO = "";
 
     public String CID = "";
     public String UUID = "";

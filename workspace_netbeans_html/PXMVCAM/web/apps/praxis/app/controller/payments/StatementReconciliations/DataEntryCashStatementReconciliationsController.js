@@ -107,6 +107,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
         this.setValue('de-txtTRANCI', this.beanResult.TRANCI);
         this.setValue('de-txtQTYTRAN1', this.beanResult.QTYTRAN1);
         this.setValue('de-txtSOCIETYS', this.beanResult.CCUST);
+        this.setValue('de-txtACCOUNTCASH', this.beanResult.ACCOUNT);
 
         this.setValue('de-txtMERCHAND', this.beanResult.MERCHAND);
         this.setValue('de-txtBANDOC', this.beanResult.BANDOC);
