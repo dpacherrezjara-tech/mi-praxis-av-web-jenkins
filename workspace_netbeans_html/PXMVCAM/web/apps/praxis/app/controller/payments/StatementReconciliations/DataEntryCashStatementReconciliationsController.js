@@ -78,10 +78,12 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
         
         // STATEMENT INFORMATION 
         let  cfuente = '';
-        if (this.bean.data.TINPUT === 'B' || this.bean.data.TINPUT === 'A'){
+        if (this.bean.data.CCUSTPRO === '00'){
             cfuente = 'BSP';
-        } else {
-            cfuente = 'ISC';
+        } else if (this.bean.data.CCUSTPRO === '01') {
+            cfuente = 'ICCS';
+        } else if (this.bean.data.CCUSTPRO === '02') {
+            cfuente = 'ARC';
         }
         this.setValue('de-txtVALDATEL', this.beanResult.VALDATE);
         this.setValue('de-txtInput', cfuente);

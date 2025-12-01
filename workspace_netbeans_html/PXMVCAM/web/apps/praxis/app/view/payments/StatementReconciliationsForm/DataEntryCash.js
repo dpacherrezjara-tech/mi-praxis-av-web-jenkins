@@ -1098,7 +1098,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                                 items: [
                                                                     {
                                                                         text: 'Value <br> Date',
-                                                                        dataIndex: 'VALDATE',
+                                                                        dataIndex: 'ADATE',
                                                                         width: 120  ,
                                                                         renderer: function (value, metaData) {
                                                                             metaData.style = "text-align:center;";

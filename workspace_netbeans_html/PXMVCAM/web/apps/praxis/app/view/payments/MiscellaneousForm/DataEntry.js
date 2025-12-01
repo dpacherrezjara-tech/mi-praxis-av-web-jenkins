@@ -228,6 +228,33 @@ Ext.define('Ext.Praxis.view.payments.MiscellaneousForm.DataEntry',{
                                 { xtype: 'tbspacer', width: 7 },
                                 {
                                     xtype: 'label',
+                                    text: 'Description 3',
+                                    hidden: false,
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    width: 90
+                                    
+                                },
+                                { xtype: 'tbspacer', width: 7 },
+                                {
+                                    xtype: 'textfield',
+                                    id:prototype.id+'-de-txtCDesc3',
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    fieldStyle: 'text-align:center;',
+                                    width: 200,
+                                    enforceMaxLength: true,
+                                    maxLength: 100,
+                                }
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            layout: 'hbox',
+                            border: false,
+                            margin: '10 2 2 8',
+                            items: [
+                                { xtype: 'tbspacer', width: 7 },
+                                {
+                                    xtype: 'label',
                                     text: 'Document',
                                     hidden: false,
                                     style: 'font-weight:bold;color:#0B333C;',
