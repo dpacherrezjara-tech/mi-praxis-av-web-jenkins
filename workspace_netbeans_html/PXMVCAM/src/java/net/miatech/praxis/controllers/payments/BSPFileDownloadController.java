@@ -1407,8 +1407,6 @@ public class BSPFileDownloadController extends BaseController {
             return;
         }
 
-        String year = dateSett.substring(0, 4);
-
         String ruta = this.serverSession.propertySession.get("DB_SERVER_DEFAULT_TYPE").toString();
         String rutaCarpeta;
 
@@ -1419,16 +1417,15 @@ public class BSPFileDownloadController extends BaseController {
             default: rutaCarpeta = "";
         }
 
-        Path folderPath = Paths.get("\\\\10.0.0.87\\av\\Efectivo\\"
-                + rutaCarpeta + "\\process\\BSP\\"
-                + country + "\\" + year);
+        // 🔥 Nueva ruta correcta
+        Path folderPath = Paths.get("\\\\Px\\av\\Efectivo\\"
+                + rutaCarpeta + "\\workspace\\HISTORY");
 
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(folderPath, "*.csv")) {
             Path matchedFile = null;
 
             for (Path path : stream) {
                 String fileName = path.getFileName().toString();
-
                 if (fileName.contains(country) && fileName.contains(customer) && fileName.contains(dateSett)) {
                     matchedFile = path;
                     break;
@@ -1444,7 +1441,6 @@ public class BSPFileDownloadController extends BaseController {
 
             System.out.println("Archivo encontrado: " + matchedFile);
 
-            // Descargar
             response.setContentType("text/csv");
             response.setHeader("Content-Disposition",
                     "attachment; filename=\"" + matchedFile.getFileName().toString() + "\"");
@@ -1454,11 +1450,9 @@ public class BSPFileDownloadController extends BaseController {
 
                 byte[] buffer = new byte[4096];
                 int bytesRead;
-
                 while ((bytesRead = fis.read(buffer)) != -1) {
                     out.write(buffer, 0, bytesRead);
                 }
-
                 out.flush();
             }
 
@@ -1468,6 +1462,7 @@ public class BSPFileDownloadController extends BaseController {
             response.getWriter().write("Error al buscar o descargar el archivo CSV");
         }
     }
+
 
    @RequestMapping(value = "getBulkCSV", method = RequestMethod.POST)
     public void getBulkCSV(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1513,45 +1508,45 @@ public class BSPFileDownloadController extends BaseController {
         int addedFiles = 0;
 
         for (A2354Filter item : list) {
-            try {
-                String year = item.DATESETT.substring(0, 4);
-                Path folderPath = Paths.get("\\\\10.0.0.87\\av\\Efectivo\\" + rutaCarpeta +
-                        "\\process\\BSP\\" + item.COUNTRY + "\\" + year);
+    try {
+        Path folderPath = Paths.get("\\\\Px\\av\\Efectivo\\"
+                + rutaCarpeta + "\\workspace\\HISTORY");
 
-                try (DirectoryStream<Path> stream = Files.newDirectoryStream(folderPath, "*.csv")) {
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(folderPath, "*.csv")) {
 
-                    boolean added = false;
+            boolean added = false;
 
-                    for (Path path : stream) {
-                        try {
-                            String fileName = path.getFileName().toString();
+            for (Path path : stream) {
+                try {
+                    String fileName = path.getFileName().toString();
 
-                            if (fileName.contains(item.COUNTRY)
-                                    && fileName.contains(item.CUSTOMER)
-                                    && fileName.contains(item.DATESETT)) {
+                    if (fileName.contains(item.COUNTRY)
+                            && fileName.contains(item.CUSTOMER)
+                            && fileName.contains(item.DATESETT)) {
 
-                                zos.putNextEntry(new ZipEntry(fileName));
-                                Files.copy(path, zos);
-                                zos.closeEntry();
-                                addedFiles++;
-                                added = true;
-                                break;
-                            }
-                        } catch (Exception eFile) {
-                            System.err.println("⚠ No se pudo agregar archivo al ZIP: " + path + " → " + eFile.getMessage());
-                        }
+                        zos.putNextEntry(new ZipEntry(fileName));
+                        Files.copy(path, zos);
+                        zos.closeEntry();
+                        addedFiles++;
+                        added = true;
+                        break;
                     }
-
-                    if (!added) {
-                        System.err.println("⚠ Archivo NO encontrado para: "
-                                + item.COUNTRY + " | " + item.CUSTOMER + " | " + item.DATESETT);
-                    }
-
+                } catch (Exception eFile) {
+                    System.err.println("⚠ No se pudo agregar archivo al ZIP: " + path + " → " + eFile.getMessage());
                 }
-            } catch (Exception eFolder) {
-                System.err.println("⚠ Carpeta inaccesible: pais=" + item.COUNTRY + ", año=" + item.DATESETT.substring(0, 4));
             }
+
+            if (!added) {
+                System.err.println("⚠ Archivo NO encontrado para: "
+                        + item.COUNTRY + " | " + item.CUSTOMER + " | " + item.DATESETT);
+            }
+
         }
+    } catch (Exception eFolder) {
+        System.err.println("⚠ Carpeta inaccesible: país=" + item.COUNTRY + ", fecha=" + item.DATESETT);
+    }
+}
+
 
         zos.close();
 

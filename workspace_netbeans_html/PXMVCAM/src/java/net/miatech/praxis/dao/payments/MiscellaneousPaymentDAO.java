@@ -58,32 +58,35 @@ public class MiscellaneousPaymentDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP04518_V2(?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.SQP04518_V2(?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(3, Types.INTEGER);
-            cstmt.registerOutParameter(4, Types.INTEGER);
-            cstmt.registerOutParameter(5, Types.INTEGER);
             cstmt.registerOutParameter(6, Types.INTEGER);
+            cstmt.registerOutParameter(7, Types.INTEGER);
+            cstmt.registerOutParameter(8, Types.INTEGER);
+            cstmt.registerOutParameter(9, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_CODE.trim());
+            cstmt.setString(3, filter.IN_DESCRE1.trim());
+            cstmt.setString(4, filter.IN_DESCRE2.trim());
+            cstmt.setString(5, filter.IN_DESCRE3.trim());
 
-            cstmt.setInt(3, filter.page.PAGNUM);
-            cstmt.setInt(4, filter.page.PAGROW);
-            cstmt.setInt(5, filter.page.TOTPAG);
-            cstmt.setInt(6, filter.page.TOTROW);
+            cstmt.setInt(6, filter.page.PAGNUM);
+            cstmt.setInt(7, filter.page.PAGROW);
+            cstmt.setInt(8, filter.page.TOTPAG);
+            cstmt.setInt(9, filter.page.TOTROW);
 
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(3);
-            filter.page.PAGROW = cstmt.getInt(4);
-            filter.page.TOTPAG = cstmt.getInt(5);
-            filter.page.TOTROW = cstmt.getInt(6);
+            filter.page.PAGNUM = cstmt.getInt(6);
+            filter.page.PAGROW = cstmt.getInt(7);
+            filter.page.TOTPAG = cstmt.getInt(8);
+            filter.page.TOTROW = cstmt.getInt(9);
 
             rst = cstmt.getResultSet();
             while (rst.next()) {
@@ -94,6 +97,7 @@ public class MiscellaneousPaymentDAO {
                 bean.CODETB = rst.getString("CODETB");
                 bean.DESCRE1 = rst.getString("DESCRE1");
                 bean.DESCRE2 = rst.getString("DESCRE2");
+                bean.DESCRE3 = rst.getString("DESCRE3");
                 //bean.TDOC = rst.getString("TDOC");
                 if (hmDescEstados.containsKey(rst.getString("TDOC").trim())) {
                     bean.TDOC = hmDescEstados.get(rst.getString("TDOC").trim()).toString();
@@ -299,6 +303,7 @@ public class MiscellaneousPaymentDAO {
                 beanTkt.TTABLA = rs01.getString("TTABLA").trim();
                 beanTkt.DESCRE1 = rs01.getString("DESCRE1").trim();
                 beanTkt.DESCRE2 = rs01.getString("DESCRE2").trim();
+                beanTkt.DESCRE3 = rs01.getString("DESCRE3").trim();
                 beanTkt.TDOC = rs01.getString("TDOC").trim();
                 beanTkt.DESCR_TTABLA = rs01.getString("DESCR_TTABLA").trim();
                 beanTkt.CANT1 = rs01.getInt("CANT1");
@@ -350,7 +355,7 @@ public class MiscellaneousPaymentDAO {
 
         CallableStatement cstmt = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP04521(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.SQP04521(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -373,7 +378,7 @@ public class MiscellaneousPaymentDAO {
             cstmt.setString(14, session.getUserView().getUserInfo().USR);
             cstmt.setString(15, Functions.getFechaActual());
             cstmt.setString(16, Functions.getHoraActual());
-
+            cstmt.setString(17, filter.DESCRE3.trim());
             cstmt.execute();
 
         } catch (Exception e) {
