@@ -49,8 +49,8 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Info', {
                         {
                             xtype: 'grid',
                             id: prototype.id + '-gridDataImport',
-                            width: 1075,
-                            height: 540,
+                            width: 1155,
+                            height: 500,
                             columnLines: true,
                             cls: 'modern-grid',
                             store: Ext.data.StoreManager.lookup(prototype.id + '-store'),
@@ -71,10 +71,19 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Info', {
                                 //                                {text: 'ID', dataIndex: 'PROCID', width: 70, align: 'center'},
 
                                 {text: 'Description', dataIndex: 'PROCDESC', width: 220, align: 'left'},
+                                
+                                {text: 'File Date', dataIndex: 'PROCDATE', width: 90, align: 'center',
+                                    renderer: function (value) {
+                                        // value siempre viene como YYYYMMDD → formato 2025-07-01
+                                        return value.substring(0, 4) + '-' +
+                                               value.substring(4, 6) + '-' +
+                                               value.substring(6, 8);
+                                    }
+                                },
 
-                                {text: 'COUNTRY', dataIndex: 'PROCPAIS', width: 90, align: 'center'},
+                                {text: 'Country', dataIndex: 'PROCPAIS', width: 90, align: 'center'},
 
-                                {text: 'PROGRAM', dataIndex: 'CPROGRAM', width: 100, align: 'center'},
+                                {text: 'Program', dataIndex: 'CPROGRAM', width: 100, align: 'center'},
                                 //                                {text: 'DATE', dataIndex: 'PROCDATE', width: 100, align: 'center'},
                                 {
                                     text: 'Status',
@@ -100,7 +109,7 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Info', {
                                         return text;
                                     }
                                 },
-                                {text: 'MESSAGE', dataIndex: 'PROCMESSAG', width: 350, align: 'left'},
+                                {text: 'Message', dataIndex: 'PROCMESSAG', width: 350, align: 'left'},
                                 {
                                     text: 'Begin',
                                     dataIndex: 'PROCINI',
@@ -132,7 +141,7 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Info', {
                 },
 
                 // ===========================================================
-                //  TAB 2: CONTROL RPA — (vacío)
+                //  TAB 2: CONTROL RPA —
                 // ===========================================================
                 {
                     title: 'CONTROL RPA',
