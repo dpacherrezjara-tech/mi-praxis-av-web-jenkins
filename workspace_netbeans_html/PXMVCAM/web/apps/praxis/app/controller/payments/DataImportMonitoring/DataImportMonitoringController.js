@@ -61,9 +61,9 @@ Ext.define('Ext.Praxis.controller.payments.DataImportMonitoring.DataImportMonito
                         data: me.lstCountry
                     });
 
-//                    Ext.getCmp(prototype.id + '-cmbIN_COUNTRY')
-//                            .bindStore(storeData3)
-//                            .setValue('');
+                    Ext.getCmp(prototype.id + '-cmbIN_COUNTRY')
+                            .bindStore(storeData3)
+                            .setValue('');
 
                 } else {
                     global.Msg({msg: res.sesion});
@@ -75,7 +75,10 @@ Ext.define('Ext.Praxis.controller.payments.DataImportMonitoring.DataImportMonito
     setFormatParameter: function () {
 
         this.searchParams.bean = {
-            IN_PROCPAIS: Ext.getCmp(prototype.id + '-cmbIN_COUNTRY').getValue() || ''
+            IN_PROCPAIS: Ext.getCmp(prototype.id + '-cmbIN_COUNTRY').getValue() || '',
+            IN_DATETYPE: Ext.getCmp(prototype.id + '-cmbDateType').getValue() || '',
+            IN_PROCDATE: Ext.getCmp(prototype.id + '-txtDATEPICKER').getSubmitValue() || ''
+            
         };
 
         this.searchParams.beanString = JSON.stringify(this.searchParams.bean);
@@ -110,6 +113,7 @@ Ext.define('Ext.Praxis.controller.payments.DataImportMonitoring.DataImportMonito
                     store.getProxy().extraParams = me.searchParams;
                 }
             }
+            
         });
 
         // BIND DEL STORE AL GRID NUEVO
@@ -121,7 +125,9 @@ Ext.define('Ext.Praxis.controller.payments.DataImportMonitoring.DataImportMonito
     },
 
     btnClear_click: function () {
-        Ext.getCmp(prototype.id + '-cmbIN_COUNTRY').setValue('');
+//        Ext.getCmp(prototype.id + '-cmbIN_COUNTRY').setValue('');
+        Ext.getCmp(prototype.id + '-txtDATEPICKER').setValue('');
+        Ext.getCmp(prototype.id + '-cmbDateType').setValue('');
         this.btnSearch_click();
     },
 

@@ -331,6 +331,10 @@
                                 },
                             ]
                         },
+                        
+                        ///////////////// CASHH
+                        
+                        
                         {
                             xtype: 'panel',
                             id: prototype.id + '-panelGridDataCash',
@@ -1554,6 +1558,190 @@
                                 },
                             ]
                         },
+
+                            ///// 
+                            ///// GRILLA DETALLE MPF102
+                            
+                            
+                            
+                            
+                            {
+                                xtype: 'panel',
+                                id: prototype.id + '-panelGridDataCashDetail',
+                                bodyStyle: 'background-color: #E3EAEF;',
+                                border: false,
+                                height: 'auto',
+                                width: 1180,
+                                margin: '10 0 0 0',
+                                layout: {
+                                    type: 'vbox',
+                                    align: 'center'
+                                },
+                                items: [
+                                    {
+                                        xtype: 'label',
+                                        id: prototype.id + '-lblDetailCash',
+                                        text: '',
+                                        padding: '6 0',
+                                        style: 'font-weight:bold;text-align:center;',
+                                        width: 1160
+                                    },
+                                    {
+                                        xtype: 'grid',
+                                        id: prototype.id + '-gridCashDetail',
+                                        width: 1160,
+                                        columnLines: true,
+                                        features: [{ ftype: 'summary' }],
+                                        columns: {
+                                            defaults: {
+                                                menuDisabled: true,
+                                                sortable: false,
+                                                align: 'center'
+                                            },
+                                            items: [
+                                                {
+                                                    text: 'Country',
+                                                    dataIndex: 'DESC_SCOUNTRY',
+                                                    width: 100,
+                                                    renderer: function (value, metaData) {
+                                                        metaData.style = "text-align:center;";
+                                                        return value;
+                                                    }
+                                                },
+                                                {
+                                                    text: 'Doc. Type',
+                                                    dataIndex: 'F_TDOC',
+                                                    width: 100,
+                                                    renderer: function (value, metaData, record) {
+                                                        metaData.style = "text-align:center;";
+                                                        metaData.tdAttr = 'data-qtip="' + record.data.TDOC + '"';
+                                                        if (value === 'S') {
+                                                            return 'SALES';
+                                                        }  
+                                                        return value;
+                                                    }
+                                                },
+                                                {
+                                                    text: 'Status',
+                                                    dataIndex: 'STVAL',
+                                                    width: 95,
+                                                    renderer: function (value, metaData) {
+                                                        metaData.style = "text-align:center;";
+                                                        metaData.tdCls = "x-grid-cell x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                        return value;
+                                                    }
+                                                },
+                                                {
+                                                    text: 'Merchant',
+                                                    dataIndex: 'F_MERCHAND',
+                                                    width: 100,
+                                                    renderer: function (value, metaData) {
+                                                        metaData.style = "text-align:center;";
+                                                        metaData.tdCls = "x-grid-cell x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                        return value;
+                                                    }
+                                                },
+                                                {
+                                                    text: 'Doc SAP BANK',
+                                                    dataIndex: 'F_BANDOC',
+                                                    width: 100,
+                                                    renderer: function (value, metaData) {
+                                                        metaData.style = "text-align:center;";
+                                                        metaData.tdCls = "x-grid-cell x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                        return value;
+                                                    }
+                                                },
+                                                {
+                                                    text: 'Abono Date',
+                                                    dataIndex: 'F_ADATE',
+                                                    width: 100,
+                                                    renderer: function (value, metaData) {
+                                                        metaData.style = "text-align:center;";
+                                                        metaData.tdCls = "x-grid-cell x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                        return value;
+                                                    }
+                                                },
+                                                {
+                                                    text: 'Currency',
+                                                    dataIndex: 'F_SCURRENCY',
+                                                    width: 100,
+                                                    renderer: function (value, metaData) {
+                                                        metaData.style = "text-align:center;";
+                                                        metaData.tdCls = "x-grid-cell x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+
+                                                        
+                                                        return value;
+                                                    }
+                                                },
+                                                {
+                                                    text: 'Neto EECC',
+                                                    dataIndex: 'F_NETO',
+                                                    width: 160,
+                                                    renderer: function (value, metaData) {
+                                                        metaData.style = "text-align:right;";
+                                                        return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
+                                                    },
+                                                    summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridCashDetail').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.totNETOEECC, '0,000.00') + '<b>';
+                                                        }
+                                                },
+                                                {
+                                                    text: 'Neto Settlement',
+                                                    dataIndex: 'F_NETOC',
+                                                    width: 160,
+                                                    renderer: function (value, metaData) {
+                                                        metaData.style = "text-align:right;";
+                                                        return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
+                                                    },
+                                                    summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridCashDetail').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.totNETOSETLEMENT, '0,000.00') + '<b>';
+                                                        }
+                                                },
+                                                {
+                                                    text: 'Source',
+                                                    dataIndex: 'F_CCUSTPRO',
+                                                    width: 100,
+                                                    renderer: function (value, metaData) {
+                                                        metaData.style = "text-align:center;";
+                                                        metaData.tdCls = "x-grid-cell x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                        if (value === '00') {
+                                                            value = 'BSP';
+                                                        }  else if (value === '01'){
+                                                            value = 'ICCS';
+                                                        }  else if (value === '02'){
+                                                            value = 'ARC';
+                                                        }  
+                                                        return value;
+                                                    }
+                                                },
+                                                
+                                                {
+                                                    xtype: 'actioncolumn',
+                                                    width: 40,
+                                                    text: 'Edit',
+                                                    align: 'center',
+                                                    items: [
+                                                        {
+                                                            iconCls: 'prx-icon-edit',
+                                                            tooltip: 'Edit',
+                                                            handler: 'onEditClickCash'
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            
+                            
+                            ////////
+                            ///////////7
+                        
                             {
                                 xtype: 'panel',
                                 id: prototype.id + '-boxDetLiquiCash',
@@ -1726,6 +1914,8 @@
                                     }
                                 ]
                             },
+                            
+                            
                             {
                                 xtype: 'panel',
                                 id: prototype.id + '-boxDetSalesDirect',

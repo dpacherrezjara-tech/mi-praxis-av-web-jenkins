@@ -133,6 +133,9 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                     hidden: true,
                                                     width: 90
                                                 },
+                                                
+                                                //
+                                                
                                                 {
                                                     xtype: 'textfield',
                                                     id: prototype.id + '-de-txtNAME',
@@ -142,6 +145,29 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                     width: 160
                                                 },
                                                 {xtype: 'tbspacer', width: 50},
+                                                
+                                                //
+                                                //
+                                                   {
+                                                    xtype: 'label',
+                                                    text: 'Account',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    width: 60
+                                                },
+                                                
+                                                 {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtACCOUNTCASH',
+                                                    enforceMaxLength: true,
+                                                    readOnly: true,
+                                                    width: 160
+                                                },
+                                                
+//                                           
+                                               
+                                                
+                                                //
+                                                //
                                                 {
                                                     xtype: 'label',
                                                     text: 'Country',
@@ -174,7 +200,14 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                     hidden: true,
                                                     width: 160
                                                 },
-                                                {xtype: 'tbspacer', width: 440}
+                                                
+
+
+//                                                {xtype: 'tbspacer', width: 50},
+                                             
+                                                
+                                                
+                                                {xtype: 'tbspacer', width: 215}
                                             ]
                                         },
                                         {
