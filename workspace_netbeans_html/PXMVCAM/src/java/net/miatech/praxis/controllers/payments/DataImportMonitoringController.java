@@ -47,7 +47,7 @@ public class DataImportMonitoringController extends BaseController {
     @RequestMapping(value = "getMonitoringData")
     public @ResponseBody
     String getMonitoringData(ModelMap map, HttpServletRequest request) {
-        System.out.println("-------------- PAYMENTSCHEDULE SSS:SearchGrid-------------");
+        System.out.println("-------------- DATA IMPORT MONITORING :SearchGrid-------------");
         map.put("success", true);
         List<MPFER90> lst = this.getListMPFER90(request, false);
         System.out.println("Total : " + lst.size());

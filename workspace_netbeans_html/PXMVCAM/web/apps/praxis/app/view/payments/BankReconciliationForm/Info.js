@@ -7068,11 +7068,12 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 text: 'Source', dataIndex: 'TINPUT', width: 70, align: 'center',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
+                                                    console.log(value,"Este es el valor del INPUT");
                                                     if (value === 'B') {
                                                         value = 'BSP'
-                                                    } else if (value = 'I') {
+                                                    } else if (value === 'I') {
                                                         value = 'ICCS'
-                                                    } else if (value = 'A') {
+                                                    } else if (value === 'A') {
                                                         value = 'ARC'
                                                     } else {
                                                         value = 'Not Source'

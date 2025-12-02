@@ -121,15 +121,13 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         // DETAIL SETTLEMENT
         this.setValue('de-txtStatusCash', this.bean.descSTVAL);
         let cfuente;
-        if (this.bean.TINPUT === 'B') {
+        if (this.bean.TINPUT === 'B' || this.bean.TINPUT === 'A') {
             cfuente = 'BSP';
             Ext.getCmp(prototype.id + '-panelDataInfoScan').show();
 
         } else if (this.bean.TINPUT === 'I') {
             cfuente = 'ICCS';
             Ext.getCmp(prototype.id + '-panelDataInfoScanICCS').show();
-        } else {
-            cfuente = 'ARC';
         }
         ;
         this.setValue('de-txtSource', cfuente);
@@ -994,6 +992,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         this.bean_scan.STRDATE = seleccionado.get('STRDATE');
         this.bean_scan.ENDDATE = seleccionado.get('ENDDATE');
         this.bean_scan.ADATE = seleccionado.get('ADATE');
+        this.bean_scan.TINPUT = seleccionado.get('TINPUT');
 
         var paramScan = {beanString: JSON.stringify(this.bean_scan)};
 
