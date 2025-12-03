@@ -360,7 +360,8 @@ Ext.define('Ext.Praxis.view.payments.ReconciliationReportForm.Filters', {
                                     ["", "ALL"],
                                     ["L", "Load"],
                                     ["P", "Pending"],
-                                    ["S", "Send"]
+                                    ["S", "Send"],
+                                    ["E", "Empty"]
                                 ]
                             }),
                             width: 180,
@@ -380,7 +381,7 @@ Ext.define('Ext.Praxis.view.payments.ReconciliationReportForm.Filters', {
                 {
                     xtype: 'fieldset',
                     title: '<span style="color:#1A4D8F;font-weight:bold;">ADITIONAL EXTRACT</span>',
-                    width: 550,
+                    width: 680,
                     style: 'border: 1px solid #1A4D8F; padding: 6px; margin: 5px;',
                     layout: 'hbox',
                     items: [
@@ -458,6 +459,33 @@ Ext.define('Ext.Praxis.view.payments.ReconciliationReportForm.Filters', {
                                 ]
                             }),
                             width: 180,
+                            labelWidth: 40,
+                            emptyText: 'All',
+                            value: '',
+                            displayField: 'description',
+                            valueField: 'value',
+                            queryMode: 'local',
+                            filterPickList: true,
+                            editable: true,
+                            multiSelect: false,
+                            forceSelection: true,
+                            margin: '0 10 0 0'
+                        },
+                         {
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbDebits',
+                            fieldLabel: 'Debits',
+                            labelStyle: 'text-align: left; font-size: 12px;',
+                            fieldStyle: 'text-align: center; font-size: 12px;',
+                            store: new Ext.data.SimpleStore({
+                                fields: ['value', 'description'],
+                                data: [
+                                    ["", "ALL"],
+                                    ["Y", "Yes"],
+                                    ["N", "No"]
+                                ]
+                            }),
+                            width: 120,
                             labelWidth: 40,
                             emptyText: 'All',
                             value: '',

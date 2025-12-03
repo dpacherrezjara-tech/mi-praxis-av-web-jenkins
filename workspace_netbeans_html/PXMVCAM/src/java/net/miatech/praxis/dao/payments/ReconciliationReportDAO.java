@@ -496,17 +496,17 @@ public class ReconciliationReportDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS430(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS430(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(12, Types.INTEGER);
             cstmt.registerOutParameter(13, Types.INTEGER);
             cstmt.registerOutParameter(14, Types.INTEGER);
             cstmt.registerOutParameter(15, Types.INTEGER);
+            cstmt.registerOutParameter(16, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_FROM_VALDATE.trim());
@@ -519,17 +519,18 @@ public class ReconciliationReportDAO {
             cstmt.setString(9, filter.IN_SOCIETY.trim());
             cstmt.setString(10, filter.IN_PROCESSOR.trim());
             cstmt.setString(11, filter.IN_STATUS.trim());
-            cstmt.setInt(12, filter.page.PAGNUM);
-            cstmt.setInt(13, filter.page.PAGROW);
-            cstmt.setInt(14, filter.page.TOTPAG);
-            cstmt.setInt(15, filter.page.TOTROW);
+            cstmt.setString(12, filter.IN_DEBITS.trim());
+            cstmt.setInt(13, filter.page.PAGNUM);
+            cstmt.setInt(14, filter.page.PAGROW);
+            cstmt.setInt(15, filter.page.TOTPAG);
+            cstmt.setInt(16, filter.page.TOTROW);
 
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(12);
-            filter.page.PAGROW = cstmt.getInt(13);
-            filter.page.TOTPAG = cstmt.getInt(14);
-            filter.page.TOTROW = cstmt.getInt(15);
+            filter.page.PAGNUM = cstmt.getInt(13);
+            filter.page.PAGROW = cstmt.getInt(14);
+            filter.page.TOTPAG = cstmt.getInt(15);
+            filter.page.TOTROW = cstmt.getInt(16);
 
             rst = cstmt.getResultSet();
             while (rst.next()) {
@@ -555,7 +556,11 @@ public class ReconciliationReportDAO {
                 bean.TEXTO = rst.getString("TEXTO").trim();
                 bean.SCURRENCY = rst.getString("SCURRENCY").trim();
                 bean.LOCRENCY2 = rst.getString("LOCRENCY2").trim();
+                bean.IDCONT = rst.getString("IDCONT").trim();
+                bean.IDCDEB = rst.getString("IDCDEB").trim();
+                bean.SCURRENCYDEB = rst.getString("SCURRENCYDEB").trim();
                 
+                bean.LOCAMOUNTDEB = rst.getDouble("LOCAMOUNTDEB");
                 bean.NETO = rst.getDouble("NETO");
                 bean.LOCAMOUNT2 = rst.getDouble("LOCAMOUNT2");
                 bean.FASE1_DEBITOS = rst.getInt("FASE1_DEBITOS");

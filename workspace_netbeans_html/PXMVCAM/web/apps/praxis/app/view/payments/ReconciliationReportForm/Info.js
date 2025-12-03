@@ -113,7 +113,7 @@ Ext.define('Ext.Praxis.view.payments.ReconciliationReportForm.Info', {
                                                     metaData.style = "text-align:center;";
                                                     return  value;
                                                 }},
-                                            {text: '<span style="color:white;font-weight:bold;">Payment Date</span>', dataIndex: 'ADATE', width: 95, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                            {text: '<span style="color:white;font-weight:bold;">Payment Date</span>', dataIndex: 'VALDATE', width: 95, style: 'padding:2px; background: #6C87A8;border-color:white',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
@@ -220,6 +220,27 @@ Ext.define('Ext.Praxis.view.payments.ReconciliationReportForm.Info', {
                                                 ]
                                             },
                                             {
+                                                text: '<span style="color:white;font-weight:bold;">USD DEBITS</span>',
+                                                style: 'background:#6C87A8; border-color:white;',
+                                                columns: [
+                                                    {align: 'center', text: '<span style="color:white;font-weight:bold;">Currency</span>', dataIndex: 'SCURRENCYDEB', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            var data = record.data;
+                                                            metaData.style = "text-align:center;";
+                                                            return  value;
+                                                        }
+                                                    },
+                                                    {align: 'center', text: '<span style="color:white;font-weight:bold;">Amount</span>', dataIndex: 'LOCAMOUNTDEB', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:right;";
+                                                            if (value == null || value === '')
+                                                                return '';
+                                                            return Ext.util.Format.number(value, '0,000');
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
                                                 text: '<span style="color:white;font-weight:bold;">Phase 1</span>',
                                                 style: 'background:#6C87A8; border-color:white;',
                                                 columns: [
@@ -277,7 +298,7 @@ Ext.define('Ext.Praxis.view.payments.ReconciliationReportForm.Info', {
                                                             return  value;
                                                         }
                                                     },
-                                                    {align: 'center',text: '<span style="color:white;font-weight:bold;">Header</span>', dataIndex: 'HEADER_REG', width: 140, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                    {align: 'center',text: '<span style="color:white;font-weight:bold;">ID</span>', dataIndex: 'IDCONT', width: 140, style: 'padding:2px; background: #6C87A8;border-color:white',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             var data = record.data;
                                                             metaData.style = "text-align:center;";
@@ -343,7 +364,7 @@ Ext.define('Ext.Praxis.view.payments.ReconciliationReportForm.Info', {
                                                             return  value;
                                                         }
                                                     },
-                                                    {align: 'center',text: '<span style="color:white;font-weight:bold;">Header</span>', dataIndex: 'HEADER_DEB', width: 100, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                    {align: 'center',text: '<span style="color:white;font-weight:bold;">ID</span>', dataIndex: 'IDCDEB', width: 100, style: 'padding:2px; background: #6C87A8;border-color:white',
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             var data = record.data;
                                                             metaData.style = "text-align:center;";
