@@ -1338,6 +1338,8 @@ public class ReconciliationReportController extends BaseController {
             Cell CH1_35 = row1.createCell(35);
             Cell CH1_36 = row1.createCell(36);
             Cell CH1_37 = row1.createCell(37);
+            Cell CH1_38 = row1.createCell(38);
+            Cell CH1_39 = row1.createCell(39);
 
             CH1_0.setCellValue("Nbr");
             CH1_1.setCellValue("Customer");
@@ -1358,25 +1360,27 @@ public class ReconciliationReportController extends BaseController {
             CH1_16.setCellValue("Local Amount");
             CH1_17.setCellValue("USD Currency");
             CH1_18.setCellValue("USD Amount");
-            CH1_19.setCellValue("Phase 1 Total");
-            CH1_20.setCellValue("Phase 1 Debits");
-            CH1_21.setCellValue("Phase 2 Total");
-            CH1_22.setCellValue("Phase 2 Debits");
-            CH1_23.setCellValue("Taxes");
-            CH1_24.setCellValue("Period Regular");
-            CH1_25.setCellValue("Header Regular");
-            CH1_26.setCellValue("Correlativo Regular");
-            CH1_27.setCellValue("Date SAP Regular");
-            CH1_28.setCellValue("Status SAP Regular");
-            CH1_29.setCellValue("Period Debit");
-            CH1_30.setCellValue("Type Debit");
-            CH1_31.setCellValue("Sub Type");
-            CH1_32.setCellValue("Header Debit");
-            CH1_33.setCellValue("Correlativo Debit");
-            CH1_34.setCellValue("Name File");
-            CH1_35.setCellValue("Date SAP Debit");
-            CH1_36.setCellValue("Status SAP Debit");
-            CH1_37.setCellValue("Qty Reject");
+            CH1_19.setCellValue("USD Currency DEB");
+            CH1_20.setCellValue("USD Amount DEB");
+            CH1_21.setCellValue("Phase 1 Total");
+            CH1_22.setCellValue("Phase 1 Debits");
+            CH1_23.setCellValue("Phase 2 Total");
+            CH1_24.setCellValue("Phase 2 Debits");
+            CH1_25.setCellValue("Taxes");
+            CH1_26.setCellValue("Period Regular");
+            CH1_27.setCellValue("ID Regular");
+            CH1_28.setCellValue("Correlativo Regular");
+            CH1_29.setCellValue("Date SAP Regular");
+            CH1_30.setCellValue("Status SAP Regular");
+            CH1_31.setCellValue("Period Debit");
+            CH1_32.setCellValue("Type Debit");
+            CH1_33.setCellValue("Sub Type");
+            CH1_34.setCellValue("ID Debit");
+            CH1_35.setCellValue("Correlativo Debit");
+            CH1_36.setCellValue("Name File");
+            CH1_37.setCellValue("Date SAP Debit");
+            CH1_38.setCellValue("Status SAP Debit");
+            CH1_39.setCellValue("Qty Reject");
             
             CH1_0.setCellStyle(headerStyle);
             CH1_1.setCellStyle(headerStyle);
@@ -1416,6 +1420,8 @@ public class ReconciliationReportController extends BaseController {
             CH1_35.setCellStyle(headerStyle);
             CH1_36.setCellStyle(headerStyle);
             CH1_37.setCellStyle(headerStyle);
+            CH1_38.setCellStyle(headerStyle);
+            CH1_39.setCellStyle(headerStyle);
 
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, 1));
@@ -1455,6 +1461,8 @@ public class ReconciliationReportController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 35, 35));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 36, 36));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 37, 37));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 38, 38));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 39, 39));
             ++vj;
             //============================================
 
@@ -1499,6 +1507,8 @@ public class ReconciliationReportController extends BaseController {
                 Cell rcell35 = row1.createCell(35);
                 Cell rcell36 = row1.createCell(36);
                 Cell rcell37 = row1.createCell(37);
+                Cell rcell38 = row1.createCell(38);
+                Cell rcell39 = row1.createCell(39);
 
                 //  Escribimos las celdas
                 rcell0.setCellValue(listaData.get(vi).RN);
@@ -1520,25 +1530,27 @@ public class ReconciliationReportController extends BaseController {
                 rcell16.setCellValue(listaData.get(vi).NETO);
                 rcell17.setCellValue(listaData.get(vi).LOCRENCY2);
                 rcell18.setCellValue(listaData.get(vi).LOCAMOUNT2);
-                rcell19.setCellValue(listaData.get(vi).FASE1_TOTAL);
-                rcell20.setCellValue(listaData.get(vi).FASE1_DEBITOS);
-                rcell21.setCellValue(listaData.get(vi).FASE2_TOTAL);
-                rcell22.setCellValue(listaData.get(vi).FASE2_DEBITOS);
-                rcell23.setCellValue(listaData.get(vi).TAXES);
-                rcell24.setCellValue(listaData.get(vi).PERIODO_REG);
-                rcell25.setCellValue(listaData.get(vi).HEADER_REG);
-                rcell26.setCellValue(listaData.get(vi).CORRELATIVO_REG);
-                rcell27.setCellValue(listaData.get(vi).FECSAP_REG);
-                rcell28.setCellValue(listaData.get(vi).STATUSSAP_REG);
-                rcell29.setCellValue(listaData.get(vi).PERIODO_DEB);
-                rcell30.setCellValue(listaData.get(vi).TIPO_DEB);
-                rcell31.setCellValue(listaData.get(vi).SUB_TIPO_DEB);
-                rcell32.setCellValue(listaData.get(vi).HEADER_DEB);
-                rcell33.setCellValue(listaData.get(vi).CORRELATIVO_DEB);
-                rcell34.setCellValue(listaData.get(vi).FILENAME_DEB);
-                rcell35.setCellValue(listaData.get(vi).FECSAP_DEB);
-                rcell36.setCellValue(listaData.get(vi).STATUSSAP_DEB);
-                rcell37.setCellValue(listaData.get(vi).QTY_REJECTED);
+                rcell19.setCellValue(listaData.get(vi).SCURRENCYDEB);
+                rcell20.setCellValue(listaData.get(vi).LOCAMOUNTDEB);
+                rcell21.setCellValue(listaData.get(vi).FASE1_TOTAL);
+                rcell22.setCellValue(listaData.get(vi).FASE1_DEBITOS);
+                rcell23.setCellValue(listaData.get(vi).FASE2_TOTAL);
+                rcell24.setCellValue(listaData.get(vi).FASE2_DEBITOS);
+                rcell25.setCellValue(listaData.get(vi).TAXES);
+                rcell26.setCellValue(listaData.get(vi).PERIODO_REG);
+                rcell27.setCellValue(listaData.get(vi).HEADER_REG);
+                rcell28.setCellValue(listaData.get(vi).CORRELATIVO_REG);
+                rcell29.setCellValue(listaData.get(vi).FECSAP_REG);
+                rcell30.setCellValue(listaData.get(vi).STATUSSAP_REG);
+                rcell31.setCellValue(listaData.get(vi).PERIODO_DEB);
+                rcell32.setCellValue(listaData.get(vi).TIPO_DEB);
+                rcell33.setCellValue(listaData.get(vi).SUB_TIPO_DEB);
+                rcell34.setCellValue(listaData.get(vi).HEADER_DEB);
+                rcell35.setCellValue(listaData.get(vi).CORRELATIVO_DEB);
+                rcell36.setCellValue(listaData.get(vi).FILENAME_DEB);
+                rcell37.setCellValue(listaData.get(vi).FECSAP_DEB);
+                rcell38.setCellValue(listaData.get(vi).STATUSSAP_DEB);
+                rcell39.setCellValue(listaData.get(vi).QTY_REJECTED);
 
                 iter.next();
                 ++vi;
@@ -1584,6 +1596,8 @@ public class ReconciliationReportController extends BaseController {
             sheet.autoSizeColumn(35, true);
             sheet.autoSizeColumn(36, true);
             sheet.autoSizeColumn(37, true);
+            sheet.autoSizeColumn(38, true);
+            sheet.autoSizeColumn(39, true);
 
             //============================================
             response.setContentType("application/vnd.openxml");
