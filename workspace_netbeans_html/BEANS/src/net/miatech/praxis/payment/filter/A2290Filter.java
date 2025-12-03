@@ -44,7 +44,6 @@ public class A2290Filter extends A2290 {
     public String IN_ADATE = "";
     public String IN_STATUS = "";
     public String IN_FECHA_TO = "";
-    public String IN_FECFILTRO = "";
     public String strFecFiltro = "";
     public String strYearFrom = "";
     public String strYearTo = "";
@@ -1141,6 +1140,7 @@ public class A2290Filter extends A2290 {
     public String HOSEND = "";
     public String FERECV = "";
     public String HORECV = "";
+    public String IN_FECFILTRO;
 
     public String getVariable() {
         return BANDOC;

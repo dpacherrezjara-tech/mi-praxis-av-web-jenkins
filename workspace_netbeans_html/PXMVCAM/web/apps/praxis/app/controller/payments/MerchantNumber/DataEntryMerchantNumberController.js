@@ -26,6 +26,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
 
     },
     afterRender: function () {
+        console.log(this.actionCode,"esta es la accion")
         switch (this.actionCode) {
             case 'I':
 
@@ -273,7 +274,11 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
     },
     //<editor-fold defaultstate="collapsed" desc="llenarData">
     llenarData: function (beanTemp) {
-        console.log('llenarData');
+        
+        
+        console.log('llenarData', beanTemp);
+        
+        
         beanTemp.CMERCHAN = this.getValue("de-txtMERCHN")
         beanTemp.SUCMERCH = this.getValue("de-txtAFBRANCH")
         beanTemp.DREPORT = this.getValue("de-txtDOWNREPORT")
@@ -312,6 +317,7 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         beanTemp.SOCIETY = this.getValue("SOCIETY")
         beanTemp.SCURRENCY = this.getValue("SCURRENCY")
         beanTemp.SBENCEN = this.getValue("SBENCEN")
+        beanTemp.CODPRO = this.getValue("CODPRO").trim();
         beanTemp.COSTCEN = this.getValue("COSTCEN")
         beanTemp.IDFBENEF = this.getValue("IDFBENEF")
         beanTemp.CODPRO = this.getValue("CODPRO")
@@ -322,6 +328,8 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         beanTemp.USUP = this.getValue("txtUSUP").trim();
         beanTemp.FEUP = this.getValue("txtFEUP").trim();
         beanTemp.HOUP = this.getValue("txtHOUP").trim();
+        
+        console.log('llenarData', beanTemp);
 
     },
     getData: function () {
@@ -494,12 +502,13 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
     winDataEntry: function (action, rec) {
         action = action === null || action === undefined ? 'U' : action;
         rec = rec === null || rec === undefined ? {} : rec;
-        console.log('llega antes del create')
+        console.log('llega antes del create',rec)
         Ext.create('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetail', {
             id: prototype.id + '-dataEntryDetail',
             params: {
                 action: action,
-                rec: rec
+                rec: rec,
+                codpro: this.bean.data.IN_CODPRO_2
             }
         }).show();
     },

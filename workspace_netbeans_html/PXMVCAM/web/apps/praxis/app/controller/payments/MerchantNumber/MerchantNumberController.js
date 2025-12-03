@@ -420,6 +420,8 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.MerchantNumberControll
     winDataEntry: function (action, rec) {
         action = action === null || action === undefined ? 'U' : action;
         rec = rec === null || rec === undefined ? {} : rec;
+        
+        console.log(rec,"eseto envio al primer data enTRY");
 
         Ext.create('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
             id: prototype.id + '-dataEntry',
@@ -427,7 +429,17 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.MerchantNumberControll
                 action: action,
                 rec: rec,
                 lstCountry: me.lstCountry
+            },
+            listeners: {
+                close: function(panel) {
+                    console.log('La ventana se ha cerrado');
+                    me.btnSearch_click();
+                    
+                    // Aquí va tu lógica adicional al cerrar
+                }
+                
             }
+            
         }).show();
     },
     onViewMirror: function (grid, rowIndex, colIndex) {
