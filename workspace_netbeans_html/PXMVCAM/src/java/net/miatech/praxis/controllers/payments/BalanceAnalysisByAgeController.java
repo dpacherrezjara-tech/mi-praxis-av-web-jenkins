@@ -234,7 +234,7 @@ public class BalanceAnalysisByAgeController extends BaseController {
         }
         return lst;
     }
-    
+
     @RequestMapping(value = "searchCountryTotal")
     public @ResponseBody
     String searchCountryTotal(ModelMap map, HttpServletRequest request) {
@@ -284,7 +284,7 @@ public class BalanceAnalysisByAgeController extends BaseController {
         }
         return lst;
     }
-    
+
     public List<A2356Filter> getListCountryTotal2(HttpServletRequest request, Boolean bExcel) {
 
         List<A2356Filter> lst = new ArrayList<>(0);
@@ -1141,7 +1141,7 @@ public class BalanceAnalysisByAgeController extends BaseController {
         }
         return lst;
     }
-    
+
     @RequestMapping(value = "searchProvisions")
     public @ResponseBody
     String searchProvisions(ModelMap map, HttpServletRequest request) {
@@ -1189,7 +1189,7 @@ public class BalanceAnalysisByAgeController extends BaseController {
         }
         return lst;
     }
-    
+
     @RequestMapping(value = "searchTotalConciliation")
     public @ResponseBody
     String searchTotalConciliation(ModelMap map, HttpServletRequest request) {
@@ -1239,7 +1239,7 @@ public class BalanceAnalysisByAgeController extends BaseController {
         }
         return lst;
     }
-    
+
     public List<A2356Filter> getListTotalConciliation_Bard(HttpServletRequest request, Boolean bExcel) {
 
         List<A2356Filter> lst = new ArrayList<>(0);
@@ -1325,7 +1325,7 @@ public class BalanceAnalysisByAgeController extends BaseController {
         }
         return lst;
     }
-    
+
     public List<A2356Filter> getListTotalConciliation_BardMDP(HttpServletRequest request, Boolean bExcel) {
 
         List<A2356Filter> lst = new ArrayList<>(0);
@@ -1472,11 +1472,11 @@ public class BalanceAnalysisByAgeController extends BaseController {
             Sheet sheet = workbook.createSheet("Report");
             XSSFCellStyle headerF1 = (XSSFCellStyle) workbook.createCellStyle();
             CellStyle bodyStyle = workbook.createCellStyle();
-            
+
             Integer vi = 0;
-            Integer vj = 0; 
+            Integer vj = 0;
             Iterator iter = listaData.iterator();
-            
+
             Font headerFont = workbook.createFont();
             headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
             headerFont.setColor(IndexedColors.BLACK.getIndex());
@@ -1508,7 +1508,7 @@ public class BalanceAnalysisByAgeController extends BaseController {
             headerF1.setBorderTop(CellStyle.BORDER_THIN);
             headerF1.setTopBorderColor(IndexedColors.BLACK.getIndex());
             headerF1.setAlignment(CellStyle.ALIGN_CENTER);
-            headerF1.setFillForegroundColor(new XSSFColor(new java.awt.Color(244,204,204)));
+            headerF1.setFillForegroundColor(new XSSFColor(new java.awt.Color(244, 204, 204)));
             headerF1.setFillPattern(CellStyle.SOLID_FOREGROUND);
             headerF1.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
 
@@ -1551,17 +1551,22 @@ public class BalanceAnalysisByAgeController extends BaseController {
 
             // ====== NIVEL 2 ======
             Row row2 = sheet.createRow(vj);
-            String[] headers2 = {"", "", "Received", "Total", "", "", "", "%", "Pending To F2", 
-                                 "F1 Completed", "Total", "", "%", "Pending To Acc", "F2 Completed", 
-                                 "Total", "", "SAP", "%","Return Error"};
+            String[] headers2 = {"", "", "Received", "Total", "", "", "", "%", "Pending To F2",
+                "F1 Completed", "Total", "", "%", "Pending To Acc", "F2 Completed",
+                "Total", "", "SAP", "%", "Return Error"};
             for (int c = 0; c < headers2.length; c++) {
                 Cell ch = row2.createCell(c);
                 ch.setCellValue(headers2[c]);
-               
-                if (c <= 1) ch.setCellStyle(headerMain);
-                else if (c >= 2 && c <= 8) ch.setCellStyle(headerF1);
-                else if (c >= 9 && c <= 13) ch.setCellStyle(headerF2);
-                else ch.setCellStyle(headerF3);
+
+                if (c <= 1) {
+                    ch.setCellStyle(headerMain);
+                } else if (c >= 2 && c <= 8) {
+                    ch.setCellStyle(headerF1);
+                } else if (c >= 9 && c <= 13) {
+                    ch.setCellStyle(headerF2);
+                } else {
+                    ch.setCellStyle(headerF3);
+                }
             }
 
             // Merges nivel 2
@@ -1583,15 +1588,20 @@ public class BalanceAnalysisByAgeController extends BaseController {
             // ====== NIVEL 3 ======
             Row row3 = sheet.createRow(vj);
             String[] headers3 = {"", "", "", "W/O Settl", "Completed", "Taxes", "Error", "Progress",
-                                 "", "", "W/O Sales", "F2 Completed", "Progress", "", "", 
-                                 "Pending To Sent", "SENT", "", "Progress",""};
+                "", "", "W/O Sales", "F2 Completed", "Progress", "", "",
+                "Pending To Sent", "SENT", "", "Progress", ""};
             for (int c = 0; c < headers3.length; c++) {
                 Cell ch = row3.createCell(c);
                 ch.setCellValue(headers3[c]);
-                if (c <= 1) ch.setCellStyle(headerMain);
-                else if (c >= 2 && c <= 8) ch.setCellStyle(headerF1);
-                else if (c >= 9 && c <= 13) ch.setCellStyle(headerF2);
-                else ch.setCellStyle(headerF3);
+                if (c <= 1) {
+                    ch.setCellStyle(headerMain);
+                } else if (c >= 2 && c <= 8) {
+                    ch.setCellStyle(headerF1);
+                } else if (c >= 9 && c <= 13) {
+                    ch.setCellStyle(headerF2);
+                } else {
+                    ch.setCellStyle(headerF3);
+                }
             }
 
             // Merges nivel 3
@@ -1609,12 +1619,11 @@ public class BalanceAnalysisByAgeController extends BaseController {
             ++vj;
 
             //============================================
-
             CellStyle bodyStylePercent = workbook.createCellStyle();
             bodyStylePercent.cloneStyleFrom(bodyStyle);
             bodyStylePercent.setDataFormat(workbook.createDataFormat().getFormat("0.00%"));
-            
-           while (iter.hasNext()) {
+
+            while (iter.hasNext()) {
                 row1 = sheet.createRow(vj);
 
                 Cell rcell0 = row1.createCell(0);
@@ -1685,15 +1694,13 @@ public class BalanceAnalysisByAgeController extends BaseController {
 
                 rcell18.setCellValue(percentF3);
                 rcell18.setCellStyle(bodyStylePercent);
-                
+
                 rcell19.setCellValue(item.F3_TOTAL_ERROR);
 
                 iter.next();
                 ++vi;
                 ++vj;
             }
-
-
 
             sheet.autoSizeColumn(0, true);
             sheet.autoSizeColumn(1, true);
@@ -1728,7 +1735,7 @@ public class BalanceAnalysisByAgeController extends BaseController {
             throw new SpringException(e);
         }
     }
-    
+
     @RequestMapping(value = "getXLSXDashboardDetail")
     public @ResponseBody
     void getXLSXDashboardDetail(HttpServletRequest request, HttpServletResponse response) {
@@ -1743,11 +1750,11 @@ public class BalanceAnalysisByAgeController extends BaseController {
             Sheet sheet = workbook.createSheet("Report");
             XSSFCellStyle headerF1 = (XSSFCellStyle) workbook.createCellStyle();
             CellStyle bodyStyle = workbook.createCellStyle();
-            
+
             Integer vi = 0;
-            Integer vj = 0; 
+            Integer vj = 0;
             Iterator iter = listaData.iterator();
-            
+
             Font headerFont = workbook.createFont();
             headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
             headerFont.setColor(IndexedColors.BLACK.getIndex());
@@ -1779,7 +1786,7 @@ public class BalanceAnalysisByAgeController extends BaseController {
             headerF1.setBorderTop(CellStyle.BORDER_THIN);
             headerF1.setTopBorderColor(IndexedColors.BLACK.getIndex());
             headerF1.setAlignment(CellStyle.ALIGN_CENTER);
-            headerF1.setFillForegroundColor(new XSSFColor(new java.awt.Color(244,204,204)));
+            headerF1.setFillForegroundColor(new XSSFColor(new java.awt.Color(244, 204, 204)));
             headerF1.setFillPattern(CellStyle.SOLID_FOREGROUND);
             headerF1.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
 
@@ -1851,7 +1858,7 @@ public class BalanceAnalysisByAgeController extends BaseController {
             CH1_15.setCellStyle(headerMain);
             CH1_16.setCellStyle(headerMain);
             CH1_17.setCellStyle(headerMain);
-            
+
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, 1));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 2));
@@ -1871,8 +1878,8 @@ public class BalanceAnalysisByAgeController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 16, 16));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 17, 17));
             ++vj;
-            
-           while (iter.hasNext()) {
+
+            while (iter.hasNext()) {
                 row1 = sheet.createRow(vj);
 
                 Cell rcell0 = row1.createCell(0);
@@ -1882,7 +1889,7 @@ public class BalanceAnalysisByAgeController extends BaseController {
                 Cell rcell4 = row1.createCell(4);
                 Cell rcell5 = row1.createCell(5);
                 Cell rcell6 = row1.createCell(6);
-                Cell rcell7 = row1.createCell(7); 
+                Cell rcell7 = row1.createCell(7);
                 Cell rcell8 = row1.createCell(8);
                 Cell rcell9 = row1.createCell(9);
                 Cell rcell10 = row1.createCell(10);
@@ -1918,7 +1925,6 @@ public class BalanceAnalysisByAgeController extends BaseController {
                 ++vi;
                 ++vj;
             }
-
 
             sheet.autoSizeColumn(0, true);
             sheet.autoSizeColumn(1, true);
@@ -1956,7 +1962,6 @@ public class BalanceAnalysisByAgeController extends BaseController {
     public @ResponseBody
     String setUploadInvoice(ModelMap map, @RequestParam("txtfile") MultipartFile txtfile, HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
 
-
         byte[] bytes = null;
         A2356Filter filter = new A2356Filter();
         Gson gson = new Gson();
@@ -1985,22 +1990,23 @@ public class BalanceAnalysisByAgeController extends BaseController {
     private String uploadFileInvoice(byte[] bytes, String option) throws Exception {
 
         Functions.msjConsola("PRAXISMP",
-            this.serverSession.getServerSession().getUserView().getUserInfo().USR,
-            getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+                this.serverSession.getServerSession().getUserView().getUserInfo().USR,
+                getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
-        
         List<A2356Filter> lstData = new ArrayList<>();
         String message = "";
         String messageA2270 = "";
 
-       try {
+        try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(bytes)));
             String line;
             int lineNumber = 0;
 
             while ((line = reader.readLine()) != null) {
                 lineNumber++;
-                if (line.trim().isEmpty()) continue;
+                if (line.trim().isEmpty()) {
+                    continue;
+                }
 
                 String[] parts = line.split(",");
                 if (parts.length < 3) {
@@ -2030,9 +2036,9 @@ public class BalanceAnalysisByAgeController extends BaseController {
             int updated = result.get("actualizados");
             int notUpdated = result.get("no_actualizados");
 
-            message = "Process completed successfully.<br>" +
-                      "Updated records: " + updated + "<br>" +
-                      "Not updated: " + notUpdated;
+            message = "Process completed successfully.<br>"
+                    + "Updated records: " + updated + "<br>"
+                    + "Not updated: " + notUpdated;
 
         } catch (Exception e) {
             message = e.getMessage();
@@ -2055,7 +2061,7 @@ public class BalanceAnalysisByAgeController extends BaseController {
         return new Gson().toJson(map);
     }
 
-     public List<A2356Filter> getListsearchSumaryMainPendingGraf(HttpServletRequest request, Boolean bExcel) {
+    public List<A2356Filter> getListsearchSumaryMainPendingGraf(HttpServletRequest request, Boolean bExcel) {
 
         List<A2356Filter> lst = new ArrayList<>(0);
         A2356Filter filter = new A2356Filter();
@@ -2090,103 +2096,53 @@ public class BalanceAnalysisByAgeController extends BaseController {
         }
         return lst;
     }
-    
-//    private String uploadFileInvoiceBK(byte[] bytes, String option) throws Exception {
-//
-//        Functions.msjConsola("PRAXISMP", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
-//
-//        logic = new BalanceAnalysisByAgeLogic();
-//        List<A2356Filter> lstData = new ArrayList<>();
-//        String ruta = serverSession.getServerSession().getPropertySession().get("RUTA_DOWNLOAD").toString();
-//        String message = "";
-//        String messageA2270 = "";
-//        int i = 0, cont = 0;
-//        String horaInicio = LocalTime.now().format(DateTimeFormatter.ofPattern("HHmmss"));
-//        
-//        try {
-//            String strSesion = UUID.randomUUID().toString();
-//            String strNomExcel = "InvoiceLoad_." + strSesion + ".xlsx";
-//
-//            String strArchivo = ruta + "\\" + strNomExcel;
-//            File archivo = new File(strArchivo);
-//            FileOutputStream fs = new FileOutputStream(archivo);
-//
-//            fs.write(bytes);
-//            fs.flush();
-//            fs.close();
-//
-//            DataFormatter dataFormatter = new DataFormatter(Locale.US);
-//            FileInputStream file = new FileInputStream(new File(strArchivo));
-//            XSSFWorkbook worbook = new XSSFWorkbook(file);
-//            XSSFSheet sheet = worbook.getSheetAt(0);
-//            Iterator<Row> rowIterator = sheet.iterator();
-//            DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-//
-//            try {
-//                while (rowIterator.hasNext()) {
-//                    i++;
-//                    Row row = rowIterator.next();
-//
-//                    if (row.getCell(0) == null && row.getCell(1) == null && row.getCell(2) == null && row.getCell(3) == null && row.getCell(4) == null && row.getCell(5) == null
-//                            && row.getCell(6) == null && row.getCell(7) == null && row.getCell(8) == null && row.getCell(9) == null && row.getCell(10) == null) {
-//                        break;
-//                    }
-//
-//                    if (i > 1) {
-//                        cont++;
-//                        if (row.getCell(0) != null) {
-//                            A2356Filter obj = new A2356Filter();
-//                            
-//                            String valSVFOPL = dataFormatter.formatCellValue(row.getCell(8));
-//                            String valSVFOPUSD = dataFormatter.formatCellValue(row.getCell(10));
-//                            String valSDATE = "";
-//                            
-//                             if (row.getCell(6) != null  && row.getCell(6).getCellType() == Cell.CELL_TYPE_NUMERIC  && DateUtil.isCellDateFormatted(row.getCell(6))) {
-//
-//                                Date date = row.getCell(6).getDateCellValue();
-//                                LocalDate localDate = date.toInstant() .atZone(ZoneId.systemDefault()) .toLocalDate();
-//                                valSDATE = localDate.format(outputFormatter);
-//
-//                            } else {
-//                                valSDATE = parseDateFlexible(dataFormatter.formatCellValue(row.getCell(6)));
-//                            }
-//                            
-//                            obj.SOCIETY = dataFormatter.formatCellValue(row.getCell(0));
-//                            obj.PAIS = dataFormatter.formatCellValue(row.getCell(1));
-//                            obj.IATA = dataFormatter.formatCellValue(row.getCell(2));
-//                            obj.IATANAME = dataFormatter.formatCellValue(row.getCell(3));
-//                            obj.INVOICE = dataFormatter.formatCellValue(row.getCell(4));
-//                            obj.CLASEDOC = dataFormatter.formatCellValue(row.getCell(5));
-//                            obj.SDATE = valSDATE;
-//                            obj.SCURRENCYL = dataFormatter.formatCellValue(row.getCell(7));
-//                            obj.SVFOPL = parseDoubleSafe(valSVFOPL);
-//                            obj.CURUSD = dataFormatter.formatCellValue(row.getCell(9));
-//                            obj.SVFOPUSD = parseDoubleSafe(valSVFOPUSD);
-//                            lstData.add(obj);
-//                        }
-//                    }
-//                }
-//                file.close();
-//                
-//            
-////                logic.setSession(this.serverSession.getServerSession());
-////                Map<String, Integer> result = logic.loadMPS351(lstData, cont, option);
-//              
-////                messageA2270 = logic.loadMPS352(result.get("leidos"), result.get("escritos"), result.get("errores"), result.get("duplicados"), horaInicio);
-//
-//            } catch (Exception e) {
-//                message = e.getMessage();
-//                e.printStackTrace();
-//            }
-//
-//            archivo.delete();
-//        } catch (Exception e) {
-//            message = e.getMessage();
-//            e.printStackTrace();
-//        }
-//        return messageA2270;
-//    }
 
+    @RequestMapping(value = "searchSumaryMainCash")
+    public @ResponseBody
+    String searchSumaryMainCash(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BalanceAnalysisByAge : searchSumaryMainCash-------------");
+        map.put("success", true);
+        List<A2356Filter> lst = this.getListsearchDashboardMDPCASH(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
 
+    public List<A2356Filter> getListsearchDashboardMDPCASH(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2356Filter> lst = new ArrayList<>(0);
+        A2356Filter filter = new A2356Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new BalanceAnalysisByAgeLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2356Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.getListsearchDashboardMDPCASH(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
 
 }

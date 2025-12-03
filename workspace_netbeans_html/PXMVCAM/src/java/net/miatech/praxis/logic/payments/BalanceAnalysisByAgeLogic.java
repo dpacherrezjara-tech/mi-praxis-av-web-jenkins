@@ -154,4 +154,9 @@ public class BalanceAnalysisByAgeLogic {
     public String validateErrorCodes(List<A2356Filter> lstData) throws Exception {
         return balanceAnalysisByAge.validateErrorCodes(lstData);
     }
+    
+//    CASH
+     public List<A2356Filter> getListsearchDashboardMDPCASH(A2356Filter filter) throws SQLException, Exception {
+        return balanceAnalysisByAge.getListsearchDashboardMDPCASH(filter);
+    }
 }
