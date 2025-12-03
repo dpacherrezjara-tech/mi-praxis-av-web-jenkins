@@ -9093,7 +9093,957 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                     }
                                 }
                             ]
-                        }
+                        },
+                        {
+                            xtype: 'panel',
+                            border: false,
+                            width: 1617,
+                            id: prototype.id + '-panelGridSumaryMainCash',
+                            bodyStyle: 'background-color: #F4F7FD;margin-top:8px',
+                            padding: '1',
+                            hidden: false,
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            items: [
+                                 {
+                                     xtype: 'panel',
+                                    bodyStyle: 'background-color: #F4F7FD;',
+                                    border: false,
+//                                    margin: '0 0 0 20',
+                                    layout: {
+                                        type: 'vbox'
+                                    },
+                                    items: [
+                                        {
+                                                xtype: 'container',
+                                                hidden:true,
+                                                layout: {
+                                                    type: 'vbox',
+                                                    align: 'center'
+                                                },
+                                                padding: '0 10 3 10',
+                                                items: [
+                                                    {
+                                                        xtype: 'container',
+                                                        layout: {
+                                                            type: 'hbox',
+                                                            align: 'middle'
+                                                        },
+                                                        padding: '0 10 5 10',
+                                                        items: [
+                                                            {
+                                                                xtype: 'label',
+                                                                text: 'All View',
+                                                                margin: '0 5 0 0',
+                                                                width: 50,
+                                                                id: prototype.id + '-COLCASH'
+                                                            },
+                                                            {
+                                                                xtype: 'component',
+                                                                id: prototype.id + '-btnToggleSwitchPendingCash',
+                                                                margin: '0 5 0 0',
+                                                                html: `<style>
+                                                                    .toggle-container{display:inline-block;position:relative;width:30px;height:16px;vertical-align:middle;}
+                                                                    .toggle-input{opacity:0;width:0;height:0;}
+                                                                    .toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#72e34f;transition:.4s;border-radius:16px;}
+                                                                    .toggle-slider::before{position:absolute;content:"";height:12px;width:12px;border-radius:50%;left:2px;bottom:2px;background-color:white;transition:.4s;}
+                                                                    .toggle-input:checked+.toggle-slider{background-color:#4c7daf;}
+                                                                    .toggle-input:checked+.toggle-slider::before{transform:translateX(16px);}
+                                                                </style>
+                                                                <label class="toggle-container">
+                                                                    <input type="checkbox" class="toggle-input">
+                                                                    <span class="toggle-slider"></span>
+                                                                </label>`,
+                                                                tooltip: 'Export to Report',
+                                                                listeners: {
+                                                                    change: 'chgBash',
+                                                                    click: 'chgBash'
+                                                                }
+                                                            },
+                                                            {
+                                                                xtype: 'label',
+                                                                text: 'Pending View',
+                                                                margin: '0 0 0 5',
+                                                                width: 80,
+                                                                id: prototype.id + '-EXTCASH'
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                        {
+                                    xtype: 'treepanel',
+                                    id: prototype.id + '-gridSumaryMainCash',
+                                    width: 1617,
+                                    useArrows: true,
+                                    rootVisible: false,
+                                    multiSelect: true,
+                                    columnLines: true,
+                                    rowLines: true,
+                                    scrollable: true,
+                                    features: [{
+                                            ftype: 'summary'
+                                        }],
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: false,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Valdate</span>', style:'background:#c9daf5;color:black !important',
+                                                dataIndex: 'strFormatDate', width: 100, align: 'center', xtype: 'treecolumn',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:left;";
+                                                    value = '<b>' + value + '</b>';
+                                                    return  !record.data.children ? ' ' : value;
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">AV GROUP</span>', style:'background:#c9daf5;color:black !important',
+                                                dataIndex: 'CCUST',
+                                                width: 85,
+                                                align: 'center', // centra a nivel de columna (por defecto)
+                                                renderer: function (value, metaData, record) {
+                                                    metaData.style = "text-align:center; color:#1A1A1A; display:block; text-align:center;";
+
+                                                    const strCCUST = {
+                                                        '547': 'AEROGAL',
+                                                        '134': 'AVIANCA',
+                                                        '133': 'LACSA',
+                                                        '202': 'TACA'
+                                                    };
+
+                                                    const displayText = strCCUST[value] || 'AV GROUP';
+                                                    return displayText;
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">F1 - Extract</span>', menuDisabled: true,style:'background:#FBD2D1;color:black !important',
+                                                columns: [
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Received</span>', dataIndex: 'F1_TOTAL', width: 70, style:'background:#FBD2D1;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                             metaData.style = "color:#057ECB;text-align:right;color:#1A1A1A";
+                                                             value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                             return value;
+                                                         },
+                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                             var data = Ext.getCmp(prototype.id + '-gridSumaryMainCash').getStore().getData().items[0].data;
+                                                             metaData.style = 'text-align:right; margin-right:3px ';
+                                                             return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                         }
+                                                     },
+                                                     {
+                                                        text: '<span style="color:black;font-weight:bold;">Total</span>', menuDisabled: true,style:'background:#FBD2D1;color:black !important',
+                                                        columns: [
+                                                                {
+                                                            text: '<span style="color:black;font-weight:bold;">W/O Settl</span>', dataIndex: 'F1_TOTAL_STVAL3', width: 70, style:'background:#FBD2D1;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                            listeners: {
+                                                                click: 'onClickDetailAviancaCash',
+                                                                args: ['IN_WSETT']
+                                                            },
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMainCash').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                                {
+                                                            text: '<span style="color:black;font-weight:bold;">Completed</span>', dataIndex: 'F1_TOTAL_STVAL1', width: 80, style:'background:#FBD2D1;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#1A1A1A";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMainCash').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                         {
+                                                            text: '<span style="color:black;font-weight:bold;">Taxes</span>', dataIndex: 'F1_TOTAL_TAXES', width: 80, style:'background:#FBD2D1;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                             listeners: {
+                                                                click: 'onClickDetailAviancaCash',
+                                                                args: ['IN_TAXES']
+                                                            },
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMainCash').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                         {
+                                                            text: '<span style="color:black;font-weight:bold;">Error</span>', dataIndex: 'F1_TOTAL_ERROR', width: 80, style:'background:#FBD2D1;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                               listeners: {
+                                                                click: 'onClickDetailAviancaCash',
+                                                                args: ['IN_ERROR']
+                                                            },
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMainCash').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                        ]
+                                                    },
+                                                     {
+                                                        text: '<span style="color:black;font-weight:bold;">%</span>', menuDisabled: true,style:'background:#FBD2D1;color:black !important',
+                                                        columns: [
+                                                            {
+                                                                text: '<span style="color:black;font-weight:bold;">Progress</span>', dataIndex: 'F1_PERCENT', width: 70, style:'background:#FBD2D1;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                               
+                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                      metaData.style = "color:#057ECB;text-align:right;color:#1A1A1A";
+                                                                     return '<b>' + value + '</b>';
+                                                                 },
+                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                     var data = Ext.getCmp(prototype.id + '-gridSumaryMainCash').getStore().getData().items[0].data;
+                                                                     metaData.style = 'text-align:right; margin-right:3px ';
+                                                                     return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                                 }
+                                                             }
+                                                        ]
+                                                    },
+                                                     {
+                                                        text: '<span style="color:black;font-weight:bold;align: center">Pending <br> to F2</span>', dataIndex: 'F1_TOTAL_PENDING_TO_F2', width: 70, style:'background:#FBD2D1;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                            listeners: {
+                                                                click: 'onClickDetailAviancaCash',
+                                                                args: ['IN_PENDING_F2']
+                                                            },
+                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                             metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                             value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                             return value;
+                                                         },
+                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                             var data = Ext.getCmp(prototype.id + '-gridSumaryMainCash').getStore().getData().items[0].data;
+                                                             metaData.style = 'text-align:right; margin-right:3px ';
+                                                             return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                         }
+                                                     },
+                                                ]
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">F2 - Sales</span>', menuDisabled: true,style:'background:#D1FBD2;color:black !important',
+                                                columns: [
+                                                            {
+                                                            text: '<span style="color:black;font-weight:bold;">F1 Completed</span>', dataIndex: 'F2_F1_TOTAL_COMPLETED', width: 90, style:'background:#D1FBD2;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                            
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#1A1A1A";
+                                                                value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMainCash').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Total</span>', menuDisabled: true,style:'background:#D1FBD2;color:black !important',
+                                                        columns: [
+                                                         {
+                                                            text: '<span style="color:black;font-weight:bold;">W/O Sales</span>', dataIndex: 'F2_TOTAL_PENDING_OVER50', width: 70, style:'background:#D1FBD2;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                                listeners: {
+                                                                click: 'onClickDetailAviancaCash',
+                                                                args: ['IN_WSALES']
+                                                            },
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMainCash').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                          {
+                                                            text: '<span style="color:black;font-weight:bold;">F2 Completed</span>', dataIndex: 'F2_TOTAL_MATCH_OVER50', width: 90, style:'background:#D1FBD2;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                           
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMainCash').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">%</span>', menuDisabled: true,style:'background:#D1FBD2;color:black !important',
+                                                        columns: [
+                                                            {
+                                                                text: '<span style="color:black;font-weight:bold;">Progress</span>', dataIndex: 'F2_PERCENT', width: 70, style:'background:#D1FBD2;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                              
+                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                     metaData.style = "color:#057ECB;text-align:right;color:#1A1A1A;";
+                                                                     return '<b>' + value + '</b>';
+                                                                 },
+                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                     var data = Ext.getCmp(prototype.id + '-gridSumaryMainCash').getStore().getData().items[0].data;
+                                                                     metaData.style = 'text-align:right; margin-right:3px ';
+                                                                     return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                                 }
+                                                             }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;align: center">Pending <br> to Acc</span>', dataIndex: 'F3_TOTAL_WO_ACC', width: 70, style:'background:#D1FBD2;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                           listeners: {
+                                                                click: 'onClickDetailAviancaCash',
+                                                                args: ['IN_PENDING_ACC']
+                                                            },
+                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                             metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                             value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                             return value;
+                                                         },
+                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                             var data = Ext.getCmp(prototype.id + '-gridSumaryMainCash').getStore().getData().items[0].data;
+                                                             metaData.style = 'text-align:right; margin-right:3px ';
+                                                             return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                         }
+                                                     },
+                                                ]
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Accounted</span>', menuDisabled: true,style:'background:#D6D6D6;color:black !important',
+                                                columns: [
+                                                    {
+                                                            text: '<span style="color:black;font-weight:bold;">F2 Completed</span>', dataIndex: 'F3_F2_TOTAL_COMPLETED', width: 100, style:'background:#D6D6D6;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                            
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#1A1A1A";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMainCash').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Total</span>', menuDisabled: true,style:'background:#D6D6D6;color:black !important',
+                                                        columns: [
+                                                            
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;align: center">Pending <br> to Sent</span>', dataIndex: 'F3_TOTAL_PENDING_SENT', width: 70, style:'background:#D6D6D6;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                         listeners: {
+                                                                click: 'onClickDetailAviancaCash',
+                                                                args: ['IN_PENDING_SENT']
+                                                            },
+                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                             metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                             value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                             return value;
+                                                         },
+                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                             var data = Ext.getCmp(prototype.id + '-gridSumaryMainCash').getStore().getData().items[0].data;
+                                                             metaData.style = 'text-align:right; margin-right:3px ';
+                                                             return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                         }
+                                                     },
+                                                     
+                                                         {
+                                                            text: '<span style="color:black;font-weight:bold;">SENT</span>', dataIndex: 'F3_TOTAL_COMPLETED', width: 100, style:'background:#D6D6D6;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                             listeners: {
+                                                                click: 'onClickDetailAviancaCash',
+                                                                args: ['IN_SENT']
+                                                            },
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                             value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                             return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMainCash').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                          {
+                                                            text: '<span style="color:black;font-weight:bold;">W/O  Acc</span>', dataIndex: 'F3_TOTAL_WO_ACC', width: 90, style:'background:#D6D6D6;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                             listeners: {
+                                                                 click: 'onGridDataDetailCash'
+                                                             },
+                                                             hidden:true,
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMainCash').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                        ]
+                                                    },
+                                                    {
+                                                            text: '<span style="color:black;font-weight:bold;">SAP</span>', dataIndex: 'F3_TOTAL_COMPLETED_SAP', width: 90, style:'background:#D6D6D6;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                           
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                  return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMainCash').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                         
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">%</span>', menuDisabled: true,style:'background:#D6D6D6;color:black !important',
+                                                        columns: [
+                                                            {
+                                                                text: '<span style="color:black;font-weight:bold;">Progress</span>', dataIndex: 'F3_PERCENT', width: 70, style:'background:#D6D6D6;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                               
+                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                     metaData.style = "color:#057ECB;text-align:right;color:#1A1A1A";
+                                                                     return '<b>' + value + '</b>';
+                                                                 },
+                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                     var data = Ext.getCmp(prototype.id + '-gridSumaryMainCash').getStore().getData().items[0].data;
+                                                                     metaData.style = 'text-align:right; margin-right:3px ';
+                                                                     return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                                 }
+                                                             }
+                                                        ]
+                                                    },
+                                                     {
+                                                            text: '<span style="color:black;font-weight:bold;">Return Error</span>', dataIndex: 'F3_TOTAL_ERROR', width: 90, style:'background:#D6D6D6;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                             listeners: {
+                                                                 click: 'onGridDataDetailCash'
+                                                             },
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMainCash').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                ]
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Sent to AV</span>', menuDisabled: true,style:'background:#DCD1F7;color:black !important',
+                                                columns: [
+                                                    {
+                                                        hidden:true,text: '<span style="color:black;font-weight:bold;">Total</span>', menuDisabled: true,style:'background:#DCD1F7;color:black !important',
+                                                        columns: [
+                                                            {
+                                                            text: '<span style="color:black;font-weight:bold;">Completed Acc</span>', dataIndex: 'F1_TOTAL_STVAL3', width: 100, style:'background:#DCD1F7;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                             listeners: {
+                                                                 click: 'onGridDataDetailCash'
+                                                             },
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMainCash').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                        ]
+                                                    },
+                                                    {
+                                                        hidden:true,text: '<span style="color:black;font-weight:bold;">Pending</span>', menuDisabled: true,style:'background:#DCD1F7;color:black !important',
+                                                        columns: [
+                                                            {
+                                                            text: '<span style="color:black;font-weight:bold;">To Sent</span>', dataIndex: 'F3_TOTAL_PENDING_SENT', width: 90, style:'background:#DCD1F7;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                             listeners: {
+                                                                 click: 'onGridDataDetailCash'
+                                                             },
+                                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                 metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                 value = '<b>' + Ext.util.Format.number(value, '0') + '</b>';
+                                                                 return value;
+                                                             },
+                                                             summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                 var data = Ext.getCmp(prototype.id + '-gridSumaryMainCash').getStore().getData().items[0].data;
+                                                                 metaData.style = 'text-align:right; margin-right:3px ';
+                                                                 return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                             }
+                                                         },
+                                                        ]
+                                                    },
+                                                    {
+                                                        hidde:true,text: '<span style="color:black;font-weight:bold;">Total</span>', menuDisabled: true,style:'background:#DCD1F7;color:black !important',
+                                                        columns: [
+                                                        
+                                                        ]
+                                                    },
+                                                    {
+                                                        hidden:true,text: '<span style="color:black;font-weight:bold;">%</span>', menuDisabled: true,style:'background:#DCD1F7;color:black !important',
+                                                        columns: [
+                                                            {
+                                                                text: '<span style="color:black;font-weight:bold;">Progress</span>', dataIndex: 'F1_PERCENT', width: 70, style:'background:#DCD1F7;color:black !important',align: 'center', menuDisabled: true, //flex: 1
+                                                                 listeners: {
+                                                                     click: 'onGridDataDetailCash'
+                                                                 },
+                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                     metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                     return '<b>' + value + '</b>';
+                                                                 },
+                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                     var data = Ext.getCmp(prototype.id + '-gridSumaryMainCash').getStore().getData().items[0].data;
+                                                                     metaData.style = 'text-align:right; margin-right:3px ';
+                                                                     return '<b>' + Ext.util.Format.number(data.totQRMATCH, '0,000') + '<b>';
+                                                                 }
+                                                             }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                },
+                                        {
+                                        xtype: 'panel',
+                                        id: prototype.id + '-SummaryMainDataCash',
+                                        align: 'left',
+                                        margin: '0 0 0 0 ',
+                                        layout: {
+                                            type: 'hbox',
+                                            align: 'left'
+                                        },
+                                        defaults: {
+                                            xtype: 'label',
+                                            align: 'left',
+                                            html: '' + '&nbsp',
+                                            height: 25,
+                                            padding: '5 5 5 0',
+                                            style: 'background:#A0BFD3;color:#244066;text-align:right;font-weight:bold;border: 0.3px #4A6371 solid;font-size:11px'
+                                        },
+                                        items: [
+                                            {
+                                                width: 185,
+                                                id: prototype.id + '-SPACE1CASH',
+                                                style: 'background:#c9daf5; text-align:center; font-weight:bold; color:black;',
+                                                html: 'Totals'
+                                            },
+                                            {width: 70, id: prototype.id + '-F1_TOTAL_GLOBALCASH',style:'background: #FBD2D1;text-align:right'},
+                                            {width: 70, id: prototype.id + '-F1_TOTAL_STVAL3_GLOBALCASH',style:'background: #FBD2D1;text-align:right'},
+                                            {width: 80, id: prototype.id + '-F1_TOTAL_STVAL1_GLOBALCASH',style:'background: #FBD2D1;text-align:right'},
+                                            {width: 80, id: prototype.id + '-F1_TOTAL_TAXES_GLOBALCASH',style:'background: #FBD2D1;text-align:right'},
+                                            {width: 80, id: prototype.id + '-F1_TOTAL_ERROR_GLOBALCASH',style:'background: #FBD2D1;text-align:right'},
+                                            {width: 70, id: prototype.id + '-F1_PERCENT_GLOBALCASH',style:'background: #FBD2D1;text-align:right'},
+                                            {width: 70, id: prototype.id + '-F1_TOTAL_PENDING_TO_F2_GLOBALCASH',style:'background: #FBD2D1;text-align:right'},
+                                            
+                                            {width: 90, id: prototype.id + '-F2_TOTAL_GLOBALCASH',style:'background: #D1FBD2;text-align:right'},
+                                            {width: 70, id: prototype.id + '-F2_TOTAL_STVAL3_GLOBALCASH',style:'background: #D1FBD2;text-align:right'},
+                                            {width: 90, id: prototype.id + '-F2_TOTAL_STVAL1_GLOBALCASH',style:'background: #D1FBD2;text-align:right'},
+                                            {width: 70, id: prototype.id + '-F2_PERCENT_GLOBALCASH',style:'background: #D1FBD2;text-align:right'},
+                                            
+                                            
+                                            
+                                            {width: 70, id: prototype.id + '-SENT_TOTAL_STVAL3_GLOBALCASH',style:'background: #D1FBD2;text-align:right'},
+                                            {width: 100, id: prototype.id + '-SENT_TOTAL_GLOBALCASH',style:'background: #D6D6D6;text-align:right'},
+                                            {width: 70, id: prototype.id + '-SENT_TOTAL_SENT_GLOBALCASH',style:'background: #D6D6D6;text-align:right'},
+                                            {width: 100, id: prototype.id + '-SENT_TOTAL_STVAL1_GLOBALCASH',style:'background: #D6D6D6;text-align:right'},
+                                            {width: 90, id: prototype.id + '-SAP_TOTAL_STVAL1_GLOBALCASH',style:'background: #D6D6D6;text-align:right'},
+                                            {width: 70, id: prototype.id + '-SENT_PERCENT_GLOBALCASH',style:'background: #D6D6D6;text-align:right'},
+                                            {width: 90, id: prototype.id + '-RETURN_ERROR_GLOBALCASH',style:'background: #D6D6D6;text-align:right'},
+                                            
+                                            
+                                            {hidden:true,width: 100, id: prototype.id + '-SAP_TOTAL_GLOBALCASH',style:'background: #DCD1F7;text-align:right'},
+                                            {hidden:true,width: 90, id: prototype.id + '-SAP_TOTAL_STVAL3_GLOBALCASH',style:'background: #DCD1F7;text-align:right'},
+                                            {hidden:true,width: 90, id: prototype.id + '-SAP_PERCENT_GLOBALCASH',style:'background: #DCD1F7;text-align:right'},
+                                            {hidden:true,width: 70, id: prototype.id + '-SAP_PERCENT_GLOBAL1CASH',style:'background: #DCD1F7;text-align:right'},
+                                        ]
+                                    },
+                                    ]
+                                },
+                                  {
+                                        xtype: 'panel',
+                                        bodyStyle: 'background-color: #F4F7FD;',
+                                        border: false,
+                                        margin: '20 0 0 0',
+                                        height:390,
+                                        layout: {
+                                            type: 'hbox',
+                                            align: 'stretch',
+                                            pack: 'center'
+                                        },
+                                        items: [
+                                            // ==========================
+                                            // 🟢 PIE 1 - F1 Settlement
+                                            // ==========================
+                                            {
+                                                xtype: 'panel',
+                                                flex: 1,
+                                                id: prototype.id + '-pieF1CASH',
+                                                bodyStyle: 'background-color: #F4F7FD;',
+                                                border: false,
+                                                layout: {
+                                                    type: 'vbox',
+                                                    align: 'center'
+                                                },
+                                                items: [
+                                                    {
+                                                        xtype: 'component',
+                                                          html: `
+                                                                <div 
+                                                                    style="
+                                                                        font-size:18px; 
+                                                                        font-weight:600; 
+                                                                        color:#4C8ED9;
+                                                                        text-decoration: underline; 
+                                                                        cursor: pointer; 
+                                                                        margin-bottom:10px;
+                                                                    ">
+                                                                    F1 - Settlement
+                                                                </div>
+                                                            `,
+                                                        style: { textAlign: 'center' }
+                                                    },
+                                                    {
+                                                        xtype: 'polar',
+                                                        id: prototype.id + '-displayPolarSMCASH',
+                                                        width: 420,
+                                                        height: 310,
+                                                        innerPadding: 20,
+//                                                        insetPadding: { bottom: 40 },
+                                                        background: '#FFFFFF',
+                                                        border: false,
+                                                        bodyBorder: false,
+                                                        bodyStyle: { background: '#FFFFFF', border: 'none' },
+                                                        animation: { duration: 400, easing: 'easeOut' },
+                                                        interactions: ['rotate', 'itemhighlight'],
+
+                                                        legend: {
+                                                            docked: 'bottom',
+                                                            itemSpacing: 10,
+                                                            marker: { size: 14 },
+                                                            label: { fontSize: 13 }
+                                                        },
+
+                                                        series: [{
+                                                            type: 'pie3d',
+                                                            angleField: 'Perc2',
+                                                            legendField: 'LABEL',
+                                                            donut: 0, // sin hueco
+                                                            distortion: 0.5,
+                                                            highlightCfg: { margin: 6 },
+                                                            colors: ['#A3E4A6', '#E31C24'], // verde pastel = avance, rojo pastel = pendiente
+
+                                                            label: {
+                                                                field: 'VENDOR',
+                                                                display: 'rotate',
+                                                                contrast: true,
+                                                                font: '13px Arial',
+                                                                fontWeight: 'bold',
+                                                                calloutLine: { length: 25, width: 1 }
+                                                            },
+
+                                                            tooltip: {
+                                                                trackMouse: true,
+                                                                renderer: function (toolTip, record) {
+                                                                    toolTip.setHtml(record.get('VENDOR').replace(/\n/g, '<br>'));
+                                                                }
+                                                            }
+                                                        }]
+                                                    },
+                                                ]
+                                            },
+                                            {  id: prototype.id + '-spacef2CASH',xtype: 'container', width: 40 },
+                                            // ==========================
+                                            // 🔵 PIE 2 - F2 Sales
+                                            // ==========================
+                                            {
+                                                xtype: 'panel',
+                                                  id: prototype.id + '-pieF2CASH',
+                                                flex: 1,
+                                                bodyStyle: 'background-color: #F4F7FD;',
+                                                border: false,
+                                                layout: {
+                                                    type: 'vbox',
+                                                    align: 'center'
+                                                },
+                                                items: [
+                                                    {
+                                                        xtype: 'component',
+                                                        html: `
+                                                                <div 
+                                                                    style="
+                                                                        font-size:18px; 
+                                                                        font-weight:600; 
+                                                                        color:#4C8ED9;
+                                                                        text-decoration: underline; 
+                                                                        cursor: pointer; 
+                                                                        margin-bottom:10px;
+                                                                    ">
+                                                                    F2 - Sales
+                                                                </div>
+                                                            `,
+                                                        style: { textAlign: 'center' }
+                                                    },
+                                                    {
+                                                        xtype: 'polar',
+                                                        id: prototype.id + '-displayPolarF2CASH',
+                                                        width: 420,
+                                                        height: 310,
+                                                        innerPadding: 20,
+                                                        background: '#FFFFFF',
+                                                        border: false,
+                                                        bodyBorder: false,
+                                                        bodyStyle: { background: '#FFFFFF', border: 'none' },
+                                                        animation: { duration: 400, easing: 'easeOut' },
+                                                        interactions: ['rotate', 'itemhighlight'],
+
+                                                        legend: {
+                                                            docked: 'bottom',
+                                                            itemSpacing: 10,
+                                                            marker: { size: 14 },
+                                                            label: { fontSize: 13 }
+                                                        },
+
+                                                        series: [{
+                                                            type: 'pie3d',
+                                                            angleField: 'Perc2',
+                                                            legendField: 'LABEL',
+                                                            donut: 0,
+                                                            distortion: 0.5,
+                                                            highlightCfg: { margin: 8 },
+                                                            colors: ['#A3E4A6', '#E31C24'], // mismos colores pastel
+
+                                                            label: {
+                                                                field: 'VENDOR',
+                                                                display: 'rotate',
+                                                                contrast: true,
+                                                                font: '13px Arial',
+                                                                fontWeight: 'bold',
+                                                                calloutLine: { length: 25, width: 1 }
+                                                            },
+
+                                                            tooltip: {
+                                                                trackMouse: true,
+                                                                renderer: function (toolTip, record) {
+                                                                    toolTip.setHtml(record.get('VENDOR').replace(/\n/g, '<br>'));
+                                                                }
+                                                            }
+                                                        }]
+                                                    }
+                                                ]
+                                            },
+                                            { id: prototype.id + '-spacef1CASH',xtype: 'container', width: 40 },
+                                             // ==========================
+                                            // 🔵 PIE 3 - aCCOUNTED
+                                            // ==========================
+                                            {
+                                                xtype: 'panel',
+                                                flex: 1,
+                                                bodyStyle: 'background-color: #F4F7FD;',
+                                                  id: prototype.id + '-pieAccCASH',
+                                                border: false,
+                                                layout: {
+                                                    type: 'vbox',
+                                                    align: 'center'
+                                                },
+                                                items: [
+                                                    {
+                                                        xtype: 'component',
+                                                        html: `
+                                                                <div 
+                                                                    style="
+                                                                        font-size:18px; 
+                                                                        font-weight:600; 
+                                                                        color:#4C8ED9;
+                                                                        text-decoration: underline; 
+                                                                        cursor: pointer; 
+                                                                        margin-bottom:10px;
+                                                                    ">
+                                                                    Accounted
+                                                                </div>
+                                                            `,
+                                                        style: { textAlign: 'center' }
+                                                    },
+                                                    {
+                                                        xtype: 'polar',
+                                                        id: prototype.id + '-displayPolarF3CASH',
+                                                       width: 420,
+                                                        height: 310,
+                                                        innerPadding: 20,
+                                                        background: '#FFFFFF',
+                                                        border: false,
+                                                        bodyBorder: false,
+                                                        bodyStyle: { background: '#FFFFFF', border: 'none' },
+                                                        animation: { duration: 400, easing: 'easeOut' },
+                                                        interactions: ['rotate', 'itemhighlight'],
+
+                                                        legend: {
+                                                            docked: 'bottom',
+                                                            itemSpacing: 10,
+                                                            marker: { size: 14 },
+                                                            label: { fontSize: 13 }
+                                                        },
+
+                                                        series: [{
+                                                            type: 'pie3d',
+                                                            angleField: 'Perc2',
+                                                            legendField: 'LABEL',
+                                                            donut: 0,
+                                                            distortion: 0.5,
+                                                            highlightCfg: { margin: 8 },
+                                                            colors: ['#A3E4A6', '#E31C24'], // mismos colores pastel
+
+                                                            label: {
+                                                                field: 'VENDOR',
+                                                                display: 'rotate',
+                                                                contrast: true,
+                                                                font: '13px Arial',
+                                                                fontWeight: 'bold',
+                                                                calloutLine: { length: 25, width: 1 }
+                                                            },
+
+                                                            tooltip: {
+                                                                trackMouse: true,
+                                                                renderer: function (toolTip, record) {
+                                                                    toolTip.setHtml(record.get('VENDOR').replace(/\n/g, '<br>'));
+                                                                }
+                                                            }
+                                                        }]
+                                                    }
+                                                ]
+                                            },
+                                            // ==========================
+                                            //F1 CODES
+                                            // ==========================
+                                            {
+                                                xtype: 'panel',
+                                                id: prototype.id + '-codeF1CASH',
+                                                layout: {
+                                                    type: 'vbox',
+                                                    pack: 'center'
+                                                },
+                                                border: false,
+                                                 background: '#FFFFFF',
+                                                hidden: true,
+                                                bodyStyle: 'background-color: transparent; border: 1px solid #81BEF7',
+                                                items: [
+                                                    {
+                                                        xtype: 'cartesian',
+                                                        id: prototype.id + '-displayF1CASH',
+                                                        width: 1000,
+                                                        height: 300,
+                                                        border: false,
+                                                        background: '#F4F7FD',
+                                                        margin: '0 0 0 5',
+                                                        flipXY: true,
+
+                                                        captions: {
+                                                            title: {
+                                                                alignTo: 'chart',
+                                                                text: 'Pending',
+                                                                fontSize: 22,
+                                                                color: '#333',
+                                                                fontWeight: 'bold'
+                                                            }
+                                                        },
+                                                        animation: { duration: 300 },
+                                                        interactions: ['itemhighlight'],
+                                                        legend: {
+                                                            docked: 'bottom',
+                                                            background: '#F4F7FD'
+                                                        },
+                                                        axes: [
+                                                            {
+                                                                type: 'numeric3d',
+                                                                position: 'bottom',
+                                                                fields: ['QUANTITY_OF_DEPOSITS'],
+                                                                grid: true,
+                                                                renderer: function (obj, value) {
+                                                                    return Ext.util.Format.number(value, '0,000');
+                                                                }
+                                                            },
+                                                            {
+                                                                type: 'category3d',
+                                                                position: 'left',
+                                                                fields: 'strDescription',
+                                                                grid: true,
+                                                                label: {
+                                                                textAlign: 'left',
+                                                                font: 'bold 16px',
+                                                                color: '#333'
+                                                            }
+
+                                                            }
+                                                        ],
+                                                        series: [
+                                                            {
+                                                                type: 'bar3d',
+                                                                stacked: false,
+                                                                xField: 'strDescription',
+                                                                yField: ['QUANTITY_OF_DEPOSITS'],
+                                                                colors: ['#E31C24'], // verde suave
+                                                                highlight: true,
+                                                                style: {
+                                                                    inGroupGapWidth: 10,
+                                                                    minGapWidth: 5,
+                                                                    maxBarWidth: 120,
+                                                                    thickness: 8 // 👈 reduce la profundidad del 3D
+                                                                },
+                                                                distortion: 0.25, // 👈 suaviza el ángulo del 3D
+                                                                tooltip: {
+                                                                    trackMouse: true,
+                                                                    renderer: function (toolTip, record, ctx) {
+                                                                        toolTip.setHtml(
+                                                                            'QUANTITY OF DEPOSITS: <b>' +
+                                                                                Ext.util.Format.number(
+                                                                                    record.get(ctx.field),
+                                                                                    '0,000'
+                                                                                ) +
+                                                                                '</b>'
+                                                                        );
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+
+                                        ]
+                                    }
+                            ]
+                        },
                     ]
                 },
                  {

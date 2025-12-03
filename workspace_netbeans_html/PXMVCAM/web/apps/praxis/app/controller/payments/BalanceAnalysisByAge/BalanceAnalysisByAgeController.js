@@ -87,22 +87,18 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         });
     },
     xpanel_afterrender: function (obj, e) {
-        this.setStoreData();
-        this.getDataAudit();
-        this.obtainData();
+        
         
         $('#BalanceAnalysisByAgeForm-btnToggleSwitchPending').on('change', function () {
             
             var toggleCmp = Ext.getCmp(prototype.id + '-btnToggleSwitchPending');
             var isChecked = toggleCmp.getEl().down('input.toggle-input').dom.checked;
-
             if (isChecked) {
                 Ext.getCmp(prototype.id + '-pieF1').setVisible(false);
                 Ext.getCmp(prototype.id + '-pieF2').setVisible(false);
                 Ext.getCmp(prototype.id + '-pieAcc').setVisible(false);
                 Ext.getCmp(prototype.id + '-spacef1').setVisible(false);
                 Ext.getCmp(prototype.id + '-spacef2').setVisible(false);
-
                 Ext.getCmp(prototype.id + '-codeF1').setVisible(true);
                 console.log('Pending View activo');
             } else {
@@ -112,13 +108,33 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                 Ext.getCmp(prototype.id + '-pieAcc').setVisible(true);
                 Ext.getCmp(prototype.id + '-spacef1').setVisible(true);
                 Ext.getCmp(prototype.id + '-spacef2').setVisible(true);
-                
                 Ext.getCmp(prototype.id + '-codeF1').setVisible(false);
             }
-
-            
         });
         
+        $('#BalanceAnalysisByAgeForm-btnToggleSwitchCashOrCredit').on('change', function () {
+            
+            var toggleCmp = Ext.getCmp(prototype.id + '-btnToggleSwitchCashOrCredit');
+            var isChecked = toggleCmp.getEl().down('input.toggle-input').dom.checked;
+            if (isChecked) {
+                me.panelActual = '-panelGridSumaryMainCash';
+                Ext.getCmp(prototype.id + '-panelGridSumaryMain').hide();
+                Ext.getCmp(prototype.id + '-panelGridSumaryMainCash').show();
+            } else {
+                me.panelActual = '-panelGridSumaryMain';
+                Ext.getCmp(prototype.id + '-panelGridSumaryMain').show();
+                Ext.getCmp(prototype.id + '-panelGridSumaryMainCash').hide();
+            }
+            me.btnSearch_click();
+        });
+        
+        
+        this.setStoreData();
+        this.getDataAudit();
+        this.obtainData();
+        
+        
+       
     },
     eventKey: function (e, eOpts) {
         if (eOpts.getKey() === 13) {
@@ -377,11 +393,18 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
         let panelGridConciliation = Ext.getCmp(prototype.id + '-panelGridConciliation')
         let panelGridConciliationMDP = Ext.getCmp(prototype.id + '-panelGridConciliationMDP')
         let panelGridSumaryMain = Ext.getCmp(prototype.id + '-panelGridSumaryMain')
-        console.log(panelGridData.isVisible(), 'VISIBILIDAD?')
+        let panelGridSumaryMainCash = Ext.getCmp(prototype.id + '-panelGridSumaryMainCash')
+        console.log(panelGridSumaryMain.isVisible(), 'VISIBILIDAD')
         
         if (panelGridSumaryMain.isVisible()) {
+            console.log(1)
             this.setFormatParameterDashboard();
             this.setGridDataDashboard();
+        } 
+        else if (panelGridSumaryMainCash.isVisible()) {
+            console.log(1)
+            this.setFormatParameterDashboard();
+            this.setGridDataDashboardCash();
         } 
         else if (panelGridConciliationMDP.isVisible()) {
             this.setFormatParameter2();
@@ -3324,7 +3347,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
             prototype.id + '-cargaMerchant'
         ];
 
-        const hide = (panelId === '-panelGridSumaryMain' || panelId === '-panelGridSumaryDetail');
+        const hide = (panelId === '-panelGridSumaryMain' || panelId === '-panelGridSumaryDetail' || panelId === '-panelGridSumaryMainCash');
 
         // Ajustar altura del panel
         const panelHeight = Ext.getCmp(prototype.id + '-panelHeight');
@@ -3684,6 +3707,477 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                                 }
                                 var storeF3 = Ext.create('Ext.data.Store', { fields: ['LABEL', 'Perc2', 'VENDOR'], data: totalsF3 });
                                 Ext.getCmp(prototype.id + '-displayPolarF3').bindStore(storeF3);
+
+                                
+                                console.log({
+                                    F1_TOTAL_GLOBAL,
+                                    F1_TOTAL_STVAL3_GLOBAL,
+                                    F1_TOTAL_STVAL1_GLOBAL,
+                                    F1_PERCENT_GLOBAL
+                                }, 'totales globales');
+
+                            
+                            return;
+                            var data = lastRecord;
+                            console.log(lastRecord, 'datadata');
+                            console.log(obj, 'objobj');
+                            
+                            return;
+                            
+                            let item = {};
+                            let item2 = {};
+                            let item3 = {};
+                            let item4 = {};
+                            let item5 = {};
+                            let totals = [];
+                            let totalCantidad = lastRecord.QTY_TOTAL_REFUND +
+                                lastRecord.QTY_TOTAL_CHGBACK +
+                                lastRecord.QTY_TOTAL_REVERSE_CHGBACK +
+                                lastRecord.QTY_TOTAL_ACRED +
+                                lastRecord.QTY_TOTAL_PENDING;
+
+                            let refundMatch = (lastRecord.QTY_TOTAL_REFUND / totalCantidad) * 100;
+                            let chgbkMatch = (lastRecord.QTY_TOTAL_CHGBACK / totalCantidad) * 100;
+                            let reverseChgbkMatch = (lastRecord.QTY_TOTAL_REVERSE_CHGBACK / totalCantidad) * 100;
+                            let acreditMatch = (lastRecord.QTY_TOTAL_ACRED / totalCantidad) * 100;
+                            let othersPend = (lastRecord.QTY_TOTAL_PENDING / totalCantidad) * 100;
+
+                            if (obj.data.items.length > 0) {
+                                totals.push({
+                                    LABEL: 'Refund',
+                                    Perc2: lastRecord.QTY_TOTAL_REFUND,
+                                    VENDOR: 'Refund:\n' + Ext.util.Format.number(refundMatch, '0.00%')
+                                });
+
+                                totals.push({
+                                    LABEL: 'Pending',
+                                    Perc2: lastRecord.QTY_TOTAL_PENDING,
+                                    VENDOR: 'Pending:\n' + Ext.util.Format.number(othersPend, '0.00%')
+                                });
+                                totals.push({
+                                    LABEL: 'Chgback',
+                                    Perc2: lastRecord.QTY_TOTAL_CHGBACK,
+                                    VENDOR: 'Chgback:\n' + Ext.util.Format.number(chgbkMatch, '0.00%')
+                                });
+                                totals.push({
+                                    LABEL: 'Acredit',
+                                    Perc2: lastRecord.QTY_TOTAL_ACRED,
+                                    VENDOR: 'Acredit:\n'+ Ext.util.Format.number(acreditMatch, '0.00%')
+                                });
+                                totals.push({
+                                    LABEL: 'Chgback Reverse',
+                                    Perc2: lastRecord.QTY_TOTAL_REVERSE_CHGBACK,
+                                    VENDOR: 'Chgback Reverse:\n' + Ext.util.Format.number(reverseChgbkMatch, '0.00%')
+                                });
+                            }
+
+                            var storeData1er = Ext.create('Ext.data.Store', {
+                                data: totals,
+                                autoLoad: true
+                            });
+
+                            Ext.getCmp(prototype.id + '-displayPolarSM').bindStore(storeData1er);
+                            //Ext.getCmp(prototype.id + '-lblTittlePaidSumaryMain').setText('Totals Debits: ' + Ext.util.Format.number(totalCantidad, '0,000'));
+
+                            let dataBar = [
+                                {
+                                    category: 'Refund',
+                                    USD: lastRecord.AMOUNT_TOTAL_REFUND_USD,
+                                    SEND: lastRecord.AMOUNT_TOTAL_REFUND_SEND,
+                                    SAP: lastRecord.AMOUNT_TOTAL_REFUND_SAP
+                                },
+                                {
+                                    category: 'Chargeback',
+                                    USD: lastRecord.AMOUNT_TOTAL_CHGBACK_USD,
+                                    SEND: lastRecord.AMOUNT_TOTAL_CHGBACK_SEND,
+                                    SAP: lastRecord.AMOUNT_TOTAL_CHGBACK_SAP
+                                },
+                                {
+                                    category: 'Reverse ChgBck',
+                                    USD: lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_USD,
+                                    SEND: lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_SEND,
+                                    SAP: lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_SAP
+                                },
+                                {
+                                    category: 'Acreditaciones',
+                                    USD: lastRecord.AMOUNT_TOTAL_ACRED_USD,
+                                    SEND: lastRecord.AMOUNT_TOTAL_ACRED_SEND,
+                                    SAP: lastRecord.AMOUNT_TOTAL_ACRED_SAP
+                                },
+                                {
+                                    category: 'Pending',
+                                    USD: lastRecord.AMOUNT_TOTAL_PENDING_USD,
+                                    SEND: lastRecord.AMOUNT_TOTAL_PENDING_SEND,
+                                    SAP: lastRecord.AMOUNT_TOTAL_PENDING_SAP
+                                }
+                            ];
+
+                            let chart = Ext.getCmp(prototype.id + '-displayBarSM');
+                            chart.setStore({
+                                fields: ['category', 'USD', 'SEND', 'SAP'],
+                                data: dataBar
+                            });
+
+                            chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
+
+                        }
+                    }
+                }
+            });
+        global.clear();
+        this.getPaggin();
+        
+        var storeGridDatasPending = Ext.create('Ext.Praxis.store.payments.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchSumaryMainPendingGraf'
+                }, listeners: {
+                    beforeload: function (obj) {
+                        obj.proxy.extraParams = searchParams;
+                    },
+                    load: function (obj) {
+                            if (obj.data.length === 0) return;
+
+                            let lstData = obj.data.items.map(v => v.data);
+                            let dataRoot = { text: '.', expanded: true, children: [] };
+
+                            Ext.Array.each(lstData, function (value) {
+                                dataRoot.children.push({
+                                    CERROR: value.CERROR,
+                                    DESCRIPTION_CERROR: value.DESCRIPTION_CERROR,
+                                    F1_TOTAL_STVAL3: value.F1_TOTAL_STVAL3,
+                                    F2_TOTAL_PENDING_OVER50: value.F2_TOTAL_PENDING_OVER50,
+                                    F3_TOTAL_PENDING_SENT: value.F3_TOTAL_PENDING_SENT,
+                                    leaf: true
+                                });
+                            });
+
+                            let storeTree = Ext.create('Ext.data.TreeStore', { root: dataRoot });
+
+                            // gráfico
+                            let chartData = lstData.map(v => ({
+                                strDescription: v.DESCRIPTION_CERROR,
+                                QUANTITY_OF_DEPOSITS: v.F1_TOTAL_STVAL3
+                            }));
+
+                            if (chartData.length === 0) {
+                                chartData.push({ strDescription: 'Not found', QUANTITY: 1 });
+                            }
+                            
+                            console.log(chartData,'chartData')
+
+                            let storeGraf3 = Ext.create('Ext.data.Store', { data: chartData });
+                            Ext.getCmp(prototype.id + '-displayF1').bindStore(storeGraf3);
+                        }
+
+                }
+            });
+
+    },
+     setGridDataDashboardCash: function () {
+        win.lblUser_toolTip("Estructura: MPF102");
+        me.panelActual = '-panelGridSumaryMainCash';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+     
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchSumaryMainCash'
+                }, listeners: {
+                    beforeload: function (obj) {
+                        Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
+                        obj.proxy.extraParams = searchParams;
+                    },
+                    load: function (obj) {
+                        Ext.getCmp(prototype.id + '-contentInfo').unmask();
+                       
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        } else {
+                            
+                            let lstData = [];
+                                for (let value of obj.data.items) {
+                                    lstData.push(value.data);
+                                }
+
+                                // Totales generales
+                                let F1_TOTAL_GLOBAL = 0;
+                                let F1_TOTAL_STVAL3_GLOBAL = 0;
+                                let F1_TOTAL_STVAL1_GLOBAL = 0;
+                                let F1_TOTAL_TAXES_GLOBAL = 0;
+                                let F1_TOTAL_ERROR_GLOBAL = 0;
+                                let F1_TOTAL_PENDING_TO_F2_GLOBAL = 0;
+                                
+                                let F2_F1_TOTAL_COMPLETED_GLOBAL = 0;
+                                let F2_TOTAL_PENDING_OVER50_GLOBAL = 0;
+                                let F2_TOTAL_MATCH_OVER50_GLOBAL = 0;
+                                
+                                let F3_F2_TOTAL_COMPLETED_GLOBAL = 0;
+                                let F3_TOTAL_WO_ACC_GLOBAL = 0;
+                                let F3_TOTAL_COMPLETED_GLOBAL = 0;
+                                let F3_TOTAL_PENDING_SENT_GLOBAL = 0;
+                                let F3_TOTAL_COMPLETED_SAP_GLOBAL = 0;
+                                let F3_TOTAL_ERROR_GLOBAL = 0;
+
+                                let a = [];
+                                let dataRoot = { text: '.', expanded: false, children: [] };
+
+                                Ext.Object.each(lstData, function (index, value) {
+                                    if (a.indexOf(value.strFormatDate) < 0) {
+                                        let V_F1_TOTAL = 0;
+                                        let V_F1_TOTAL_STVAL3 = 0;
+                                        let V_F1_TOTAL_STVAL1 = 0;
+                                        let V_F1_TOTAL_TAXES = 0;
+                                        let V_F1_TOTAL_ERROR = 0;
+                                        let V_F1_PERCENT = 0;
+                                        let V_F1_PENDING_TO_F2 = 0;
+                                        
+                                        let V_F2_F1_TOTAL_COMPLETED = 0;
+                                        let V_F2_TOTAL_PENDING_OVER50 = 0;
+                                        let V_F2_TOTAL_MATCH_OVER50 = 0;
+                                        let V_F2_PERCENT = 0;
+                                        
+                                        let V_F3_F2_TOTAL_COMPLETED = 0;
+                                        let V_F3_TOTAL_WO_ACC = 0;
+                                        let V_F3_TOTAL_COMPLETED = 0;
+                                        let V_F3_TOTAL_PENDING_SENT = 0;
+                                        let V_F3_PERCENT = 0;
+                                        let V_F3_TOTAL_COMPLETED_SAP = 0;
+                                        let V_F3_TOTAL_ERROR = 0;
+
+                                        // Agrupar por mes
+                                        Ext.Object.each(lstData, function (index, valuex) {
+                                            if (value.strFormatDate === valuex.strFormatDate) {
+                                                V_F1_TOTAL += valuex.F1_TOTAL;
+                                                V_F1_TOTAL_STVAL3 += valuex.F1_TOTAL_STVAL3;
+                                                V_F1_TOTAL_STVAL1 += valuex.F1_TOTAL_STVAL1;
+                                                V_F1_TOTAL_TAXES += valuex.F1_TOTAL_TAXES;
+                                                V_F1_TOTAL_ERROR += valuex.F1_TOTAL_ERROR;
+                                                V_F1_PENDING_TO_F2 += valuex.F1_TOTAL_PENDING_TO_F2;
+                                                
+                                                V_F2_F1_TOTAL_COMPLETED += valuex.F2_F1_TOTAL_COMPLETED;
+                                                V_F2_TOTAL_PENDING_OVER50 += valuex.F2_TOTAL_PENDING_OVER50;
+                                                V_F2_TOTAL_MATCH_OVER50 += valuex.F2_TOTAL_MATCH_OVER50;
+                                                
+                                                V_F3_F2_TOTAL_COMPLETED += valuex.F3_F2_TOTAL_COMPLETED;
+                                                V_F3_TOTAL_WO_ACC += valuex.F3_TOTAL_WO_ACC;
+                                                V_F3_TOTAL_COMPLETED += valuex.F3_TOTAL_COMPLETED;
+                                                V_F3_TOTAL_PENDING_SENT += valuex.F3_TOTAL_PENDING_SENT;
+                                                V_F3_TOTAL_COMPLETED_SAP += valuex.F3_TOTAL_COMPLETED_SAP;
+                                                V_F3_TOTAL_ERROR += valuex.F3_TOTAL_ERROR;
+                                            }
+                                        });
+
+                                        // Calcular porcentaje por mes
+                                        if (V_F1_TOTAL > 0) {
+                                            V_F1_PERCENT = (V_F1_TOTAL_STVAL1 * 100) / V_F1_TOTAL;
+                                        }
+                                        
+                                        if (V_F2_F1_TOTAL_COMPLETED > 0) {
+                                            V_F2_PERCENT = (V_F2_TOTAL_MATCH_OVER50 * 100) / V_F2_F1_TOTAL_COMPLETED;
+                                        }
+                                        
+                                        if (V_F3_F2_TOTAL_COMPLETED > 0) {
+                                            V_F3_PERCENT = (V_F3_TOTAL_COMPLETED * 100) / V_F3_F2_TOTAL_COMPLETED;
+                                        }
+
+                                        // Agregar al árbol
+                                        a.push(value.strFormatDate);
+                                        dataRoot.children.push({
+                                            strFormatDate: value.strFormatDate,
+                                            VALDATE: value.VALDATE,
+                                            F1_TOTAL: V_F1_TOTAL,
+                                            F1_TOTAL_STVAL3: V_F1_TOTAL_STVAL3,
+                                            F1_TOTAL_STVAL1: V_F1_TOTAL_STVAL1,
+                                            F1_TOTAL_TAXES: V_F1_TOTAL_TAXES,
+                                            F1_TOTAL_ERROR: V_F1_TOTAL_ERROR,
+                                            F1_TOTAL_PENDING_TO_F2: V_F1_PENDING_TO_F2,
+                                            F1_PERCENT: V_F1_PERCENT.toFixed(2) + '%',
+                                            
+                                            F2_F1_TOTAL_COMPLETED: V_F2_F1_TOTAL_COMPLETED,
+                                            F2_TOTAL_PENDING_OVER50: V_F2_TOTAL_PENDING_OVER50,
+                                            F2_TOTAL_MATCH_OVER50: V_F2_TOTAL_MATCH_OVER50,
+                                            F2_PERCENT: V_F2_PERCENT.toFixed(2) + '%',
+                                            
+                                            F3_F2_TOTAL_COMPLETED: V_F3_F2_TOTAL_COMPLETED,
+                                            F3_TOTAL_WO_ACC: V_F3_TOTAL_WO_ACC,
+                                            F3_TOTAL_COMPLETED: V_F3_TOTAL_COMPLETED,
+                                            F3_TOTAL_PENDING_SENT: V_F3_TOTAL_PENDING_SENT,
+                                            F3_TOTAL_COMPLETED_SAP: V_F3_TOTAL_COMPLETED_SAP,
+                                            F3_PERCENT: V_F3_PERCENT.toFixed(2) + '%',
+                                            F3_TOTAL_ERROR: V_F3_TOTAL_ERROR,
+                                            
+                                            expanded: false,
+                                            children: []
+                                        });
+
+                                        // Agregar las filas hijas
+                                        Ext.Object.each(lstData, function (index, value01) {
+                                            if (value.strFormatDate === value01.strFormatDate) {
+                                                let V_CHILD_PERCENT = 0;
+                                                let V_CHILD_PERCENT_F2 = 0;
+                                                let V_CHILD_PERCENT_F3 = 0;
+                                                
+                                                if (value01.F1_TOTAL > 0) {
+                                                    V_CHILD_PERCENT = (value01.F1_TOTAL_STVAL1 * 100) / value01.F1_TOTAL;
+                                                }
+                                                
+                                                if (value01.F2_F1_TOTAL_COMPLETED > 0) {
+                                                    V_CHILD_PERCENT_F2 = (value01.F2_TOTAL_MATCH_OVER50 * 100) / value01.F2_F1_TOTAL_COMPLETED;
+                                                }
+                                                
+                                                if (value01.F3_F2_TOTAL_COMPLETED > 0) {
+                                                    V_CHILD_PERCENT_F3 = (value01.F3_TOTAL_COMPLETED * 100) / value01.F3_F2_TOTAL_COMPLETED;
+                                                }
+
+                                                dataRoot.children[a.indexOf(value.strFormatDate)].children.push({
+                                                    strFormatDate: value01.strFormatDate,
+                                                    VALDATE: value01.VALDATE,
+                                                    CCUST: value01.CCUST,
+                                                    F1_TOTAL: value01.F1_TOTAL,
+                                                    F1_TOTAL_STVAL3: value01.F1_TOTAL_STVAL3,
+                                                    F1_TOTAL_STVAL1: value01.F1_TOTAL_STVAL1,
+                                                    F1_TOTAL_TAXES: value01.F1_TOTAL_TAXES,
+                                                    F1_TOTAL_ERROR: value01.F1_TOTAL_ERROR,
+                                                    F1_TOTAL_PENDING_TO_F2: value01.F1_TOTAL_PENDING_TO_F2,
+                                                    F1_PERCENT: V_CHILD_PERCENT.toFixed(2) + '%',
+                                                    
+                                                    F2_F1_TOTAL_COMPLETED: value01.F2_F1_TOTAL_COMPLETED,
+                                                    F2_TOTAL_PENDING_OVER50: value01.F2_TOTAL_PENDING_OVER50,
+                                                    F2_TOTAL_MATCH_OVER50: value01.F2_TOTAL_MATCH_OVER50,
+                                                    F2_PERCENT: V_CHILD_PERCENT_F2.toFixed(2) + '%',
+                                                    
+                                                    F3_F2_TOTAL_COMPLETED: value01.F3_F2_TOTAL_COMPLETED,
+                                                    F3_TOTAL_WO_ACC: value01.F3_TOTAL_WO_ACC,
+                                                    F3_TOTAL_COMPLETED: value01.F3_TOTAL_COMPLETED,
+                                                    F3_TOTAL_PENDING_SENT: value01.F3_TOTAL_PENDING_SENT,
+                                                    F3_TOTAL_COMPLETED_SAP: value01.F3_TOTAL_COMPLETED_SAP,
+                                                    F3_TOTAL_ERROR: value01.F3_TOTAL_ERROR,
+                                                    F3_PERCENT: V_CHILD_PERCENT_F3.toFixed(2) + '%',
+                                                    
+                                                    leaf: true
+                                                });
+                                            }
+                                        });
+
+                                        // Acumular global
+                                        F1_TOTAL_GLOBAL += V_F1_TOTAL;
+                                        F1_TOTAL_STVAL3_GLOBAL += V_F1_TOTAL_STVAL3;
+                                        F1_TOTAL_STVAL1_GLOBAL += V_F1_TOTAL_STVAL1;
+                                        F1_TOTAL_TAXES_GLOBAL += V_F1_TOTAL_TAXES;
+                                        F1_TOTAL_ERROR_GLOBAL += V_F1_TOTAL_ERROR;
+                                        F1_TOTAL_PENDING_TO_F2_GLOBAL += V_F1_PENDING_TO_F2;
+                                        
+                                        F2_F1_TOTAL_COMPLETED_GLOBAL += V_F2_F1_TOTAL_COMPLETED;
+                                        F2_TOTAL_PENDING_OVER50_GLOBAL += V_F2_TOTAL_PENDING_OVER50;
+                                        F2_TOTAL_MATCH_OVER50_GLOBAL += V_F2_TOTAL_MATCH_OVER50;
+                                        
+                                        F3_F2_TOTAL_COMPLETED_GLOBAL += V_F3_F2_TOTAL_COMPLETED;
+                                        F3_TOTAL_WO_ACC_GLOBAL += V_F3_TOTAL_WO_ACC;
+                                        F3_TOTAL_COMPLETED_GLOBAL += V_F3_TOTAL_COMPLETED;
+                                        F3_TOTAL_PENDING_SENT_GLOBAL += V_F3_TOTAL_PENDING_SENT;
+                                        F3_TOTAL_COMPLETED_SAP_GLOBAL += V_F3_TOTAL_COMPLETED_SAP;
+                                        F3_TOTAL_ERROR_GLOBAL += V_F3_TOTAL_ERROR;
+                                    }
+                                });
+
+                                // Calcular porcentaje global
+                                let F1_PERCENT_GLOBAL = 0;
+                                if (F1_TOTAL_GLOBAL > 0) {
+                                    F1_PERCENT_GLOBAL = (F1_TOTAL_STVAL1_GLOBAL * 100) / F1_TOTAL_GLOBAL;
+                                }
+                                
+                                let F1_PERCENT_GLOBAL_F2 = 0;
+                                if (F2_F1_TOTAL_COMPLETED_GLOBAL > 0) {
+                                    F1_PERCENT_GLOBAL_F2 = (F2_TOTAL_MATCH_OVER50_GLOBAL * 100) / F2_F1_TOTAL_COMPLETED_GLOBAL;
+                                }
+                                
+                                let F1_PERCENT_GLOBAL_F3 = 0;
+                                if (F3_F2_TOTAL_COMPLETED_GLOBAL > 0) {
+                                    F1_PERCENT_GLOBAL_F3 = (F3_TOTAL_COMPLETED_GLOBAL * 100) / F3_F2_TOTAL_COMPLETED_GLOBAL;
+                                }
+
+                                // Crear el store
+                                var storeTree = Ext.create('Ext.data.TreeStore', {
+                                    root: dataRoot
+                                });
+
+                                Ext.getCmp(prototype.id + '-gridSumaryMainCash').setStore(storeTree);
+
+                                Ext.getCmp(prototype.id + '-F1_TOTAL_GLOBALCASH').setText(Ext.util.Format.number(F1_TOTAL_GLOBAL, '0,000'));
+                                Ext.getCmp(prototype.id + '-F1_TOTAL_STVAL3_GLOBALCASH').setText(Ext.util.Format.number(F1_TOTAL_STVAL3_GLOBAL, '0,000'));
+                                Ext.getCmp(prototype.id + '-F1_TOTAL_STVAL1_GLOBALCASH').setText(Ext.util.Format.number(F1_TOTAL_STVAL1_GLOBAL, '0,000'));
+                                Ext.getCmp(prototype.id + '-F1_TOTAL_TAXES_GLOBALCASH').setText(Ext.util.Format.number(F1_TOTAL_TAXES_GLOBAL, '0,000'));
+                                Ext.getCmp(prototype.id + '-F1_TOTAL_ERROR_GLOBALCASH').setText(Ext.util.Format.number(F1_TOTAL_ERROR_GLOBAL, '0,000'));
+                                Ext.getCmp(prototype.id + '-F1_PERCENT_GLOBALCASH').setText(F1_PERCENT_GLOBAL.toFixed(2) + '%');
+                                 Ext.getCmp(prototype.id + '-F1_TOTAL_PENDING_TO_F2_GLOBALCASH').setText(Ext.util.Format.number(F1_TOTAL_PENDING_TO_F2_GLOBAL, '0,000'));
+                                
+                                Ext.getCmp(prototype.id + '-F2_TOTAL_GLOBALCASH').setText(Ext.util.Format.number(F2_F1_TOTAL_COMPLETED_GLOBAL, '0,000'));
+                                Ext.getCmp(prototype.id + '-F2_TOTAL_STVAL3_GLOBALCASH').setText(Ext.util.Format.number(F2_TOTAL_PENDING_OVER50_GLOBAL, '0,000'));
+                                Ext.getCmp(prototype.id + '-F2_TOTAL_STVAL1_GLOBALCASH').setText(Ext.util.Format.number(F2_TOTAL_MATCH_OVER50_GLOBAL, '0,000'));
+                                Ext.getCmp(prototype.id + '-F2_PERCENT_GLOBALCASH').setText(F1_PERCENT_GLOBAL_F2.toFixed(2) + '%');
+                                Ext.getCmp(prototype.id + '-SENT_TOTAL_SENT_GLOBAL').setText(Ext.util.Format.number(F3_TOTAL_PENDING_SENT_GLOBAL, '0,000'));
+                                
+                                
+                                Ext.getCmp(prototype.id + '-SENT_TOTAL_GLOBAL').setText(Ext.util.Format.number(F3_F2_TOTAL_COMPLETED_GLOBAL, '0,000'));
+                                Ext.getCmp(prototype.id + '-SENT_TOTAL_STVAL3_GLOBAL').setText(Ext.util.Format.number(F3_TOTAL_WO_ACC_GLOBAL, '0,000'));
+                                Ext.getCmp(prototype.id + '-SENT_TOTAL_STVAL1_GLOBAL').setText(Ext.util.Format.number(F3_TOTAL_COMPLETED_GLOBAL, '0,000'));
+
+                                Ext.getCmp(prototype.id + '-SAP_TOTAL_STVAL1_GLOBAL').setText(Ext.util.Format.number(F3_TOTAL_COMPLETED_SAP_GLOBAL, '0,000'));
+                                Ext.getCmp(prototype.id + '-SENT_PERCENT_GLOBALCASH').setText(F1_PERCENT_GLOBAL_F3.toFixed(2) + '%');
+                                Ext.getCmp(prototype.id + '-RETURN_ERROR_GLOBALCASH').setText(Ext.util.Format.number(F3_TOTAL_ERROR_GLOBAL, '0,000'));
+                                
+                                // ==== F1 - Settlement ====
+                                var totalsF1 = [];
+                                if (typeof F1_PERCENT_GLOBAL !== 'undefined') {
+                                    totalsF1.push({
+                                        LABEL: 'Advance',
+                                        Perc2: F1_PERCENT_GLOBAL,
+                                        VENDOR: 'Advance:\n' + Ext.util.Format.number(F1_PERCENT_GLOBAL, '0.00') + '%'
+                                    });
+                                    totalsF1.push({
+                                        LABEL: 'Pending',
+                                        Perc2: 100 - F1_PERCENT_GLOBAL,
+                                        VENDOR: 'Pending:\n' + Ext.util.Format.number(100 - F1_PERCENT_GLOBAL, '0.00') + '%'
+                                    });
+                                }
+                                var storeF1 = Ext.create('Ext.data.Store', { fields: ['LABEL', 'Perc2', 'VENDOR'], data: totalsF1 });
+                                Ext.getCmp(prototype.id + '-displayPolarSMCASH').bindStore(storeF1);
+
+
+                                // ==== F2 - Sales ====
+                                var totalsF2 = [];
+                                if (typeof F1_PERCENT_GLOBAL_F2 !== 'undefined') {
+                                    totalsF2.push({
+                                        LABEL: 'Advance',
+                                        Perc2: F1_PERCENT_GLOBAL_F2,
+                                        VENDOR: 'Advance:\n' + Ext.util.Format.number(F1_PERCENT_GLOBAL_F2, '0.00') + '%'
+                                    });
+                                    totalsF2.push({
+                                        LABEL: 'Pending',
+                                        Perc2: 100 - F1_PERCENT_GLOBAL_F2,
+                                        VENDOR: 'Pending:\n' + Ext.util.Format.number(100 - F1_PERCENT_GLOBAL_F2, '0.00') + '%'
+                                    });
+                                }
+                                var storeF2 = Ext.create('Ext.data.Store', { fields: ['LABEL', 'Perc2', 'VENDOR'], data: totalsF2 });
+                                Ext.getCmp(prototype.id + '-displayPolarF2CASH').bindStore(storeF2);
+                                
+                                // ==== Accounted ====
+                                var totalsF3 = [];
+                                if (typeof F1_PERCENT_GLOBAL_F3 !== 'undefined') {
+                                    totalsF3.push({
+                                        LABEL: 'Advance',
+                                        Perc2: F1_PERCENT_GLOBAL_F3,
+                                        VENDOR: 'Advance:\n' + Ext.util.Format.number(F1_PERCENT_GLOBAL_F3, '0.00') + '%'
+                                    });
+                                    totalsF3.push({
+                                        LABEL: 'Pending',
+                                        Perc2: 100 - F1_PERCENT_GLOBAL_F3,
+                                        VENDOR: 'Pending:\n' + Ext.util.Format.number(100 - F1_PERCENT_GLOBAL_F3, '0.00') + '%'
+                                    });
+                                }
+                                var storeF3 = Ext.create('Ext.data.Store', { fields: ['LABEL', 'Perc2', 'VENDOR'], data: totalsF3 });
+                                Ext.getCmp(prototype.id + '-displayPolarF3CASH').bindStore(storeF3);
 
                                 
                                 console.log({
