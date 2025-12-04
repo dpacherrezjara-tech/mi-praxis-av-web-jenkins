@@ -44,6 +44,7 @@ public class A2290 {
     
     public String SEQ = "";
     public String STVAL = "";
+    public String CHEADER = "";
     public String FSTVAL = "";
     public String VALDATE = "";
     public String VALDATEL = "";
@@ -107,6 +108,7 @@ public class A2290 {
     public String CECO = "";
     public String MERCHAND = "";
     public String ACCNUMBERL = "";
+    public String SCURREVENCONVERT = "";
     public double SVFOP = 0;
     public double SVFOPADJ = 0;
     public double SVFOPC = 0;
@@ -138,7 +140,6 @@ public class A2290 {
     public String COREPL = "";
     public String SCARDNM = "";
     public String SCARDN = "";
-    public String SCURREVEN = "";
     public String SDATEXP = "";
     public String SAUTHOC = "";
     public String SAUTHOCM = "";
@@ -295,5 +296,24 @@ public class A2290 {
     public Boolean checkActive = true;
     public Boolean checkActiveViewADM = false;
     public Boolean blockChange = false;
+    
+    
+    
+        //DETALLE
+    
+    public String F_SCOUNTRY = "";
+    public String F_TDOC = "";
+    public String F_ADATE = "";
+    public String F_SCURRENCY = "";
+    public String F_MERCHAND = "";
+    public String F_BANDOC = "";
+    public double F_NETO = 0;
+    public double F_NETOC = 0;
+    public String F_CODPRO = "";
+    public String F_CCUSTPRO = "";
+    public String F_FREGLA = "";
+    
+    
+    
     
 }

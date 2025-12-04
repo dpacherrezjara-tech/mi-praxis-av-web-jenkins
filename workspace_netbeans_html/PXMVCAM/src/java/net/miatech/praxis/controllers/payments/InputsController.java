@@ -72,6 +72,7 @@ public class InputsController extends BaseController {
     @RequestMapping(value = "obtainDataCombo")
     public @ResponseBody
     String obtainDataCombo(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- Inputs : obtainDataCombo -------------");
         A1686Filter filter = new A1686Filter();
         List<A006> lstPaises = null;
         HashMap hm;

@@ -71,6 +71,15 @@ public class StatementReconciliationsLogic {
     public List<A2290Filter> loadPX002CASH(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX002CASH(filter);
     }
+    
+    //detalle cash
+    
+    
+    public List<A2290Filter> loadDetalleCASH(A2290Filter filter) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadDetalleCASH(filter);
+    }
+    
+    ///
     public List<A2290Filter> loadPXSalesDirect(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPXSalesDirect(filter);
     }

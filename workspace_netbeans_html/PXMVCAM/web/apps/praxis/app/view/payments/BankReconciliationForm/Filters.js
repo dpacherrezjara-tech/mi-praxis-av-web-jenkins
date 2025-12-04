@@ -283,6 +283,50 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                                 keypress: 'eventKey'
                             }
                         },
+                         {
+                            xtype: 'fieldcontainer',
+                            fieldLabel: 'Payment Date',
+                            id: prototype.id + '-datePayment',
+                            labelWidth: 90,
+                            margin: '10 10 0 0',
+                            
+                            
+//                                            labelStyle: 'font-weight: bold;',
+                            defaults: {
+                                xtype: 'datefield',
+                                format: 'd/m/Y', 
+                                submitFormat: 'Ymd', 
+                                editable: false,
+                                allowBlank: true,
+                                hidden: true,
+                                
+                                width: 140,
+                                fieldStyle: 'text-align:center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'datefield',
+                                    id: prototype.id + '-txtDATEPICKER',
+                                    name: 'IN_ADATE',
+                                    emptyText: 'Select a Date',
+                                    format: 'd/m/Y',
+                                    submitFormat: 'Ymd',
+                                    editable: false,
+                                    allowBlank: true,
+                                    width: 140,
+                                    fieldStyle: 'text-align:center',
+                                    triggers: {
+                                        clear: {
+                                            cls: 'x-form-clear-trigger', 
+                                            handler: function (field) {
+                                                field.reset(); 
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        {xtype: 'tbspacer', width: 20},
                         {
                             fieldLabel: 'Business',
                             hidden: false,
@@ -580,6 +624,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                         {
                             xtype: 'label',
                             text: 'Processor:',
+                            id: prototype.id + '-labelProcessor',
 //                            padding: '3 0 0 30 ',
                             width: 70,
                             //                    hidden:true
@@ -658,27 +703,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                                 'data-qtip': 'Status'
                             }
                         },
-//                        {
-//                            xtype: 'combo',
-//                            id: prototype.id + '-cmbStatus',
-//                            
-//                            queryMode: 'local',
-//                            allowBlank: false,
-//                            forceSelection: true,
-//                            selectOnFocus: true,
-//                            caseSensitive: false,
-//                            autoSelect: true,
-//                            editable: true,
-//                            width: 100,
-//                            value: "",
-//                            hidden: false,
-//                            typeAhead: true,
-//                            valueField: 'value', displayField: 'description',
-//                            enableKeyEvents: true,
-//                            triggerAction: 'all',
-//                            listeners: {
-//                            }
-//                        },
+
                         {
                             xtype: 'combo',
                             id: prototype.id + '-cmbStatus',
@@ -686,7 +711,9 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             store: new Ext.data.SimpleStore({
                                 fields: ['value', 'description'],
                                 data: [
-                                    ["1", "Match"], ["3", "Settlement Without Sales"], ["5", "Match Manual"]
+                                    ["1", "Match"], 
+                                    ["3", "Settlement Without Sales"], 
+                                    ["5", "Match Manual"]
                                 ]
                             }),
                             width: 100,
@@ -701,17 +728,27 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             forceSelection: true,
 
                         },
-                        {xtype: 'tbspacer', width: 10},
+                        {xtype: 'tbspacer', width: 20},
+                        
+                        //////   datepicker
+
+                      
+                       
+
+
+                                        
+                        ////
                         {
                             xtype: 'label',
                             text: 'Amount :',
+                            id: prototype.id + '-lblAmount',
                             padding: '3 0',
                             hidden: false,
                             width: 62,
                             autoEl: {
                                 tag: 'label',
                                 'data-qtip': 'Amount'
-                            },
+                            }
                         },
                         {
                             xtype: 'textfield',
@@ -721,7 +758,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             maskRe: /[0-9.]/, // Permitir solo números y el punto decimal
                             maxLength: 20,
                             hidden: false,
-                            width: 120,
+                            width: 100,
                             enableKeyEvents: true,
                             listeners: {
                                 keyup: function (field) {
@@ -795,6 +832,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             xtype: 'label',
 //                            style: 'font-weight:bold;color:#0B333C;',
                             padding: '3 0 0 0',
+                            id: prototype.id + '-lblBPOComment',
                             text: 'BPO Comment:',
                             width: 100
                         },
@@ -817,6 +855,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                         {
                             xtype: 'label',
                             text: 'Doc Sap Bank:',
+                            id: prototype.id + '-lblDocSapBank',
                             padding: '3 0 0 0',
                             width: 100,
                         },

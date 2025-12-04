@@ -1611,8 +1611,14 @@ public class AbnormalValueDAO {
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
-
+            
+            cstmt.registerOutParameter(2, Types.INTEGER);
+            cstmt.registerOutParameter(3, Types.INTEGER);
+            cstmt.registerOutParameter(4, Types.INTEGER);
+            cstmt.registerOutParameter(5, Types.INTEGER);
+            
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            
             cstmt.execute();
 
             rst = cstmt.getResultSet();

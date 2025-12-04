@@ -51,6 +51,7 @@ Ext.define('Ext.Praxis.controller.payments.Miscellaneous.DataEntryMiscellaneousC
         this.copia = this.getValue('de-txtCTable');
         this.setValue('de-txtCDesc1', this.beanResult.DESCRE1);
         this.setValue('de-txtCDesc2', this.beanResult.DESCRE2);
+        this.setValue('de-txtCDesc3', this.beanResult.DESCRE3);
         this.setValue('cmbDoc', this.beanResult.TDOC);
 //        this.setValue('de-txtCant1', this.beanResult.CANT1);
 //        this.setValue('de-txtCant2', this.beanResult.CANT2);
@@ -100,6 +101,7 @@ Ext.define('Ext.Praxis.controller.payments.Miscellaneous.DataEntryMiscellaneousC
         beanTemp.CODETBCO = this.copia;
         beanTemp.DESCRE1 = this.getValue("de-txtCDesc1");
         beanTemp.DESCRE2 = this.getValue("de-txtCDesc2");
+        beanTemp.DESCRE3 = this.getValue("de-txtCDesc3");
         beanTemp.TDOC = this.getValue("cmbDoc");
 //        beanTemp.CANT1 = this.getValue("de-txtCant1");
 //        var a =  this.getValue("de-txtCant1");
@@ -201,14 +203,21 @@ Ext.define('Ext.Praxis.controller.payments.Miscellaneous.DataEntryMiscellaneousC
     validateDates: function () {
         var DATINI = this.getValue("de-txtINI");
         var DATFIN = this.getValue("de-txtFIN");
+        var TABLA = this.getValue("de-txtCodeTable");
+        
         var msj = '';
+        
+        
 
-        if (DATINI.length === 8 && DATFIN.length === 8) {
-            if (DATFIN < DATINI) {
-                msj = 'Error in dates';
+        if (TABLA !== "95") {
+            if (DATINI.length === 8 && DATFIN.length === 8) {
+                if (DATFIN < DATINI) {
+                    msj = 'Error in dates';
+                }
+            } 
+            else {
+                msj = 'Error in date lenghts'
             }
-        } else {
-            msj = 'Error in date lenghts'
         }
 
         return msj;

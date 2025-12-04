@@ -28,7 +28,9 @@ public class SpringWS {
     private CurrentSession cs;
 
     public Boolean postAsync(String body, String endpoint) throws Exception {
-        String url = cs.getPropertySession().get("RUTA_REST_SPRING").toString();
+        String environment = this.cs.getPropertySession().get("DB_SERVER_DEFAULT_TYPE").toString();
+        String configSpring = "RUTA_REST_"+ environment + "_SPRING";
+        String url = cs.getPropertySession().get(configSpring).toString();
         Unirest.setTimeouts(600000, 300000);
         HttpResponse<JsonNode> response = Unirest.post(url + endpoint)
                 .header("Content-Type", "application/json") // Header indicando JSON
@@ -44,7 +46,9 @@ public class SpringWS {
     }
 
     public String postFileAsync(MultipartFile file, String body, String endpoint) throws Exception {
-        String url = cs.getPropertySession().get("RUTA_REST_SPRING").toString();
+        String environment = this.cs.getPropertySession().get("DB_SERVER_DEFAULT_TYPE").toString();
+        String configSpring = "RUTA_REST_"+ environment + "_SPRING";
+        String url = cs.getPropertySession().get(configSpring).toString();
         Unirest.setTimeouts(600000, 300000);
         HttpResponse<String> response = Unirest.post(url + endpoint)
                 .field("file", file.getInputStream(), file.getOriginalFilename())
@@ -59,7 +63,9 @@ public class SpringWS {
     }
 
     public Boolean postFilesAsync(String body, List<MultipartFile> files, String endpoint) throws Exception {
-        String url = cs.getPropertySession().get("RUTA_REST_SPRING").toString();
+        String environment = this.cs.getPropertySession().get("DB_SERVER_DEFAULT_TYPE").toString();
+        String configSpring = "RUTA_REST_"+ environment + "_SPRING";
+        String url = cs.getPropertySession().get(configSpring).toString();
         Unirest.setTimeouts(600000, 300000);
         HttpRequestWithBody request = Unirest.post(url + endpoint);
         MultipartBody multipart = request
@@ -84,7 +90,9 @@ public class SpringWS {
     }
 
     public byte[] getFile(String body, String endpoint) throws Exception {
-        String url = cs.getPropertySession().get("RUTA_REST_SPRING").toString();
+        String environment = this.cs.getPropertySession().get("DB_SERVER_DEFAULT_TYPE").toString();
+        String configSpring = "RUTA_REST_"+ environment + "_SPRING";
+        String url = cs.getPropertySession().get(configSpring).toString();
         Unirest.setTimeouts(600000, 300000);
         HttpResponse<InputStream> response = Unirest.post(url + endpoint)
                 .header("Content-Type", "application/json") // Header indicando JSON

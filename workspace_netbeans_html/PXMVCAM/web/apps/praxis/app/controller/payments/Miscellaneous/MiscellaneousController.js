@@ -87,23 +87,23 @@ Ext.define('Ext.Praxis.controller.payments.Miscellaneous.MiscellaneousController
     },
     obtainData: function() {
       
-        Ext.Ajax.request({
-            url: prototype.url + '/getCodes',
-            method: 'POST',
-            timeout: 60000000,
-            params: {beanString: JSON.stringify(this.dataObtain)},
-            success: function(response, options) {
-                var res = Ext.JSON.decode(response.responseText);             
-                if (res.success) {
-                    Ext.getCmp(prototype.id + '-cmbCodes').bindStore(
-                        Ext.create('Ext.data.Store', {data: res.data, autoLoad: true})
-                    );
-                    Ext.getCmp(prototype.id + '-cmbCodes').setValue('');
-//                    me.btnSearch_click();
-                } else
-                    global.Msg({msg: res.sesion});
-            }
-        });
+//        Ext.Ajax.request({
+//            url: prototype.url + '/getCodes',
+//            method: 'POST',
+//            timeout: 60000000,
+//            params: {beanString: JSON.stringify(this.dataObtain)},
+//            success: function(response, options) {
+//                var res = Ext.JSON.decode(response.responseText);             
+//                if (res.success) {
+//                    Ext.getCmp(prototype.id + '-cmbCodes').bindStore(
+//                        Ext.create('Ext.data.Store', {data: res.data, autoLoad: true})
+//                    );
+//                    Ext.getCmp(prototype.id + '-cmbCodes').setValue('');
+////                    me.btnSearch_click();
+//                } else
+//                    global.Msg({msg: res.sesion});
+//            }
+//        });
         
         Ext.Ajax.request({
             url: prototype.url + '/getTables',
@@ -116,7 +116,7 @@ Ext.define('Ext.Praxis.controller.payments.Miscellaneous.MiscellaneousController
                     Ext.getCmp(prototype.id + '-cmbTable').bindStore(
                         Ext.create('Ext.data.Store', {data: res.data, autoLoad: true})
                     );
-                    Ext.getCmp(prototype.id + '-cmbTable').setValue('');
+                    Ext.getCmp(prototype.id + '-cmbTable').setValue('95');
                     me.btnSearch_click();
                 } else
                     global.Msg({msg: res.sesion});
@@ -127,7 +127,11 @@ Ext.define('Ext.Praxis.controller.payments.Miscellaneous.MiscellaneousController
 
         me.bean = {};
         me.bean.IN_CODE = Ext.getCmp(prototype.id + '-cmbTable').getValue();
+        me.bean.IN_DESCRE1 = Ext.getCmp(prototype.id + '-txtDescription1').getValue();
+        me.bean.IN_DESCRE2 = Ext.getCmp(prototype.id + '-txtDescription2').getValue();
+        me.bean.IN_DESCRE3 = Ext.getCmp(prototype.id + '-txtDescription3').getValue();
         var beanString = JSON.stringify(me.bean);
+        console.log(beanString,'beanString')
         searchParams = {
             bean: me.bean,
             beanString: beanString

@@ -42,6 +42,8 @@ public class MPF100 {
     public String SCURRENCY = "";
     public String SCARDN = "";
     public String SDATEXP = "";
+    public String SCARDNCOR = "";
+    public String CORRL = "";
     public String SAUTHOC = "";
     public String SINVN = "";
     public String SIDATE = "";
@@ -127,6 +129,22 @@ public class MPF100 {
     public double RICAAMOC = 0;
     public double RFTEAMOC = 0;    
     public double NETOAMOC = 0;
+    
+    
+    
+    public String O_STVAL = "";
+    public String O_SAGENT = "";
+    public String O_NAMEA = "";
+    public String O_DIG_AGENT = "";
+    public String O_strDescripcion = "";
+    public String O_CCIA = "";
+    public String O_FORMA = "";
+    public String O_SERIE = "";
+    public String O_SDATE = "";
+    public String O_SCARDN = "";
+    public String O_SAUTHOC = "";
+    public double O_SVFOP = 0;
+    
 
     // VARIABLES CASH
     //Variables del Sistema

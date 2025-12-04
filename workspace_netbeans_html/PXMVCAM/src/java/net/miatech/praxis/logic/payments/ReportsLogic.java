@@ -33,8 +33,20 @@ public class ReportsLogic {
         return banksCatalogDAO.loadSQP05120_DETAIL(filter);
     }
     
+    public List<A2356Filter> loadSQP05120_DETAILChgbck(A2356Filter filter) throws SQLException, Exception {
+        return banksCatalogDAO.loadSQP05120_DETAILChgbck(filter);
+    }
+    
     public List<A2356Filter> loadSQP05120_SM(A2356Filter filter) throws SQLException, Exception {
         return banksCatalogDAO.loadSQP05120_SM(filter);
+    }
+    
+    public List<A2356Filter> loadSQP05120_SMChgbck(A2356Filter filter) throws SQLException, Exception {
+        return banksCatalogDAO.loadSQP05120_SMChgbck(filter);
+    }
+    
+    public List<A2356Filter> loadSQP05120_SMPending(A2356Filter filter) throws SQLException, Exception {
+        return banksCatalogDAO.loadSQP05120_SMPending(filter);
     }
     
     public A2356Filter loadSQP02856(A2356Filter filter) throws SQLException, Exception {
@@ -52,5 +64,7 @@ public class ReportsLogic {
         return banksCatalogDAO.load_MPS350(filter);
     }
     
-    
+    public List<A2356Filter> loadSQP05120_DETAILPending(A2356Filter filter) throws SQLException, Exception {
+        return banksCatalogDAO.loadSQP05120_DETAILPending(filter);
+    }
 }

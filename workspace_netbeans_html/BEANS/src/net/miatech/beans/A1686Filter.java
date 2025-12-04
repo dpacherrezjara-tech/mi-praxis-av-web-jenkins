@@ -16,7 +16,10 @@ public class A1686Filter extends A1686 {
     public int IN_TIPOFECHA = 0;
     public String IN_FECHA_FROM = "";
     public String IN_FECHA_TO = "";
+    public String IN_TDATE = "";
     public String IN_FUENTE = "";
+    public String IN_MENSA = "";
+    public String IN_CONSULTA = "";
     public String IN_ERROR = "";
     public String IN_CODEBANK = "";
     public String IN_ADATE = "";

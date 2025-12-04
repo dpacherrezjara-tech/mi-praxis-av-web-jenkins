@@ -231,6 +231,9 @@ public class CalendarControlBSPController extends BaseController {
                     A1529BAIR = oList.get(i).A1529BAIR;
                     A1529REMW = oList.get(i).A1529REMW;
                     A1529SETW = oList.get(i).A1529SETW;
+                    if (oList.get(i).A1529CLOS != null && !oList.get(i).A1529CLOS.trim().equals("")) {
+                        A1529SETW = "<font color='#009900'><b>" + A1529SETW + "</b></font>";
+                    }
                     b = false;
                 }
                 switch (oList.get(i).A1529PCYC) {

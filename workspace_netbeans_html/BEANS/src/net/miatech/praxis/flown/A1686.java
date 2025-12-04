@@ -28,9 +28,11 @@ public class A1686 {
     public int QRECOR = 0;
     public int QRECORG = 0;
     public int QRECERR = 0;
+    public int QTYDELET = 0;
     public int QTYDOC = 0;
     public int tot_QTYDOC = 0;
     public String MENSA = "";
+    public String DESCRIP = "";
 
     //AUDITORIA
     public String USCR = "";

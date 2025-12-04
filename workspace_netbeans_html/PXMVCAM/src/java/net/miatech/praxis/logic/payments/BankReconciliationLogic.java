@@ -300,7 +300,24 @@ public class BankReconciliationLogic {
     public List<A2290Filter> loadPX269SQP00698CountryCash(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP00698CountryCash(filter);
     }
+
     
+    public List<A2290Filter> loadLISTAR_MPF199(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadLISTAR_MPF199(filter);
+    }
+    
+    
+     public String MPF199Update(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.MPF199Update(filter);
+    }
+     public String ConciliacionAdjust(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.ConciliacionAdjust(filter);
+    }
+    
+    
+    
+    
+
     public List<A2290Filter> loadPX269SQP00698DayCash(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP00698DayCash(filter);
     }
@@ -322,5 +339,9 @@ public class BankReconciliationLogic {
     }
     public MPF100Filter ConciliationManualCash(MPF100Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.ConciliationManualCash(filter);
+    }
+    
+    public MPF100Filter AssignCashComment(MPF100Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.AssignCashComment(filter);
     }
 }

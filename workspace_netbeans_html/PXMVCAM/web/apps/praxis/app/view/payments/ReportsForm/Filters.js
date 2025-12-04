@@ -245,6 +245,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Filters', {
                                 keypress: 'eventKey'
                             }
                         },
+                        
                         {
                                 xtype: 'displayfield',
                                 id: prototype.id + '-lblExchangeMessage2',

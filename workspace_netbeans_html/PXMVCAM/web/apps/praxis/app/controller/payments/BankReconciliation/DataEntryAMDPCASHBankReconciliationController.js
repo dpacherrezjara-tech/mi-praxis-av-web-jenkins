@@ -4,8 +4,11 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
     // <editor-fold defaultstate="collapsed" desc="Variables Globales">
     meDe: '',
     actionCode: '',
+    storeDataCash: {},
+    showOnlyPending: false,
     bean: {},
     beanCashAgent: {},
+    beanCashCsv: {},
     bean_detail: {},
     bean_scan: {},
     lstA1852: {},
@@ -23,15 +26,16 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         this.p = this.view.params;
         this.actionCode = this.p.action;
         this.bean = this.p.beanCons;
+        console.log(this.p.beanCons, "PROBANDO")
         this.lstCard = this.p.lstCard;
         this.lstBank = this.p.lstBank;
         this.lstCountry = this.p.lstCountry;
         this.lstAdjustment = [];
     },
     afterRender: function () {
-        
-        console.log(this.bean,"Esto es todo lo que traigo")
-        
+
+        console.log(this.bean, "Esto es todo lo que traigo")
+
 //        Ext.Ajax.request({
 //            url: prototype.urlMaster + '/obtainData',
 //            method: 'POST',
@@ -51,37 +55,33 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
 //            
 //        });
 
-        
+        this.obtainData();
         this.mostrarData();
         Ext.getCmp(prototype.id + '-btn-save').hide();
         Ext.getCmp(prototype.id + '-btn-cancel').show();
-        console.log(this.bean.STVAL,'ESTADOOOO')
-        console.log(this.bean.CBATCH,"wdaaaaaaaaaaaaaaA")
+        console.log(this.bean.STVAL, 'ESTADOOOO')
+        console.log(this.bean.CBATCH, "wdaaaaaaaaaaaaaaA")
+
         this.onSearchCompleteDetail();
-        if (this.bean.STVAL === '1' || this.bean.STVAL === '5') {
-            this.onSearchCompleteDetail();
-        } 
     },
     ocultarBtnReversa: function () {
-        let validacion1 = ['45', '46','54','55'].includes(this.bean.CERROR);
+        let validacion1 = ['45', '46', '54', '55'].includes(this.bean.CERROR);
         let validacion2 = this.bean.TERMI === '00000000' && this.bean.CODEBANK === '0051';
-        if(validacion1  || validacion2){
+        if (validacion1 || validacion2) {
             console.log('entra en ocultar')
             Ext.getCmp(prototype.id + '-btn-reverse').hide();
-        }else{
+        } else {
             console.log('entra en mostrar')
             Ext.getCmp(prototype.id + '-btn-reverse').hide();
         }
     },
-    
+
     joinMultiSelect: function (element) {
         let comboBox = element.getValue();
         return comboBox.join('|');
     },
-    gaaaa: function (element) {
-        console.log("Prueba")
-    },
     onSearchCompleteDetail: function () {
+        meDe.showOnlyPending = false;
         var paramDetail = {};
         paramDetail.beanString = JSON.stringify(this.bean);
         Ext.Ajax.request({
@@ -93,16 +93,17 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
             success: function (response, opts) {
                 Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
                 var res = Ext.JSON.decode(response.responseText);
-                console.log(res.success,'RESULTADOOOOOO')
+                console.log(res.success, 'RESULTADOOOOOO')
                 if (res.success) {
                     meDe.bean_detail = res.result;
                     var storeData = Ext.create('Ext.data.Store', {
                         data: res.data,
                         autoLoad: true
                     });
-                    
-                        Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
-                        Ext.getCmp(prototype.id + '-gridDataInfoScanICCS').bindStore(storeData);
+
+                    Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
+                    meDe.storeDataCash = storeData;
+                    Ext.getCmp(prototype.id + '-gridDataInfoScanICCS').bindStore(storeData);
 //                    meDe.calcularSumAmount();
                     meDe.calcularMontos();
                 } else {
@@ -116,36 +117,35 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         });
     },
     mostrarData: function () {
-        
-        // DETAIL SETTLEMENT
-          this.setValue('de-txtStatusCash', this.bean.descSTVAL);  
-          let cfuente;
-          if (this.bean.TINPUT === 'B') {
-              cfuente = 'BSP';
-              Ext.getCmp(prototype.id + '-panelDataInfoScan').show();
-              
-          } else if (this.bean.TINPUT === 'I') {
-              cfuente = 'ICCS';
-              Ext.getCmp(prototype.id + '-panelDataInfoScanICCS').show();
-          } else {
-              cfuente = 'ARC';
-          };
-          this.setValue('de-txtSource', cfuente);  
-          this.setValue('de-txtAdate', this.bean.ADATE);  
-          this.setValue('de-txtScountry', this.bean.DESC_SCOUNTRY);          
-          let negocio = 'PASAJES';
-          
-          this.setValue('de-txtNegocio', negocio);  
-          this.setValue('de-txtScurrency', this.bean.SCURRENCY);  
-          this.setValue('de-txtNeto', this.bean.NETO);  
-          this.setValue('de-txtBandoc', this.bean.BANDOC);  
-          this.setValue('de-txtAccount', this.bean.ACCNUMBER);  
-          this.setValue('de-txtQtyTkt', this.bean.QTYTKT);
 
-          
-          
-         // CONCILIATE
-         
+        // DETAIL SETTLEMENT
+        this.setValue('de-txtStatusCash', this.bean.descSTVAL);
+        let cfuente;
+        if (this.bean.TINPUT === 'B' || this.bean.TINPUT === 'A') {
+            cfuente = 'BSP';
+            Ext.getCmp(prototype.id + '-panelDataInfoScan').show();
+
+        } else if (this.bean.TINPUT === 'I') {
+            cfuente = 'ICCS';
+            Ext.getCmp(prototype.id + '-panelDataInfoScanICCS').show();
+        }
+        ;
+        this.setValue('de-txtSource', cfuente);
+        this.setValue('de-txtAdate', this.bean.ADATE);
+        this.setValue('de-txtScountry', this.bean.DESC_SCOUNTRY);
+        let negocio = 'PASAJES';
+
+        this.setValue('de-txtNegocio', negocio);
+        this.setValue('de-txtScurrency', this.bean.SCURRENCY);
+        this.setValue('de-txtNeto', Ext.util.Format.number(this.bean.NETO, '0,000.00'));
+        this.setValue('de-txtBandoc', this.bean.BANDOC);
+        this.setValue('de-txtAccount', this.bean.ACCNUMB);
+        this.setValue('de-txtQtyTkt', this.bean.QTYTKT);
+
+
+
+        // CONCILIATE
+
         this.setValue('de-txtSTVAL', this.bean.descSTVAL);
         this.setValue('de-txtdescFREGLA', this.bean.descFREGLA);
         this.setValue('de-txtDATEC', this.bean.DATEC);
@@ -154,18 +154,18 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         this.setValue('de-txtTRANC', this.bean.TRANC);
         this.setValue('de-txtQTYDOC', this.bean.QTYDOC);
         this.setValue('de-txtQTYTKT', this.bean.QTYTKT);
-        this.setValue('de-txtSOCIETY', this.bean.SOCIETY);
-        this.setValue('de-txtSOCIETYL', this.bean.SOCIETYL);
-        
+        this.setValue('de-txtNetoPending', Ext.util.Format.number(this.bean.lngPayamouPending, '0,000.00'));
+        this.setValue('de-txtNetConciliado', Ext.util.Format.number(this.bean.lngPayamouMatch, '0,000.00'));
+
         // 191 
-        this.setValue('de-txtCOUNTRY191', this.bean.SCOUNTRY_191);
+        this.setValue('de-txtCOUNTRY191', this.bean.DESC_SCOUNTRY);
         this.setValue('de-txtCurrency191', this.bean.SCURRENCY_191);
         this.setValue('de-txtSCONSOL_191', this.bean.SCONSOL_191);
         this.setValue('de-txtSTRDATE', this.bean.STARDATE_191);
         this.setValue('de-txtENDDATE', this.bean.ENDDATE_191);
-        this.setValue('de-txtNETO191', this.bean.NETO_191);
-        this.setValue('de-txtPAYAMOU191', this.bean.PAYAMOU_191);
-        this.setValue('de-txtCOMISION191', this.bean.COMISION_191);
+        this.setValue('de-txtNETO191', Ext.util.Format.number(this.bean.NETO_191, '0,000.00'));
+        this.setValue('de-txtPAYAMOU191', Ext.util.Format.number(this.bean.PAYAMOU_191, '0,000.00'));
+        this.setValue('de-txtCOMISION191', Ext.util.Format.number(this.bean.NETO_191 - this.bean.PAYAMOU_191, '0,000.00'));
         this.setValue('de-txtQTYTKT191', this.bean.QTYTKT_191);
         this.setValue('txtUSCR', this.bean.USCR);
         this.setValue('txtFECR', this.bean.FECR);
@@ -179,7 +179,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         this.lstSendManual = [];
         var store_gridInfoScan = Ext.getCmp(prototype.id + '-gridDataInfoScan').getStore();
         var qtyTkt = store_gridInfoScan.getCount();
-        
+
         for (var i = 0; i < store_gridInfoScan.data.length; i++) {
             var dataRow1 = store_gridInfoScan.data.items[i];
             this.lstSendManual.push(dataRow1.data);
@@ -190,13 +190,13 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         for (var i = 0; i < this.lstAdjustment.length; i++) {
             this.sumAmount = this.sumAmount + parseFloat(this.lstAdjustment[i].A1531VFOP);
         }
-        Ext.getCmp(prototype.id + '-de-QtyTkt').setValue(qtyTkt); 
+        Ext.getCmp(prototype.id + '-de-QtyTkt').setValue(qtyTkt);
 //        this.setValue('de-txtSumAmount', Ext.util.Format.number(this.sumAmount, '0,000.00'));
         Ext.getCmp(prototype.id + '-gridDataInfoScan').getView().refresh();
     },
-    mostrarComment: function () {
+    mostrarCommentCash: function () {
 
-        var txtCOMENT = Ext.getCmp(prototype.id + '-PanelComments');
+        var txtCOMENT = Ext.getCmp(prototype.id + '-PanelCommentsCash');
         var comentVisible = txtCOMENT.isVisible();
         if (comentVisible) {
             txtCOMENT.hide();
@@ -340,17 +340,16 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
             }
         });
     },
-    
-    
-    updateComent: function (){
-        
-        
-        let valorComent = Ext.getCmp(prototype.id + '-cmbCOMENT').getValue();
-         meDe.bean.CERROR = valorComent;
-        console.log("CERROR enviado:", meDe.bean.CERROR); 
-        
-        
-        
+
+    updateComent: function () {
+
+
+        let valorComent = Ext.getCmp(prototype.id + '-cmbCOMENTCASH').getValue();
+        meDe.bean.CERROR = valorComent;
+        console.log("CERROR enviado:", meDe.bean.CERROR);
+
+
+
         Ext.Ajax.request({
             url: prototype.url + '/updateCERROR_BPO_revision',
             method: 'POST',
@@ -358,15 +357,15 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
             params: {beanString: JSON.stringify(meDe.bean)},
 //            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
             success: function (response, opts) {
-                
+
                 var res = Ext.JSON.decode(response.responseText);
-                
+
                 if (res.success) {
-                    
-                  var msj = res.mensaje;  
-                  global.Msg({
-                    msg: msj
-                   });
+
+                    var msj = res.mensaje;
+                    global.Msg({
+                        msg: msj
+                    });
 //                Ext.getCmp(prototype.id + '-dataEntry').unmask();
 //                    var beanCons = res.result;
 //                    console.log('beanCons');
@@ -388,25 +387,25 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
 //                Ext.getCmp(prototype.id + '-dataEntry').unmask();
             }
         });
-        
-        
-        
-        
-        
+
+
+
+
+
     },
     onUpdateClick: async function (btn) {
-        
+
 // 
-        let valorComent = Ext.getCmp(prototype.id + '-cmbCOMENT').getValue();
-        console.log(valorComent,"visualkizar xxx");
-        
-        if (valorComent == "75" ||valorComent== "76" ||  valorComent==  "77" || valorComent==  "78"){
-            
-            this.updateComent();  
+        let valorComent = Ext.getCmp(prototype.id + '-cmbCOMENTCASH').getValue();
+        console.log(valorComent, "visualkizar xxx");
+
+        if (valorComent == "75" || valorComent == "76" || valorComent == "77" || valorComent == "78") {
+
+            this.updateComent();
 //            console.log("recibe comentario codigo");
-            
-        }else{
-                  var deci = await this.preexecuteOption();
+
+        } else {
+            var deci = await this.preexecuteOption();
             if (deci) {
                 Ext.Msg.show({
                     title: '.:Confirmation:.',
@@ -426,18 +425,13 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
                     }
                 });
             }
-            
-        }
-        
 
-        
+        }
+
+
+
     },
-    
-    
-    
-    
-    
-    
+
     onDeleteClick: function (btn) {
         Ext.Msg.show({
             title: '.:PRAXIS:.',
@@ -488,7 +482,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         var BSVFOP = parseFloat(Ext.getCmp(prototype.id + '-de-txtSumAmount').getValue().replace(/,/g, '').replace('.00', ''));
         if (ASVFOP == BSVFOP) {
 
-            var comment = Ext.getCmp(prototype.id + '-cmbCOMENT').getValue();
+            var comment = Ext.getCmp(prototype.id + '-cmbCOMENTCASH').getValue();
             if (comment !== '' && comment !== null) {
                 let miGrilla = Ext.getCmp(prototype.id + '-gridDataInfoScan');
                 let miGrillaAdj = Ext.getCmp(prototype.id + '-gridDataAdjustment');
@@ -504,8 +498,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
                 }
             } else {
                 global.Msg({msg: 'Select the Manual Reconciliation reason "BPO Comment" '});
-                Ext.getCmp(prototype.id + '-PanelComments').show();
-                Ext.getCmp(prototype.id + '-COMENT_Forced').show();
+                Ext.getCmp(prototype.id + '-PanelCommentsCash').show();
+                Ext.getCmp(prototype.id + '-COMENT_ForcedCash').show();
             }
 
         } else {
@@ -866,13 +860,21 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
             Ext.getCmp(prototype.id + '-input-txtTKTScan1').setValue(obj.IN_TKT_ASIG);
         }
     },
-    onGridViewTKTAgent: function (column, e, row, column, x, rowData) {
-        
+    onGridViewTKTAgent: function (column, e, row, columnIndex, x, rowData) {
+        var value = x.record.data.QTYTKT;
+        if (!value || value <= 0) {
+            Ext.Msg.alert('Aviso', 'No se encuentran tickets.');
+            return;
+        }
+
         var paramDetail = {};
-        this.beanCashAgent.IN_SAGENT  = x.record.data.SAGENT;
-        this.beanCashAgent.IN_DATEC  = x.record.data.DATEC;
-        this.beanCashAgent.IN_TRANC  = x.record.data.TRANC;
+        this.beanCashAgent.IN_SAGENT = x.record.data.SAGENT;
+        this.beanCashAgent.IN_DATEC = x.record.data.DATEC;
+        this.beanCashAgent.IN_TRANC = x.record.data.TRANC;
+
+        this.beanCashAgent.IN_SPAYMENT = (x.record.data.TPERIOD === 'E') ? 'EP' : 'CA';
         paramDetail.beanString = JSON.stringify(this.beanCashAgent);
+
         Ext.Ajax.request({
             url: prototype.url + '/searchBeanTicketAgent',
             method: 'POST',
@@ -900,30 +902,150 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
                 Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
             }
         });
-        
     },
-    highlightRow: function(value, meta, record) {
+
+    highlightRow: function (value, meta, record) {
         meta.style = "text-align:center;";
-        if (record.data.TDOC === 'A') meta.style += "background-color:#bff5bf;";
+        if (record.data.TDOC === 'A')
+            meta.style += "background-color:#bff5bf;";
         return value;
     },
-                                                                        
+    AddAdjustCash: function () {
+        var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        var gridAgent = Ext.getCmp(prototype.id + '-gridDataInfoScanAgent');
+
+        var storeScan = gridScan.getStore();
+        var storeAgent = gridAgent.getStore();
+
+        // === 1️⃣ Verificar selección ===
+        var seleccionado = gridScan.getSelectionModel().getSelection()[0];
+        if (!seleccionado) {
+            Ext.Msg.alert('Aviso', 'Seleccione una fila del grid principal (Scan) antes de crear el ajuste.');
+            return;
+        }
+
+        // === 2️⃣ Calcular totales ===
+        var totalScan = parseFloat(seleccionado.get('NETO')) || 0;
+
+        var totalAgent = 0;
+        storeAgent.each(function (r) {
+            totalAgent += parseFloat(r.get('SVFOPNETR')) || 0;
+        });
+
+        var diferencia = totalScan - totalAgent;
+
+        // === 3️⃣ Obtener último registro como referencia ===
+        var ultimoRegistro = storeAgent.last();
+        if (!ultimoRegistro) {
+            Ext.Msg.alert('Aviso', 'No hay registros en la grilla Agent para usar como referencia.');
+            return;
+        }
+
+        // === 4️⃣ Crear nuevo registro desde cero ===
+        var newRec = Ext.create(storeAgent.model, {
+            // Copiamos algunos campos del último registro
+            TDOC: 'A',
+            STVAL: '3',
+            SAGENT: ultimoRegistro.get('SAGENT'),
+            SCONSOL: ultimoRegistro.get('SCONSOL'),
+            SDATE: ultimoRegistro.get('SDATE'),
+            MCLOS: ultimoRegistro.get('MCLOS'),
+            SCOUNTRY: ultimoRegistro.get('SCOUNTRY'),
+            TKT: ultimoRegistro.get('TKT'),
+            SCURRENCY: ultimoRegistro.get('SCURRENCY'),
+            INVOICE: ultimoRegistro.get('INVOICE') + 'PP',
+            CFUENTE: ultimoRegistro.get('CFUENTE'),
+            SPAYMENT: ultimoRegistro.get('SPAYMENT'),
+            SVFOPNETR: diferencia,
+            SVFOP: diferencia
+        });
+
+        // === 5️⃣ Agregar el nuevo registro ===
+        storeAgent.add(newRec);
+
+        // === 6️⃣ Refrescar la vista ===
+        gridAgent.getView().refresh();
+
+        // === 7️⃣ Logs para depuración ===
+        console.log('✅ Ajuste creado:', newRec.data);
+        console.log('⚖️ Total Scan:', totalScan);
+        console.log('⚖️ Total Agent (antes del ajuste):', totalAgent);
+        console.log('⚖️ Diferencia aplicada:', diferencia);
+    },
+
+    onConciliationCashAdjust: function () {
+        var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        var seleccionado = gridScan.getSelectionModel().getSelection()[0];
+
+        if (!seleccionado) {
+            Ext.Msg.alert('Aviso', 'Debe seleccionar una fila para conciliar.');
+            return;
+        }
+
+        // === Crear el bean con los campos requeridos ===
+        this.bean_scan = this.bean_scan || {}; // asegúrate que exista el objeto
+        this.bean_scan.SAGENT = seleccionado.get('SAGENT');
+        this.bean_scan.SCOUNTRY = seleccionado.get('SCOUNTRY');
+        this.bean_scan.SCURRENCY = seleccionado.get('SCURRENCY');
+        this.bean_scan.SPAYMENT = 'CA';
+        this.bean_scan.CBATCH = seleccionado.get('CBATCH');
+        this.bean_scan.STRDATE = seleccionado.get('STRDATE');
+        this.bean_scan.ENDDATE = seleccionado.get('ENDDATE');
+        this.bean_scan.ADATE = seleccionado.get('ADATE');
+        this.bean_scan.TINPUT = seleccionado.get('TINPUT');
+
+        var paramScan = {beanString: JSON.stringify(this.bean_scan)};
+
+        Ext.Ajax.request({
+            url: prototype.url + '/ConciliationAdjust',
+            method: 'POST',
+            timeout: 60000000,
+            params: paramScan,
+            beforeRequest: function () {
+                Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').mask('Procesando conciliación...');
+            },
+            success: function (response) {
+                Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
+                var res = Ext.JSON.decode(response.responseText || '{}');
+
+                if (res.success) {
+                    global.Msg({msg: res.Mensaje || 'Conciliación completada con éxito.'});
+
+                    var store = gridScan.getStore();
+                    if (store)
+                        store.reload();
+                } else {
+                    global.Msg({msg: res.Mensaje || 'Error en la conciliación.'});
+                }
+            },
+            failure: function (response) {
+                Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
+                Ext.Msg.alert('Error', 'Error en el servidor (' + response.status + ')');
+                console.error('Server-side failure:', response);
+            }
+        });
+    },
+
     addCash_keyDownHandler: function () {
         var me = this;
         var fecha_a_validar = "";
         this.bean_scan.TICKET = Ext.getCmp(prototype.id + '-input-txtTKTScanCash').getValue();
         let fechaFrom = Ext.getCmp(prototype.id + '-txtFromDateCash').getValue() || fecha_a_validar;
         let fechato = Ext.getCmp(prototype.id + '-txtToDateCash').getValue() || fecha_a_validar;
+        let fechaClos = Ext.getCmp(prototype.id + '-txtMclos').getValue() || fecha_a_validar;
+
 
         // --- Fechas ---
-        if (fechaFrom || fechato) {
+        if (fechaFrom || fechato || fechaClos) {
             let fechaBaseFrom = Ext.isDate(fechaFrom) ? fechaFrom : Ext.Date.parse(fechaFrom, 'Y-m-d');
             let fechaBaseTo = Ext.isDate(fechato) ? fechato : Ext.Date.parse(fechato, 'Y-m-d');
+            let fechaBaseClos = Ext.isDate(fechaClos) ? fechaClos : Ext.Date.parse(fechaClos, 'Y-m-d');
 
-            if (fechaBaseFrom || fechaBaseTo) {
+            if (fechaBaseFrom || fechaBaseTo || fechaClos) {
                 this.bean_scan.SDATE = Ext.Date.format(fechaBaseFrom, 'Ymd');
                 this.bean_scan.SDATE_MIN = Ext.Date.format(fechaBaseFrom, 'Ymd');
                 this.bean_scan.SDATE_MAX = Ext.Date.format(fechaBaseTo, 'Ymd');
+                this.bean_scan.MCLOS = Ext.Date.format(fechaBaseClos, 'Ymd');
             } else {
                 console.warn('La fecha ingresada no es válida.');
             }
@@ -935,9 +1057,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         this.bean_scan.SCURRENCY = Ext.getCmp(prototype.id + '-txtScanScurrency').getValue();
         this.bean_scan.SCOUNTRY = Ext.getCmp(prototype.id + '-txtScanScountry').getValue();
         this.bean_scan.CCUST = Ext.getCmp(prototype.id + '-cmbCLIENT').getValue();
+        this.bean_scan.SPAYMENT = Ext.getCmp(prototype.id + '-cmbTypePayment').getValue();
 
         if (!this.bean_scan.TICKET && !this.bean_scan.SDATE && !this.bean_scan.SAGENT && !this.bean_scan.SCONSOL) {
-            global.Msg({ msg: 'Fields to Scan must be filled out' });
+            global.Msg({msg: 'Fields to Scan must be filled out'});
             return;
         }
 
@@ -947,12 +1070,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         // --- Construir mapa de registros actuales ---
         let existingKeys = {};
         store.each(function (rec) {
-            let key = `${rec.get('TKT')}#${rec.get('SVFOPNETR')}#${rec.get('SCURRENCY')}`;
+            let key = `${rec.get('CCUST')}#${rec.get('TKT')}#${rec.get('TDOC')}#${rec.get('SCARDNCOR')}#${rec.get('SAUTHOC')}#${rec.get('SEQ')}#${rec.get('CORRL')}`;
             existingKeys[key] = true;
         });
 
         // --- Parámetros AJAX ---
-        var paramScan = { beanString: JSON.stringify(this.bean_scan) };
+        var paramScan = {beanString: JSON.stringify(this.bean_scan)};
         Ext.Ajax.request({
             url: prototype.url + '/searchBeanAMDP_SCANCASH',
             method: 'POST',
@@ -960,49 +1083,50 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
             params: paramScan,
             beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').mask('Loading...'),
             success: function (response, opts) {
-            Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
-            var res = Ext.JSON.decode(response.responseText);
+                Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
+                var res = Ext.JSON.decode(response.responseText);
 
-            if (res.success) {
-                console.log("✅ Respuesta AJAX:", res);
+                if (res.success) {
+                    console.log("✅ Respuesta AJAX:", res);
 
-                let gridCmp = Ext.getCmp(prototype.id + '-gridDataInfoScanAgent');
-                let store = gridCmp.getStore();
+                    let gridCmp = Ext.getCmp(prototype.id + '-gridDataInfoScanAgent');
+                    let store = gridCmp.getStore();
 
-                // 🔹 Convertimos los datos existentes a un mapa por clave compuesta
-                let existingKeys = {};
-                store.each(function (record) {
-                    let key = record.get('TKT') + '#' + record.get('SVFOPNETR') + '#' + record.get('SCURRENCY');
-                    existingKeys[key] = true;
-                });
-
-                let nuevos = 0;
-                let duplicados = 0;
-
-                // 🔹 Recorremos los nuevos datos
-                Ext.Array.each(res.data, function (newRecord) {
-                    let key = newRecord.TKT + '#' + newRecord.SVFOPNETR + '#' + newRecord.SCURR;
-
-                    if (!existingKeys[key]) {
-                        store.add(newRecord);
+                    // 🔹 Convertimos los datos existentes a un mapa por clave compuesta
+                    let existingKeys = {};
+                    store.each(function (record) {
+                        let key = record.get('CCUST') + '#' + record.get('TKT') + '#' + record.get('TDOC') + '#' + record.get('SCARDNCOR') + '#' + record.get('SAUTHOC') + '#' + record.get('SEQ') + '#' + record.get('CORRL');
+                        console.log(key, "Clave compuesta");
+                        console.log("Entro a este For");
                         existingKeys[key] = true;
-                        nuevos++;
-                    } else {
-                        duplicados++;
-                    }
-                });
+                    });
 
-                console.log(`🟢 ${nuevos} registros nuevos agregados, ${duplicados} duplicados ignorados.`);
+                    let nuevos = 0;
+                    let duplicados = 0;
 
-                gridCmp.getView().refresh();
+                    Ext.Array.each(res.data, function (newRecord, index) {
+                        let key = newRecord.TKT + '#' + newRecord.SVFOPNETR + '#' + newRecord.SCURRENCY;
 
-                Ext.getCmp(prototype.id + '-panelDataInfoScanAgent').show();
-                meDe.calcularMontos();
+                        if (!existingKeys[key]) {
+                            newRecord.id = key || Ext.id(null, 'rec-');
+                            store.add(newRecord);
+                            existingKeys[key] = true;
+                            nuevos++;
+                        } else {
+                            duplicados++;
+                        }
+                    });
 
-            } else {
-                global.Msg({msg: res.Mensaje});
-            }
-        },
+                    console.log(`🟢 ${nuevos} registros nuevos agregados, ${duplicados} duplicados ignorados.`);
+
+
+                    Ext.getCmp(prototype.id + '-panelDataInfoScanAgent').show();
+                    meDe.calcularMontos();
+
+                } else {
+                    global.Msg({msg: res.Mensaje});
+                }
+            },
 
             failure: function (response, opts) {
                 Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
@@ -1011,85 +1135,267 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         });
     },
 
-    
     onConciliationCash: function (element) {
-    var me = this;
-    var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
-    var storeScan = gridScan.getStore();
+        var me = this;
+        var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        var storeScan = gridScan.getStore();
+        
+        // --- Filtrar registros seleccionados
+        var seleccionados = storeScan.getRange().filter(function (r) {
+            return r.get('selected') === true;
+            console.log(r.get('NETO'), "Seleccion Neto");
+        });
 
-    // --- Filtrar registros seleccionados
-    var seleccionados = storeScan.getRange().filter(function (r) {
-        return r.get('selected') === true;
-    });
-
-    if (seleccionados.length === 0) {
-        Ext.Msg.alert('Aviso', 'Debe seleccionar al menos un registro para conciliar.');
-        return;
-    }
-
-    // --- Obtener datos del grid de agentes
-    var gridAgent = Ext.getCmp(prototype.id + '-gridDataInfoScanAgent');
-    var storeAgent = gridAgent.getStore();
-
-    var agentData = [];
-    storeAgent.each(function (rec) {
-        agentData.push(rec.getData());
-    });
-
-    // --- Calcular suma de svfopnetr
-    var totalScan = 0;
-    seleccionados.forEach(function (r) {
-        totalScan += parseFloat(r.get('SVFOPNETR') || 0);
-    });
-
-    var totalAgent = 0;
-    storeAgent.each(function (r) {
-        totalAgent += parseFloat(r.get('SVFOPNETR') || 0);
-    });
-
-    // --- Validar que las sumas coincidan (con pequeña tolerancia)
-    var diferencia = Math.abs(totalScan - totalAgent);
-    if (diferencia > 0.01) { // puedes ajustar la tolerancia
-        Ext.Msg.alert(
-            'Aviso',
-            'Las sumas de SVFOPNETR no coinciden. ' +
-            '<br><b>Grid principal:</b> ' + totalScan.toFixed(2) +
-            '<br><b>Grid agente:</b> ' + totalAgent.toFixed(2)
-        );
-        return;
-    }
-
-    // --- Si pasa la validación, continuar con la conciliación
-    var beanConciliacion = {
-        mainRecords: seleccionados.map(function (r) { return r.getData(); }),
-        agentList: agentData
-    };
-
-    var paramDetail = {};
-    paramDetail.beanString = JSON.stringify(beanConciliacion);
-
-    Ext.Ajax.request({
-        url: prototype.url + '/ManualConciliacionCash',
-        method: 'POST',
-        timeout: 60000000,
-        params: paramDetail,
-        beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').mask('Processing Conciliation...'),
-        success: function (response, opts) {
-            Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
-            var res = Ext.JSON.decode(response.responseText);
-            if (res.success) {
-                Ext.Msg.alert('Éxito', 'Conciliación procesada correctamente.');
-                console.log('✅ Backend respondió:', res);
-            } else {
-                global.Msg({ msg: res.Mensaje || 'Successfully reconciled.' });
-            }
-        },
-        failure: function (response, opts) {
-            Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
-            Ext.Msg.alert('Error', 'No se pudo procesar la conciliación. Código: ' + response.status);
+        if (seleccionados.length === 0) {
+            Ext.Msg.alert('Aviso', 'Debe seleccionar al menos un registro para conciliar.');
+            return;
         }
-    });
-}
+
+        // --- Obtener datos del grid de agentes
+        var gridAgent = Ext.getCmp(prototype.id + '-gridDataInfoScanAgent');
+        var storeAgent = gridAgent.getStore();
+
+        var agentData = [];
+        storeAgent.each(function (rec) {
+            agentData.push(rec.getData());
+        });
+
+        var totalScan = 0;
+        seleccionados.forEach(function (r) {
+            totalScan += parseFloat(r.get('NETO') || 0);
+        });
+
+        var totalAgent = 0;
+        storeAgent.each(function (r) {
+            totalAgent += parseFloat(r.get('SVFOPNETR') || 0);
+        });
+        console.log(seleccionados,' seleccionados')
+        console.log(agentData,' agentData')
+        // --- Validar que las sumas coincidan (con pequeña tolerancia)
+        var diferencia = Math.abs(totalScan - totalAgent);
+        if (diferencia != 0.00) { // puedes ajustar la tolerancia
+            Ext.Msg.alert(
+                    'Aviso',
+                    'Los montos no coinciden. ' +
+                    '<br><b>Liquidacion:</b> ' + totalScan.toFixed(2) +
+                    '<br><b>Venta:</b> ' + totalAgent.toFixed(2)
+                    );
+            return;
+        }
+
+        // --- Si pasa la validación, continuar con la conciliación
+        var beanConciliacion = {
+            mainRecords: seleccionados.map(function (r) {
+                return r.getData();
+            }),
+            agentList: agentData,
+            SVFOPNETR: totalAgent
+        };
+
+        var paramDetail = {};
+        paramDetail.beanString = JSON.stringify(beanConciliacion);
+
+        Ext.Ajax.request({
+            url: prototype.url + '/ManualConciliacionCash',
+            method: 'POST',
+            jsonData: beanConciliacion, // 👈 Enviar JSON limpio
+            timeout: 60000000,
+            headers: {'Content-Type': 'application/json'},
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').mask('Processing Conciliation...'),
+            success: function (response) {
+                Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
+                var res = Ext.JSON.decode(response.responseText);
+                if (res.success) {
+                    Ext.Msg.alert('Éxito', 'Conciliación procesada correctamente.');
+                } else {
+                    global.Msg({msg: res.Mensaje || 'Successfully reconciled.'});
+                }
+            },
+            failure: function (response) {
+                Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
+                Ext.Msg.alert('Error', 'No se pudo procesar la conciliación. Código: ' + response.status);
+            }
+        });
+
+    },
+
+    ExportCSV: function () {
+        console.log('Descargando CSV...');
+
+        const country = this.bean.SCOUNTRY; // Ejemplo: "CO"
+        const date = this.bean.ADATE;       // Ejemplo: "20250731"
+
+        if (!country || !date) {
+            Ext.Msg.alert('Error', 'Faltan parámetros para la descarga (SCOUNTRY o ADATE).');
+            return;
+        }
+
+        // Enviamos los dos parámetros al backend
+        const url = prototype.url + '/getCSV?country=' + encodeURIComponent(country)
+                + '&date=' + encodeURIComponent(date);
+
+        console.log('Solicitando:', url);
+
+        global.getFile(url);
+    },
+
+    getExcelCashTicket: function () {
+        const grid = Ext.getCmp(prototype.id + '-gridDataInfoScanAgent');
+        if (!grid) {
+            Ext.Msg.alert('Error', 'No se encontró la grilla.');
+            return;
+        }
+
+        const store = grid.getStore();
+        const data = [];
+        const visibleCols = grid.getColumnManager().getColumns().filter(c => !c.hidden && c.dataIndex);
+
+        store.each(function (rec) {
+            const row = {};
+            visibleCols.forEach(col => {
+                row[col.text] = rec.get(col.dataIndex);
+            });
+            data.push(row);
+        });
+
+        if (data.length === 0) {
+            Ext.Msg.alert('Aviso', 'No hay datos para exportar.');
+            return;
+        }
+        const ws = XLSX.utils.json_to_sheet(data);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Datos");
+        XLSX.writeFile(wb, "InfoScanAgent.xlsx");
+    },
+
+    obtainData: function () {
+        Ext.Ajax.request({
+            url: prototype.url + '/obtainMessages',
+            method: 'POST',
+            timeout: 60000000,
+            params: {},
+            success: function (response, opts) {
+                var res = Ext.JSON.decode(response.responseText);
+                if (res.success) {
+//                    meDe.bean_detail = res.result;
+                    var storeData = Ext.create('Ext.data.Store', {
+                        data: res.data,
+                        autoLoad: true
+                    });
+                    Ext.getCmp(prototype.id + '-cmbCOMENTCASH').bindStore(storeData);
+                    Ext.getCmp(prototype.id + '-cmbCOMENTCASH').setValue('');
+                } else {
+                    global.Msg({msg: res.Mensaje});
+                }
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+//                Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+            }
+        });
+
+    },
+
+    onUpdateCommentsCash: function () {
+        const getCommentCash = Ext.getCmp(prototype.id + '-cmbCOMENTCASH');
+        const commentValue = getCommentCash.getValue();
+        var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        var storeScan = gridScan.getStore();
+
+        if (!commentValue) {
+            Ext.Msg.alert('Alert', 'No valid comment has been selected.');
+            return;
+        }
+
+        var seleccionados = storeScan.getRange().filter(function (r) {
+            return r.get('selected') === true;
+        });
+
+        if (seleccionados.length === 0) {
+            Ext.Msg.alert('Alert', 'Please select at least one record to assign a comment.');
+            return;
+        }
+
+        var invalid = seleccionados.find(function (r) {
+            return r.get('STVAL') !== "3";
+        });
+
+        if (invalid) {
+            Ext.Msg.alert(
+                    'Alert',
+                    'No puede asignar comentario a un registro MATCH.'
+                    );
+            return;
+        }
+
+        var beanConciliacion = {
+            mainRecords: seleccionados.map(function (r) {
+                return r.getData();
+            }),
+            codeComment: commentValue
+        };
+
+        console.log(beanConciliacion, 'beanConciliacion')
+        var paramDetail = {};
+        paramDetail.beanString = JSON.stringify(beanConciliacion);
+
+
+        Ext.Ajax.request({
+            url: prototype.url + '/AssignCashComment',
+            method: 'POST',
+            jsonData: beanConciliacion,
+            timeout: 60000000,
+            headers: {'Content-Type': 'application/json'},
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').mask('Assigning Comment...'),
+            success: function (response) {
+                Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
+                var res = Ext.JSON.decode(response.responseText);
+                if (res.success) {
+                    Ext.Msg.alert('Success', 'Code Assigned Successfully.');
+                    meDe.onSearchCompleteDetail();
+                } else {
+                    global.Msg({msg: res.Mensaje || 'Code Assigned Successfully.'});
+                }
+            },
+            failure: function (response) {
+                Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
+                Ext.Msg.alert('Error', 'The comment could not be assigned');
+            }
+        });
+
+
+    },
+
+    onShowWOSales: function () {
+        var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        var storeScan = gridScan.getStore();
+
+        meDe.showOnlyPending = !meDe.showOnlyPending;
+
+        if (meDe.showOnlyPending) {
+
+            var filteredData = meDe.storeDataCash.getRange().filter(function (r) {
+                return r.get('STVAL') === "3";
+            });
+
+            var newStore = Ext.create('Ext.data.Store', {
+                data: filteredData
+            });
+
+            gridScan.bindStore(newStore);
+//        Ext.Msg.alert('Info', 'Mostrando solo registros Pending (STVAL = 3)');
+        } else {
+
+            var newStore = Ext.create('Ext.data.Store', {
+                data: meDe.storeDataCash.getRange()
+            });
+
+            gridScan.bindStore(newStore);
+//        Ext.Msg.alert('Info', 'Mostrando todos los registros');
+        }
+    }
+
+
 
 
 

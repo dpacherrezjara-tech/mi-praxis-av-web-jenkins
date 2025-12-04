@@ -16,14 +16,34 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Filters2', {
 //        labelStyle: 'font-weight:bold;'
     },
     items: [
+//        {
+//            xtype: 'label',
+//            html: '<strong style="color:#000;">Generation Date </strong>',
+//            labelStyle: 'font-weight:bold;',
+//            align: 'left',
+//            fieldStyle: 'text-align: left;',
+//            padding: '8px 7px 0px 10px',
+//            hidden: false
+//        },
+        
         {
-            xtype: 'label',
-            html: '<strong style="color:#000;">Generation Date </strong>',
-            labelStyle: 'font-weight:bold;',
-            align: 'left',
+            xtype: 'combo',
+            fieldLabel: 'Search By',
+            id: prototype.id+'-cmbTDATE',           
+            triggerAction: 'all',
+            enableKeyEvents: true,
+            readOnly: false,
+            editable: false,
+            valueField: 'code',
+            displayField: 'name',
+            width: 170,
+            labelWidth: 70,
             fieldStyle: 'text-align: left;',
-            padding: '8px 7px 0px 10px',
-            hidden: false
+            hidden: false,
+            listeners:{
+//                        change: 'btnSearch_click',
+//                        select: 'selectCmbVista'
+            }
         },
         {
             xtype: 'combo',

@@ -18,6 +18,10 @@ public class DataObtain {
     public byte BANKN = 0;
     public byte CARD = 0;
     public byte CARDEQUIVALENT = 0;
+    public byte SOURCEAGENT = 0;
+    public byte CANALAGENT = 0;
+    public byte ACREDITACIONAGENT = 0;
+    public byte RIESGOAGENT = 0;
     public byte SOURCEA1691 = 0;
     public byte REJECTIONS = 0;
     public byte TRANSCODE = 0;
@@ -27,4 +31,5 @@ public class DataObtain {
     public byte USERPERMIS = 0;
     public String NPROG = "";
     public byte IN_PF122CODPR = 0;
+    public byte IN_ACC_CHGBK = 0;
 }

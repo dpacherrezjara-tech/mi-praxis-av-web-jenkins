@@ -1366,6 +1366,190 @@ public class MasterDAO {
 
     }
     
+    public List<A2280> loadSourceAgent() throws Exception {
+
+        Statement stmt = null;
+        ResultSet rst = null;
+        String strSQL = "";
+        List<A2280> listaFuenteAgentes = new ArrayList<>();
+        A2280 tarjetas;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS401(?)}";
+        
+        try {
+
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cs = cnx.prepareCall(SQLCLL01);
+
+            cs.setString(1, session.getUserView().getCustomerInfo().CCUST);
+
+            cs.execute();
+
+            rst = cs.getResultSet();
+            
+            tarjetas = new A2280();
+            tarjetas.CODE = "";
+            tarjetas.NAME = "All";
+            listaFuenteAgentes.add(tarjetas);
+
+            while (rst.next()) {
+
+                tarjetas = new A2280();
+                tarjetas.CODE = rst.getString("CANAV").trim();
+                tarjetas.NAME = tarjetas.CODE;
+
+                listaFuenteAgentes.add(tarjetas);
+                
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            setClose();
+        }
+
+        return listaFuenteAgentes;
+
+    }
+    
+    public List<A2280> loadCanalAgent() throws Exception {
+
+        Statement stmt = null;
+        ResultSet rst = null;
+        String strSQL = "";
+        List<A2280> listaCanalAgentes = new ArrayList<>();
+        A2280 tarjetas;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS402(?)}";
+        
+        try {
+
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cs = cnx.prepareCall(SQLCLL01);
+
+            cs.setString(1, session.getUserView().getCustomerInfo().CCUST);
+
+            cs.execute();
+
+            rst = cs.getResultSet();
+            
+            tarjetas = new A2280();
+            tarjetas.CODE = "";
+            tarjetas.NAME = "All";
+            listaCanalAgentes.add(tarjetas);
+
+            while (rst.next()) {
+
+                tarjetas = new A2280();
+                tarjetas.CODE = rst.getString("TYPEAG").trim();
+                tarjetas.NAME = tarjetas.CODE;
+
+                listaCanalAgentes.add(tarjetas);
+                
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            setClose();
+        }
+
+        return listaCanalAgentes;
+
+    }
+    
+    public List<A2280> loadAcreditacionAgent() throws Exception {
+
+        Statement stmt = null;
+        ResultSet rst = null;
+        String strSQL = "";
+        List<A2280> listaAcreditacionAgentes = new ArrayList<>();
+        A2280 tarjetas;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS403(?)}";
+        
+        try {
+
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cs = cnx.prepareCall(SQLCLL01);
+
+            cs.setString(1, session.getUserView().getCustomerInfo().CCUST);
+
+            cs.execute();
+
+            rst = cs.getResultSet();
+            
+            tarjetas = new A2280();
+            tarjetas.CODE = "";
+            tarjetas.NAME = "All";
+            listaAcreditacionAgentes.add(tarjetas);
+
+            while (rst.next()) {
+
+                tarjetas = new A2280();
+                tarjetas.CODE = rst.getString("ASTATUS").trim();
+                tarjetas.NAME = tarjetas.CODE;
+
+                listaAcreditacionAgentes.add(tarjetas);
+                
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            setClose();
+        }
+
+        return listaAcreditacionAgentes;
+
+    }
+    
+    public List<A2280> loadRiesgoAgent() throws Exception {
+
+        Statement stmt = null;
+        ResultSet rst = null;
+        String strSQL = "";
+        List<A2280> listaRiesgoAgentes = new ArrayList<>();
+        A2280 tarjetas;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS404(?)}";
+        
+        try {
+
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cs = cnx.prepareCall(SQLCLL01);
+
+            cs.setString(1, session.getUserView().getCustomerInfo().CCUST);
+
+            cs.execute();
+
+            rst = cs.getResultSet();
+            
+            tarjetas = new A2280();
+            tarjetas.CODE = "";
+            tarjetas.NAME = "All";
+            listaRiesgoAgentes.add(tarjetas);
+
+            while (rst.next()) {
+
+                tarjetas = new A2280();
+                tarjetas.CODE = rst.getString("RSTATUS").trim();
+                tarjetas.NAME = tarjetas.CODE;
+
+                listaRiesgoAgentes.add(tarjetas);
+                
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            setClose();
+        }
+
+        return listaRiesgoAgentes;
+
+    }
+    
     public List<CPF031Filter> loadUaudits() {
 
         //Connection con = null;
@@ -2066,6 +2250,44 @@ public class MasterDAO {
     
     }
     
-    
+    public List<A4451Filter> listarCuentasChargeback(A4451Filter filter) throws SQLException, Exception {
+
+        List<A4451Filter> lstProcesador = new ArrayList<>(0);
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        Connection cnx = null;
+
+        String SQLCLL01 = "{CALL PRAXISMP.MPS410()}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+            cstmt.execute();
+            rst = cstmt.getResultSet();
+
+            if (rst.next()) {
+                A4451Filter item1 = new A4451Filter();
+                item1.A4451KEY2 = "CBCK-ID";
+                item1.A4451KEY3 = rst.getString("CUENTA_CBCK_ID");
+                lstProcesador.add(item1);
+
+                A4451Filter item2 = new A4451Filter();
+                item2.A4451KEY2 = "CBCK-IDM";
+                item2.A4451KEY3 = rst.getString("CUENTA_CBCK_IDM");
+                lstProcesador.add(item2);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (rst != null) try { rst.close(); } catch (SQLException e) {}
+            if (cstmt != null) try { cstmt.close(); } catch (SQLException e) {}
+            if (cnx != null) session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+        }
+
+        return lstProcesador;
+    }
+
     
 }

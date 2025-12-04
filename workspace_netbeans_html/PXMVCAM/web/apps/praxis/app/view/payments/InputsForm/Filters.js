@@ -1,19 +1,19 @@
 Ext.define('Ext.Praxis.view.payments.InputsForm.Filters', {
     extend: 'Ext.form.Panel',
-    alias: 'widget.'+prototype.id+'-filters',
+    alias: 'widget.' + prototype.id + '-filters',
     border: true,
     bodyStyle: 'background-color: #E3EAF9;',
     padding: '2px 0px 1px 0px',
     layout: 'column',
     items: [
-        {   
+        {
             id: prototype.id + '-Filters3_1',
             xtype: 'form',
             border: false,
             bodyStyle: 'background: transparent',
             padding: '2px 5px 1px 5px',
             layout: 'column',
-            defaults:  {
+            defaults: {
 //                labelStyle: 'font-weight:bold;',
                 fieldStyle: 'text-align: center;',
                 padding: '5px 1px 5px 1px',
@@ -146,7 +146,7 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Filters', {
                 {
                     xtype: 'datefield',
                     fieldLabel: 'Create Date ',
-                    id: prototype.id+'-txtDateField',
+                    id: prototype.id + '-txtDateField',
                     autoSelect: false,
                     format: 'Y/m/d',
                     invalidText: 'Type the date in the format: YYYY/MM/DD',
@@ -167,7 +167,7 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Filters', {
                 {
                     xtype: 'combo',
                     fieldLabel: '<strong style="color:red;font-size:13px;"></strong>  Country',
-                    id: prototype.id+'-cmbCountry',           
+                    id: prototype.id + '-cmbCountry',
                     queryMode: 'local',
                     triggerAction: 'all',
                     autoSelect: false,
@@ -193,14 +193,14 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Filters', {
                     boxLabel: '<b>Logs</b>',
                     hidden: true,
                     inputValue: '1',
-                    listeners:{
+                    listeners: {
                         change: 'ChangechkLOG'
                     }
                 },
                 {
                     xtype: 'combo',
                     fieldLabel: '',
-                    id: prototype.id+'-cmbPrograma',
+                    id: prototype.id + '-cmbPrograma',
                     fieldStyle: 'text-align: left;',
                     queryMode: 'local',
                     triggerAction: 'all',
@@ -211,20 +211,20 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Filters', {
                     labelWidth: 80,
                     hidden: true,
                     hiddenLabel: false,
-                    listeners:{
+                    listeners: {
                         change: 'btnSearch_click'
                     }
                 }
             ]
         },
-        {   
+        {
             id: prototype.id + '-Filters3_2',
             xtype: 'form',
             border: false,
             bodyStyle: 'background: transparent',
-            margin: '10px 10px 0px 820px',
+            margin: '10px 10px 0px 600',
             layout: 'column',
-            defaults:  {
+            defaults: {
                 labelStyle: 'font-weight:bold;',
                 fieldStyle: 'text-align: center;',
                 anchor: '100%',
@@ -234,7 +234,28 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Filters', {
                 hidden: false,
                 selectOnFocus: true
             },
-            items: [ 
+            items: [
+
+                {
+                    xtype: 'radiogroup',
+                    id: prototype.id + '-rbgChangeMDP',
+//                            fieldLabel: 'Sumary',
+                    padding: '0 10 0 50',
+                    columns: 2,
+//                            width: '120',
+
+//                            hidden: true,
+                    vertical: true,
+                    value: '1',
+                    items: [
+
+                        {boxLabel: '<b> C.Card</b>', name: 'opcion', inputValue: '1', checked: true, padding: '0 10 0 50'},
+                        {boxLabel: '<b> Cash</b>', name: 'opcion', inputValue: '2', padding: '0 10 0 50'},
+                    ],
+                    listeners: {
+                        change: 'rgChangeMDP'
+                    }
+                },
                 {
                     xtype: 'checkboxfield',
                     id: prototype.id + '-chkCITY',
@@ -249,7 +270,7 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Filters', {
                 {
                     xtype: 'combo',
                     fieldLabel: 'Group By',
-                    id: prototype.id+'-cmbVISTA',           
+                    id: prototype.id + '-cmbVISTA',
                     triggerAction: 'all',
                     enableKeyEvents: true,
                     readOnly: false,
@@ -260,7 +281,7 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Filters', {
                     labelWidth: 70,
                     fieldStyle: 'text-align: left;',
                     hidden: false,
-                    listeners:{
+                    listeners: {
 //                        change: 'btnSearch_click',
                         select: 'selectCmbVista'
                     }
@@ -268,8 +289,8 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Filters', {
                 {
                     xtype: 'combo',
                     fieldLabel: 'Source',
-                    id: prototype.id+'-cmbFUENTE',
-                    enableKeyEvents: true,                    
+                    id: prototype.id + '-cmbFUENTE',
+                    enableKeyEvents: true,
                     readOnly: false,
                     editable: false,
                     valueField: 'FUENTE',
@@ -282,12 +303,12 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Filters', {
                     emptyText: 'All',
                     queryMode: 'local',
                     triggerAction: 'all',
-                    listeners:{
+                    listeners: {
                         select: 'searchDetAllFilter_clickHandler'
                     }
-                }           
+                }
             ]
-        } 
+        }
 
     ]
 });
