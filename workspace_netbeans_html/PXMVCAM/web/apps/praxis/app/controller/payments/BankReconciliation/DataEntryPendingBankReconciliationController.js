@@ -24,6 +24,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryPendingBa
         this.actionCode = this.p.action;
         this.bean = this.p.rec;
         this.lstCountry = this.p.listaPaises;
+        this.lstStatus = this.p.lstStatus;
+        this.lstConcept = this.p.lstConcept;
+        this.lstAdjType = this.p.lstAdjType;
+        
         
         
         
@@ -43,17 +47,17 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryPendingBa
  ///////////////////////SOLO SE USA CUANDO ES ALGO QUE NO PUEDE CAMBIAR COMO PAISES//////
 
         var obtenerLista = Ext.create('Ext.data.Store', {
-//            data: this.lstCountry,
+            data: this.lstCountry,
             autoLoad: true
         });
 
-//        Ext.getCmp(prototype.id + '-de-cmbSCOUNTRY').bindStore(obtenerLista);
-//        Ext.getCmp(prototype.id + '-de-cmbSCOUNTRY').setValue('');
-//        
-       
-         
-         
 
+        Ext.getCmp(prototype.id + '-cmbCOUNTRY').bindStore(obtenerLista);
+        Ext.getCmp(prototype.id + '-cmbCOUNTRY').setValue('');
+        
+
+         
+         
         switch (this.actionCode) {
             
            
@@ -81,64 +85,66 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryPendingBa
          var adjtTxt = '';
                      
 
-        switch (this.bean.O_STATUS) {
-            case '3':
-            case 3:
-                statusTxt = 'Pending';
-                break;
-            default:
-                statusTxt = 'Match';
-        }
-        this.setValue('txtSTATUSMPF199', statusTxt);
+    //Ext.getCmp(prototype.id + '-txtSTATUSMPF199').setValue(String(this.bean.O_STVAL).trim());
+       this.setValue('txtSTATUSMPF199', this.bean.O_STVAL);
+    
+
+ //       this.setValue('txtSTATUSMPF199', this.bean.O_STATUS);
+
 
 
             
-        switch ((this.bean.O_CONCEPT || '').trim()) {
-            case 'P':
-                conceptTxt = 'Positive';
-                break;
-            case 'N':
-                conceptTxt = 'Negative';
-                break;
-            case 'X':
-                conceptTxt = 'No Billing';
-                break;
-            case 'A':
-                conceptTxt = 'Adjustment';
-                break;
-            case 'M':
-                conceptTxt = 'Automatic';
-                break;
-            case 'C':
-                conceptTxt = 'Compensation';
-                break;
-            default:
-                conceptTxt = '';
-        }
-        this.setValue('txtCONCEPTMPF199', conceptTxt);
+//        switch ((this.bean.O_CONCEPT || '').trim()) {
+//            case 'P':
+//                conceptTxt = 'Positive';
+//                break;
+//            case 'N':
+//                conceptTxt = 'Negative';
+//                break;
+//            case 'X':
+//                conceptTxt = 'No Billing';
+//                break;
+//            case 'A':
+//                conceptTxt = 'Adjustment';
+//                break;
+//            case 'M':
+//                conceptTxt = 'Automatic';
+//                break;
+//            case 'C':
+//                conceptTxt = 'Compensation';
+//                break;
+//            default:
+//                conceptTxt = '';
+//        }
+//        this.setValue('txtCONCEPTMPF199', conceptTxt);
 
-        
-        switch ((this.bean.O_TADJ || '').trim()) {
-             case 'N':
-                adjtTxt = 'Non Remmitance';
-                break;
-            case 'R':
-                adjtTxt = 'Recovery';
-                break;
-            case 'U':
-                adjtTxt = 'Uncleared';
-                break;
-            case 'E':
-                adjtTxt = 'Excess';
-                break;
-            case 'S':
-                adjtTxt = 'Short';
-                break;
-            default:
-                conceptTxt = '';
-            
-        }
-        this.setValue('txtATYPEMPF199', adjtTxt);
+//        Ext.getCmp(prototype.id + '-txtCONCEPTMPF199').setValue(String(this.bean.O_CONCEPT).trim());
+        this.setValue('txtCONCEPTMPF199', this.bean.O_CONCEPT);
+//        
+//        switch ((this.bean.O_TADJ || '').trim()) {
+//             case 'N':
+//                adjtTxt = 'Non Remmitance';
+//                break;
+//            case 'R':
+//                adjtTxt = 'Recovery';
+//                break;
+//            case 'U':
+//                adjtTxt = 'Uncleared';
+//                break;
+//            case 'E':
+//                adjtTxt = 'Excess';
+//                break;
+//            case 'S':
+//                adjtTxt = 'Short';
+//                break;
+//            default:
+//                conceptTxt = '';
+//            
+//        }
+//        this.setValue('txtATYPEMPF199', adjtTxt);
+
+//        Ext.getCmp(prototype.id + '-txtATYPEMPF199').setValue(String(this.bean.O_TADJ).trim());
+        this.setValue('txtATYPEMPF199', this.bean.O_TADJ);
         
         this.setValue('txtAGENTMPF199', this.bean.O_SAGENT);
         this.setValue('txtVALUEDATEMPF199', this.bean.O_ADATE);
@@ -150,6 +156,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryPendingBa
         this.setValue('txtENDMPF199', this.bean.O_ENDDATE);
         this.setValue('txtREFEMPF199', this.bean.O_REFERENCE);
         this.setValue('txtCOMMENTSMPF199', this.bean.O_COMMENTS);
+        this.setValue('cmbCOUNTRY', this.bean.O_SCOUNTRY);
         
       
         
@@ -198,7 +205,66 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryPendingBa
     },
     
     
-  
+    llenarDataInsert:function(beanTemp){
+        
+        
+ 
+        beanTemp.O_SAGENT = this.getValue("txtAGENTMPF199");
+        beanTemp.O_STVAL = this.getValue("txtSTATUSMPF199");  
+        beanTemp.O_ADATE = this.getValue("txtVALUEDATEMPF199");
+        beanTemp.O_CONCEPT = this.getValue("txtCONCEPTMPF199");
+        beanTemp.O_TADJ = this.getValue("txtATYPEMPF199");
+        beanTemp.O_SCONSOL = this.getValue("txtCONSOLMPF199");
+        beanTemp.O_SCURRENCY = this.getValue("txtCURRENCYMPF199");
+        beanTemp.O_NETO = this.getValue("txtNETOMPF199");
+        beanTemp.O_PAYAMOU = this.getValue("txtIPAYMPF199");
+        beanTemp.O_STRDATE = this.getValue("txtSTARTMPF199");
+        beanTemp.O_ENDDATE = this.getValue("txtENDMPF199");
+        beanTemp.O_SCOUNTRY = this.getValue("cmbCOUNTRY");
+        beanTemp.O_REFERENCE = this.getValue("txtREFEMPF199");
+        beanTemp.O_COMMENTS = this.getValue("txtCOMMENTSMPF199");
+        
+        
+        
+        beanTemp.O_USUP = this.getValue("txtUSUP").trim();
+        beanTemp.O_FEUP = this.getValue("txtFEUP").trim();
+        beanTemp.O_HOUP = this.getValue("txtHOUP").trim();
+        beanTemp.O_USCR = this.getValue("txtUSCR").trim();
+        beanTemp.O_FECR = this.getValue("txtFECR").trim();
+        beanTemp.O_HOCR = this.getValue("txtHOCR").trim();
+        
+        
+        
+   
+        
+    },
+    
+    
+//    <editor-fold defaultstate="collapsed" desc="Botones">
+    onSaveClick: function (btn) {
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Are you sure to insert ?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'yes') {
+                    var beanTemp = {};
+                    this.llenarDataInsert(beanTemp);
+                    
+                    
+                        beanTemp.option = 'I';
+                      
+                        this.MaintenanceMPF199insert(beanTemp);
+                    
+                        
+                    
+                }
+            }
+        });
+    },
 
       
       
@@ -257,6 +323,37 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryPendingBa
                 
         Ext.Ajax.request({
             url: prototype.url + '/MaintenanceMPF199',
+            method: 'POST',
+            timeout: 60000000,
+             params: {
+            beanString: Ext.encode(beanTemp)
+        },
+//            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+            success: function (response, opts) {
+                Ext.getCmp(prototype.id + '-dataEntryPending').unmask('Loading...');
+                var res = Ext.JSON.decode(response.responseText);
+                console.log(res);
+                if (res.success) {
+                    global.Msg({msg: res.Mensaje});
+//                    Ext.getCmp(prototype.id + '-dataEntry').unmask();
+                    
+                    Ext.getCmp('BankReconciliationForm-dataEntryPending').close();
+                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+                } else {
+                    global.Msg({msg: 'An error occurred'});
+                }
+            }
+        });
+    },
+    
+    // insert
+    
+    MaintenanceMPF199insert: function (beanTemp) {
+
+        Ext.getCmp(prototype.id + '-dataEntryPending').mask('Loading...');
+                
+        Ext.Ajax.request({
+            url: prototype.url + '/MaintenanceMPF199insert',
             method: 'POST',
             timeout: 60000000,
              params: {

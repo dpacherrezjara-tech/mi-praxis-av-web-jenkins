@@ -78,25 +78,60 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryPending',{
                                     
                                 },
                                 { xtype: 'tbspacer', width: 35 },
+                                
+                                
+//                                {
+//                                    xtype: 'label',
+//                                    text: 'Status',
+//                                    hidden: false,
+//                                    style: 'font-weight:bold;color:#0B333C;',
+//                                    width: 100
+//                                    
+//                                },
+//                                { xtype: 'tbspacer', width: 5 },
+//                                {
+//                                    xtype: 'textfield',
+//                                    id:prototype.id+'-txtSTATUSMPF199',
+//                                    style: 'font-weight:bold;color:#0B333C;',
+//                                    fieldStyle: 'text-align:center;',
+//                                    editable: false,
+//                                    width: 100
+//                                    
+//                                },
+
                                 {
                                     xtype: 'label',
                                     text: 'Status',
                                     hidden: false,
                                     style: 'font-weight:bold;color:#0B333C;',
                                     width: 100
-                                    
                                 },
-                                { xtype: 'tbspacer', width: 5 },
+                                {xtype: 'tbspacer', width: 5},
+
                                 {
-                                    xtype: 'textfield',
-                                    id:prototype.id+'-txtSTATUSMPF199',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    fieldStyle: 'text-align:center;',
+                                    xtype: 'combo',
+                                    id: prototype.id + '-txtSTATUSMPF199',
+                                    width: 100,
+                                    queryMode: 'local',
                                     editable: false,
-                                    width: 100
-                                    
+                                    forceSelection: true,
+                                    store: [
+                                        {code: '1', name: 'Match'},
+                                        {code: '3', name: 'Pending'}
+                                    ],
+                                    displayField: 'name',
+                                    valueField: 'code',
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    fieldStyle: 'text-align:center;'
                                 },
+
+                                {xtype: 'tbspacer', width: 30},
+
+
+    
                                 { xtype: 'tbspacer', width: 30 },
+                                
+                                
                                 
                                 
                                 {
@@ -111,15 +146,33 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryPending',{
                                 { xtype: 'tbspacer', width: 10 },
 
                                 
+//                                {
+//                                    xtype: 'textfield',
+//                                    id:prototype.id+'-txtVALUEDATEMPF199',
+//                                    style: 'font-weight:bold;color:#0B333C;',
+//                                    fieldStyle: 'text-align:center;',
+//                                    editable: false,
+//                                    width: 90
+//                                    
+//                                },
+//                                
                                 {
                                     xtype: 'textfield',
-                                    id:prototype.id+'-txtVALUEDATEMPF199',
+                                    id: prototype.id + '-txtVALUEDATEMPF199',
                                     style: 'font-weight:bold;color:#0B333C;',
                                     fieldStyle: 'text-align:center;',
-                                    editable: false,
-                                    width: 90
-                                    
+                                    width: 90,
+                                    maskRe: /^[0-9]$/, // SOLO NÚMEROS
+                                    regex: /^[0-9]{8}$/, // VALIDACIÓN EXACTA (8 números)
+                                    maxLength: 8,
+                                    minLength: 8,
+                                    enforceMaxLength: true, // BLOQUEA escribir más de 8
+                                    allowBlank: false, // NO permite vacío
+                                    validator: function (val) {
+                                        return (/^[0-9]{8}$/.test(val)) ? true : 'Fecha debe ser Año-Mes-Dia';
+                                    }
                                 },
+
                                 { xtype: 'tbspacer', width: 20 }
                                 
                             ]
@@ -163,37 +216,85 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryPending',{
                                     
                                 },
                                 { xtype: 'tbspacer', width: 17 },
-                                {
-                                    xtype: 'textfield',
-                                    id:prototype.id+'-txtCONCEPTMPF199',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    fieldStyle: 'text-align:center;',
+//                                {
+//                                    xtype: 'textfield',
+//                                    id:prototype.id+'-txtCONCEPTMPF199',
+//                                    style: 'font-weight:bold;color:#0B333C;',
+//                                    fieldStyle: 'text-align:center;',
+//                                    editable: false,
+//                                    width: 80,
+//                                    enforceMaxLength: true
+//                                    
+//                                },
+
+{
+                                    xtype: 'combo',
+                                    id: prototype.id + '-txtCONCEPTMPF199',
+                                    width: 90,
+                                    queryMode: 'local',
                                     editable: false,
-                                    width: 80,
-                                    enforceMaxLength: true
-                                    
+                                    forceSelection: true,
+                                    store: [
+                                        {code: 'P', name: 'Positive'},
+                                        {code: 'N', name: 'Negative'},
+                                        {code: 'X', name: 'No Billing'},
+                                        {code: 'A', name: 'No Adjustment'},
+                                        {code: 'M', name: 'Automatic'},
+                                        {code: 'C', name: 'Compensation'},
+                                    ],
+                                    displayField: 'name',
+                                    valueField: 'code',
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    fieldStyle: 'text-align:center;'
                                 },
+
+
+
+    
                                   { xtype: 'tbspacer', width: 20 },
                                 {
                                     xtype: 'label',
-                                    text: 'Adjusment Type',
+                                    text: 'Adj Type',
                                     hidden: false,
                                     style: 'font-weight:bold;color:#0B333C;',
                                     width: 110
                                     
                                 },
                                 { xtype: 'tbspacer', width: 10 },
-                                {
-                                    xtype: 'textfield',
-                                    id:prototype.id+'-txtATYPEMPF199',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    fieldStyle: 'text-align:center;',
+//                                {
+//                                    xtype: 'textfield',
+//                                    id:prototype.id+'-txtATYPEMPF199',
+//                                    style: 'font-weight:bold;color:#0B333C;',
+//                                    fieldStyle: 'text-align:center;',
+//                                    editable: false,
+//                                    width: 100,
+//                                    enforceMaxLength: true
+//                                    
+//                                },
+
+{
+                                    xtype: 'combo',
+                                    id: prototype.id + '-txtATYPEMPF199',
+                                    width: 110,
+                                    queryMode: 'local',
                                     editable: false,
-                                    width: 100,
-                                    enforceMaxLength: true
-                                    
+                                    forceSelection: true,
+                                    store: [
+                                        {code: 'N', name: 'Non Remmitance'},
+                                        {code: 'R', name: 'Recovery'},
+                                        {code: 'U', name: 'Uncleared'},
+                                        {code: 'E', name: 'Excess'},
+                                        {code: 'S', name: 'Short'}
+                                        
+                                    ],
+                                    displayField: 'name',
+                                    valueField: 'code',
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    fieldStyle: 'text-align:center;'
                                 },
+                                
                                 { xtype: 'tbspacer', width: 40 },
+                                
                                 {
                                     xtype: 'label',
                                     text: 'Consol',
@@ -318,15 +419,32 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryPending',{
                                 },
 
                                 {xtype: 'tbspacer', width: 7},
-                                {
+//                                {
+//                                    xtype: 'textfield',
+//                                    id: prototype.id + '-txtSTARTMPF199',
+//                                    style: 'font-weight:bold;color:#0B333C;',
+//                                    fieldStyle: 'text-align:center;',
+//                                    editable: false,
+//                                    width: 90,
+//                                    enforceMaxLength: true
+//
+//                                },
+
+   {
                                     xtype: 'textfield',
                                     id: prototype.id + '-txtSTARTMPF199',
                                     style: 'font-weight:bold;color:#0B333C;',
                                     fieldStyle: 'text-align:center;',
-                                    editable: false,
                                     width: 90,
-                                    enforceMaxLength: true
-
+                                    maskRe: /^[0-9]$/, // SOLO NÚMEROS
+                                    regex: /^[0-9]{8}$/, // VALIDACIÓN EXACTA (8 números)
+                                    maxLength: 8,
+                                    minLength: 8,
+                                    enforceMaxLength: true, // BLOQUEA escribir más de 8
+                                    allowBlank: false, // NO permite vacío
+                                    validator: function (val) {
+                                        return (/^[0-9]{8}$/.test(val)) ? true : 'Fecha debe ser Año-Mes-Dia';
+                                    }
                                 },
 
                                 {xtype: 'tbspacer', width: 40},
@@ -345,16 +463,64 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryPending',{
                                 },
 
                                 {xtype: 'tbspacer', width: 7},
-                                {
+//                                {
+//                                    xtype: 'textfield',
+//                                    id: prototype.id + '-txtENDMPF199',
+//                                    style: 'font-weight:bold;color:#0B333C;',
+//                                    fieldStyle: 'text-align:center;',
+//                                    editable: false,
+//                                    width: 90,
+//                                    enforceMaxLength: true
+//
+//                                },
+
+   {
                                     xtype: 'textfield',
                                     id: prototype.id + '-txtENDMPF199',
                                     style: 'font-weight:bold;color:#0B333C;',
                                     fieldStyle: 'text-align:center;',
-                                    editable: false,
                                     width: 90,
-                                    enforceMaxLength: true
+                                    maskRe: /^[0-9]$/, // SOLO NÚMEROS
+                                    regex: /^[0-9]{8}$/, // VALIDACIÓN EXACTA (8 números)
+                                    maxLength: 8,
+                                    minLength: 8,
+                                    enforceMaxLength: true, // BLOQUEA escribir más de 8
+                                    allowBlank: false, // NO permite vacío
+                                    validator: function (val) {
+                                        return (/^[0-9]{8}$/.test(val)) ? true : 'Fecha debe ser Año-Mes-Dia';
+                                    }
+                                },
+                                {xtype: 'tbspacer', width: 40},
+                                
+                                 {
+                                    xtype: 'label',
+                                    text: 'Country',
+                                    hidden: false,
+                                    style: 'font-weight:bold;color:#0B333C;',
+                                    width: 42
 
                                 },
+                                
+                                {xtype: 'tbspacer', width: 30},
+                                
+                                 {
+                                    xtype: 'combo',
+                                    id: prototype.id + '-cmbCOUNTRY',
+                                    fieldStyle: 'text-align:left;',
+                                    enableKeyEvents: true,
+                                    width: 95,
+                                    editable: true,
+                                    readOnly: false,
+                                    queryMode: 'local',
+                                    triggerAction: 'all',
+                                    emptyText: 'All',
+                                    valueField: 'A006PAIS',
+                                    displayField: 'A006NOMBRE'
+//                                    listeners: {
+//                                        select: 'searchCitys'
+//                                    }
+                                },
+                               
 
                                
                                 
@@ -365,6 +531,10 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryPending',{
 
                             ]
                         },
+                        
+                        
+                        
+                        
 
                         
                         
