@@ -226,13 +226,13 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryPendingBa
         
         
         
-        beanTemp.O_USUP = this.getValue("txtUSUP").trim();
-        beanTemp.O_FEUP = this.getValue("txtFEUP").trim();
-        beanTemp.O_HOUP = this.getValue("txtHOUP").trim();
-        beanTemp.O_USCR = this.getValue("txtUSCR").trim();
-        beanTemp.O_FECR = this.getValue("txtFECR").trim();
-        beanTemp.O_HOCR = this.getValue("txtHOCR").trim();
-        
+//        beanTemp.O_USUP = this.getValue("txtUSUP").trim();
+//        beanTemp.O_FEUP = this.getValue("txtFEUP").trim();
+//        beanTemp.O_HOUP = this.getValue("txtHOUP").trim();
+//        beanTemp.O_USCR = this.getValue("txtUSCR").trim();
+//        beanTemp.O_FECR = this.getValue("txtFECR").trim();
+//        beanTemp.O_HOCR = this.getValue("txtHOCR").trim();
+//        
         
         
    

@@ -8608,11 +8608,11 @@ public class BankReconciliationDAO {
     
       
     public String MPF199Insert(A2290Filter filter) throws SQLException, Exception {
-        String message = "Update successful.";
+        String message = " Successfully Inserted.";
         CallableStatement cstmt = null;
         Connection cnx = null;
 
-        String SQL = "{CALL PRAXISMP.MPS358_INSERT(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+        String SQL = "{CALL PRAXISMP.MPS358_INSERT(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -8621,7 +8621,8 @@ public class BankReconciliationDAO {
            
 
 //            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST.trim());
-            cstmt.setString(1, filter.O_CCUST.trim());
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST.trim());
+//            cstmt.setString(1, filter.O_CCUST.trim());
             cstmt.setString(2, filter.O_SAGENT.trim());
             cstmt.setString(3, filter.O_STVAL.trim());
             cstmt.setString(4, filter.O_ADATE.trim());

@@ -5515,7 +5515,7 @@ public class BankReconciliationController extends BaseController {
             filter = gson.fromJson(beanString, A2290Filter.class);
             
             
-            msj = logic.MPF199Update(filter);
+            msj = logic.MPF199Insert(filter);
 
             map.put("success", true);
             map.put("Mensaje", msj);
