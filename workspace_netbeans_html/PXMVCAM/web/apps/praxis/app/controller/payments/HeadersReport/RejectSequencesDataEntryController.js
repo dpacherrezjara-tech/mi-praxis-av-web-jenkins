@@ -12,31 +12,24 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.RejectSequencesDataEntr
     },
     onRejectClick: async function () {
         const me = this;
-        let txtReject = Ext.getCmp(prototype.idDErej + '-textReject');
-        if (txtReject.value === '') {
-            me.notifier.alert('Insert a Comment to Reject');
-            return;
-        }
-        const {idCont, header, status} = me.view.obj;
-            me.view.setLoading(true);
-            const tmp = await global.loadRecordsOnTable('PRAXISMP', 'XTEMPO', me.view.obj.rejected);
-            let username = document.getElementById('menuUser').textContent;
-            let params = {
-                IN_IDCONT: idCont,
-                IN_FILESQ: corrl,
-                IN_HEADER: header,
-                IN_STATUS: status,
-                IN_MAILBODY: txtReject.value,
-                IN_USER: username,
-                IN_CUUID: tmp.cuuid,
-                IN_FUUID: tmp.fuuid
-            };
-            const formData = new FormData();
-            formData.append('params', JSON.stringify(params));
-            const res = await global.callStoreGet('PRAXISMP', 'MPS309', params)
-//            console.log(res);
-            me.notifier.info('Sequences Updated');
-            me.view.setLoading(true);
+        const {idCont, corrl} = me.view.obj;
+        me.view.setLoading(true);
+        const tmp = await global.loadRecordsOnTable('PRAXISMP', 'XTEMPO', me.view.rejected);
+        let username = document.getElementById('menuUser').textContent;
+        let params = {
+            IN_PROCESO: me.view.option,
+            IN_IDCONT: idCont,
+            IN_FILESQ: corrl,
+            IN_USER: username,
+            IN_CUUID: tmp.cuuid,
+            IN_FUUID: tmp.fuuid
+        };
+        const formData = new FormData();
+        formData.append('params', JSON.stringify(params));
+        const res = await global.callStoreGet('PRAXISMP', 'MPS292', params);
+        console.log(res);
+        me.notifier.info('Sequences Updated');
+        me.view.setLoading(true);
         me.view.reloadForm();
         me.view.close();
     },

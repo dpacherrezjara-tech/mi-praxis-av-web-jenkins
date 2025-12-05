@@ -24,8 +24,8 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Options', {
                     padding: 5,
                     width:420,
                     items: [
-                        {boxLabel: '<span style="color: green; font-weight: bold;">Headers</span>', name: 'opcion', inputValue: '1', checked: true},
-                        {boxLabel: '<span style="color: green; font-weight: bold;">Sequence</span>', name: 'opcion', inputValue: '2'},
+                        {boxLabel: '<span style="color: green; font-weight: bold;">Headers</span>', name: 'opcion', inputValue: '1', hidden:true},
+                        {boxLabel: '<span style="color: green; font-weight: bold;">Sequence</span>', name: 'opcion', inputValue: '2',checked: true },
                         {boxLabel: '<span style="color: green; font-weight: bold;">Integrator</span>', name: 'opcion', inputValue: '3'},
                         {boxLabel: '<span style="color: green; font-weight: bold;">Week View</span>', name: 'opcion', inputValue: '4'}
                     ],

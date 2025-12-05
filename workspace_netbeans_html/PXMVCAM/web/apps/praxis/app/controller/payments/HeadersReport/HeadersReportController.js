@@ -17,25 +17,26 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersReportController
         this.hasLoadedSequences = false; //  Indicador de si ya se cargó SequencesGrid
     },
     afterRender: async function () {
-    const me = this;
-      await this.loadFilters();
+        const me = this;
+        await this.loadFilters();
+        this.onChangeView(null,{opcion:'2'});
 
-      // --- Cargar HeadersGrid al abrir el componente ---
-      me.onClickSearchBtn();
-      me.hasLoadedHeaders = true;
+        // --- Cargar HeadersGrid al abrir el componente ---
+        me.onClickSearchBtn();
+        me.hasLoadedHeaders = true;
 
-      // --- Escuchar cuando se muestre la vista Sequences ---
-      const sequenceView = Ext.getCmp(prototype.id + '-viewSecuence');
+        // --- Escuchar cuando se muestre la vista Sequences ---
+        const sequenceView = Ext.getCmp(prototype.id + '-viewSecuence');
 
-      // Si las vistas se activan/desactivan con "show"/"hide"
-      if (sequenceView) {
-          sequenceView.on('show', function () {
-              if (!me.hasLoadedSequences) {
-                  me.onClickSearchBtn();
-                  me.hasLoadedSequences = true;
-              }
-          });
-      }
+        // Si las vistas se activan/desactivan con "show"/"hide"
+        if (sequenceView) {
+            sequenceView.on('show', function () {
+                if (!me.hasLoadedSequences) {
+                    me.onClickSearchBtn();
+                    me.hasLoadedSequences = true;
+                }
+            });
+        }
     },
     loadFilters: async function () {
         const me = this;
@@ -85,7 +86,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersReportController
         }
 
         // Si estamos en Integrador
-         if (rb === '3') {
+        if (rb === '3') {
             let params = me.formatParamsIntegrator();
             const integradorContainer = Ext.getCmp(prototype.id + '-contentIntegrator');
             integradorContainer.removeAll();
@@ -95,8 +96,8 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersReportController
                 filters: me.filters
             });
             integradorContainer.add(panelDetail);
-        } 
-        
+        }
+
     },
     onDisplayFilterBtn: function () {
         const filters = Ext.getCmp(prototype.id + '-panelFilters');
@@ -127,33 +128,33 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersReportController
         win.show();
     },
 
-    onChangeView: function(field, newValue){
-    const cmbStatus = Ext.getCmp(prototype.id + '-formFilters')
-        ?.down('combobox[name=IN_STSAP]');
+    onChangeView: function (field, newValue) {
+        const cmbStatus = Ext.getCmp(prototype.id + '-formFilters')
+                ?.down('combobox[name=IN_STSAP]');
 
-    const storeStatusHeaders = [
-        ['', 'All'],
-        ['5', 'SFTP'],
-        ['L', 'Loaded'],
-        ['R', 'Rejected'],
-        ['J', 'Justified'],
-        ['6', 'Partially Rejected'],
-        ['9', 'Partially Justified']
-    ];
+        const storeStatusHeaders = [
+            ['', 'All'],
+            ['5', 'SFTP'],
+            ['L', 'Loaded'],
+            ['R', 'Rejected'],
+            ['J', 'Justified'],
+            ['6', 'Partially Rejected'],
+            ['9', 'Partially Justified']
+        ];
 
-    const storeStatusSequences = [
-        ['', 'All'],
-        ['1', 'Send'],
-        ['2', 'Loaded'],
-        ['4', 'Total Rejected'],
-        ['5', 'Partial Rejected'],
-        ['R', 'Manual Rejected'],
-        ['L', 'Manual Loaded']
-    ];
-    
-        if(newValue.opcion === '1'){
+        const storeStatusSequences = [
+            ['', 'All'],
+            ['1', 'Send'],
+            ['2', 'Loaded'],
+            ['4', 'Total Rejected'],
+            ['5', 'Partial Rejected'],
+            ['R', 'Manual Rejected'],
+            ['L', 'Manual Loaded']
+        ];
+
+        if (newValue.opcion === '1') {
             Ext.getCmp(prototype.id + '-viewHeaders').show();
-            Ext.getCmp(prototype.id + '-viewSecuence').hide(); 
+            Ext.getCmp(prototype.id + '-viewSecuence').hide();
             Ext.getCmp(prototype.id + '-contentIntegrator').hide();
             Ext.getCmp(prototype.id + '-dayPilotCmp').hide();
             Ext.getCmp(prototype.id + '-panelFilters').show();
@@ -161,7 +162,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersReportController
             if (cmbStatus) {
                 cmbStatus.getStore().loadData(storeStatusHeaders);
                 cmbStatus.setValue('');
-                }
+            }
         } else if (newValue.opcion === '2') {
             Ext.getCmp(prototype.id + '-viewHeaders').hide();
             Ext.getCmp(prototype.id + '-viewSecuence').show();
@@ -172,15 +173,15 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersReportController
             if (cmbStatus) {
                 cmbStatus.getStore().loadData(storeStatusSequences);
                 cmbStatus.setValue('');
-                }
-        } else if(newValue.opcion === '3'){
+            }
+        } else if (newValue.opcion === '3') {
             Ext.getCmp(prototype.id + '-viewHeaders').hide();
             Ext.getCmp(prototype.id + '-viewSecuence').hide();
             Ext.getCmp(prototype.id + '-contentIntegrator').show();
             Ext.getCmp(prototype.id + '-dayPilotCmp').hide();
             Ext.getCmp(prototype.id + '-panelFilters').hide();
             Ext.getCmp(prototype.id + '-filterIntegrator').show();
-        } else if(newValue.opcion === '4'){
+        } else if (newValue.opcion === '4') {
             Ext.getCmp(prototype.id + '-viewHeaders').hide();
             Ext.getCmp(prototype.id + '-viewSecuence').hide();
             Ext.getCmp(prototype.id + '-contentIntegrator').hide();
@@ -190,8 +191,8 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersReportController
         }
         this.onClickSearchBtn();
     },
-    
-     onChangeDateSTBtn: function (obj) {
+
+    onChangeDateSTBtn: function (obj) {
         let option = obj.id.split('-').at(-1);
 
         const from = Ext.getCmp(prototype.id + '-datefieldFromST');

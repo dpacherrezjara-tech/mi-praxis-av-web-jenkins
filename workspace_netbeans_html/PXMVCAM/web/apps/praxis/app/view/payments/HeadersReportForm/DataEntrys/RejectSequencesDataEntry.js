@@ -29,7 +29,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.RejectSequence
         items: [
             {
                 xtype: 'label',
-                text: 'Are you sure to Reject the Sequences?',
+                text: 'Are you sure to save this Header?',
                 style: {
                     fontSize: '14px',
                     color: 'red',
@@ -37,17 +37,6 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.RejectSequence
                     marginTop: '10px',
                     marginBottom: '10px'
                 }
-            },
-            {
-                xtype: 'textareafield',
-                id: prototype.idDErej + '-textReject',
-                fieldLabel: 'Comment',
-                labelStyle: 'font-weight:bold;',
-                grow: true,
-                width: '100%',
-                height: 70,
-                allowBlank: false,
-                value: ''
             }
         ]
     },
