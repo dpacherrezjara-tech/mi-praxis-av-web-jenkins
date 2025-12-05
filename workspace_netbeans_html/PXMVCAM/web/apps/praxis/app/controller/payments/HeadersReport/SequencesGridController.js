@@ -65,8 +65,8 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.SequencesGridController
 
                     if (key === 'STATUS_PRAXIS') {
                         const praxisMap = {
-                            '1': 'SENT',
-                            '2': 'LOADED',
+                            '1': 'SFTP',
+                            '2': 'LOADED TO SAP',
                             '4': 'TOTAL REJECTED',
                             '5': 'PARTIAL REJECTED',
                             'R': 'MANUAL REJECTED',

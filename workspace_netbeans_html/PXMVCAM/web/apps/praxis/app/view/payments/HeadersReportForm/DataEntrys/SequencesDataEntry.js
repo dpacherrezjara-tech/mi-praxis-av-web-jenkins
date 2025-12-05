@@ -63,8 +63,8 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                 }
             },
             items: [
-                
-              //<editor-fold defaultstate="collapsed" desc="File Details">
+
+                //<editor-fold defaultstate="collapsed" desc="File Details">
                 {
                     title: '<span style="font-weight: bold; text-decoration-line: underline;font-size:13px;">File Details</span>',
                     itemId: prototype.idDEsequence + '-fileDetails',
@@ -81,11 +81,13 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                         border: false,
                         bodyStyle: 'background: transparent',
                         defaults: {
-                            xtype: 'displayfield',
+                            xtype: 'textfield',
                             labelWidth: 100,
                             margin: '2 10 2 10',
                             labelStyle: 'text-align:left;font-weight:bolder;line-height:22px;',
-                            flex: 1
+                            fieldStyle: 'text-align:center;border-style:solid;border-color:#6CB6E7;border-width:1px;background:white;',
+                            flex: 1,
+                            readOnly: true
                         }
                     },
                     items: [
@@ -106,21 +108,28 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                             ]
                         },
                         {
-                            items: [   
-                                { fieldLabel: 'Qty. Sequence', name: 'TOT_SECUENCIAS', itemId: 'TOT_SECUENCIAS' },
-                                { fieldLabel: 'Rej. Sequence', name: 'REJ_SECUENCIAS', itemId: 'REJ_SECUENCIAS' },
-                                { fieldLabel: 'Pay. Currency', name: 'PAY_CURRENCY', itemId: 'PAY_CURRENCY' },
-                                { fieldLabel: 'Pay. Amount', name: 'PAY_AMOUNT', itemId: 'PAY_AMOUNT' },
-                                { fieldLabel: 'Rev. Currency', name: 'REV_CURRENCY', itemId: 'REV_CURRENCY' },
-                                { fieldLabel: 'Rev. Amount', name: 'REV_AMOUNT', itemId: 'REV_AMOUNT' }
+                            flex: 1,
+                            layout: {
+                                type: 'hbox',
+                                pack: 'end'
+                            },
+                            items: [
+                                {
+                                    fieldLabel: 'Qty. Sequence', name: 'TOT_SECUENCIAS', itemId: 'TOT_SECUENCIAS',
+                                    width: 180, labelWidth: 100, flex: 0
+                                },
+                                {
+                                    fieldLabel: 'Rej. Sequence', name: 'REJ_SECUENCIAS', itemId: 'REJ_SECUENCIAS',
+                                    width: 180, labelWidth: 100, flex: 0
+                                }
                             ]
                         }
                     ]
                 },
 
                 //</editor-fold> 
-               
-              //<editor-fold defaultstate="collapsed" desc="Grids">
+
+                //<editor-fold defaultstate="collapsed" desc="Grids">
                 {
                     xtype: 'panel',
                     border: false,
@@ -137,7 +146,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                             xtype: 'tabpanel',
                             id: prototype.idDEsequence + '-tabMainSequences2',
                             width: '100%',
-                             flex: 1, 
+                            flex: 1,
                             height: '100%',
                             border: false,
                             margin: '0 1 0 1',
@@ -160,9 +169,9 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                     autoScroll: true,
                                     height: 'auto'
                                 }
-                            },                   
+                            },
                             items: [
-                               //<editor-fold defaultstate="collapsed" desc="Sequences">
+                                //<editor-fold defaultstate="collapsed" desc="Sequences">
                                 {
                                     title: 'Sequences',
                                     itemId: 'A',
@@ -173,7 +182,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                             xtype: 'grid',
                                             border: false,
                                             id: prototype.idDEsequence + '-gridSequences',
-                                            emptyText: 'No documents available', 
+                                            emptyText: 'No documents available',
                                             tbar: {
                                                 xtype: 'panel',
                                                 layout: {
@@ -257,41 +266,40 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                                 ]
                                             },
                                             columns: [
-                                                    {
-                                                        text: 'RN',
-                                                        locked: true,
-                                                        xtype: 'rownumberer', // Columna de número de fila
-                                                        width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
-                                                    },
-                                                    {text: 'Bank Doc.', dataIndex: 'BANDOC', flex: 1},
-                                                    {text: 'Referencia', dataIndex: 'REFER', flex: 1},
-                                                    {text: 'Value Date', dataIndex: 'VALDATE', flex: 1},
-                                                    {text: 'Currency', dataIndex: 'MONEDA_PAGO', flex: 0.8},
-                                                    {text: 'Amount', dataIndex: 'MONTO_PAGO', flex: 0.8},
-                                                    {text: 'Rev. Currency', dataIndex: 'MONEDA_REVENUE', flex: 0.8},
-                                                    {text: 'Rev. Amount', dataIndex: 'MONTO_REVENUE', flex: 0.8},
-                                                    {
-                                                        xtype: 'actioncolumn',
-                                                        id: prototype.idDEsequence + '-btnRejectRec',
-                                                        width: 50,
-                                                        text: 'Rej.',
-                                                        align: 'center',
-                                                        items: [
-                                                            {
-                                                                iconCls: 'prx-icon-image-trash',
-                                                                tooltip: 'Reject Sequence',
-                                                                handler: 'onRejectRec'
-                                                            }
-                                                        ]
-                                                    }
-                                                 ]
-                                            },
-                                        
+                                                {
+                                                    text: 'RN',
+                                                    locked: true,
+                                                    xtype: 'rownumberer', // Columna de número de fila
+                                                    width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
+                                                },
+                                                { text: 'Bank Doc.', dataIndex: 'BANDOC', flex: 1 },
+                                                { text: 'Referencia', dataIndex: 'REFER', flex: 1 },
+                                                { text: 'Value Date', dataIndex: 'VALDATE', flex: 1 },
+                                                { text: 'Currency', dataIndex: 'MONEDA_PAGO', flex: 0.8 },
+                                                { text: 'Amount', dataIndex: 'MONTO_PAGO', flex: 0.8 },
+                                                { text: 'Rev. Currency', dataIndex: 'MONEDA_REVENUE', flex: 0.8 },
+                                                { text: 'Rev. Amount', dataIndex: 'MONTO_REVENUE', flex: 0.8 },
+                                                {
+                                                    xtype: 'actioncolumn',
+                                                    id: prototype.idDEsequence + '-btnRejectRec',
+                                                    width: 50,
+                                                    text: 'Rej.',
+                                                    align: 'center',
+                                                    items: [
+                                                        {
+                                                            iconCls: 'prx-icon-image-trash',
+                                                            tooltip: 'Reject Sequence',
+                                                            handler: 'onRejectRec'
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
                                     ]
                                 },
-                               //</editor-fold>   
-                               
-                               //<editor-fold defaultstate="collapsed" desc="Rejections">
+                                //</editor-fold>   
+
+                                //<editor-fold defaultstate="collapsed" desc="Rejections">
                                 {
                                     title: 'Rejections',
                                     itemId: 'C',
@@ -317,28 +325,30 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                                         xtype: 'rownumberer', // Columna de número de fila
                                                         width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
                                                     },
-                                                    {text: 'Status', dataIndex: 'STREJ', flex: 0.7,
-                                                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                        metaData.style = "font-weight:bold;";
-                                                        const opts = {
-                                                            'R': 'Rejected'
-                                                        };
-                                                        return opts[value];
-                                                    }},
-                                                    {text: 'Reference', dataIndex: 'REFER', flex: 1},
-                                                    {text: 'Bank Doc.', dataIndex: 'BANDOC', flex: 1},
-                                                    {text: 'Value Date', dataIndex: 'VALDATE', flex: 1},
-                                                    {text: 'Processor', dataIndex: 'CODPRO', flex: 1},
-                                                    {text: 'Code', dataIndex: 'CODREC', flex: 1},
-                                                    {text: 'Comment', dataIndex: 'OBSERV', flex: 1}
+                                                    {
+                                                        text: 'Status', dataIndex: 'STREJ', flex: 0.7,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "font-weight:bold;";
+                                                            const opts = {
+                                                                'R': 'Rejected'
+                                                            };
+                                                            return opts[value];
+                                                        }
+                                                    },
+                                                    { text: 'Reference', dataIndex: 'REFER', flex: 1 },
+                                                    { text: 'Bank Doc.', dataIndex: 'BANDOC', flex: 1 },
+                                                    { text: 'Value Date', dataIndex: 'VALDATE', flex: 1 },
+                                                    { text: 'Processor', dataIndex: 'CODPRO', flex: 1 },
+                                                    { text: 'Code', dataIndex: 'CODREC', flex: 1 },
+                                                    { text: 'Comment', dataIndex: 'OBSERV', flex: 1 }
                                                 ]
                                             }
                                         }
                                     ]
                                 },
-                     //</editor-fold>  
-                     
-                               //<editor-fold defaultstate="collapsed" desc="Derived headers">
+                                //</editor-fold>  
+
+                                //<editor-fold defaultstate="collapsed" desc="Derived headers">
                                 {
                                     title: 'Reprocessing Summary',
                                     itemId: 'B',
@@ -388,10 +398,11 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                                         xtype: 'rownumberer', // Columna de número de fila
                                                         width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
                                                     },
-                                                    {text: 'Process Origin', dataIndex: 'R_SOURCE', flex: 1,
+                                                    {
+                                                        text: 'Process Origin', dataIndex: 'R_SOURCE', flex: 1,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                        //metaData.style = "background-color:#838187";
-                                                        const opts = {
+                                                            //metaData.style = "background-color:#838187";
+                                                            const opts = {
                                                                 'AUTO_SUCCESS': () => {
                                                                     metaData.style = "background-color:#43bf68;color:#ffffff;font-weight:bold"; // Verde
                                                                     return 'Auto Process';
@@ -402,46 +413,48 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                                                 }
                                                             };
 
-                                                        return opts[value]();
-                                                    }
+                                                            return opts[value]();
+                                                        }
                                                     },
-                                                    {text: 'Qty. Sequence', dataIndex: 'QTY_SEQUENCES', flex: 0.5},
-                                                    {text: 'New Header ID', dataIndex: 'NEW_HEADER_ID', flex: 1},
-                                                    {text: 'New File Name', dataIndex: 'NEW_FILENAME', flex: 1,
+                                                    { text: 'Qty. Sequence', dataIndex: 'QTY_SEQUENCES', flex: 0.5 },
+                                                    { text: 'New Header ID', dataIndex: 'NEW_HEADER_ID', flex: 1 },
+                                                    {
+                                                        text: 'New File Name', dataIndex: 'NEW_FILENAME', flex: 1,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                        let filename = value;
-                                                        if (!value){
-                                                           filename = 'Pending File';
-                                                           metaData.style = "background-color:#d4d4d4;color:000";
-                                                        }       
-                                                        return filename;
-                                                    }
+                                                            let filename = value;
+                                                            if (!value) {
+                                                                filename = 'Pending File';
+                                                                metaData.style = "background-color:#d4d4d4;color:000";
+                                                            }
+                                                            return filename;
+                                                        }
                                                     },
-                                                    {text: 'New Praxis ID', dataIndex: 'NEW_PRAXIS_ID', flex: 1},
-                                                    {text: 'Description', dataIndex: 'R_SOURCE', flex: 2,
-                                                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                        //metaData.style = "background-color:#838187";
-                                                        const opts = {
+                                                    { text: 'New Praxis ID', dataIndex: 'NEW_PRAXIS_ID', flex: 1 },
+                                                    {
+                                                        text: 'Description', dataIndex: 'R_SOURCE', flex: 2,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            //metaData.style = "background-color:#838187";
+                                                            const opts = {
                                                                 'AUTO_SUCCESS': () => {
                                                                     return 'Generated automatically from successful sequences';
                                                                 },
-                                                                'MANUAL_REJECT': () => {                                                         
+                                                                'MANUAL_REJECT': () => {
                                                                     return 'Generated manually from previously rejected sequences';
                                                                 }
                                                             };
 
-                                                        return opts[value]();
+                                                            return opts[value]();
+                                                        }
                                                     }
-                                                  }
                                                 ]
                                             }
                                         }
                                     ]
                                 },
-                     //</editor-fold>  
-                     
-                         
-                              
+                                //</editor-fold>  
+
+
+
                             ]
                         }
                     ]
@@ -450,8 +463,8 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
             ]
         }
     ],
-    dockedItems: [ 
-       //<editor-fold defaultstate="collapsed" desc="Buttons Footer"> 
+    dockedItems: [
+        //<editor-fold defaultstate="collapsed" desc="Buttons Footer"> 
         {
             xtype: 'toolbar',
             dock: 'bottom',
@@ -485,47 +498,49 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                 }
             ]
         },
-         //</editor-fold> 
-         
-       //<editor-fold defaultstate="collapsed" desc="Control Data">
-                         {
-                    title: '<span style="font-weight: bold; text-decoration-line: underline;font-size:13px;">User Control Data</span>',
-                    itemId: prototype.idDEsequence + '-userDetails',
-                    dock: 'bottom',
-                    //margin: '0 0 5 0',
-                    layout: {
-                        type: 'vbox',
-                        align: 'center',
-                        pack: 'end'
-                    },
-                    defaults: {
-                        xtype: 'panel',
-                        layout: {
-                            type: 'hbox',
-                            align: 'stretch',
-                            pack: 'end'
-                        },
-                        border: false,
-                        bodyStyle: 'background: transparent',
-                        defaults: {
-                            xtype: 'displayfield',
-                            labelWidth: 90,
-                            margin: '2 10 2 10',
-                            labelStyle: 'text-align:left;font-weight:bolder;line-height:22px;',
-                            width: 300
-                        }
-                    },
+        //</editor-fold> 
+
+        //<editor-fold defaultstate="collapsed" desc="Control Data">
+        {
+            title: '<span style="font-weight: bold; text-decoration-line: underline;font-size:13px;">User Control Data</span>',
+            itemId: prototype.idDEsequence + '-userDetails',
+            dock: 'bottom',
+            //margin: '0 0 5 0',
+            layout: {
+                type: 'vbox',
+                align: 'center',
+                pack: 'end'
+            },
+            flex: 1,
+            defaults: {
+                xtype: 'panel',
+                layout: {
+                    type: 'hbox',
+                    align: 'stretch',
+                    pack: 'end'
+                },
+                flex: 1,
+                border: false,
+                bodyStyle: 'background: #E0F2F7',
+                defaults: {
+                    xtype: 'displayfield',
+                    labelWidth: 90,
+                    margin: '2 10 2 10',
+                    labelStyle: 'text-align:left;font-weight:bolder;line-height:22px;',
+                    width: 300
+                }
+            },
+            items: [
+                {
                     items: [
-                        {
-                            items: [
-                                { fieldLabel: 'User Created', name: 'USCR', itemId: 'USCR' },
-                                { fieldLabel: 'Date Created', name: 'TSCR', itemId: 'TSCR' },
-                                { fieldLabel: 'User Updated', name: 'USUP', itemId: 'USUP' },
-                                { fieldLabel: 'Date Updated', name: 'TSUP', itemId: 'TSUP' }
-                            ]
-                        }
+                        { fieldLabel: 'User Created', name: 'USCR', itemId: 'USCR' },
+                        { fieldLabel: 'Date Created', name: 'TSCR', itemId: 'TSCR' },
+                        { fieldLabel: 'User Updated', name: 'USUP', itemId: 'USUP' },
+                        { fieldLabel: 'Date Updated', name: 'TSUP', itemId: 'TSUP' }
                     ]
                 }
-                //</editor-fold> 
+            ]
+        }
+        //</editor-fold> 
     ]
 });
