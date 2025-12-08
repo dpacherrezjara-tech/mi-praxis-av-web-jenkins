@@ -1030,6 +1030,17 @@ Ext.define('Ext.Praxis.view.payments.SalesReconciliationForm.Filters', {
                                     hidden: true,
                                     width: 60
                                 },
+                                {
+                                xtype: 'button',
+                                text: 'View Cash',
+                                id: prototype.id + '-btnViewCash',
+                                width: 70,
+//                                margin: '3 0 0 3',
+                                listeners: {
+                                    click: 'seeCash'
+                                }
+                            }
+
                             ]
                         },
 

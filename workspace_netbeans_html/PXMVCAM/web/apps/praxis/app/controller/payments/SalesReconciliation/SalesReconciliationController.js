@@ -3546,5 +3546,8 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         }
         Ext.getCmp(prototype.id + '-pie').setVisible(true);
     },
-    
+    seeCash: function () {
+        window.location.href = '/AVIANCA/Home#payments-cash-form';
+    }
+
 });

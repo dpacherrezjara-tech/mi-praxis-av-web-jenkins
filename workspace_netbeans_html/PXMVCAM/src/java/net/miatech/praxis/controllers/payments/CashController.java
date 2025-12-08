@@ -16,6 +16,9 @@ import java.util.List;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.miatech.praxis.MPF108;
+import net.miatech.praxis.MPF108Filter;
+import net.miatech.praxis.MPF300;
 import net.miatech.praxis.classes.ExportUtil;
 import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.dao.master.MasterDAO;
@@ -34,6 +37,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -64,57 +68,22 @@ public class CashController extends BaseController {
         return "sales/Cash/form_index";
     }
 
-    @RequestMapping(value = "/search")
+    @RequestMapping(value = "search")
     public @ResponseBody
-    String search(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
-        A2290Filter filter = new A2290Filter();
-        boolean dw_excel = Boolean.parseBoolean(request.getParameter("dw_excel"));
-        try {
-            Functions.msjConsola("PRAXIS", 
-                    this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
-            filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
-            filter.page.TOTROW = -1;
-            filter.page.START = 0;
-            filter.page.LIMIT = 0;
-
-            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit"));
-            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
-            if (!dw_excel) {
-                filter.page.PAGROW = 20;
-                start = (start != 0 ? start : 0);
-                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
-            } else {
-                filter.page.PAGROW = -1;
-                filter.page.PAGNUM = 1;
-            }
-
-            CashLogic logic = new CashLogic();
-            logic.setSession(this.serverSession.getServerSession());
-            List<A2290Filter> listaDataSales = logic.loadPX263SQP00652(filter);
-
-            map.put("success", true);
-            if (dw_excel) {
-                ExportUtil.exportFields(request, response, listaDataSales);
-//                map.put("nameExcel", nameExcel);
-            } else {
-                map.put("success", true);
-                map.put("data", listaDataSales);
-                map.put("total", listaDataSales.size() > 0 ? listaDataSales.get(0).page.TOTROW : 0);
-            }
-        } catch (SQLException e) {
-            map.put("success", false);
-            map.put("sesion", SESSION_CONTROL);
-        } catch (Exception e) {
-            map.put("success", false);
-            map.put("sesion", SESSION_CONTROL);
-        }
-        return (dw_excel) ? null : (new Gson().toJson(map));
+    String search(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- Cash Controller : search-------------");
+        map.put("success", true);
+        List<MPF108> lst = this.getListsearch(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
     }
 
-    public List<A2282Filter> getList(HttpServletRequest request, Boolean bExcel) {
+    public List<MPF108> getListsearch(HttpServletRequest request, Boolean bExcel) {
 
-        List<A2282Filter> lst = new ArrayList<>(0);
-        A2282Filter filter = new A2282Filter();
+        List<MPF108> lst = new ArrayList<>(0);
+        MPF108Filter filter = new MPF108Filter();
         Gson gson = new Gson();
         String beanString = "";
 
@@ -123,7 +92,7 @@ public class CashController extends BaseController {
             logic.setSession(this.serverSession.getServerSession());
 
             beanString = request.getParameter("beanString");
-            filter = gson.fromJson(beanString, A2282Filter.class);
+            filter = gson.fromJson(beanString, MPF108Filter.class);
             filter.page.TOTROW = -1;
             filter.page.START = 0;
             filter.page.LIMIT = 0;
@@ -140,56 +109,77 @@ public class CashController extends BaseController {
                 filter.page.PAGNUM = 1;
             }
 
-            lst = logic.loadPX268SQP00675(filter);
+            lst = logic.loadMPS441(filter);
         } catch (Exception e) {
             throw new SpringException(e);
         }
         return lst;
     }
 
-    @RequestMapping(value = "searchTKT")
+    @RequestMapping(value = "searchDataDetailSource")
     public @ResponseBody
-    String searchTKT(ModelMap map, HttpServletRequest request) {
-
-        System.out.println("-------------- BSPLink : searchTKT-------------");
-
-        try {
-            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
-
-            List<A2282Filter> lst = this.getListTKT(request, false);
-
-            map.put("success", true);
-            map.put("data", lst);
-            map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
-        } catch (SQLException e) {
-            map.put("success", false);
-            map.put("sesion", SESSION_CONTROL);
-        } catch (Exception e) {
-            map.put("success", false);
-            map.put("sesion", SESSION_CONTROL);
-        }
+    String searchDataDetailSource(ModelMap map, HttpServletRequest request) throws Exception {
+        Functions.msjConsola("PRAXISMP", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+        map.put("success", true);
+        List<MPF300> lst = this.getListDataDetailSource(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
         return new Gson().toJson(map);
     }
 
-    public List<A2282Filter> getListTKT(HttpServletRequest request, Boolean bExcel) {
+    public List<MPF300> getListDataDetailSource(HttpServletRequest request, Boolean bExcel) {
 
-        List<A2282Filter> lst = new ArrayList<>(0);
-        A2282Filter filter;
+        List<MPF300> lst = new ArrayList<>(0);
+        MPF108Filter filter = new MPF108Filter();
         Gson gson = new Gson();
-        String beanString;
+        String beanString = "";
 
         try {
             logic = new CashLogic();
             logic.setSession(this.serverSession.getServerSession());
 
             beanString = request.getParameter("beanString");
-            filter = gson.fromJson(beanString, A2282Filter.class);
+            filter = gson.fromJson(beanString, MPF108Filter.class);
+
+            lst = logic.loadMPS442(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+
+    @RequestMapping(value = "searchDataDetailPrincipal")
+    public @ResponseBody
+    String searchDataDetailPrincipal(ModelMap map, HttpServletRequest request) throws Exception {
+        Functions.msjConsola("PRAXISMP", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+        map.put("success", true);
+        List<MPF300> lst = this.getListDataDetailPrincipal(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<MPF300> getListDataDetailPrincipal(HttpServletRequest request, Boolean bExcel) {
+
+        List<MPF300> lst = new ArrayList<>(0);
+        MPF108Filter filter = new MPF108Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new CashLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, MPF108Filter.class);
             filter.page.TOTROW = -1;
             filter.page.START = 0;
             filter.page.LIMIT = 0;
 
-            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
-            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit"));
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
 
             if (!bExcel) {
                 filter.page.PAGROW = 20;
@@ -199,238 +189,471 @@ public class CashController extends BaseController {
                 filter.page.PAGROW = -1;
                 filter.page.PAGNUM = 1;
             }
-            lst = logic.loadPX268SQP00907(filter);
+
+            lst = logic.loadMPS443(filter);
         } catch (Exception e) {
             throw new SpringException(e);
         }
         return lst;
     }
-    
-    @RequestMapping(value = "/searchDetMonth")
+
+    @RequestMapping(value = "searchDataDetailSecundary")
     public @ResponseBody
-    String searchDetMonth(ModelMap map, HttpServletRequest request) {
-        A2290Filter filter = new A2290Filter();
+    String searchDataDetailSecundary(ModelMap map, HttpServletRequest request) throws Exception {
+        Functions.msjConsola("PRAXISMP", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+        map.put("success", true);
+        List<MPF300> lst = this.getListDataDetailSecundary(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<MPF300> getListDataDetailSecundary(HttpServletRequest request, Boolean bExcel) {
+
+        List<MPF300> lst = new ArrayList<>(0);
+        MPF108Filter filter = new MPF108Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
         try {
-            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
-            filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
+            logic = new CashLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, MPF108Filter.class);
             filter.page.TOTROW = -1;
             filter.page.START = 0;
             filter.page.LIMIT = 0;
 
             int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit"));
             int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
-            filter.page.PAGROW = 20;
-            start = (start != 0 ? start : 0);
-            filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
 
-            CashLogic logic = new CashLogic();
-            logic.setSession(this.serverSession.getServerSession());
-            List<A2290Filter> listaData = logic.loadPX100NEW(filter);
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
 
-            map.put("success", true);
-            map.put("data", listaData);
-            map.put("total", listaData.size() > 0 ? listaData.get(0).page.TOTROW : 0);
-
-        } catch (SQLException e) {
-            map.put("success", false);
-            map.put("sesion", SESSION_CONTROL);
+            lst = logic.loadMPS444(filter);
         } catch (Exception e) {
-            map.put("success", false);
-            map.put("sesion", SESSION_CONTROL);
+            throw new SpringException(e);
         }
+        return lst;
+    }
+
+    @RequestMapping(value = "searchDataDetailPrincipalSource")
+    public @ResponseBody
+    String searchDataDetailPrincipalSource(ModelMap map, HttpServletRequest request) throws Exception {
+        Functions.msjConsola("PRAXISMP", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+        map.put("success", true);
+        List<MPF300> lst = this.getListDataDetailPrincipalSource(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
         return new Gson().toJson(map);
     }
-    
-    @RequestMapping(value = "/searchDetDay")
-    public @ResponseBody
-    String searchDetDay(ModelMap map, HttpServletRequest request) {
-        A2290Filter filter = new A2290Filter();
+
+    public List<MPF300> getListDataDetailPrincipalSource(HttpServletRequest request, Boolean bExcel) {
+
+        List<MPF300> lst = new ArrayList<>(0);
+        MPF108Filter filter = new MPF108Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
         try {
-            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
-            filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
+            logic = new CashLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, MPF108Filter.class);
             filter.page.TOTROW = -1;
             filter.page.START = 0;
             filter.page.LIMIT = 0;
 
             int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit"));
             int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
-            filter.page.PAGROW = 20;
-            start = (start != 0 ? start : 0);
-            filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
 
-            CashLogic logic = new CashLogic();
-            logic.setSession(this.serverSession.getServerSession());
-            List<A2290Filter> listaData = logic.loadPX100DetailDay(filter);
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
 
-            map.put("success", true);
-            map.put("data", listaData);
-            map.put("total", listaData.size() > 0 ? listaData.get(0).page.TOTROW : 0);
-
-        } catch (SQLException e) {
-            map.put("success", false);
-            map.put("sesion", SESSION_CONTROL);
+            lst = logic.loadMPS445(filter);
         } catch (Exception e) {
-            map.put("success", false);
-            map.put("sesion", SESSION_CONTROL);
+            throw new SpringException(e);
         }
-        return new Gson().toJson(map);
+        return lst;
     }
 
-    @RequestMapping(value = "getXLSX")
+    @RequestMapping(value = "getXLSXDetailSecundary")
     public @ResponseBody
-    void getXLSX(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        System.out.println("Report : getXLSX");
-        String fileNameDownload = String.format("Report  - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
+    void getXLSXDetailSecundary(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("Report : getXLSXDetailSecundary");
+        String fileNameDownload = "Report_" + Functions.getFechaActual() + ".xlsx";
+        SXSSFWorkbook workbook = new SXSSFWorkbook(500);
+        workbook.setCompressTempFiles(true);
+
+        try {
+            List<MPF300> listaData = this.getListDataDetailSecundary(request, true);
+            System.out.println("Tamaño de lista devuelta : " + listaData.size());
+
+            Sheet sheet = workbook.createSheet("Report");
+
+            // ======== ESTILOS ===========
+            CellStyle headerStyle = workbook.createCellStyle();
+            CellStyle bodyStyle = workbook.createCellStyle();
+
+            Font headerFont = workbook.createFont();
+            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+
+            headerStyle.setFont(headerFont);
+            headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            headerStyle.setFillForegroundColor((short) 22); // gris / compatible POI 3.7-3.9
+            headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            headerStyle.setBorderBottom(CellStyle.BORDER_THIN);
+            headerStyle.setBorderTop(CellStyle.BORDER_THIN);
+            headerStyle.setBorderLeft(CellStyle.BORDER_THIN);
+            headerStyle.setBorderRight(CellStyle.BORDER_THIN);
+
+            bodyStyle.setBorderBottom(CellStyle.BORDER_THIN);
+            bodyStyle.setBorderTop(CellStyle.BORDER_THIN);
+            bodyStyle.setBorderLeft(CellStyle.BORDER_THIN);
+            bodyStyle.setBorderRight(CellStyle.BORDER_THIN);
+
+            // ======== CABECERA ===========
+            String[] columnas = {
+                "Nbr.", "Ticket", "Status", "Source", "Type", "Sales Date",
+                "Country", "Agent", "Transaction", "Days Pending", "Currency", "Amount"
+            };
+
+            int rowIndex = 0;
+            Row headerRow = sheet.createRow(rowIndex++);
+
+            for (int i = 0; i < columnas.length; i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(columnas[i]);
+                cell.setCellStyle(headerStyle);
+            }
+
+            // ======== CUERPO (STREAMING REAL) ===========
+            for (MPF300 bean : listaData) {
+                Row row = sheet.createRow(rowIndex++);
+                int c = 0;
+
+                row.createCell(c++).setCellValue(bean.RN);
+                row.createCell(c++).setCellValue(bean.strTicket);
+                row.createCell(c++).setCellValue(bean.STVAL);
+                row.createCell(c++).setCellValue(bean.CFUENTE);
+                row.createCell(c++).setCellValue(bean.TDOC);
+                row.createCell(c++).setCellValue(bean.SDATE);
+                row.createCell(c++).setCellValue(bean.SCOUNTRY);
+                row.createCell(c++).setCellValue(bean.SAGENT);
+                row.createCell(c++).setCellValue(bean.TRNCU);
+                row.createCell(c++).setCellValue(bean.DIFFDAYS);
+                row.createCell(c++).setCellValue(bean.SCURRENCY);
+                row.createCell(c++).setCellValue(bean.SVFOP);
+
+                // aplicar estilo sin crear objetos nuevos
+                for (int i = 0; i < columnas.length; i++) {
+                    row.getCell(i).setCellStyle(bodyStyle);
+                }
+            }
+
+            // No uses autoSizeColumn → revienta SXSSF
+            // (AutoSize requiere cargar TODAS las filas → rompre streaming)
+            // sheet.autoSizeColumn(x) SOLO funciona con XSSFWorkbook.
+            // ======== OUTPUT ===========
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+
+            workbook.write(response.getOutputStream());
+            response.flushBuffer();
+
+        } catch (Exception e) {
+            throw new SpringException(e);
+
+        } finally {
+            workbook.dispose();
+        }
+    }
+
+    @RequestMapping(value = "getXLSXDetailPrincipal")
+    public @ResponseBody
+    void getXLSXDetailPrincipal(HttpServletRequest request, HttpServletResponse response) {
+
+        System.out.println("Report : getXLSXDetailPrincipal");
+        String fileNameDownload = "Report_" + Functions.getFechaActual() + ".xlsx";
+
+        SXSSFWorkbook workbook = new SXSSFWorkbook(500);
+        workbook.setCompressTempFiles(true); // comprime archivos temporales (menos disco)
+
+        try {
+            List<MPF300> listaData = this.getListDataDetailPrincipal(request, true);
+            System.out.println("Tamaño de lista devuelta : " + listaData.size());
+
+            Sheet sheet = workbook.createSheet("Report");
+
+            CellStyle headerStyle = workbook.createCellStyle();
+            CellStyle bodyStyle = workbook.createCellStyle();
+            Font headerFont = workbook.createFont();
+
+            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            headerStyle.setFont(headerFont);
+            headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+
+            headerStyle.setFillForegroundColor((short) 22);
+            headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            headerStyle.setBorderBottom(CellStyle.BORDER_THIN);
+            headerStyle.setBorderTop(CellStyle.BORDER_THIN);
+            headerStyle.setBorderLeft(CellStyle.BORDER_THIN);
+            headerStyle.setBorderRight(CellStyle.BORDER_THIN);
+
+            bodyStyle.setBorderBottom(CellStyle.BORDER_THIN);
+            bodyStyle.setBorderTop(CellStyle.BORDER_THIN);
+            bodyStyle.setBorderLeft(CellStyle.BORDER_THIN);
+            bodyStyle.setBorderRight(CellStyle.BORDER_THIN);
+
+            int rowIndex = 0;
+
+            String[] columnas = {
+                "Nbr.", "Ticket", "Status", "Source", "Type", "Sales Date",
+                "Country", "Agent", "Transaction", "Days Pending", "Currency", "Amount"
+            };
+
+            Row header = sheet.createRow(rowIndex++);
+
+            for (int i = 0; i < columnas.length; i++) {
+                Cell cell = header.createCell(i);
+                cell.setCellValue(columnas[i]);
+                cell.setCellStyle(headerStyle);
+            }
+
+            for (MPF300 bean : listaData) {
+                Row row = sheet.createRow(rowIndex++);
+                int c = 0;
+
+                row.createCell(c++).setCellValue(bean.RN);
+                row.createCell(c++).setCellValue(bean.strTicket);
+                row.createCell(c++).setCellValue(bean.STVAL);
+                row.createCell(c++).setCellValue(bean.CFUENTE);
+                row.createCell(c++).setCellValue(bean.TDOC);
+                row.createCell(c++).setCellValue(bean.SDATE);
+                row.createCell(c++).setCellValue(bean.SCOUNTRY);
+                row.createCell(c++).setCellValue(bean.SAGENT);
+                row.createCell(c++).setCellValue(bean.TRNCU);
+                row.createCell(c++).setCellValue(bean.DIFFDAYS);
+                row.createCell(c++).setCellValue(bean.SCURRENCY);
+                row.createCell(c++).setCellValue(bean.SVFOP);
+
+                for (int i = 0; i < columnas.length; i++) {
+                    row.getCell(i).setCellStyle(bodyStyle);
+                }
+            }
+
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+
+            workbook.write(response.getOutputStream());
+            response.flushBuffer();
+
+        } catch (Exception e) {
+            throw new SpringException(e);
+
+        } finally {
+            workbook.dispose();
+        }
+    }
+
+    @RequestMapping(value = "getXLSXDashboard")
+    public @ResponseBody
+    void getXLSXDashboard(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("Report : getXLSXDashboard");
+        String fileNameDownload = String.format("Report  Dashboard - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
         try {
             Workbook workbook;
             File file = File.createTempFile(fileNameDownload, ".xlsx");
-            CashLogic logic = new CashLogic();
-            logic.setSession(this.serverSession.getServerSession());
-            A2290Filter filter = new A2290Filter();
-            filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
-            filter.page.PAGROW = -1;
-            filter.page.PAGNUM = 1;
-            List<A2290Filter> listaData = logic.loadPX263SQP00652(filter);
+            List<MPF108> listaData = this.getListsearch(request, true);
             System.out.println("Tamaño de lista devuelta : " + listaData.size());
             workbook = new XSSFWorkbook();
             Sheet sheet = workbook.createSheet("Report");
-
-            // ==== Estilos ====
-            XSSFCellStyle headerStyle = (XSSFCellStyle) workbook.createCellStyle();
+            XSSFCellStyle headerF1 = (XSSFCellStyle) workbook.createCellStyle();
             CellStyle bodyStyle = workbook.createCellStyle();
+
+            Integer vi = 0;
+            Integer vj = 0;
+            Iterator iter = listaData.iterator();
+
             Font headerFont = workbook.createFont();
             headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
             headerFont.setColor(IndexedColors.BLACK.getIndex());
-            headerStyle.setBorderRight(CellStyle.BORDER_THIN);
-            headerStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
-            headerStyle.setBorderBottom(CellStyle.BORDER_THIN);
-            headerStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-            headerStyle.setBorderLeft(CellStyle.BORDER_THIN);
-            headerStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
-            headerStyle.setBorderTop(CellStyle.BORDER_THIN);
-            headerStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
-            headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
-            headerStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(127, 152, 168)));
-            headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
-            headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-            headerStyle.setFont(headerFont);
 
-            bodyStyle.setBorderRight(CellStyle.BORDER_THIN);
-            bodyStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
-            bodyStyle.setBorderBottom(CellStyle.BORDER_THIN);
-            bodyStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-            bodyStyle.setBorderLeft(CellStyle.BORDER_THIN);
-            bodyStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
-            bodyStyle.setBorderTop(CellStyle.BORDER_THIN);
-            bodyStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            XSSFCellStyle baseHeaderStyle = (XSSFCellStyle) workbook.createCellStyle();
+            baseHeaderStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            baseHeaderStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            baseHeaderStyle.setBorderRight(CellStyle.BORDER_THIN);
+            baseHeaderStyle.setBorderBottom(CellStyle.BORDER_THIN);
+            baseHeaderStyle.setBorderLeft(CellStyle.BORDER_THIN);
+            baseHeaderStyle.setBorderTop(CellStyle.BORDER_THIN);
+            baseHeaderStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+            baseHeaderStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            baseHeaderStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            baseHeaderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            baseHeaderStyle.setFont(headerFont);
 
-            int vj = 0;
+            XSSFCellStyle headerMain = (XSSFCellStyle) workbook.createCellStyle();
+            headerMain.cloneStyleFrom(baseHeaderStyle);
+            headerMain.setFillForegroundColor(IndexedColors.GREY_40_PERCENT.getIndex()); // azul grisáceo aprox
+            headerMain.setFillPattern(CellStyle.SOLID_FOREGROUND);
 
-            // ==== Nivel 1 (encabezados principales) ====
+            headerF1.setBorderRight(CellStyle.BORDER_THIN);
+            headerF1.setRightBorderColor(IndexedColors.BLACK.getIndex());
+            headerF1.setBorderBottom(CellStyle.BORDER_THIN);
+            headerF1.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            headerF1.setBorderLeft(CellStyle.BORDER_THIN);
+            headerF1.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            headerF1.setBorderTop(CellStyle.BORDER_THIN);
+            headerF1.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            headerF1.setAlignment(CellStyle.ALIGN_CENTER);
+            headerF1.setFillForegroundColor(new XSSFColor(new java.awt.Color(244, 204, 204)));
+            headerF1.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            headerF1.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+
+            XSSFCellStyle headerF2 = (XSSFCellStyle) workbook.createCellStyle();
+            headerF2.cloneStyleFrom(baseHeaderStyle);
+            headerF2.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex()); // verde claro
+            headerF2.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            XSSFCellStyle headerF3 = (XSSFCellStyle) workbook.createCellStyle();
+            headerF3.cloneStyleFrom(baseHeaderStyle);
+            headerF3.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex()); // gris claro
+            headerF3.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            // ====== NIVEL 1 ======
             Row row1 = sheet.createRow(vj);
-            Cell h0 = row1.createCell(0);
-            h0.setCellValue("Sales");
-            h0.setCellStyle(headerStyle);
+            Cell CH1_0 = row1.createCell(0);
+            Cell CH1_1 = row1.createCell(1);
+            Cell CH1_2 = row1.createCell(2);
 
-            Cell h1 = row1.createCell(1);
-            h1.setCellValue("Sales Total");
-            h1.setCellStyle(headerStyle);
+            CH1_0.setCellValue("Month");
+            CH1_1.setCellValue("Society");
+            CH1_2.setCellValue("Tickets");
 
-            Cell h2 = row1.createCell(4);
-            h2.setCellValue("Conciliacion Cash");
-            h2.setCellStyle(headerStyle);
+            CH1_0.setCellStyle(headerMain);
+            CH1_1.setCellStyle(headerMain);
+            CH1_2.setCellStyle(headerF1);
 
-            // Merges
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0)); // "Sales" (Date)
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, 3)); // "Sales Total"
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, 6)); // "Conciliacion Cash"
-
+            sheet.addMergedRegion(new CellRangeAddress(0, 2, 0, 0));
+            sheet.addMergedRegion(new CellRangeAddress(0, 2, 1, 1));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 8));
             ++vj;
 
-            // ==== Nivel 2 (subcolumnas) ====
+            // ====== NIVEL 2 ======
             Row row2 = sheet.createRow(vj);
+            String[] headers2 = {"", "", "Total", "Match", "", "", "", "Accounted", ""};
+            for (int c = 0; c < headers2.length; c++) {
+                Cell ch = row2.createCell(c);
+                ch.setCellValue(headers2[c]);
 
-            Cell s0 = row2.createCell(0);
-            s0.setCellValue("Date");
-            s0.setCellStyle(headerStyle);
+                if (c <= 1) {
+                    ch.setCellStyle(headerMain);
+                } else if (c >= 2 && c <= 8) {
+                    ch.setCellStyle(headerF1);
+                } else {
+                    ch.setCellStyle(headerF3);
+                }
+            }
 
-            Cell s1 = row2.createCell(1);
-            s1.setCellValue("ARC");
-            s1.setCellStyle(headerStyle);
-
-            Cell s2 = row2.createCell(2);
-            s2.setCellValue("BSP");
-            s2.setCellStyle(headerStyle);
-
-            Cell s3 = row2.createCell(3);
-            s3.setCellValue("Venta directa");
-            s3.setCellStyle(headerStyle);
-
-            Cell s4 = row2.createCell(4);
-            s4.setCellValue("ARC");
-            s4.setCellStyle(headerStyle);
-
-            Cell s5 = row2.createCell(5);
-            s5.setCellValue("BSP");
-            s5.setCellStyle(headerStyle);
-
-            Cell s6 = row2.createCell(6);
-            s6.setCellValue("Venta directa");
-            s6.setCellStyle(headerStyle);
-
+            // Merges nivel 2
+            sheet.addMergedRegion(new CellRangeAddress(1, 2, 2, 2));
+            sheet.addMergedRegion(new CellRangeAddress(1, 1, 3, 6));
+            sheet.addMergedRegion(new CellRangeAddress(1, 1, 7, 8));
             ++vj;
 
-            // ==== Datos ====
-            int vi = 0;
-            for (A2290Filter data : listaData) {
-                Row row = sheet.createRow(vj);
-
-                Cell c0 = row.createCell(0);
-                c0.setCellValue(data.strFormatDate);
-                c0.setCellStyle(bodyStyle);
-
-                Cell c1 = row.createCell(1);
-                c1.setCellValue(data.lngARC);
-                c1.setCellStyle(bodyStyle);
-
-                Cell c2 = row.createCell(2);
-                c2.setCellValue(data.lngBSP);
-                c2.setCellStyle(bodyStyle);
-
-                Cell c3 = row.createCell(3);
-                c3.setCellValue(data.lngVentaDirecta);
-                c3.setCellStyle(bodyStyle);
-
-                Cell c4 = row.createCell(4);
-                c4.setCellValue(data.lngArcConc);
-                c4.setCellStyle(bodyStyle);
-
-                Cell c5 = row.createCell(5);
-                c5.setCellValue(data.lngBspConc);
-                c5.setCellStyle(bodyStyle);
-
-                Cell c6 = row.createCell(6);
-                c6.setCellValue(data.lngVentaDirectaConc);
-                c6.setCellStyle(bodyStyle);
-
-                vj++;
-                vi++;
+            // ====== NIVEL 3 ======
+            Row row3 = sheet.createRow(vj);
+            String[] headers3 = {"", "", "", "Auto", "%", "Manual", "W/O Settlement", "Pending",
+                "Processed"};
+            for (int c = 0; c < headers3.length; c++) {
+                Cell ch = row3.createCell(c);
+                ch.setCellValue(headers3[c]);
+                if (c <= 1) {
+                    ch.setCellStyle(headerMain);
+                } else if (c >= 2 && c <= 8) {
+                    ch.setCellStyle(headerF1);
+                } else if (c >= 9 && c <= 13) {
+                    ch.setCellStyle(headerF2);
+                } else {
+                    ch.setCellStyle(headerF3);
+                }
             }
 
-            // ==== Total al final ====
-            Row totalRow = sheet.createRow(vj);
-            Cell totalCell = totalRow.createCell(0);
-            totalCell.setCellValue("Total");
-            totalCell.setCellStyle(headerStyle);
+            // Merges nivel 3
+            sheet.addMergedRegion(new CellRangeAddress(2, 2, 3, 3));
+            sheet.addMergedRegion(new CellRangeAddress(2, 2, 4, 4));
+            sheet.addMergedRegion(new CellRangeAddress(2, 2, 5, 5));
+            sheet.addMergedRegion(new CellRangeAddress(2, 2, 6, 6));
+            sheet.addMergedRegion(new CellRangeAddress(2, 2, 7, 7));
+            sheet.addMergedRegion(new CellRangeAddress(2, 2, 8, 8));
+            ++vj;
 
-            sheet.addMergedRegion(new CellRangeAddress(vj, vj, 0, 6));
+            //============================================
+            CellStyle bodyStylePercent = workbook.createCellStyle();
+            bodyStylePercent.cloneStyleFrom(bodyStyle);
+            bodyStylePercent.setDataFormat(workbook.createDataFormat().getFormat("0.00%"));
 
-            // ==== Autosize ====
-            for (int i = 0; i <= 6; i++) {
-                sheet.autoSizeColumn(i, true);
+            while (iter.hasNext()) {
+                row1 = sheet.createRow(vj);
+
+                Cell rcell0 = row1.createCell(0);
+                Cell rcell1 = row1.createCell(1);
+                Cell rcell2 = row1.createCell(2);
+                Cell rcell3 = row1.createCell(3);
+                Cell rcell4 = row1.createCell(4);
+                Cell rcell5 = row1.createCell(5);
+                Cell rcell6 = row1.createCell(6);
+                Cell rcell7 = row1.createCell(7);
+                Cell rcell8 = row1.createCell(8);
+
+                MPF108 item = listaData.get(vi);
+
+                rcell0.setCellValue(item.SDATE);
+                rcell1.setCellValue(item.CCUST);
+                rcell2.setCellValue(item.QSALES);
+                rcell3.setCellValue(item.QMATCH);
+                rcell4.setCellValue(item.PCT_MATCH);
+                rcell5.setCellValue(item.QMANUAL);
+                rcell6.setCellValue(item.QPEND);
+                rcell7.setCellValue(item.QPOLIPE);
+                rcell8.setCellValue(item.QPOLIC);
+
+                iter.next();
+                ++vi;
+                ++vj;
             }
 
-            // ==== Descargar ====
+            sheet.autoSizeColumn(0, true);
+            sheet.autoSizeColumn(1, true);
+            sheet.autoSizeColumn(2, true);
+            sheet.autoSizeColumn(3, true);
+            sheet.autoSizeColumn(4, true);
+            sheet.autoSizeColumn(5, true);
+            sheet.autoSizeColumn(6, true);
+            sheet.autoSizeColumn(7, true);
+            sheet.autoSizeColumn(8, true);
+
+            //============================================
             response.setContentType("application/vnd.openxml");
             response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
 
@@ -442,6 +665,284 @@ public class CashController extends BaseController {
             throw new SpringException(e);
         }
     }
+
+    @RequestMapping(value = "getXLSXDashboardSource")
+    public @ResponseBody
+    void getXLSXDashboardSource(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("Report : getXLSXDashboardSource");
+        String fileNameDownload = String.format("Report  Dashboard Source- " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
+        try {
+            Workbook workbook;
+            File file = File.createTempFile(fileNameDownload, ".xlsx");
+            List<MPF300> listaData = this.getListDataDetailSource(request, true);
+            System.out.println("Tamaño de lista devuelta : " + listaData.size());
+            workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Report");
+            XSSFCellStyle headerF1 = (XSSFCellStyle) workbook.createCellStyle();
+            CellStyle bodyStyle = workbook.createCellStyle();
+
+            Integer vi = 0;
+            Integer vj = 0;
+            Iterator iter = listaData.iterator();
+
+            Font headerFont = workbook.createFont();
+            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            headerFont.setColor(IndexedColors.BLACK.getIndex());
+
+            XSSFCellStyle baseHeaderStyle = (XSSFCellStyle) workbook.createCellStyle();
+            baseHeaderStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            baseHeaderStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            baseHeaderStyle.setBorderRight(CellStyle.BORDER_THIN);
+            baseHeaderStyle.setBorderBottom(CellStyle.BORDER_THIN);
+            baseHeaderStyle.setBorderLeft(CellStyle.BORDER_THIN);
+            baseHeaderStyle.setBorderTop(CellStyle.BORDER_THIN);
+            baseHeaderStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+            baseHeaderStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            baseHeaderStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            baseHeaderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            baseHeaderStyle.setFont(headerFont);
+
+            XSSFCellStyle headerMain = (XSSFCellStyle) workbook.createCellStyle();
+            headerMain.cloneStyleFrom(baseHeaderStyle);
+            headerMain.setFillForegroundColor(IndexedColors.GREY_40_PERCENT.getIndex()); // azul grisáceo aprox
+            headerMain.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            headerF1.setBorderRight(CellStyle.BORDER_THIN);
+            headerF1.setRightBorderColor(IndexedColors.BLACK.getIndex());
+            headerF1.setBorderBottom(CellStyle.BORDER_THIN);
+            headerF1.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            headerF1.setBorderLeft(CellStyle.BORDER_THIN);
+            headerF1.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            headerF1.setBorderTop(CellStyle.BORDER_THIN);
+            headerF1.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            headerF1.setAlignment(CellStyle.ALIGN_CENTER);
+            headerF1.setFillForegroundColor(new XSSFColor(new java.awt.Color(244, 204, 204)));
+            headerF1.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            headerF1.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+
+            XSSFCellStyle headerF2 = (XSSFCellStyle) workbook.createCellStyle();
+            headerF2.cloneStyleFrom(baseHeaderStyle);
+            headerF2.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex()); // verde claro
+            headerF2.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            XSSFCellStyle headerF3 = (XSSFCellStyle) workbook.createCellStyle();
+            headerF3.cloneStyleFrom(baseHeaderStyle);
+            headerF3.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex()); // gris claro
+            headerF3.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            // ====== NIVEL 1 ======
+            Row row1 = sheet.createRow(vj);
+            Cell CH1_0 = row1.createCell(0);
+            Cell CH1_1 = row1.createCell(1);
+            Cell CH1_2 = row1.createCell(2);
+
+            CH1_0.setCellValue("Month");
+            CH1_1.setCellValue("Source");
+            CH1_2.setCellValue("Tickets");
+
+            CH1_0.setCellStyle(headerMain);
+            CH1_1.setCellStyle(headerMain);
+            CH1_2.setCellStyle(headerF1);
+
+            sheet.addMergedRegion(new CellRangeAddress(0, 2, 0, 0));
+            sheet.addMergedRegion(new CellRangeAddress(0, 2, 1, 1));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 8));
+            ++vj;
+
+            // ====== NIVEL 2 ======
+            Row row2 = sheet.createRow(vj);
+            String[] headers2 = {"", "", "Total", "Match", "", "", "", "Accounted", ""};
+            for (int c = 0; c < headers2.length; c++) {
+                Cell ch = row2.createCell(c);
+                ch.setCellValue(headers2[c]);
+
+                if (c <= 1) {
+                    ch.setCellStyle(headerMain);
+                } else if (c >= 2 && c <= 8) {
+                    ch.setCellStyle(headerF1);
+                } else {
+                    ch.setCellStyle(headerF3);
+                }
+            }
+
+            // Merges nivel 2
+            sheet.addMergedRegion(new CellRangeAddress(1, 2, 2, 2));
+            sheet.addMergedRegion(new CellRangeAddress(1, 1, 3, 6));
+            sheet.addMergedRegion(new CellRangeAddress(1, 1, 7, 8));
+            ++vj;
+
+            // ====== NIVEL 3 ======
+            Row row3 = sheet.createRow(vj);
+            String[] headers3 = {"", "", "", "Auto", "%", "Manual", "W/O Settlement", "Pending",
+                "Processed"};
+            for (int c = 0; c < headers3.length; c++) {
+                Cell ch = row3.createCell(c);
+                ch.setCellValue(headers3[c]);
+                if (c <= 1) {
+                    ch.setCellStyle(headerMain);
+                } else if (c >= 2 && c <= 8) {
+                    ch.setCellStyle(headerF1);
+                } else if (c >= 9 && c <= 13) {
+                    ch.setCellStyle(headerF2);
+                } else {
+                    ch.setCellStyle(headerF3);
+                }
+            }
+
+            // Merges nivel 3
+            sheet.addMergedRegion(new CellRangeAddress(2, 2, 3, 3));
+            sheet.addMergedRegion(new CellRangeAddress(2, 2, 4, 4));
+            sheet.addMergedRegion(new CellRangeAddress(2, 2, 5, 5));
+            sheet.addMergedRegion(new CellRangeAddress(2, 2, 6, 6));
+            sheet.addMergedRegion(new CellRangeAddress(2, 2, 7, 7));
+            sheet.addMergedRegion(new CellRangeAddress(2, 2, 8, 8));
+            ++vj;
+
+            //============================================
+            CellStyle bodyStylePercent = workbook.createCellStyle();
+            bodyStylePercent.cloneStyleFrom(bodyStyle);
+            bodyStylePercent.setDataFormat(workbook.createDataFormat().getFormat("0.00%"));
+
+            while (iter.hasNext()) {
+                row1 = sheet.createRow(vj);
+
+                Cell rcell0 = row1.createCell(0);
+                Cell rcell1 = row1.createCell(1);
+                Cell rcell2 = row1.createCell(2);
+                Cell rcell3 = row1.createCell(3);
+                Cell rcell4 = row1.createCell(4);
+                Cell rcell5 = row1.createCell(5);
+                Cell rcell6 = row1.createCell(6);
+                Cell rcell7 = row1.createCell(7);
+                Cell rcell8 = row1.createCell(8);
+
+                MPF300 item = listaData.get(vi);
+
+                rcell0.setCellValue(item.SDATE);
+                rcell1.setCellValue(item.CFUENTE);
+                rcell2.setCellValue(item.QSALES);
+                rcell3.setCellValue(item.QMATCH);
+                rcell4.setCellValue(item.PCT_MATCH);
+                rcell5.setCellValue(item.QMANUAL);
+                rcell6.setCellValue(item.QPEND);
+                rcell7.setCellValue(item.QPOLIPE);
+                rcell8.setCellValue(item.QPOLIC);
+
+                iter.next();
+                ++vi;
+                ++vj;
+            }
+
+            sheet.autoSizeColumn(0, true);
+            sheet.autoSizeColumn(1, true);
+            sheet.autoSizeColumn(2, true);
+            sheet.autoSizeColumn(3, true);
+            sheet.autoSizeColumn(4, true);
+            sheet.autoSizeColumn(5, true);
+            sheet.autoSizeColumn(6, true);
+            sheet.autoSizeColumn(7, true);
+            sheet.autoSizeColumn(8, true);
+
+            //============================================
+            response.setContentType("application/vnd.openxml");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+
+            FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
+            workbook.write(response.getOutputStream());
+            fos.close();
+
+        } catch (IOException e) {
+            throw new SpringException(e);
+        }
+    }
+    
+    @RequestMapping(value = "getXLSXDetailPrincipalSource")
+    public @ResponseBody
+    void getXLSXDetailPrincipalSource(HttpServletRequest request, HttpServletResponse response) {
+
+        System.out.println("Report : getXLSXDetailPrincipalSource");
+        String fileNameDownload = "Report_" + Functions.getFechaActual() + ".xlsx";
+
+        SXSSFWorkbook workbook = new SXSSFWorkbook(500);
+        workbook.setCompressTempFiles(true); // comprime archivos temporales (menos disco)
+
+        try {
+            List<MPF300> listaData = this.getListDataDetailPrincipalSource(request, true);
+            System.out.println("Tamaño de lista devuelta : " + listaData.size());
+
+            Sheet sheet = workbook.createSheet("Report");
+
+            CellStyle headerStyle = workbook.createCellStyle();
+            CellStyle bodyStyle = workbook.createCellStyle();
+            Font headerFont = workbook.createFont();
+
+            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            headerStyle.setFont(headerFont);
+            headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+
+            headerStyle.setFillForegroundColor((short) 22);
+            headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            headerStyle.setBorderBottom(CellStyle.BORDER_THIN);
+            headerStyle.setBorderTop(CellStyle.BORDER_THIN);
+            headerStyle.setBorderLeft(CellStyle.BORDER_THIN);
+            headerStyle.setBorderRight(CellStyle.BORDER_THIN);
+
+            bodyStyle.setBorderBottom(CellStyle.BORDER_THIN);
+            bodyStyle.setBorderTop(CellStyle.BORDER_THIN);
+            bodyStyle.setBorderLeft(CellStyle.BORDER_THIN);
+            bodyStyle.setBorderRight(CellStyle.BORDER_THIN);
+
+            int rowIndex = 0;
+
+            String[] columnas = {
+                "Nbr.", "Ticket", "Status", "Source", "Type", "Sales Date",
+                "Country", "Agent", "Transaction", "Days Pending", "Currency", "Amount"
+            };
+
+            Row header = sheet.createRow(rowIndex++);
+
+            for (int i = 0; i < columnas.length; i++) {
+                Cell cell = header.createCell(i);
+                cell.setCellValue(columnas[i]);
+                cell.setCellStyle(headerStyle);
+            }
+
+            for (MPF300 bean : listaData) {
+                Row row = sheet.createRow(rowIndex++);
+                int c = 0;
+
+                row.createCell(c++).setCellValue(bean.RN);
+                row.createCell(c++).setCellValue(bean.strTicket);
+                row.createCell(c++).setCellValue(bean.STVAL);
+                row.createCell(c++).setCellValue(bean.CFUENTE);
+                row.createCell(c++).setCellValue(bean.TDOC);
+                row.createCell(c++).setCellValue(bean.SDATE);
+                row.createCell(c++).setCellValue(bean.SCOUNTRY);
+                row.createCell(c++).setCellValue(bean.SAGENT);
+                row.createCell(c++).setCellValue(bean.TRNCU);
+                row.createCell(c++).setCellValue(bean.DIFFDAYS);
+                row.createCell(c++).setCellValue(bean.SCURRENCY);
+                row.createCell(c++).setCellValue(bean.SVFOP);
+
+                for (int i = 0; i < columnas.length; i++) {
+                    row.getCell(i).setCellStyle(bodyStyle);
+                }
+            }
+
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+
+            workbook.write(response.getOutputStream());
+            response.flushBuffer();
+
+        } catch (Exception e) {
+            throw new SpringException(e);
+
+        } finally {
+            workbook.dispose();
+        }
+    }
+
 }
-
-
