@@ -66,6 +66,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     bean_detailT: [],
     lstCard: [],
     lstCountry: [],
+    lstStatus: [],
+    lstConcept: [],
+    lstAdjType: [],
     listaCampos: [],
     lstParametros: [],
     beanTW: {},
@@ -94,6 +97,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             '#BankReconciliationForm-btnSearch': {
                 click: this.btnSearch_click
             },
+            '#BankReconciliationForm-btnAdd': {
+                click: this.btnAdd_click
+            },
+            
             
             '#BankReconciliationForm-btnClear': {
                 click: this.btnClear_click
@@ -209,6 +216,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 Ext.getCmp(prototype.id + '-lblDocSapBank').show();
                 Ext.getCmp(prototype.id + '-datePayment').hide();
                 Ext.getCmp(prototype.id + '-txtDATEPICKER').hide();
+                
             } else {
                 Ext.getCmp(prototype.id + '-cmbFecFiltro').hide(); 
                 Ext.getCmp(prototype.id + '-txtCard1').hide(); 
@@ -4852,9 +4860,15 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     },
     
     /////////DATAENTRY MPF199
+     /////////DATAENTRY MPF199
+      /////////DATAENTRY MPF199
     
+      btnAdd_click: function() {
+        this.winDataEntryMPF199('I');
+    },
     
-    
+
+      /////////DATAENTRY MPF199
     
     onEditClickMPF199: function(grid, rowIndex, colIndex) {
         
@@ -4872,6 +4886,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             params: {
                 action: action,
                 rec: rec.data,
+                listaPaises : me.lstCountry,
+                listaStatus : me.lstStatus,
+                listaConcept : me.lstConcept,
+                listaAdj : me.lstAdjType ,
+                
+                 
                 
                 
                 lst:me.lst

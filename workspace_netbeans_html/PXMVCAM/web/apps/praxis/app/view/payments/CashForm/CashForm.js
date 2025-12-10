@@ -15,6 +15,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.CashForm', {
     layout: {
         type: 'fit'
     },
+    padding: '0 0 0 0',
     border: false,
     defaults: {
         border: false
@@ -31,17 +32,16 @@ Ext.define('Ext.Praxis.view.payments.CashForm.CashForm', {
                     border: false,
                     bodyCls: 'colorFondo',
                     layout: 'fit',
-//                    defaults: {
-//                        border: false,
-//                        autoScroll: true
-//                    },
+                    defaults: {
+                        border: false,
+                        autoScroll: true
+                    },
                     items: [
                         {
                             xtype: 'panel',
                             region: 'center',
-                            width: 980,
+                            width: 1000,
                             layout: 'border',
-                            
                             items: [
                                 {
                                     region: 'center',
@@ -53,36 +53,34 @@ Ext.define('Ext.Praxis.view.payments.CashForm.CashForm', {
                                     border: true,
                                     autoScroll: true,
                                     defaults: {
-                                        width: 1600,
+                                        width: 1550,
                                         align: 'center'
                                     },
                                     items: [
                                         {
-                                            xtype: prototype.id + '-options'
+                                            xtype: prototype.id + '-options',
+//                                            style:'margin-top:20px'
                                         }
-                                        ,
-                                        {
+                                        , {
                                             xtype: prototype.id + '-filters',
-                                            id: prototype.id + '-contentFilter'
-                                        }
-                                        ,
+                                            id: prototype.id + '-contentFilter',
+                                            hidden: false
+                                        },
                                         {
                                             xtype: 'panel',
-                                            height: 600,
-                                            width: 1600,
+                                            flex: 1, // ← AHORA CRECE AUTOMÁTICAMENTE
                                             layout: 'fit',
+                                            id: prototype.id + '-panelHeight',
                                             items: [
                                                 {
                                                     xtype: 'panel',
                                                     id: prototype.id + '-centerC-panel01',
-                                                    width: 1600,
                                                     layout: 'border',
                                                     align: 'center',
-                                                    border: true,
+                                                    border: false,
                                                     defaults: {
                                                         border: false
                                                     },
-                                                    bodyStyle: 'background-color: white;',
                                                     items: [
                                                         {
                                                             region: 'center',
@@ -93,10 +91,9 @@ Ext.define('Ext.Praxis.view.payments.CashForm.CashForm', {
                                                 }
                                             ]
                                         }
-                                   ]
+                                    ]
                                 }
                             ]
-                            
                         }
                     ]
                 }

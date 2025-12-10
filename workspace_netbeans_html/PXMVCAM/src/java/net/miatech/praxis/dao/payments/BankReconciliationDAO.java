@@ -8603,6 +8603,71 @@ public class BankReconciliationDAO {
         return message;
     }
     
+    
+    //// INSERT 
+    
+      
+    public String MPF199Insert(A2290Filter filter) throws SQLException, Exception {
+        String message = " Successfully Inserted.";
+        CallableStatement cstmt = null;
+        Connection cnx = null;
+
+        String SQL = "{CALL PRAXISMP.MPS358_INSERT(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQL);
+
+           
+
+//            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST.trim());
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST.trim());
+//            cstmt.setString(1, filter.O_CCUST.trim());
+            cstmt.setString(2, filter.O_SAGENT.trim());
+            cstmt.setString(3, filter.O_STVAL.trim());
+            cstmt.setString(4, filter.O_ADATE.trim());
+            cstmt.setString(5, filter.O_CONCEPT.trim());
+            cstmt.setString(6, filter.O_TADJ.trim());
+            cstmt.setString(7, filter.O_SCONSOL.trim());
+            cstmt.setString(8, filter.O_SCURRENCY.trim());
+            cstmt.setDouble(9, filter.O_NETO);
+            cstmt.setDouble(10, filter.O_PAYAMOU);
+            cstmt.setString(11, filter.O_STRDATE.trim());
+            cstmt.setString(12, filter.O_ENDDATE.trim());
+            cstmt.setString(13, filter.O_SCOUNTRY.trim());
+            cstmt.setString(14, filter.O_REFERENCE.trim());
+            cstmt.setString(15, filter.O_COMMENTS.trim());
+            
+
+            cstmt.setString(16, session.getUserView().getUserInfo().USR);
+           
+
+            cstmt.execute();
+
+           
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            message = e.getMessage();
+        } finally {
+            if (cstmt != null) 
+            try {
+                cstmt.close();
+            } catch (SQLException e) {
+                logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return message;
+    }
+    
+    
+    
+    
+    ////
+    
     public String ConciliacionAdjust(A2290Filter filter) throws SQLException, Exception {
         String message = "Update successful.";
         CallableStatement cstmt = null;

@@ -281,6 +281,12 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Options', {
                             iconCls: 'prx-icon-search',
                             tooltip: 'Search'
                         },
+                         {
+                            xtype: 'button',
+                            id: prototype.id + '-btnAdd',
+                            iconCls: 'prx-icon-add',
+                            tooltip: 'New'
+                        },
                         {
                             xtype: 'button',
                             id: prototype.id + '-btnFilter',
