@@ -829,6 +829,23 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                         },
                         {xtype: 'tbspacer', width: 10},
                         {
+                            xtype: 'button',
+                            hidden: true,
+                            text: 'Conciliación Fase 2',
+                            id: prototype.id + '-btnFase2',
+                            iconCls: 'prx-icon-update', 
+                            style: {
+                                'background-color': '#3498db', 
+                                'color': 'white',
+                                'font-weight': 'bold'
+                            },
+
+                            listeners: {
+                                click: 'conciliacionFase2' 
+                            }
+                        },
+                        {xtype: 'tbspacer', width: 10},
+                        {
                             xtype: 'label',
 //                            style: 'font-weight:bold;color:#0B333C;',
                             padding: '3 0 0 0',

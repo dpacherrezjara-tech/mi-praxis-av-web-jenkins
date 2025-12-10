@@ -216,6 +216,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 Ext.getCmp(prototype.id + '-lblDocSapBank').show();
                 Ext.getCmp(prototype.id + '-datePayment').hide();
                 Ext.getCmp(prototype.id + '-txtDATEPICKER').hide();
+                Ext.getCmp(prototype.id + '-btnFase2').hide();
                 
             } else {
                 Ext.getCmp(prototype.id + '-cmbFecFiltro').hide(); 
@@ -232,7 +233,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 Ext.getCmp(prototype.id + '-lblBPOComment').hide();
                 Ext.getCmp(prototype.id + '-lblDocSapBank').hide();
                 Ext.getCmp(prototype.id + '-datePayment').show();
-                Ext.getCmp(prototype.id + '-txtDATEPICKER').show();
+                Ext.getCmp(prototype.id + '-btnFase2').show();
             }
             });
 
@@ -4923,6 +4924,49 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
 
             global.getFile(url);
         },
+        
+        // Añade esta función a tu controlador, por ejemplo, junto a MaintenanceMPF199Generic
+    conciliacionFase2: function () {
+        var me = this;
+        var mainView = me.getView(); 
+        mainView.mask('Iniciando Conciliación Fase 2. Por favor, espere...');
+
+        Ext.Ajax.request({
+            url: prototype.url + '/conciliacionFaseDos',
+            method: 'POST',
+            timeout: 1200000, 
+
+            success: function (response) {
+                mainView.unmask();
+
+                var res = Ext.JSON.decode(response.responseText, true);
+
+                if (res && res.success) {
+                    global.Msg({
+                        msg: res.Mensaje || 'Conciliación Fase 2 completada con éxito.',
+                        icon: Ext.MessageBox.INFO
+                    });
+                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+
+                } else {
+                    global.Msg({
+                        title: 'Error de Conciliación',
+                        msg: res ? res.Mensaje : 'Error desconocido al procesar la solicitud.',
+                        icon: Ext.MessageBox.ERROR
+                    });
+                }
+            },
+
+            failure: function (response) {
+                mainView.unmask();
+                global.Msg({
+                    title: 'Error de Conexión',
+                    msg: 'No se pudo conectar con el servidor o la operación agotó el tiempo de espera. Inténtelo más tarde.',
+                    icon: Ext.MessageBox.ERROR
+                });
+            }
+        });
+    }
         
         
         
