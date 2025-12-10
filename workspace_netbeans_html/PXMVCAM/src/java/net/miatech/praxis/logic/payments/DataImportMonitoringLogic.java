@@ -30,73 +30,8 @@ public class DataImportMonitoringLogic {
     }
 
 //    UPS
-    
-    public List<MPFER90> getListMonitoringRPA(MPFER90 filter, String rutaSpring) throws SQLException, Exception {
-
-        // 1) Lista desde AS400 (configuración)
-        List<MPFER90> configList = Dataimport.getListMonitoringRPA(filter);
-
-        // 2) Intentar obtener datos en vivo desde API RPA
-        try {
-            RestTemplate rest = new RestTemplate();
-            String url = rutaSpring + "rpa/list";
-            String json = rest.getForObject(url, String.class);
-
-            // Mapear JSON → lista de RobotLiveDTO
-            RobotLiveDTO[] liveArray = new Gson().fromJson(json, RobotLiveDTO[].class);
-
-            // Recorrer robots AS400 y complementar con robots en vivo
-            for (MPFER90 cfg : configList) {
-                String cfgName = cfg.ROBOTNAME != null ? cfg.ROBOTNAME.trim() : "";
-
-                for (RobotLiveDTO live : liveArray) {
-                    String liveName = live.name != null ? live.name.trim() : "";
-
-                    // Match estrictamente por ROBOTNAME
-                    if (!cfgName.isEmpty() && cfgName.equalsIgnoreCase(liveName)) {
-
-                        cfg.LIVE_RUNNING = live.running;
-                        cfg.LIVE_RUNNING_SECONDS = live.runningSeconds;
-                        cfg.LIVE_NAME = liveName;
-                        cfg.LIVE_PID = live.pid != null ? live.pid : "";
-                        cfg.LIVE_ID = live.id != null ? live.id : "";
-                        cfg.LIVE_STATUS = live.status != null ? live.status : "";
-                        cfg.LIVE_LAST_LOG = live.lastLog != null ? live.lastLog : "";
-
-                        System.out.println("✔ MATCH RPA → " + cfgName + " ↔ " + liveName);
-                    }
-                }
-            }
-
-        } catch (Exception ex) {
-            System.out.println("❌ Error API RPA: " + ex.getMessage());
-            System.out.println("→ Valores LIVE permanecerán vacíos");
-        }
-
-        return configList;
-    }
-
-    public String executeRpaAction(String robotId, String action, String rutaSpring) {
-        try {
-            RestTemplate rest = new RestTemplate();
-
-            // Asegurar el slash final
-            if (!rutaSpring.endsWith("/")) {
-                rutaSpring += "/";
-            }
-
-            String url = rutaSpring + "rpa/" + robotId + "/" + action;
-            System.out.println("🔥 Ejecutando → " + url);
-
-            String response = rest.postForObject(url, null, String.class);
-            return (response != null && !response.isEmpty())
-                    ? response
-                    : "Acción ejecutada correctamente";
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new RuntimeException("Error ejecutando acción RPA: " + ex.getMessage());
-        }
+    public List<MPFER90> getListMonitoringRPA_DB(MPFER90 filter) throws Exception {
+        return Dataimport.getListMonitoringRPA(filter);
     }
 
     public String getLogRPA(String id, String rutaSpring) throws Exception {
