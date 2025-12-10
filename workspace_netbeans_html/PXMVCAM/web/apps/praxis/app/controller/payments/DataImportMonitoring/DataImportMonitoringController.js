@@ -203,7 +203,7 @@ Ext.define('Ext.Praxis.controller.payments.DataImportMonitoring.DataImportMonito
                 global.Msg({msg: "⚠ Robot inactivo. No se puede ejecutar acciones."});
                 return;
             }
-            if (status !== "RUNNING" && (action === "stop" || action === "restart" || action === "log")) {
+            if (status !== "RUNNING" && (action === "stop" || action === "restart")) {
                 global.Msg({msg: "⚠ Robot no está corriendo."});
                 return;
             }

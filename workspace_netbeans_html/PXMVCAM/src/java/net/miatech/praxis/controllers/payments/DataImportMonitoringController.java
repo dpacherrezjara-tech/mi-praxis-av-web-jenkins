@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import net.miatech.praxis.RobotLiveDTO;
 import net.miatech.praxis.classes.CurrentSession;
 import net.miatech.praxis.logic.payments.DataImportMonitoringLogic;
 
@@ -80,107 +81,117 @@ public class DataImportMonitoringController extends BaseController {
 //    UPS
     @RequestMapping(value = "getMonitoringRPA")
     @ResponseBody
-    public String getMonitoringRPA(ModelMap map, HttpServletRequest request) {
+    public String getMonitoringRPA(ModelMap map, HttpServletRequest request) throws Exception {
+
         System.out.println("-------------- getMonitoringRPA-------------");
+
+        Gson gson = new Gson();
+        String beanString = request.getParameter("beanString");
+        MPFER90 filter = gson.fromJson(beanString, MPFER90.class);
+
+        DataImportMonitoringLogic logic = new DataImportMonitoringLogic();
+        logic.setSession(this.serverSession.getServerSession());
+
+        // 1. DATOS AS400 (DB2)
+        List<MPFER90> listDB = logic.getListMonitoringRPA_DB(filter);
+
+        // 2. DATOS API RPA (SPRING WS)
+        RobotLiveDTO[] live = ws.getJson("rpa/list", RobotLiveDTO[].class);
+
+        // 3. MERGE AQUÍ MISMO (como tu compañero)
+        mergeRPA(listDB, live);
+
         map.put("success", true);
+        map.put("data", listDB);
 
-        List<MPFER90> lst = this.getListMonitoringRPA(request, false);
-        System.out.println("Total : " + lst.size());
-        map.put("data", lst);
-
-        return new Gson().toJson(map);
+        return gson.toJson(map);
     }
 
-    public List<MPFER90> getListMonitoringRPA(HttpServletRequest request, Boolean bExcel) {
+    private void mergeRPA(List<MPFER90> listDB, RobotLiveDTO[] liveArray) {
 
-        List<MPFER90> lst = new ArrayList<>(0);
-        MPFER90 filter = new MPFER90();
-        Gson gson = new Gson();
-        String beanString = "";
-
-        try {
-            logic = new DataImportMonitoringLogic();
-            logic.setSession(this.serverSession.getServerSession());
-
-            // 🔹 Obtener ruta Spring desde properties
-            String rutaSpring = (String) this.serverSession
-                    .getServerSession()
-                    .getPropertySession()
-                    .get("RUTA_REST_SPRING");
-
-            beanString = request.getParameter("beanString");
-            filter = gson.fromJson(beanString, MPFER90.class);
-
-            // 🔹 Pasar la ruta al logic
-            lst = logic.getListMonitoringRPA(filter, rutaSpring);
-
-        } catch (Exception e) {
-            throw new SpringException(e);
+        if (liveArray == null) {
+            return;
         }
 
-        return lst;
+        for (MPFER90 cfg : listDB) {
+
+            String cfgName = cfg.ROBOTNAME != null ? cfg.ROBOTNAME.trim() : "";
+
+            for (RobotLiveDTO live : liveArray) {
+
+                String liveName = live.name != null ? live.name.trim() : "";
+
+                if (!cfgName.isEmpty() && cfgName.equalsIgnoreCase(liveName)) {
+
+                    cfg.LIVE_RUNNING = live.running;
+                    cfg.LIVE_RUNNING_SECONDS = live.runningSeconds;
+                    cfg.LIVE_NAME = liveName;
+                    cfg.LIVE_PID = live.pid != null ? live.pid : "";
+                    cfg.LIVE_ID = live.id != null ? live.id : "";
+                    cfg.LIVE_STATUS = live.status != null ? live.status : "";
+                    cfg.LIVE_LAST_LOG = live.lastLog != null ? live.lastLog : "";
+
+                    System.out.println("MATCH RPA → " + cfgName + " ↔ " + liveName);
+                }
+            }
+        }
     }
 
     @RequestMapping(value = "executeRpaAction", method = RequestMethod.POST)
     @ResponseBody
     public String executeRpaAction(ModelMap map, HttpServletRequest request) {
+
         System.out.println("----- executeRpaAction -----");
-
+        Gson gson = new Gson();
         map.put("success", false);
+
         try {
-            String robotId = request.getParameter("RN");      // LIVE_ID
-            String action = request.getParameter("ACTION"); // start | stop | restart
+            String robotId = request.getParameter("RN");
+            String action = request.getParameter("ACTION");
 
-            DataImportMonitoringLogic logic = new DataImportMonitoringLogic();
-            logic.setSession(this.serverSession.getServerSession());
+            String endpoint = "rpa/" + robotId + "/" + action;
 
-            // Obtener ruta API desde property
-            String rutaSpring = (String) this.serverSession
-                    .getServerSession()
-                    .getPropertySession()
-                    .get("RUTA_REST_SPRING");
-
-            String message = logic.executeRpaAction(robotId, action, rutaSpring);
+            String response = ws.postNoBody(endpoint);
 
             map.put("success", true);
-            map.put("message", message);
+            map.put("message", response);
 
         } catch (Exception e) {
             map.put("message", e.getMessage());
             e.printStackTrace();
         }
 
-        return new Gson().toJson(map);
+        return gson.toJson(map);
     }
 
     @RequestMapping(value = "getLogRPA")
     @ResponseBody
     public String getLogRPA(ModelMap map, HttpServletRequest request) {
         System.out.println("-------------- getLogRPA -------------");
-
+        Gson gson = new Gson();
         map.put("success", false);
+
         try {
             String id = request.getParameter("LIVE_ID");
 
-            logic = new DataImportMonitoringLogic();
-            logic.setSession(this.serverSession.getServerSession());
+            if (id == null || id.trim().isEmpty()) {
+                map.put("log", "ID vacío");
+                return gson.toJson(map);
+            }
 
-            // Obtener la ruta desde el property
-            String rutaSpring = (String) serverSession.getServerSession()
-                    .getPropertySession()
-                    .get("RUTA_REST_SPRING");
-
-            // → enviar ruta al logic
-            String logText = logic.getLogRPA(id, rutaSpring);
+            // 2. Llamada directa al API vía SpringWS
+            String endpoint = "rpa/" + id + "/log";
+            String logText = ws.getText(endpoint);
 
             map.put("success", true);
-            map.put("log", logText);
+            map.put("log", (logText != null ? logText : "Log vacío"));
+
         } catch (Exception e) {
-            map.put("log", "⚠ Error obteniendo log: " + e.getMessage());
+            map.put("log", "Error obteniendo log: " + e.getMessage());
             e.printStackTrace();
         }
 
-        return new Gson().toJson(map);
+        return gson.toJson(map);
     }
 
     @RequestMapping(value = "MaintenanceA2280")
