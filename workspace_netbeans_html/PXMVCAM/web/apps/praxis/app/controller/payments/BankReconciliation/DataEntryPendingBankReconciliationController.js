@@ -432,17 +432,14 @@ calculateNeto: function () {
     var me = this;
     var prototypeId = prototype.id;
 
-    // Función auxiliar para obtener el valor limpio y convertirlo a número
     var getNumericValue = function (id) {
         var val = Ext.getCmp(prototypeId + '-' + id).getValue();
-        // Limpiar comas (separadores de miles) y reemplazar punto decimal por punto
         if (typeof val === 'string') {
             val = val.replace(/\./g, '').replace(/,/g, '.');
         }
         return Ext.Number.parseFloat(val) || 0;
     };
 
-    // Obtener valores numéricos
     var recaudacion = getNumericValue('txtRECAUDACION');
     var tasa = getNumericValue('txtTASA');
     var rendicion = getNumericValue('txtRendicion');
@@ -450,32 +447,25 @@ calculateNeto: function () {
     var comisionMEP = getNumericValue('txtComisionMEP');
     var iva = getNumericValue('txtIVA');
     
-    // CALCULO: Neto Rendido = Recaudación - (Tasa + Rendicion + PagoTercero + ComisionMEP + IVA)
     var descuentos = tasa + rendicion + pagoTercero + comisionMEP + iva;
     var netoRendido = recaudacion - descuentos;
     
-    // Formatear el resultado (usando punto decimal y coma como separador de miles)
     var formattedNeto = Ext.util.Format.number(netoRendido, '0,000.00');
     
-    // Establecer el valor en el campo de salida
     Ext.getCmp(prototypeId + '-txtNETORENDIDO').setValue(formattedNeto);
 },
     
     onExceptionSelect: function (combo, record) {
         var selectedCode = record.get('code'); 
 
-        // 1. Paneles a controlar
         var pnlRendicion = Ext.getCmp(prototype.id + '-pnlRENDICIONBSP');
         var pnlPendingFields = Ext.getCmp(prototype.id + '-pnlPENDINGFIELDS'); 
         var pnlConversionIND = Ext.getCmp(prototype.id + '-pnlConversionIND'); 
 
-        // 2. Títulos a controlar
         var titleArgentina = Ext.getCmp(prototype.id + '-titleBspArgentina');
         var titleIndia = Ext.getCmp(prototype.id + '-titleBspIndia'); 
 
-        // 3. Lógica de visibilidad exclusiva
 
-        // Asumiendo que todos los componentes existen:
 
         // ARGENTINA (Código '1')
         var isArgentina = (selectedCode === '1');
@@ -491,7 +481,6 @@ calculateNeto: function () {
         var isAll = (selectedCode === '');
         if (pnlPendingFields) pnlPendingFields.setVisible(isAll);
 
-        // 4. Opcional: Limpiar campos de paneles ocultos (mantenemos la recomendación)
         if (!isArgentina && pnlRendicion && pnlRendicion.getForm) {
             pnlRendicion.getForm().reset();
         }
@@ -499,7 +488,6 @@ calculateNeto: function () {
             pnlConversionIND.getForm().reset();
         }
 
-        // Nota: El título de "Pending Information" siempre estaba visible, por lo que no necesita control explícito aquí.
     },
 
 

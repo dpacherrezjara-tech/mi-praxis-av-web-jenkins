@@ -5555,10 +5555,10 @@ public class BankReconciliationController extends BaseController {
             map.put("Mensaje", msj);
         }  catch (NumberFormatException | SQLException ex) {
             map.put("success", false);
-            map.put("Mensaje", ex.getMessage()); // Captura el mensaje de error del SP/DB
+            map.put("Mensaje", ex.getMessage());
         } catch (Exception ex) {
             map.put("success", false);
-            map.put("Mensaje", ex.getMessage()); // Captura el mensaje de error del SP/DB
+            map.put("Mensaje", ex.getMessage());
         }
 
         return new Gson().toJson(map);
@@ -5588,10 +5588,10 @@ public class BankReconciliationController extends BaseController {
             map.put("Mensaje", msj);
         }  catch (NumberFormatException | SQLException ex) {
             map.put("success", false);
-            map.put("Mensaje", ex.getMessage()); // Captura el mensaje de error del SP/DB
+            map.put("Mensaje", ex.getMessage());
         } catch (Exception ex) {
             map.put("success", false);
-            map.put("Mensaje", ex.getMessage()); // Captura el mensaje de error del SP/DB
+            map.put("Mensaje", ex.getMessage()); 
         }
 
         return new Gson().toJson(map);

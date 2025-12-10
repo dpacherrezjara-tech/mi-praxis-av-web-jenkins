@@ -8676,7 +8676,6 @@ public class BankReconciliationDAO {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQL);
 
-            // 1. Parámetros de Entrada (Input Parameters)
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST.trim());
             cstmt.setDouble(2, filter.O_RECAUDACION);
             cstmt.setDouble(3, filter.O_TASA);
@@ -8689,35 +8688,27 @@ public class BankReconciliationDAO {
             cstmt.setString(10, session.getUserView().getUserInfo().USR);
 
             cstmt.setInt(11, 0); 
-            // Parámetro 12: VMESSAGE (VARCHAR INOUT) - Inicializado a vacío
             cstmt.setString(12, "");
 
-            // 3. Registrar Parámetros de Salida (Output Registration)
-            // Parámetro 11: VSQLCODE (INTEGER)
             cstmt.registerOutParameter(11, java.sql.Types.INTEGER);
-            // Parámetro 12: VMESSAGE (VARCHAR)
             cstmt.registerOutParameter(12, java.sql.Types.VARCHAR);
 
             cstmt.execute();
 
-            // 3. Leer los mensajes después de la ejecución
             int sqlCode = cstmt.getInt(11);
             String sqlMessage = cstmt.getString(12);
 
-            // 4. Devolver el mensaje del SP
-            if (sqlCode == 1) { // 1 es éxito según tu SP (o 0 si no hubo errores)
+            if (sqlCode == 1) { 
                  message = sqlMessage; 
             } else {
-                 // Si SQLCODE es 0 (o cualquier otro valor que signifique error/aviso)
                  message = "ERROR SP: " + sqlMessage;
-                 throw new Exception(message); // Lanzar excepción para el bloque catch
+                 throw new Exception(message); 
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            message = e.getMessage(); // Captura el mensaje de la excepción lanzada
+            message = e.getMessage(); 
         } finally {
-            // ... (Tu manejo de finally) ...
         }
 
         return message;
