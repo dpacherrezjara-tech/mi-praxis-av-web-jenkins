@@ -15,6 +15,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
     beanDetails: {},
     beanScan: {},
     beanAgrupa: {},
+    beanRefreshHeader: {},
     lstA1852: {},
     dataObtain: {},
     // </editor-fold>
@@ -34,6 +35,14 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
     },
     afterRender: function () {
         console.log('afterRender');
+        var cmpToggle = Ext.getCmp(prototype.id + '-btnTS_HEADER');
+        var chkEl = cmpToggle.getEl().down('#chkHeader');
+
+        if (chkEl) {
+            chkEl.on('change', function () {
+                meDE.onChangeHeader();
+            });
+        }
         switch (this.actionCode) {
             case 'U':
                 this.getData();
@@ -89,8 +98,11 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
         this.setValue('de-txtInput', cfuente);
         this.setValue('de-txtNegoc', 'PASAJES');
         
-        
-        
+        if(this.beanResult.SCURRENCY === 'EUR'){
+            Ext.getCmp(prototype.id + '-btnTS_HEADER').getEl().down('#chkHeader').dom.checked = true;
+        }else{
+            Ext.getCmp(prototype.id + '-btnTS_HEADER').getEl().down('#chkHeader').dom.checked = false;
+        }
         
         this.setValue('de-txtdescTDOC', this.beanResult.descTDOC);
         this.setValue('de-txtTDOC', this.beanResult.TDOC);
@@ -160,26 +172,59 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
     getData: function () {
         console.log('getData');
         console.log('meDE.bean', meDE.bean);
-        meDE.bean.data.IN_VALDATE = meDE.bean.data.VALDATE;
-        meDE.bean.data.IN_CODEBANK = meDE.bean.data.CODEBANK;
-        meDE.bean.data.IN_MERCHAND = meDE.bean.data.MERCHAND;
         meDE.bean.data.IN_TRANCI = meDE.bean.data.TRANCI;
         meDE.bean.data.IN_DATECI = meDE.bean.data.DATECI;
         meDE.bean.data.IN_BANDOC = meDE.bean.data.BANDOC;
-        meDE.bean.data.IN_NETO = meDE.bean.data.NETO + "";
-        meDE.bean.data.IN_RED = meDE.bean.data.RED;
         meDE.bean.data.IN_STVAL = meDE.bean.data.STVAL;
         meDE.bean.data.SCURRENCY = meDE.bean.data.SCURRENCY;
         meDE.bean.data.IN_CBATCH = meDE.bean.data.CBATCH;
         meDE.bean.data.IN_FECR = meDE.bean.data.FECR;
+//        meDE.bean.data.IN_CONSULTA = meDE.bean.data.FECR;
         if (meDE.bean.data.IN_STVAL === 'Match' ) {
             meDE.bean.data.IN_STVAL = '1';
         } else if ( meDE.bean.data.IN_STVAL === 'Match Manual' ){
             meDE.bean.data.IN_STVAL = '5';
         } else {
-            meDE.bean.data.IN_STVAL = 'P';
+            meDE.bean.data.IN_STVAL = '3';
         }
         var beanString = JSON.stringify(meDE.bean.data);
+        Ext.Ajax.request({
+            url: prototype.url + '/searchBeanCash',
+            method: 'POST',
+            timeout: 60000000,
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntryCash').mask('Loading...'),
+            params: {beanString: beanString},
+            success: function (response, options) {
+                Ext.getCmp(prototype.id + '-dataEntryCash').unmask('Loading...');
+                var res = Ext.JSON.decode(response.responseText);
+                meDE.beanResult = res.data;
+                meDE.onSearchCompleteDetail();
+                meDE.mostrarData();
+            }
+        });
+    },
+    
+    getDataRefreshHeader: function (SCURRENCY) {
+        
+        meDE.beanRefreshHeader = {}
+        meDE.beanRefreshHeader.IN_TRANCI = meDE.bean.data.TRANCI;
+        meDE.beanRefreshHeader.IN_DATECI = meDE.bean.data.DATECI;
+        meDE.beanRefreshHeader.IN_BANDOC = meDE.bean.data.BANDOC;
+        meDE.beanRefreshHeader.IN_STVAL = meDE.bean.data.STVAL;
+        meDE.beanRefreshHeader.IN_SCURRENCY = SCURRENCY;
+        meDE.beanRefreshHeader.IN_CONSULTA = '1';
+        
+        meDE.beanRefreshHeader.IN_CBATCH = meDE.bean.data.CBATCH;
+        meDE.beanRefreshHeader.IN_FECR = meDE.bean.data.FECR;
+//        meDE.bean.data.IN_CONSULTA = meDE.bean.data.FECR;
+        if (meDE.bean.data.IN_STVAL === 'Match' ) {
+            meDE.beanRefreshHeader.IN_STVAL = '1';
+        } else if ( meDE.bean.data.IN_STVAL === 'Match Manual' ){
+            meDE.beanRefreshHeader.IN_STVAL = '5';
+        } else {
+            meDE.beanRefreshHeader.IN_STVAL = '3';
+        }
+        var beanString = JSON.stringify(meDE.beanRefreshHeader);
         Ext.Ajax.request({
             url: prototype.url + '/searchBeanCash',
             method: 'POST',
@@ -286,7 +331,27 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
             }
         });
     },
+    onChangeHeader: function (){
+       
+        var cmpToggle = Ext.getCmp(prototype.id + '-btnTS_HEADER');
 
+        var chk = false;
+        if (cmpToggle && cmpToggle.getEl()) {
+            var chkEl = cmpToggle.getEl().down('#chkHeader');
+            chk = chkEl ? chkEl.dom.checked : false;
+        }
+
+        if (chk) {
+            console.log("TOGGLE → EUR");
+            this.getDataRefreshHeader('EUR')
+
+        } else {
+            console.log("TOGGLE → USD");
+            this.getDataRefreshHeader('USD')
+        }
+//        return false;
+    
+    },
     //</editor-fold>
     
     hiddenGridColumns: function (){
@@ -1068,15 +1133,25 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
 
             const country = this.beanResult.SCOUNTRY; // Ejemplo: "CO"
             const date = this.beanResult.VALDATE;       // Ejemplo: "20250731"
-
-            if (!country || !date) {
-                Ext.Msg.alert('Error', 'Faltan parámetros para la descarga (SCOUNTRY o ADATE).');
+            const ccustN = this.beanResult.CCUST;       
+            const cycle = this.beanResult.DCYCLE.trim();     
+            const input = this.beanResult.TINPUT.trim();     
+            let codigoClient = {
+                '134' : 'AV-134',
+                '133' : 'LR-134',
+                '202' : 'TA-134',
+                '547' : '2K-134'
+            }
+            const ccustR = codigoClient[this.beanResult.CCUST] ? codigoClient[this.beanResult.CCUST] : '';
+            if (!country || !date || !ccustN || !cycle || !input) {
+                Ext.Msg.alert('Error', 'Faltan parámetros para la descarga.');
                 return;
             }
 
             // Enviamos los dos parámetros al backend
             const url = prototype.url + '/getCSV?country=' + encodeURIComponent(country)
-                                       + '&date=' + encodeURIComponent(date);
+                                       + '&date=' + encodeURIComponent(date) + '&ccustR=' + encodeURIComponent(ccustR)
+                + '&cycle=' + encodeURIComponent(cycle) + '&input=' + encodeURIComponent(input);
 
             console.log('Solicitando:', url);
 
