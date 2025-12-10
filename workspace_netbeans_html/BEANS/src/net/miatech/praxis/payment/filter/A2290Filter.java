@@ -1118,6 +1118,17 @@ public class A2290Filter extends A2290 {
     public String O_TRANA = "";
     public String O_INVOICE = "";
     
+    public double O_RECAUDACION = 0;
+    public double O_TASA = 0;
+    public double O_RENDICION = 0;
+    public double O_PAGOTERCERO = 0;
+    public double O_COMISIONMEP = 0;
+    public double O_IVA = 0;
+    public double O_NETORENDIDO = 0;
+    public String O_EXCEPTION_CODE = "";
+    public double O_RECAUDACION_INR = 0;
+    public double O_RECAUDACION_USD = 0;
+    
     
     public String O_USCR = "";
     public String O_FECR = "";
