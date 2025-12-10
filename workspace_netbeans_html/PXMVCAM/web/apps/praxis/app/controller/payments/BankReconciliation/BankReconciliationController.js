@@ -180,6 +180,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     },
     xpanel_afterrender: function (obj, e) {
         
+        Ext.getCmp(prototype.id + '-btnAdd').hide();
+        
         $('#BankReconciliationForm-btnToggleSwitchFTGraf').change(function () {
             me.procesador();
         });
@@ -217,6 +219,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 Ext.getCmp(prototype.id + '-datePayment').hide();
                 Ext.getCmp(prototype.id + '-txtDATEPICKER').hide();
                 Ext.getCmp(prototype.id + '-btnFase2').hide();
+                Ext.getCmp(prototype.id + '-btnAdd').hide();
                 
             } else {
                 Ext.getCmp(prototype.id + '-cmbFecFiltro').hide(); 
@@ -234,6 +237,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 Ext.getCmp(prototype.id + '-lblDocSapBank').hide();
                 Ext.getCmp(prototype.id + '-datePayment').show();
                 Ext.getCmp(prototype.id + '-btnFase2').show();
+                Ext.getCmp(prototype.id + '-btnAdd').show();
             }
             });
 

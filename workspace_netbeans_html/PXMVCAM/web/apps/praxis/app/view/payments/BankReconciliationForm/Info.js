@@ -6384,7 +6384,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                             ]
                         },
 
-                        /////////////PAE+NEL MPF199/////////////////////
+                        /////////////PANEL MPF199/////////////////////
 
                         ////////////////////////////////////////////////
                         ////////////////////////////////////////////////////
@@ -6465,7 +6465,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                             {
                                                 text: 'Status',
                                                 dataIndex: 'O_STVAL',
-                                                width: 90,
+                                                width: 60,
                                                 renderer: function (value, metaData) {
                                                     metaData.style = "text-align:center;";
 
@@ -6482,7 +6482,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                             {
                                                 text: 'Source',
                                                 dataIndex: 'O_TINPUT',
-                                                width: 80,
+                                                width: 60,
                                                 renderer: function (value, metaData) {
                                                     metaData.style = "text-align:center;";
                                                     if(value == 'B'){
@@ -6506,7 +6506,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                             {
                                                 text: 'Days',
                                                 dataIndex: 'O_ADATE',
-                                                width: 50,
+                                                width: 45,
                                                 align: 'center',
                                                 renderer: function (value, metaData, record) {
                                                     const adateStr = record.get('O_ADATE');
@@ -6542,7 +6542,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                             {
                                                 text: 'Concept',
                                                 dataIndex: 'O_CONCEPT',
-                                                width: 100,
+                                                width: 80,
                                                 renderer: function (value, metaData, record) {
                                                     metaData.style = "text-align:center;";
 
@@ -6572,7 +6572,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                             {
                                                 text: 'Type<br>Adjusment',
                                                 dataIndex: 'O_TADJ',
-                                                width: 130,
+                                                width: 100,
                                                 renderer: function (value, metaData, record) {
                                                     metaData.style = "text-align:center;";
 
@@ -6602,7 +6602,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                             {
                                                 text: 'Agent',
                                                 dataIndex: 'O_SAGENT',
-                                                width: 80,
+                                                width: 70,
                                                 renderer: function (value, metaData) {
                                                     metaData.style = "text-align:center;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -6611,9 +6611,18 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'Consol.',
+                                                text: 'Consol',
                                                 dataIndex: 'O_SCONSOL',
                                                 width: 80,
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                             {
+                                                text: 'Country',
+                                                dataIndex: 'O_SCOUNTRY',
+                                                width: 60,
                                                 renderer: function (value, metaData) {
                                                     metaData.style = "text-align:center;";
                                                     return value;
@@ -6622,7 +6631,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                             {
                                                 text: 'Currency',
                                                 dataIndex: 'O_SCURRENCY',
-                                                width: 70,
+                                                width: 60,
                                                 renderer: function (value, metaData) {
                                                     metaData.style = "text-align:center;";
                                                     return value;
@@ -6631,7 +6640,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                             {
                                                 text: 'Neto',
                                                 dataIndex: 'O_NETO',
-                                                width: 115,
+                                                width: 110,
                                                 xtype: 'numbercolumn',
                                                 summaryType: 'sum', // 🔥 suma automático
 
@@ -6649,7 +6658,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                             {
                                                 text: 'Issued Payment',
                                                 dataIndex: 'O_PAYAMOU',
-                                                width: 115,
+                                                width: 110,
                                                 xtype: 'numbercolumn',
                                                 summaryType: 'sum', // 🔥 suma automático
                                                 renderer: function (value, metaData) {
@@ -6686,7 +6695,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                             {
                                                 text: 'Reference / Comment',
                                                 dataIndex: 'O_REFERENCE',
-                                                width: 330,
+                                                width: 300,
                                                 renderer: function (value, metaData, record) {
                                                     metaData.style = "text-align:center;";
 
@@ -6701,7 +6710,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                             {
                                                 text: 'BANDOC',
                                                 dataIndex: 'O_BANDOC',
-                                                width: 100,
+                                                width: 90,
                                                 renderer: function (value, metaData) {
                                                     metaData.style = "text-align:center;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
