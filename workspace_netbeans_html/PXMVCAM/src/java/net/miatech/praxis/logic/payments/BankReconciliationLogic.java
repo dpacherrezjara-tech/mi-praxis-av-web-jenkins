@@ -316,6 +316,15 @@ public class BankReconciliationLogic {
       public String MPF199Insert(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.MPF199Insert(filter);
     }
+    public String MPF199InsertArgentina(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.MPF199InsertArgentina(filter);
+    }
+    public String MPF199UpdateIndia(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.MPF199UpdateIndia(filter);
+    }
+    public String processFaseDosConciliation() throws SQLException, Exception {
+        return bankReconciliationDAO.processFaseDosConciliation();
+    }
      
      
      

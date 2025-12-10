@@ -349,10 +349,10 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Info', {
                                                 style: 'background:#c9daf5; border-color:white',
                                                 renderer: function (value, metaData, record) {
                                                     const id = record.get('LIVE_ID');
-                                                    const enabled = record.get('STATUSRO') === 'A';
+                                                    const enabled = true;
                                                     const status = record.get('LIVE_STATUS');
 
-                                                    const canLog = enabled && status === 'RUNNING';
+                                                    const canLog = enabled;
 
                                                     metaData.style = "text-align:center;";
                                                     metaData.tdCls = "rpa-buttons-cell";

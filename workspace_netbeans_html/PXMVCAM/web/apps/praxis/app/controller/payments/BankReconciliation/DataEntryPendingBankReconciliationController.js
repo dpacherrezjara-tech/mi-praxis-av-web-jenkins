@@ -241,26 +241,54 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryPendingBa
     
     
 //    <editor-fold defaultstate="collapsed" desc="Botones">
+
+
     onSaveClick: function (btn) {
+        var exceptionCode = this.getValue('txtExceptionExterior');
+        var urlAction;
+        var exceptionName;
+        var beanTemp = {};
+        
+       
+        
+        switch (exceptionCode) {
+            case '1': 
+                this.llenarDataArgentina(beanTemp);
+                urlAction = '/MaintenanceMPF199insertArgentina';
+                exceptionName = 'Argentina';
+                break;
+
+            case '2': 
+                this.llenarDataIndia(beanTemp);
+                urlAction = '/MaintenanceMPF199insertIndia';
+                exceptionName = 'India';
+                break;
+
+            default: 
+                this.llenarDataInsert(beanTemp);
+                urlAction = '/MaintenanceMPF199insert';
+                exceptionName = 'All';
+                break;
+        }
+        
+        console.log(urlAction,"esta es la URL"),
+        console.log(exceptionCode,"esta es la exceptionCode"),
+
+        beanTemp.option = 'I'; // Asegurar que el bean siempre tenga la opción de Insert
+
+        // 2. Mensaje de confirmación
         Ext.Msg.show({
             title: '.:PRAXIS:.',
-            msg: 'Are you sure to insert ?',
+            msg: 'Are you sure to insert data for ' + exceptionName + '?',
             buttons: Ext.MessageBox.YESNO,
             scope: this,
             icon: Ext.MessageBox.QUESTION,
             modal: true,
             fn: function (btn) {
                 if (btn === 'yes') {
-                    var beanTemp = {};
-                    this.llenarDataInsert(beanTemp);
-                    
-                    
-                        beanTemp.option = 'I';
-                      
-                        this.MaintenanceMPF199insert(beanTemp);
-                    
-                        
-                    
+                    // Llamar a la función de mantenimiento genérica
+                    beanTemp.option = 'I';
+                    this.MaintenanceMPF199Generic(beanTemp, urlAction, exceptionName);
                 }
             }
         });
@@ -348,33 +376,118 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryPendingBa
     
     // insert
     
-    MaintenanceMPF199insert: function (beanTemp) {
+    llenarDataArgentina: function (beanTemp) {
+        beanTemp.O_RECAUDACION = this.getCleanNumberValue("txtRECAUDACION");
+        beanTemp.O_TASA = this.getCleanNumberValue("txtTASA");
+        beanTemp.O_RENDICION = this.getCleanNumberValue("txtRendicion");
+        beanTemp.O_PAGOTERCERO = this.getCleanNumberValue("txtPagoTercero");
+        beanTemp.O_COMISIONMEP = this.getCleanNumberValue("txtComisionMEP");
+        beanTemp.O_IVA = this.getCleanNumberValue("txtIVA");
+        beanTemp.O_NETORENDIDO = this.getCleanNumberValue("txtNETORENDIDO");
+        beanTemp.O_EXCEPTION_CODE = this.getValue("txtExceptionExterior");
+    },
+    
+    llenarDataIndia: function (beanTemp) {
+        beanTemp.O_RECAUDACION_INR = this.getCleanNumberValue("txtRecaudacionINR");
+        beanTemp.O_RECAUDACION_USD = this.getCleanNumberValue("txtRecaudacionUSD");
+        beanTemp.O_EXCEPTION_CODE = this.getValue("txtExceptionExterior");
+    },
+    
+    getCleanNumberValue: function (id) {
+        var val = this.getValue(id);
+        if (typeof val === 'string') {
+            val = val.replace(/,/g, ''); 
+            val = val.replace(/[^0-9.-]/g, ''); 
+        }
+        return val; 
+    },
+    
+    MaintenanceMPF199Generic: function (beanTemp, urlAction, exceptionName) {
+        var finalUrl = (prototype && prototype.url) ? (prototype.url + urlAction) : (CONTEXTPATH + '/BankReconciliation' + urlAction);
 
-        Ext.getCmp(prototype.id + '-dataEntryPending').mask('Loading...');
-                
+        Ext.getCmp(prototype.id + '-dataEntryPending').mask('Saving data for ' + exceptionName + '...');
         Ext.Ajax.request({
-            url: prototype.url + '/MaintenanceMPF199insert',
+            url: finalUrl, 
             method: 'POST',
             timeout: 60000000,
-             params: {
-            beanString: Ext.encode(beanTemp)
-        },
-//            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+            params: {
+                beanString: Ext.encode(beanTemp)
+            },
             success: function (response, opts) {
                 Ext.getCmp(prototype.id + '-dataEntryPending').unmask('Loading...');
                 var res = Ext.JSON.decode(response.responseText);
-                console.log(res);
                 if (res.success) {
-                    global.Msg({msg: res.Mensaje});
-//                    Ext.getCmp(prototype.id + '-dataEntry').unmask();
-                    
+                    global.Msg({msg: res.Mensaje}); 
                     Ext.getCmp('BankReconciliationForm-dataEntryPending').close();
                     Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
                 } else {
-                    global.Msg({msg: 'An error occurred'});
+                    global.Msg({msg: 'Error: ' + res.Mensaje}); 
                 }
             }
         });
+    },
+    
+    // Agrega esta función utilitaria a tu controlador
+calculateNeto: function () {
+    var me = this;
+    var prototypeId = prototype.id;
+
+    var getNumericValue = function (id) {
+        var val = Ext.getCmp(prototypeId + '-' + id).getValue();
+        if (typeof val === 'string') {
+            val = val.replace(/\./g, '').replace(/,/g, '.');
+        }
+        return Ext.Number.parseFloat(val) || 0;
+    };
+
+    var recaudacion = getNumericValue('txtRECAUDACION');
+    var tasa = getNumericValue('txtTASA');
+    var rendicion = getNumericValue('txtRendicion');
+    var pagoTercero = getNumericValue('txtPagoTercero');
+    var comisionMEP = getNumericValue('txtComisionMEP');
+    var iva = getNumericValue('txtIVA');
+    
+    var descuentos = tasa + rendicion + pagoTercero + comisionMEP + iva;
+    var netoRendido = recaudacion - descuentos;
+    
+    var formattedNeto = Ext.util.Format.number(netoRendido, '0,000.00');
+    
+    Ext.getCmp(prototypeId + '-txtNETORENDIDO').setValue(formattedNeto);
+},
+    
+    onExceptionSelect: function (combo, record) {
+        var selectedCode = record.get('code'); 
+
+        var pnlRendicion = Ext.getCmp(prototype.id + '-pnlRENDICIONBSP');
+        var pnlPendingFields = Ext.getCmp(prototype.id + '-pnlPENDINGFIELDS'); 
+        var pnlConversionIND = Ext.getCmp(prototype.id + '-pnlConversionIND'); 
+
+        var titleArgentina = Ext.getCmp(prototype.id + '-titleBspArgentina');
+        var titleIndia = Ext.getCmp(prototype.id + '-titleBspIndia'); 
+
+
+
+        // ARGENTINA (Código '1')
+        var isArgentina = (selectedCode === '1');
+        if (pnlRendicion) pnlRendicion.setVisible(isArgentina);
+        if (titleArgentina) titleArgentina.setVisible(isArgentina);
+
+        // INDIA (Código '2')
+        var isIndia = (selectedCode === '2');
+        if (pnlConversionIND) pnlConversionIND.setVisible(isIndia);
+        if (titleIndia) titleIndia.setVisible(isIndia);
+
+        // ALL (Código '')
+        var isAll = (selectedCode === '');
+        if (pnlPendingFields) pnlPendingFields.setVisible(isAll);
+
+        if (!isArgentina && pnlRendicion && pnlRendicion.getForm) {
+            pnlRendicion.getForm().reset();
+        }
+        if (!isIndia && pnlConversionIND && pnlConversionIND.getForm) {
+            pnlConversionIND.getForm().reset();
+        }
+
     },
 
 

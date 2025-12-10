@@ -8664,6 +8664,140 @@ public class BankReconciliationDAO {
     }
     
     
+    public String MPF199InsertArgentina(A2290Filter filter) throws SQLException, Exception {
+        String message = " Successfully Inserted.";
+        CallableStatement cstmt = null;
+        Connection cnx = null;
+
+        // El SP tiene 12 parámetros en total (10 IN, 2 INOUT)
+        String SQL = "{CALL PRAXISMP.MPS450(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}"; 
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQL);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST.trim());
+            cstmt.setDouble(2, filter.O_RECAUDACION);
+            cstmt.setDouble(3, filter.O_TASA);
+            cstmt.setDouble(4, filter.O_RENDICION);
+            cstmt.setDouble(5, filter.O_PAGOTERCERO);
+            cstmt.setDouble(6, filter.O_COMISIONMEP);
+            cstmt.setDouble(7, filter.O_IVA);
+            cstmt.setDouble(8, filter.O_NETORENDIDO);
+            cstmt.setString(9, filter.O_EXCEPTION_CODE);
+            cstmt.setString(10, session.getUserView().getUserInfo().USR);
+
+            cstmt.setInt(11, 0); 
+            cstmt.setString(12, "");
+
+            cstmt.registerOutParameter(11, java.sql.Types.INTEGER);
+            cstmt.registerOutParameter(12, java.sql.Types.VARCHAR);
+
+            cstmt.execute();
+
+            int sqlCode = cstmt.getInt(11);
+            String sqlMessage = cstmt.getString(12);
+
+            if (sqlCode == 1) { 
+                 message = sqlMessage; 
+            } else {
+                 message = "ERROR SP: " + sqlMessage;
+                 throw new Exception(message); 
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            message = e.getMessage(); 
+        } finally {
+        }
+
+        return message;
+    }
+    
+    public String MPF199UpdateIndia(A2290Filter filter) throws SQLException, Exception {
+        String message = " Successfully Inserted.";
+        CallableStatement cstmt = null;
+        Connection cnx = null;
+        String SQL = "{CALL PRAXISMP.MPS451(?, ?, ?, ?, ?, ?, ?)}"; 
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQL);
+
+            // 1. Parámetros de Entrada (Input Parameters)
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST.trim());
+            cstmt.setDouble(2, filter.O_RECAUDACION_INR);
+            cstmt.setDouble(3, filter.O_RECAUDACION_USD);
+            cstmt.setString(4, filter.O_EXCEPTION_CODE);
+            cstmt.setString(5, session.getUserView().getUserInfo().USR);
+
+            cstmt.setInt(6, 0); 
+            cstmt.setString(7, "");
+
+
+            cstmt.registerOutParameter(6, java.sql.Types.INTEGER);
+            cstmt.registerOutParameter(7, java.sql.Types.VARCHAR);
+
+            cstmt.execute();
+            int sqlCode = cstmt.getInt(6);
+            String sqlMessage = cstmt.getString(7);
+
+            if (sqlCode == 1) { 
+                 message = sqlMessage; 
+            } else {
+                
+                 message = "ERROR SP: " + sqlMessage;
+                 throw new Exception(message); 
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            message = e.getMessage(); 
+        } finally {
+        }
+
+        return message;
+    }
+    
+    public String processFaseDosConciliation() throws SQLException, Exception {
+        String message = " Successfully executed MPS319.";
+        CallableStatement cstmt = null;
+        Connection cnx = null;
+
+        String SQL = "{CALL PRAXISMP.MPS319(?, ?)}"; 
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQL);
+
+            cstmt.setInt(1, 0); 
+            cstmt.setString(2, "");
+
+            cstmt.registerOutParameter(1, java.sql.Types.INTEGER);
+            cstmt.registerOutParameter(2, java.sql.Types.VARCHAR);
+
+            cstmt.execute();
+
+            int sqlCode = cstmt.getInt(1);
+            String sqlMessage = cstmt.getString(2);
+
+            if (sqlCode == 1) { 
+                 message = sqlMessage; 
+            } else {
+                 message = "ERROR MPS319: " + sqlMessage;
+                 throw new Exception(message); 
+            }
+
+        } catch (SQLException e) {
+            logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+            throw new SQLException("Error al ejecutar la conciliación: " + e.getMessage());
+        } finally {
+            if (cstmt != null) cstmt.close();
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+        }
+
+        return message;
+    }
     
     
     ////

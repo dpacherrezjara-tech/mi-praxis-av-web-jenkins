@@ -5529,6 +5529,104 @@ public class BankReconciliationController extends BaseController {
         return new Gson().toJson(map);
     }
     
+    @RequestMapping(value = "MaintenanceMPF199insertArgentina")
+    public @ResponseBody
+    String MaintenanceMPF199insertArgentina(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- BANKRECONCILIATIONDATAENTRY : MaintenanceMPF199insertArgentina-------------");
+//        String option;
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String msj = "";
+        String beanString = "";
+
+        try {
+
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            
+            
+            msj = logic.MPF199InsertArgentina(filter);
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        }  catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+
+        return new Gson().toJson(map);
+    }
+    
+    @RequestMapping(value = "MaintenanceMPF199insertIndia")
+    public @ResponseBody
+    String MaintenanceMPF199insertIndia(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- BANKRECONCILIATIONDATAENTRY : MaintenanceMPF199insertIndia-------------");
+//        String option;
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String msj = "";
+        String beanString = "";
+
+        try {
+
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            msj = logic.MPF199UpdateIndia(filter);
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        }  catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage()); 
+        }
+
+        return new Gson().toJson(map);
+    }
+    
+    @RequestMapping(value = "conciliacionFaseDos")
+    public @ResponseBody
+    String conciliacionFaseDos(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- BANKRECONCILIATION : conciliacionFaseDos-------------");
+
+        String msj = "";
+        Gson gson = new Gson();
+
+        try {
+
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            msj = logic.processFaseDosConciliation(); 
+
+            // 2. Respuesta de éxito
+            map.put("success", true);
+            map.put("Mensaje", msj);
+
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage()); 
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+
+        return gson.toJson(map);
+    }
     
     
     

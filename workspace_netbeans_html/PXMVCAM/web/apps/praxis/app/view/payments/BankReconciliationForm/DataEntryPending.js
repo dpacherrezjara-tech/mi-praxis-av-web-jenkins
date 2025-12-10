@@ -46,509 +46,603 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryPending', {
                         },
                         {xtype: 'tbspacer', width: 6},
                         {
-                            xtype: 'panel',
+                            xtype: 'panel', // Contenedor para el combo box (lo que estaba antes)
                             layout: 'hbox',
                             border: false,
-                            margin: '10 2 2 8',
                             items: [
-                                {xtype: 'tbspacer', width: 7},
                                 {
                                     xtype: 'label',
-                                    text: 'Agent ',
-                                    fontSize: 15,
-                                    textAlign: 'center',
-                                    paddingLeft: 3,
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 90
-                                },
-                                {xtype: 'tbspacer', width: 7},
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-txtAGENTMPF199',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    fieldStyle: 'background-color:#FFF2CC; color:#0B333C; text-align:center; font-weight:bold;',
-
-                                    editable: true,
-                                    maskRe: /^[0-9]$/, // SOLO NÚMEROS
-                                    regex: /^[0-9]{8}$/, // VALIDACIÓN EXACTA (8 números)
-
-                                    maxLength: 8,
-                                    minLength: 8,
-                                    enforceMaxLength: true,
-//                                    regex: /^[0-9]{0,8}$/,
-                                    align: 'center',
-                                    width: 80
-
-
-                                },
-                                {xtype: 'tbspacer', width: 35},
-
-
-
-                                {
-                                    xtype: 'label',
-                                    text: 'Status',
+                                    text: 'Exception',
                                     hidden: false,
                                     style: 'font-weight:bold;color:#0B333C;',
                                     width: 90
                                 },
                                 {xtype: 'tbspacer', width: 5},
-
                                 {
                                     xtype: 'combo',
-                                    id: prototype.id + '-txtSTATUSMPF199',
+                                    id: prototype.id + '-txtExceptionExterior',
                                     width: 110,
                                     queryMode: 'local',
                                     editable: false,
                                     forceSelection: true,
+                                    valu: '',
                                     store: [
-                                        {code: '1', name: 'Match'},
-                                        {code: '3', name: 'Pending'}
+                                        {code: '', name: 'All'},
+                                        {code: '1', name: 'ARGENTINA'},
+                                        {code: '2', name: 'INDIA'}
                                     ],
                                     displayField: 'name',
                                     valueField: 'code',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    fieldStyle: 'text-align:center;'
-                                },
-
-                                {xtype: 'tbspacer', width: 30},
-
-                                {
-                                    xtype: 'label',
-                                    text: 'Value Date',
-                                    hidden: false,
-                                    style: 'font-weight:bold;color:#0B333C;',
-
-                                    width: 100
-
-                                },
-                                {xtype: 'tbspacer', width: 10},
-
-//                                {
-//                                    xtype: 'textfield',
-//                                    id:prototype.id+'-txtVALUEDATEMPF199',
-//                                    style: 'font-weight:bold;color:#0B333C;',
-//                                    fieldStyle: 'text-align:center;',
-//                                    editable: false,
-//                                    width: 90
-//                                    
-//                                },
-//                                
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-txtVALUEDATEMPF199',
                                     style: 'font-weight:bold;color:#0B333C;',
                                     fieldStyle: 'text-align:center;',
-                                    width: 90,
-                                    maskRe: /^[0-9]$/, // SOLO NÚMEROS
-                                    regex: /^[0-9]{8}$/, // VALIDACIÓN EXACTA (8 números)
-                                    maxLength: 8,
-                                    minLength: 8,
-                                    enforceMaxLength: true, // BLOQUEA escribir más de 8
-                                    allowBlank: false, // NO permite vacío
-                                    validator: function (val) {
-                                        return (/^[0-9]{8}$/.test(val)) ? true : 'Fecha debe ser Año-Mes-Dia';
+                                    listeners: { 
+                                        select: 'onExceptionSelect'
                                     }
-                                },
-
-                                {xtype: 'tbspacer', width: 20}
-
-                            ]
-
-
-                        },
-                        {
-                            xtype: 'panel',
-                            layout: 'hbox',
-                            border: false,
-                            margin: '10 2 2 8',
-                            hidden: true,
-                            items: [
-                                {xtype: 'tbspacer', width: 7},
-                                {
-                                    xtype: 'label',
-                                    text: 'Status',
-                                    hidden: false,
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 90
-
-                                },
-                                {xtype: 'tbspacer', width: 7}
-
+                                }
                             ]
                         },
-                        {xtype: 'tbspacer', width: 6},
+                        
+                        // ========================================================
+                        // 1. PANEL DE CAMPOS PENDIENTES (SE MUESTRA POR DEFECTO)
+                        // ========================================================
                         {
                             xtype: 'panel',
-                            layout: 'hbox',
-                            border: false,
-                            margin: '10 2 2 8',
+                            id: prototype.id + '-pnlPENDINGFIELDS', 
+                            layout: 'vbox',
+                            defaults: {
+                                anchor: '100%'
+                            },
                             items: [
-                                {xtype: 'tbspacer', width: 7},
-                                {
-                                    xtype: 'label',
-                                    text: 'Concept',
-                                    hidden: false,
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 80
-
+                                { // Panel Agent, Status, Value Date (hbox)
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    border: false,
+                                    margin: '10 2 2 8',
+                                    items: [
+                                        {xtype: 'tbspacer', width: 7},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Agent ',
+                                            fontSize: 15,
+                                            textAlign: 'center',
+                                            paddingLeft: 3,
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 90
+                                        },
+                                        {xtype: 'tbspacer', width: 7},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-txtAGENTMPF199',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'background-color:#FFF2CC; color:#0B333C; text-align:center; font-weight:bold;',
+                                            editable: true,
+                                            maskRe: /^[0-9]$/, // SOLO NÚMEROS
+                                            regex: /^[0-9]{8}$/, // VALIDACIÓN EXACTA (8 números)
+                                            maxLength: 8,
+                                            minLength: 8,
+                                            enforceMaxLength: true,
+                                            align: 'center',
+                                            width: 80
+                                        },
+                                        {xtype: 'tbspacer', width: 35},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Status',
+                                            hidden: false,
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 90
+                                        },
+                                        {xtype: 'tbspacer', width: 5},
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-txtSTATUSMPF199',
+                                            width: 110,
+                                            queryMode: 'local',
+                                            editable: false,
+                                            forceSelection: true,
+                                            store: [
+                                                {code: '1', name: 'Match'},
+                                                {code: '3', name: 'Pending'}
+                                            ],
+                                            displayField: 'name',
+                                            valueField: 'code',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:center;'
+                                        },
+                                        {xtype: 'tbspacer', width: 30},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Value Date',
+                                            hidden: false,
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 100
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-txtVALUEDATEMPF199',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:center;',
+                                            width: 90,
+                                            maskRe: /^[0-9]$/, // SOLO NÚMEROS
+                                            regex: /^[0-9]{8}$/, // VALIDACIÓN EXACTA (8 números)
+                                            maxLength: 8,
+                                            minLength: 8,
+                                            enforceMaxLength: true, // BLOQUEA escribir más de 8
+                                            allowBlank: false, // NO permite vacío
+                                            validator: function (val) {
+                                                return (/^[0-9]{8}$/.test(val)) ? true : 'Fecha debe ser Año-Mes-Dia';
+                                            }
+                                        },
+                                        {xtype: 'tbspacer', width: 20}
+                                    ]
                                 },
-                                {xtype: 'tbspacer', width: 17},
-//                                {
-//                                    xtype: 'textfield',
-//                                    id:prototype.id+'-txtCONCEPTMPF199',
-//                                    style: 'font-weight:bold;color:#0B333C;',
-//                                    fieldStyle: 'text-align:center;',
-//                                    editable: false,
-//                                    width: 80,
-//                                    enforceMaxLength: true
-//                                    
-//                                },
-
+                                // Panel Concept, Adj Type, Consol (hbox)
                                 {
-                                    xtype: 'combo',
-                                    id: prototype.id + '-txtCONCEPTMPF199',
-                                    width: 90,
-                                    queryMode: 'local',
-                                    editable: false,
-                                    forceSelection: true,
-                                    store: [
-                                        {code: 'P', name: 'Positive'},
-                                        {code: 'N', name: 'Negative'},
-                                        {code: 'X', name: 'No Billing'},
-                                        {code: 'A', name: 'No Adjustment'},
-                                        {code: 'M', name: 'Automatic'},
-                                        {code: 'C', name: 'Compensation'},
-                                    ],
-                                    displayField: 'name',
-                                    valueField: 'code',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    fieldStyle: 'text-align:center;'
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    border: false,
+                                    margin: '10 2 2 8',
+                                    items: [
+                                        {xtype: 'tbspacer', width: 7},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Concept',
+                                            hidden: false,
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 80
+                                        },
+                                        {xtype: 'tbspacer', width: 17},
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-txtCONCEPTMPF199',
+                                            width: 90,
+                                            queryMode: 'local',
+                                            editable: false,
+                                            forceSelection: true,
+                                            store: [
+                                                {code: 'P', name: 'Positive'},
+                                                {code: 'N', name: 'Negative'},
+                                                {code: 'X', name: 'No Billing'},
+                                                {code: 'A', name: 'No Adjustment'},
+                                                {code: 'M', name: 'Automatic'},
+                                                {code: 'C', name: 'Compensation'},
+                                            ],
+                                            displayField: 'name',
+                                            valueField: 'code',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:center;'
+                                        },
+                                        {xtype: 'tbspacer', width: 20},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Adj Type',
+                                            hidden: false,
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 90
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-txtATYPEMPF199',
+                                            width: 110,
+                                            queryMode: 'local',
+                                            editable: false,
+                                            forceSelection: true,
+                                            store: [
+                                                {code: 'N', name: 'Non Remmitance'},
+                                                {code: 'R', name: 'Recovery'},
+                                                {code: 'U', name: 'Uncleared'},
+                                                {code: 'E', name: 'Excess'},
+                                                {code: 'S', name: 'Short'}
+                                            ],
+                                            displayField: 'name',
+                                            valueField: 'code',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:center;'
+                                        },
+                                        {xtype: 'tbspacer', width: 40},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Consol',
+                                            hidden: false,
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 90
+                                        },
+                                        {xtype: 'tbspacer', width: 9},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-txtCONSOLMPF199',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:center;',
+                                            editable: true,
+                                            width: 90,
+                                            enforceMaxLength: true
+                                        }
+                                    ]
                                 },
+                                // Panel Currency, Neto, Issued Payment (hbox)
+                                {
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    border: false,
+                                    margin: '10 2 2 8',
+                                    items: [
+                                        {xtype: 'tbspacer', width: 7},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Currency',
+                                            hidden: false,
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 80
+                                        },
+                                        {xtype: 'tbspacer', width: 17},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-txtCURRENCYMPF199',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:center;',
+                                            editable: true,
+                                            width: 60,
+                                            enforceMaxLength: true
+                                        },
+                                        {xtype: 'tbspacer', width: 80},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Neto',
+                                            hidden: false,
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 50
+                                        },
+                                        {xtype: 'tbspacer', width: 20},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-txtNETOMPF199',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:center;',
+                                            editable: true,
+                                            width: 100,
+                                            enforceMaxLength: true
+                                        },
+                                        {xtype: 'tbspacer', width: 47},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Issued Payment',
+                                            hidden: false,
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 80
+                                        },
+                                        {xtype: 'tbspacer', width: 23},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-txtIPAYMPF199',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:center;',
+                                            editable: true,
+                                            width: 90,
+                                            enforceMaxLength: true
+                                        }
+                                    ]
+                                },
+                                // Panel Start Date, End Date, Country (hbox)
+                                {
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    border: false,
+                                    margin: '10 2 2 8',
+                                    items: [
+                                        {xtype: 'tbspacer', width: 7},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Start Date',
+                                            hidden: false,
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 90
+                                        },
+                                        {xtype: 'tbspacer', width: 7},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-txtSTARTMPF199',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:center;',
+                                            width: 90,
+                                            maskRe: /^[0-9]$/, // SOLO NÚMEROS
+                                            regex: /^[0-9]{8}$/, // VALIDACIÓN EXACTA (8 números)
+                                            maxLength: 8,
+                                            minLength: 8,
+                                            enforceMaxLength: true, // BLOQUEA escribir más de 8
+                                            allowBlank: false, // NO permite vacío
+                                            validator: function (val) {
+                                                return (/^[0-9]{8}$/.test(val)) ? true : 'Fecha debe ser Año-Mes-Dia';
+                                            }
+                                        },
+                                        {xtype: 'tbspacer', width: 40},
+                                        {
+                                            xtype: 'label',
+                                            text: 'End Date',
+                                            hidden: false,
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 72
+                                        },
+                                        {xtype: 'tbspacer', width: 7},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-txtENDMPF199',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:center;',
+                                            width: 100,
+                                            maskRe: /^[0-9]$/, // SOLO NÚMEROS
+                                            regex: /^[0-9]{8}$/, // VALIDACIÓN EXACTA (8 números)
+                                            maxLength: 8,
+                                            minLength: 8,
+                                            enforceMaxLength: true, // BLOQUEA escribir más de 8
+                                            allowBlank: false, // NO permite vacío
+                                            validator: function (val) {
+                                                return (/^[0-9]{8}$/.test(val)) ? true : 'Fecha debe ser Año-Mes-Dia';
+                                            }
+                                        },
+                                        {xtype: 'tbspacer', width: 50},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Country',
+                                            hidden: false,
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 72
+                                        },
+                                        {xtype: 'tbspacer', width: 30},
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbCOUNTRY',
+                                            fieldStyle: 'text-align:left;',
+                                            enableKeyEvents: true,
+                                            width: 95,
+                                            editable: true,
+                                            readOnly: false,
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            emptyText: 'All',
+                                            valueField: 'A006PAIS',
+                                            displayField: 'A006NOMBRE'
+                                        },
+                                        {xtype: 'tbspacer', width: 10}
+                                    ]
+                                },
+                                // Panel Reference, Comment (hbox)
+                                {
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    border: false,
+                                    margin: '10 2 2 8',
+                                    items: [
+                                        {xtype: 'tbspacer', width: 7},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Reference',
+                                            hidden: false,
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 90
+                                        },
+                                        {xtype: 'tbspacer', width: 7},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-txtREFEMPF199',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:center;',
+                                            editable: true,
+                                            width: 240,
+                                            enforceMaxLength: true
+                                        },
+                                        {xtype: 'tbspacer', width: 7},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Comment',
+                                            hidden: false,
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 65
+                                        },
+                                        {xtype: 'tbspacer', width: 7},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-txtCOMMENTSMPF199',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:center;',
+                                            editable: true,
+                                            width: 240,
+                                            enforceMaxLength: true
+                                        }
+                                    ]
+                                }
+                            ] // Fin de items de pnlPENDINGFIELDS
+                        }, 
+                        // ========================================================
+                        // 2. PANEL DE RENDICIÓN BSP (SE OCULTA/MUESTRA DINÁMICAMENTE)
+                        // ========================================================
+                        
+                        // ========================================================
 
+
+                // ========================================================
+                // ETIQUETA Y PANEL DE RENDICIÓN BSP (VALIDADO Y CALCULADO)
+                // ========================================================
+
+                {
+                    xtype: 'label',
+                    text: 'Rendición BSP Data',
+                    id: prototype.id + '-titleBspArgentina',
+                    style: 'font-weight:bold;color:#0B333C;text-decoration-line: underline;',
+                    fontSize: '11',
+                    width: 234,
+                    margin: '10 2 4 8',
+                    hidden: true
+                },
+                {
+                    xtype: 'panel',
+                    id: prototype.id + '-pnlRENDICIONBSP', // ID CLAVE
+                    layout: 'vbox', 
+                    hidden: true, 
+                    padding: '0 10 0 10', 
+
+                    defaults: {
+                        xtype: 'panel',
+                        layout: 'hbox', 
+                        border: false,
+                        width: 680, 
+                        margin: '3 0 3 0',
+                        defaults: {
+                            labelWidth: 200, 
+                            labelAlign: 'right',
+                            // Estilo consistente para todos los campos de entrada
+                            fieldStyle: 'text-align: right; font-weight: bold; color: #0B333C;', 
+                            width: 350
+                        }
+                    },
+                    items: [
+                        // Fila 1: Recaudación BSP ARS | TASA AEROPORTUARIA
+                        {
+                            items: [
+                                {
+                                    xtype: 'numberfield', // Cambiado a numberfield para mejor manejo de números
+                                    fieldLabel: 'Recaudación BSP ARS:',
+                                    id: prototype.id + '-txtRECAUDACION',
+                                    decimalPrecision: 2, // 2 decimales
+                                    alwaysDisplayDecimals: true,
+                                    // Llamar a la función de cálculo en cada cambio
+                                    listeners: { change: 'calculateNeto' } 
+                                },
                                 {xtype: 'tbspacer', width: 20},
                                 {
-                                    xtype: 'label',
-                                    text: 'Adj Type',
-                                    hidden: false,
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 90
-
-                                },
-                                {xtype: 'tbspacer', width: 10},
-//                                {
-//                                    xtype: 'textfield',
-//                                    id:prototype.id+'-txtATYPEMPF199',
-//                                    style: 'font-weight:bold;color:#0B333C;',
-//                                    fieldStyle: 'text-align:center;',
-//                                    editable: false,
-//                                    width: 100,
-//                                    enforceMaxLength: true
-//                                    
-//                                },
-
-                                {
-                                    xtype: 'combo',
-                                    id: prototype.id + '-txtATYPEMPF199',
-                                    width: 110,
-                                    queryMode: 'local',
-                                    editable: false,
-                                    forceSelection: true,
-                                    store: [
-                                        {code: 'N', name: 'Non Remmitance'},
-                                        {code: 'R', name: 'Recovery'},
-                                        {code: 'U', name: 'Uncleared'},
-                                        {code: 'E', name: 'Excess'},
-                                        {code: 'S', name: 'Short'}
-
-                                    ],
-                                    displayField: 'name',
-                                    valueField: 'code',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    fieldStyle: 'text-align:center;'
-                                },
-
-                                {xtype: 'tbspacer', width: 40},
-
-                                {
-                                    xtype: 'label',
-                                    text: 'Consol',
-                                    hidden: false,
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 90
-
-                                },
-                                {xtype: 'tbspacer', width: 9},
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-txtCONSOLMPF199',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    fieldStyle: 'text-align:center;',
-                                    editable: true,
-                                    width: 90,
-                                    enforceMaxLength: true
-
+                                    xtype: 'numberfield',
+                                    fieldLabel: 'TASA AEROPORTUARIA:',
+                                    id: prototype.id + '-txtTASA',
+                                    decimalPrecision: 2,
+                                    alwaysDisplayDecimals: true,
+                                    labelWidth: 150,
+                                    listeners: { change: 'calculateNeto' }
                                 }
                             ]
                         },
 
+                        // Fila 2: Rendicion de Recaudacion | Pago a 3eros
                         {
-                            xtype: 'panel',
-                            layout: 'hbox',
-                            border: false,
-                            margin: '10 2 2 8',
                             items: [
-
-                                {xtype: 'tbspacer', width: 7},
-
                                 {
-                                    xtype: 'label',
-                                    text: 'Currency',
-                                    hidden: false,
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 80
-
-                                },
-                                {xtype: 'tbspacer', width: 17},
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-txtCURRENCYMPF199',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    fieldStyle: 'text-align:center;',
-                                    editable: true,
-                                    width: 60,
-                                    enforceMaxLength: true
-
-                                },
-
-                                {xtype: 'tbspacer', width: 80},
-
-                                {
-                                    xtype: 'label',
-                                    text: 'Neto',
-                                    hidden: false,
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 50
-
+                                    xtype: 'numberfield',
+                                    fieldLabel: 'Rendicion de Recaudacion (Alicuota 1,20%):',
+                                    id: prototype.id + '-txtRendicion',
+                                    decimalPrecision: 2,
+                                    alwaysDisplayDecimals: true,
+                                    listeners: { change: 'calculateNeto' }
                                 },
                                 {xtype: 'tbspacer', width: 20},
                                 {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-txtNETOMPF199',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    fieldStyle: 'text-align:center;',
-                                    editable: true,
-                                    width: 100,
-                                    enforceMaxLength: true
-
-                                },
-
-                                {xtype: 'tbspacer', width: 47},
-
-                                {
-                                    xtype: 'label',
-                                    text: 'Issued Payment',
-                                    hidden: false,
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 80
-
-                                },
-                                {xtype: 'tbspacer', width: 23},
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-txtIPAYMPF199',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    fieldStyle: 'text-align:center;',
-                                    editable: true,
-                                    width: 90,
-                                    enforceMaxLength: true
-
+                                    xtype: 'numberfield',
+                                    fieldLabel: 'Pago a 3eros (Alicuota 1,20%):',
+                                    id: prototype.id + '-txtPagoTercero',
+                                    decimalPrecision: 2,
+                                    alwaysDisplayDecimals: true,
+                                    labelWidth: 150,
+                                    listeners: { change: 'calculateNeto' }
                                 }
-
-
-
-
                             ]
                         },
 
+                        // Fila 3: Comision MEP | I.V.A.
                         {
-                            xtype: 'panel',
-                            layout: 'hbox',
-                            border: false,
-                            margin: '10 2 2 8',
                             items: [
-                                {xtype: 'tbspacer', width: 7},
-
                                 {
-                                    xtype: 'label',
-                                    text: 'Start Date',
-                                    hidden: false,
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 90
-
+                                    xtype: 'numberfield',
+                                    fieldLabel: 'Comision MEP:',
+                                    id: prototype.id + '-txtComisionMEP',
+                                    decimalPrecision: 2,
+                                    alwaysDisplayDecimals: true,
+                                    listeners: { change: 'calculateNeto' }
                                 },
-
-                                {xtype: 'tbspacer', width: 7},
-//                                {
-//                                    xtype: 'textfield',
-//                                    id: prototype.id + '-txtSTARTMPF199',
-//                                    style: 'font-weight:bold;color:#0B333C;',
-//                                    fieldStyle: 'text-align:center;',
-//                                    editable: false,
-//                                    width: 90,
-//                                    enforceMaxLength: true
-//
-//                                },
-
+                                {xtype: 'tbspacer', width: 20},
                                 {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-txtSTARTMPF199',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    fieldStyle: 'text-align:center;',
-                                    width: 90,
-                                    maskRe: /^[0-9]$/, // SOLO NÚMEROS
-                                    regex: /^[0-9]{8}$/, // VALIDACIÓN EXACTA (8 números)
-                                    maxLength: 8,
-                                    minLength: 8,
-                                    enforceMaxLength: true, // BLOQUEA escribir más de 8
-                                    allowBlank: false, // NO permite vacío
-                                    validator: function (val) {
-                                        return (/^[0-9]{8}$/.test(val)) ? true : 'Fecha debe ser Año-Mes-Dia';
-                                    }
-                                },
-
-                                {xtype: 'tbspacer', width: 40},
-
-                                {
-                                    xtype: 'label',
-                                    text: 'End Date',
-                                    hidden: false,
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 72
-
-                                },
-
-                                {xtype: 'tbspacer', width: 7},
-
-
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-txtENDMPF199',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    fieldStyle: 'text-align:center;',
-                                    width: 100,
-                                    maskRe: /^[0-9]$/, // SOLO NÚMEROS
-                                    regex: /^[0-9]{8}$/, // VALIDACIÓN EXACTA (8 números)
-                                    maxLength: 8,
-                                    minLength: 8,
-                                    enforceMaxLength: true, // BLOQUEA escribir más de 8
-                                    allowBlank: false, // NO permite vacío
-                                    validator: function (val) {
-                                        return (/^[0-9]{8}$/.test(val)) ? true : 'Fecha debe ser Año-Mes-Dia';
-                                    }
-                                },
-                                {xtype: 'tbspacer', width: 50},
-
-                                {
-                                    xtype: 'label',
-                                    text: 'Country',
-                                    hidden: false,
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 72
-
-                                },
-
-                                {xtype: 'tbspacer', width: 30},
-
-                                {
-                                    xtype: 'combo',
-                                    id: prototype.id + '-cmbCOUNTRY',
-                                    fieldStyle: 'text-align:left;',
-                                    enableKeyEvents: true,
-                                    width: 95,
-                                    editable: true,
-                                    readOnly: false,
-                                    queryMode: 'local',
-                                    triggerAction: 'all',
-                                    emptyText: 'All',
-                                    valueField: 'A006PAIS',
-                                    displayField: 'A006NOMBRE'
-//                                    listeners: {
-//                                        select: 'searchCitys'
-//                                    }
-                                },
-
-                                {xtype: 'tbspacer', width: 10}
-
-
-
-
+                                    xtype: 'numberfield',
+                                    fieldLabel: 'I.V.A.:',
+                                    id: prototype.id + '-txtIVA',
+                                    decimalPrecision: 2,
+                                    alwaysDisplayDecimals: true,
+                                    labelWidth: 150,
+                                    listeners: { change: 'calculateNeto' }
+                                }
                             ]
                         },
 
+                        // Fila 4: Neto Rendido ARS (Campo de resultado)
                         {
-                            xtype: 'panel',
-                            layout: 'hbox',
-                            border: false,
-                            margin: '10 2 2 8',
                             items: [
-                                {xtype: 'tbspacer', width: 7},
-
                                 {
-                                    xtype: 'label',
-                                    text: 'Reference',
-                                    hidden: false,
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 90
-
-                                },
-
-                                {xtype: 'tbspacer', width: 7},
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-txtREFEMPF199',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    fieldStyle: 'text-align:center;',
-                                    editable: true,
-                                    width: 240,
-                                    enforceMaxLength: true
-
-                                },
-                                {xtype: 'tbspacer', width: 7},
-                                {
-                                    xtype: 'label',
-                                    text: 'Comment',
-                                    hidden: false,
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 65
-
-                                },
-
-                                {xtype: 'tbspacer', width: 7},
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-txtCOMMENTSMPF199',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    fieldStyle: 'text-align:center;',
-                                    editable: true,
-                                    width: 240,
-                                    enforceMaxLength: true
-
-                                },
+                                    xtype: 'textfield', // Se deja como textfield porque el formato es de salida
+                                    fieldLabel: 'Neto Rendido ARS:',
+                                    id: prototype.id + '-txtNETORENDIDO',
+                                    readOnly: true, 
+                                    // Estilo de resultado (fondo diferente)
+                                    fieldStyle: 'background-color: #F8F8FF; color: #00008B; font-weight: bold; text-align: right;', 
+                                    width: 400 
+                                }
                             ]
                         }
+                    ]
+                },
+                
+                {
+                    xtype: 'label',
+                    text: 'Conversion IND a USD',
+                    id: prototype.id + '-titleBspIndia',
+                    style: 'font-weight:bold;color:#0B333C;text-decoration-line: underline;',
+                    fontSize: '11',
+                    width: 234,
+                    margin: '10 2 4 8',
+                    hidden: true
+                },
+                {
+                    xtype: 'panel',
+                    id: prototype.id + '-pnlConversionIND', 
+                    layout: 'vbox', 
+                    hidden: true, 
+                    padding: '0 10 0 10', 
 
+                    defaults: {
+                        xtype: 'panel',
+                        layout: 'hbox', 
+                        border: false,
+                        width: 680, 
+                        margin: '3 0 3 0',
+                        defaults: {
+                            labelWidth: 200, 
+                            labelAlign: 'right',
+                            fieldStyle: 'text-align: right; font-weight: bold; color: #0B333C;', 
+                            width: 350
+                        }
+                    },
+                    items: [
+                        {
+                            items: [
+                                {
+                                    xtype: 'numberfield', 
+                                    fieldLabel: 'Reportado en INR:',
+                                    id: prototype.id + '-txtRecaudacionINR',
+                                    decimalPrecision: 2, 
+                                    alwaysDisplayDecimals: true,
+                                },
+                                {xtype: 'tbspacer', width: 20},
+                                {
+                                    xtype: 'numberfield',
+                                    fieldLabel: 'Reportado en USD:',
+                                    id: prototype.id + '-txtRecaudacionUSD',
+                                    decimalPrecision: 2,
+                                    alwaysDisplayDecimals: true,
+                                    labelWidth: 150,
+                                }
+                            ]
+                        },
 
+                        
+                    ]
+                }
 
-
-
-
-
-
-
-
-
-                        //////////////////////////
 
 
                     ]
@@ -723,14 +817,6 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryPending', {
                         click: 'onUpdateClick'
                     }
                 },
-//                {
-//                    text: 'Delete',
-//                    id:prototype.id+'-btn-delete',
-//                    iconCls: 'prx-icon-delete',
-//                    listeners:{
-//                        click: 'onDeleteClick'
-//                    }
-//                },
                 {
                     text: 'Cancel',
                     id: prototype.id + '-btn-cancel',
@@ -742,5 +828,4 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryPending', {
             ]
         }
     ]
-}
-);
+});
