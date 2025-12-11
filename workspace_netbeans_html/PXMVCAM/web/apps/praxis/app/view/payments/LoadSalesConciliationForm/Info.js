@@ -158,6 +158,26 @@ Ext.define('Ext.Praxis.view.payments.LoadSalesConciliationForm.Info', {
                                                     padding: '0px 0px 0px 0px',
 
                                                 },
+                                                {xtype: 'tbspacer', width: 15},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Multi-Currency',
+                                                    id: prototype.id + '-lblMCURRENCY',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    hidden: true,
+                                                    width: 85,
+                                                    margin: '4 0 0 0',
+                                                },
+                                                {xtype: 'tbspacer', width: 5},
+                                                {
+                                                    xtype: 'checkboxfield',
+                                                    id: prototype.id + '-chkMCURRENCY',
+                                                    hidden: true,
+//                                                    margin: '0 0 0 0',
+//                                                    checked: true,
+                                                    padding: '0px 0px 0px 0px',
+
+                                                },
 
                                                 {xtype: 'tbspacer', width: 500}
 
