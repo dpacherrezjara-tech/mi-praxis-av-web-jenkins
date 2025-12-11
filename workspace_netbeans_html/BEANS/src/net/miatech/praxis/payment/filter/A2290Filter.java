@@ -1153,6 +1153,12 @@ public class A2290Filter extends A2290 {
     public String FERECV = "";
     public String HORECV = "";
     public String IN_FECFILTRO  = "";
+    public String IN_CCUSTPRO = "";
+    public String IN_FLIQUIDACI = "";
+    public String IN_MONEDA = "";
+    public String IN_CORRL = "";
+    public String IN_CODIGO = "";
+    public double IN_IMPORTE = 0;
 
     public String getVariable() {
         return BANDOC;
