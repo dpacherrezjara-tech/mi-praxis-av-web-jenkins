@@ -208,6 +208,8 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
                     Ext.getCmp(prototype.id + '-btn-process').show()
                     Ext.getCmp(prototype.id + '-chkCONTAB').show()
                     Ext.getCmp(prototype.id + '-lblCONTAB').show()
+                    Ext.getCmp(prototype.id + '-lblMCURRENCY').show()
+                    Ext.getCmp(prototype.id + '-chkMCURRENCY').show()
                     Ext.getCmp(prototype.id + '-btn-upload').setDisabled(true)
                     Ext.getCmp(prototype.id + '-rbgFlag').setDisabled(true)
                     Ext.getCmp(prototype.id + '-file').setDisabled(true)
@@ -327,6 +329,7 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
         beanProcess.IN_TRANL = parseInt(Ext.getCmp(prototype.id + '-de-txtTRANL').getValue())
         beanProcess.IN_CERROR = Ext.getCmp(prototype.id + '-chkCONTAB').getValue() ? '46' : '45'
         beanProcess.IN_STCON = Ext.getCmp(prototype.id + '-chkCONTAB').getValue() ? '1' : '2'
+        beanProcess.NINPUT = Ext.getCmp(prototype.id + '-chkMCURRENCY').getValue() ? 'Y' : 'N'
         let msgCONTAB = Ext.getCmp(prototype.id + '-chkCONTAB').getValue() ? 'Generate with accounting?' : 'Generate without accounting?'
         Ext.Msg.show({
             title: '.:PRAXIS:.',
@@ -486,6 +489,8 @@ Ext.define('Ext.Praxis.controller.payments.LoadSalesConciliation.LoadSalesConcil
         Ext.getCmp(prototype.id + '-btn-process').hide()
         Ext.getCmp(prototype.id + '-chkCONTAB').hide()
         Ext.getCmp(prototype.id + '-lblCONTAB').hide()
+        Ext.getCmp(prototype.id + '-lblMCURRENCY').hide()
+        Ext.getCmp(prototype.id + '-chkMCURRENCY').hide()
         Ext.getCmp(prototype.id + '-btn-upload').setDisabled(false)
         Ext.getCmp(prototype.id + '-rbgFlag').setDisabled(false)
         Ext.getCmp(prototype.id + '-btn-reconciliation').setDisabled(false)

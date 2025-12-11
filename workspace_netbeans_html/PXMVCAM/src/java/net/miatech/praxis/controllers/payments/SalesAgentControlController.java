@@ -1985,7 +1985,7 @@ public class SalesAgentControlController extends BaseController {
             Row row1 = sheet.createRow(vj);
 
             // Nivel 1 fijo
-            String[] headersFixed = {"NBR", "Client", "SRC", "Name", "Type"};
+            String[] headersFixed = {"NBR", "Client", "SRC", "Name","Agent", "Type"};
             for (int i = 0; i < headersFixed.length; i++) {
                 Cell cell = row1.createCell(i);
                 cell.setCellValue(headersFixed[i]);
@@ -2060,6 +2060,7 @@ public class SalesAgentControlController extends BaseController {
                 row.createCell(c++).setCellValue(item.CCUST);
                 row.createCell(c++).setCellValue(item.CANAV);
                 row.createCell(c++).setCellValue(item.NAGENT);
+                row.createCell(c++).setCellValue(item.VENDOR);
                 row.createCell(c++).setCellValue(item.TYPEAG);
 
                 // Accreditation Type

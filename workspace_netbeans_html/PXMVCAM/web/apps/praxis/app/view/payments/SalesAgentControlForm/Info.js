@@ -84,10 +84,17 @@ Ext.define('Ext.Praxis.view.payments.SalesAgentControlForm.Info', {
                                                 return  value;
                                             }},
                                             {text: '<span style="color:black;font-weight:bold;">SRC</span>', dataIndex: 'CANAV', width: 50,style: 'padding:2px; background: #c9daf5;border-color:white'},
-                                            {text: '<span style="color:black;font-weight:bold;">Name</span>', dataIndex: 'NAGENT', width: 226,style: 'padding:2px; background: #c9daf5;border-color:white',
+                                            {text: '<span style="color:black;font-weight:bold;">Name</span>', dataIndex: 'NAGENT', width: 100,style: 'padding:2px; background: #c9daf5;border-color:white',
                                             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                 var data = record.data;
                                                 metaData.style = "text-align:left;";
+
+                                                return value;
+                                            }},
+                                            {text: '<span style="color:black;font-weight:bold;">Agent</span>', dataIndex: 'VENDOR', width: 80,style: 'padding:2px; background: #c9daf5;border-color:white',
+                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                var data = record.data;
+                                                metaData.style = "text-align:center;";
 
                                                 return value;
                                             }},

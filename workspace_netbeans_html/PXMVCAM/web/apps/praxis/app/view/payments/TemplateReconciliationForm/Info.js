@@ -1872,6 +1872,437 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                     ]
                 }
             ]
+        },
+        {
+            region: 'center',
+            id: prototype.id + '-boxConsultas3',
+            layout: {
+                type: 'hbox',
+                align: 'stretch'
+            },
+            hidden: true,
+            border: false,
+            autoScroll: true,
+            items: [
+                 {
+                    xtype: 'panel',
+                    width: 710,
+                    border: false,
+                    margin: '8 0 8 8',
+                    layout: {
+                        type: 'vbox',
+                        align: 'left'
+                    },
+                    bodyPadding: 5,
+                    bodyStyle: 'background-color: #F4F7FD;',
+//                    style: 'border:2px solid #B8A189; border-radius:6px; background:#FAF9F7;',
+                    items: [
+                        // Filtros Bandoc
+                        {
+                            xtype: 'container',
+                            layout: {
+                                type: 'hbox',
+                                align: 'middle'
+                            },
+                            style: 'background:#EFE6DC; border:1px solid #D6C4A0; padding:8px; border-radius:4px;',
+                            width: 700,
+                            defaults: {
+                                margin: '0 10 0 0',
+                                labelAlign: 'left',
+                                labelStyle: 'font-size:12px; font-weight:bold;',
+                                fieldStyle: 'font-size:12px; text-align:center;'
+                            },
+                            items: [
+                                {
+                                    xtype: 'textfield',
+                                    fieldLabel: 'Bandoc',
+                                    id: prototype.id + '-txtBandocSaleReview',
+                                    enforceMaxLength: true,
+                                    maskRe: /[0-9]/,
+                                    maxLength: 10,
+                                    width: 150,
+                                    labelWidth: 50,
+                                    enableKeyEvents: true,
+                                    listeners: { keypress: 'searchBandocSalesReview' }
+                                },
+                            ]
+                        },
+                        // Grid Bandoc
+                        {
+    xtype: 'grid',
+    id: prototype.id + '-gridDataBandocReview',
+    height: 460,
+    width: 700,
+    margin: '10px 5px 0 0',
+    columnLines: true,
+
+    viewConfig: {
+        markDirty: false,
+        enableTextSelection: true,
+        preserveScrollOnRefresh: true
+    },
+    features: [{ ftype: 'summary', dock: 'bottom' }],
+
+    store: {
+        fields: ['RN','BANDOC','VALDATE','ADATE','ACCOUNT','SOCIETY','SCURRENCY','NETO'],
+        data: []
+    },
+
+    columns: {
+        items: [
+            {
+                text: 'DEPOSITS',
+                style: 'background: #8A7155;border-color:white',
+                columns: [
+                    {
+                        text: 'RN', width: 45, dataIndex: 'RN', align: 'center',
+                        style: 'padding:2px;background:#8A7155;border-color:white',
+                        renderer: function(v){ return v; },
+                        summaryRenderer: function(v, summaryData, dataIndex, meta){
+                            meta.style = "background:#8A7155;color:white";
+                            return "";
+                        }
+                    },
+                    {
+                        text: 'BANDOC', width: 88, dataIndex: 'BANDOC', align: 'center',
+                        style: 'padding:2px;background:#8A7155;border-color:white',
+                        renderer: function(v){ return v; },
+                        summaryRenderer: function(v, s, d, meta){
+                            meta.style = "background:#8A7155;color:white";
+                            return "";
+                        }
+                    },
+                    {
+                        text: 'VALDATE', width: 75, dataIndex: 'VALDATE', align: 'center',
+                        style: 'padding:2px;background:#8A7155;border-color:white',
+                        renderer: function(v){ return v; },
+                        summaryRenderer: function(v, s, d, meta){
+                            meta.style = "background:#8A7155;color:white";
+                            return "";
+                        }
+                    },
+                    {
+                        text: 'DATE', width: 75, dataIndex: 'ADATE', align: 'center',
+                        style: 'padding:2px;background:#8A7155;border-color:white',
+                        renderer: function(v){ return v; },
+                        summaryRenderer: function(v, s, d, meta){
+                            meta.style = "background:#8A7155;color:white";
+                            return "";
+                        }
+                    },
+                    {
+                        text: 'ACCOUNT', width: 82, dataIndex: 'ACCOUNT', align: 'center',
+                        style: 'padding:2px;background:#8A7155;border-color:white',
+                        renderer: function(v){ return v; },
+                        summaryRenderer: function(v, s, d, meta){
+                            meta.style = "background:#8A7155;color:white";
+                            return "";
+                        }
+                    },
+                    {
+                        text: 'REFER', width: 85, dataIndex: 'REFER', align: 'center',
+                        style: 'padding:2px;background:#8A7155;border-color:white',
+                        renderer: function(v){ return v; },
+                        summaryRenderer: function(v, s, d, meta){
+                            meta.style = "background:#8A7155;color:white";
+                            return "";
+                        }
+                    },
+                    {
+                        text: 'SOCIETY', width: 77, dataIndex: 'SOCIETY', align: 'center',
+                        style: 'padding:2px;background:#8A7155;border-color:white',
+                        renderer: function(v){ return v; },
+                        summaryRenderer: function(v, s, d, meta){
+                            meta.style = "background:#8A7155;color:white";
+                            return "";
+                        }
+                    }
+                ]
+            },
+
+            {
+                text: 'AMOUNT',
+                style: 'background: #8A7155;border-color:white',
+                columns: [
+                    {
+                        text: 'CURR', width: 75, dataIndex: 'SCURRENCY', align: 'center',
+                        style: 'padding:2px;background:#8A7155;border-color:white',
+                        renderer: function(v){ return v; },
+                        summaryRenderer: function(v, s, d, meta){
+                            meta.style = "background:#8A7155;color:white";
+                            return "";
+                        }
+                    },
+                   {
+    text: 'NETO',
+    width: 95,
+    dataIndex: 'NETO',
+
+    // CABECERA centrada
+    style: 'padding:2px;background:#8A7155;border-color:white;text-align:center',
+
+    // DATOS a la derecha
+    align: 'right',
+
+    renderer: function(v){
+        return '<b>' + Ext.util.Format.number(v, '0,000.00') + '</b>';
+    },
+    summaryRenderer: function(v, s, d, meta){
+        var store = Ext.getCmp(prototype.id + '-gridDataBandocReview').getStore();
+        var total = 0;
+        store.each(rec => total += rec.get('NETO'));
+        meta.style = "text-align:right;background:#8A7155;color:white";
+        return '<b>' + Ext.util.Format.number(total, '0,000.00') + '</b>';
+    }
+}
+
+                ]
+            }
+        ]
+    }
+}
+
+                    ]
+                },
+                // --- Caja VENTAS ---
+                {
+                    xtype: 'panel',
+                    width: 970,
+                    border: false,
+                    margin: '8 8 8 0',
+                    layout: {
+                        type: 'vbox',
+                        align: 'left'
+                    },
+                    bodyPadding: 5,
+                    bodyStyle: 'background-color: #F4F7FD;',
+        //            style: 'border:2px solid #3F5675; border-radius:6px; background:#F8FAFC;',
+                    items: [
+                        // Filtros Ventas
+                        {
+                            xtype: 'container',
+                            layout: {
+                                type: 'hbox',
+                                align: 'middle'
+                            },
+                            style: 'background:#E6ECF5; border:1px solid #99A9C4; padding:8px; border-radius:4px;',
+                            width: 960, 
+                            defaults: {
+                                margin: '0 10 0 0',
+                                labelAlign: 'left',
+                                labelStyle: 'font-size:12px; font-weight:bold;',
+                                fieldStyle: 'font-size:12px; text-align:center;'
+                            },
+                            items: [
+                                {
+                                    xtype: 'button',
+                                    id: prototype.id + '-btnAddDiscount',
+                                    iconCls: 'prx-icon-add',
+                                    tooltip: 'New Discount'
+                                }
+                            ]
+                        },
+                       // Grid Ventas
+{
+    xtype: 'grid',
+    id: prototype.id + '-gridDataVen2tas',
+    height: 460,
+    width: 960,
+    margin: '10px 5px 0 0',
+    columnLines: true,
+
+    viewConfig: {
+        markDirty: false,
+        enableTextSelection: true,
+        preserveScrollOnRefresh: true
+    },
+    features: [{ ftype: 'summary', dock: 'bottom' }],
+
+    store: {
+        fields: [
+            'RN','CCUST','DATECI','TRANCI','BANDOC','ADATE',
+            'CODPRO','MONEDAPAGO','IMPORTE','IMPORTEPAG'
+        ],
+        data: []
+    },
+
+    columns: {
+        items: [
+            {
+                text: 'DISCOUNTS',
+                style: 'background:#3F5675;border-color:white',
+                columns: [
+                    {
+                        text: 'RN', width: 50, dataIndex: 'RN', align: 'center',
+                        style: 'padding:2px;background:#3F5675;border-color:white',
+                        renderer: function(v){ return v; },
+                        summaryRenderer: function(v, s, d, meta){
+                            meta.style = "background:#3F5675;color:white";
+                            return "";
+                        }
+                    },
+                    {
+                        sortable: false,
+                        xtype: 'actioncolumn',
+                        width: 45,
+                        text: '<span style="color:white;font-weight:bold;">EDIT</span>',
+                        style: 'padding:2px; background:#3F5675; border-color:white',
+                        align: 'center',
+                        items: [
+                            {
+                                iconCls: 'prx-icon-edit',
+                                tooltip: 'Edit',
+                                handler: 'onEditClick'
+                            }
+                        ],
+                        summaryRenderer: function(v, s, d, meta){
+                            meta.style = "background:#3F5675;color:white";
+                            return "";
+                        }
+                    },
+                    {
+                        text: 'CCUST', width: 60, dataIndex: 'CCUST', align: 'center',
+                        style: 'padding:2px;background:#3F5675;border-color:white',
+                        renderer: function(v){ return v; },
+                        summaryRenderer: function(v, s, d, meta){
+                            meta.style = "background:#3F5675;color:white";
+                            return "";
+                        }
+                    },
+                    {
+                        text: 'PRDA', width: 70, dataIndex: 'PRDA', align: 'center',
+                        style: 'padding:2px;background:#3F5675;border-color:white',
+                        renderer: function(v){ return v; },
+                        summaryRenderer: function(v, s, d, meta){
+                            meta.style = "background:#3F5675;color:white";
+                            return "";
+                        }
+                    },
+                    {
+                        text: 'CODPRO', width: 75, dataIndex: 'CODPRO', align: 'center',
+                        style: 'padding:2px;background:#3F5675;border-color:white',
+                        renderer: function(v){ return v; },
+                        summaryRenderer: function(v, s, d, meta){
+                            meta.style = "background:#3F5675;color:white";
+                            return "";
+                        }
+                    },
+                    {
+                        text: 'CCUSTPRO', width: 85, dataIndex: 'CCUSTPRO', align: 'center',
+                        style: 'padding:2px;background:#3F5675;border-color:white',
+                        renderer: function(v){ return v; },
+                        summaryRenderer: function(v, s, d, meta){
+                            meta.style = "background:#3F5675;color:white";
+                            return "";
+                        }
+                    },
+                    {
+                        text: 'FLIQUIDACI', width: 85, dataIndex: 'FLIQUIDACI', align: 'center',
+                        style: 'padding:2px;background:#3F5675;border-color:white',
+                        renderer: function(v){ return v; },
+                        summaryRenderer: function(v, s, d, meta){
+                            meta.style = "background:#3F5675;color:white";
+                            return "";
+                        }
+                    },
+                    {
+                        text: 'LIQUIDACIO', width: 90, dataIndex: 'LIQUIDACIO', align: 'center',
+                        style: 'padding:2px;background:#3F5675;border-color:white',
+                        renderer: function(v){ return v; },
+                        summaryRenderer: function(v, s, d, meta){
+                            meta.style = "background:#3F5675;color:white";
+                            return "";
+                        }
+                    },
+                    {
+                        text: 'MERCHAND', width: 90, dataIndex: 'MERCHAND', align: 'center',
+                        style: 'padding:2px;background:#3F5675;border-color:white',
+                        renderer: function(v){ return v; },
+                        summaryRenderer: function(v, s, d, meta){
+                            meta.style = "background:#3F5675;color:white";
+                            return "";
+                        }
+                    },
+                    {
+                        text: 'CODIGO', width: 75, dataIndex: 'CODIGO', align: 'center',
+                        style: 'padding:2px;background:#3F5675;border-color:white',
+                        renderer: function(v){ return v; },
+                        summaryRenderer: function(v, s, d, meta){
+                            meta.style = "background:#3F5675;color:white";
+                            return "";
+                        }
+                    },
+                    {
+                        text: 'CORRL', width: 70, dataIndex: 'CORRL', align: 'center',
+                        style: 'padding:2px;background:#3F5675;border-color:white',
+                        renderer: function(v){ return v; },
+                        summaryRenderer: function(v, s, d, meta){
+                            meta.style = "background:#3F5675;color:white";
+                            return "";
+                        }
+                    }
+                ]
+            },
+
+            {
+                text: 'AMOUNT',
+                style: "background:#3F5675;border-color:white",
+                columns: [
+                    {
+    text: 'MONEDA', width: 80, dataIndex: 'MONEDA',
+    align: 'center',      // ✔ centra solo el header
+    style: 'padding:2px;background:#3F5675;border-color:white',
+    renderer: function(v){
+        return '<div style="text-align:center;">' + v + '</div>';  // ✔ contenido centrado
+    },
+    summaryRenderer: function(v, s, d, meta){
+        meta.style = "background:#3F5675;color:white;text-align:center;";
+        return "";
+    }
+},
+{
+    text: 'IMPORTE', width: 83, dataIndex: 'IMPORTE',
+    align: 'center',      // ✔ centra solo el header
+    style: 'padding:2px;background:#3F5675;border-color:white',
+    renderer: function(v){
+        return '<div style="text-align:right;"><b>' +
+               Ext.util.Format.number(v, '0,000.00') +
+               '</b></div>';     // ✔ contenido a la derecha sin tocar header
+    },
+    summaryRenderer: function(v, s, d, meta){
+        var store = Ext.getCmp(prototype.id + '-gridDataVen2tas').getStore();
+        var total = 0; store.each(r => total += (r.get('IMPORTE') || 0));
+        meta.style = "background:#3F5675;color:white;text-align:right;";
+        return '<b>' + Ext.util.Format.number(total, '0,000.00') + '</b>';
+    }
+}
+
+                ]
+            }
+        ]
+    }
+}
+
+
+
+                    ]
+                },
+            ]
         }
     ]
 });
+
+
+Ext.util.CSS.createStyleSheet(`
+    .section-title {
+        font-weight: bold;
+        font-size: 13px;
+        color: #0B333C;
+        text-decoration: underline;
+        background-color: #E5ECEF;
+        padding: 4px 8px;
+        border-radius: 3px;
+        display: block;
+        margin: 8px 0 4px 8px;
+    }
+`, 'section-title-style');

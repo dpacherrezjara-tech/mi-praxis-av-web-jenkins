@@ -105,30 +105,38 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             '#TemplateReconciliationForm-btnExcelLog': {
                 click: this.btnExcelLog_click
             },
+            '#TemplateReconciliationForm-btnAddDiscount': {
+                click: this.btnAddDiscount
+            },
         });
 
     },
     init_this: function () {
         me = this;
     },
-    xpanel_afterrender: function(obj, e) {
+    xpanel_afterrender: function (obj, e) {
+
+        $('#TemplateReconciliationForm-btnToggleSwitch').on('change', function () {
+            me.changeProcessor();
+        });
+
         this.setStoreData();
 //        this.btnSearch_click();
     },
-    
+
     btnSearch_click: function () {
         this.setFormatParameter();
 //        this.search();
     },
     setFormatParameter: function () {
-        
+
         me.bean = {};
         let getCustomer = Ext.getCmp(prototype.id + '-typeClient').getValue();
         let getProcessor = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
         let getDateFrom = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() +
-                                Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue() + Ext.getCmp(prototype.id + '-cmbDateDay').getValue();
+                Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue() + Ext.getCmp(prototype.id + '-cmbDateDay').getValue();
         let getDateTo = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() +
-                                Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue() + Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
+                Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue() + Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
 
         me.bean.IN_CCUST = getCustomer;
 //        me.bean.IN_DATE = getSettlementDate;
@@ -139,24 +147,24 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         global.selectedChild(me.childs, prototype.id + me.panelActual);
         this.searchParams.beanString = JSON.stringify(me.bean);
         console.log(me.bean, 'me.bean')
-        
+
     },
     search: function () {
-        
+
         let lstData = []
 
         var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
             proxy: {
                 url: prototype.url + '/getPendingSettlements'
             }, listeners: {
-                beforeload: function(obj) {
+                beforeload: function (obj) {
                     obj.proxy.extraParams = me.searchParams;
                 },
-                load: function(obj) {
-                    console.log(obj,'obj')
+                load: function (obj) {
+                    console.log(obj, 'obj')
                     var pag = Ext.getCmp(prototype.id + '-paggin2');
                     var pagData = pag.getPageData();
-                    console.log(pagData,'pagData')
+                    console.log(pagData, 'pagData')
 
                     Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
                     Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
@@ -190,12 +198,12 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             Ext.getCmp(prototype.id + me.boxActual).hide();
             me.boxActual = nameGrid;
             Ext.getCmp(prototype.id + me.boxActual).show();
-            console.log(me.drillDown,'me.drillDown')
+            console.log(me.drillDown, 'me.drillDown')
         }
     },
     btnExcel_click: function () {
         this.setFormatParameter();
-        console.log(this.searchParams,'this.searchParams')
+        console.log(this.searchParams, 'this.searchParams')
         Ext.Msg.show({
             title: '.:PRAXISEX:.',
             msg: 'Download Excel ?',
@@ -203,16 +211,16 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             scope: this,
             icon: Ext.MessageBox.QUESTION,
             modal: true,
-            fn: function(btn) {
+            fn: function (btn) {
                 if (btn === 'ok') {
                     this.exportExcel();
                 }
             }
         });
     },
-    exportExcel: function() {
-        console.log(this.boxActual,'this.boxActual')
-        console.log(me.boxActual,'this.boxActual')
+    exportExcel: function () {
+        console.log(this.boxActual, 'this.boxActual')
+        console.log(me.boxActual, 'this.boxActual')
         if (this.boxActual === '-boxMainData') {
             console.log('entre excel')
             me.goURLpost('excelAccountingInterfaces', this.searchParams.beanString, Ext.getCmp(prototype.id + '-gridData').config.columns.items);
@@ -287,7 +295,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             this.btnSearch_click();
         }
     },
-    joinMultiSelect: function (element){
+    joinMultiSelect: function (element) {
         let comboBox = element.getValue();
         return comboBox.join('|');
     },
@@ -331,7 +339,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             Ext.getCmp(prototype.id + '-boxPagDetail').setWidth(width);
         }
     },
-    updateTotalsOnCheck: function(column, rowIndex, checked, record) {
+    updateTotalsOnCheck: function (column, rowIndex, checked, record) {
         let recordSettlements = me.getGridRecords(prototype.id + '-gridData');
         let totalSettlements = 0;
         let totalComision = 0;
@@ -361,14 +369,14 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
 
         // Actualizar selecciones
         store.suspendEvents();
-        store.each(function(record) {
+        store.each(function (record) {
             record.set('select', record.get('checkActive') === true); // Asumo que debería ser como en tu función original
             record.commit();
         });
         store.resumeEvents();
 
         grid.getView().refresh();
-        
+
         me.updateGridTotal()
     },
     updateGridBandoc: function (column, rowIndex, checked, record) {
@@ -383,7 +391,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             record.commit();
         });
         store.resumeEvents();
-        
+
         me.updateGridTotal();
     },
     updateGridBandocSale: function (column, rowIndex, checked, record) {
@@ -440,15 +448,17 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         store.resumeEvents();
 
         me.updateGridTotalSale();
-    }, 
+    },
     markAllGridSale: function (checkbox, newValue) {
-        var grid  = Ext.getCmp(prototype.id + '-gridDataVentas');
+        var grid = Ext.getCmp(prototype.id + '-gridDataVentas');
         var store = grid.getStore();
-        var tam   = store.getCount();
-        if (tam === 0) return;
+        var tam = store.getCount();
+        if (tam === 0)
+            return;
 
         var checkCol = grid.down('checkcolumn[dataIndex=checkActive]');
-        if (checkCol && checkCol.suspendEvents) checkCol.suspendEvents();
+        if (checkCol && checkCol.suspendEvents)
+            checkCol.suspendEvents();
         store.suspendEvents();
 
 
@@ -460,7 +470,8 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         }
 
         store.resumeEvents();
-        if (checkCol && checkCol.resumeEvents) checkCol.resumeEvents();
+        if (checkCol && checkCol.resumeEvents)
+            checkCol.resumeEvents();
 
         // ✅ solo recalcular total si se marcó
         if (newValue) {
@@ -487,13 +498,15 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         me.updateGridTotalSale();
     },
     markAllGridBandoc: function (checkbox, newValue) {
-        var grid  = Ext.getCmp(prototype.id + '-gridData212');
+        var grid = Ext.getCmp(prototype.id + '-gridData212');
         var store = grid.getStore();
-        var tam   = store.getCount();
-        if (tam === 0) return;
+        var tam = store.getCount();
+        if (tam === 0)
+            return;
 
         var checkCol = grid.down('checkcolumn[dataIndex=checkActive]');
-        if (checkCol && checkCol.suspendEvents) checkCol.suspendEvents();
+        if (checkCol && checkCol.suspendEvents)
+            checkCol.suspendEvents();
         store.suspendEvents();
 
 
@@ -505,7 +518,8 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         }
 
         store.resumeEvents();
-        if (checkCol && checkCol.resumeEvents) checkCol.resumeEvents();
+        if (checkCol && checkCol.resumeEvents)
+            checkCol.resumeEvents();
 
         // ✅ solo recalcular total si se marcó
         if (newValue) {
@@ -528,8 +542,8 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         me.updateGridTotalSale();
     },
     updateGridDiscount: function (column, rowIndex, checked, record) {
-        console.log(record.data.blockChange,'record')
-        
+        console.log(record.data.blockChange, 'record')
+
         if (record.data.blockChange) {
             // Restaurar el valor anterior
             record.set('checkActive', true);
@@ -540,16 +554,16 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         let recordDiscount = me.getGridRecords(prototype.id + '-gridDataDescuentos');
         let totalImport = 0;
         let totalImportPag = 0;
-        
+
         for (let row of recordDiscount) {
             totalImport += row.IMPORTECeba || 0;
             totalImportPag += row.IMPORTEPAG || 0;
         }
-        
+
         var grid = Ext.getCmp(prototype.id + '-gridDataDescuentos');
         var store = grid.getStore();
         var tam = store.getCount();
-        
+
         if (tam > 0) {
             var lastRecord = store.getAt(0);
             lastRecord.set('TOTAL_IMPORTE', totalImport);
@@ -564,7 +578,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             record.commit();
         });
         store.resumeEvents();
-        
+
         me.updateGridTotal();
     },
     updateGridHead: function (column, rowIndex, checked, record) {
@@ -580,12 +594,13 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         grid.getView().refresh();
     },
     searchAllGrid: function (e, eOpts) {
-        if (eOpts.getKey() !== 13) return false;
+        if (eOpts.getKey() !== 13)
+            return false;
         this.searchDiscounts();
         this.searchSettlements();
     },
-    verifyConciliation: function() {
-        
+    verifyConciliation: function () {
+
 //        if (this.esIgual !== 0) {
 //            Ext.Msg.show({
 //                title: '.:PRAXISEX:.',
@@ -596,7 +611,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
 //            });
 //            return
 //        }
-        
+
         Ext.Msg.show({
             title: '.:PRAXISEX:.',
             msg: 'Are you sure you want to execute the conciliation?',
@@ -604,17 +619,17 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             scope: this,
             icon: Ext.MessageBox.QUESTION,
             modal: true,
-            fn: function(btn) {
+            fn: function (btn) {
                 if (btn === 'ok') {
                     this.executeConciliation();
                 }
             }
         });
     },
-    executeConciliation: function() {
+    executeConciliation: function () {
         let me = this;
         me.beanConciliation = {};
-        
+
         let recordDiscounts = me.getGridRecordsDiscount(prototype.id + '-gridDataDescuentos');
         let recordBandoc = me.getGridRecords(prototype.id + '-gridData21');
         let recordSettlements = me.getGridRecords(prototype.id + '-gridData');
@@ -622,15 +637,15 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         let recordSale = me.getGridRecords(prototype.id + '-gridDataVentas');
         let getProcess = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
         let getCustomer = Ext.getCmp(prototype.id + '-typeClient').getValue();
-        
+
         if (!recordBandoc.length) {
             global.Msg({
                 msg: 'No ha seleccionado un bandoc.'
             });
             return
         }
-        
-        if (getProcess !== "VN" && getProcess !== "BM"  && getProcess !== "AB") {
+
+        if (getProcess !== "VN" && getProcess !== "BM" && getProcess !== "AB") {
             if (!recordSettlements.length) {
                 global.Msg({
                     msg: 'No ha seleccionado liquidaciones.'
@@ -645,8 +660,8 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                 return
             }
         }
-        
-        let cleanSettlements = recordSettlements.map(function(item) {
+
+        let cleanSettlements = recordSettlements.map(function (item) {
             return {
                 RN: item.RN,
                 SDATE: item.SDATE ? item.SDATE.trim() : '',
@@ -670,8 +685,8 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                 IMPORTEPAG: item.IMPORTEPAG
             };
         });
-        
-        let cleanDiscounts = recordDiscounts.map(function(item) {
+
+        let cleanDiscounts = recordDiscounts.map(function (item) {
             return {
                 RN: item.RN,
                 CODPRO: item.CODPRO,
@@ -689,7 +704,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             };
         });
 
-        let cleanBandoc = recordBandoc.map(function(item) {
+        let cleanBandoc = recordBandoc.map(function (item) {
             return {
                 CCUST: item.CCUST,
                 BANDOC: item.BANDOC,
@@ -701,8 +716,8 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                 CODEBANK_EC: item.CODEBANK
             };
         });
-        
-        let cleanSale = recordBandoc.map(function(item) {
+
+        let cleanSale = recordBandoc.map(function (item) {
             return {
                 CCUST: item.CCUST,
                 CCIA: item.CCIA,
@@ -734,58 +749,58 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             beanSettlements: JSON.stringify(cleanSettlements),
             beanSales: JSON.stringify(cleanSale)
         };
-        
+
         console.log(searchParamsConciliation, 'searchParamsConciliation');
-        
-        me.sendConciliation(searchParamsConciliation, function(responseData) {
+
+        me.sendConciliation(searchParamsConciliation, function (responseData) {
             console.log(responseData)
         });
-        
+
     },
     sendConciliation: function (params, callback) {
         Ext.Ajax.request({
             url: prototype.url + '/executeConciliation',
             method: 'POST',
             timeout: 60000000,
-            params: {beanString: params.beanString, beanDiscounts: params.beanDiscounts, beanBandoc: params.beanBandoc, 
-                beanHead: params.beanHead, beanSettlements: params.beanSettlements, beanSales:params.beanSales},
-            beforerequest:  Ext.getCmp(prototype.id + '-xpanel').mask('Loading...'),
-            success: function(response, options) {
-                
+            params: {beanString: params.beanString, beanDiscounts: params.beanDiscounts, beanBandoc: params.beanBandoc,
+                beanHead: params.beanHead, beanSettlements: params.beanSettlements, beanSales: params.beanSales},
+            beforerequest: Ext.getCmp(prototype.id + '-xpanel').mask('Loading...'),
+            success: function (response, options) {
+
                 Ext.getCmp(prototype.id + '-xpanel').unmask('Loading...');
                 let res = Ext.JSON.decode(response.responseText);
-                console.log(res,'res')
+                console.log(res, 'res')
 
                 if (res.success) {
                     global.Msg({msg: res.result});
-                    
+
                     Ext.getCmp(prototype.id + '-gridDataDescuentos').getStore().removeAll();
                     Ext.getCmp(prototype.id + '-gridDataDescuentos').getView().refresh();
-                    
+
                     Ext.getCmp(prototype.id + '-gridData21').getStore().removeAll();
                     Ext.getCmp(prototype.id + '-gridData21').getView().refresh();
-                    
+
                     Ext.getCmp(prototype.id + '-gridDataVentas').getStore().removeAll();
                     Ext.getCmp(prototype.id + '-gridDataVentas').getView().refresh();
-                    
+
                     me.searchSettlements();
                     me.updateGridTotal();
-                    
+
                 } else {
-                    
+
                     global.Msg({msg: res.result});
-                    
-                    callback(res); 
+
+                    callback(res);
                 }
             },
-            failure: function(response, options) {
+            failure: function (response, options) {
                 Ext.getCmp(prototype.id + '-xpanel').unmask('Loading...');
                 console.error("Error en la petición AJAX");
                 global.Msg({msg: "Error al obtener datos"});
             }
         });
     },
-    getGridRecords: function(gridId) {
+    getGridRecords: function (gridId) {
         var grid = Ext.getCmp(gridId);
         if (!grid) {
             console.error('Grid not found with ID:', gridId);
@@ -799,10 +814,10 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         }
 
         return store.getRange()
-            .map(record => record.getData())
-            .filter(data => data.checkActive === true);
+                .map(record => record.getData())
+                .filter(data => data.checkActive === true);
     },
-    getGridRecordsDiscount: function(gridId) {
+    getGridRecordsDiscountReview: function (gridId) {
         var grid = Ext.getCmp(gridId);
         if (!grid) {
             console.error('Grid not found with ID:', gridId);
@@ -816,10 +831,9 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         }
 
         return store.getRange()
-            .map(record => record.getData())
-            .filter(data => data.checkActive === true && data.blockChange === false);
+                .map(record => record.getData());
     },
-    getGridRecordsSettlements: function(gridId) {
+    getGridRecordsDiscount: function (gridId) {
         var grid = Ext.getCmp(gridId);
         if (!grid) {
             console.error('Grid not found with ID:', gridId);
@@ -833,47 +847,65 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         }
 
         return store.getRange()
-            .map(record => record.getData())
-            .filter(data => data.checkActive === true);
+                .map(record => record.getData())
+                .filter(data => data.checkActive === true && data.blockChange === false);
+    },
+    getGridRecordsSettlements: function (gridId) {
+        var grid = Ext.getCmp(gridId);
+        if (!grid) {
+            console.error('Grid not found with ID:', gridId);
+            return [];
+        }
+
+        var store = grid.getStore();
+        if (!store) {
+            console.error('The grid has no associated store.');
+            return [];
+        }
+
+        return store.getRange()
+                .map(record => record.getData())
+                .filter(data => data.checkActive === true);
     },
     // <editor-fold defaultstate="collapsed" desc="Llenar Grilla Bandoc para Ventas">
     searchBandocSales: function (e, eOpts) {
-        if (eOpts.getKey() !== 13) return false;
+        if (eOpts.getKey() !== 13)
+            return false;
         this.fetchBandocSales();
     },
     fetchBandocSales: function () {
         let me = this;
         me.beanBandoc = {};
 
-        let getProcess  = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
-        let getBandoc   = Ext.getCmp(prototype.id + '-txtBandocSale').getValue();
+        let getProcess = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
+        let getBandoc = Ext.getCmp(prototype.id + '-txtBandocSale').getValue();
         let getCustomer = Ext.getCmp(prototype.id + '-typeClient').getValue();
         let getBandocFrom = Ext.Date.format(Ext.getCmp(prototype.id + '-txtFromBandoc').getValue(), 'Ymd');
         let getBandocTo = Ext.Date.format(Ext.getCmp(prototype.id + '-txtToBandoc').getValue(), 'Ymd');
 
-        me.beanBandoc.IN_CCUST    = getCustomer;
-        me.beanBandoc.IN_BANDOC   = getBandoc;
+        me.beanBandoc.IN_CCUST = getCustomer;
+        me.beanBandoc.IN_BANDOC = getBandoc;
         me.beanBandoc.IN_DATEFROM = getBandocFrom;
-        me.beanBandoc.IN_DATETO   = getBandocTo;
-        me.beanBandoc.IN_CODPRO   =getProcess;
+        me.beanBandoc.IN_DATETO = getBandocTo;
+        me.beanBandoc.IN_CODPRO = getProcess;
 
         let searchParamsBandoc = {
             beanString: JSON.stringify(me.beanBandoc)
         };
-        
+
         me.getBandocSales(searchParamsBandoc);
-       
+
     },
     getBandocSales: function (params) {
-        
+
         var storeGridDiscounts = Ext.create('Ext.Praxis.store.flown.PassengerConciliation.GridData', {
             proxy: {
                 url: prototype.url + '/getPendingDepositsSales'
             }, listeners: {
-                beforeload: function(obj) {
+                beforeload: function (obj) {
                     obj.proxy.extraParams = params;
                 },
-                load: function(obj) {
+                load: function (obj) {
                     console.log(obj.data, 'BANDOC SALE');
                     if (obj.data.length === 0) {
                         global.Msg({
@@ -882,7 +914,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                     } else {
                         var bean = obj.data.items[0].data;
                     }
-                    
+
                     me.updateGridTotalSale();
                 }
             }
@@ -890,45 +922,46 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
 
         Ext.getCmp(prototype.id + '-gridData212').setStore(storeGridDiscounts);
         storeGridDiscounts.load();
-        
+
     },
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Llenar Grilla Bandoc">
     searchBandoc: function (e, eOpts) {
-        if (eOpts.getKey() !== 13) return false;
+        if (eOpts.getKey() !== 13)
+            return false;
         this.fetchBandoc();
     },
     fetchBandoc: function () {
         let me = this;
         me.beanBandoc = {};
 
-        let getProcess  = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
-        let getBandoc   = Ext.getCmp(prototype.id + '-txtBandoc').getValue();
+        let getProcess = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
+        let getBandoc = Ext.getCmp(prototype.id + '-txtBandoc').getValue();
         let getCustomer = Ext.getCmp(prototype.id + '-typeClient').getValue();
 
-        me.beanBandoc.IN_CCUST    = getCustomer;
-        me.beanBandoc.IN_BANDOC   = getBandoc;
+        me.beanBandoc.IN_CCUST = getCustomer;
+        me.beanBandoc.IN_BANDOC = getBandoc;
         me.beanBandoc.IN_DATEFROM = '';
-        me.beanBandoc.IN_DATETO   = '';
-        me.beanBandoc.IN_CODPRO   = '';
+        me.beanBandoc.IN_DATETO = '';
+        me.beanBandoc.IN_CODPRO = '';
 
         let searchParamsBandoc = {
             beanString: JSON.stringify(me.beanBandoc)
         };
-        
+
         me.getBandoc(searchParamsBandoc);
-       
+
     },
     getBandoc: function (params) {
-        
+
         var storeGridDiscounts = Ext.create('Ext.Praxis.store.flown.PassengerConciliation.GridData', {
             proxy: {
                 url: prototype.url + '/getPendingDeposits'
             }, listeners: {
-                beforeload: function(obj) {
+                beforeload: function (obj) {
                     obj.proxy.extraParams = params;
                 },
-                load: function(obj) {
+                load: function (obj) {
                     console.log(obj.data);
                     if (obj.data.length === 0) {
                         global.Msg({
@@ -937,7 +970,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                     } else {
                         var bean = obj.data.items[0].data;
                     }
-                    
+
                     me.updateGridTotal();
                 }
             }
@@ -945,20 +978,20 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
 
         Ext.getCmp(prototype.id + '-gridData21').setStore(storeGridDiscounts);
         storeGridDiscounts.load();
-        
+
     },
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Llenar Grilla Descuentos">
     searchDiscounts: function () {
         let recordSettlements = me.getGridRecords(prototype.id + '-gridData');
-        
+
         if (!recordSettlements.length) {
             global.Msg({
                 msg: 'Seleccione las liquidaciones primero.'
             });
             return;
         }
-        
+
         this.fetchDiscounts();
     },
     fetchDiscounts: function () {
@@ -974,7 +1007,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         let recordSettlements = me.getGridRecords(prototype.id + '-gridData');
         let merchands = [];
         let liquidaciones = [];
-        
+
         for (let sett of recordSettlements) {
             let merch = (sett.MERCHAND || '').toString().trim();
             let liq = (sett.LIQUIDACIO || '').toString().trim();
@@ -987,8 +1020,8 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                 liquidaciones.push(liq);
             }
         }
-        
-        
+
+
         me.beanDiscounts.IN_CCUST = getCustomer;
         me.beanDiscounts.IN_CODPRO = getProcess;
         me.beanDiscounts.IN_DATEFROM = getDateFrom;
@@ -1007,15 +1040,15 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         me.getDiscounts(searchParamsDiscounts);
     },
     getDiscounts: function (params) {
-        
+
         var storeGridDiscounts = Ext.create('Ext.Praxis.store.flown.PassengerConciliation.GridData', {
             proxy: {
                 url: prototype.url + '/getPendingDiscounts'
             }, listeners: {
-                beforeload: function(obj) {
+                beforeload: function (obj) {
                     obj.proxy.extraParams = params;
                 },
-                load: function(obj) {
+                load: function (obj) {
                     console.log(obj.data);
                     if (obj.data.length === 0) {
                         global.Msg({
@@ -1025,7 +1058,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                         var bean = obj.data.items[0].data;
 //                        me.setTotalRowGridData(bean);
                     }
-                    
+
                     me.updateGridTotal();
                 }
             }
@@ -1049,7 +1082,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         let getDateTo = Ext.Date.format(Ext.getCmp(prototype.id + '-txtToSett').getValue(), 'Ymd');
         let getMerchant = Ext.getCmp(prototype.id + '-txtMerchant').getValue();
         let getLiquidation = Ext.getCmp(prototype.id + '-txtLiquidation').getValue();
-        
+
         me.beanSettlements.IN_CCUST = getCustomer;
         me.beanSettlements.IN_DATEFROM = getDateFrom;
         me.beanSettlements.IN_DATETO = getDateTo;
@@ -1063,7 +1096,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
 
         console.log(searchParamsSettlements, 'searchParamsBandoc');
 
-        me.getSettlements(searchParamsSettlements, function(responseData) {
+        me.getSettlements(searchParamsSettlements, function (responseData) {
             let store = Ext.create('Ext.data.Store', {
                 data: responseData.data
             });
@@ -1072,17 +1105,17 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         });
     },
     getSettlements: function (params, callback) {
-        
-        
-        
+
+
+
         var storeGridDatas = Ext.create('Ext.Praxis.store.flown.PassengerConciliation.GridData', {
             proxy: {
                 url: prototype.url + '/getPendingSettlements'
             }, listeners: {
-                beforeload: function(obj) {
+                beforeload: function (obj) {
                     obj.proxy.extraParams = params;
                 },
-                load: function(obj) {
+                load: function (obj) {
                     console.log(obj.data);
                     if (obj.data.length === 0) {
                         global.Msg({
@@ -1092,7 +1125,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                         var bean = obj.data.items[0].data;
 //                        me.setTotalRowGridData(bean);
                     }
-                    
+
                     me.updateGridTotal();
                 }
             }
@@ -1116,8 +1149,8 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         let getAgent = Ext.getCmp(prototype.id + '-txtAgentSale').getValue();
         let getCountry = Ext.getCmp(prototype.id + '-txtCountrySale').getValue();
 
-        
-        
+
+
         me.beanSales.IN_CCUST = getCustomer;
         me.beanSales.IN_CODPRO = getProcess;
         me.beanSales.IN_DATEFROM = getDateFrom;
@@ -1134,16 +1167,16 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         me.getSales(searchParamsSales);
     },
     getSales: function (params) {
-        
+
         var storeGridSale = Ext.create('Ext.Praxis.store.flown.PassengerConciliation.GridData', {
             proxy: {
                 url: prototype.url + '/getPendingSales'
             }, listeners: {
-                beforeload: function(obj) {
+                beforeload: function (obj) {
                     obj.proxy.extraParams = params;
                 },
-                load: function(obj) {
-                    console.log(obj.data,'VENTASSS');
+                load: function (obj) {
+                    console.log(obj.data, 'VENTASSS');
                     if (obj.data.length === 0) {
                         global.Msg({
                             msg: 'Data not found.'
@@ -1152,7 +1185,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                         var bean = obj.data.items[0].data;
 //                        me.setTotalRowGridData(bean);
                     }
-                    
+
                     me.updateGridTotalSale();
                 }
             }
@@ -1186,7 +1219,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
 
         console.log(searchParamsHead, 'searchParamsHead');
 
-        me.getHead(searchParamsHead, function(responseData) {
+        me.getHead(searchParamsHead, function (responseData) {
             let store = Ext.create('Ext.data.Store', {
                 data: responseData.data
             });
@@ -1200,25 +1233,25 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             method: 'POST',
             timeout: 60000000,
             params: params,
-            beforerequest:  Ext.getCmp(prototype.id + '-gridDataCabecera').mask('Loading...'),
-            success: function(response, options) {
+            beforerequest: Ext.getCmp(prototype.id + '-gridDataCabecera').mask('Loading...'),
+            success: function (response, options) {
                 Ext.getCmp(prototype.id + '-gridDataCabecera').unmask('Loading...');
                 let res = Ext.JSON.decode(response.responseText);
 
                 if (!res.success) {
                     global.Msg({msg: res.sesion});
                 } else {
-                    
+
                     if (!res.data.length) {
                         global.Msg({
                             msg: 'Data not found.'
                         });
                     }
-                    
+
                     callback(res); // Retorna los datos mediante callback
                 }
             },
-            failure: function(response, options) {
+            failure: function (response, options) {
                 Ext.getCmp(prototype.id + '-gridDataCabecera').unmask('Loading...');
                 console.error("Error en la petición AJAX");
                 global.Msg({msg: "Error al obtener datos"});
@@ -1227,36 +1260,36 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
     },
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Combo Date">
-    cbxDateFromYear_changeHandler: function() {
+    cbxDateFromYear_changeHandler: function () {
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue());
     },
-    cbxDateFromMonth_changeHandler: function() {
+    cbxDateFromMonth_changeHandler: function () {
         Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue(Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue());
     },
-    cbxDateFromDay_changeHandler: function() {
+    cbxDateFromDay_changeHandler: function () {
         Ext.getCmp(prototype.id + '-cmbDateToDay').setValue(Ext.getCmp(prototype.id + '-cmbDateFromDay').getValue());
     },
-    cbxDateFromYear_changeHandlerDesc: function() {
+    cbxDateFromYear_changeHandlerDesc: function () {
         Ext.getCmp(prototype.id + '-cmbDateToYearDesc').setValue(Ext.getCmp(prototype.id + '-cmbDateFromYearDesc').getValue());
     },
-    cbxDateFromMonth_changeHandlerDesc: function() {
+    cbxDateFromMonth_changeHandlerDesc: function () {
         Ext.getCmp(prototype.id + '-cmbDateToMonthDesc').setValue(Ext.getCmp(prototype.id + '-cmbDateFromMonthDesc').getValue());
     },
-    cbxDateFromDay_changeHandlerDesc: function() {
+    cbxDateFromDay_changeHandlerDesc: function () {
         Ext.getCmp(prototype.id + '-cmbDateToDayDesc').setValue(Ext.getCmp(prototype.id + '-cmbDateFromDayDesc').getValue());
     },
-    cbxDateFromYear_changeHandlerHead: function() {
+    cbxDateFromYear_changeHandlerHead: function () {
         Ext.getCmp(prototype.id + '-cmbDateToYearHead').setValue(Ext.getCmp(prototype.id + '-cmbDateFromYearHead').getValue());
     },
-    cbxDateFromMonth_changeHandlerHead: function() {
+    cbxDateFromMonth_changeHandlerHead: function () {
         Ext.getCmp(prototype.id + '-cmbDateToMonthHead').setValue(Ext.getCmp(prototype.id + '-cmbDateFromMonthHead').getValue());
     },
-    cbxDateFromDay_changeHandlerHead: function() {
+    cbxDateFromDay_changeHandlerHead: function () {
         Ext.getCmp(prototype.id + '-cmbDateToDayHead').setValue(Ext.getCmp(prototype.id + '-cmbDateFromDayHead').getValue());
     },
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Paginado">
-    pagFirst: function(obj, e) {
+    pagFirst: function (obj, e) {
         this.getPaggin();
         var pag = Ext.getCmp(prototype.id + me.pagginActual);
         pag.moveFirst();
@@ -1346,10 +1379,10 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
 //        Ext.getCmp(prototype.id + '-cmbDateToMonthDesc').setValue(month);
 //        Ext.getCmp(prototype.id + '-cmbDateDayDesc').setValue('01'); // Ahora se establece el día de ayer
 //        Ext.getCmp(prototype.id + '-cmbDateToDayDesc').setValue('15');
-        
+
         this.paramsObtainData.COREP = 2;
         this.paramsObtainData.COUNTRY = 2;
-        
+
         Ext.Ajax.request({
             url: prototype.urlMaster + '/obtainData',
             method: 'POST',
@@ -1363,20 +1396,20 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                 var res = Ext.JSON.decode(response.responseText);
                 var lstProcessor = res.lstProcessor;
                 var lstCountry = res.lstCountry;
-               
+
                 var storeDataProcessor = Ext.create('Ext.data.Store', {
                     data: lstProcessor,
                     autoLoad: true
                 });
-                
+
                 var storeDataCountrys = Ext.create('Ext.data.Store', {
                     data: lstCountry,
                     autoLoad: true
                 });
-                
+
                 Ext.getCmp(prototype.id + '-cmbCOREP').bindStore(storeDataProcessor);
-                Ext.getCmp(prototype.id + '-cmbCOREP').setValue('BM');
-                
+                Ext.getCmp(prototype.id + '-cmbCOREP').setValue('FD');
+
                 Ext.getCmp(prototype.id + '-txtCountrySale').bindStore(storeDataCountrys);
             }
         });
@@ -1413,7 +1446,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                 comisionSettGrid += Number(sett.COMISION) || 0;
             }
         }
-        
+
         if (recordSales.length) {
             for (let sale of recordSales) {
                 totalSaleGrid += Number(sale.SVFOP) || 0;
@@ -1428,7 +1461,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
 
         let calculo = Math.abs(totalSettGrid - Math.abs(comisionSettGrid) - Math.abs(totalDescGrid) - Math.abs(totalSaleGrid));
         let formattedDiff = Ext.util.Format.number(calculo, '0,000.00');
-        
+
         let diferencia_bandoc_calculo = totalBandocGrid - calculo;
         let formattedDiffB = Ext.util.Format.number(diferencia_bandoc_calculo, '0,000.00');
 
@@ -1448,7 +1481,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         cmpDiffB.setValue(formattedDiffB);
         cmpComision.setValue(formattedComision);
 
-        
+
         this.esIgual = diferencia_bandoc_calculo === 0;
 
         let colorFondo = this.esIgual ? '#4CAF50' : '#F44336';
@@ -1471,8 +1504,8 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
     updateGridTotalSale: function () {
         let recordBandoc = me.getGridRecords(prototype.id + '-gridData212');
         let recordSales = me.getGridRecords(prototype.id + '-gridDataVentas');
-        
-        console.log(recordSales,'recordSales')
+
+        console.log(recordSales, 'recordSales')
 
         this.esIgual = 0;
         let totalBandoc = 0;
@@ -1492,27 +1525,27 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             }
         }
 
-         let valueProccesor = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
-         let baseValue = (valueProccesor === 'AB') ? totalSales : totalSalesConverted;
-         
+        let valueProccesor = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
+        let baseValue = (valueProccesor === 'AB') ? totalSales : totalSalesConverted;
+
         let formattedBandoc = Ext.util.Format.number(totalBandoc, '0,000.00');
         let formattedSale = Ext.util.Format.number(baseValue, '0,000.00');
 
-        
+
         let calculo = baseValue - totalBandoc;
         let porcentaje = calculo > 0 ? (calculo / baseValue) * 100 : 0;
-        
+
         let formattedDiff = Ext.util.Format.number(calculo, '0,000.00');
         let formattedPorcentaje = Ext.util.Format.number(porcentaje, '0.00') + '%';
-        
-        
+
+
         //
-        
-        
-        
+
+
+
         //
-        
-        
+
+
         let cmpDeposito = Ext.getCmp(prototype.id + '-txtTotalDeposito');
         let cmpVenta = Ext.getCmp(prototype.id + '-txtVentas');
         let cmpDiferencia = Ext.getCmp(prototype.id + '-txtTotalDiffVenta');
@@ -1543,7 +1576,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                 }
             });
         }, 10);
-        
+
         Ext.defer(function () {
             [cmpPorcentaje].forEach(cmp => {
                 let el = cmp.getEl();
@@ -1559,41 +1592,55 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         }, 10);
     },
     changeProcessor: function () {
-        
+
         let getProcess = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
-        this.changeViewTemplate(getProcess)
-        
+        let toggleEl = Ext.getCmp(prototype.id + '-btnToggleSwitch').el.dom;
+        let isChecked = toggleEl.querySelector(".toggle-input").checked;
+        this.changeViewTemplate(getProcess, isChecked)
+
         Ext.getCmp(prototype.id + '-gridDataDescuentos').getStore().removeAll();
         Ext.getCmp(prototype.id + '-gridDataDescuentos').getView().refresh();
-        
+
         Ext.getCmp(prototype.id + '-gridDataVentas').getStore().removeAll();
         Ext.getCmp(prototype.id + '-gridDataVentas').getView().refresh();
-        
+
         Ext.getCmp(prototype.id + '-gridData21').getStore().removeAll();
         Ext.getCmp(prototype.id + '-gridData21').getView().refresh();
-        
-        if (getProcess !== "VN" && getProcess !== "BM" && getProcess !== "AB" ) {
+
+        if (isChecked) {
+            console.log('isChecked');
+        } else if (getProcess !== "VN" && getProcess !== "BM" && getProcess !== "AB" && !isChecked) {
             me.searchSettlements();
             me.updateGridTotal();
         } else {
             me.updateGridTotalSale();
         }
-        
+
     },
-    changeViewTemplate: function(getProcess) {
-        
-        if (getProcess !== "VN" && getProcess !== "BM"  && getProcess !== "AB") {
+    changeViewTemplate: function (getProcess, isChecked) {
+
+        if (getProcess !== "VN" && getProcess !== "BM" && getProcess !== "AB" && !isChecked) {
             console.log(1)
             Ext.getCmp(prototype.id + "-boxConsultas2").hide();
+            Ext.getCmp(prototype.id + "-boxConsultas3").hide();
             Ext.getCmp(prototype.id + "-boxConsultas").show();
             Ext.getCmp(prototype.id + "-gridData21").show();
             Ext.getCmp(prototype.id + "-txtBandoc").show();
             Ext.getCmp(prototype.id + "-btnExecute").show();
             Ext.getCmp("panelResumenTotales").show();
             Ext.getCmp("panelResumenBandocMenosCalculo").show();
+        } else if (isChecked) {
+            Ext.getCmp(prototype.id + "-boxConsultas3").show();
+            Ext.getCmp(prototype.id + "-boxConsultas").hide();
+            Ext.getCmp(prototype.id + "-gridData21").hide();
+            Ext.getCmp(prototype.id + "-txtBandoc").hide();
+            Ext.getCmp(prototype.id + "-btnExecute").hide();
+            Ext.getCmp("panelResumenTotales").hide();
+            Ext.getCmp("panelResumenBandocMenosCalculo").hide();
         } else {
             console.log(2)
             Ext.getCmp(prototype.id + "-boxConsultas2").show();
+            Ext.getCmp(prototype.id + "-boxConsultas3").hide();
             Ext.getCmp(prototype.id + "-boxConsultas").hide();
             Ext.getCmp(prototype.id + "-gridData21").hide();
             Ext.getCmp(prototype.id + "-txtBandoc").hide();
@@ -1601,17 +1648,14 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             Ext.getCmp("panelResumenTotales").hide();
             Ext.getCmp("panelResumenBandocMenosCalculo").hide();
             Ext.getCmp(prototype.id + '-centerC-panel02')
-            .getEl()
-            .setStyle('margin-top', '60px');
-
-
-
+                    .getEl()
+                    .setStyle('margin-top', '60px');
         }
-        
-        
+
+
     },
-    verifyConciliationSale: function() {
-        
+    verifyConciliationSale: function () {
+
 //        if (this.esIgual !== 0) {
 //            Ext.Msg.show({
 //                title: '.:PRAXISEX:.',
@@ -1622,7 +1666,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
 //            });
 //            return
 //        }
-        
+
         Ext.Msg.show({
             title: '.:PRAXISEX:.',
             msg: 'Are you sure you want to execute the conciliation?',
@@ -1630,18 +1674,18 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             scope: this,
             icon: Ext.MessageBox.QUESTION,
             modal: true,
-            fn: function(btn) {
+            fn: function (btn) {
                 if (btn === 'ok') {
                     this.executeConciliationSale();
                 }
             }
         });
     },
-    executeConciliationSale: function() {
+    executeConciliationSale: function () {
         let me = this;
         me.beanConciliation = {};
-        
-        
+
+
         let recordDiscounts = me.getGridRecordsDiscount(prototype.id + '-gridDataDescuentos');
         let recordSettlements = me.getGridRecords(prototype.id + '-gridData');
         let recordHead = me.getGridRecords(prototype.id + '-gridDataCabecera');
@@ -1649,22 +1693,22 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         let recordSale = me.getGridRecords(prototype.id + '-gridDataVentas');
         let getProcess = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
         let getCustomer = Ext.getCmp(prototype.id + '-typeClient').getValue();
-        
+
         if (!recordBandoc.length) {
             global.Msg({
                 msg: 'No ha seleccionado un bandoc.'
             });
             return
         }
-        
+
         if (!recordSale.length) {
             global.Msg({
                 msg: 'No ha seleccionado Ventas.'
             });
             return
         }
-        
-        let cleanSettlements = recordSettlements.map(function(item) {
+
+        let cleanSettlements = recordSettlements.map(function (item) {
             return {
                 RN: item.RN,
                 SDATE: item.SDATE ? item.SDATE.trim() : '',
@@ -1688,8 +1732,8 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                 IMPORTEPAG: item.IMPORTEPAG
             };
         });
-        
-        let cleanDiscounts = recordDiscounts.map(function(item) {
+
+        let cleanDiscounts = recordDiscounts.map(function (item) {
             return {
                 RN: item.RN,
                 CODPRO: item.CODPRO,
@@ -1707,7 +1751,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             };
         });
 
-        let cleanBandoc = recordBandoc.map(function(item) {
+        let cleanBandoc = recordBandoc.map(function (item) {
             return {
                 CCUST: item.CCUST,
                 BANDOC: item.BANDOC,
@@ -1719,8 +1763,8 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                 CODEBANK_EC: item.CODEBANK
             };
         });
-        
-        let cleanSale = recordSale.map(function(item) {
+
+        let cleanSale = recordSale.map(function (item) {
             return {
                 CCUST: item.CCUST,
                 CCIA: item.CCIA,
@@ -1752,57 +1796,210 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             beanSettlements: JSON.stringify(cleanSettlements),
             beanSales: JSON.stringify(cleanSale)
         };
-        
+
         console.log(searchParamsConciliation, 'searchParamsConciliation');
-        
-        me.sendConciliationSale(searchParamsConciliation, function(responseData) {
+
+        me.sendConciliationSale(searchParamsConciliation, function (responseData) {
             console.log(responseData)
         });
-        
+
     },
     sendConciliationSale: function (params, callback) {
         Ext.Ajax.request({
             url: prototype.url + '/executeConciliation',
             method: 'POST',
             timeout: 60000000,
-            params: {beanString: params.beanString, beanDiscounts: params.beanDiscounts, beanBandoc: params.beanBandoc, 
-                beanHead: params.beanHead, beanSettlements: params.beanSettlements, beanSales:params.beanSales},
-            beforerequest:  Ext.getCmp(prototype.id + '-xpanel').mask('Loading...'),
-            success: function(response, options) {
-                
+            params: {beanString: params.beanString, beanDiscounts: params.beanDiscounts, beanBandoc: params.beanBandoc,
+                beanHead: params.beanHead, beanSettlements: params.beanSettlements, beanSales: params.beanSales},
+            beforerequest: Ext.getCmp(prototype.id + '-xpanel').mask('Loading...'),
+            success: function (response, options) {
+
                 Ext.getCmp(prototype.id + '-xpanel').unmask('Loading...');
                 let res = Ext.JSON.decode(response.responseText);
-                console.log(res,'res')
+                console.log(res, 'res')
 
                 if (res.success) {
                     global.Msg({msg: res.result});
-                    
+
                     Ext.getCmp(prototype.id + '-gridDataDescuentos').getStore().removeAll();
                     Ext.getCmp(prototype.id + '-gridDataDescuentos').getView().refresh();
-                    
+
                     Ext.getCmp(prototype.id + '-gridData21').getStore().removeAll();
                     Ext.getCmp(prototype.id + '-gridData21').getView().refresh();
-                    
+
                     Ext.getCmp(prototype.id + '-gridData212').getStore().removeAll();
                     Ext.getCmp(prototype.id + '-gridData212').getView().refresh();
-                    
+
                     Ext.getCmp(prototype.id + '-gridDataVentas').getStore().removeAll();
                     Ext.getCmp(prototype.id + '-gridDataVentas').getView().refresh();
-                    
+
                     me.updateGridTotalSale();
-                    
+
                 } else {
-                    
+
                     global.Msg({msg: res.result});
-                    
-                    callback(res); 
+
+                    callback(res);
                 }
             },
-            failure: function(response, options) {
+            failure: function (response, options) {
                 Ext.getCmp(prototype.id + '-xpanel').unmask('Loading...');
                 console.error("Error en la petición AJAX");
                 global.Msg({msg: "Error al obtener datos"});
             }
         });
     },
+
+    // <editor-fold defaultstate="collapsed" desc="Llenar Grilla Bandoc y Descuentos">
+    searchBandocSalesReview: function (e, eOpts) {
+        // Si no viene evento (cuando se refresca), continuar sin validar tecla
+        if (eOpts && eOpts.getKey && eOpts.getKey() !== 13)
+            return false;
+
+        this.fetchBandocSalesReview();
+    },
+    fetchBandocSalesReview: function () {
+        let me = this;
+        me.beanBandoc = {};
+
+        let getProcess = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
+        let getBandoc = Ext.getCmp(prototype.id + '-txtBandocSaleReview').getValue();
+        let getCustomer = Ext.getCmp(prototype.id + '-typeClient').getValue();
+
+        me.beanBandoc.IN_CCUST = getCustomer;
+        me.beanBandoc.IN_BANDOC = getBandoc;
+        me.beanBandoc.IN_CODPRO = getProcess;
+
+        let searchParamsBandoc = {
+            beanString: JSON.stringify(me.beanBandoc)
+        };
+
+        console.log(me.beanBandoc, 'RAAA')
+
+        me.getBandocSalesReview(searchParamsBandoc);
+
+    },
+    getBandocSalesReview: function (params) {
+        let me = this;
+
+        Ext.Ajax.request({
+            url: prototype.url + '/getPendingDepositsSalesReview',
+            method: 'POST',
+            beforerequest: Ext.getCmp(prototype.id + '-boxConsultas3').mask('Loading...'),
+            params: params,
+            success: function (response) {
+
+                let json;
+                try {
+                    json = Ext.decode(response.responseText);
+                } catch (e) {
+                    console.error("Error al parsear JSON:", e);
+                    global.Msg({msg: 'Invalid JSON response'});
+                    return;
+                }
+
+                if (!json.success) {
+                    console.warn(" success=false en respuesta");
+                    global.Msg({msg: 'Error loading data'});
+                    return;
+                }
+
+                let deposits = json.data.deposits || [];
+                let invoices = json.data.invoices || [];
+
+                let grid1 = Ext.getCmp(prototype.id + '-gridDataBandocReview');
+                let grid2 = Ext.getCmp(prototype.id + '-gridDataVen2tas');
+
+                if (!grid1)
+                    console.error("gridDataBandocReview NO encontrado");
+                if (!grid2)
+                    console.error("gridDataVen2tas NO encontrado");
+
+                grid1.getStore().loadData(deposits);
+                grid2.getStore().loadData(invoices);
+
+                if (deposits.length === 0 && invoices.length === 0) {
+                    console.warn("Respuesta vacía");
+                    global.Msg({msg: 'Data not found.'});
+                }
+
+                Ext.getCmp(prototype.id + '-boxConsultas3').unmask('Loading...');
+
+            },
+            failure: function (err) {
+                console.error("Error en la petición AJAX:", err);
+                global.Msg({msg: 'Connection error.'});
+            }
+        });
+    },
+    onEditClick: function (grid, rowIndex, colIndex) {
+        var rec = grid.getStore().getAt(rowIndex);
+        this.winDataEntry('U', rec);
+    },
+    winDataEntry: function (action, rec) {
+        action = action === null || action === undefined ? 'U' : action;
+        rec = rec === null || rec === undefined ? {} : rec;
+
+        Ext.create('Ext.Praxis.view.payments.TemplateReconciliationForm.DataEntry', {
+            id: prototype.id + '-dataEntry',
+            params: {
+                action: action,
+                rec: rec,
+                lstCountry: []
+//                lstCountry: me.lstCountry
+            }
+        }).show();
+    },
+    btnAddDiscount: function () {
+
+        let getProcess = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
+        let recordDiscounts = me.getGridRecordsDiscountReview(prototype.id + '-gridDataBandocReview');
+
+        if (getProcess !== 'CM') {
+            Ext.Msg.alert('.:PRAXIS:.', 'Only processor CM is allowed to create international commission.');
+            return;
+        }
+
+        console.log('Processor CM validated — commission creation allowed');
+
+        console.log(recordDiscounts[0])
+
+        var beanTemp = {};
+        beanTemp.IN_CCUST = recordDiscounts[0].CCUST;
+        beanTemp.IN_BANDOC = recordDiscounts[0].BANDOC;
+        beanTemp.IN_DATECI = recordDiscounts[0].DATECI;
+        beanTemp.IN_TRANCI = recordDiscounts[0].TRANCI;
+
+        console.log(beanTemp);
+
+        var beanString = JSON.stringify(beanTemp);
+
+        Ext.Ajax.request({
+            url: prototype.url + '/addDiscountInternacional',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: beanString},
+            beforerequest: Ext.getCmp(prototype.id + '-boxConsultas3').mask('Loading...'),
+            success: function (response, opts) {
+                Ext.getCmp(prototype.id + '-boxConsultas3').unmask('Loading...');
+                var res = Ext.JSON.decode(response.responseText);
+                console.log(res);
+
+                if (res.success) {
+                    global.Msg({msg: res.Mensaje});
+                    me.fetchBandocSalesReview();
+//                    Ext.getCmp(prototype.id + '-dataEntry').unmask();
+//                    Ext.getCmp(prototype.id + '-dataEntry').close();
+//                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+
+                } else
+                    global.Msg({msg: ''});
+            }
+        });
+
+    }
+
+
+    // </editor-fold>
+
 });
