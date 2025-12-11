@@ -8612,7 +8612,7 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         Connection cnx = null;
 
-        String SQL = "{CALL PRAXISMP.MPS358_INSERT(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)}";
+        String SQL = "{CALL PRAXISMP.MPS334(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
