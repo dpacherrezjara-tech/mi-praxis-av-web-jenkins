@@ -8808,14 +8808,14 @@ public class BankReconciliationDAO {
         Connection cnx = null;
         int sqlCode = -1;
 
-        String SQL = "{CALL PRAXISMP.MPS382(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+        String SQL = "{CALL PRAXISMP.MPS382(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQL);
 
-            cstmt.registerOutParameter(11, Types.INTEGER);
-            cstmt.registerOutParameter(12, Types.VARCHAR);
+            cstmt.registerOutParameter(12, Types.INTEGER);
+            cstmt.registerOutParameter(13, Types.VARCHAR);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST.trim());
             cstmt.setString(2, filter.SAGENT.trim());
@@ -8826,15 +8826,16 @@ public class BankReconciliationDAO {
             cstmt.setString(7, filter.STRDATE.trim());
             cstmt.setString(8, filter.ENDDATE.trim());
             cstmt.setString(9, filter.CBATCH.trim());
-            cstmt.setString(10, filter.TINPUT.trim());
-            cstmt.setInt(11, sqlCode);
-            cstmt.setString(12, message);
+            cstmt.setString(10, filter.SEQ.trim());
+            cstmt.setString(11, filter.TINPUT.trim());
+            cstmt.setInt(12, sqlCode);
+            cstmt.setString(13, message);
             
 
             cstmt.execute();
 
-            sqlCode = cstmt.getInt(11);
-            message = cstmt.getString(12);
+            sqlCode = cstmt.getInt(12);
+            message = cstmt.getString(13);
 
         } catch (Exception e) {
             e.printStackTrace();
