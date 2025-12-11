@@ -776,6 +776,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                         {xtype: 'tbspacer', width: 10},
                         {
                             xtype: 'label',
+                            id: prototype.id + '-lblSourceSource',
                             text: 'Source:',
                             padding: '3 0',
                             width: 55
@@ -828,6 +829,33 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
 
                         },
                         {xtype: 'tbspacer', width: 10},
+                        
+                        
+             {
+                    xtype: 'combo',
+                    id: prototype.id + '-cmbFuente',
+                    width: 160,
+                    fieldLabel: 'Source',
+                    queryMode: 'local',
+                    labelWidth: 50,
+                    triggerAction: 'all',
+                    valueField: 'value',
+                    displayField: 'text',
+                    editable: false, 
+                    forceSelection: true,
+                    value: 'BSP',  
+                    
+                    store: {
+                        fields: ['value', 'text'],
+                        data: [
+                            {value: '', text: 'ALL'},
+                            {value: 'B', text: 'BSP'},
+                            {value: 'I', text: 'ICCS'},
+                            {value: 'A', text: 'ARC'}
+                        ]
+                    }
+                },
+                {xtype: 'tbspacer', width: 20},
                         {
                             xtype: 'button',
                             hidden: true,
@@ -954,7 +982,10 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             listeners: {
                                 change: 'btnSearch_click'
                             }
-                        },
+                        }
+                        
+
+                        
 //                        {
 //                            xtype: 'combo',
 //                            id: prototype.id + '-cmbAGENCY',

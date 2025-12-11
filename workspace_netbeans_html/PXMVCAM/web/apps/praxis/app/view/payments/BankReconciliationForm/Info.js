@@ -6398,7 +6398,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                             bodyStyle: 'background: transparent;',
                             border: false,
 //                            height: 'auto',
-                            width: 1858,
+                            width: 1715,
                             height: 620,
 //                            scrollable: 'vertical',
 
@@ -6422,6 +6422,9 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                 },
 
                                 //FILTROS
+                                
+                                
+ 
                                 {
                                     xtype: 'container',
                                     layout: {
@@ -6437,7 +6440,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataMPF199',
-                                    width: 1834,
+                                    width: 1754,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -6631,7 +6634,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                             {
                                                 text: 'Currency',
                                                 dataIndex: 'O_SCURRENCY',
-                                                width: 60,
+                                                width: 65,
                                                 renderer: function (value, metaData) {
                                                     metaData.style = "text-align:center;";
                                                     return value;
