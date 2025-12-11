@@ -43,7 +43,7 @@ public class DataImportMonitoringDAO {
         List<MPFER90> listaData = new ArrayList<>();
         MPFER90 bean;
 
-        String SQL = "{CALL PRAXISMP.MPS388(?,?,?)}";
+        String SQL = "{CALL PRAXISMP.MPS388(?,?,?,?)}";
         Connection cnx = null;
         CallableStatement cstmt = null;
         ResultSet rst = null;
@@ -55,6 +55,7 @@ public class DataImportMonitoringDAO {
             cstmt.setString(1, filter.IN_PROCPAIS.trim());
             cstmt.setString(2, filter.IN_DATETYPE.trim());
             cstmt.setString(3, filter.IN_PROCDATE.trim());
+            cstmt.setString(4, filter.IN_PROCFUENTE.trim());
 
             cstmt.execute();
 
@@ -74,6 +75,7 @@ public class DataImportMonitoringDAO {
                 bean.PROCINI = rst.getString("PROCINI");
                 bean.PROCFIN = rst.getString("PROCFIN");
                 bean.CPROGRAM = rst.getString("CPROGRAM");
+                bean.FUENTE = rst.getString("PROCFUENTE");
 
                 listaData.add(bean);
             }

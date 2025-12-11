@@ -27,9 +27,11 @@ public class MPFER90 {
     public String PROCINI = "";
     public String PROCFIN = "";
     public String CPROGRAM = "";
+    public String FUENTE = "";
     public String IN_PROCPAIS = "";
     public String IN_DATETYPE = "";
     public String IN_PROCDATE = "";
+    public String IN_PROCFUENTE = "";
 
 //    VARIABLES DE RPA
     public String RN = "";

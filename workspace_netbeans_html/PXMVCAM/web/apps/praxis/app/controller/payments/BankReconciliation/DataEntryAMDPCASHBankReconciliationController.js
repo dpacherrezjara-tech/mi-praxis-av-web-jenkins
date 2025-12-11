@@ -911,12 +911,18 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         return value;
     },
     AddAdjustCash: function () {
-        var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        
+        if(this.bean.TINPUT == 'I'){
+            var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScanICCS');
+        }else {
+            var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        }
+        
         var gridAgent = Ext.getCmp(prototype.id + '-gridDataInfoScanAgent');
-
+        
         var storeScan = gridScan.getStore();
         var storeAgent = gridAgent.getStore();
-
+        
         // === 1️⃣ Verificar selección ===
         var seleccionado = gridScan.getSelectionModel().getSelection()[0];
         if (!seleccionado) {
@@ -974,7 +980,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
     },
 
     onConciliationCashAdjust: function () {
-        var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+//        var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        if(this.bean.TINPUT == 'I'){
+            var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScanICCS');
+        }else {
+            var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        }
         var seleccionado = gridScan.getSelectionModel().getSelection()[0];
 
         if (!seleccionado) {
@@ -993,6 +1004,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         this.bean_scan.ENDDATE = seleccionado.get('ENDDATE');
         this.bean_scan.ADATE = seleccionado.get('ADATE');
         this.bean_scan.TINPUT = seleccionado.get('TINPUT');
+        this.bean_scan.SEQ = seleccionado.get('SEQ');
 
         var paramScan = {beanString: JSON.stringify(this.bean_scan)};
 
@@ -1224,7 +1236,15 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
 
         const country = this.bean.SCOUNTRY; // Ejemplo: "CO"
         const date = this.bean.ADATE;       // Ejemplo: "20250731"
-
+//        const ccustN = this.bean.CCUST;       // Ejemplo: "20250731"
+//        const cycle = this.bean.DCYCLE.trim();       // Ejemplo: "20250731"
+//        let codigoClient = {
+//            '134' : 'AV-134',
+//            '133' : 'LR-134',
+//            '202' : 'TA-134',
+//            '547' : '2K-134'
+//        }
+//        const ccustR = codigoClient[this.bean.CCUST] ? codigoClient[this.bean.CCUST] : '';
         if (!country || !date) {
             Ext.Msg.alert('Error', 'Faltan parámetros para la descarga (SCOUNTRY o ADATE).');
             return;

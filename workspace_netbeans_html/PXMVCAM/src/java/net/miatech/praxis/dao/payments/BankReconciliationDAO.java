@@ -8439,7 +8439,7 @@ public class BankReconciliationDAO {
         A2290Filter bean;
         
         
-        String SQL = "{CALL PRAXISMP.MPS333(?, ?, ? , ?, ? , ?, ?, ?, ?)}";
+        String SQL = "{CALL PRAXISMP.MPS333(?, ?, ? , ?, ? , ?, ?, ?, ?, ?, ?)}";
         
         CallableStatement cstmt = null;
         ResultSet rst = null;
@@ -8452,10 +8452,10 @@ public class BankReconciliationDAO {
             cstmt = cnx.prepareCall(SQL);
 
             // para la paginacion
-            cstmt.registerOutParameter(6, Types.INTEGER);
-            cstmt.registerOutParameter(7, Types.INTEGER);
             cstmt.registerOutParameter(8, Types.INTEGER);
             cstmt.registerOutParameter(9, Types.INTEGER);
+            cstmt.registerOutParameter(10, Types.INTEGER);
+            cstmt.registerOutParameter(11, Types.INTEGER);
 
             // los de entrada
     
@@ -8464,18 +8464,20 @@ public class BankReconciliationDAO {
             cstmt.setString(3, filter.IN_SAGENT);
             cstmt.setString(4, filter.IN_ADATE);
             cstmt.setString(5, filter.IN_STATUS);
-            cstmt.setInt(6, filter.page.PAGNUM);
-            cstmt.setInt(7, filter.page.PAGROW);
-            cstmt.setInt(8, filter.page.TOTPAG);
-            cstmt.setInt(9, filter.page.TOTROW);
+            cstmt.setString(6, filter.IN_COUNTRY);
+            cstmt.setString(7, filter.IN_SOURCE);
+            cstmt.setInt(8, filter.page.PAGNUM);
+            cstmt.setInt(9, filter.page.PAGROW);
+            cstmt.setInt(10, filter.page.TOTPAG);
+            cstmt.setInt(11, filter.page.TOTROW);
 
             cstmt.execute();
 
             // se actualiza paginacion
-            filter.page.PAGNUM = cstmt.getInt(6);
-            filter.page.PAGROW = cstmt.getInt(7);
-            filter.page.TOTPAG = cstmt.getInt(8);
-            filter.page.TOTROW = cstmt.getInt(9);
+            filter.page.PAGNUM = cstmt.getInt(8);
+            filter.page.PAGROW = cstmt.getInt(9);
+            filter.page.TOTPAG = cstmt.getInt(10);
+            filter.page.TOTROW = cstmt.getInt(11);
 
             rst = cstmt.getResultSet();
 
@@ -8612,7 +8614,7 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         Connection cnx = null;
 
-        String SQL = "{CALL PRAXISMP.MPS358_INSERT(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)}";
+        String SQL = "{CALL PRAXISMP.MPS334(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -8808,14 +8810,14 @@ public class BankReconciliationDAO {
         Connection cnx = null;
         int sqlCode = -1;
 
-        String SQL = "{CALL PRAXISMP.MPS382(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+        String SQL = "{CALL PRAXISMP.MPS382(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQL);
 
-            cstmt.registerOutParameter(11, Types.INTEGER);
-            cstmt.registerOutParameter(12, Types.VARCHAR);
+            cstmt.registerOutParameter(12, Types.INTEGER);
+            cstmt.registerOutParameter(13, Types.VARCHAR);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST.trim());
             cstmt.setString(2, filter.SAGENT.trim());
@@ -8826,15 +8828,16 @@ public class BankReconciliationDAO {
             cstmt.setString(7, filter.STRDATE.trim());
             cstmt.setString(8, filter.ENDDATE.trim());
             cstmt.setString(9, filter.CBATCH.trim());
-            cstmt.setString(10, filter.TINPUT.trim());
-            cstmt.setInt(11, sqlCode);
-            cstmt.setString(12, message);
+            cstmt.setString(10, filter.SEQ.trim());
+            cstmt.setString(11, filter.TINPUT.trim());
+            cstmt.setInt(12, sqlCode);
+            cstmt.setString(13, message);
             
 
             cstmt.execute();
 
-            sqlCode = cstmt.getInt(11);
-            message = cstmt.getString(12);
+            sqlCode = cstmt.getInt(12);
+            message = cstmt.getString(13);
 
         } catch (Exception e) {
             e.printStackTrace();

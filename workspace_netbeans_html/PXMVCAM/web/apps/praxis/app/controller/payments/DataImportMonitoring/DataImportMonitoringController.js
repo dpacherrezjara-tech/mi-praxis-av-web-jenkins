@@ -77,7 +77,8 @@ Ext.define('Ext.Praxis.controller.payments.DataImportMonitoring.DataImportMonito
         this.searchParams.bean = {
             IN_PROCPAIS: Ext.getCmp(prototype.id + '-cmbIN_COUNTRY').getValue() || '',
             IN_DATETYPE: Ext.getCmp(prototype.id + '-cmbDateType').getValue() || '',
-            IN_PROCDATE: Ext.getCmp(prototype.id + '-txtDATEPICKER').getSubmitValue() || ''
+            IN_PROCDATE: Ext.getCmp(prototype.id + '-txtDATEPICKER').getSubmitValue() || '',
+            IN_PROCFUENTE: Ext.getCmp(prototype.id + '-cmbFuente').getValue() || ''
             
         };
 

@@ -70,6 +70,7 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Info', {
 
                                 //                                {text: 'ID', dataIndex: 'PROCID', width: 70, align: 'center'},
 
+                                {text: 'Source', dataIndex: 'FUENTE', width:60, align: 'center'},
                                 {text: 'Description', dataIndex: 'PROCDESC', width: 220, align: 'left'},
                                 
                                 {text: 'File Date', dataIndex: 'PROCDATE', width: 90, align: 'center',
@@ -109,7 +110,7 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Info', {
                                         return text;
                                     }
                                 },
-                                {text: 'Message', dataIndex: 'PROCMESSAG', width: 350, align: 'left'},
+                                {text: 'Message', dataIndex: 'PROCMESSAG', width: 300, align: 'left'},
                                 {
                                     text: 'Begin',
                                     dataIndex: 'PROCINI',
@@ -393,7 +394,7 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Info', {
 
 
 // 
-// CSS PARA COLOREAR LAS FILAS
+// CSS 
 // 
 Ext.util.CSS.createStyleSheet(`
     /* .row-green, .row-yellow, .row-red removed for pure white look */
