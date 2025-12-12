@@ -94,7 +94,8 @@ Ext.define('Ext.Praxis.controller.payments.Cash.DataEntryTicketCashController', 
         this.setValue('2-txtCountry', this.bean.data.SCOUNTRY);
         this.setValue('2-txtAgent', this.bean.data.SAGENT);
         this.setValue('2-txtSdate', this.bean.data.SDATE);
-        this.setValue('svfop', this.bean.data.SVFOP);
+        this.setValue('svfop', this.format2(this.bean.data.SVFOP));
+        this.setValue('svfopnetr', this.format2(this.bean.data.SVFOPNETR));
         this.setValue('currency', this.bean.data.SCURRENCY);
 
 //        Reconciliation Information
@@ -119,5 +120,10 @@ Ext.define('Ext.Praxis.controller.payments.Cash.DataEntryTicketCashController', 
     },
     setValue: function (id, txt) {
         Ext.getCmp(prototype.id + '-' + id).setValue(txt);
+    },
+    format2: function (value) {
+        if (value === null || value === '')
+            return "0.00";
+        return Ext.util.Format.number(value, '0,000.00');
     }
 });

@@ -180,9 +180,47 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Filters', {
                 },
                 {
                     xtype: 'fieldset',
+                    id: prototype.id + '-titleFieldsetAccounting',
+                    title: '<span style="color:#1a4d8f;font-weight:bold;">ACCOUNTING</span>',
+                    width: 860,
+                    hidden: true,
+                    style: 'border: 1px solid #1a4d8f; padding: 8px; margin: 5px;',
+                    layout: 'hbox',
+                    items: [
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbStatusAccounting',
+                            fieldLabel: 'Status',
+                            labelStyle: 'text-align: left; font-size: 12px;',
+                            fieldStyle: 'text-align: center; font-size: 12px;',
+                            store: new Ext.data.SimpleStore({
+                                fields: ['value', 'description'],
+                                data: [
+                                    ["", "All"],
+                                    ["1", "Pending"],
+                                    ["3", "Processed"]
+                                ]
+                            }),
+                            width: 180,
+                            labelWidth: 40,
+                            emptyText: 'All',
+                            value: '',
+                            displayField: 'description',
+                            valueField: 'value',
+                            queryMode: 'local',
+                            filterPickList: true,
+                            editable: true,
+                            multiSelect: false,
+                            forceSelection: true,
+                            margin: '0 10 0 0'
+                        },
+                    ]
+                },
+                {
+                    xtype: 'fieldset',
                     id: prototype.id + '-titleFieldsetSale',
                     title: '<span style="color:#1a4d8f;font-weight:bold;">ADITIONAL SALE</span>',
-                    width: 860,
+                    width: 1070,
                     hidden: true,
                     style: 'border: 1px solid #1a4d8f; padding: 8px; margin: 5px;',
                     layout: 'hbox',
@@ -218,6 +256,39 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Filters', {
                                     {code: '202', name: 'TACA'},
                                     {code: '547', name: 'AEROGAL'},
                                     {code: '', name: 'All'}
+                                ]
+                            },
+                            margin: '0 10 0 0'
+                        },
+                        {
+                            fieldLabel: 'Payment Method',
+                            xtype: 'combo',
+                            width: 200,
+                            labelWidth: 100,
+                            labelStyle: 'text-align: left; font-size: 12px;',
+                            fieldStyle: 'text-align: center; font-size: 12px;',
+                            disabled: false,
+                            id: prototype.id + '-paymentMethod',
+                            queryMode: 'local',
+                            allowBlank: false,
+                            forceSelection: true,
+                            selectOnFocus: true,
+                            caseSensitive: false,
+                            autoSelect: true,
+                            editable: true,
+                            listConfig: {maxHeight: 130},
+                            typeAhead: true,
+                            valueField: 'code',
+                            displayField: 'name',
+                            enableKeyEvents: true,
+                            triggerAction: 'all',
+                            value: '',
+                            store: {
+                                fields: ['code', 'name'],
+                                data: [
+                                    {code: '', name: 'All'},
+                                    {code: 'EP', name: 'Easy Pay'},
+                                    {code: 'CA', name: 'Cash'}
                                 ]
                             },
                             margin: '0 10 0 0'
@@ -304,7 +375,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Filters', {
                                 keypress: 'eventKey'
                             },
                             margin: '0 10 0 0'
-                        },
+                        }
                     ]
                 }
             ]

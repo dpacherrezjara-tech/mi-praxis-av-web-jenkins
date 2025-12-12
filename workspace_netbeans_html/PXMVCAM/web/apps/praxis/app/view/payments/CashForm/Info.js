@@ -729,7 +729,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                         {
                             xtype: 'panel',
                             border: false,
-                            width: 1200,
+                            width: 1400,
                             id: prototype.id + '-panelGridDataDetailSecundary',
                             bodyStyle: 'background-color: #F4F7FD;',
                             padding: '1',
@@ -743,7 +743,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetailSecundary',
                                     minHeight: 200,
-                                    width: 1060,
+                                    width: 1160,
                                     hidden: false,
                                     columnLines: true,
                                     viewConfig: {
@@ -818,18 +818,39 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                                     metaData.style = "text-align:center;";
                                                     return  value;
                                                 }},
-                                            {text: '<span style="color:black;font-weight:bold;">Currency</span>', dataIndex: 'SCURRENCY', width: 75, style: 'padding:2px; background: #c9daf5;',
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    var data = record.data;
-                                                    metaData.style = "text-align:center;";
-                                                    return  value;
-                                                }},
-                                            {text: '<span style="color:black;font-weight:bold;">Amount</span>', dataIndex: 'SVFOP', width: 80, style: 'padding:2px; background: #c9daf5;',
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    metaData.style = "color:#2B2B2B;text-align:right;";
-                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
-                                                    return  value;
-                                                }
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Amount</span>',
+                                                style: 'text-align:center; background:#c9daf5;',
+                                                columns: [
+                                                    {text: '<span style="color:black;font-weight:bold;">Currency</span>', dataIndex: 'SCURRENCY', width: 75, style: 'padding:2px; background: #c9daf5;',
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            var data = record.data;
+                                                            metaData.style = "text-align:center;";
+                                                            return  value;
+                                                        }},
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">SVFOP</span>',
+                                                        dataIndex: 'SVFOP',
+                                                        width: 90,
+                                                        align:'center',
+                                                        style: 'background:#c9daf5;',
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "color:#2B2B2B;text-align:right;";
+                                                            return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">SVFOPNETR</span>',
+                                                        dataIndex: 'SVFOPNETR',
+                                                        width: 90,
+                                                        align:'center',
+                                                        style: 'background:#c9daf5;',
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "color:#2B2B2B;text-align:right;";
+                                                            return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
+                                                        }
+                                                    }
+                                                ]
                                             },
                                             {
                                                 sortable: false,
@@ -1064,7 +1085,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                 }
                             ]
                         },
-                        // </editor-fold>
+                                // </editor-fold>
                     ]
                 },
                 // <editor-fold defaultstate="collapsed" desc="boxPagDetail">
