@@ -296,10 +296,16 @@ public class LoadSalesConciliationDAO {
     public A2290Filter SQPMPS076_UP(A2290Filter filter, UserView user) throws SQLException, Exception {
 
         String strMsj = "Operation was successful.";
+        String SQLCLL01 = "";
         A2290Filter objRtn = new A2290Filter();
         CallableStatement cstmt01 = null;
         ResultSet rs01 = null;
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".UpdateRecords_V1(?,?,?,?,?,?,?,?,?,?,?,?)}";
+        if(filter.NINPUT.equals("Y")){
+            SQLCLL01 = "{CALL PRAXISMP.MPS435(?,?,?,?,?,?,?,?,?,?,?,?)}";
+        }else{
+            SQLCLL01 = "{CALL " + session.getMainLibrary() + ".UpdateRecords_V1(?,?,?,?,?,?,?,?,?,?,?,?)}";
+        }
+        
 
         Connection cnx = null;
         try {
