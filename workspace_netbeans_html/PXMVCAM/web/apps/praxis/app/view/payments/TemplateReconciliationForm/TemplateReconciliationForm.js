@@ -467,18 +467,18 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.TemplateReconcil
                                                                         }
                                                                     ]
                                                                 },
-                                                                
-                                                        {
-                                                            xtype: 'button',
-                                                            id: prototype.id + '-btnExecute',
-                                                            width: 90,
-                                                            html: '<span style="color:white;font-size:12px;color:white;font-weight:bold">Execute</span>',
-                                                            style: 'background:#3F5675;margin-top:1px',
-                                                            border: false,
-                                                            listeners: {
-                                                                click: 'verifyConciliation'
-                                                            }
-                                                        }
+
+                                                                {
+                                                                    xtype: 'button',
+                                                                    id: prototype.id + '-btnExecute',
+                                                                    width: 90,
+                                                                    html: '<span style="color:white;font-size:12px;color:white;font-weight:bold">Execute</span>',
+                                                                    style: 'background:#3F5675;margin-top:1px',
+                                                                    border: false,
+                                                                    listeners: {
+                                                                        click: 'verifyConciliation'
+                                                                    }
+                                                                }
                                                             ]
                                                         },
                                                     ]
