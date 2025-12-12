@@ -121,9 +121,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         // DETAIL SETTLEMENT
         this.setValue('de-txtStatusCash', this.bean.descSTVAL);
         let cfuente;
-        if (this.bean.TINPUT === 'B' || this.bean.TINPUT === 'A') {
+        if (this.bean.TINPUT === 'B') {
             cfuente = 'BSP';
             Ext.getCmp(prototype.id + '-panelDataInfoScan').show();
+
+        } else if (this.bean.TINPUT === 'A') {
+            cfuente = 'ARC';          
 
         } else if (this.bean.TINPUT === 'I') {
             cfuente = 'ICCS';
@@ -1236,6 +1239,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
 
         const country = this.bean.SCOUNTRY; // Ejemplo: "CO"
         const date = this.bean.ADATE;       // Ejemplo: "20250731"
+        const fuente = this.bean.TINPUT;       // Ejemplo: "20250731"
+        const dateArc = this.bean.DPERIOD;       // Ejemplo: "20250731"
+        const ccust = this.bean.CCUST;       // Ejemplo: "20250731"
+
 //        const ccustN = this.bean.CCUST;       // Ejemplo: "20250731"
 //        const cycle = this.bean.DCYCLE.trim();       // Ejemplo: "20250731"
 //        let codigoClient = {
@@ -1252,7 +1259,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
 
         // Enviamos los dos parámetros al backend
         const url = prototype.url + '/getCSV?country=' + encodeURIComponent(country)
-                + '&date=' + encodeURIComponent(date);
+                + '&date=' + encodeURIComponent(date)+ '&fuente=' + encodeURIComponent(fuente)
+                + '&dateArc=' + encodeURIComponent(dateArc)+ '&ccust=' + encodeURIComponent(ccust);
 
         console.log('Solicitando:', url);
 
