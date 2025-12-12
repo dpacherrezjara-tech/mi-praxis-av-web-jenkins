@@ -178,10 +178,12 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
 
         if (selected === 0) {
             Ext.getCmp(prototype.id + '-titleFieldsetSale').setVisible(false);
+            Ext.getCmp(prototype.id + '-titleFieldsetAccounting').setVisible(false);
             this.setFormatParameterDashboard();
             this.setGridDataDashboard();
         } else if (selected === 1) {
             Ext.getCmp(prototype.id + '-titleFieldsetSale').setVisible(true);
+            Ext.getCmp(prototype.id + '-titleFieldsetAccounting').setVisible(true);
             this.setFormatParameterDetailSecundary();
             this.setGridDataDetailSecundary();
         }
@@ -196,6 +198,7 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         me.beanSecundary.IN_STATUS = Ext.getCmp(prototype.id + '-cmbStatus').getValue();
         me.beanSecundary.IN_AGENT = Ext.getCmp(prototype.id + '-txtAGENTE').getValue();
         me.beanSecundary.IN_TICKET = Ext.getCmp(prototype.id + '-txtTICKET').getValue();
+        me.beanSecundary.IN_STATUSACC = Ext.getCmp(prototype.id + '-cmbStatusAccounting').getValue();
 
         var beanString = JSON.stringify(me.beanSecundary);
         me.searchParamsSecundary = {

@@ -5913,20 +5913,22 @@ public class BankReconciliationController extends BaseController {
         return new Gson().toJson(map);
     }
 
-    
-    @RequestMapping(value = "getCSV")
-    public @ResponseBody void getCSV(HttpServletRequest request, HttpServletResponse response) throws Exception {
+//ELEGIR DESCARGA DE INSUMO SEGUN FUENTE   
+        @RequestMapping(value = "getCSV")
+        public @ResponseBody void getCSV(HttpServletRequest request, HttpServletResponse response) throws Exception {
         System.out.println("Report : getCSV");
 
         String country = request.getParameter("country");
         String date = request.getParameter("date");
+        String fuente = request.getParameter("fuente");
+        String dateArc = request.getParameter("dateArc");
+        String ccust = request.getParameter("ccust");
 
         if (country == null || date == null || country.isEmpty() || date.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().write("Parámetros 'country' y 'date' son obligatorios");
             return;
         }
-        
 
         String ruta = this.serverSession.propertySession.get("DB_SERVER_DEFAULT_TYPE").toString();
         String rutaCarpeta;
@@ -5938,58 +5940,87 @@ public class BankReconciliationController extends BaseController {
         } else if ("PRO".equals(ruta)) {
             rutaCarpeta = "prod";
         } else {
-            rutaCarpeta = ""; 
+            rutaCarpeta = "";
         }
 
-        System.out.println("esta es mi ruta" + ruta);
+        System.out.println("esta es mi ruta " + ruta);
 
-        // Carpeta base donde buscar los archivos CSV
-        Path folderPath = Paths.get("\\\\10.0.0.87\\av\\Efectivo\\"+rutaCarpeta+"\\process\\BSP\\"+country+"\\2025");
+        // Determinar carpeta y extensión según fuente
+        String carpetaInsumo = "BSP";
+        String extension = "*.csv";
 
-        System.out.println("Buscando archivos para country=" + country + " y date=" + date);
+        if ("A".equals(fuente)) {
+            carpetaInsumo = "ARC-IMG";
+            extension = "*.png";
+        }
 
-        // Buscar el archivo que cumpla con el patrón: "CO*20250731*.csv"
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(folderPath, "*.csv")) {
-            Path matchedFile = null;
+        Path folderPath = Paths.get("\\\\10.0.0.87\\av\\Efectivo\\"
+                + rutaCarpeta + "\\process\\"
+                + carpetaInsumo + "\\"
+                + country + "\\2025");
+
+        System.out.println("Buscando archivos en: " + folderPath);
+
+        Path matchedFile = null;
+
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(folderPath, extension)) {
+
             for (Path path : stream) {
                 String fileName = path.getFileName().toString();
-                if (fileName.startsWith(country) && fileName.contains(date)) {
-                    matchedFile = path;
-                    break;
+
+                if ("B".equals(fuente)) {
+                    // BSP: CO*20250731*.csv
+                    if (fileName.startsWith(country) && fileName.contains(date)) {
+                        matchedFile = path;
+                        break;
+                    }
+                } else if ("A".equals(fuente)) {
+                    // ARC: 202_ARC8000227120250803_LOADED.png
+                    if (fileName.startsWith(ccust) && fileName.contains(dateArc)) {
+                        matchedFile = path;
+                        break;
+                    }
                 }
             }
 
-            if (matchedFile == null) {
-                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                response.getWriter().write("No se encontró ningún archivo para " + country + " y fecha " + date);
-                return;
-            }
-
-            System.out.println("Archivo encontrado: " + matchedFile);
-
-            // Configurar cabeceras
-            response.setContentType("text/csv");
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + matchedFile.getFileName().toString() + "\"");
-
-            try (FileInputStream fis = new FileInputStream(matchedFile.toFile());
-                 OutputStream out = response.getOutputStream()) {
-
-                byte[] buffer = new byte[4096];
-                int bytesRead;
-
-                while ((bytesRead = fis.read(buffer)) != -1) {
-                    out.write(buffer, 0, bytesRead);
-                }
-
-                out.flush();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("Error al buscar o descargar el archivo CSV");
+            response.getWriter().write("Error al acceder a la carpeta de archivos");
+            return;
+        }
+
+        if (matchedFile == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.getWriter().write("No se encontró archivo para los parámetros enviados");
+            return;
+        }
+
+        System.out.println("Archivo encontrado: " + matchedFile);
+
+        // Content type correcto
+        if ("A".equals(fuente)) {
+            response.setContentType("image/png"); // ARC TXT
+        } else {
+            response.setContentType("text/csv");   // BSP CSV
+        }
+
+        response.setHeader("Content-Disposition",
+                "attachment; filename=\"" + matchedFile.getFileName().toString() + "\"");
+
+        try (FileInputStream fis = new FileInputStream(matchedFile.toFile()); OutputStream out = response.getOutputStream()) {
+
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+
+            while ((bytesRead = fis.read(buffer)) != -1) {
+                out.write(buffer, 0, bytesRead);
+            }
+
+            out.flush();
         }
     }
-    
+
     
     //EXCEL DE MPF199
     
