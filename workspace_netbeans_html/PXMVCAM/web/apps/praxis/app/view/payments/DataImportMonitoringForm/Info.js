@@ -49,7 +49,7 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Info', {
                         {
                             xtype: 'grid',
                             id: prototype.id + '-gridDataImport',
-                            width: 1155,
+                            width: 1170,
                             height: 500,
                             columnLines: true,
                             cls: 'modern-grid',
@@ -75,7 +75,7 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Info', {
                                 
                                 {text: 'File Date', dataIndex: 'PROCDATE', width: 90, align: 'center',
                                     renderer: function (value) {
-                                        // value siempre viene como YYYYMMDD → formato 2025-07-01
+                                        // formato 2025-07-01
                                         return value.substring(0, 4) + '-' +
                                                value.substring(4, 6) + '-' +
                                                value.substring(6, 8);

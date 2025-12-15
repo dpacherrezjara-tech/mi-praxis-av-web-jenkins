@@ -128,7 +128,8 @@ Ext.define('Ext.Praxis.controller.payments.DataImportMonitoring.DataImportMonito
     btnClear_click: function () {
 //        Ext.getCmp(prototype.id + '-cmbIN_COUNTRY').setValue('');
         Ext.getCmp(prototype.id + '-txtDATEPICKER').setValue('');
-        Ext.getCmp(prototype.id + '-cmbDateType').setValue('');
+        //Ext.getCmp(prototype.id + '-cmbDateType').setValue('');
+        Ext.getCmp(prototype.id + '-cmbIN_COUNTRY').setValue('');
         this.btnSearch_click();
     },
 

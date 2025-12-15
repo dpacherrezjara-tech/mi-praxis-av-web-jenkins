@@ -121,20 +121,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             });
         }
 
-
-        var ids = [
-            '-rbgTypeCASH',
-            '-fcDateRange'
-
-        ];
-        Ext.Array.forEach(ids, function (id) {
-            var cashCmp = Ext.getCmp(prototype.id + id);
-            if (cashCmp) {
-                cashCmp.setVisible(false);
-            }
-
-        });
-        
         
         $('#StatementReconciliationsForm-btnToggleSwitchFT').change(function () {
             me.procesador();
@@ -292,11 +278,11 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
     setFormatParameter: function () {
         me.bean = {};
 
-        me.bean.strYearFrom = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue();
-        me.bean.strMonthFrom = Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue();
-
-        me.bean.strYearTo = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue();
-        me.bean.strMonthTo = Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue();
+//        me.bean.strYearFrom = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue();
+//        me.bean.strMonthFrom = Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue();
+//
+//        me.bean.strYearTo = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue();
+//        me.bean.strMonthTo = Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue();
         me.bean.IN_TDOC = Ext.getCmp(prototype.id + '-cmbTDOC').getValue();
 
         me.bean.IN_DATE = Ext.getCmp(prototype.id + '-cmbDateSel').getValue();
@@ -307,6 +293,15 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         me.bean.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
         me.bean.IN_BANK = Ext.getCmp(prototype.id + '-cmbBank').getValue();
         me.bean.IN_COREP = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
+        
+        var fecFrom = Ext.getCmp(prototype.id + '-FEC_FROM').getValue();
+        var fecTo   = Ext.getCmp(prototype.id + '-FEC_TO').getValue();
+
+        me.bean.IN_FECHA_FROM = fecFrom ? Ext.Date.format(fecFrom, 'Ym') : '';
+        me.bean.IN_FECHA_TO   = fecTo   ? Ext.Date.format(fecTo, 'Ym') : '';
+
+
+        
 
         let proces = Ext.getCmp(prototype.id + '-TEST');
         if (!proces.isVisible()) {
@@ -1208,6 +1203,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             this.setFormatParameter();   // prepara parámetros para cash
             this.setGridDataCash();      // carga data cash inmediatamente
             this.ocultarCamposCredit();  //  oculta campos de crédito
+            
         } else {
             console.log("TOGGLE → CREDIT CARD");
 
@@ -2588,15 +2584,16 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         var cashCmp = Ext.getCmp(prototype.id + '-rbgTypeCASH');
         if (cashCmp) {
             cashCmp.show();
-            cashCmp.updateLayout(); // fuerza re-layout
+//            cashCmp.updateLayout(); // fuerza re-layout
         }
 
 
         var cntDocSap = Ext.getCmp(prototype.id + '-cntDocSap');
         if (cntDocSap) {
             cntDocSap.setVisible(true);
-            cntDocSap.setMargin('10 0 0 -30'); // lo alineas bonito en modo CASH
+            cntDocSap.setMargin('10 0 -10 -30'); // lo alineas  en modo CASH
         }
+        
 
     },
 
@@ -2650,7 +2647,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
         var cntDocSap = Ext.getCmp(prototype.id + '-cntDocSap');
         if (cntDocSap) {
-            cntDocSap.setMargin('0 0 0 0'); // regresa a su lugar original
+            cntDocSap.setMargin('0 0 -20 0'); // regresa a su lugar original
         }
 
     },
