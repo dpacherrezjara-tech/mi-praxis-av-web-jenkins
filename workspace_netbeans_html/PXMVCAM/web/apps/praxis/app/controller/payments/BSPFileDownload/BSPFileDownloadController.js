@@ -351,20 +351,43 @@ Ext.define('Ext.Praxis.controller.payments.BSPFileDownload.BSPFileDownloadContro
         }).show();
 
     },
+    onDownloadCSVARC: function (column, e, row, colIndex, x, rowData) {
+        let data = rowData.data;
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+        const datePed  = data.PEDARC;     // "25/12/07"  (YY/MM/DD)
+        let filename   = data.NAMEFILE;   // sin .txt
+
+        if (!datePed || !filename) {
+            Ext.Msg.alert(
+                'Error',
+                'Faltan parámetros para la descarga (Date PED, File Name).'
+            );
+            return;
+        }
+
+        // PEDARC = YY/MM/DD
+        const parts = datePed.split('/');
+
+        if (parts.length !== 3) {
+            Ext.Msg.alert('Error', 'Formato de fecha PED inválido: ' + datePed);
+            return;
+        }
+
+        const year = '20' + parts[0];   // ✅ 25 → 2025
+
+        // asegurar extensión .txt
+        if (!filename.toLowerCase().endsWith('.txt')) {
+            filename += '.txt';
+        }
+
+        const url = prototype.url + '/getTXTARC'
+            + '?year=' + encodeURIComponent(year)
+            + '&filename=' + encodeURIComponent(filename);
+
+        console.log('Solicitando:', url);
+
+        global.getFile(url);
+    },
     btnExcel_click: function (obj, e) {
        Ext.Msg.show({
             title: '.:PRAXIS:.',
@@ -385,20 +408,12 @@ Ext.define('Ext.Praxis.controller.payments.BSPFileDownload.BSPFileDownloadContro
              case  '-panelGridDataDetail':
                 global.getFile(prototype.url + '/getXLSX?beanString=' + encodeURI(searchParams.beanString));
                 break;
-                
-                
-                
-                
-            case  '-panelGridSumaryMain':
-                me.setFormatParameterDashboard()
-                global.getFile(prototype.url + '/getXLSXDashboard?beanString=' + encodeURI(searchParams.beanString));
+            case  '-panelGridDataARC':
+                global.getFile(prototype.url + '/getXLSXARC?beanString=' + encodeURI(searchParams.beanString));
                 break;
             default:
-                global.Msg(
-                        {msg: 'Under Construction'
-                        });
+                global.Msg( {msg: 'Under Construction' });
         }
-
     },
     buildDate: function (y, m, d) {
         y = y || '';
@@ -645,23 +660,40 @@ Ext.define('Ext.Praxis.controller.payments.BSPFileDownload.BSPFileDownloadContro
         global.getFile(url); 
     },
     onDownloadAllCSV: function () {
-         switch (me.panelActual) {
-             case  '-panelGridDataDetail':
-                console.log('Zip Permitido');
+        let me = this;
+        let url = null;
+
+        switch (me.panelActual) {
+
+            case '-panelGridDataDetail': // BSP
+                console.log('ZIP BSP permitido');
+                url = prototype.url + '/getBulkCSV';
+                break;
+
+            case '-panelGridDataARC': // ARC
+                console.log('ZIP ARC permitido');
+                url = prototype.url + '/getBulkTXTARC';
+                break;
+
             default:
-                global.Msg( {msg: 'Under Construction' });
+                global.Msg({ msg: 'Under Construction' });
                 return;
         }
-        
+
         if (!searchParams || !searchParams.beanString) {
-            Ext.Msg.alert("Error", "Debe realizar una búsqueda antes de descargar.");
+            Ext.Msg.alert(
+                "Error",
+                "Debe realizar una búsqueda antes de descargar."
+            );
             return;
         }
 
-        const url = prototype.url + "/getBulkCSV";
         console.log("Solicitando ZIP con filtros:", searchParams);
+        console.log("Endpoint:", url);
 
-        this.getFileByPost(url, { beanString: searchParams.beanString });
+        me.getFileByPost(url, {
+            beanString: searchParams.beanString
+        });
     },
     getFileByPost : function (url, params) {
         var form = document.createElement("form");
@@ -683,7 +715,5 @@ Ext.define('Ext.Praxis.controller.payments.BSPFileDownload.BSPFileDownloadContro
         form.submit();
         form.remove();
     }
-
-
 }
 );

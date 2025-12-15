@@ -306,7 +306,7 @@ Ext.define('Ext.Praxis.view.payments.BSPFileDownloadForm.Info', {
                                                 renderer: function (value, metaData, record) {
                                                     let file = record.get('FILE_NAME');  // o el campo que tú uses para descargar
 
-                                                    return `<img src="resources/img/botones/excel-png-office-xlsx-icon-3.png"
+                                                    return `<img src="resources/img/botones/txt.png"
                                                                  style="cursor:pointer; width:18px; height:18px;"
                                                                 >`;
                                                 },
