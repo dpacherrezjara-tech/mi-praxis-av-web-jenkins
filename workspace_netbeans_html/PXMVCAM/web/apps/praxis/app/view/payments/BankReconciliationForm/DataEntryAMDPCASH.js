@@ -1620,7 +1620,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                         {
                                                                             xtype: 'grid',
                                                                             id: prototype.id + '-gridDataInfoScanICCS',
-                                                                            width: 1220,
+                                                                            width: 1276,
                                                                             height: 250,
                                                                             columnLines: true,
                                                                             plugins: [
@@ -1716,7 +1716,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                                             let valueFinal = ''
                                                                                             metaData.style = "text-align:center;";
                                                                                             if (data.TINPUT == 'I') {
-                                                                                                valueFinal = data.SCONSOL_TABLE.trim()
+                                                                                                valueFinal = data.SCONSOL_TABLE
                                                                                             } else if (data.TINPUT == 'B') {
                                                                                                 valueFinal = value
                                                                                             } else {

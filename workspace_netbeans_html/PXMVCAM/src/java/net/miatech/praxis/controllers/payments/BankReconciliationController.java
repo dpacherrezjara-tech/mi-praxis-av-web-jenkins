@@ -5923,6 +5923,7 @@ public class BankReconciliationController extends BaseController {
         String fuente = request.getParameter("fuente");
         String dateArc = request.getParameter("dateArc");
         String ccust = request.getParameter("ccust");
+        String cycle = request.getParameter("cycle");
 
         if (country == null || date == null || country.isEmpty() || date.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -5946,18 +5947,33 @@ public class BankReconciliationController extends BaseController {
         System.out.println("esta es mi ruta " + ruta);
 
         // Determinar carpeta y extensión según fuente
-        String carpetaInsumo = "BSP";
-        String extension = "*.csv";
-
+        String carpetaInsumo = "";
+        String extension = "";
+        String rutaFolder = "";
         if ("A".equals(fuente)) {
             carpetaInsumo = "ARC-IMG";
             extension = "*.png";
+        } else if("B".equals(fuente)) {
+            carpetaInsumo = "BSP";
+            extension = "*.csv";
+        } else if("I".equals(fuente)) {
+            carpetaInsumo = "ICCS";
+            extension = "*.csv";
         }
+        
+        if (fuente.equals("I")){
+            rutaFolder = "\\\\10.0.0.87\\av\\Efectivo\\"
+                + rutaCarpeta + "\\process\\"
+                + carpetaInsumo + "\\2025\\"
+                + ccust ;
 
-        Path folderPath = Paths.get("\\\\10.0.0.87\\av\\Efectivo\\"
+        }else{
+            rutaFolder = "\\\\10.0.0.87\\av\\Efectivo\\"
                 + rutaCarpeta + "\\process\\"
                 + carpetaInsumo + "\\"
-                + country + "\\2025");
+                + country + "\\2025";
+        }
+        Path folderPath = Paths.get(rutaFolder);
 
         System.out.println("Buscando archivos en: " + folderPath);
 
@@ -5977,6 +5993,12 @@ public class BankReconciliationController extends BaseController {
                 } else if ("A".equals(fuente)) {
                     // ARC: 202_ARC8000227120250803_LOADED.png
                     if (fileName.startsWith(ccust) && fileName.contains(dateArc)) {
+                        matchedFile = path;
+                        break;
+                    }
+                }   else if ("I".equals(fuente)) {
+                    // ARC: 202_ARC8000227120250803_LOADED.png
+                    if (fileName.startsWith(cycle) ) {
                         matchedFile = path;
                         break;
                     }

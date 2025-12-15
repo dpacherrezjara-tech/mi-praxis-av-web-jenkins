@@ -1123,17 +1123,11 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
 
             const country = this.beanResult.SCOUNTRY; // Ejemplo: "CO"
             const date = this.beanResult.VALDATE;       // Ejemplo: "20250731"
-            const ccustN = this.beanResult.CCUST;       
+            const ccustR = this.beanResult.CCUST;       
             const cycle = this.beanResult.DCYCLE.trim();     
             const input = this.beanResult.TINPUT.trim();     
-            let codigoClient = {
-                '134' : 'AV-134',
-                '133' : 'LR-134',
-                '202' : 'TA-134',
-                '547' : '2K-134'
-            }
-            const ccustR = codigoClient[this.beanResult.CCUST] ? codigoClient[this.beanResult.CCUST] : '';
-            if (!country || !date || !ccustN || !cycle || !input) {
+
+            if (!country || !date || !ccustR || !cycle || !input) {
                 Ext.Msg.alert('Error', 'Faltan parámetros para la descarga.');
                 return;
             }

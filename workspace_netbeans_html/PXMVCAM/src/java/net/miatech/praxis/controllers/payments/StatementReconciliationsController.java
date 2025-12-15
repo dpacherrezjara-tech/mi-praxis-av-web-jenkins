@@ -4645,7 +4645,7 @@ public class StatementReconciliationsController extends BaseController {
         if(input.equals("B")){
             rutaFolder = "\\\\10.0.0.87\\av\\Efectivo\\"+rutaCarpeta+"\\process\\BSP\\"+country+"\\2025";
         }else if(input.equals("I")){
-            rutaFolder = "\\\\10.0.0.87\\av\\Efectivo\\"+rutaCarpeta+"\\process\\ICCS\\"+ccustR;
+            rutaFolder = "\\\\10.0.0.87\\av\\Efectivo\\"+rutaCarpeta+"\\process\\ICCS\\2025\\"+ccustR;
         }else if(input.equals("A")){
             rutaFolder = "\\\\10.0.0.87\\av\\Efectivo\\"+rutaCarpeta+"\\process\\ARC\\"+country+"\\2025";
         }else{
