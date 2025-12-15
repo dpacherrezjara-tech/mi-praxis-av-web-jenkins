@@ -173,7 +173,7 @@ Ext.define('Ext.Praxis.view.payments.BSPFileDownloadForm.Info', {
                         {
                             xtype: 'panel',
                             border: false,
-                            width: 1400,
+                            width: 1420,
                             id: prototype.id + '-panelGridDataARC',
                             bodyStyle: 'background-color: #F4F7FD;',
                             padding: '1',
@@ -186,7 +186,7 @@ Ext.define('Ext.Praxis.view.payments.BSPFileDownloadForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetailARC',
                                     height: 543,
-                                    width: 1210,
+                                    width: 1400,
                                     hidden: false,
                                     columnLines: true,
                                     viewConfig: {
@@ -242,7 +242,7 @@ Ext.define('Ext.Praxis.view.payments.BSPFileDownloadForm.Info', {
                                                     return  value;
                                                 }
                                             },
-                                             {text: '<span style="color:white;font-weight:bold;">Date</span>', dataIndex: 'DATEARC', width: 90,style: 'padding:2px; background: #6C87A8;border-color:white',
+                                             {text: '<span style="color:white;font-weight:bold;">Date</span>', dataIndex: 'DATEARC', width: 80,style: 'padding:2px; background: #6C87A8;border-color:white',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
@@ -250,7 +250,7 @@ Ext.define('Ext.Praxis.view.payments.BSPFileDownloadForm.Info', {
                                                     return  value;
                                                 }
                                             },
-                                             {text: '<span style="color:white;font-weight:bold;">File Name</span>', dataIndex: 'FILENAME', width: 90,style: 'padding:2px; background: #6C87A8;border-color:white',
+                                             {text: '<span style="color:white;font-weight:bold;">File Name</span>', dataIndex: 'NAMEFILE', width: 260,style: 'padding:2px; background: #6C87A8;border-color:white',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
@@ -258,7 +258,7 @@ Ext.define('Ext.Praxis.view.payments.BSPFileDownloadForm.Info', {
                                                     return  value;
                                                 }
                                             },
-                                             {text: '<span style="color:white;font-weight:bold;">Time</span>', dataIndex: 'TIMEARC', width: 100,style: 'padding:2px; background: #6C87A8;border-color:white',
+                                             {text: '<span style="color:white;font-weight:bold;">Time</span>', dataIndex: 'TIMEARC', width: 90,style: 'padding:2px; background: #6C87A8;border-color:white',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
@@ -299,8 +299,8 @@ Ext.define('Ext.Praxis.view.payments.BSPFileDownloadForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: '<span style="color:white;font-weight:bold;">Download File</span>',
-                                                width: 100,
+                                                text: '<span style="color:white;font-weight:bold;">Download</span>',
+                                                width: 80,
                                                 align: 'center',
                                                 style: 'padding:2px; background: #6C87A8; border-color:white',
                                                 renderer: function (value, metaData, record) {
@@ -313,8 +313,23 @@ Ext.define('Ext.Praxis.view.payments.BSPFileDownloadForm.Info', {
                                                 listeners: {
                                                     click: 'onDownloadCSVARC'
                                                 }
-                                            }
+                                            },
+                                            {
+                                                text: '<span style="color:white;font-weight:bold;">View</span>',
+                                                width: 60,
+                                                align: 'center',
+                                                style: 'padding:2px; background: #6C87A8; border-color:white',
+                                                renderer: function (value, metaData, record) {
+                                                    let file = record.get('FILE_NAME');
 
+                                                    return `<img src="resources/img/botones/search.png"
+                                                                  style="cursor:pointer; width:14px; height:14px;"
+                                                                >`;
+                                                },
+                                                listeners: {
+                                                    click: 'onViewCSVARC'
+                                                }
+                                            }
                                         ]
                                     }
                                 }

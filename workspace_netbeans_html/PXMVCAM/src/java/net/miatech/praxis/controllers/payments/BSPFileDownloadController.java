@@ -112,7 +112,7 @@ public class BSPFileDownloadController extends BaseController {
         }
         return lst;
     }
-    
+
     @RequestMapping(value = "searchARC")
     public @ResponseBody
     String searchARC(ModelMap map, HttpServletRequest request) {
@@ -397,6 +397,57 @@ public class BSPFileDownloadController extends BaseController {
         Files.copy(tempZip.toPath(), response.getOutputStream());
         response.flushBuffer();
         tempZip.delete();
+    }
+
+    @RequestMapping(value = "getARCImage", method = RequestMethod.GET)
+    public void getARCImage(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        System.out.println("Report : getARCImage");
+
+        String environment = this.serverSession
+                .getPropertySession()
+                .get("DB_SERVER_DEFAULT_TYPE")
+                .toString();
+
+        // Base: \\Px\av\Efectivo\<env>
+        String rutaBaseKey = "RUTA_CASH_" + environment + "_FILES";
+        String rutaBase = this.serverSession
+                .getPropertySession()
+                .get(rutaBaseKey)
+                .toString();
+
+        String filename = request.getParameter("filename"); 
+
+        if (filename == null || filename.trim().isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("filename es obligatorio");
+            return;
+        }
+
+        String realFileName = filename + "_img.png";
+
+        Path imagePath = Paths.get(
+                rutaBase,
+                "workspace",
+                "ARC-IMAGENES",
+                realFileName
+        );
+
+        System.out.println("Buscando imagen en: " + imagePath);
+
+        if (!Files.exists(imagePath)) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.getWriter().write("Imagen no encontrada: " + realFileName);
+            return;
+        }
+
+        response.setContentType("image/png");
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+
+        try (OutputStream out = response.getOutputStream()) {
+            Files.copy(imagePath, out);
+            out.flush();
+        }
     }
 
 }

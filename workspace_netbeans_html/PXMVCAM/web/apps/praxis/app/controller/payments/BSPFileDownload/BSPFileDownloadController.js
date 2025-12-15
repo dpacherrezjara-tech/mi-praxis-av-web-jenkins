@@ -308,9 +308,50 @@ Ext.define('Ext.Praxis.controller.payments.BSPFileDownload.BSPFileDownloadContro
             Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
         
     },
-    
-    
-    
+    onViewCSVARC: function (column, e, row, colIndex, x, rowData) {
+         let data = rowData.data;
+         const filename  = data.NAMEFILE;
+
+        if (!filename) {
+            Ext.Msg.alert('Error', 'No se encontró el nombre del archivo.');
+            return;
+        }
+
+        const imageUrl = prototype.url
+            + '/getARCImage'
+            + '?filename=' + encodeURIComponent(filename);
+
+        Ext.create('Ext.window.Window', {
+            title: 'ARC Image Viewer',
+            modal: true,
+            width: 1300,
+            height: 800,
+            layout: 'fit',
+            items: [{
+                xtype: 'panel',
+                autoScroll: true,
+                bodyStyle: 'background:#000;',
+                items: [{
+                    xtype: 'image',
+                    src: imageUrl,
+                    style: {
+                        display: 'block',
+                        transform: 'scale(1.4)',          // 🔍 nivel de zoom
+                        transformOrigin: 'top left',      // 🎯 foco arriba izquierda
+                        margin: '0'
+                    }
+                }]
+            }],
+            buttons: [{
+                text: 'Close',
+                handler: function (btn) {
+                    btn.up('window').close();
+                }
+            }]
+        }).show();
+
+    },
+
     
     
     

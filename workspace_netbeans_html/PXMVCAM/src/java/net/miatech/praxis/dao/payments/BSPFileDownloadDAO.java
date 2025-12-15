@@ -204,6 +204,7 @@ public class BSPFileDownloadDAO {
                 bean.LINESARC = rst.getString("LINESARC").trim();
                 bean.PAGESARC = rst.getString("PAGESARC").trim();
                 bean.OBSERVAC = rst.getString("OBSERVAC").trim();
+                bean.NAMEFILE = rst.getString("NAMEFILE").trim();
 
                 bean.page.PAGNUM = filter.page.PAGNUM;
                 bean.page.PAGROW = filter.page.PAGROW;

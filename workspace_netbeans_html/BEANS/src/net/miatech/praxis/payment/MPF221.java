@@ -26,4 +26,5 @@ public class MPF221 {
     public String LINESARC = "";
     public String PAGESARC = "";
     public String OBSERVAC = "";
+    public String NAMEFILE = "";
 }
