@@ -271,64 +271,54 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
             beforerequest: Ext.getCmp(prototype.id + '-dataEntryCash').mask('Loading...'),
             params: {beanString: beanString},
             success: function (response, options) {
-                Ext.getCmp(prototype.id + '-dataEntryCash').unmask('Loading...');
-                var res = Ext.JSON.decode(response.responseText);
-                if (res.success) {
+    Ext.getCmp(prototype.id + '-dataEntryCash').unmask('Loading...');
+    var res = Ext.JSON.decode(response.responseText);
+    
+    if (res.success) {
+        // 🔥 CAMBIO: Usamos los datos directos del backend, SIN agregar filas de sumario manuales
+        // ExtJS Grid con feature 'summary' hará la matemática solo.
+        var data = Ext.isArray(res.data) ? res.data : [];
 
-                    var storeData = Ext.create('Ext.data.Store', {
-                        data: res.data,
-                        autoLoad: true
-                    });
-                    console.log(res.data, 'res.data complete detail')
-                    
-                    function parseNumber(v) {
-                        if (v === null || v === undefined || v === '') return 0;
-                        if (typeof v === 'number') return v;
-                        var s = String(v).replace(/\s/g,'').replace(/,/g,''); // quita espacios y comas
-                        var n = parseFloat(s);
-                        return isNaN(n) ? 0 : n;
-                    }
+        var storeData = Ext.create('Ext.data.Store', {
+            data: data, // Usamos la data limpia
+            autoLoad: true
+        });
 
-                    var data = Ext.isArray(res.data) ? Ext.Array.clone(res.data) : [];
+        // --- SECCIÓN ELIMINADA: Ya no necesitas calcular totalNeto ni totalPayamou aquí ---
+        // --- SECCIÓN ELIMINADA: Ya no necesitas data.push(summaryRec) ---
+        
+        var panelScanArc = Ext.getCmp(prototype.id + '-panelDataInfoScanARC'); 
+        var panelScan    = Ext.getCmp(prototype.id + '-panelDataInfoScan');
+        var gridScanArc  = Ext.getCmp(prototype.id + '-gridDataInfoScanArc');
+        var gridScan     = Ext.getCmp(prototype.id + '-gridDataInfoScan');
 
-                    // calcular totales y qty
-                    var totalNeto = 0;
-                    var totalPayamou = 0;
-                    var qty = 0;
-                    Ext.Array.forEach(data, function(rec){
-                        // si rec.NETO undefined => 0
-                        var n = parseNumber(rec.NETO);
-                        var p = parseNumber(rec.PAYAMOU);
-                        var p = parseNumber(rec.USDEQUI);
-                        totalNeto += n;
-                        totalPayamou += p;
-                        // considera contar solo filas "normales" (no summary previas)
-                        qty++;
-                    });
+        if (gridScanArc && gridScan) {
+            gridScanArc.bindStore(storeData); 
+            gridScan.bindStore(storeData);    
+        }
 
-                    // crear fila resumen (marca _isSummary para detectarla en renderer)
-                    var summaryRec = {
-                        totalNeto: totalNeto,           // números reales
-                        totalPayamou: totalPayamou,
-                        totalUsdEqui: totalPayamou,
-                        _isSummary: true
-                    };
+        // ... resto de tu lógica de visualización de paneles ...
+        if (meDE.bean.data.CCUSTPRO == '02') {
+             if(panelScanArc) panelScanArc.show(); 
+                if(panelScan)    panelScan.hide(); 
+            } else {
+                if(panelScanArc) panelScanArc.hide(); 
+                if(panelScan)    panelScan.show(); 
 
-                    // agregar al final de la data
-                    data.push(summaryRec);
-                    Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
-                    if(meDE.bean.data.TINPUT == 'I'){
-                        meDE.hiddenGridColumns();
-                    } else if (meDE.bean.data.TINPUT == 'B' || meDE.bean.data.TINPUT == 'A') {
-                        meDE.hiddenGridColumnsBSP();
-                    }
-                    meDE.calcularMontos();
-                    meDE.calcularDiferencias();
-                } else {
-                    global.Msg({msg: res.Mensaje});
+                // Lógica adicional de columnas
+                if(meDE.bean.data.TINPUT == 'I'){
+                    meDE.hiddenGridColumns();
+                } else if (meDE.bean.data.TINPUT == 'B' || meDE.bean.data.TINPUT == 'A') {
+                    meDE.hiddenGridColumnsBSP();
                 }
-
-            }
+        }
+        
+        meDE.calcularMontos();
+        meDE.calcularDiferencias();
+    } else {
+        global.Msg({msg: res.Mensaje});
+    }
+}
         });
     },
     onChangeHeader: function (){
@@ -1133,17 +1123,11 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
 
             const country = this.beanResult.SCOUNTRY; // Ejemplo: "CO"
             const date = this.beanResult.VALDATE;       // Ejemplo: "20250731"
-            const ccustN = this.beanResult.CCUST;       
+            const ccustR = this.beanResult.CCUST;       
             const cycle = this.beanResult.DCYCLE.trim();     
             const input = this.beanResult.TINPUT.trim();     
-            let codigoClient = {
-                '134' : 'AV-134',
-                '133' : 'LR-134',
-                '202' : 'TA-134',
-                '547' : '2K-134'
-            }
-            const ccustR = codigoClient[this.beanResult.CCUST] ? codigoClient[this.beanResult.CCUST] : '';
-            if (!country || !date || !ccustN || !cycle || !input) {
+
+            if (!country || !date || !ccustR || !cycle || !input) {
                 Ext.Msg.alert('Error', 'Faltan parámetros para la descarga.');
                 return;
             }

@@ -9230,7 +9230,7 @@ public class BankReconciliationDAO {
             objRtn.CBATCH = rs01.getString("CBATCH");
             objRtn.CHEADER = rs01.getString("CHEADER");
             objRtn.TINPUT = rs01.getString("TINPUT");
-
+            objRtn.DCYCLE = rs01.getString("DCYCLE");
             objRtn.ADATE = rs01.getString("ADATE");
             objRtn.NEGOC = rs01.getString("NEGOC");
             objRtn.BANDOC = rs01.getString("BANDOC");

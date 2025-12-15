@@ -3801,6 +3801,7 @@ public class StatementReconciliationsDAO {
                 beanTkt.COMMENTS = rst.getString("COMMENTS");
                 beanTkt.CBATCH = rst.getString("CBATCH");
                 beanTkt.FECR = rst.getString("FECR");
+                beanTkt.DPERIOD = rst.getString("DPERIOD");
                 
                 lstTkts.add(beanTkt);
             }

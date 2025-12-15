@@ -1310,6 +1310,208 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                 }
                                             ]
                                         },
+                                        
+                                        {
+    xtype: 'panel',
+    layout: 'hbox',
+    border: false,
+    margin: '10 0 0 30',
+    items: [
+        {
+            xtype: 'panel',
+            layout: 'fit', // 🔥 CAMBIO: Usar fit o anchor ayuda a que se adapte mejor
+            id: prototype.id + '-panelDataInfoScanARC',
+            border: false,
+            width: 1156,
+            height: 160, // 🔥 CAMBIO: Reducido de 280 a 160 (suficiente para cabecera + 2 filas + sumario)
+            items: [
+                {
+                    xtype: 'grid',
+                    id: prototype.id + '-gridDataInfoScanArc',
+                    // width: 1100, // 🔥 CAMBIO: Quitamos ancho fijo para que se adapte al panel padre (1156) o usamos forceFit
+                    width: '100%', 
+                    height: 150, // 🔥 CAMBIO: Reducido de 250 a 150 para quitar el espacio blanco
+                    columnLines: true,
+                    // 🔥 CAMBIO: forceFit hace que las columnas se estiren para llenar TODO el ancho (arregla la barra azul)
+                    forceFit: true, 
+                    plugins: [
+                        {
+                            ptype: 'cellediting',
+                            clicksToEdit: 1
+                        }
+                    ],
+                    features: [{
+                        ftype: 'summary'
+                    }],
+                    viewConfig: {
+                        getRowClass: function (record) {
+                            if (record.get('REFERENCE') && record.get('REFERENCE').trim() !== '') {
+                                return 'row-with-comments';
+                            }
+                            return '';
+                        },
+                        listeners: {
+                            itemmouseenter: function (view, record, item) {
+                                if (record.get('REFERENCE') && record.get('REFERENCE').trim() !== '') {
+                                    Ext.tip.QuickTipManager.register({
+                                        target: item,
+                                        text: `<b>Reference:</b> ${record.get('REFERENCE') || ''}<br><b>Comments:</b> ${record.get('COMMENTS') || ''}`
+                                    });
+                                }
+                            },
+                            itemmouseleave: function (view, record, item) {
+                                Ext.tip.QuickTipManager.unregister(item);
+                            }
+                        }
+                    },
+                    columns: {
+                        defaults: {
+                            menuDisabled: true,
+                            sortable: true,
+                            align: 'center'
+                        },
+                        items: [
+                            {
+                                text: 'Value <br> Date',
+                                dataIndex: 'ADATE',
+                                width: 85,
+                                renderer: function (value, metaData) {
+                                    metaData.style = "text-align:center;";
+                                    return value;
+                                }
+                            },
+                            {
+                                text: 'Concept',
+                                dataIndex: 'CONCEPT',
+                                width: 120, // 🔥 CAMBIO: Ajuste de ancho
+                                renderer: function (value, metaData) {
+                                    metaData.style = "text-align:center;";
+                                    return 'Disbursement advice';
+                                }
+                            },
+                            {
+                                text: 'Country',
+                                dataIndex: 'DESC_SCOUNTRY',
+                                width: 100, // 🔥 CAMBIO: Esta columna se estirará para llenar el espacio vacío
+                                renderer: function (value, metaData, record) {
+                                    var data = record.data;
+                                    metaData.style = "text-align:center;";
+                                    metaData.tdAttr = 'data-qtip="' + data.SCOUNTRY + '"';
+                                    return value;
+                                }
+                            },
+                            {
+                                text: 'Sconsol',
+                                dataIndex: 'SCONSOL',
+                                width: 95,
+                                renderer: function (value, metaData) {
+                                    metaData.style = "text-align:center;";
+                                    return value;
+                                }
+                            },
+                            {
+                                text: 'Currency',
+                                dataIndex: 'SCURRENCY',
+                                width: 70,
+                                renderer: function (value, metaData) {
+                                    metaData.style = "text-align:center;";
+                                    return value;
+                                }
+                            },
+                            {
+    text: 'Neto Sales',
+    dataIndex: 'NETO',
+    width: 110,
+    xtype: 'numbercolumn',
+    // Quitamos summaryType porque estaba llegando vacío
+    renderer: function (value, metaData) {
+        metaData.style = "text-align:right;";
+        return Ext.util.Format.number(value, '0,000.00');
+    },
+    summaryRenderer: function (value, summaryData, dataIndex) {
+        // 🔥 ESTRATEGIA SEGURA: Buscamos la grilla y su store manualmente
+        var grid = Ext.getCmp(prototype.id + '-gridDataInfoScanArc');
+        var total = 0;
+
+        if (grid && grid.getStore()) {
+            grid.getStore().each(function(record) {
+                var rawVal = record.get('NETO');
+                // Convertimos a String para evitar error si ya es numero, y quitamos comas
+                var stringVal = String(rawVal).replace(/,/g, ''); 
+                var numberVal = parseFloat(stringVal);
+
+                if (!isNaN(numberVal)) {
+                    total += numberVal;
+                }
+            });
+        }
+        
+        return '<b>' + Ext.util.Format.number(total, '0,000.00') + '</b>';
+    }
+},
+{
+    text: 'Neto EECC',
+    dataIndex: 'PAYAMOU',
+    width: 110,
+    xtype: 'numbercolumn',
+    renderer: function (value, metaData) {
+        metaData.style = "text-align:right;";
+        return Ext.util.Format.number(value, '0,000.00');
+    },
+    summaryRenderer: function (value, summaryData, dataIndex) {
+        // 🔥 MISMA ESTRATEGIA PARA PAYAMOU
+        var grid = Ext.getCmp(prototype.id + '-gridDataInfoScanArc');
+        var total = 0;
+
+        if (grid && grid.getStore()) {
+            grid.getStore().each(function(record) {
+                var rawVal = record.get('PAYAMOU');
+                var stringVal = String(rawVal).replace(/,/g, ''); 
+                var numberVal = parseFloat(stringVal);
+
+                if (!isNaN(numberVal)) {
+                    total += numberVal;
+                }
+            });
+        }
+
+        return '<b>' + Ext.util.Format.number(total, '0,000.00') + '</b>';
+    }
+},
+                            {
+                                text: 'Settlement Day',
+                                dataIndex: 'DPERIOD',
+                                width: 90,
+                                renderer: function (value, metaData) {
+                                    metaData.style = "text-align:center;";
+                                    return value;
+                                }
+                            },
+                            {
+                                text: 'Billing From',
+                                dataIndex: 'STRDATE',
+                                width: 85,
+                                renderer: function (value, metaData) {
+                                    metaData.style = "text-align:center;";
+                                    return value;
+                                }
+                            },
+                            {
+                                text: 'Billing To',
+                                dataIndex: 'ENDDATE',
+                                width: 85,
+                                renderer: function (value, metaData) {
+                                    metaData.style = "text-align:center;";
+                                    return value;
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+},
 
                                         {
                                             xtype: 'panel',

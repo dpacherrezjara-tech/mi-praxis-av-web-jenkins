@@ -100,10 +100,14 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
                         data: res.data,
                         autoLoad: true
                     });
-
-                    Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
+                    if(meDe.bean.TINPUT == 'I'){
+                        Ext.getCmp(prototype.id + '-gridDataInfoScanICCS').bindStore(storeData);
+                    }else{
+                        Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
+                    }
+                    
                     meDe.storeDataCash = storeData;
-                    Ext.getCmp(prototype.id + '-gridDataInfoScanICCS').bindStore(storeData);
+                    
 //                    meDe.calcularSumAmount();
                     meDe.calcularMontos();
                 } else {
@@ -124,13 +128,17 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         if (this.bean.TINPUT === 'B') {
             cfuente = 'BSP';
             Ext.getCmp(prototype.id + '-panelDataInfoScan').show();
+            Ext.getCmp(prototype.id + '-panelDataInfoScanICCS').hide();
 
         } else if (this.bean.TINPUT === 'A') {
+            Ext.getCmp(prototype.id + '-panelDataInfoScan').show();
+            Ext.getCmp(prototype.id + '-panelDataInfoScanICCS').hide();
             cfuente = 'ARC';          
 
         } else if (this.bean.TINPUT === 'I') {
             cfuente = 'ICCS';
             Ext.getCmp(prototype.id + '-panelDataInfoScanICCS').show();
+            Ext.getCmp(prototype.id + '-panelDataInfoScan').hide();
         }
         ;
         this.setValue('de-txtSource', cfuente);
@@ -1152,7 +1160,13 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
 
     onConciliationCash: function (element) {
         var me = this;
-        var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+//        var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        
+        if(this.bean.TINPUT == 'I'){
+            var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScanICCS');
+        }else {
+            var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        }
         var storeScan = gridScan.getStore();
         
         // --- Filtrar registros seleccionados
@@ -1241,7 +1255,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         const date = this.bean.ADATE;       // Ejemplo: "20250731"
         const fuente = this.bean.TINPUT;       // Ejemplo: "20250731"
         const dateArc = this.bean.DPERIOD;       // Ejemplo: "20250731"
-        const ccust = this.bean.CCUST;       // Ejemplo: "20250731"
+        const ccust = this.bean.CCUST;       // Ejemplo: "20250731"      
+        const cycle = this.bean.DCYCLE.trim();     
 
 //        const ccustN = this.bean.CCUST;       // Ejemplo: "20250731"
 //        const cycle = this.bean.DCYCLE.trim();       // Ejemplo: "20250731"
@@ -1260,7 +1275,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         // Enviamos los dos parámetros al backend
         const url = prototype.url + '/getCSV?country=' + encodeURIComponent(country)
                 + '&date=' + encodeURIComponent(date)+ '&fuente=' + encodeURIComponent(fuente)
-                + '&dateArc=' + encodeURIComponent(dateArc)+ '&ccust=' + encodeURIComponent(ccust);
+                + '&dateArc=' + encodeURIComponent(dateArc)+ '&ccust=' + encodeURIComponent(ccust) + '&cycle=' + encodeURIComponent(cycle);
 
         console.log('Solicitando:', url);
 

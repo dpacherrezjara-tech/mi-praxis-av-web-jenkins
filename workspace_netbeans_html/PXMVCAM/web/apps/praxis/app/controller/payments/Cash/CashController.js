@@ -1,4 +1,3 @@
-
 Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.CashController',
@@ -99,45 +98,6 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(this.fecha.getFullYear());
         Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('');
         Ext.getCmp(prototype.id + '-cmbDateToDay').setValue('');
-
-//        var cmbPERNUM = Ext.getCmp(prototype.id + '-cmbPERNUM');
-//        cmbPERNUM.bindStore(Ext.create('Ext.data.ArrayStore', {
-//            autoLoad: false,
-//            fields: ['code', 'name'],
-//            data: [
-//                ["", "All"],
-//                ["01", "01"],
-//                ["02", "02"],
-//                ["03", "03"],
-//                ["04", "04"]
-//            ]
-//        }));
-//        cmbPERNUM.setValue("");
-
-//        var cmbPROCIND = Ext.getCmp(prototype.id + '-cmbPROCIND');
-//        cmbPROCIND.bindStore(Ext.create('Ext.data.ArrayStore', {
-//            autoLoad: false,
-//            fields: ['code', 'name'],
-//            data: [
-//                ["", "All"],
-//                ["1", "1 - BILLED ELECTRONICALLY"],
-//                ["2", "2 - BILLED ELECTRONICALLY"],
-//                ["3", "3"],
-//                ["4", "4 - NOT PRESENTED TO CARD COMPANY"]
-//            ]
-//        }));
-//        cmbPROCIND.setValue("");
-
-//        var cmbTRANSTYPE = Ext.getCmp(prototype.id + '-cmbTRANSTYPE');
-//        cmbTRANSTYPE.bindStore(Ext.create('Ext.data.ArrayStore', {
-//            autoLoad: false,
-//            fields: ['code', 'name'],
-//            data: [
-//                ["S", "SALES"],
-//                ["R", "REFUNDS"]
-//            ]
-//        }));
-//        cmbTRANSTYPE.setValue("S");
 
         this.dataObtain.CARD = 2;
         Ext.Ajax.request({
@@ -750,14 +710,14 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         if (mode === 1) {
 
             Ext.getCmp(prototype.id + '-cmbDateFromYear').setValue(year);
-            Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue('06');
+//            Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue('06');
             Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue(month);
-//            Ext.getCmp(prototype.id + '-cmbDateFromDay').setValue('01');
+            Ext.getCmp(prototype.id + '-cmbDateFromDay').setValue('');
 
             Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(year);
-            Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('06');
+//            Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('06');
             Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue(month);
-//            Ext.getCmp(prototype.id + '-cmbDateToDay').setValue('01');
+            Ext.getCmp(prototype.id + '-cmbDateToDay').setValue('');
         }
     },
     cbxDateFromYear_changeHandler: function () {
