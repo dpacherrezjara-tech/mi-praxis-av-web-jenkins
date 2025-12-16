@@ -1699,7 +1699,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                                         dataIndex: 'DESC_SCOUNTRY',
                                                                                         width: 120,
                                                                                         renderer: function (value, metaData) {
-                                                                                            metaData.style = "text-align:center;";
+                                                                                            metaData.style = "text-align:left;";
                                                                                             if (!value)
                                                                                                 return '';
                                                                                             value = value.toLowerCase();
