@@ -4382,13 +4382,15 @@ public class StatementReconciliationsController extends BaseController {
         byte[] bytes = null;
         String message = "";
         String filename = "";
+        String tolerancia = "" ;
 
         try {
 
             byte[] dataFile = excelfile.getBytes();
             filename = request.getParameter("filename");
+            tolerancia = request.getParameter("tolerancia");
 
-            message = uploadFileConciliaECColombia(dataFile);
+            message = uploadFileConciliaECColombia(dataFile,tolerancia );
 
             map.put("success", true);
             map.put("msjResult", message);
@@ -4399,7 +4401,7 @@ public class StatementReconciliationsController extends BaseController {
         return new Gson().toJson(map);
     }
 
-    private String uploadFileConciliaECColombia(byte[] bytes) throws Exception {
+    private String uploadFileConciliaECColombia(byte[] bytes, String tolerancia ) throws Exception {
 
         Functions.msjConsola("PRAXISMP", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
@@ -4409,6 +4411,8 @@ public class StatementReconciliationsController extends BaseController {
         String message = "";
         int i = 0, cont = 0;
         boolean isOk = false;
+        boolean isTolerancia = false;
+        boolean isTolerancia_seq = false;
         String BANDOC = "";
         try {
             String strSesion = UUID.randomUUID().toString();
@@ -4428,6 +4432,7 @@ public class StatementReconciliationsController extends BaseController {
             List<MPF101> listaDataEECC = new ArrayList<MPF101>(0);
             List<MPF101> listaDataLIQUI = new ArrayList<MPF101>(0);
             List<MPF101> listaDataLIQUI_SEQ = new ArrayList<MPF101>(0);
+            MPF101 objMPF101 = new MPF101();
 
             //CODEBANK,ADATE,SDATE,MERCHAND,SAGENT,RED
             int COUNT = 0;
@@ -4473,18 +4478,29 @@ public class StatementReconciliationsController extends BaseController {
                 String merchand = buildInClause("MERCHAND", uniqueMERCHAND);
                 String sagent = buildInClause("SAGENT", uniqueSAGENT);
                 String red = buildInClause("RED", uniqueRED);
-
+                
                 String QUERY = codebank + " AND " + adate + " AND " + sdate + " AND " + merchand + " AND " + sagent + " AND " + red;
                 System.out.println(QUERY);
-
+                String primerADATE = uniqueADATE.iterator().next();
                 listaDataEECC = logic.CONFIEC(BANDOC);
                 listaDataLIQUI = logic.CONFILIQ(QUERY);
                 listaDataLIQUI_SEQ = logic.CONFILIQ_SEQ(QUERY);
+                objMPF101 = logic.GET_TOLERANCIA(primerADATE);
+                
 
                 if (!listaDataEECC.isEmpty() && !listaDataLIQUI.isEmpty() && !listaDataLIQUI_SEQ.isEmpty()) {
-
+                    double netoEECC  = Double.parseDouble(listaDataEECC.get(0).NETOS);
+                    double netoLIQUI = Double.parseDouble(listaDataLIQUI.get(0).NETOS);
+                    double netoLIQUI_SEQ = Double.parseDouble(listaDataLIQUI_SEQ.get(0).NETOS);
+                    if (tolerancia.equals("Y")){
+                        isTolerancia = Math.abs(netoEECC - netoLIQUI) <= objMPF101.SVFOPD;
+                        isTolerancia_seq = Math.abs(netoEECC - netoLIQUI_SEQ) <= objMPF101.SVFOPD;
+                    }else{
+                        isTolerancia = true;
+                        isTolerancia_seq = true;
+                    }
                     for (int a = 0; a < listaDataEECC.size(); a++) {
-                        if (listaDataEECC.get(a).NETOS.equals(listaDataLIQUI.get(0).NETOS) && COUNT == listaDataLIQUI.get(0).QTY) {
+                        if (  isTolerancia && COUNT == listaDataLIQUI.get(0).QTY) {
                             //LOS MONTOS CONCILIAN, SE PROCEDE CON LA CONCILIACION 
                             String ban = listaDataEECC.get(a).BANDOC;
                             String dateci = listaDataEECC.get(a).DATECI;
@@ -4503,7 +4519,7 @@ public class StatementReconciliationsController extends BaseController {
                                 message = "Error in conciliation";
                             }
 
-                        } else if (listaDataEECC.get(a).NETOS.equals(listaDataLIQUI_SEQ.get(0).NETOS) && COUNT == listaDataLIQUI_SEQ.get(0).QTY) {
+                        } else if ( isTolerancia_seq && COUNT == listaDataLIQUI_SEQ.get(0).QTY) {
 
                             //LOS MONTOS CONCILIAN, SE PROCEDE CON LA CONCILIACION 
                             String ban = listaDataEECC.get(a).BANDOC;

@@ -443,66 +443,66 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                 
                 
                 
-                {
-                    xtype: 'combo',
-                    hidden: true,
-                    id: prototype.id + '-cmbExt',
-                    store: new Ext.data.SimpleStore({
-                        fields: ['value', 'description'],
-                        data: [
-                            ["E", "Ext"], ["C", "Col"]
-                        ]
-                    }),
-                    queryMode: 'local',
-                    allowBlank: false,
-                    forceSelection: true,
-                    selectOnFocus: true,
-                    caseSensitive: false,
-                    autoSelect: true,
-                    editable: false,
-                    width: 50,
-                    value: "E",
-                    hidden: false,
-                    typeAhead: true,
-                    valueField: 'value', displayField: 'description',
-                    enableKeyEvents: true,
-                    triggerAction: 'all'
-                },
-                {
-                    xtype: 'form',
-                    id: prototype.id + '-formLIQvsEC',
-                    border: false,
-                    bodyStyle: 'background-color: #E3EAF9;',
-                    items: [{
-
-                            xtype: 'filefield',
-                            id: prototype.id + '-file',
-                            name: 'excelfile',
-                            allowBlank: true,
-                            accept: '.xlsx, .xls',
-                            labelWidth: 85,
-                            width: 250,
-                            buttonAlign: 'left',
-                            buttonText: 'Select excel...',
-                            regex: /(.)+((\.xlsx)|(\.xls)|(\.csv)(\w)?)$/i,
-                            regexText: 'Only XLS and XLSX formats are accepted',
-                            buttonConfig: {
-                                text: '<strong>Select</strong>',
-                                width: 60,
-                                style: 'margin-right: 10px;' // Agregamos un margen derecho al botón
-                            }
-                        }]
-                },
-                {
-                    xtype: 'button',
-                    id: prototype.id + '-btn_Concilia_LIQvsEC',
-                    html: '<strong style="color:white;">Conciliar</strong>',
-                    style: 'background:#24678D;color:white;font-weight:bold;',
-                    border: false,
-                    listeners: {
-                        click: 'onLoadClick_conciliaEC'
-                    }
-                },
+//                {
+//                    xtype: 'combo',
+//                    hidden: true,
+//                    id: prototype.id + '-cmbExt',
+//                    store: new Ext.data.SimpleStore({
+//                        fields: ['value', 'description'],
+//                        data: [
+//                            ["E", "Ext"], ["C", "Col"]
+//                        ]
+//                    }),
+//                    queryMode: 'local',
+//                    allowBlank: false,
+//                    forceSelection: true,
+//                    selectOnFocus: true,
+//                    caseSensitive: false,
+//                    autoSelect: true,
+//                    editable: false,
+//                    width: 50,
+//                    value: "E",
+//                    hidden: false,
+//                    typeAhead: true,
+//                    valueField: 'value', displayField: 'description',
+//                    enableKeyEvents: true,
+//                    triggerAction: 'all'
+//                },
+//                {
+//                    xtype: 'form',
+//                    id: prototype.id + '-formLIQvsEC',
+//                    border: false,
+//                    bodyStyle: 'background-color: #E3EAF9;',
+//                    items: [{
+//
+//                            xtype: 'filefield',
+//                            id: prototype.id + '-file',
+//                            name: 'excelfile',
+//                            allowBlank: true,
+//                            accept: '.xlsx, .xls',
+//                            labelWidth: 85,
+//                            width: 250,
+//                            buttonAlign: 'left',
+//                            buttonText: 'Select excel...',
+//                            regex: /(.)+((\.xlsx)|(\.xls)|(\.csv)(\w)?)$/i,
+//                            regexText: 'Only XLS and XLSX formats are accepted',
+//                            buttonConfig: {
+//                                text: '<strong>Select</strong>',
+//                                width: 60,
+//                                style: 'margin-right: 10px;' // Agregamos un margen derecho al botón
+//                            }
+//                        }]
+//                },
+//                {
+//                    xtype: 'button',
+//                    id: prototype.id + '-btn_Concilia_LIQvsEC',
+//                    html: '<strong style="color:white;">Conciliar</strong>',
+//                    style: 'background:#24678D;color:white;font-weight:bold;',
+//                    border: false,
+//                    listeners: {
+//                        click: 'onLoadClick_conciliaEC'
+//                    }
+//                },
                 {xtype: 'tbspacer', width: 15, height:20},
                 {
                     xtype: 'label',
@@ -587,7 +587,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     width: 251,
                     labelAlign: 'left'
                 },
-                {xtype: 'tbspacer', width: 150, height:20},
+                {xtype: 'tbspacer', width: 513, height:20},
                 {
                     xtype: 'label',
                     text: 'CreditCard',

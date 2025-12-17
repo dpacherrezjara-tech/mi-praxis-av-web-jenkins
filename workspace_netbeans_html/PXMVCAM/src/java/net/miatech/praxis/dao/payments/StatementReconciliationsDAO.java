@@ -4782,6 +4782,35 @@ public class StatementReconciliationsDAO {
         return result;
     }
     
+    public MPF101 GET_TOLERANCIA(String Adate) throws SQLException, Exception {
+        boolean result = false;
+        String Query = "SELECT PRAXISMP.FN_CONVERT(?, ?, ?, ?, ?) AS RESULT " +
+        "FROM SYSIBM.SYSDUMMY1";
+        MPF101 objMPF101 = new MPF101();
+        try (Connection connection = session.getCNXIBMDB2().getIBMDB2Connection();
+                PreparedStatement preparedStatement = connection.prepareStatement(Query)) {
+
+            // Asignación de valores a los parámetros
+            preparedStatement.setDouble(1, 1.00);
+            preparedStatement.setString(2, "USD");
+            preparedStatement.setString(3, "COP");
+            preparedStatement.setString(4, Adate);
+            preparedStatement.setString(5, "134");
+            // Ejecuta el UPDATE
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                if (rs.next()) {
+                    objMPF101.SVFOPD = rs.getDouble("RESULT");
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            result = false;
+        }
+
+        return objMPF101;
+    }
+    
     // CASH
     
         public List<MPF100Filter> loadCashSummaryMain(MPF100Filter filter) throws SQLException, Exception {
