@@ -194,6 +194,10 @@ public class StatementReconciliationsLogic {
     public boolean CONCILIA2_SEQ(String QUERY ,String ban,String dateci,String tranci,String valdate,String prda) throws SQLException, Exception {
         return StatementReconciliationsDAO.CONCILIA2_SEQ( QUERY , ban, dateci, tranci, valdate, prda);
     }
+    
+    public MPF101 GET_TOLERANCIA(String Adate) throws SQLException, Exception {
+        return StatementReconciliationsDAO.GET_TOLERANCIA(Adate);
+    }
             
     //CASH
     public List<MPF100Filter> loadCashSummaryMain(MPF100Filter filter) throws SQLException, Exception {
