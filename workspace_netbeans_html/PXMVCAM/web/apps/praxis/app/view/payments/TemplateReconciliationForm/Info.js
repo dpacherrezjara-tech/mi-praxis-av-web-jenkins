@@ -1847,7 +1847,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
             items: [
                 {
                     xtype: 'panel',
-                    width: 710,
+                    width: 760,
                     border: false,
                     margin: '8 0 8 8',
                     layout: {
@@ -1866,7 +1866,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                 align: 'middle'
                             },
                             style: 'background:#EFE6DC; border:1px solid #D6C4A0; padding:8px; border-radius:4px;',
-                            width: 700,
+                            width: 750,
                             defaults: {
                                 margin: '0 10 0 0',
                                 labelAlign: 'left',
@@ -1932,7 +1932,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                             xtype: 'grid',
                             id: prototype.id + '-gridDataBandocReview',
                             height: 460,
-                            width: 700,
+                            width: 750,
                             margin: '10px 5px 0 0',
                             columnLines: true,
 
@@ -2073,7 +2073,23 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliationForm.Info', {
                                             }
 
                                         ]
-                                    }
+                                    },
+                                    {
+                                        xtype: 'checkcolumn', // Columna de checkbox
+                                        text: 'SEL', // Título de la columna
+                                        width: 50, // Ancho de la columna
+                                        dataIndex: 'checkActive', // Campo en el store que almacena el estado del checkbox
+                                        align: 'center',
+                                        style: 'padding: 2px; background: #8A7155 ;border-color:white',
+                                        menuDisabled: true,
+                                        listeners: {
+                                            checkchange: 'checkBandocComitin'
+                                        },
+                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                            metaData.style = "text-align:right;background: #8A7155;color:white";
+                                            return '';
+                                        }
+                                    },
                                 ]
                             }
                         }

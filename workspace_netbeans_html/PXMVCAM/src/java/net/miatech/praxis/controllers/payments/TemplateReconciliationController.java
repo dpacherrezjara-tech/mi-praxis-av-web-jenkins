@@ -912,6 +912,63 @@ public class TemplateReconciliationController extends BaseController {
         return response;
     }
 
+     @RequestMapping(value = "getPendingDiscoundCom")
+    public @ResponseBody
+    String getPendingDiscoundCom(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- TemplateReconciliation : getPendingDiscoundCom -----------");
+
+        map.put("success", true);
+
+        MPS419Response response = this.searchPendingDiscoundCom(request, false);
+
+        // total = tamaño de depósitos (o tamaño de invoices si deseas)
+        int total = response.deposits != null ? response.deposits.size() : 0;
+
+        System.out.println("Total : " + total);
+        map.put("total", total);
+        map.put("data", response);
+
+        return new Gson().toJson(map);
+    }
+
+    public MPS419Response searchPendingDiscoundCom(HttpServletRequest request, Boolean bExcel) {
+
+        A2290Filter filter = new A2290Filter();
+        MPS419Response response = new MPS419Response();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new TemplateReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit"));
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
+
+            if (false) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            response = logic.searchPendingDiscoundCom(filter);
+
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+
+        return response;
+    }
+    
     @RequestMapping(value = "MaintenanceA2280")
     public @ResponseBody
     String MaintenanceA2280(ModelMap map, HttpServletRequest request) {

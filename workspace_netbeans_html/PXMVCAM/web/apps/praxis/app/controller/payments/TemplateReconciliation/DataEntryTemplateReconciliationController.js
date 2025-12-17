@@ -264,7 +264,8 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.DataEntryTempl
                     Ext.getCmp(prototype.id + '-dataEntry').unmask();
                     Ext.getCmp(prototype.id + '-dataEntry').close();
                     Ext.getCmp(prototype.id + '-txtBandocSaleReview').fireEvent('keypress');
-
+                    let grid = Ext.getCmp(prototype.id + '-gridDataVen2tas');
+                    grid.getStore().removeAll();
 
                 } else
                     global.Msg({msg: ''});
