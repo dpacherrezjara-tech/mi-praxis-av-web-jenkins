@@ -34,6 +34,7 @@ public class A1698 {
     public String A1698FPRDA_00 = "";
     public String A1698FFILE_00 = "";
     public String A1698STPRO_00 = "";
+    public String A1698FREGI_00 = "";
     
     public String A1698UCONC = "";
     public String A1698FCONC = "";

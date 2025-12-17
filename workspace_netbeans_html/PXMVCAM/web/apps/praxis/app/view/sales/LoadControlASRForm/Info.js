@@ -91,7 +91,7 @@ Ext.define('Ext.Praxis.view.sales.LoadControlASRForm.Info', {
                                                 ]
                                             },
                                             {text: 'ID File', dataIndex: 'A1698IDFIL', flex: 1, width: 100},
-                                            {text: 'System Date', dataIndex: 'A1698FREGI', width: 100}
+                                            {text: 'System Date', dataIndex: 'A1698FREGI_00', width: 100}
                                         ]
                                     },
                                     listeners: {
