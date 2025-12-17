@@ -128,6 +128,21 @@ Ext.define('Ext.Praxis.view.sales.LoadControlASRForm.Options', {
                                 click: 'btnExcel_click'
                             }
                         },
+                        
+                        {
+                            xtype: 'button',
+                            id: prototype.id + '-btnExcelMonth',
+                            //iconCls: 'prx-icon-excel',
+                            icon: 'resources/img/icon/iconexcelA.png',
+                            tooltip: 'Export to Excel',
+                            listeners: {
+                                click: 'btnExcel_clickMonth'
+                            }
+                        },
+                        
+                        
+                        
+                        
                         {
                             xtype: 'button',
                             id: prototype.id + '-btnClear',
