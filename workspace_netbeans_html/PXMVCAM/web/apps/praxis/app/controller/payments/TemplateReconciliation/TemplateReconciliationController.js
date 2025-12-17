@@ -830,9 +830,10 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             return [];
         }
 
-        return store.getRange()
-                .map(record => record.getData());
+        // 🔑 RECORDS REALES
+        return store.getRange();
     },
+
     getGridRecordsDiscount: function (gridId) {
         var grid = Ext.getCmp(gridId);
         if (!grid) {
@@ -1408,7 +1409,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                 });
 
                 Ext.getCmp(prototype.id + '-cmbCOREP').bindStore(storeDataProcessor);
-                Ext.getCmp(prototype.id + '-cmbCOREP').setValue('FD');
+                Ext.getCmp(prototype.id + '-cmbCOREP').setValue('CM');
 
                 Ext.getCmp(prototype.id + '-txtCountrySale').bindStore(storeDataCountrys);
             }
@@ -1874,19 +1875,20 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
             beanString: JSON.stringify(me.beanBandoc)
         };
 
-        console.log(me.beanBandoc, 'RAAA')
-
+        console.log(me.beanBandoc, 'me.beanBandoc')
         me.getBandocSalesReview(searchParamsBandoc);
-
     },
     getBandocSalesReview: function (params) {
         let me = this;
 
+        let box = Ext.getCmp(prototype.id + '-boxConsultas3');
+        box.mask('Loading...');
+
         Ext.Ajax.request({
             url: prototype.url + '/getPendingDepositsSalesReview',
             method: 'POST',
-            beforerequest: Ext.getCmp(prototype.id + '-boxConsultas3').mask('Loading...'),
             params: params,
+
             success: function (response) {
 
                 let json;
@@ -1895,40 +1897,45 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
                 } catch (e) {
                     console.error("Error al parsear JSON:", e);
                     global.Msg({msg: 'Invalid JSON response'});
+                    box.unmask();
                     return;
                 }
+
+                console.log('RESPUESTA BACKEND:', json);
 
                 if (!json.success) {
-                    console.warn(" success=false en respuesta");
                     global.Msg({msg: 'Error loading data'});
+                    box.unmask();
                     return;
                 }
 
-                let deposits = json.data.deposits || [];
-                let invoices = json.data.invoices || [];
+                // 🔑 AQUÍ ESTABA EL ERROR
+                let deposits = json.data && json.data.deposits
+                        ? json.data.deposits
+                        : [];
 
-                let grid1 = Ext.getCmp(prototype.id + '-gridDataBandocReview');
-                let grid2 = Ext.getCmp(prototype.id + '-gridDataVen2tas');
+                console.log('DEPOSITS:', deposits);
 
-                if (!grid1)
+                let grid = Ext.getCmp(prototype.id + '-gridDataBandocReview');
+                if (!grid) {
                     console.error("gridDataBandocReview NO encontrado");
-                if (!grid2)
-                    console.error("gridDataVen2tas NO encontrado");
+                    box.unmask();
+                    return;
+                }
 
-                grid1.getStore().loadData(deposits);
-                grid2.getStore().loadData(invoices);
+                grid.getStore().loadData(deposits);
 
-                if (deposits.length === 0 && invoices.length === 0) {
-                    console.warn("Respuesta vacía");
+                if (deposits.length === 0) {
                     global.Msg({msg: 'Data not found.'});
                 }
 
-                Ext.getCmp(prototype.id + '-boxConsultas3').unmask('Loading...');
-
+                box.unmask();
             },
+
             failure: function (err) {
                 console.error("Error en la petición AJAX:", err);
                 global.Msg({msg: 'Connection error.'});
+                box.unmask();
             }
         });
     },
@@ -1951,55 +1958,187 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliation.TemplateReconc
         }).show();
     },
     btnAddDiscount: function () {
+        let me = this;
 
+        // 🔹 Validar procesador
         let getProcess = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
-        let recordDiscounts = me.getGridRecordsDiscountReview(prototype.id + '-gridDataBandocReview');
-
         if (getProcess !== 'CM') {
             Ext.Msg.alert('.:PRAXIS:.', 'Only processor CM is allowed to create international commission.');
             return;
         }
 
-        console.log('Processor CM validated — commission creation allowed');
+        // 🔹 Obtener grid y registros
+        let grid = Ext.getCmp(prototype.id + '-gridDataBandocReview');
+        if (!grid) {
+            console.error('gridDataBandocReview NO encontrado');
+            return;
+        }
 
-        console.log(recordDiscounts[0])
+        let store = grid.getStore();
+        let records = store.getRange();
 
-        var beanTemp = {};
-        beanTemp.IN_CCUST = recordDiscounts[0].CCUST;
-        beanTemp.IN_BANDOC = recordDiscounts[0].BANDOC;
-        beanTemp.IN_DATECI = recordDiscounts[0].DATECI;
-        beanTemp.IN_TRANCI = recordDiscounts[0].TRANCI;
+        // 🔹 Filtrar solo registros con check activo
+        let checkedRecords = records.filter(r => r.get('checkActive') === true);
 
-        console.log(beanTemp);
+        console.log('CHECKED RECORDS:', checkedRecords);
 
-        var beanString = JSON.stringify(beanTemp);
+        // 🔴 Validar selección
+        if (checkedRecords.length === 0) {
+            global.Msg({msg: 'No Bandoc selected, please select a Bandoc first.'});
+            return;
+        }
+
+        // 🔴 Seguridad extra: solo uno
+        if (checkedRecords.length > 1) {
+            global.Msg({msg: 'Please select only one Bandoc.'});
+            return;
+        }
+
+        // 🔹 Registro seleccionado
+        let selectedRecord = checkedRecords[0];
+
+        // 🔹 Construir bean para backend
+        let beanTemp = {
+            IN_CCUST: selectedRecord.get('CCUST'),
+            IN_BANDOC: selectedRecord.get('BANDOC'),
+            IN_DATECI: selectedRecord.get('DATECI'),
+            IN_TRANCI: selectedRecord.get('TRANCI')
+        };
+
+        console.log('BEAN ADD DISCOUNT:', beanTemp);
+
+        // 🔹 Ejecutar AJAX
+        let box = Ext.getCmp(prototype.id + '-boxConsultas3');
+        box.mask('Loading...');
 
         Ext.Ajax.request({
             url: prototype.url + '/addDiscountInternacional',
             method: 'POST',
             timeout: 60000000,
-            params: {beanString: beanString},
-            beforerequest: Ext.getCmp(prototype.id + '-boxConsultas3').mask('Loading...'),
-            success: function (response, opts) {
-                Ext.getCmp(prototype.id + '-boxConsultas3').unmask('Loading...');
-                var res = Ext.JSON.decode(response.responseText);
+            params: {
+                beanString: Ext.encode(beanTemp)
+            },
+
+            success: function (response) {
+                box.unmask();
+
+                let res = Ext.JSON.decode(response.responseText);
                 console.log(res);
 
                 if (res.success) {
                     global.Msg({msg: res.Mensaje});
                     me.fetchBandocSalesReview();
-//                    Ext.getCmp(prototype.id + '-dataEntry').unmask();
-//                    Ext.getCmp(prototype.id + '-dataEntry').close();
-//                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+                } else {
+                    global.Msg({msg: res.Mensaje || 'Error while adding discount.'});
+                }
+            },
 
-                } else
-                    global.Msg({msg: ''});
+            failure: function (err) {
+                console.error("Error en la petición AJAX:", err);
+                global.Msg({msg: 'Connection error.'});
+                box.unmask();
             }
         });
-
     }
+
+
 
 
     // </editor-fold>
 
+    ,
+    checkBandocComitin: function (column, rowIndex, checked, record) {
+        var grid = column.up('grid');
+        var store = grid.getStore();
+
+        if (checked) {
+            store.each(function (rec) {
+                if (rec !== record && rec.get('checkActive')) {
+                    rec.set('checkActive', false);
+                }
+            });
+        }
+
+        record.set('checkActive', checked);
+
+        if (checked) {
+            let me = this;
+
+            let beanBandoc = {
+                IN_CCUST: record.get('CCUST'),
+                IN_BANDOC: record.get('BANDOC'),
+                IN_CODPRO: Ext.getCmp(prototype.id + '-cmbCOREP').getValue(),
+                IN_DATECI: record.get('DATECI'),
+                IN_TRANCI: record.get('TRANCI')
+            };
+
+            let box = Ext.getCmp(prototype.id + '-boxConsultas3');
+            let grid = Ext.getCmp(prototype.id + '-gridDataVen2tas');
+
+            if (!grid) {
+                console.error('gridDataVen2tas NO encontrado');
+                return;
+            }
+
+            // 🔴 LIMPIAR SIEMPRE antes de buscar
+            grid.getStore().removeAll();
+
+            box.mask('Loading...');
+
+            Ext.Ajax.request({
+                url: prototype.url + '/getPendingDiscoundCom',
+                method: 'POST',
+                params: {
+                    beanString: Ext.encode(beanBandoc)
+                },
+
+                success: function (response) {
+                    let json;
+
+                    try {
+                        json = Ext.decode(response.responseText);
+                    } catch (e) {
+                        console.error("Error al parsear JSON:", e);
+                        box.unmask();
+                        return;
+                    }
+
+                    if (!json.success) {
+                        global.Msg({msg: 'Error loading data'});
+                        box.unmask();
+                        return;
+                    }
+
+                    // 🔑 AQUÍ ESTABA EL ERROR
+                    let invoices = json.data && json.data.invoices
+                            ? json.data.invoices
+                            : [];
+
+                    console.log('INVOICES ARRAY:', invoices, Array.isArray(invoices));
+
+                    grid.getStore().loadData(invoices);
+
+                    if (invoices.length === 0) {
+                        global.Msg({msg: 'No discounts found for this BANDOC.'});
+                    }
+
+                    box.unmask();
+                },
+
+                failure: function (err) {
+                    console.error("Error en la petición AJAX:", err);
+                    global.Msg({msg: 'Connection error.'});
+                    box.unmask();
+                }
+            });
+        } else {
+             let grid = Ext.getCmp(prototype.id + '-gridDataVen2tas');
+             grid.getStore().removeAll();
+             
+//              let grid2 = Ext.getCmp(prototype.id + '-gridDataBandocReview');
+//             grid2.getStore().removeAll();
+        }
+
+
+    },
 });

@@ -69,5 +69,9 @@ public class TemplateReconciliationLogic {
     public String addDiscountInternacional(A2290Filter bean) throws Exception {
         return objDAO.addDiscountInternacional(bean);
     }
+    
+    public MPS419Response searchPendingDiscoundCom(A2290Filter filter) throws SQLException, Exception {
+        return objDAO.searchPendingDiscoundCom(filter);
+    }
 
 }

@@ -1101,13 +1101,13 @@ public class TemplateReconciliationDAO {
         return lstTkts;
     }
 
-    public MPS419Response searchPendingDepositsSalesReview(A2290Filter filter) throws SQLException, Exception {
+    public MPS419Response searchPendingDepositsSalesReview(A2290Filter filter)
+            throws SQLException, Exception {
 
         CallableStatement cstmt = null;
         ResultSet rst = null;
         Connection cnx = null;
 
-        // OBJETO DE RESPUESTA FINAL
         MPS419Response response = new MPS419Response();
 
         try {
@@ -1122,9 +1122,6 @@ public class TemplateReconciliationDAO {
 
             cstmt.execute();
 
-            // ==============================
-            //  RESULT SET 1 → MPF102 (Deposits)
-            // ==============================
             rst = cstmt.getResultSet();
             while (rst.next()) {
                 MPF102DTO dto = new MPF102DTO();
@@ -1144,63 +1141,90 @@ public class TemplateReconciliationDAO {
                 response.deposits.add(dto);
             }
 
-            // ==============================
-            //  RESULT SET 2 → MPF091 (Invoices)
-            // ==============================
-            if (cstmt.getMoreResults()) {
-                rst = cstmt.getResultSet();
-                while (rst.next()) {
-                    MPF091DTO dto = new MPF091DTO();
-                    dto.RN = rst.getLong("RN");
-                    dto.CCUST = rst.getString("CCUST");
-                    dto.PRDA = rst.getString("PRDA");
-                    dto.CODPRO = rst.getString("CODPRO");
-                    dto.CCUSTPRO = rst.getString("CCUSTPRO");
-                    dto.FLIQUIDACI = rst.getString("FLIQUIDACI");
-                    dto.LIQUIDACIO = rst.getString("LIQUIDACIO");
-                    dto.MERCHAND = rst.getString("MERCHAND");
-                    dto.MONEDA = rst.getString("MONEDA");
-                    dto.MONEDALIQ = rst.getString("MONEDALIQ");
-                    dto.PAISLIQ = rst.getString("PAISLIQ");
-                    dto.VALDATE = rst.getString("VALDATE");
-                    dto.BANDOC = rst.getString("BANDOC");
-                    dto.DATECI = rst.getString("DATECI");
-                    dto.TRANCI = rst.getString("TRANCI");
-                    dto.ADATE = rst.getString("ADATE");
-                    dto.ACCCOMP = rst.getString("ACCCOMP");
-                    dto.FSELEC = rst.getString("FSELEC");
-                    dto.FECSELEC = rst.getString("FECSELEC");
-                    dto.USCR = rst.getString("USCR");
-                    dto.FECR = rst.getString("FECR");
-                    dto.HOCR = rst.getString("HOCR");
-                    dto.PGMCR = rst.getString("PGMCR");
-                    dto.USUP = rst.getString("USUP");
-                    dto.FEUP = rst.getString("FEUP");
-                    dto.HOUP = rst.getString("HOUP");
-                    dto.PGMUP = rst.getString("PGMUP");
-                    dto.CODE = rst.getString("CODE");
-                    dto.CORRL = rst.getString("CORRL");
-                    dto.CODIGO = rst.getString("CODIGO");
-                    dto.TIPOARCH = rst.getString("TIPOARCH");
-                    dto.MONEDAPAGO = rst.getString("MONEDAPAGO");
-                    dto.IMPORTE = rst.getDouble("IMPORTE");
-                    dto.IMPORTEPAG = rst.getDouble("IMPORTEPAG");
-
-                    response.invoices.add(dto);
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new SpringException(e);
         } finally {
-            if (rst != null) try {
+            if (rst != null) {
                 rst.close();
-            } catch (SQLException ex) {
             }
-            if (cstmt != null) try {
+            if (cstmt != null) {
                 cstmt.close();
-            } catch (SQLException ex) {
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return response;
+    }
+
+    public MPS419Response searchPendingDiscoundCom(A2290Filter filter)
+            throws SQLException, Exception {
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        Connection cnx = null;
+
+        MPS419Response response = new MPS419Response();
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+
+            String SQL = "{CALL " + session.getMainLibrary() + "MP.MPS447(?,?,?,?,?)}";
+            cstmt = cnx.prepareCall(SQL);
+
+            cstmt.setString(1, filter.IN_CCUST);
+            cstmt.setString(2, filter.IN_BANDOC);
+            cstmt.setString(3, filter.IN_CODPRO);
+            cstmt.setString(4, filter.IN_DATECI);
+            cstmt.setString(5, filter.IN_TRANCI);
+
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+            while (rst.next()) {
+                MPF091DTO dto = new MPF091DTO();
+                dto.RN = rst.getLong("RN");
+                dto.CCUST = rst.getString("CCUST");
+                dto.PRDA = rst.getString("PRDA");
+                dto.CODPRO = rst.getString("CODPRO");
+                dto.CCUSTPRO = rst.getString("CCUSTPRO");
+                dto.FLIQUIDACI = rst.getString("FLIQUIDACI");
+                dto.LIQUIDACIO = rst.getString("LIQUIDACIO");
+                dto.MERCHAND = rst.getString("MERCHAND");
+                dto.MONEDA = rst.getString("MONEDA");
+                dto.MONEDALIQ = rst.getString("MONEDALIQ");
+                dto.PAISLIQ = rst.getString("PAISLIQ");
+                dto.VALDATE = rst.getString("VALDATE");
+                dto.BANDOC = rst.getString("BANDOC");
+                dto.DATECI = rst.getString("DATECI");
+                dto.TRANCI = rst.getString("TRANCI");
+                dto.ADATE = rst.getString("ADATE");
+                dto.ACCCOMP = rst.getString("ACCCOMP");
+                dto.FSELEC = rst.getString("FSELEC");
+                dto.FECSELEC = rst.getString("FECSELEC");
+                dto.USCR = rst.getString("USCR");
+                dto.FECR = rst.getString("FECR");
+                dto.HOCR = rst.getString("HOCR");
+                dto.PGMCR = rst.getString("PGMCR");
+                dto.USUP = rst.getString("USUP");
+                dto.FEUP = rst.getString("FEUP");
+                dto.HOUP = rst.getString("HOUP");
+                dto.PGMUP = rst.getString("PGMUP");
+                dto.CODE = rst.getString("CODE");
+                dto.CORRL = rst.getString("CORRL");
+                dto.CODIGO = rst.getString("CODIGO");
+                dto.TIPOARCH = rst.getString("TIPOARCH");
+                dto.MONEDAPAGO = rst.getString("MONEDAPAGO");
+                dto.IMPORTE = rst.getDouble("IMPORTE");
+                dto.IMPORTEPAG = rst.getDouble("IMPORTEPAG");
+
+                response.invoices.add(dto);
+            }
+
+        } finally {
+            if (rst != null) {
+                rst.close();
+            }
+            if (cstmt != null) {
+                cstmt.close();
             }
             session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
             pasarGarbageCollector();
