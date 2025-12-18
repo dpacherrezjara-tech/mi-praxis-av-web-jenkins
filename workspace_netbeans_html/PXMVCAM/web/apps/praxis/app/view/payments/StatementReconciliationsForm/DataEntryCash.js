@@ -1197,7 +1197,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                                         width: 143,
                                                                         renderer: function (value, metaData, record) {
                                                                             var data = record.data;
-                                                                            metaData.style = "text-align:center;";
+                                                                            metaData.style = "text-align:left;";
                                                                             metaData.tdAttr = 'data-qtip="' + data.SCOUNTRY + '"';
                                                                             return value;
                                                                         }

@@ -78,26 +78,54 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
     },
     obtainData: function () {
 
+        let fechaHoy = new Date();
+        let year = fechaHoy.getFullYear();
+        let month = String(fechaHoy.getMonth() + 1).padStart(2, '0'); // "01" – "12"
+        let day = String(fechaHoy.getDate()).padStart(2, '0');
+
         var storeComboDataYear = win.getStoreYear(false);
         var storeComboDataMonth = win.getStoreMonth(true);
         var storeComboDataDay = win.getStoreDays(true);
 
-        Ext.getCmp(prototype.id + '-cmbDateFromYear').bindStore(storeComboDataYear);
-        Ext.getCmp(prototype.id + '-cmbDateFromMonth').bindStore(storeComboDataMonth);
-        Ext.getCmp(prototype.id + '-cmbDateFromDay').bindStore(storeComboDataDay);
+        Ext.getCmp(prototype.id + '-cmbDateFromYearDash').bindStore(storeComboDataYear);
+        Ext.getCmp(prototype.id + '-cmbDateFromMonthDash').bindStore(storeComboDataMonth);
+        Ext.getCmp(prototype.id + '-cmbDateFromDayDash').bindStore(storeComboDataDay);
 
-        Ext.getCmp(prototype.id + '-cmbDateFromYear').setValue(this.fecha.getFullYear());
-        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue('');
-        Ext.getCmp(prototype.id + '-cmbDateFromDay').setValue('');
+        Ext.getCmp(prototype.id + '-cmbDateFromYearDash').setValue(this.fecha.getFullYear());
+        Ext.getCmp(prototype.id + '-cmbDateFromMonthDash').setValue('');
+        Ext.getCmp(prototype.id + '-cmbDateFromDayDash').setValue('');
 
+        Ext.getCmp(prototype.id + '-cmbDateToYearDash').bindStore(storeComboDataYear);
+        Ext.getCmp(prototype.id + '-cmbDateToMonthDash').bindStore(storeComboDataMonth);
+        Ext.getCmp(prototype.id + '-cmbDateToDayDash').bindStore(storeComboDataDay);
 
-        Ext.getCmp(prototype.id + '-cmbDateToYear').bindStore(storeComboDataYear);
-        Ext.getCmp(prototype.id + '-cmbDateToMonth').bindStore(storeComboDataMonth);
-        Ext.getCmp(prototype.id + '-cmbDateToDay').bindStore(storeComboDataDay);
+        Ext.getCmp(prototype.id + '-cmbDateToYearDash').setValue(this.fecha.getFullYear());
+        Ext.getCmp(prototype.id + '-cmbDateToMonthDash').setValue('');
+        Ext.getCmp(prototype.id + '-cmbDateToDayDash').setValue('');
 
-        Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(this.fecha.getFullYear());
-        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('');
-        Ext.getCmp(prototype.id + '-cmbDateToDay').setValue('');
+        let cmbFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYear');
+        let cmbFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonth');
+        let cmbFromDay = Ext.getCmp(prototype.id + '-cmbDateFromDay');
+
+        cmbFromYear.bindStore(storeComboDataYear);
+        cmbFromMonth.bindStore(storeComboDataMonth);
+        cmbFromDay.bindStore(storeComboDataDay);
+
+        cmbFromYear.setValue(year);
+        cmbFromMonth.setValue(month);
+        cmbFromDay.setValue('01');
+
+        let cmbToYear = Ext.getCmp(prototype.id + '-cmbDateToYear');
+        let cmbToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
+        let cmbToDay = Ext.getCmp(prototype.id + '-cmbDateToDay');
+
+        cmbToYear.bindStore(storeComboDataYear);
+        cmbToMonth.bindStore(storeComboDataMonth);
+        cmbToDay.bindStore(storeComboDataDay);
+
+        cmbToYear.setValue(year);
+        cmbToMonth.setValue(month);
+        cmbToDay.setValue(day);
 
         this.dataObtain.CARD = 2;
         Ext.Ajax.request({
@@ -106,16 +134,28 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
             timeout: 60000000,
             params: {
                 beanString: JSON.stringify({
-                    COUNTRY: 2, CARD: 2, USERPERMIS: 2, NPROG: sessionStorage.getItem('nprog')
+                    CFUENTECASH: 2, COUNTRY: 2
                 })
             },
             success: function (response, options) {
                 var res = Ext.JSON.decode(response.responseText);
+                console.log(res, 'res')
                 if (res.success) {
                     Ext.getCmp(prototype.id + '-cmbCountry').bindStore(
                             Ext.create('Ext.data.Store', {data: res.lstCountry, autoLoad: true})
                             );
                     win.setValue('cmbCountry', '');
+                    Ext.getCmp(prototype.id + '-cmbCountryDashboard').bindStore(
+                            Ext.create('Ext.data.Store', {data: res.lstCountry, autoLoad: true})
+                            );
+                    win.setValue('cmbCountryDashboard', '');
+
+                    Ext.getCmp(prototype.id + '-cmbCfuenteDashboard').bindStore(
+                            Ext.create('Ext.data.Store', {data: res.lstsCfuenteCash, autoLoad: true})
+                            );
+                    win.setValue('cmbCfuenteDashboard', '');
+
+
                 } else
                     global.Msg({msg: res.sesion});
                 global.clear();
@@ -125,25 +165,19 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
             }
         });
     },
-    changeView: function (obj, e) {
-        let seg = Ext.getCmp(prototype.id + '-segViewMode');
-        let selected = seg.getValue();
-        this.setDateFilters(selected);
-        me.btnSearch_click();
-    },
     btnSearch_click: function (obj, e) {
         let seg = Ext.getCmp(prototype.id + '-segViewMode');
         let selected = seg.getValue();
         this.drillDown = [];
 
         if (selected === 0) {
-            Ext.getCmp(prototype.id + '-titleFieldsetSale').setVisible(false);
-            Ext.getCmp(prototype.id + '-titleFieldsetAccounting').setVisible(false);
+            Ext.getCmp(prototype.id + '-panelDashbaord').setVisible(true);
+            Ext.getCmp(prototype.id + '-panelDetail').setVisible(false);
             this.setFormatParameterDashboard();
             this.setGridDataDashboard();
         } else if (selected === 1) {
-            Ext.getCmp(prototype.id + '-titleFieldsetSale').setVisible(true);
-            Ext.getCmp(prototype.id + '-titleFieldsetAccounting').setVisible(true);
+            Ext.getCmp(prototype.id + '-panelDashbaord').setVisible(false);
+            Ext.getCmp(prototype.id + '-panelDetail').setVisible(true);
             this.setFormatParameterDetailSecundary();
             this.setGridDataDetailSecundary();
         }
@@ -155,6 +189,7 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         me.beanSecundary.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue() + Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
         me.beanSecundary.IN_SOCIETY = Ext.getCmp(prototype.id + '-typeSociety').getValue();
         me.beanSecundary.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
+        me.beanSecundary.IN_SPAYMENT = Ext.getCmp(prototype.id + '-paymentMethod').getValue();
         me.beanSecundary.IN_STATUS = Ext.getCmp(prototype.id + '-cmbStatus').getValue();
         me.beanSecundary.IN_AGENT = Ext.getCmp(prototype.id + '-txtAGENTE').getValue();
         me.beanSecundary.IN_TICKET = Ext.getCmp(prototype.id + '-txtTICKET').getValue();
@@ -202,8 +237,10 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
     setFormatParameterDashboard: function () {
         me.bean = {};
 
-        me.bean.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue();
-        me.bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue();
+        me.bean.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYearDash').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonthDash').getValue();
+        me.bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYearDash').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonthDash').getValue();
+        me.bean.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountryDashboard').getValue();
+        me.bean.IN_SOURCE = Ext.getCmp(prototype.id + '-cmbCfuenteDashboard').getValue();
 
         var beanString = JSON.stringify(me.bean);
         searchParams = {
@@ -381,10 +418,12 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         } else {
             me.bean.IN_SOCIETY = rowPadre.CCUST;
         }
-        
+
         me.bean.IN_FECHA_FROM = fecha;
         me.bean.IN_FECHA_TO = fecha;
         me.bean.IN_ACCOUNT = IN_ACCOUNT;
+        me.bean.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountryDashboard').getValue();
+        me.bean.IN_SOURCE = Ext.getCmp(prototype.id + '-cmbCfuenteDashboard').getValue();
 
         me.paramsDetailSource.beanString = JSON.stringify(me.bean);
         console.log(me.bean, 'searchParamsDetailPrincipal');
@@ -434,6 +473,7 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         me.bean.IN_FECHA_TO = rowPadre.SDATE;
         me.bean.IN_ACCOUNT = IN_ACCOUNT;
         me.bean.IN_CFUENTE = (rowPadre.CFUENTE || "").trim();
+        me.bean.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountryDashboard').getValue();
 
         me.paramsDetailSource.beanString = JSON.stringify(me.bean);
         console.log(me.bean, 'searchParamsDetailPrincipal');
@@ -488,7 +528,9 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
 
         me.bean.IN_FECHA_FROM = fecha;
         me.bean.IN_FECHA_TO = fecha;
-        me.IN_SOCIETY = me.bean.IN_SOCIETY
+        me.bean.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountryDashboard').getValue();
+        me.bean.IN_SOURCE = Ext.getCmp(prototype.id + '-cmbCfuenteDashboard').getValue();
+        me.IN_SOCIETY = me.bean.IN_SOCIETY;
         me.paramsDetailSource.beanString = JSON.stringify(me.bean);
         console.log(me.bean, 'searchParams');
         this.setGridDataDetailSource();
@@ -691,35 +733,6 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
             option.setVisible(true);
         }
     },
-    setDateFilters: function (mode) {
-        let year = this.fecha.getFullYear();
-        let month = (this.fecha.getMonth() + 1).toString().padStart(2, '0');
-        let day = this.fecha.getDate().toString().padStart(2, '0');
-
-        if (mode === 0) {
-
-            Ext.getCmp(prototype.id + '-cmbDateFromYear').setValue(year);
-            Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue('');
-            Ext.getCmp(prototype.id + '-cmbDateFromDay').setValue('');
-
-            Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(year);
-            Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('');
-            Ext.getCmp(prototype.id + '-cmbDateToDay').setValue('');
-        }
-
-        if (mode === 1) {
-
-            Ext.getCmp(prototype.id + '-cmbDateFromYear').setValue(year);
-//            Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue('06');
-            Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue(month);
-            Ext.getCmp(prototype.id + '-cmbDateFromDay').setValue('');
-
-            Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(year);
-//            Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('06');
-            Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue(month);
-            Ext.getCmp(prototype.id + '-cmbDateToDay').setValue('');
-        }
-    },
     cbxDateFromYear_changeHandler: function () {
         let comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYear');
         let comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYear');
@@ -760,7 +773,6 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         }
     },
     selectComboFromDay: function (obj) {
-        console.log("FAAA")
         var comboToDay = Ext.getCmp(prototype.id + '-cmbDateToDay');
         comboToDay.setValue(obj.getValue());
     },
@@ -796,6 +808,9 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         };
         return anio + (meses[mesTxt] || '00');
     },
+    onViewCreditCardClick: function () {
+        window.location.hash = 'payments-sales-reconciliation-form';
+    }
     // </editor-fold>
 }
 );

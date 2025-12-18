@@ -24,7 +24,6 @@ Ext.define('Ext.Praxis.view.payments.CashForm.CashForm', {
         {
             id: prototype.id + '-xpanel',
             border: false,
-            autoScroll: false,
             layout: 'fit',
             items: [
                 {
@@ -51,7 +50,6 @@ Ext.define('Ext.Praxis.view.payments.CashForm.CashForm', {
                                         align: 'center'
                                     },
                                     border: true,
-                                    autoScroll: true,
                                     defaults: {
                                         width: 1550,
                                         align: 'center'
@@ -69,6 +67,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.CashForm', {
                                         {
                                             xtype: 'panel',
                                             flex: 1, // ← AHORA CRECE AUTOMÁTICAMENTE
+//                                            height: 750,
                                             layout: 'fit',
                                             id: prototype.id + '-panelHeight',
                                             items: [

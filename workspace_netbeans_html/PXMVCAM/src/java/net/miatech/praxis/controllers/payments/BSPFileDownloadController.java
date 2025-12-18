@@ -161,6 +161,76 @@ public class BSPFileDownloadController extends BaseController {
         return lst;
     }
 
+    @RequestMapping(value = "getXLSXARC")
+    public @ResponseBody
+    void getXLSXARC(HttpServletRequest request, HttpServletResponse response) {
+
+        String fileNameDownload = "ARC File Downloads - " + Functions.getFechaActual() + ".xlsx";
+
+        try {
+            List<MPF221> listaData = this.getListARC(request, true);
+
+            SXSSFWorkbook workbook = new SXSSFWorkbook(100);
+            Sheet sheet = workbook.createSheet("Report");
+
+            CellStyle headerStyle = workbook.createCellStyle();
+            Font headerFont = workbook.createFont();
+
+            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            headerFont.setColor(IndexedColors.WHITE.getIndex());
+            headerStyle.setFont(headerFont);
+            headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            headerStyle.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.getIndex());
+            headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            Row header = sheet.createRow(0);
+            String[] columns = {
+                "Nbr", "Report ID", "User ID (N/A)", "REF NBR (B*MM*W*C)",
+                "PED (yy/mm/dd)", "Date", "File Name", "Time", "Dist. Name", "Group ID (N/A)",
+                "Lines","Pages"
+            };
+
+            for (int i = 0; i < columns.length; i++) {
+                Cell cell = header.createCell(i);
+                cell.setCellValue(columns[i]);
+                cell.setCellStyle(headerStyle);
+                sheet.setColumnWidth(i, 5500);
+            }
+
+            int rowIdx = 1;
+            for (MPF221 item : listaData) {
+                Row row = sheet.createRow(rowIdx++);
+                row.createCell(0).setCellValue(item.RN);
+                row.createCell(1).setCellValue(item.REPORTID);
+                row.createCell(2).setCellValue(item.USERID);
+                row.createCell(3).setCellValue(item.REFNBR);
+                row.createCell(4).setCellValue(item.PEDARC);
+                row.createCell(5).setCellValue(item.DATEARC);
+                row.createCell(6).setCellValue(item.NAMEFILE);
+                row.createCell(7).setCellValue(item.TIMEARC);
+                row.createCell(8).setCellValue(item.DISTNAME);
+                row.createCell(9).setCellValue(item.GROUPID);
+                row.createCell(10).setCellValue(item.LINESARC);
+                row.createCell(11).setCellValue(item.PAGESARC);
+            }
+
+            response.setContentType(
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            );
+            response.setHeader(
+                    "Content-Disposition",
+                    "attachment; filename=\"" + fileNameDownload + "\""
+            );
+
+            workbook.write(response.getOutputStream());
+            workbook.dispose();
+
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+    }
+    
     @RequestMapping(value = "getXLSX")
     public @ResponseBody
     void getXLSX(HttpServletRequest request, HttpServletResponse response) {
@@ -303,6 +373,74 @@ public class BSPFileDownloadController extends BaseController {
         }
     }
 
+    @RequestMapping(value = "getTXTARC")
+    public @ResponseBody
+    void getTXTARC(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        System.out.println("Report : getTXTARC");
+
+        String environment = this.serverSession
+                .getPropertySession()
+                .get("DB_SERVER_DEFAULT_TYPE")
+                .toString();
+
+        String rutaBaseKey = "RUTA_CASH_" + environment + "_FILES";
+        String rutaBase = this.serverSession
+                .getPropertySession()
+                .get(rutaBaseKey)
+                .toString();
+
+        String year = request.getParameter("year");       // ej: 2025
+        String filename = request.getParameter("filename"); // ej: ARC_XXXX.txt
+
+        System.out.println("Parámetros → year=" + year + ", filename=" + filename);
+
+        if (year == null || filename == null
+                || year.isEmpty() || filename.isEmpty()) {
+
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write(
+                    "Parámetros obligatorios: year y filename"
+            );
+            return;
+        }
+
+        String folderStr
+                = rutaBase
+                + "\\workspace\\HISTORY-ARC\\US\\"
+                + year;
+
+        Path folderPath = Paths.get(folderStr);
+
+        System.out.println("Buscando en: " + folderPath);
+
+        Path filePath = folderPath.resolve(filename);
+
+        if (!Files.exists(filePath)) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.getWriter().write("Archivo no encontrado: " + filename);
+            return;
+        }
+
+        System.out.println("Archivo encontrado: " + filePath);
+
+        response.setContentType("text/plain");
+        response.setHeader(
+                "Content-Disposition",
+                "attachment; filename=\"" + filename + "\""
+        );
+
+        try (FileInputStream fis = new FileInputStream(filePath.toFile()); OutputStream out = response.getOutputStream()) {
+
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = fis.read(buffer)) != -1) {
+                out.write(buffer, 0, bytesRead);
+            }
+            out.flush();
+        }
+    }
+
     @RequestMapping(value = "getBulkCSV", method = RequestMethod.POST)
     public void getBulkCSV(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -416,7 +554,7 @@ public class BSPFileDownloadController extends BaseController {
                 .get(rutaBaseKey)
                 .toString();
 
-        String filename = request.getParameter("filename"); 
+        String filename = request.getParameter("filename");
 
         if (filename == null || filename.trim().isEmpty()) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -448,6 +586,115 @@ public class BSPFileDownloadController extends BaseController {
             Files.copy(imagePath, out);
             out.flush();
         }
+    }
+
+    @RequestMapping(value = "getBulkTXTARC", method = RequestMethod.POST)
+    public void getBulkTXTARC(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        System.out.println("Report : getBulkTXTARC");
+
+        String beanString = request.getParameter("beanString");
+        if (beanString == null || beanString.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("beanString es obligatorio");
+            return;
+        }
+
+        Gson gson = new Gson();
+        MPF221Filter filter = gson.fromJson(beanString, MPF221Filter.class);
+
+        filter.page.PAGROW = -1;
+        filter.page.PAGNUM = 1;
+
+        BSPFileDownloadLogic logic = new BSPFileDownloadLogic();
+        logic.setSession(this.serverSession.getServerSession());
+
+        List<MPF221> list = logic.loadMPS446(filter);
+
+        System.out.println("Registros encontrados ARC: " + list.size());
+
+        if (list.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.getWriter().write("No hay archivos ARC para descargar");
+            return;
+        }
+
+        String environment = this.serverSession
+                .getPropertySession()
+                .get("DB_SERVER_DEFAULT_TYPE")
+                .toString();
+
+        String rutaBaseKey = "RUTA_CASH_" + environment + "_FILES";
+        String rutaBase = this.serverSession
+                .getPropertySession()
+                .get(rutaBaseKey)
+                .toString();
+
+        File tempZip = File.createTempFile("ARC_Files_", ".zip");
+        int addedFiles = 0;
+
+        try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(tempZip))) {
+
+            for (MPF221 item : list) {
+
+                try {
+                    // PEDARC = YY/MM/DD → YEAR = 20YY
+                    String pedarc = item.PEDARC;
+                    if (pedarc == null || pedarc.length() < 2) {
+                        System.err.println("PEDARC inválido para: " + item.NAMEFILE);
+                        continue;
+                    }
+
+                    String year = "20" + pedarc.substring(0, 2);
+
+                    String folderStr
+                            = rutaBase
+                            + "\\workspace\\HISTORY-ARC\\US\\"
+                            + year;
+
+                    String fileName = item.NAMEFILE;
+                    if (!fileName.toLowerCase().endsWith(".txt")) {
+                        fileName += ".txt";
+                    }
+
+                    Path filePath = Paths.get(folderStr).resolve(fileName);
+
+                    if (!Files.exists(filePath)) {
+                        System.err.println("Archivo ARC NO encontrado: " + filePath);
+                        continue;
+                    }
+
+                    zos.putNextEntry(new ZipEntry(fileName));
+                    Files.copy(filePath, zos);
+                    zos.closeEntry();
+
+                    addedFiles++;
+
+                } catch (Exception eFile) {
+                    System.err.println("Error agregando ARC al ZIP: "
+                            + item.NAMEFILE + " → " + eFile.getMessage());
+                }
+            }
+        }
+
+        System.out.println("ARC incluidos en ZIP: " + addedFiles + " de " + list.size());
+
+        if (addedFiles == 0) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.getWriter().write("No se encontraron archivos ARC físicos");
+            tempZip.delete();
+            return;
+        }
+
+        response.setContentType("application/zip");
+        response.setHeader(
+                "Content-Disposition",
+                "attachment; filename=\"Cash_Files_ARC.zip\""
+        );
+
+        Files.copy(tempZip.toPath(), response.getOutputStream());
+        response.flushBuffer();
+        tempZip.delete();
     }
 
 }

@@ -32,6 +32,7 @@ public class MPF300 {
     public String SCONSOL = "";
     public String SDATE = "";
     public String SCURRENCY = "";
+    public String SPAYMENT = "";
     public String BANDOC = "";
     public String DATCO = "";
     public String USCR = "";

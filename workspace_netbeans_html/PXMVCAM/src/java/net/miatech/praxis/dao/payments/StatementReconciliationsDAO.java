@@ -4834,10 +4834,10 @@ public class StatementReconciliationsDAO {
     long lngTotQTMATCH = 0, lngTotQTMANUAL = 0, lngTotQTPEND = 0, lngTotTOTALL = 0, lngTotQSALESDIRECT = 0;
 
     // Ajuste fechas
-    filter.strYearFrom = Functions.fillZeros(4, filter.strYearFrom).replace("00", "");
-    filter.strMonthFrom = Functions.fillZeros(2, filter.strMonthFrom).replace("00", "");
-    filter.strYearTo = Functions.fillZeros(4, filter.strYearTo).replace("00", "");
-    filter.strMonthTo = Functions.fillZeros(2, filter.strMonthTo).replace("00", "");
+//    filter.strYearFrom = Functions.fillZeros(4, filter.strYearFrom).replace("00", "");
+//    filter.strMonthFrom = Functions.fillZeros(2, filter.strMonthFrom).replace("00", "");
+//    filter.strYearTo = Functions.fillZeros(4, filter.strYearTo).replace("00", "");
+//    filter.strMonthTo = Functions.fillZeros(2, filter.strMonthTo).replace("00", "");
 
     String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS398(?,?,?,?,?,?,?,?,?)}";
 
@@ -4855,8 +4855,8 @@ public class StatementReconciliationsDAO {
             cstmt.registerOutParameter(9, Types.INTEGER);
 
         cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-        cstmt.setString(2, filter.strYearFrom + filter.strMonthFrom);
-        cstmt.setString(3, filter.strYearTo + filter.strMonthTo);
+        cstmt.setString(2, filter.IN_FECHA_FROM.trim());
+        cstmt.setString(3, filter.IN_FECHA_TO.trim());
         cstmt.setString(4, filter.IN_COUNTRY.trim());
         cstmt.setString(5, filter.IN_SOURCE.trim());
             cstmt.setInt(6, filter.page.PAGNUM);

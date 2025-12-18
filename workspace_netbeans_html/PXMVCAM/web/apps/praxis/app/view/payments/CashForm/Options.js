@@ -25,7 +25,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Options', {
                 }
             ],
             listeners: {
-                change: 'changeView'
+                change: 'btnSearch_click'
             }
         },
         {xtype: 'tbspacer', width: 20},
@@ -232,4 +232,33 @@ Ext.util.CSS.createStyleSheet(`
 `, 'segmode-style');
 
 
+Ext.util.CSS.createStyleSheet(`
+    /* Botón simple alineado al segmented */
+    .btn-credit-card {
+        background-color: #f5f7fa !important;
+        border: 1px solid #c9d4e2 !important;
+        border-radius: 20px !important;
+        color: #1a4d8f !important;
+        font-weight: bold !important;
+        font-size: 12px !important;
+        padding: 2px 14px !important;
+        height: 26px !important;
+        line-height: 22px !important;
+        transition: all .2s ease-in-out;
+    }
+
+    .btn-credit-card.x-btn-over {
+        background-color: #e8eef7 !important;
+    }
+
+    .btn-credit-card.x-btn-pressed {
+        background-color: #316fdc !important;
+        border-color: #316fdc !important;
+        color: white !important;
+    }
+
+    .btn-credit-card .x-btn-inner {
+        color: inherit !important;
+    }
+`, 'btn-credit-card-style');
 

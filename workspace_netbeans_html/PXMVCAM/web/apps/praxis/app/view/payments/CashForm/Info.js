@@ -50,7 +50,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                 {
                                     xtype: 'treepanel',
                                     id: prototype.id + '-gridSumaryMain',
-                                    width: 878,
+                                    width: 875,
                                     useArrows: true,
                                     rootVisible: false,
                                     multiSelect: true,
@@ -61,7 +61,8 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                         defaults: {
                                             menuDisabled: true,
                                             sortable: false,
-                                            align: 'center'
+                                            align: 'center',
+                                            resizable: false
                                         },
                                         items: [
                                             {
@@ -265,9 +266,19 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                                     tooltip: {
                                                         trackMouse: true,
                                                         renderer: function (tooltip, record, item) {
+
+                                                            const series = item.series;
+                                                            const yFields = series.getYField();   // ['TicketTotal','TicketMatch','TicketPending']
+                                                            const titles = series.getTitle();    // ['Total','Match','Pending']
+
+                                                            const field = item.field;            // ej: 'TicketMatch'
+                                                            const index = Ext.Array.indexOf(yFields, field);
+
+                                                            const title = titles[index] || field;
+                                                            const value = record.get(field);
+
                                                             tooltip.setHtml(
-                                                                    item.series.getTitle()[item.series.getYFieldIndex(item.field)] + ': ' +
-                                                                    Ext.util.Format.number(record.get(item.field), '0,0')
+                                                                    title + ': ' + Ext.util.Format.number(value, '0,0')
                                                                     );
                                                         }
                                                     }
@@ -296,7 +307,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetailSource',
                                     minHeight: 200,
-                                    width: 795,
+                                    width: 790,
                                     hidden: false,
                                     columnLines: true,
                                     viewConfig: {
@@ -517,7 +528,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                         {
                             xtype: 'panel',
                             border: false,
-                            width: 1200,
+                            width: 1300,
                             id: prototype.id + '-panelGridDataDetailPrincipal',
                             bodyStyle: 'background-color: #F4F7FD;',
                             padding: '1',
@@ -531,7 +542,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetailPrincipal',
                                     minHeight: 200,
-                                    width: 1000,
+                                    width: 1239,
                                     hidden: false,
                                     columnLines: true,
                                     viewConfig: {
@@ -576,6 +587,12 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                                     metaData.style = "text-align:center;";
                                                     return  value;
                                                 }},
+                                            {text: '<span style="color:black;font-weight:bold;">Form Payment</span>', dataIndex: 'SPAYMENT', width: 100, style: 'padding:2px; background: #c9daf5;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
                                             {text: '<span style="color:black;font-weight:bold;">Sales Date</span>', dataIndex: 'SDATE', width: 80, style: 'padding:2px; background: #c9daf5;',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
@@ -612,113 +629,28 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                                     metaData.style = "text-align:center;";
                                                     return  value;
                                                 }},
-                                            {text: '<span style="color:black;font-weight:bold;">Amount</span>', dataIndex: 'SVFOP', width: 80, style: 'padding:2px; background: #c9daf5;',
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">SVFOP</span>',
+                                                dataIndex: 'SVFOP',
+                                                width: 110,
+                                                align: 'center',
+                                                style: 'background:#c9daf5;',
+                                                renderer: function (value, metaData) {
                                                     metaData.style = "color:#2B2B2B;text-align:right;";
-                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
-                                                    return  value;
+                                                    return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
                                                 }
                                             },
-//                                            {
-//                                                text: '<span style="color:black;font-weight:bold;">Tickets</span>', menuDisabled: true, style: 'background:#c9daf5;color:black !important',
-//                                                columns: [
-//                                                    {
-//                                                        text: '<span style="color:black;font-weight:bold;">Total</span>',
-//                                                        dataIndex: 'QSALES', width: 100, style: 'background:#F9D88C;color:black !important', align: 'center ', menuDisabled: true, //flex: 1
-//
-//                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                            metaData.style = "color:#2B2B2B;text-align:right;";
-//                                                            value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
-//                                                            return  value;
-//                                                        },
-//                                                    },
-//                                                    {
-//                                                        text: '<span style="color:black;font-weight:bold;">Match</span>', menuDisabled: true, style: 'background:#D1FBD2;color:black !important',
-//                                                        menuDisabled: true,
-//                                                        columns: [
-//                                                            {
-//                                                                text: '<span style="color:black;font-weight:bold;">Auto</span>', dataIndex: 'QMATCH',
-//                                                                style: 'background:#D1FBD2;color:black !important', width: 100, align: 'center', menuDisabled: true,
-//                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                                    metaData.style = "color:#2B2B2B;text-align:right;";
-//                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
-//                                                                    return  value;
-//                                                                }
-//                                                            },
-//                                                            {
-//                                                                text: '<span style="color:black;font-weight:bold;">%</span>',
-//                                                                dataIndex: 'PCT_MATCH',
-//                                                                style: 'background:#D1FBD2;color:black !important',
-//                                                                width: 70,
-//                                                                align: 'center',
-//                                                                menuDisabled: true,
-//
-//                                                                renderer: function (value, metaData, record) {
-//
-//                                                                    metaData.style = "color:#2B2B2B;text-align:right;";
-//
-//                                                                    if (value === null || value === undefined) {
-//                                                                        return '<b>0.00 %</b>';
-//                                                                    }
-//
-//                                                                    // Formatear con 2 decimales
-//                                                                    let pct = Ext.util.Format.number(value, '0.00');
-//
-//                                                                    return '<b>' + pct + ' %</b>';
-//                                                                }
-//                                                            },
-//                                                            {
-//                                                                text: '<span style="color:black;font-weight:bold;">Manual</span>', dataIndex: 'QMANUAL',
-//                                                                style: 'background:#D1FBD2;color:black !important', width: 100, align: 'center', menuDisabled: true,
-//                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                                    metaData.style = "color:#2B2B2B;text-align:right;";
-//                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
-//                                                                    return  value;
-//                                                                }
-//                                                            },
-//                                                            {
-//                                                                text: '<span style="color:black;font-weight:bold;">W/O Settlement</span>', dataIndex: 'QPEND',
-//                                                                style: 'background:#FFA8A8;color:black !important', width: 120, align: 'center', menuDisabled: true,
-//                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                                    metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
-//                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
-//                                                                    return value;
-//                                                                },
-//                                                                listeners: {
-//                                                                    click: 'onGridDataDetail'
-//                                                                }
-//                                                            }
-//                                                        ]
-//                                                    },
-//                                                    {
-//                                                        text: '<span style="color:black;font-weight:bold;">Accounted</span>', menuDisabled: true, style: 'background:#D1FBD2;color:black !important',
-//                                                        menuDisabled: true,
-//                                                        columns: [
-//                                                            {
-//                                                                text: '<span style="color:black;font-weight:bold;">Pending</span>', dataIndex: 'QPOLIPE',
-//                                                                style: 'background:#FFA8A8;color:black !important', width: 100, align: 'center', menuDisabled: true,
-//                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                                    metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
-//                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
-//                                                                    return value;
-//                                                                },
-//                                                                listeners: {
-//                                                                    click: 'onGridDataDetail'
-//                                                                }
-//                                                            },
-//                                                            {
-//                                                                text: '<span style="color:black;font-weight:bold;">Processed</span>', dataIndex: 'QPOLIC',
-//                                                                style: 'background:#D1FBD2;color:black !important', width: 100, align: 'center', menuDisabled: true,
-//                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                                    metaData.style = "color:#2B2B2B;text-align:right;";
-//                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
-//                                                                    return  value;
-//                                                                },
-//                                                            }
-//                                                        ]
-//                                                    }
-//                                                ]
-//                                            }
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">SVFOPNETR</span>',
+                                                dataIndex: 'SVFOPNETR',
+                                                width: 110,
+                                                align: 'center',
+                                                style: 'background:#c9daf5;',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "color:#2B2B2B;text-align:right;";
+                                                    return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
+                                                }
+                                            }
                                         ]
                                     }
                                 }
@@ -743,7 +675,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetailSecundary',
                                     minHeight: 200,
-                                    width: 1160,
+                                    width: 1259,
                                     hidden: false,
                                     columnLines: true,
                                     viewConfig: {
@@ -783,6 +715,12 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                                     return  value;
                                                 }},
                                             {text: '<span style="color:black;font-weight:bold;">Type</span>', dataIndex: 'strPEM', width: 80, style: 'padding:2px; background: #c9daf5;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:black;font-weight:bold;">Form Payment</span>', dataIndex: 'SPAYMENT', width: 100, style: 'padding:2px; background: #c9daf5;',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
@@ -818,39 +756,34 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                                     metaData.style = "text-align:center;";
                                                     return  value;
                                                 }},
+
+                                            {text: '<span style="color:black;font-weight:bold;">Currency</span>', dataIndex: 'SCURRENCY', width: 75, style: 'padding:2px; background: #c9daf5;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
                                             {
-                                                text: '<span style="color:black;font-weight:bold;">Amount</span>',
-                                                style: 'text-align:center; background:#c9daf5;',
-                                                columns: [
-                                                    {text: '<span style="color:black;font-weight:bold;">Currency</span>', dataIndex: 'SCURRENCY', width: 75, style: 'padding:2px; background: #c9daf5;',
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            var data = record.data;
-                                                            metaData.style = "text-align:center;";
-                                                            return  value;
-                                                        }},
-                                                    {
-                                                        text: '<span style="color:black;font-weight:bold;">SVFOP</span>',
-                                                        dataIndex: 'SVFOP',
-                                                        width: 90,
-                                                        align:'center',
-                                                        style: 'background:#c9daf5;',
-                                                        renderer: function (value, metaData) {
-                                                            metaData.style = "color:#2B2B2B;text-align:right;";
-                                                            return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
-                                                        }
-                                                    },
-                                                    {
-                                                        text: '<span style="color:black;font-weight:bold;">SVFOPNETR</span>',
-                                                        dataIndex: 'SVFOPNETR',
-                                                        width: 90,
-                                                        align:'center',
-                                                        style: 'background:#c9daf5;',
-                                                        renderer: function (value, metaData) {
-                                                            metaData.style = "color:#2B2B2B;text-align:right;";
-                                                            return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
-                                                        }
-                                                    }
-                                                ]
+                                                text: '<span style="color:black;font-weight:bold;">SVFOP</span>',
+                                                dataIndex: 'SVFOP',
+                                                width: 90,
+                                                align: 'center',
+                                                style: 'background:#c9daf5;',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "color:#2B2B2B;text-align:right;";
+                                                    return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">SVFOPNETR</span>',
+                                                dataIndex: 'SVFOPNETR',
+                                                width: 90,
+                                                align: 'center',
+                                                style: 'background:#c9daf5;',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "color:#2B2B2B;text-align:right;";
+                                                    return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
+                                                }
                                             },
                                             {
                                                 sortable: false,
@@ -868,106 +801,6 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                                     }
                                                 ]
                                             }
-//                                            {
-//                                                text: '<span style="color:black;font-weight:bold;">Tickets</span>', menuDisabled: true, style: 'background:#c9daf5;color:black !important',
-//                                                columns: [
-//                                                    {
-//                                                        text: '<span style="color:black;font-weight:bold;">Total</span>',
-//                                                        dataIndex: 'QSALES', width: 100, style: 'background:#F9D88C;color:black !important', align: 'center ', menuDisabled: true, //flex: 1
-//
-//                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                            metaData.style = "color:#2B2B2B;text-align:right;";
-//                                                            value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
-//                                                            return  value;
-//                                                        },
-//                                                    },
-//                                                    {
-//                                                        text: '<span style="color:black;font-weight:bold;">Match</span>', menuDisabled: true, style: 'background:#D1FBD2;color:black !important',
-//                                                        menuDisabled: true,
-//                                                        columns: [
-//                                                            {
-//                                                                text: '<span style="color:black;font-weight:bold;">Auto</span>', dataIndex: 'QMATCH',
-//                                                                style: 'background:#D1FBD2;color:black !important', width: 100, align: 'center', menuDisabled: true,
-//                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                                    metaData.style = "color:#2B2B2B;text-align:right;";
-//                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
-//                                                                    return  value;
-//                                                                }
-//                                                            },
-//                                                            {
-//                                                                text: '<span style="color:black;font-weight:bold;">%</span>',
-//                                                                dataIndex: 'PCT_MATCH',
-//                                                                style: 'background:#D1FBD2;color:black !important',
-//                                                                width: 70,
-//                                                                align: 'center',
-//                                                                menuDisabled: true,
-//
-//                                                                renderer: function (value, metaData, record) {
-//
-//                                                                    metaData.style = "color:#2B2B2B;text-align:right;";
-//
-//                                                                    if (value === null || value === undefined) {
-//                                                                        return '<b>0.00 %</b>';
-//                                                                    }
-//
-//                                                                    // Formatear con 2 decimales
-//                                                                    let pct = Ext.util.Format.number(value, '0.00');
-//
-//                                                                    return '<b>' + pct + ' %</b>';
-//                                                                }
-//                                                            },
-//                                                            {
-//                                                                text: '<span style="color:black;font-weight:bold;">Manual</span>', dataIndex: 'QMANUAL',
-//                                                                style: 'background:#D1FBD2;color:black !important', width: 100, align: 'center', menuDisabled: true,
-//                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                                    metaData.style = "color:#2B2B2B;text-align:right;";
-//                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
-//                                                                    return  value;
-//                                                                }
-//                                                            },
-//                                                            {
-//                                                                text: '<span style="color:black;font-weight:bold;">W/O Settlement</span>', dataIndex: 'QPEND',
-//                                                                style: 'background:#FFA8A8;color:black !important', width: 120, align: 'center', menuDisabled: true,
-//                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                                    metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
-//                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
-//                                                                    return value;
-//                                                                },
-//                                                                listeners: {
-//                                                                    click: 'onGridDataDetail'
-//                                                                }
-//                                                            }
-//                                                        ]
-//                                                    },
-//                                                    {
-//                                                        text: '<span style="color:black;font-weight:bold;">Accounted</span>', menuDisabled: true, style: 'background:#D1FBD2;color:black !important',
-//                                                        menuDisabled: true,
-//                                                        columns: [
-//                                                            {
-//                                                                text: '<span style="color:black;font-weight:bold;">Pending</span>', dataIndex: 'QPOLIPE',
-//                                                                style: 'background:#FFA8A8;color:black !important', width: 100, align: 'center', menuDisabled: true,
-//                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                                    metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
-//                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
-//                                                                    return value;
-//                                                                },
-//                                                                listeners: {
-//                                                                    click: 'onGridDataDetail'
-//                                                                }
-//                                                            },
-//                                                            {
-//                                                                text: '<span style="color:black;font-weight:bold;">Processed</span>', dataIndex: 'QPOLIC',
-//                                                                style: 'background:#D1FBD2;color:black !important', width: 100, align: 'center', menuDisabled: true,
-//                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-//                                                                    metaData.style = "color:#2B2B2B;text-align:right;";
-//                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
-//                                                                    return  value;
-//                                                                },
-//                                                            }
-//                                                        ]
-//                                                    }
-//                                                ]
-//                                            }
                                         ]
                                     }
                                 }
@@ -978,7 +811,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                         {
                             xtype: 'panel',
                             border: false,
-                            width: 1200,
+                            width: 1300,
                             id: prototype.id + '-panelGridDataDetailPrincipalSource',
                             bodyStyle: 'background-color: #F4F7FD;',
                             padding: '1',
@@ -992,7 +825,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetailPrincipalSource',
                                     minHeight: 200,
-                                    width: 1000,
+                                    width: 1239,
                                     hidden: false,
                                     columnLines: true,
                                     viewConfig: {
@@ -1032,6 +865,12 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                                     return  value;
                                                 }},
                                             {text: '<span style="color:black;font-weight:bold;">Type</span>', dataIndex: 'strPEM', width: 80, style: 'padding:2px; background: #c9daf5;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:black;font-weight:bold;">Form Payment</span>', dataIndex: 'SPAYMENT', width: 100, style: 'padding:2px; background: #c9daf5;',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
@@ -1073,11 +912,26 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                                     metaData.style = "text-align:center;";
                                                     return  value;
                                                 }},
-                                            {text: '<span style="color:black;font-weight:bold;">Amount</span>', dataIndex: 'SVFOP', width: 80, style: 'padding:2px; background: #c9daf5;',
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">SVFOP</span>',
+                                                dataIndex: 'SVFOP',
+                                                width: 110,
+                                                align: 'center',
+                                                style: 'background:#c9daf5;',
+                                                renderer: function (value, metaData) {
                                                     metaData.style = "color:#2B2B2B;text-align:right;";
-                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
-                                                    return  value;
+                                                    return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">SVFOPNETR</span>',
+                                                dataIndex: 'SVFOPNETR',
+                                                width: 110,
+                                                align: 'center',
+                                                style: 'background:#c9daf5;',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "color:#2B2B2B;text-align:right;";
+                                                    return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
                                                 }
                                             }
                                         ]

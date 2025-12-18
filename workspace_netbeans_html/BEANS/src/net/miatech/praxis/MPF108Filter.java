@@ -20,8 +20,11 @@ public class MPF108Filter {
     public String IN_CFUENTE = "";
     public String IN_SOCIETY = "";
     public String IN_COUNTRY = "";
+    public String IN_SOURCE = "";
     public String IN_STATUS = "";
     public String IN_AGENT = "";
     public String IN_TICKET = "";
+    public String IN_STATUSACC = "";
+    public String IN_SPAYMENT = "";
     
 }
