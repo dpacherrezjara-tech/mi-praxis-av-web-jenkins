@@ -204,6 +204,11 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlASR.LoadControlASRController'
             this.exportExcel('/getXLSX?beanString=' + encodeURI(JSON.stringify(bean)));
             return;
         }
+        if (opt === 'XLS_MONTH') {
+            this.exportExcel('/getXLSXMonth?beanString=' + encodeURI(JSON.stringify(bean))
+        );
+        return;
+    }
         var storeGridDatas = Ext.create('Ext.Praxis.store.sales.LoadControlASR.GridData', {
             proxy: {
                 url: prototype.url+'/search'
@@ -252,6 +257,34 @@ Ext.define('Ext.Praxis.controller.sales.LoadControlASR.LoadControlASRController'
             }
         });
     },
+    
+    
+    //////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////
+    //
+    //
+        btnExcel_clickMonth: function () {
+
+            if (!this.bean.IN_A1698FPRDA) {
+                global.Msg({ msg: 'Required Field, Processing Date' });
+                this.focus('txtA1698FPRDA');
+                return;
+            }
+
+            this.bean.IN_A1698FPRDA = this.bean.IN_A1698FPRDA.substring(0, 6);
+
+            this.search(this.bean, 'XLS_MONTH');
+        },
+
+   
+    
+    ////////////////////////////////////////////////
+    
+    
+    
+    
+    
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="loadASR">
     loadASR: function(beanASR) {

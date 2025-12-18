@@ -100,6 +100,7 @@ public class LoadControlDAO {
                 objRtn.A1698FPRDA_00 = rs01.getString("A1698FPRDA_00");
                 objRtn.A1698FFILE_00 = rs01.getString("A1698FFILE_00");                	                
                 objRtn.A1698FREGI = rs01.getString("A1698FREGI");                	                
+                objRtn.A1698FREGI_00 = rs01.getString("A1698FREGI_00");                	                
                 objRtn.page.PAGNUM = filter.page.PAGNUM;
                 objRtn.page.PAGROW = filter.page.PAGROW;
                 objRtn.page.TOTPAG = filter.page.TOTPAG;
