@@ -133,6 +133,11 @@ public class MasterController extends BaseController {
                 map.put("lstCardEquivalent", lstCardEquivalent);
             }
             
+            if (data.CFUENTECASH != 0) {
+                List<A2280> lstsCfuenteCash = masterDAO.lstsCfuenteCash();
+                map.put("lstsCfuenteCash", lstsCfuenteCash);
+            }
+            
             if (data.SOURCEAGENT != 0) {
                 List<A2280> lstsSourceAgent = masterDAO.loadSourceAgent();
                 map.put("lstsSourceAgent", lstsSourceAgent);
