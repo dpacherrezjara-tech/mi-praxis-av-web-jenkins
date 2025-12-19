@@ -4795,19 +4795,14 @@ public class StatementReconciliationsDAO {
     
     public MPF101 GET_TOLERANCIA(String Adate) throws SQLException, Exception {
         boolean result = false;
-        String Query = "SELECT PRAXISMP.FN_CONVERT(?, ?, ?, ?, ?) AS RESULT " +
-        "FROM SYSIBM.SYSDUMMY1";
+        String Query = "SELECT MAXF1 AS RESULT FROM PRAXISMP.MPF112 WHERE CCUST = ? AND SCURRENCY = ? LIMIT 1 ";
         MPF101 objMPF101 = new MPF101();
         try (Connection connection = session.getCNXIBMDB2().getIBMDB2Connection();
                 PreparedStatement preparedStatement = connection.prepareStatement(Query)) {
 
-            // Asignación de valores a los parámetros
-            preparedStatement.setDouble(1, 1.00);
-            preparedStatement.setString(2, "USD");
-            preparedStatement.setString(3, "COP");
-            preparedStatement.setString(4, Adate);
-            preparedStatement.setString(5, "134");
-            // Ejecuta el UPDATE
+            preparedStatement.setString(1, "134");
+            preparedStatement.setString(2, "COP");
+            
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 if (rs.next()) {
                     objMPF101.SVFOPD = rs.getDouble("RESULT");
