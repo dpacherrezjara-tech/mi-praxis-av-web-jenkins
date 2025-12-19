@@ -94,7 +94,7 @@
                                                     {text: 'Frec Payment', dataIndex: 'FRECPAYM', width: 100, align: 'center',style: 'background: #3F5675;border-color:white',
                                                     renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                         
-                                                        metaData.style = "text-align:left;";
+                                                        metaData.style = "text-align:center;";
                                                         metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
                                                         
                                                         if (value == "98") {
@@ -122,6 +122,7 @@
                                             {text: 'Email-3', dataIndex: 'EMAILS3', width: 120, align: 'center',style: 'padding:2px; background: #3F5675;border-color:white',},
                                             {text: 'Email-4', dataIndex: 'EMAILS4', width: 120, align: 'center',style: 'padding:2px; background: #3F5675;border-color:white',},
                                             {text: 'Email-5', dataIndex: 'EMAILS5', width: 120, align: 'center',style: 'padding:2px; background: #3F5675;border-color:white',},
+                                            {text: 'Profit', dataIndex: 'SBENCEN', width: 80, align: 'center',style: 'padding:2px; background: #3F5675;border-color:white'},
                                             {text: 'Phone', dataIndex: 'NPHONE', width: 80,style: 'padding:2px; background: #3F5675;border-color:white',},
                                             {text: 'Terminal', dataIndex: 'TERMI', width: 80,style: 'padding:2px; background: #3F5675;border-color:white',},
                                             {text: 'Contact', dataIndex: 'CONTAC', width: 120,style: 'padding:2px; background: #3F5675;border-color:white',},

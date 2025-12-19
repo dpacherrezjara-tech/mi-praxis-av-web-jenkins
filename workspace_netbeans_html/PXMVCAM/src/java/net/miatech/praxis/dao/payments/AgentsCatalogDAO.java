@@ -7,6 +7,7 @@ package net.miatech.praxis.dao.payments;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.miatech.beans.spring.implement.IServerSession;
+import net.miatech.libmiatec.A1007;
 import net.miatech.praxis.payment.filter.MPF106Filter;
 import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
@@ -51,34 +53,35 @@ public class AgentsCatalogDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.SQP04941_V85(?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS427(?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(5, Types.INTEGER);
             cstmt.registerOutParameter(6, Types.INTEGER);
             cstmt.registerOutParameter(7, Types.INTEGER);
             cstmt.registerOutParameter(8, Types.INTEGER);
+            cstmt.registerOutParameter(9, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_CAGENCY.trim());
             cstmt.setString(3, filter.COUNTRY.trim());            
-            cstmt.setString(4, filter.NEGOC.trim());            
+            cstmt.setString(4, filter.CITY.trim());            
+            cstmt.setString(5, filter.NEGOC.trim());            
 
-            cstmt.setInt(5, filter.page.PAGNUM);
-            cstmt.setInt(6, filter.page.PAGROW);
-            cstmt.setInt(7, filter.page.TOTPAG);
-            cstmt.setInt(8, filter.page.TOTROW);
+            cstmt.setInt(6, filter.page.PAGNUM);
+            cstmt.setInt(7, filter.page.PAGROW);
+            cstmt.setInt(8, filter.page.TOTPAG);
+            cstmt.setInt(9, filter.page.TOTROW);
 
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(5);
-            filter.page.PAGROW = cstmt.getInt(6);
-            filter.page.TOTPAG = cstmt.getInt(7);
-            filter.page.TOTROW = cstmt.getInt(8);
+            filter.page.PAGNUM = cstmt.getInt(6);
+            filter.page.PAGROW = cstmt.getInt(7);
+            filter.page.TOTPAG = cstmt.getInt(8);
+            filter.page.TOTROW = cstmt.getInt(9);
 
             rst = cstmt.getResultSet();
             while (rst.next()) {
@@ -152,6 +155,52 @@ public class AgentsCatalogDAO {
         return lstData;
     }
     
+    
+   
+    
+   public List<MPF106Filter> loadCitiesByCountry(MPF106Filter filter)
+        throws SQLException, Exception {
+    List<MPF106Filter> lst = new ArrayList<>();
+    MPF106Filter bean;
+
+    String sql =
+        "SELECT DISTINCT CITY " +
+        "FROM PRAXISMP.MPF106 " +
+        "WHERE COUNTRY = ? " +
+        "ORDER BY CITY";
+
+    Connection cnx = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+
+    try {
+        cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+        ps = cnx.prepareStatement(sql);
+        ps.setString(1, filter.COUNTRY.trim());
+
+        rs = ps.executeQuery();
+
+        // Opción All
+        bean = new MPF106Filter();
+        bean.CITY = "";
+        lst.add(bean);
+
+        while (rs.next()) {
+            bean = new MPF106Filter();
+            bean.CITY = rs.getString("CITY").trim();
+            lst.add(bean);
+        }
+
+    } finally {
+        if (rs != null) rs.close();
+        if (ps != null) ps.close();
+        session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+    }
+
+    return lst;
+}
+
+ 
     public String loadPX305SQP00941(List<MPF106Filter> filter, int Contador,String option) throws Exception {
 
         CallableStatement cs = null;
@@ -216,6 +265,7 @@ public class AgentsCatalogDAO {
         return msj;
     }
 
+    
     public String loadPX616SQP04942(MPF106Filter filter, String option) throws SQLException, Exception {
         //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2280.
         String strMsj = "Operation was successful.";
