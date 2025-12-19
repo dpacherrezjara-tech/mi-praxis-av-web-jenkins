@@ -4782,6 +4782,30 @@ public class StatementReconciliationsDAO {
         return result;
     }
     
+    public MPF101 GET_TOLERANCIA(String Adate) throws SQLException, Exception {
+        boolean result = false;
+        String Query = "SELECT MAXF1 AS RESULT FROM PRAXISMP.MPF112 WHERE CCUST = ? AND SCURRENCY = ? LIMIT 1 ";
+        MPF101 objMPF101 = new MPF101();
+        try (Connection connection = session.getCNXIBMDB2().getIBMDB2Connection();
+                PreparedStatement preparedStatement = connection.prepareStatement(Query)) {
+
+            preparedStatement.setString(1, "134");
+            preparedStatement.setString(2, "COP");
+            
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                if (rs.next()) {
+                    objMPF101.SVFOPD = rs.getDouble("RESULT");
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            result = false;
+        }
+
+        return objMPF101;
+    }
+    
     // CASH
     
         public List<MPF100Filter> loadCashSummaryMain(MPF100Filter filter) throws SQLException, Exception {

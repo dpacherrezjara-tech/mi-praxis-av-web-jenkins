@@ -2185,9 +2185,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         });
     },
 
-    onLoadClick_conciliaEC: function () {
+    onLoadClick_conciliaEC: function ( valorExt,file,form,tolerancia ) {
 
-        var valorExt = Ext.getCmp(prototype.id + '-cmbExt').getValue();
+//        var valorExt = Ext.getCmp(prototype.id + '-cmbExt').getValue();
 
         if (valorExt === 'E') {
             var msjPregunta = '', msjError = '';
@@ -2201,14 +2201,19 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                     icon: Ext.MessageBox.WARNING,
                     fn: function (btn) {
                         if (btn === 'ok') {
-                            me.onFileLoadToTemp();
+                            me.onFileLoadToTemp(file,form);
                         }
                     }
                 });
             }
         } else if (valorExt === 'C') {
             var msjPregunta = '', msjError = '';
-            msjPregunta = 'Sure to load file?';
+            if(tolerancia ){
+               msjPregunta = 'Are you sure you can reconcile with tolerance?';
+            }else{
+                msjPregunta = 'Are you sure you can reconcile differences??';
+            }
+            
 
             if (msjError === '') {
                 Ext.MessageBox.show({
@@ -2218,7 +2223,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                     icon: Ext.MessageBox.WARNING,
                     fn: function (btn) {
                         if (btn === 'ok') {
-                            me.onFileLoadColombia();
+                            me.onFileLoadColombia(file,form,tolerancia);
                         }
                     }
                 });
@@ -2290,7 +2295,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
     },
 
-    onFileLoadToTemp: function () {
+    onFileLoadToTemp: function (file, form) {
 
 //    console.log('onFileLoadToTemp');
 
@@ -2301,7 +2306,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 //        var fileField = Ext.getCmp(prototype.id + '-file');
 //        var file = fileField.fileInputEl.dom.files[0];
 
-        var file = Ext.getCmp(prototype.id + '-file').getValue();
+//        var file = Ext.getCmp(prototype.id + '-file').getValue();
         let beanString = JSON.stringify(beanValidation);
         if (!file) {
             Ext.MessageBox.alert('PRAXIS', "::: Select only one file. Please :::", function (btn, text) {
@@ -2311,7 +2316,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             return;
         }
 
-        var form = Ext.getCmp(prototype.id + '-formLIQvsEC').getForm();
+//        var form = Ext.getCmp(prototype.id + '-formLIQvsEC').getForm();
 
         // Realizar una solicitud AJAX para cargar el archivo
         form.submit({
@@ -2338,7 +2343,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
     },
 
-    onFileLoadColombia: function () {
+    onFileLoadColombia: function (file, form, tolerancia) {
 
         console.log('onFileLoadColombia');
 
@@ -2346,10 +2351,15 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         let beanValidation = {}
 
         beanValidation.IN_ACCNUMBER = '***********';
+        if(tolerancia){
+            tolerancia = 'Y'
+        }else{
+            tolerancia = 'N'
+        }
 //        var fileField = Ext.getCmp(prototype.id + '-file');
 //        var file = fileField.fileInputEl.dom.files[0];
 
-        var file = Ext.getCmp(prototype.id + '-file').getValue();
+//        var file = Ext.getCmp(prototype.id + '-file').getValue();
         let beanString = JSON.stringify(beanValidation);
         if (!file) {
             Ext.MessageBox.alert('PRAXIS', "::: Select only one file. Please :::", function (btn, text) {
@@ -2359,7 +2369,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             return;
         }
 
-        var form = Ext.getCmp(prototype.id + '-formLIQvsEC').getForm();
+//        var form = Ext.getCmp(prototype.id + '-formLIQvsEC').getForm();
 
         // Realizar una solicitud AJAX para cargar el archivo
         form.submit({
@@ -2367,7 +2377,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             waitMsg: 'Uploading your sure to upload the file...',
 //            method: 'POST',
 //            rawData: formData,
-            params: {fileName: file, beanString: beanString},
+            params: {fileName: file, beanString: beanString, tolerancia: tolerancia },
 //            // Configurar el tipo de contenido adecuado y el encabezado
 //            headers: {
 //                'Content-Type': null // Dejar que el navegador establezca el tipo de contenido
@@ -2385,6 +2395,176 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         });
 
     },
+    
+    onLoadConciliation: function (obj, e) {
+        var win = Ext.create('Ext.window.Window', {
+            title: 'Upload file',
+            modal: true,
+            width: 600,
+            bodyPadding: 18,
+            resizable: false,
+            closable: true,
+            layout: {
+                type: 'hbox',
+                align: 'stretch'
+            },
+            bodyStyle: 'background-color: #F9FAFB; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);',
+            defaults: {
+                labelAlign: 'right',
+                labelWidth: 90,
+                margin: '10 0 10 0',
+                style: 'background-color:white; border-radius:6px;'
+            },
+            items: [
+                {
+                    xtype: 'combo',
+                    hidden: true,
+//                    id: prototype.id + '-cmbExt',
+                    itemId: 'cmbTipo',
+                    store: new Ext.data.SimpleStore({
+                        fields: ['value', 'description'],
+                        data: [
+                            ["C", "Col"],["E", "Ext"]
+                        ]
+                    }),
+                    queryMode: 'local',
+                    allowBlank: false,
+                    forceSelection: true,
+                    selectOnFocus: true,
+                    caseSensitive: false,
+                    autoSelect: true,
+                    editable: false,
+                    width: 50,
+                    value: "C",
+                    hidden: false,
+                    typeAhead: true,
+                    valueField: 'value', displayField: 'description',
+                    enableKeyEvents: true,
+                    triggerAction: 'all',
+                    listeners: {
+                        change: function (cmb, newValue) {
+                            var win = cmb.up('window');
+
+                            var chkTolerance = win.down('#chkTolerance');
+                            var lblTolerance = win.down('#lblTolerance');
+
+                            if (newValue === 'E') {
+                                chkTolerance.hide();
+                                lblTolerance.hide(); 
+                            } else {
+                                chkTolerance.show();
+                                lblTolerance.show();
+                            }
+                        }
+                    }
+                },
+                {xtype: 'tbspacer', width: 20, height:20},
+                {
+                    xtype: 'form',
+                    id: prototype.id + '-formLIQvsEC',
+                    itemId: 'formLIQvsEC',
+                    border: false,
+//                    bodyStyle: 'background-color: #E3EAF9;',
+                    items: [{
+
+                        xtype: 'filefield',
+//                        id: prototype.id + '-file',
+                        itemId: 'file',
+                        name: 'excelfile',
+                        allowBlank: true,
+                        accept: '.xlsx, .xls',
+                        labelWidth: 85,
+                        width: 300,
+                        buttonAlign: 'left',
+                        buttonText: 'Select excel...',
+                        regex: /(.)+((\.xlsx)|(\.xls)|(\.csv)(\w)?)$/i,
+                        regexText: 'Only XLS and XLSX formats are accepted',
+                        buttonConfig: {
+                            text: '<strong>Select</strong>',
+                            width: 60,
+                            style: 'margin-right: 10px;' // Agregamos un margen derecho al botón
+                        }
+                    }]
+                },
+                {xtype: 'tbspacer', width: 20, height:20},
+                {
+                    xtype: 'label',
+                    text: 'Tolerance',
+                    itemId: 'lblTolerance',
+                    align: 'left',
+                    width: 50,
+                    style: 'text-align: left;',
+                    hidden: false,
+                    margin: '12 0 0 0'
+                },
+                {xtype: 'tbspacer', width: 10, height:20},
+                {
+                    xtype: 'checkbox',
+                    itemId: 'chkTolerance',
+                    inputValue: 'Tolerance', 
+                    name: 'chkTolerance',
+                    value: true,
+                    boxLabelAlign: 'before',
+                    listeners: {
+                        change: 'changeTolerance'
+                    }
+                },
+            ],
+            buttons: [
+                {
+                    text: 'Cancel',
+                    iconCls: 'x-fa fa-times',
+                    scale: 'medium',
+                    style: `
+                        background-color: #A9B4C2;
+                        color: white;
+                        font-weight: bold;
+                        border-radius: 6px;
+                        padding: 6px 18px;
+                    `,
+                    handler: function () {
+                        win.close();
+                    }
+                },
+                {
+                    text: 'Conciliar',
+                    iconCls: 'x-fa fa-file-excel',
+                    scale: 'medium',
+                    style: `
+                        background-color: #1E88E5;
+                        color: white;
+                        font-weight: bold;
+                        border-radius: 6px;
+                        padding: 6px 22px;
+                    `,
+                    handler: function () {
+                        var tipo = win.down('#cmbTipo').getValue(),
+                            file = win.down('#file').getValue(),
+//                            form = win.down('#formLIQvsEC').getForm(),
+                            form = Ext.getCmp(prototype.id + '-formLIQvsEC').getForm(),
+                            tolerancia = win.down('#chkTolerance').getValue();
+
+
+                        if ( !tipo || !file || !form  ) {
+                            Ext.Msg.alert('Error', 'Please select tipo  and file.');
+                            return;
+                        }
+//
+//                        var fecha = year + month + day;
+//                        Ext.Msg.alert('Selected', 'Generating report for: ' + fecha + ' - Sequence ' + seq);
+
+                        this.onLoadClick_conciliaEC(tipo,file,form,tolerancia)
+//                        win.close();
+                    },
+                    scope: this
+                }
+            ]
+        });
+
+        win.show();
+    },
+    
+    
     btnFilter_click: function (obj) {
 
         var option = Ext.getCmp(prototype.id + '-contentFilter');

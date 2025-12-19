@@ -301,6 +301,16 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Options', {
                             listeners: {
                                 click: 'onCallSummaryMPF132'
                             }
+                        },
+                        {
+                            xtype: 'button',
+                            id: prototype.id + '-btnCargaPlanilla',
+//                            iconCls: 'prx-icon-image-update',
+                            icon: 'resources/img/icon/16x16/icon_cargar_planilla_2.jpg',
+                            tooltip: 'Conciliation',
+                            listeners: {
+                                click: 'onLoadConciliation'
+                            }
                         }
                     ]
                 }
