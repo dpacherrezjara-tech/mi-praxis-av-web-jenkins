@@ -2209,7 +2209,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         } else if (valorExt === 'C') {
             var msjPregunta = '', msjError = '';
             if(tolerancia ){
-               msjPregunta = 'Are you sure you can reconcile with a $1 tolerance?';
+               msjPregunta = 'Are you sure you can reconcile with tolerance?';
             }else{
                 msjPregunta = 'Are you sure you can reconcile differences??';
             }
