@@ -514,5 +514,41 @@ public class AgentsCatalogController extends BaseController {
         }
         return new Gson().toJson(map);
     }
+    
+
+
+        @RequestMapping(value = "getCitiesByCountry")
+        @ResponseBody
+        public String getCitiesByCountry(ModelMap map, HttpServletRequest request) {
+
+            Gson gson = new Gson();
+            MPF106Filter filter;
+            List<MPF106Filter> lst;
+
+            try {
+                String beanString = request.getParameter("beanString");
+                filter = gson.fromJson(beanString, MPF106Filter.class);
+
+                logic = new AgentsCatalogLogic();
+                logic.setSession(this.serverSession.getServerSession());
+
+                lst = logic.loadCitiesByCountry(filter);
+
+                map.put("success", true);
+                map.put("data", lst);
+
+            } catch (Exception e) {
+                map.put("success", false);
+            }
+
+            return gson.toJson(map);
+        }
+
+    
+ 
+    
+    
+
+
 
 }

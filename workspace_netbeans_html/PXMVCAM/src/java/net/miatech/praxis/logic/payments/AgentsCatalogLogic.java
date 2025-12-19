@@ -43,5 +43,13 @@ public class AgentsCatalogLogic {
     public List<MPF106Filter> loadPX616SQP04943Citys(MPF106Filter filter) throws SQLException, Exception {
         return agentsCatalogDAO.loadPX616SQP04943Citys(filter);
     }
+    
+    ///// CIUDADS POR PAIS
+   
+    public List<MPF106Filter> loadCitiesByCountry(MPF106Filter filter)
+           throws Exception {
+       return agentsCatalogDAO.loadCitiesByCountry(filter);
+   }
+
 
 }

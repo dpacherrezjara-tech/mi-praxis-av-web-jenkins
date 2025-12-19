@@ -141,7 +141,7 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.AgentsCatalogController
                 ["", "All"],
                 ["1", "PASAJES"],
                 ["2", "CARGA"],
-                ["3", "CORREO"],
+                ["3", "CORREO"]
             ]
         }));
         cmbNEGOC.setValue('');
@@ -173,6 +173,8 @@ Ext.define('Ext.Praxis.controller.payments.AgentsCatalog.AgentsCatalogController
         me.bean.COUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
         me.bean.CODEBANK = Ext.getCmp(prototype.id + '-cmbBank').getValue();
         me.bean.NEGOC = Ext.getCmp(prototype.id + '-cmbNEGOC').getValue();
+        me.bean.CITY = Ext.getCmp(prototype.id + '-cmbCity').getValue() || '';
+
         var beanString = JSON.stringify(me.bean);
         searchParams = {
             bean: me.bean,
