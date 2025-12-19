@@ -35,6 +35,7 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.Filters', {
                         keypress: 'BuscarCAGENCY'
                     }
                 },
+                
                 {
                     xtype: 'combo',
                     fieldLabel: 'Country',
@@ -50,7 +51,68 @@ Ext.define('Ext.Praxis.view.payments.AgentsCatalogForm.Filters', {
                     labelWidth: 55,
                     hiddenLabel: false,
                     style: 'margin-right:10px;',
+                    listeners: {
+                        change: function (cmb, newCountry) {
+
+                            var cmbCity = Ext.getCmp(prototype.id + '-cmbCity');
+                            var store = cmbCity.getStore();
+
+                            cmbCity.reset();
+                            cmbCity.setDisabled(true);
+
+                            if (!newCountry) return;
+
+                            store.load({
+                                params: {
+                                    beanString: Ext.encode({ COUNTRY: newCountry })
+                                },
+                                callback: function (recs) {
+                                    cmbCity.setDisabled(recs.length === 0);
+                                }
+                            });
+                        }
+                    }
+
                 },
+                
+                //COMBO CIUDADES 
+                //////
+ 
+      
+
+            {
+                xtype: 'combo',
+                fieldLabel: 'City',
+                id: prototype.id + '-cmbCity',
+                labelWidth: 30,
+                width: 160,
+                disabled: true,
+                queryMode: 'local',
+                triggerAction: 'all',
+                valueField: 'CITY',
+                displayField: 'CITY',
+                emptyText: 'All',
+                    style: 'margin-right:10px;',
+    store: { /* igual */ },
+                store: {
+                    fields: ['CITY'],
+                    proxy: {
+                        type: 'ajax',
+                        url: 'AgentsCatalog/getCitiesByCountry',
+                        reader: {
+                            type: 'json',
+                            rootProperty: 'data'
+                        }
+                    },
+                    autoLoad: false
+                }
+            },
+            
+
+
+
+
+/////////
                  {
                     xtype: 'combo',
                     fieldLabel: 'Currency ',
