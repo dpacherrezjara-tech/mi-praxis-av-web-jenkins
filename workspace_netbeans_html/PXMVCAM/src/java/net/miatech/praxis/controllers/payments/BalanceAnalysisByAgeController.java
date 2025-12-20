@@ -1820,25 +1820,27 @@ public class BalanceAnalysisByAgeController extends BaseController {
             Cell CH1_15 = row1.createCell(15);
             Cell CH1_16 = row1.createCell(16);
             Cell CH1_17 = row1.createCell(17);
+            Cell CH1_18 = row1.createCell(18);
 
             CH1_0.setCellValue("Nbr");
             CH1_1.setCellValue("Client");
-            CH1_2.setCellValue("Scountry");
-            CH1_3.setCellValue("Valdate");
-            CH1_4.setCellValue("Bandoc");
-            CH1_5.setCellValue("Tranci");
-            CH1_6.setCellValue("Dateci");
-            CH1_7.setCellValue("Refer");
-            CH1_8.setCellValue("Texto Largo");
-            CH1_9.setCellValue("Corep");
-            CH1_10.setCellValue("Codpro");
-            CH1_11.setCellValue("Days Pending");
-            CH1_12.setCellValue("QTY Total");
-            CH1_13.setCellValue("Qty Match");
-            CH1_14.setCellValue("Qty Pending");
-            CH1_15.setCellValue("Header");
-            CH1_16.setCellValue("Scurrency");
-            CH1_17.setCellValue("Net");
+            CH1_2.setCellValue("Status");
+            CH1_3.setCellValue("Scountry");
+            CH1_4.setCellValue("Valdate");
+            CH1_5.setCellValue("Bandoc");
+            CH1_6.setCellValue("Tranci");
+            CH1_7.setCellValue("Dateci");
+            CH1_8.setCellValue("Refer");
+            CH1_9.setCellValue("Texto Largo");
+            CH1_10.setCellValue("Corep");
+            CH1_11.setCellValue("Codpro");
+            CH1_12.setCellValue("Days Pending");
+            CH1_13.setCellValue("QTY Total");
+            CH1_14.setCellValue("Qty Match");
+            CH1_15.setCellValue("Qty Pending");
+            CH1_16.setCellValue("Header");
+            CH1_17.setCellValue("Scurrency");
+            CH1_18.setCellValue("Net");
 
             CH1_0.setCellStyle(headerMain);
             CH1_1.setCellStyle(headerMain);
@@ -1858,6 +1860,7 @@ public class BalanceAnalysisByAgeController extends BaseController {
             CH1_15.setCellStyle(headerMain);
             CH1_16.setCellStyle(headerMain);
             CH1_17.setCellStyle(headerMain);
+            CH1_18.setCellStyle(headerMain);
 
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, 1));
@@ -1877,6 +1880,7 @@ public class BalanceAnalysisByAgeController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 15, 15));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 16, 16));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 17, 17));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 18, 18));
             ++vj;
 
             while (iter.hasNext()) {
@@ -1900,26 +1904,28 @@ public class BalanceAnalysisByAgeController extends BaseController {
                 Cell rcell15 = row1.createCell(15);
                 Cell rcell16 = row1.createCell(16);
                 Cell rcell17 = row1.createCell(17);
+                Cell rcell18 = row1.createCell(18);
 
                 A2356Filter item = listaData.get(vi);
                 rcell0.setCellValue(item.RN);
                 rcell1.setCellValue(item.CCUST);
-                rcell2.setCellValue(item.SCOUNTRY);
-                rcell3.setCellValue(item.VALDATE);
-                rcell4.setCellValue(item.BANDOC);
-                rcell5.setCellValue(item.TRANCI);
-                rcell6.setCellValue(item.DATECI);
-                rcell7.setCellValue(item.REFER);
-                rcell8.setCellValue(item.TEXTOLAR);
-                rcell9.setCellValue(item.COREP);
-                rcell10.setCellValue(item.CODPRO);
-                rcell11.setCellValue(item.DAYS_PENDING);
-                rcell12.setCellValue(item.QTY100_TOTAL);
-                rcell13.setCellValue(item.QTY100_MATCH);
-                rcell14.setCellValue(item.QTY100_PENDING);
-                rcell15.setCellValue(item.A4545HEADE);
-                rcell16.setCellValue(item.SCURRENCY);
-                rcell17.setCellValue(item.NETO);
+                rcell2.setCellValue(item.STVAL);
+                rcell3.setCellValue(item.SCOUNTRY);
+                rcell4.setCellValue(item.VALDATE);
+                rcell5.setCellValue(item.BANDOC);
+                rcell6.setCellValue(item.TRANCI);
+                rcell7.setCellValue(item.DATECI);
+                rcell8.setCellValue(item.REFER);
+                rcell9.setCellValue(item.TEXTOLAR);
+                rcell10.setCellValue(item.COREP);
+                rcell11.setCellValue(item.CODPRO);
+                rcell12.setCellValue(item.DAYS_PENDING);
+                rcell13.setCellValue(item.QTY100_TOTAL);
+                rcell14.setCellValue(item.QTY100_MATCH);
+                rcell15.setCellValue(item.QTY100_PENDING);
+                rcell16.setCellValue(item.A4545HEADE);
+                rcell17.setCellValue(item.SCURRENCY);
+                rcell18.setCellValue(item.NETO);
 
                 iter.next();
                 ++vi;
@@ -1944,6 +1950,7 @@ public class BalanceAnalysisByAgeController extends BaseController {
             sheet.autoSizeColumn(15, true);
             sheet.autoSizeColumn(16, true);
             sheet.autoSizeColumn(17, true);
+            sheet.autoSizeColumn(18, true);
 
             //============================================
             response.setContentType("application/vnd.openxml");
@@ -2145,4 +2152,33 @@ public class BalanceAnalysisByAgeController extends BaseController {
         return lst;
     }
 
+    @RequestMapping(value = "/obtainCodeError")
+    public @ResponseBody
+    String obtainCodeError(ModelMap map, HttpServletRequest request) {
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+        List<A2290Filter> lst = new ArrayList<>(0);
+        try {
+            logic = new BalanceAnalysisByAgeLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+
+            lst = logic.loadMPS449(filter);
+
+            map.put("success", true);
+            System.out.println("Total : " + lst.size());
+            map.put("data", lst);
+
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("sesion", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("sesion", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
 }

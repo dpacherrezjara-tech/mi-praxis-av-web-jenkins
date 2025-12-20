@@ -159,4 +159,8 @@ public class BalanceAnalysisByAgeLogic {
      public List<A2356Filter> getListsearchDashboardMDPCASH(A2356Filter filter) throws SQLException, Exception {
         return balanceAnalysisByAge.getListsearchDashboardMDPCASH(filter);
     }
+     
+     public List<A2290Filter> loadMPS449(A2290Filter filter) throws SQLException, Exception {
+        return balanceAnalysisByAge.loadMPS449(filter);
+    }
 }

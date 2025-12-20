@@ -34,6 +34,7 @@ public class A2356Filter extends A2356 {
     public String IN_IDCONT = "";
     public String IN_HEADER = "";
     public String IN_PROVISION = "";
+    public String IN_CODEERROR = "";
     public String IN_SENT = "";
     public String IN_SDATE = "";
     public String IN_DATE = "";
@@ -192,6 +193,7 @@ public class A2356Filter extends A2356 {
     public String IN_DEBTYPE = "";
 
     public int RN = 0;
+    public int QUANTITY = 0;
 
     public Pagination page = new Pagination();
 
