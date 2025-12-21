@@ -161,7 +161,26 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Options', {
                             xtype: 'button',
                             id: prototype.id + '-btnAdd',
                             icon: 'resources/img/botones/16x16/txt.png',
-                            tooltip: 'Assign Code'
+                            listeners: {
+                                render: function (btn) {
+                                    Ext.create('Ext.tip.ToolTip', {
+                                        target: btn.getEl(),
+                                        title: 'Asignar Comentario - Formato del archivo TXT',
+                                        html: `
+                    <b>Estructura por línea:</b><br>
+                    CLIENTE,REFERENCIA,COMENTARIO<br><br>
+
+                    <b>Ejemplo:</b><br>
+                    133,0040659200003USD,07<br>
+                    133,0040659200005USD,07<br>
+                    133,0040658300004GTQ,06
+                `,
+                                        anchor: 'top',
+                                        maxWidth: 320,
+                                        dismissDelay: 0   // 🔥 no se oculta solo
+                                    });
+                                }
+                            }
                         },
                         {
                             xtype: 'button',
