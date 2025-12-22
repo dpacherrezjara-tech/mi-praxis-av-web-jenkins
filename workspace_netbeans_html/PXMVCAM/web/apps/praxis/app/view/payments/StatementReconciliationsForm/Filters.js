@@ -437,8 +437,8 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                         }
                     ]
                 },
-                
-                
+
+                       
                 
                 //
                 

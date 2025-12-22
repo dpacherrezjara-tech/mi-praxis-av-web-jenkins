@@ -1121,8 +1121,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
      ExportCSV: function () {
             console.log('Descargando CSV...');
 
-            const country = this.beanResult.SCOUNTRY; // Ejemplo: "CO"
-            const date = this.beanResult.VALDATE;       // Ejemplo: "20250731"
+            const country = this.beanResult.SCOUNTRY; 
+            const date = this.beanResult.VALDATE;       
+            const dateARC = this.beanResult.ADATE;       
             const ccustR = this.beanResult.CCUST;       
             const cycle = this.beanResult.DCYCLE.trim();     
             const input = this.beanResult.TINPUT.trim();     
@@ -1135,7 +1136,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
             // Enviamos los dos parámetros al backend
             const url = prototype.url + '/getCSV?country=' + encodeURIComponent(country)
                                        + '&date=' + encodeURIComponent(date) + '&ccustR=' + encodeURIComponent(ccustR)
-                + '&cycle=' + encodeURIComponent(cycle) + '&input=' + encodeURIComponent(input);
+                + '&cycle=' + encodeURIComponent(cycle) + '&input=' + encodeURIComponent(input)+ '&dateARC=' + encodeURIComponent(dateARC);
 
             console.log('Solicitando:', url);
 

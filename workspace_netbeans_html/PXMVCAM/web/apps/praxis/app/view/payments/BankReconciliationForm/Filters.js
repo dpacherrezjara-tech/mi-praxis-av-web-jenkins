@@ -859,7 +859,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                         {
                             xtype: 'button',
                             hidden: true,
-                            text: 'Conciliación Fase 2',
+                            text: 'Conciliacion FASES',
                             id: prototype.id + '-btnFase2',
                             iconCls: 'prx-icon-update', 
                             style: {
@@ -872,6 +872,41 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                                 click: 'conciliacionFase2' 
                             }
                         },
+                        {xtype: 'tbspacer', width: 20},
+                        
+                        
+                        {
+                            xtype: 'segmentedbutton',
+                            itemId: 'btnModeSelector',
+                            id: prototype.id + '-segViewMode', 
+                            allowDepress: false,
+                            hidden: true,
+                            defaults: {
+                                cls: 'btn-blanco-normal',      
+                                pressedCls: 'btn-azul-pressed', 
+                                style: {
+                                    'border-radius': '4px',
+                                    'margin-right': '2px'
+                                }
+                            },
+                            items: [
+                                {
+                                    text: 'AJUSTES',
+                                    value: 'BSP',
+                                    pressed: true,
+                                    width: 100
+                                },
+                                {
+                                    text: 'COMISION',
+                                    value: 'ARC',
+                                    width: 100
+                                }
+                            ],
+                            listeners: {
+                                toggle: 'onModeChange'
+                            }
+                        },
+                        
                         {xtype: 'tbspacer', width: 10},
                         {
                             xtype: 'label',

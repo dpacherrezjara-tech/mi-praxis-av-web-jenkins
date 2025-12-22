@@ -8554,7 +8554,111 @@ public class BankReconciliationDAO {
         
     }
     
-    ////
+     ////
+     /// LISTA DE LA MPF223
+     ///
+     public List<A2290Filter> loadLISTAR_MPF223(A2290Filter filter)throws SQLException, Exception {
+        
+        
+        
+        List<A2290Filter> listaData = new ArrayList<>();
+        A2290Filter bean;
+        
+        
+        String SQL = "{CALL PRAXISMP.MPS453(?, ?, ? , ?, ? , ?, ?, ?, ? )}";
+        
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        Connection cnx = null;
+        
+        
+        
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQL);
+
+            cstmt.registerOutParameter(6, Types.INTEGER);
+            cstmt.registerOutParameter(7, Types.INTEGER);
+            cstmt.registerOutParameter(8, Types.INTEGER);
+            cstmt.registerOutParameter(9, Types.INTEGER);
+
+    
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.IN_SDATE);
+            cstmt.setString(3, filter.IN_ADATE);
+            cstmt.setString(4, filter.IN_COUNTRY);
+            cstmt.setString(5, filter.IN_SOURCE);
+            cstmt.setInt(6, filter.page.PAGNUM);
+            cstmt.setInt(7, filter.page.PAGROW);
+            cstmt.setInt(8, filter.page.TOTPAG);
+            cstmt.setInt(9, filter.page.TOTROW);
+
+            cstmt.execute();
+
+            // se actualiza paginacion
+            filter.page.PAGNUM = cstmt.getInt(6);
+            filter.page.PAGROW = cstmt.getInt(7);
+            filter.page.TOTPAG = cstmt.getInt(8);
+            filter.page.TOTROW = cstmt.getInt(9);
+
+            rst = cstmt.getResultSet();
+
+            while (rst != null && rst.next()) {
+                bean = new A2290Filter();
+
+                bean.PRDA = rst.getString("PRDA");
+                bean.TINPUT = rst.getString("TINPUT");
+                bean.CONCEPT = rst.getString("CODIGO");
+                bean.SCURRENCY = rst.getString("MONEDA");
+                bean.IMPORTEN = rst.getDouble("IMPORTE");
+                bean.SUM_NETO = rst.getDouble("SUM_IMPORTE");
+                bean.SCOUNTRY = rst.getString("SCOUNTRY");
+                bean.BANDOC = rst.getString("BANDOC");
+                
+                
+                
+                
+                bean.O_USCR = rst.getString("USCR");
+                bean.O_FECR = rst.getString("FECR");
+                bean.O_HOCR = rst.getString("HOCR");
+                bean.O_USUP = rst.getString("USUP");
+                bean.O_FEUP = rst.getString("FEUP");
+                bean.O_HOUP = rst.getString("HOUP");
+
+                // Copiar paginación en cada bean si es necesario
+                bean.page.PAGNUM = filter.page.PAGNUM;
+                bean.page.PAGROW = filter.page.PAGROW;
+                bean.page.TOTPAG = filter.page.TOTPAG;
+                bean.page.TOTROW = filter.page.TOTROW;
+
+                listaData.add(bean);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (rst != null) try {
+                rst.close();
+            } catch (SQLException ignored) {
+            }
+            if (cstmt != null) try {
+                cstmt.close();
+            } catch (SQLException ignored) {
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+            pasarGarbageCollector();
+        }
+
+        return listaData;
+        
+        
+        
+        
+    }
+    
      /////UPDATE DATAENTRY MPF199
      
     public String MPF199Update(A2290Filter filter) throws SQLException, Exception {
@@ -8762,16 +8866,40 @@ public class BankReconciliationDAO {
     }
     
     public String processFaseDosConciliation() throws SQLException, Exception {
-        String message = " Successfully executed MPS319.";
-        CallableStatement cstmt = null;
+        String message = "Proceso de Conciliación ejecutado exitosamente.";
         Connection cnx = null;
-
-        String SQL = "{CALL PRAXISMP.MPS319(?, ?)}"; 
+        String ccust = session.getUserView().getCustomerInfo().CCUST.trim();
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-            cstmt = cnx.prepareCall(SQL);
+            executeConciliationSP(cnx, "MPS316");
+            executeConciliationSP(cnx, "MPS319");
+            executeConciliationSP(cnx, "MPS316");
+            executeSummarySP(cnx, "MPS322", ccust);
+            executeSummarySP(cnx, "MPS343", ccust);
 
+
+        } catch (SQLException e) {
+            logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+            throw new SQLException("Error SQL en Super Conciliador: " + e.getMessage());
+        } catch (Exception e) {
+            logError.error("Exception -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+            throw e; 
+        } finally {
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+        }
+
+        return message;
+    }
+
+    private void executeConciliationSP(Connection cnx, String spName) throws SQLException, Exception {
+        CallableStatement cstmt = null;
+        String SQL = "{CALL PRAXISMP." + spName + "(?, ?)}";
+
+        try {
+            cstmt = cnx.prepareCall(SQL);
             cstmt.setInt(1, 0); 
             cstmt.setString(2, "");
 
@@ -8783,22 +8911,27 @@ public class BankReconciliationDAO {
             int sqlCode = cstmt.getInt(1);
             String sqlMessage = cstmt.getString(2);
 
-            if (sqlCode == 1) { 
-                 message = sqlMessage; 
-            } else {
-                 message = "ERROR MPS319: " + sqlMessage;
-                 throw new Exception(message); 
+            if (sqlCode != 1) {
+                throw new Exception("ERROR en " + spName + ": " + sqlMessage);
             }
 
-        } catch (SQLException e) {
-            logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
-            throw new SQLException("Error al ejecutar la conciliación: " + e.getMessage());
         } finally {
             if (cstmt != null) cstmt.close();
-            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
         }
+    }
 
-        return message;
+    private void executeSummarySP(Connection cnx, String spName, String ccust) throws SQLException {
+        CallableStatement cstmt = null;
+        String SQL = "{CALL PRAXISMP." + spName + "(?)}";
+
+        try {
+            cstmt = cnx.prepareCall(SQL);
+            cstmt.setString(1, ccust);
+            cstmt.execute();
+
+        } finally {
+            if (cstmt != null) cstmt.close();
+        }
     }
     
     

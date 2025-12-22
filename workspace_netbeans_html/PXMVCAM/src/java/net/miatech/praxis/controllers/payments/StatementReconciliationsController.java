@@ -4621,6 +4621,7 @@ public class StatementReconciliationsController extends BaseController {
         String ccustR = request.getParameter("ccustR");
         String cycle = request.getParameter("cycle");
         String input = request.getParameter("input");
+        String dateARC = request.getParameter("dateARC");
 
         if (country == null || date == null || country.isEmpty() || date.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

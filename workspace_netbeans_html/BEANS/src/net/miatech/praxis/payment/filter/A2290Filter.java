@@ -1101,6 +1101,7 @@ public class A2290Filter extends A2290 {
     public String O_SCONSOL ="";
     public String O_SCURRENCY ="";
     public double O_NETO =0;
+    public double IMPORTEN =0;
     public double O_PAYAMOU =0;
     public String O_STRDATE ="";
     public String O_ENDDATE ="";
