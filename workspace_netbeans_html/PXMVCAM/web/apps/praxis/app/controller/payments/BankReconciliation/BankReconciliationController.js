@@ -29,6 +29,23 @@ Ext.util.CSS.createStyleSheet(`
     .row-blue-light-2 .x-grid-cell {
         background-color: #45B547 !important;
     }
+    .btn-azul-pressed {
+        background-color: #3498db !important;
+        color: white !important; 
+        border-color: #2c3e50 !important; 
+        font-weight: bold !important;
+    }
+
+    .btn-blanco-normal {
+        background-color: white !important; 
+        color: #3498db !important; /* Texto azul para contraste */
+        border-color: #bdc3c7 !important; 
+    }
+
+    .segmode .x-btn-inner {
+        font-size: 12px; 
+        padding: 2px 5px;
+    }
 `, 'customRowStyles');  
 
 Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliationController', {
@@ -2853,6 +2870,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         } else {
             global.showMenu();
         }
+        var btnSeg = Ext.getCmp(prototype.id + '-segViewMode');
+        if (btnSeg) {
+            btnSeg.hide(); // ¡Escóndete porque ya no estamos en MPF199!
+        }
     },
 //    onViewDet: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
 //
@@ -4483,11 +4504,40 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     
     /////////AGREGAMOS CONSLTA PARA LISTA MPF199
     ///////////////////////////////////////////////////
+    
+    onModeChange: function(segmentedBtn, button, isPressed) {
+        if (!isPressed) return; // Solo actuamos cuando el botón se presiona (true)
+
+        var me = this;
+        var mode = button.value; // 'BSP' o 'ARC'
+        var cardContainer = Ext.getCmp(prototype.id + '-cardContainer');
+
+        if (mode === 'BSP') {
+            // 1. Mostrar Grilla BSP
+            cardContainer.getLayout().setActiveItem(0); 
+            win.lblUser_toolTip("Estructura: BSP Files (Ajustes)");
+            
+            // 2. Cargar Data BSP (Llama a tu función original)
+            me.setGridDataMPF199(); 
+
+        } else if (mode === 'ARC') {
+            // 1. Mostrar Grilla ARC
+            cardContainer.getLayout().setActiveItem(1); 
+            win.lblUser_toolTip("Estructura: ARC Files (Comisiones)");
+
+            // 2. Cargar Data ARC (Nueva función)
+            me.setGridDataCOMISI(); 
+        }
+    },
  
     onGridMPF199: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
         me.drillDown.push(me.panelActual);
         me.panelActual = '-panelGridDataMPF199';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
+        var btnSeg = Ext.getCmp(prototype.id + '-segViewMode');
+        if (btnSeg) {
+            btnSeg.show(); 
+        }
         
         
         
@@ -4607,6 +4657,63 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         Ext.getCmp(prototype.id + '-pagginMPF199').bindStore(storeGridDatas);
     }
 },
+
+    setGridDataCOMISI: function(data) {
+        win.lblUser_toolTip("Estructura: MPF223");
+        me.setWidthPie();
+        var msj = this.validateFields();
+
+        if (msj !== '') {
+            global.Msg({ msg: msj });
+        } else {
+
+            var groupMap = {};
+            var groupId = 0;
+
+            var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchListMPF223'
+                },
+                listeners: {
+                    beforeload: function(obj) {
+                        obj.proxy.extraParams = me.obJPADJ;                                    
+                    },
+                    load: function (obj) {
+                        var pag = Ext.getCmp(prototype.id + '-pagginMPF199');
+                        var pagData = pag.getPageData();
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+
+                        if (obj.data.length === 0) {
+                            global.Msg({ msg: 'Data not found.' });
+                        } else {
+                            var year = me.currentSDate.substring(0, 4);
+                            var month = me.currentSDate.substring(4, 6);
+                            var monthNames = [
+                                "January", "February", "March", "April", "May", "June",
+                                "July", "August", "September", "October", "November", "December"
+                            ];
+
+                            title = " Sales Date : " + monthNames[parseInt(month) - 1] + " " + year;
+                            Ext.getCmp(prototype.id + '-labelMPF199').setText(title);
+                            Ext.getCmp(prototype.id + '-labelMPF199').setVisible(true);
+
+
+                        }
+
+                        me.setWidthPie();
+                    }
+
+
+                }
+            });
+
+            global.clear();
+            Ext.getCmp(prototype.id + '-gridDataMPF199COMIS').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-pagginMPF199').bindStore(storeGridDatas);
+        }
+    },
     
 
     
@@ -4942,7 +5049,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     conciliacionFase2: function () {
         var me = this;
         var mainView = me.getView(); 
-        mainView.mask('Iniciando Conciliación Fase 2. Por favor, espere...');
+        mainView.mask('Iniciando Conciliación y Sumarios Por favor, espere...');
 
         Ext.Ajax.request({
             url: prototype.url + '/conciliacionFaseDos',
