@@ -127,6 +127,7 @@ public class A2290Filter extends A2290 {
     public String IN_RED = "";
     public String IN_NEGOC = "";
     public String IN_COMENT = "";
+    public String IN_CONSULTA = "";
     public String IN_TERMI = "";
     public String IN_AGENCY = "";
     public String IN_SAGENT = "";
@@ -1105,6 +1106,7 @@ public class A2290Filter extends A2290 {
     public String O_SCONSOL ="";
     public String O_SCURRENCY ="";
     public double O_NETO =0;
+    public double IMPORTEN =0;
     public double O_PAYAMOU =0;
     public String O_STRDATE ="";
     public String O_ENDDATE ="";
@@ -1122,6 +1124,17 @@ public class A2290Filter extends A2290 {
     public String O_DATEA = "";
     public String O_TRANA = "";
     public String O_INVOICE = "";
+    
+    public double O_RECAUDACION = 0;
+    public double O_TASA = 0;
+    public double O_RENDICION = 0;
+    public double O_PAGOTERCERO = 0;
+    public double O_COMISIONMEP = 0;
+    public double O_IVA = 0;
+    public double O_NETORENDIDO = 0;
+    public String O_EXCEPTION_CODE = "";
+    public double O_RECAUDACION_INR = 0;
+    public double O_RECAUDACION_USD = 0;
     
     
     public String O_USCR = "";

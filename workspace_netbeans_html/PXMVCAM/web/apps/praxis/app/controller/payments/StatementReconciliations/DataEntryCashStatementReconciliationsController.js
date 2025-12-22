@@ -15,6 +15,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
     beanDetails: {},
     beanScan: {},
     beanAgrupa: {},
+    beanRefreshHeader: {},
     lstA1852: {},
     dataObtain: {},
     // </editor-fold>
@@ -34,6 +35,14 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
     },
     afterRender: function () {
         console.log('afterRender');
+        var cmpToggle = Ext.getCmp(prototype.id + '-btnTS_HEADER');
+        var chkEl = cmpToggle.getEl().down('#chkHeader');
+
+        if (chkEl) {
+            chkEl.on('change', function () {
+                meDE.onChangeHeader();
+            });
+        }
         switch (this.actionCode) {
             case 'U':
                 this.getData();
@@ -89,8 +98,11 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
         this.setValue('de-txtInput', cfuente);
         this.setValue('de-txtNegoc', 'PASAJES');
         
-        
-        
+        if(this.beanResult.SCURRENCY === 'EUR'){
+            Ext.getCmp(prototype.id + '-btnTS_HEADER').getEl().down('#chkHeader').dom.checked = true;
+        }else{
+            Ext.getCmp(prototype.id + '-btnTS_HEADER').getEl().down('#chkHeader').dom.checked = false;
+        }
         
         this.setValue('de-txtdescTDOC', this.beanResult.descTDOC);
         this.setValue('de-txtTDOC', this.beanResult.TDOC);
@@ -160,26 +172,59 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
     getData: function () {
         console.log('getData');
         console.log('meDE.bean', meDE.bean);
-        meDE.bean.data.IN_VALDATE = meDE.bean.data.VALDATE;
-        meDE.bean.data.IN_CODEBANK = meDE.bean.data.CODEBANK;
-        meDE.bean.data.IN_MERCHAND = meDE.bean.data.MERCHAND;
         meDE.bean.data.IN_TRANCI = meDE.bean.data.TRANCI;
         meDE.bean.data.IN_DATECI = meDE.bean.data.DATECI;
         meDE.bean.data.IN_BANDOC = meDE.bean.data.BANDOC;
-        meDE.bean.data.IN_NETO = meDE.bean.data.NETO + "";
-        meDE.bean.data.IN_RED = meDE.bean.data.RED;
         meDE.bean.data.IN_STVAL = meDE.bean.data.STVAL;
         meDE.bean.data.SCURRENCY = meDE.bean.data.SCURRENCY;
         meDE.bean.data.IN_CBATCH = meDE.bean.data.CBATCH;
         meDE.bean.data.IN_FECR = meDE.bean.data.FECR;
+//        meDE.bean.data.IN_CONSULTA = meDE.bean.data.FECR;
         if (meDE.bean.data.IN_STVAL === 'Match' ) {
             meDE.bean.data.IN_STVAL = '1';
         } else if ( meDE.bean.data.IN_STVAL === 'Match Manual' ){
             meDE.bean.data.IN_STVAL = '5';
         } else {
-            meDE.bean.data.IN_STVAL = 'P';
+            meDE.bean.data.IN_STVAL = '3';
         }
         var beanString = JSON.stringify(meDE.bean.data);
+        Ext.Ajax.request({
+            url: prototype.url + '/searchBeanCash',
+            method: 'POST',
+            timeout: 60000000,
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntryCash').mask('Loading...'),
+            params: {beanString: beanString},
+            success: function (response, options) {
+                Ext.getCmp(prototype.id + '-dataEntryCash').unmask('Loading...');
+                var res = Ext.JSON.decode(response.responseText);
+                meDE.beanResult = res.data;
+                meDE.onSearchCompleteDetail();
+                meDE.mostrarData();
+            }
+        });
+    },
+    
+    getDataRefreshHeader: function (SCURRENCY) {
+        
+        meDE.beanRefreshHeader = {}
+        meDE.beanRefreshHeader.IN_TRANCI = meDE.bean.data.TRANCI;
+        meDE.beanRefreshHeader.IN_DATECI = meDE.bean.data.DATECI;
+        meDE.beanRefreshHeader.IN_BANDOC = meDE.bean.data.BANDOC;
+        meDE.beanRefreshHeader.IN_STVAL = meDE.bean.data.STVAL;
+        meDE.beanRefreshHeader.IN_SCURRENCY = SCURRENCY;
+        meDE.beanRefreshHeader.IN_CONSULTA = '1';
+        
+        meDE.beanRefreshHeader.IN_CBATCH = meDE.bean.data.CBATCH;
+        meDE.beanRefreshHeader.IN_FECR = meDE.bean.data.FECR;
+//        meDE.bean.data.IN_CONSULTA = meDE.bean.data.FECR;
+        if (meDE.bean.data.IN_STVAL === 'Match' ) {
+            meDE.beanRefreshHeader.IN_STVAL = '1';
+        } else if ( meDE.bean.data.IN_STVAL === 'Match Manual' ){
+            meDE.beanRefreshHeader.IN_STVAL = '5';
+        } else {
+            meDE.beanRefreshHeader.IN_STVAL = '3';
+        }
+        var beanString = JSON.stringify(meDE.beanRefreshHeader);
         Ext.Ajax.request({
             url: prototype.url + '/searchBeanCash',
             method: 'POST',
@@ -226,67 +271,77 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
             beforerequest: Ext.getCmp(prototype.id + '-dataEntryCash').mask('Loading...'),
             params: {beanString: beanString},
             success: function (response, options) {
-                Ext.getCmp(prototype.id + '-dataEntryCash').unmask('Loading...');
-                var res = Ext.JSON.decode(response.responseText);
-                if (res.success) {
+    Ext.getCmp(prototype.id + '-dataEntryCash').unmask('Loading...');
+    var res = Ext.JSON.decode(response.responseText);
+    
+    if (res.success) {
+        // 🔥 CAMBIO: Usamos los datos directos del backend, SIN agregar filas de sumario manuales
+        // ExtJS Grid con feature 'summary' hará la matemática solo.
+        var data = Ext.isArray(res.data) ? res.data : [];
 
-                    var storeData = Ext.create('Ext.data.Store', {
-                        data: res.data,
-                        autoLoad: true
-                    });
-                    console.log(res.data, 'res.data complete detail')
-                    
-                    function parseNumber(v) {
-                        if (v === null || v === undefined || v === '') return 0;
-                        if (typeof v === 'number') return v;
-                        var s = String(v).replace(/\s/g,'').replace(/,/g,''); // quita espacios y comas
-                        var n = parseFloat(s);
-                        return isNaN(n) ? 0 : n;
-                    }
+        var storeData = Ext.create('Ext.data.Store', {
+            data: data, // Usamos la data limpia
+            autoLoad: true
+        });
 
-                    var data = Ext.isArray(res.data) ? Ext.Array.clone(res.data) : [];
+        // --- SECCIÓN ELIMINADA: Ya no necesitas calcular totalNeto ni totalPayamou aquí ---
+        // --- SECCIÓN ELIMINADA: Ya no necesitas data.push(summaryRec) ---
+        
+        var panelScanArc = Ext.getCmp(prototype.id + '-panelDataInfoScanARC'); 
+        var panelScan    = Ext.getCmp(prototype.id + '-panelDataInfoScan');
+        var gridScanArc  = Ext.getCmp(prototype.id + '-gridDataInfoScanArc');
+        var gridScan     = Ext.getCmp(prototype.id + '-gridDataInfoScan');
 
-                    // calcular totales y qty
-                    var totalNeto = 0;
-                    var totalPayamou = 0;
-                    var qty = 0;
-                    Ext.Array.forEach(data, function(rec){
-                        // si rec.NETO undefined => 0
-                        var n = parseNumber(rec.NETO);
-                        var p = parseNumber(rec.PAYAMOU);
-                        var p = parseNumber(rec.USDEQUI);
-                        totalNeto += n;
-                        totalPayamou += p;
-                        // considera contar solo filas "normales" (no summary previas)
-                        qty++;
-                    });
+        if (gridScanArc && gridScan) {
+            gridScanArc.bindStore(storeData); 
+            gridScan.bindStore(storeData);    
+        }
 
-                    // crear fila resumen (marca _isSummary para detectarla en renderer)
-                    var summaryRec = {
-                        totalNeto: totalNeto,           // números reales
-                        totalPayamou: totalPayamou,
-                        totalUsdEqui: totalPayamou,
-                        _isSummary: true
-                    };
+        // ... resto de tu lógica de visualización de paneles ...
+        if (meDE.bean.data.CCUSTPRO == '02') {
+             if(panelScanArc) panelScanArc.show(); 
+                if(panelScan)    panelScan.hide(); 
+            } else {
+                if(panelScanArc) panelScanArc.hide(); 
+                if(panelScan)    panelScan.show(); 
 
-                    // agregar al final de la data
-                    data.push(summaryRec);
-                    Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
-                    if(meDE.bean.data.TINPUT == 'I'){
-                        meDE.hiddenGridColumns();
-                    } else if (meDE.bean.data.TINPUT == 'B' || meDE.bean.data.TINPUT == 'A') {
-                        meDE.hiddenGridColumnsBSP();
-                    }
-                    meDE.calcularMontos();
-                    meDE.calcularDiferencias();
-                } else {
-                    global.Msg({msg: res.Mensaje});
+                // Lógica adicional de columnas
+                if(meDE.bean.data.TINPUT == 'I'){
+                    meDE.hiddenGridColumns();
+                } else if (meDE.bean.data.TINPUT == 'B' || meDE.bean.data.TINPUT == 'A') {
+                    meDE.hiddenGridColumnsBSP();
                 }
-
-            }
+        }
+        
+        meDE.calcularMontos();
+        meDE.calcularDiferencias();
+    } else {
+        global.Msg({msg: res.Mensaje});
+    }
+}
         });
     },
+    onChangeHeader: function (){
+       
+        var cmpToggle = Ext.getCmp(prototype.id + '-btnTS_HEADER');
 
+        var chk = false;
+        if (cmpToggle && cmpToggle.getEl()) {
+            var chkEl = cmpToggle.getEl().down('#chkHeader');
+            chk = chkEl ? chkEl.dom.checked : false;
+        }
+
+        if (chk) {
+            console.log("TOGGLE → EUR");
+            this.getDataRefreshHeader('EUR')
+
+        } else {
+            console.log("TOGGLE → USD");
+            this.getDataRefreshHeader('USD')
+        }
+//        return false;
+    
+    },
     //</editor-fold>
     
     hiddenGridColumns: function (){
@@ -1066,17 +1121,22 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
      ExportCSV: function () {
             console.log('Descargando CSV...');
 
-            const country = this.beanResult.SCOUNTRY; // Ejemplo: "CO"
-            const date = this.beanResult.VALDATE;       // Ejemplo: "20250731"
+            const country = this.beanResult.SCOUNTRY; 
+            const date = this.beanResult.VALDATE;       
+            const dateARC = this.beanResult.ADATE;       
+            const ccustR = this.beanResult.CCUST;       
+            const cycle = this.beanResult.DCYCLE.trim();     
+            const input = this.beanResult.TINPUT.trim();     
 
-            if (!country || !date) {
-                Ext.Msg.alert('Error', 'Faltan parámetros para la descarga (SCOUNTRY o ADATE).');
+            if (!country || !date || !ccustR || !cycle || !input) {
+                Ext.Msg.alert('Error', 'Faltan parámetros para la descarga.');
                 return;
             }
 
             // Enviamos los dos parámetros al backend
             const url = prototype.url + '/getCSV?country=' + encodeURIComponent(country)
-                                       + '&date=' + encodeURIComponent(date);
+                                       + '&date=' + encodeURIComponent(date) + '&ccustR=' + encodeURIComponent(ccustR)
+                + '&cycle=' + encodeURIComponent(cycle) + '&input=' + encodeURIComponent(input)+ '&dateARC=' + encodeURIComponent(dateARC);
 
             console.log('Solicitando:', url);
 

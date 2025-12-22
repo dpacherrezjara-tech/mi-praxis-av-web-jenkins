@@ -6384,7 +6384,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                             ]
                         },
 
-                        /////////////PAE+NEL MPF199/////////////////////
+                        /////////////PANEL MPF199/////////////////////
 
                         ////////////////////////////////////////////////
                         ////////////////////////////////////////////////////
@@ -6398,7 +6398,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                             bodyStyle: 'background: transparent;',
                             border: false,
 //                            height: 'auto',
-                            width: 1858,
+                            width: 1715,
                             height: 620,
 //                            scrollable: 'vertical',
 
@@ -6422,6 +6422,9 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                 },
 
                                 //FILTROS
+                                
+                                
+ 
                                 {
                                     xtype: 'container',
                                     layout: {
@@ -6435,311 +6438,415 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                 },
 
                                 {
-                                    xtype: 'grid',
-                                    id: prototype.id + '-gridDataMPF199',
-                                    width: 1834,
-                                    columnLines: true,
-                                    features: [{
-                                            ftype: 'summary'
-                                        }],
-                                    viewConfig: {
-                                        getRowClass: function (record) {
-                                            const colorPalette = [
-                                                'row-blue-light-1',
-                                                'row-blue-light-2'
-                                            ];
-                                            const id = record.get('groupColorId');
-                                            if (id !== '') {
-                                                return colorPalette[id % colorPalette.length];
-                                            }
-                                            return '';
-                                        }
-                                    },
-                                    columns: {
-                                        defaults: {
-                                            menuDisabled: true,
-                                            sortable: true,
-                                            align: 'center'
-                                        },
-                                        items: [
-                                            {
-                                                text: 'Status',
-                                                dataIndex: 'O_STVAL',
-                                                width: 90,
-                                                renderer: function (value, metaData) {
-                                                    metaData.style = "text-align:center;";
-
-                                                    switch (value) {
-
-                                                        case '3':
-                                                        case 3:
-                                                            return 'Pending';
-                                                        default:
-                                                            return 'Match'; // Si no coincide, muestra el valor original
+                                    xtype: 'container',
+                                    id: prototype.id + '-cardContainer', 
+                                    layout: 'card',
+                                    activeItem: 0, 
+                                    flex: 1, 
+                                    items: [
+                                        {
+                                            xtype: 'grid',
+                                            id: prototype.id + '-gridDataMPF199',
+                                            width: 1754,
+                                            columnLines: true,
+                                            features: [{
+                                                ftype: 'summary'
+                                            }],
+                                            viewConfig: {
+                                                getRowClass: function (record) {
+                                                    const colorPalette = [
+                                                        'row-blue-light-1',
+                                                        'row-blue-light-2'
+                                                    ];
+                                                    const id = record.get('groupColorId');
+                                                    if (id !== '') {
+                                                        return colorPalette[id % colorPalette.length];
                                                     }
+                                                    return '';
                                                 }
                                             },
-                                            {
-                                                text: 'Source',
-                                                dataIndex: 'O_TINPUT',
-                                                width: 80,
-                                                renderer: function (value, metaData) {
-                                                    metaData.style = "text-align:center;";
-                                                    if(value == 'B'){
-                                                        return 'BSP'
-                                                    }else if(value == 'I'){
-                                                        return 'ICCS'
-                                                    }else{
-                                                        return value
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                text: 'Value <br> Date',
-                                                dataIndex: 'O_ADATE',
-                                                width: 90,
-                                                renderer: function (value, metaData) {
-                                                    metaData.style = "text-align:center;";
-                                                    return value;
-                                                }
-                                            },
-                                            {
-                                                text: 'Days',
-                                                dataIndex: 'O_ADATE',
-                                                width: 50,
-                                                align: 'center',
-                                                renderer: function (value, metaData, record) {
-                                                    const adateStr = record.get('O_ADATE');
-                                                    const pdateStr = record.get('O_PDATE');
-                                                    if (!adateStr || adateStr.length !== 8)
-                                                        return '';
-                                                    const toDate = function (str) {
-                                                        if (!str || str.length !== 8)
-                                                            return null;
-                                                        const y = parseInt(str.substring(0, 4), 10);
-                                                        const m = parseInt(str.substring(4, 6), 10) - 1;
-                                                        const d = parseInt(str.substring(6, 8), 10);
-                                                        return new Date(y, m, d);
-                                                    };
-
-                                                    const dateA = toDate(adateStr);
-                                                    let dateP = toDate(pdateStr);
-                                                    if (!dateP || isNaN(dateP.getTime())) {
-                                                        dateP = new Date();
-                                                    }
-
-                                                    dateA.setHours(0, 0, 0, 0);
-                                                    dateP.setHours(0, 0, 0, 0);
-
-                                                    const diffMs = dateP - dateA;
-                                                    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-                                                    if (isNaN(diffDays))
-                                                        return '';
-
-                                                    return diffDays;
-                                                }
-                                            },
-                                            {
-                                                text: 'Concept',
-                                                dataIndex: 'O_CONCEPT',
-                                                width: 100,
-                                                renderer: function (value, metaData, record) {
-                                                    metaData.style = "text-align:center;";
-
-                                                    const concept = (record.get('O_CONCEPT') || '').trim();
-                                                    if (value === 'P') {
-                                                        value = 'Positive';
-                                                    } else if (value === 'N') {
-                                                        value = 'Negative';
-                                                    } else if (value === 'X') {
-                                                        value = 'No Billing';
-                                                    } else if (value === 'A') {
-                                                        value = 'Adjusment';
-                                                    } else if (value === 'M') {
-                                                        value = 'Automatic';
-                                                    } else if (value === 'C') {
-                                                        value = 'Compensantion';
-                                                    } else if (value === 'B') {
-                                                        value = 'Bank Charge';
-                                                    } else {
-                                                        value = '';
-                                                    }
-
-                                                    return value;
-                                                }
-                                            },
-
-                                            {
-                                                text: 'Type<br>Adjusment',
-                                                dataIndex: 'O_TADJ',
-                                                width: 130,
-                                                renderer: function (value, metaData, record) {
-                                                    metaData.style = "text-align:center;";
-
-                                                    const tadj = (record.get('O_TADJ') || '').trim();
-                                                    if (value === 'N') {
-                                                        value = 'Non Remittance';
-                                                    } else if (value === 'R') {
-                                                        value = 'Recovery';
-                                                    } else if (value === 'U') {
-                                                        value = 'Uncleared';
-                                                    } else if (value === 'E') {
-                                                        value = 'Excess';
-                                                    } else if (value === 'S') {
-                                                        value = 'Short';
-                                                    } else if (value === 'C') {
-                                                        value = 'Credit Note';
-                                                    } else if (value === 'D') {
-                                                        value = 'Debit Note';
-                                                    } else {
-                                                        value = 'Otros';
-                                                    }
-
-                                                    return value;
-                                                }
-                                            },
-
-                                            {
-                                                text: 'Agent',
-                                                dataIndex: 'O_SAGENT',
-                                                width: 80,
-                                                renderer: function (value, metaData) {
-                                                    metaData.style = "text-align:center;";
-                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                    metaData.unselectableAttr = "unselectable='off'";
-                                                    return value;
-                                                }
-                                            },
-                                            {
-                                                text: 'Consol.',
-                                                dataIndex: 'O_SCONSOL',
-                                                width: 80,
-                                                renderer: function (value, metaData) {
-                                                    metaData.style = "text-align:center;";
-                                                    return value;
-                                                }
-                                            },
-                                            {
-                                                text: 'Currency',
-                                                dataIndex: 'O_SCURRENCY',
-                                                width: 70,
-                                                renderer: function (value, metaData) {
-                                                    metaData.style = "text-align:center;";
-                                                    return value;
-                                                }
-                                            },
-                                            {
-                                                text: 'Neto',
-                                                dataIndex: 'O_NETO',
-                                                width: 115,
-                                                xtype: 'numbercolumn',
-                                                summaryType: 'sum', // 🔥 suma automático
-
-                                                renderer: function (value, metaData) {
-                                                    metaData.style = "text-align:right;";
-                                                    return Ext.util.Format.number(value, '0,000.00');
+                                            columns: {
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center'
                                                 },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataMPF199').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.O_SUM_NETO, '0,000.00') + '<b>';
-                                                }
-
-                                            },
-                                            {
-                                                text: 'Issued Payment',
-                                                dataIndex: 'O_PAYAMOU',
-                                                width: 115,
-                                                xtype: 'numbercolumn',
-                                                summaryType: 'sum', // 🔥 suma automático
-                                                renderer: function (value, metaData) {
-                                                    metaData.style = "text-align:right;";
-                                                    return Ext.util.Format.number(value, '0,000.00');
-                                                },
-                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    var data = Ext.getCmp(prototype.id + '-gridDataMPF199').getStore().getData().items[0].data;
-                                                    metaData.style = 'text-align:right; margin-right:3px ';
-                                                    return '<b>' + Ext.util.Format.number(data.O_SUM_PAYAMOU, '0,000.00') + '<b>';
-                                                }
-                                            },
-                                            {
-                                                text: 'Start <br> Date',
-                                                dataIndex: 'O_STRDATE',
-                                                width: 80,
-                                                renderer: function (value, metaData) {
-                                                    metaData.style = "text-align:center;";
-                                                    return value;
-                                                }
-                                            },
-                                            {
-                                                text: 'End <br> Date',
-                                                dataIndex: 'O_ENDDATE',
-                                                width: 80,
-                                                renderer: function (value, metaData) {
-                                                    metaData.style = "text-align:center;";
-                                                    return value;
-                                                }
-
-                                            },
-                                            
-
-                                            {
-                                                text: 'Reference / Comment',
-                                                dataIndex: 'O_REFERENCE',
-                                                width: 330,
-                                                renderer: function (value, metaData, record) {
-                                                    metaData.style = "text-align:center;";
-
-                                                    // Si O_REFERENCE es null, vacío o solo espacios → usar O_COMMENTS
-                                                    if (!value || value.trim() === '') {
-                                                        return record.get('O_COMMENTS') || '';
-                                                    }
-
-                                                    return value;
-                                                }
-                                            },
-                                            {
-                                                text: 'BANDOC',
-                                                dataIndex: 'O_BANDOC',
-                                                width: 100,
-                                                renderer: function (value, metaData) {
-                                                    metaData.style = "text-align:center;";
-                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                    metaData.unselectableAttr = "unselectable='off'";
-                                                    return value;
-                                                }
-                                            },
-                                            
-                                            {
-                                                text: 'Invoice',
-                                                dataIndex: 'O_INVOICE',
-                                                width: 170,
-                                                renderer: function (value, metaData) {
-                                                    metaData.style = "text-align:center;";
-                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                    metaData.unselectableAttr = "unselectable='off'";
-                                                    return value;
-                                                }
-                                            },
-
-                                            {
-                                                sortable: false,
-                                                xtype: 'actioncolumn',
-                                                width: 42,
-                                                text: 'Edit',
-                                                align: 'center',
                                                 items: [
                                                     {
-                                                        iconCls: 'prx-icon-edit',
-                                                        tooltip: 'Edit',
-                                                        handler: 'onEditClickMPF199'
+                                                        text: 'Status',
+                                                        dataIndex: 'O_STVAL',
+                                                        width: 60,
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            switch (value) {
+                                                                case '3':
+                                                                case 3:
+                                                                    return 'Pending';
+                                                                default:
+                                                                    return 'Match';
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Source',
+                                                        dataIndex: 'O_TINPUT',
+                                                        width: 60,
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            if(value == 'B'){
+                                                                return 'BSP'
+                                                            }else if(value == 'I'){
+                                                                return 'ICCS'
+                                                            }else{
+                                                                return value
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Value <br> Date',
+                                                        dataIndex: 'O_ADATE',
+                                                        width: 90,
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Days',
+                                                        dataIndex: 'O_ADATE',
+                                                        width: 45,
+                                                        align: 'center',
+                                                        renderer: function (value, metaData, record) {
+                                                            const adateStr = record.get('O_ADATE');
+                                                            const pdateStr = record.get('O_PDATE');
+                                                            if (!adateStr || adateStr.length !== 8)
+                                                                return '';
+                                                            const toDate = function (str) {
+                                                                if (!str || str.length !== 8)
+                                                                    return null;
+                                                                const y = parseInt(str.substring(0, 4), 10);
+                                                                const m = parseInt(str.substring(4, 6), 10) - 1;
+                                                                const d = parseInt(str.substring(6, 8), 10);
+                                                                return new Date(y, m, d);
+                                                            };
+
+                                                            const dateA = toDate(adateStr);
+                                                            let dateP = toDate(pdateStr);
+                                                            if (!dateP || isNaN(dateP.getTime())) {
+                                                                dateP = new Date();
+                                                            }
+
+                                                            dateA.setHours(0, 0, 0, 0);
+                                                            dateP.setHours(0, 0, 0, 0);
+
+                                                            const diffMs = dateP - dateA;
+                                                            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+                                                            if (isNaN(diffDays))
+                                                                return '';
+
+                                                            return diffDays;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Concept',
+                                                        dataIndex: 'O_CONCEPT',
+                                                        width: 80,
+                                                        renderer: function (value, metaData, record) {
+                                                            metaData.style = "text-align:center;";
+                                                            const concept = (record.get('O_CONCEPT') || '').trim();
+                                                            if (value === 'P') {
+                                                                value = 'Positive';
+                                                            } else if (value === 'N') {
+                                                                value = 'Negative';
+                                                            } else if (value === 'X') {
+                                                                value = 'No Billing';
+                                                            } else if (value === 'A') {
+                                                                value = 'Adjusment';
+                                                            } else if (value === 'M') {
+                                                                value = 'Automatic';
+                                                            } else if (value === 'C') {
+                                                                value = 'Compensantion';
+                                                            } else if (value === 'B') {
+                                                                value = 'Bank Charge';
+                                                            } else {
+                                                                value = '';
+                                                            }
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Type<br>Adjusment',
+                                                        dataIndex: 'O_TADJ',
+                                                        width: 100,
+                                                        renderer: function (value, metaData, record) {
+                                                            metaData.style = "text-align:center;";
+                                                            const tadj = (record.get('O_TADJ') || '').trim();
+                                                            if (value === 'N') {
+                                                                value = 'Non Remittance';
+                                                            } else if (value === 'R') {
+                                                                value = 'Recovery';
+                                                            } else if (value === 'U') {
+                                                                value = 'Uncleared';
+                                                            } else if (value === 'E') {
+                                                                value = 'Excess';
+                                                            } else if (value === 'S') {
+                                                                value = 'Short';
+                                                            } else if (value === 'C') {
+                                                                value = 'Credit Note';
+                                                            } else if (value === 'D') {
+                                                                value = 'Debit Note';
+                                                            } else {
+                                                                value = 'Otros';
+                                                            }
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Agent',
+                                                        dataIndex: 'O_SAGENT',
+                                                        width: 70,
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            metaData.unselectableAttr = "unselectable='off'";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Consol',
+                                                        dataIndex: 'O_SCONSOL',
+                                                        width: 80,
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Country',
+                                                        dataIndex: 'O_SCOUNTRY',
+                                                        width: 60,
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Currency',
+                                                        dataIndex: 'O_SCURRENCY',
+                                                        width: 65,
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Neto',
+                                                        dataIndex: 'O_NETO',
+                                                        width: 110,
+                                                        xtype: 'numbercolumn',
+                                                        summaryType: 'sum', 
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:right;";
+                                                            return Ext.util.Format.number(value, '0,000.00');
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var grid = Ext.getCmp(prototype.id + '-gridDataMPF199');
+                                                            if (!grid || !grid.getStore() || grid.getStore().getCount() === 0) return '';
+
+                                                            var data = grid.getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.O_SUM_NETO, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Issued Payment',
+                                                        dataIndex: 'O_PAYAMOU',
+                                                        width: 110,
+                                                        xtype: 'numbercolumn',
+                                                        summaryType: 'sum',
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:right;";
+                                                            return Ext.util.Format.number(value, '0,000.00');
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                             var grid = Ext.getCmp(prototype.id + '-gridDataMPF199');
+                                                            if (!grid || !grid.getStore() || grid.getStore().getCount() === 0) return '';
+
+                                                            var data = grid.getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.O_SUM_PAYAMOU, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Start <br> Date',
+                                                        dataIndex: 'O_STRDATE',
+                                                        width: 80,
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'End <br> Date',
+                                                        dataIndex: 'O_ENDDATE',
+                                                        width: 80,
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Reference / Comment',
+                                                        dataIndex: 'O_REFERENCE',
+                                                        width: 300,
+                                                        renderer: function (value, metaData, record) {
+                                                            metaData.style = "text-align:center;";
+                                                            if (!value || value.trim() === '') {
+                                                                return record.get('O_COMMENTS') || '';
+                                                            }
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'BANDOC',
+                                                        dataIndex: 'O_BANDOC',
+                                                        width: 90,
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            metaData.unselectableAttr = "unselectable='off'";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Invoice',
+                                                        dataIndex: 'O_INVOICE',
+                                                        width: 170,
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            metaData.unselectableAttr = "unselectable='off'";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        sortable: false,
+                                                        xtype: 'actioncolumn',
+                                                        width: 42,
+                                                        text: 'Edit',
+                                                        align: 'center',
+                                                        items: [
+                                                            {
+                                                                iconCls: 'prx-icon-edit',
+                                                                tooltip: 'Edit',
+                                                                handler: 'onEditClickMPF199'
+                                                            }
+                                                        ]
                                                     }
                                                 ]
                                             }
+                                        },
 
-                                        ]
+                                        {
+                                            xtype: 'grid',
+                                            id: prototype.id + '-gridDataMPF199COMIS', 
+                                            width: 1754,
+                                            columnLines: true,
+                                            features: [{
+                                                ftype: 'summary'
+                                            }],
+                                            columns: {
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: true,
+                                                    align: 'center'
+                                                },
+                                                items: [
+                                                    {
+                                                        text: 'Source',
+                                                        dataIndex: 'TINPUT',
+                                                        width: 150, // Ancho fijo generoso
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            if (value == 'B') return 'BSP';
+                                                            else if (value == 'I') return 'ICCS';
+                                                            else if (value == 'A') return 'ARC';
+                                                            else return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Date <br> Process',
+                                                        dataIndex: 'PRDA',
+                                                        width: 180, 
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Concept',
+                                                        dataIndex: 'CONCEPT',
+                                                        flex: 1, 
+                                                        renderer: function (value, metaData, record) {
+                                                            metaData.style = "text-align:center;";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Country',
+                                                        dataIndex: 'SCOUNTRY',
+                                                        width: 120,
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    
+                                                    {
+                                                        text: 'Currency',
+                                                        dataIndex: 'SCURRENCY',
+                                                        width: 120,
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    
+                                                    {
+                                                        text: 'Neto',
+                                                        dataIndex: 'IMPORTEN',
+                                                        width: 200,
+                                                        xtype: 'numbercolumn',
+                                                        summaryType: 'sum',
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:right;";
+                                                            return Ext.util.Format.number(value, '0,000.00');
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var grid = Ext.getCmp(prototype.id + '-gridDataMPF199COMIS');
+                                                            if (!grid || !grid.getStore() || grid.getStore().getCount() === 0) return '';
 
-                                    }
+                                                            var data = grid.getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.SUM_NETO || 0, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Bandoc',
+                                                        dataIndex: 'BANDOC',
+                                                        width: 120, 
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    
+                                                    
+                                                
+                                                ]
+                                            }
+                                        }
+                                    ]
                                 }
                             ]
                         },

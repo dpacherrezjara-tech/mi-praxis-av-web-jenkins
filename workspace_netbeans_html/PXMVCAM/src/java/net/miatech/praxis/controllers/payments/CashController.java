@@ -332,8 +332,8 @@ public class CashController extends BaseController {
 
             // ======== CABECERA ===========
             String[] columnas = {
-                "Nbr.", "Ticket", "Status", "Source", "Type", "Sales Date",
-                "Country", "Agent", "Transaction", "Days Pending", "Currency", "Amount"
+                "Nbr.", "Ticket", "Status", "Source", "Type", "Form Payment","Sales Date",
+                "Country", "Agent", "Transaction", "Days Pending", "Currency", "SVFOP", "SVFOPNETR"
             };
 
             int rowIndex = 0;
@@ -355,6 +355,7 @@ public class CashController extends BaseController {
                 row.createCell(c++).setCellValue(bean.STVAL);
                 row.createCell(c++).setCellValue(bean.CFUENTE);
                 row.createCell(c++).setCellValue(bean.TDOC);
+                row.createCell(c++).setCellValue(bean.SPAYMENT);
                 row.createCell(c++).setCellValue(bean.SDATE);
                 row.createCell(c++).setCellValue(bean.SCOUNTRY);
                 row.createCell(c++).setCellValue(bean.SAGENT);
@@ -362,6 +363,7 @@ public class CashController extends BaseController {
                 row.createCell(c++).setCellValue(bean.DIFFDAYS);
                 row.createCell(c++).setCellValue(bean.SCURRENCY);
                 row.createCell(c++).setCellValue(bean.SVFOP);
+                row.createCell(c++).setCellValue(bean.SVFOPNETR);
 
                 // aplicar estilo sin crear objetos nuevos
                 for (int i = 0; i < columnas.length; i++) {
@@ -428,7 +430,7 @@ public class CashController extends BaseController {
             int rowIndex = 0;
 
             String[] columnas = {
-                "Nbr.", "Ticket", "Status", "Source", "Type", "Sales Date",
+                "Nbr.", "Ticket", "Status", "Source", "Type", "Form Payment","Sales Date",
                 "Country", "Agent", "Transaction", "Days Pending", "Currency", "Amount"
             };
 
@@ -449,6 +451,7 @@ public class CashController extends BaseController {
                 row.createCell(c++).setCellValue(bean.STVAL);
                 row.createCell(c++).setCellValue(bean.CFUENTE);
                 row.createCell(c++).setCellValue(bean.TDOC);
+                row.createCell(c++).setCellValue(bean.SPAYMENT);
                 row.createCell(c++).setCellValue(bean.SDATE);
                 row.createCell(c++).setCellValue(bean.SCOUNTRY);
                 row.createCell(c++).setCellValue(bean.SAGENT);
@@ -897,7 +900,7 @@ public class CashController extends BaseController {
             int rowIndex = 0;
 
             String[] columnas = {
-                "Nbr.", "Ticket", "Status", "Source", "Type", "Sales Date",
+                "Nbr.", "Ticket", "Status", "Source", "Type", "Form Payment","Sales Date",
                 "Country", "Agent", "Transaction", "Days Pending", "Currency", "Amount"
             };
 
@@ -918,6 +921,7 @@ public class CashController extends BaseController {
                 row.createCell(c++).setCellValue(bean.STVAL);
                 row.createCell(c++).setCellValue(bean.CFUENTE);
                 row.createCell(c++).setCellValue(bean.TDOC);
+                row.createCell(c++).setCellValue(bean.SPAYMENT);
                 row.createCell(c++).setCellValue(bean.SDATE);
                 row.createCell(c++).setCellValue(bean.SCOUNTRY);
                 row.createCell(c++).setCellValue(bean.SAGENT);

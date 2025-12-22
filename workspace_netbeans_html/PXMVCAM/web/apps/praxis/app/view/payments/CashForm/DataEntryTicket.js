@@ -174,9 +174,19 @@ Ext.define('Ext.Praxis.view.payments.CashForm.DataEntryTicket', {
                             items: [
                                 {
                                     xtype: 'textfield',
-                                    fieldLabel: 'Amount',
+                                    fieldLabel: 'Currency',
                                     width: 260,
                                     labelWidth: 120,
+                                    readOnly: true,
+                                    id: prototype.id + '-currency',
+                                    fieldStyle: 'text-align:center;'
+                                },
+                                {xtype: 'tbspacer', width: 25},
+                                {
+                                    xtype: 'textfield',
+                                    fieldLabel: 'SVFOP',
+                                    width: 260,
+                                    labelWidth: 130,
                                     readOnly: true,
                                     id: prototype.id + '-svfop',
                                     fieldStyle: 'text-align:center;'
@@ -184,19 +194,13 @@ Ext.define('Ext.Praxis.view.payments.CashForm.DataEntryTicket', {
                                 {xtype: 'tbspacer', width: 25},
                                 {
                                     xtype: 'textfield',
-                                    fieldLabel: 'Currency',
+                                    fieldLabel: 'SVFOPNETR',
                                     width: 260,
-                                    labelWidth: 130,
+                                    labelWidth: 110,
                                     readOnly: true,
-                                    id: prototype.id + '-currency',
+                                    id: prototype.id + '-svfopnetr',
                                     fieldStyle: 'text-align:center;'
                                 },
-                                {xtype: 'tbspacer', width: 25},
-                                {
-                                    xtype: 'label',
-                                    text: '',
-                                    width: 0
-                                }
                             ]
                         },
                         {

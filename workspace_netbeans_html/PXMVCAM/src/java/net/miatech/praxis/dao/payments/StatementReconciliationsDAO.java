@@ -1661,17 +1661,17 @@ public class StatementReconciliationsDAO {
                     } else {
                         beanTkt.STVAL = rst.getString("STVAL").trim();
                     }
-                    beanTkt.F_SCOUNTRY = rst.getString("SCOUNTRY").trim();
-                    beanTkt.F_TDOC = rst.getString("TDOC").trim();
-                    beanTkt.F_ADATE = rst.getString("ADATE").trim();
-                    beanTkt.F_SCURRENCY = rst.getString("SCURRENCY").trim();  
-                    beanTkt.F_MERCHAND = rst.getString("MERCHAND").trim();  
-                    beanTkt.F_BANDOC = rst.getString("BANDOC").trim();  
-                    beanTkt.F_NETO = rst.getDouble("NETO");
-                    beanTkt.F_NETOC = rst.getDouble("NETOC");
-                    beanTkt.F_CODPRO = rst.getString("CODPRO");
-                    beanTkt.F_CCUSTPRO = rst.getString("CCUSTPRO");
-                    beanTkt.F_FREGLA = rst.getString("FREGLA");
+                    beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
+                    beanTkt.TDOC = rst.getString("TDOC").trim();
+                    beanTkt.ADATE = rst.getString("ADATE").trim();
+                    beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();  
+                    beanTkt.MERCHAND = rst.getString("MERCHAND").trim();  
+                    beanTkt.BANDOC = rst.getString("BANDOC").trim();  
+                    beanTkt.NETO = rst.getDouble("NETO");
+                    beanTkt.NETOC = rst.getDouble("NETOC");
+                    beanTkt.CODPRO = rst.getString("CODPRO");
+                    beanTkt.CCUSTPRO = rst.getString("CCUSTPRO");
+                    beanTkt.FREGLA = rst.getString("FREGLA");
 
 
                     
@@ -2790,12 +2790,12 @@ public class StatementReconciliationsDAO {
         hmDescEstados.put("1", "Match");
         hmDescEstados.put("5", "Match Manual");
 
-        String VALDATEL = "", MERCHANDL = "", BANDOCL = "", SCURRENCYL = "", ACCNUMBER = "", COREPL = "";
+        String ADATEL = "", TINPUT = "", BANDOCL = "", SCURRENCYL = "", ACCNUMBER = "", DCYCLE = "";
         Double NETOL = 0.0;
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL PRAXISMP.MPS399(?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.MPS399(?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -2808,19 +2808,23 @@ public class StatementReconciliationsDAO {
             cstmt.setString(4, filter.IN_STVAL.trim());
             cstmt.setString(5, filter.IN_DATECI.trim());
             cstmt.setString(6, filter.IN_TRANCI.trim());
+            cstmt.setString(7, filter.IN_CONSULTA.trim());
+            cstmt.setString(8, filter.IN_SCURRENCY.trim());
             
             cstmt.execute();
 
             rst = cstmt.getResultSet();
 
             while (rst.next()) {
-//                VALDATEL = rst.getString("VALDATE").trim();
+                ADATEL = rst.getString("ADATE").trim();
 //                MERCHANDL = rst.getString("MERCHAND").trim();
-//                BANDOCL = rst.getString("BANDOC").trim();
-//                SCURRENCYL = rst.getString("SCURRENCY").trim();
-//                ACCNUMBER = rst.getString("ACCNUMBER").trim();
+                BANDOCL = rst.getString("BANDOC").trim();
+                SCURRENCYL = rst.getString("SCURRENCY").trim();
+                ACCNUMBER = rst.getString("ACCNUMBER").trim();
+                DCYCLE = rst.getString("DCYCLE").trim();
+                TINPUT = rst.getString("TINPUT").trim();
 //                COREPL = rst.getString("COREP").trim();
-//                NETOL = rst.getDouble("NETO");
+                NETOL = rst.getDouble("NETO");
             }
             rst.close();
 
@@ -2878,6 +2882,12 @@ public class StatementReconciliationsDAO {
                     beanTkt.CLAVE3 = rst.getString("CLAVE3").trim();
                     beanTkt.ACCNUMBER = rst.getString("ACCCOMP").trim();
                     beanTkt.ACCNUMBERL = ACCNUMBER;
+                    beanTkt.SCURRENCYL = SCURRENCYL;
+                    beanTkt.BANDOCL = BANDOCL;
+                    beanTkt.ADATEL = ADATEL;
+                    beanTkt.NETOL = NETOL;
+                    beanTkt.DCYCLE = DCYCLE;
+                    beanTkt.TINPUT = TINPUT;
                     beanTkt.SDATE = rst.getString("SDATE").trim();
 
                     beanTkt.USCR = rst.getString("USCR").trim();
@@ -3791,6 +3801,7 @@ public class StatementReconciliationsDAO {
                 beanTkt.COMMENTS = rst.getString("COMMENTS");
                 beanTkt.CBATCH = rst.getString("CBATCH");
                 beanTkt.FECR = rst.getString("FECR");
+                beanTkt.DPERIOD = rst.getString("DPERIOD");
                 
                 lstTkts.add(beanTkt);
             }
@@ -4818,10 +4829,10 @@ public class StatementReconciliationsDAO {
     long lngTotQTMATCH = 0, lngTotQTMANUAL = 0, lngTotQTPEND = 0, lngTotTOTALL = 0, lngTotQSALESDIRECT = 0;
 
     // Ajuste fechas
-    filter.strYearFrom = Functions.fillZeros(4, filter.strYearFrom).replace("00", "");
-    filter.strMonthFrom = Functions.fillZeros(2, filter.strMonthFrom).replace("00", "");
-    filter.strYearTo = Functions.fillZeros(4, filter.strYearTo).replace("00", "");
-    filter.strMonthTo = Functions.fillZeros(2, filter.strMonthTo).replace("00", "");
+//    filter.strYearFrom = Functions.fillZeros(4, filter.strYearFrom).replace("00", "");
+//    filter.strMonthFrom = Functions.fillZeros(2, filter.strMonthFrom).replace("00", "");
+//    filter.strYearTo = Functions.fillZeros(4, filter.strYearTo).replace("00", "");
+//    filter.strMonthTo = Functions.fillZeros(2, filter.strMonthTo).replace("00", "");
 
     String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS398(?,?,?,?,?,?,?,?,?)}";
 
@@ -4839,8 +4850,8 @@ public class StatementReconciliationsDAO {
             cstmt.registerOutParameter(9, Types.INTEGER);
 
         cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-        cstmt.setString(2, filter.strYearFrom + filter.strMonthFrom);
-        cstmt.setString(3, filter.strYearTo + filter.strMonthTo);
+        cstmt.setString(2, filter.IN_FECHA_FROM.trim());
+        cstmt.setString(3, filter.IN_FECHA_TO.trim());
         cstmt.setString(4, filter.IN_COUNTRY.trim());
         cstmt.setString(5, filter.IN_SOURCE.trim());
             cstmt.setInt(6, filter.page.PAGNUM);

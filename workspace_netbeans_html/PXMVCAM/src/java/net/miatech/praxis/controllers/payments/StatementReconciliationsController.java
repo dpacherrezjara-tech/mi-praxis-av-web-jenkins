@@ -4631,9 +4631,13 @@ public class StatementReconciliationsController extends BaseController {
     @RequestMapping(value = "getCSV")
     public @ResponseBody void getCSV(HttpServletRequest request, HttpServletResponse response) throws Exception {
         System.out.println("Report : getCSV");
-
+        String rutaFolder = "";
         String country = request.getParameter("country");
         String date = request.getParameter("date");
+        String ccustR = request.getParameter("ccustR");
+        String cycle = request.getParameter("cycle");
+        String input = request.getParameter("input");
+        String dateARC = request.getParameter("dateARC");
 
         if (country == null || date == null || country.isEmpty() || date.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -4655,9 +4659,19 @@ public class StatementReconciliationsController extends BaseController {
         }
 
         System.out.println("esta es mi ruta" + ruta);
-
+        if(input.equals("B")){
+            rutaFolder = "\\\\10.0.0.87\\av\\Efectivo\\"+rutaCarpeta+"\\process\\BSP\\"+country+"\\2025";
+        }else if(input.equals("I")){
+            rutaFolder = "\\\\10.0.0.87\\av\\Efectivo\\"+rutaCarpeta+"\\process\\ICCS\\2025\\"+ccustR;
+        }else if(input.equals("A")){
+            rutaFolder = "\\\\10.0.0.87\\av\\Efectivo\\"+rutaCarpeta+"\\process\\ARC\\"+country+"\\2025";
+        }else{
+            rutaFolder = "";
+        }
+        
         // Carpeta base donde buscar los archivos CSV
-        Path folderPath = Paths.get("\\\\10.0.0.87\\av\\Efectivo\\"+rutaCarpeta+"\\process\\BSP\\"+country+"\\2025");
+//        Path folderPath = Paths.get("\\\\10.0.0.87\\av\\Efectivo\\"+rutaCarpeta+"\\process\\BSP\\"+country+"\\2025");
+        Path folderPath = Paths.get(rutaFolder);
 
         System.out.println("Buscando archivos para country=" + country + " y date=" + date);
 
@@ -4666,10 +4680,18 @@ public class StatementReconciliationsController extends BaseController {
             Path matchedFile = null;
             for (Path path : stream) {
                 String fileName = path.getFileName().toString();
-                if (fileName.startsWith(country) && fileName.contains(date)) {
-                    matchedFile = path;
-                    break;
+                if(input.equals("B")){
+                    if (fileName.startsWith(country) && fileName.contains(date)) {
+                        matchedFile = path;
+                        break;
+                    }
+                }else if(input.equals("I")){
+                    if (fileName.contains(cycle)) {
+                        matchedFile = path;
+                        break;
+                    }
                 }
+                
             }
 
             if (matchedFile == null) {

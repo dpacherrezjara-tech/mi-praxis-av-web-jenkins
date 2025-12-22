@@ -1620,7 +1620,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                         {
                                                                             xtype: 'grid',
                                                                             id: prototype.id + '-gridDataInfoScanICCS',
-                                                                            width: 1220,
+                                                                            width: 1276,
                                                                             height: 250,
                                                                             columnLines: true,
                                                                             plugins: [
@@ -1699,7 +1699,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                                         dataIndex: 'DESC_SCOUNTRY',
                                                                                         width: 120,
                                                                                         renderer: function (value, metaData) {
-                                                                                            metaData.style = "text-align:center;";
+                                                                                            metaData.style = "text-align:left;";
                                                                                             if (!value)
                                                                                                 return '';
                                                                                             value = value.toLowerCase();
@@ -1716,7 +1716,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                                             let valueFinal = ''
                                                                                             metaData.style = "text-align:center;";
                                                                                             if (data.TINPUT == 'I') {
-                                                                                                valueFinal = data.SCONSOL_TABLE.trim()
+                                                                                                valueFinal = data.SCONSOL_TABLE
                                                                                             } else if (data.TINPUT == 'B') {
                                                                                                 valueFinal = value
                                                                                             } else {

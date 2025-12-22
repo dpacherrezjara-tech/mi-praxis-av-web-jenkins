@@ -5451,6 +5451,57 @@ public class BankReconciliationController extends BaseController {
             return lst;
         }
     
+    // LISTA MPF223 (AJUSTES)
+    
+    @RequestMapping(value = "searchListMPF223")
+    public @ResponseBody
+    String searchListMPF223(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- bankreconci :searchListMPF223-------------");
+        map.put("success", true);
+        List<A2290Filter> lst = this.getListMPF223(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+    
+    public List<A2290Filter> getListMPF223(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2290Filter> lst = new ArrayList<>(0);
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+                if (!bExcel) {
+                    filter.page.PAGROW = 20;
+                    start = (start != 0 ? start : 0);
+                    filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+                } else {
+                    filter.page.PAGROW = -1;
+                    filter.page.PAGNUM = 1;
+                }
+
+                lst = logic.loadLISTAR_MPF223(filter);
+            } catch (Exception e) {
+                throw new SpringException(e);
+            }
+            return lst;
+        }
+    
+    
     ///
     
     ////UPDATE DATAENTRYMPF199
@@ -5529,6 +5580,104 @@ public class BankReconciliationController extends BaseController {
         return new Gson().toJson(map);
     }
     
+    @RequestMapping(value = "MaintenanceMPF199insertArgentina")
+    public @ResponseBody
+    String MaintenanceMPF199insertArgentina(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- BANKRECONCILIATIONDATAENTRY : MaintenanceMPF199insertArgentina-------------");
+//        String option;
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String msj = "";
+        String beanString = "";
+
+        try {
+
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            
+            
+            msj = logic.MPF199InsertArgentina(filter);
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        }  catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+
+        return new Gson().toJson(map);
+    }
+    
+    @RequestMapping(value = "MaintenanceMPF199insertIndia")
+    public @ResponseBody
+    String MaintenanceMPF199insertIndia(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- BANKRECONCILIATIONDATAENTRY : MaintenanceMPF199insertIndia-------------");
+//        String option;
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String msj = "";
+        String beanString = "";
+
+        try {
+
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            msj = logic.MPF199UpdateIndia(filter);
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+        }  catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage()); 
+        }
+
+        return new Gson().toJson(map);
+    }
+    
+    @RequestMapping(value = "conciliacionFaseDos")
+    public @ResponseBody
+    String conciliacionFaseDos(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- BANKRECONCILIATION : conciliacionFaseDos-------------");
+
+        String msj = "";
+        Gson gson = new Gson();
+
+        try {
+
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            msj = logic.processFaseDosConciliation(); 
+
+            // 2. Respuesta de éxito
+            map.put("success", true);
+            map.put("Mensaje", msj);
+
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage()); 
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+
+        return gson.toJson(map);
+    }
     
     
     
@@ -5815,20 +5964,23 @@ public class BankReconciliationController extends BaseController {
         return new Gson().toJson(map);
     }
 
-    
-    @RequestMapping(value = "getCSV")
-    public @ResponseBody void getCSV(HttpServletRequest request, HttpServletResponse response) throws Exception {
+//ELEGIR DESCARGA DE INSUMO SEGUN FUENTE   
+        @RequestMapping(value = "getCSV")
+        public @ResponseBody void getCSV(HttpServletRequest request, HttpServletResponse response) throws Exception {
         System.out.println("Report : getCSV");
 
         String country = request.getParameter("country");
         String date = request.getParameter("date");
+        String fuente = request.getParameter("fuente");
+        String dateArc = request.getParameter("dateArc");
+        String ccust = request.getParameter("ccust");
+        String cycle = request.getParameter("cycle");
 
         if (country == null || date == null || country.isEmpty() || date.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().write("Parámetros 'country' y 'date' son obligatorios");
             return;
         }
-        
 
         String ruta = this.serverSession.propertySession.get("DB_SERVER_DEFAULT_TYPE").toString();
         String rutaCarpeta;
@@ -5840,58 +5992,108 @@ public class BankReconciliationController extends BaseController {
         } else if ("PRO".equals(ruta)) {
             rutaCarpeta = "prod";
         } else {
-            rutaCarpeta = ""; 
+            rutaCarpeta = "";
         }
 
-        System.out.println("esta es mi ruta" + ruta);
+        System.out.println("esta es mi ruta " + ruta);
 
-        // Carpeta base donde buscar los archivos CSV
-        Path folderPath = Paths.get("\\\\10.0.0.87\\av\\Efectivo\\"+rutaCarpeta+"\\process\\BSP\\"+country+"\\2025");
+        // Determinar carpeta y extensión según fuente
+        String carpetaInsumo = "";
+        String extension = "";
+        String rutaFolder = "";
+        if ("A".equals(fuente)) {
+            carpetaInsumo = "ARC-IMG";
+            extension = "*.png";
+        } else if("B".equals(fuente)) {
+            carpetaInsumo = "BSP";
+            extension = "*.csv";
+        } else if("I".equals(fuente)) {
+            carpetaInsumo = "ICCS";
+            extension = "*.csv";
+        }
+        
+        if (fuente.equals("I")){
+            rutaFolder = "\\\\10.0.0.87\\av\\Efectivo\\"
+                + rutaCarpeta + "\\process\\"
+                + carpetaInsumo + "\\2025\\"
+                + ccust ;
 
-        System.out.println("Buscando archivos para country=" + country + " y date=" + date);
+        }else{
+            rutaFolder = "\\\\10.0.0.87\\av\\Efectivo\\"
+                + rutaCarpeta + "\\process\\"
+                + carpetaInsumo + "\\"
+                + country + "\\2025";
+        }
+        Path folderPath = Paths.get(rutaFolder);
 
-        // Buscar el archivo que cumpla con el patrón: "CO*20250731*.csv"
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(folderPath, "*.csv")) {
-            Path matchedFile = null;
+        System.out.println("Buscando archivos en: " + folderPath);
+
+        Path matchedFile = null;
+
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(folderPath, extension)) {
+
             for (Path path : stream) {
                 String fileName = path.getFileName().toString();
-                if (fileName.startsWith(country) && fileName.contains(date)) {
-                    matchedFile = path;
-                    break;
+
+                if ("B".equals(fuente)) {
+                    // BSP: CO*20250731*.csv
+                    if (fileName.startsWith(country) && fileName.contains(date)) {
+                        matchedFile = path;
+                        break;
+                    }
+                } else if ("A".equals(fuente)) {
+                    // ARC: 202_ARC8000227120250803_LOADED.png
+                    if (fileName.startsWith(ccust) && fileName.contains(dateArc)) {
+                        matchedFile = path;
+                        break;
+                    }
+                }   else if ("I".equals(fuente)) {
+                    // ARC: 202_ARC8000227120250803_LOADED.png
+                    if (fileName.startsWith(cycle) ) {
+                        matchedFile = path;
+                        break;
+                    }
                 }
             }
 
-            if (matchedFile == null) {
-                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                response.getWriter().write("No se encontró ningún archivo para " + country + " y fecha " + date);
-                return;
-            }
-
-            System.out.println("Archivo encontrado: " + matchedFile);
-
-            // Configurar cabeceras
-            response.setContentType("text/csv");
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + matchedFile.getFileName().toString() + "\"");
-
-            try (FileInputStream fis = new FileInputStream(matchedFile.toFile());
-                 OutputStream out = response.getOutputStream()) {
-
-                byte[] buffer = new byte[4096];
-                int bytesRead;
-
-                while ((bytesRead = fis.read(buffer)) != -1) {
-                    out.write(buffer, 0, bytesRead);
-                }
-
-                out.flush();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("Error al buscar o descargar el archivo CSV");
+            response.getWriter().write("Error al acceder a la carpeta de archivos");
+            return;
+        }
+
+        if (matchedFile == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.getWriter().write("No se encontró archivo para los parámetros enviados");
+            return;
+        }
+
+        System.out.println("Archivo encontrado: " + matchedFile);
+
+        // Content type correcto
+        if ("A".equals(fuente)) {
+            response.setContentType("image/png"); // ARC TXT
+        } else {
+            response.setContentType("text/csv");   // BSP CSV
+        }
+
+        response.setHeader("Content-Disposition",
+                "attachment; filename=\"" + matchedFile.getFileName().toString() + "\"");
+
+        try (FileInputStream fis = new FileInputStream(matchedFile.toFile()); OutputStream out = response.getOutputStream()) {
+
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+
+            while ((bytesRead = fis.read(buffer)) != -1) {
+                out.write(buffer, 0, bytesRead);
+            }
+
+            out.flush();
         }
     }
-    
+
     
     //EXCEL DE MPF199
     

@@ -1412,6 +1412,52 @@ public class MasterDAO {
 
     }
     
+     public List<A2280> lstsCfuenteCash() throws Exception {
+
+        Statement stmt = null;
+        ResultSet rst = null;
+        String strSQL = "";
+        List<A2280> listaFuenteAgentes = new ArrayList<>();
+        A2280 tarjetas;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS448(?)}";
+        
+        try {
+
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cs = cnx.prepareCall(SQLCLL01);
+
+            cs.setString(1, session.getUserView().getCustomerInfo().CCUST);
+
+            cs.execute();
+
+            rst = cs.getResultSet();
+            
+            tarjetas = new A2280();
+            tarjetas.CODE = "";
+            tarjetas.NAME = "All";
+            listaFuenteAgentes.add(tarjetas);
+
+            while (rst.next()) {
+
+                tarjetas = new A2280();
+                tarjetas.CODE = rst.getString("CFUENTE").trim();
+                tarjetas.NAME = tarjetas.CODE;
+
+                listaFuenteAgentes.add(tarjetas);
+                
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            setClose();
+        }
+
+        return listaFuenteAgentes;
+
+    }
+    
     public List<A2280> loadCanalAgent() throws Exception {
 
         Statement stmt = null;

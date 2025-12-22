@@ -1,39 +1,30 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 Ext.define('Ext.Praxis.controller.payments.BSPFileDownload.BSPFileDownloadController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.BSPFileDownloadController',
     fecha: new Date(),
-    childs: '5',
     bean: '',
-    beanHistoric: '',
     paginActual: '',
     drillDown: [],
     lstCountry: [],
-    gridActual: '',
     panelActual: '',
     fileName: '',
-    society: '',
-    month:'',
     me: '',
     searchParams: {},
-    searchParamsHistoric: {},
     paramsDetail: {},
     paramsObtainData: {},
-    dataObtain: {},
     init: function (view) {
         me = this;
         prototype.id = 'BSPFileDownloadForm';
         prototype.url = CONTEXTPATH + '/BSPFileDownload';
         this.childs = Ext.getCmp(prototype.id + '-panelMain').items.items;
         me.panelActual = '-panelGridDataDetail';
+        prototypeProgram.view = 'payments-BSP-file-download';
+        prototypeProgram.nprog = 'PX00001032';
+        prototypeProgram.title = 'Downloaded Cash Files';
+        prototypeProgram.modulo = '';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
+        // <editor-fold defaultstate="collapsed" desc="Eventos Genericos">
         this.control({
-//            //   -------------------Eventos Genericos --------------------
             '#BSPFileDownloadForm-xpanel': {
                 afterrender: this.xpanel_afterrender
             },
@@ -87,6 +78,7 @@ Ext.define('Ext.Praxis.controller.payments.BSPFileDownload.BSPFileDownloadContro
                 select: this.selectComboToDay
             }
         });
+        // </editor-fold>
     },
     xpanel_afterrender: function () {
         me.obtainData();
@@ -123,21 +115,21 @@ Ext.define('Ext.Praxis.controller.payments.BSPFileDownload.BSPFileDownloadContro
         Ext.getCmp(prototype.id + '-cmbDateFromDay').setValue("");
         Ext.getCmp(prototype.id + '-cmbDateToDay').setValue("");
         
-        Ext.getCmp(prototype.id + '-cmbDateUploadFromYear').bindStore(win.getStoreYear(true));
-        Ext.getCmp(prototype.id + '-cmbDateUploadToYear').bindStore(win.getStoreYear(true));
-        Ext.getCmp(prototype.id + '-cmbDateUploadFromMonth').bindStore(win.getStoreMonth(true));
-        Ext.getCmp(prototype.id + '-cmbDateUploadToMonth').bindStore(win.getStoreMonth(true));
-        Ext.getCmp(prototype.id + '-cmbDateUploadFromDay').bindStore(win.getStoreDays(true));
-        Ext.getCmp(prototype.id + '-cmbDateUploadToDay').bindStore(win.getStoreDays(true));
-        
-        Ext.getCmp(prototype.id + '-cmbDateUploadFromYear').setValue("");
-        Ext.getCmp(prototype.id + '-cmbDateUploadToYear').setValue("");
+        Ext.getCmp(prototype.id + '-cmbDateFromYearARC').bindStore(win.getStoreYear(true));
+        Ext.getCmp(prototype.id + '-cmbDateToYearARC').bindStore(win.getStoreYear(true));
+        Ext.getCmp(prototype.id + '-cmbDateFromMonthARC').bindStore(win.getStoreMonth(true));
+        Ext.getCmp(prototype.id + '-cmbDateToMonthARC').bindStore(win.getStoreMonth(true));
+        Ext.getCmp(prototype.id + '-cmbDateFromDayARC').bindStore(win.getStoreDays(true));
+        Ext.getCmp(prototype.id + '-cmbDateToDayARC').bindStore(win.getStoreDays(true));
 
-        Ext.getCmp(prototype.id + '-cmbDateUploadFromMonth').setValue(""); 
-        Ext.getCmp(prototype.id + '-cmbDateUploadToMonth').setValue(""); 
+        Ext.getCmp(prototype.id + '-cmbDateFromYearARC').setValue(yearDesde);
+        Ext.getCmp(prototype.id + '-cmbDateToYearARC').setValue(yearActual);
 
-        Ext.getCmp(prototype.id + '-cmbDateUploadFromDay').setValue("");
-        Ext.getCmp(prototype.id + '-cmbDateUploadToDay').setValue("");
+        Ext.getCmp(prototype.id + '-cmbDateFromMonthARC').setValue(monthActual); 
+        Ext.getCmp(prototype.id + '-cmbDateToMonthARC').setValue(monthActual); 
+
+        Ext.getCmp(prototype.id + '-cmbDateFromDayARC').setValue("");
+        Ext.getCmp(prototype.id + '-cmbDateToDayARC').setValue("");
         
         this.paramsObtainData.COUNTRY = 2;
         Ext.Ajax.request({
@@ -165,44 +157,53 @@ Ext.define('Ext.Praxis.controller.payments.BSPFileDownload.BSPFileDownloadContro
         
     },
     btnSearch_click: function (obj, e) {
-        me.setFormatParameter();
-        me.setGridData();
+        let fs = Ext.getCmp(prototype.id + '-titleFieldsetBSP');
+        let selectedBy = Ext.getCmp(prototype.id + '-cmbInputDate').getValue();
+
+        if (selectedBy === 'S') {
+            fs.setTitle('<span style="color:#1a4d8f;font-weight:bold;">SETTLEMENT</span>');
+        } else if (selectedBy === 'U') {
+            fs.setTitle('<span style="color:#1a4d8f;font-weight:bold;">UPLOAD</span>');
+        }
+        
+        let seg = Ext.getCmp(prototype.id + '-segViewMode');
+        let selected = seg.getValue();
+        this.drillDown = [];
+        
+        if (selected === 0) {
+            Ext.getCmp(prototype.id + '-panelBSP').setVisible(true);
+            Ext.getCmp(prototype.id + '-panelARC').setVisible(false);
+            this.setFormatParameter();
+            this.setGridData();
+        } else if (selected === 1) {
+            Ext.getCmp(prototype.id + '-panelBSP').setVisible(false);
+            Ext.getCmp(prototype.id + '-panelARC').setVisible(true);
+            this.setFormatParameterARC();
+            this.setGridDataARC();
+        }
     },
     setFormatParameter: function () {
         me.bean = {};
 
         // Settlement From
-        me.bean.IN_FROM_SETT = me.buildDate(
+        me.bean.IN_FECHA_FROM = me.buildDate(
             Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue(),
             Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue(),
             Ext.getCmp(prototype.id + '-cmbDateFromDay').getValue()
         );
 
         // Settlement To
-        me.bean.IN_TO_SETT = me.buildDate(
+        me.bean.IN_FECHA_TO = me.buildDate(
             Ext.getCmp(prototype.id + '-cmbDateToYear').getValue(),
             Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue(),
             Ext.getCmp(prototype.id + '-cmbDateToDay').getValue()
-        );
-
-        // Upload File From
-        me.bean.IN_FROM_UP = me.buildDate(
-            Ext.getCmp(prototype.id + '-cmbDateUploadFromYear').getValue(),
-            Ext.getCmp(prototype.id + '-cmbDateUploadFromMonth').getValue(),
-            Ext.getCmp(prototype.id + '-cmbDateUploadFromDay').getValue()
-        );
-
-        // Upload File To
-        me.bean.IN_TO_UP = me.buildDate(
-            Ext.getCmp(prototype.id + '-cmbDateUploadToYear').getValue(),
-            Ext.getCmp(prototype.id + '-cmbDateUploadToMonth').getValue(),
-            Ext.getCmp(prototype.id + '-cmbDateUploadToDay').getValue()
         );
 
         // Additional
         me.bean.IN_SOCIETY   = Ext.getCmp(prototype.id + '-typeSociety').getValue() || '';
         me.bean.IN_COUNTRY   = Ext.getCmp(prototype.id + '-cmbCountry').getValue() || '';
         me.bean.IN_FILE_NAME = Ext.getCmp(prototype.id + '-txtINameFile').getValue() || '';
+        me.bean.IN_OPTION = Ext.getCmp(prototype.id + '-cmbInputDate').getValue() || '';
 
         var beanString = JSON.stringify(me.bean);
         searchParams = {
@@ -214,7 +215,7 @@ Ext.define('Ext.Praxis.controller.payments.BSPFileDownload.BSPFileDownloadContro
     },
     setGridData: function () {
         win.lblUser_toolTip("Estructura: MPF218");
-//        me.panelActual = '-panelGridDataDetail';
+        me.panelActual = '-panelGridDataDetail';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
         me.setWidthPie();
         
@@ -244,6 +245,149 @@ Ext.define('Ext.Praxis.controller.payments.BSPFileDownload.BSPFileDownloadContro
             Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
         
     },
+    setFormatParameterARC: function () {
+        me.bean = {};
+
+        // Settlement From
+        me.bean.IN_FECHA_FROM = me.buildDate(
+            Ext.getCmp(prototype.id + '-cmbDateFromYearARC').getValue(),
+            Ext.getCmp(prototype.id + '-cmbDateFromMonthARC').getValue(),
+            Ext.getCmp(prototype.id + '-cmbDateFromDayARC').getValue()
+        );
+
+        // Settlement To
+        me.bean.IN_FECHA_TO = me.buildDate(
+            Ext.getCmp(prototype.id + '-cmbDateToYearARC').getValue(),
+            Ext.getCmp(prototype.id + '-cmbDateToMonthARC').getValue(),
+            Ext.getCmp(prototype.id + '-cmbDateToDayARC').getValue()
+        );
+
+        // Additional
+        me.bean.IN_SOCIETY   = Ext.getCmp(prototype.id + '-typeSocietyARC').getValue() || '';
+        me.bean.IN_COMAND   = Ext.getCmp(prototype.id + '-cmbComand').getValue() || '';
+        me.bean.IN_FILE_NAME = Ext.getCmp(prototype.id + '-txtINameFileARC').getValue() || '';
+        me.bean.IN_OPTION = Ext.getCmp(prototype.id + '-cmbInputDateARC').getValue() || '';
+
+        var beanString = JSON.stringify(me.bean);
+        searchParams = {
+            bean: me.bean,
+            beanString: beanString
+        };
+
+        console.log(searchParams, 'searchParamsARC');
+    },
+    setGridDataARC: function () {
+        win.lblUser_toolTip("Estructura: MPF218");
+        me.panelActual = '-panelGridDataARC';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        me.setWidthPie();
+        
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchARC'
+                }, listeners: {
+                    beforeload: function (obj) {
+                        obj.proxy.extraParams = searchParams;
+                    },
+                    load: function (obj) {
+                        var pag = Ext.getCmp(prototype.id + '-paggin');
+                        var pagData = pag.getPageData();
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        }
+                    }
+                }
+            });
+            global.clear();
+            Ext.getCmp(prototype.id + '-gridDataDetailARC').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
+        
+    },
+    onViewCSVARC: function (column, e, row, colIndex, x, rowData) {
+         let data = rowData.data;
+         const filename  = data.NAMEFILE;
+
+        if (!filename) {
+            Ext.Msg.alert('Error', 'No se encontró el nombre del archivo.');
+            return;
+        }
+
+        const imageUrl = prototype.url
+            + '/getARCImage'
+            + '?filename=' + encodeURIComponent(filename);
+
+        Ext.create('Ext.window.Window', {
+            title: 'ARC Image Viewer',
+            modal: true,
+            width: 1300,
+            height: 800,
+            layout: 'fit',
+            items: [{
+                xtype: 'panel',
+                autoScroll: true,
+                bodyStyle: 'background:#000;',
+                items: [{
+                    xtype: 'image',
+                    src: imageUrl,
+                    style: {
+                        display: 'block',
+                        transform: 'scale(1.4)',          // 🔍 nivel de zoom
+                        transformOrigin: 'top left',      // 🎯 foco arriba izquierda
+                        margin: '0'
+                    }
+                }]
+            }],
+            buttons: [{
+                text: 'Close',
+                handler: function (btn) {
+                    btn.up('window').close();
+                }
+            }]
+        }).show();
+
+    },
+    onDownloadCSVARC: function (column, e, row, colIndex, x, rowData) {
+        let data = rowData.data;
+
+        const datePed  = data.PEDARC;     // "25/12/07"  (YY/MM/DD)
+        let filename   = data.NAMEFILE;   // sin .txt
+
+        if (!datePed || !filename) {
+            Ext.Msg.alert(
+                'Error',
+                'Faltan parámetros para la descarga (Date PED, File Name).'
+            );
+            return;
+        }
+
+        // PEDARC = YY/MM/DD
+        const parts = datePed.split('/');
+
+        if (parts.length !== 3) {
+            Ext.Msg.alert('Error', 'Formato de fecha PED inválido: ' + datePed);
+            return;
+        }
+
+        const year = '20' + parts[0];   // ✅ 25 → 2025
+
+        // asegurar extensión .txt
+        if (!filename.toLowerCase().endsWith('.txt')) {
+            filename += '.txt';
+        }
+
+        const url = prototype.url + '/getTXTARC'
+            + '?year=' + encodeURIComponent(year)
+            + '&filename=' + encodeURIComponent(filename);
+
+        console.log('Solicitando:', url);
+
+        global.getFile(url);
+    },
     btnExcel_click: function (obj, e) {
        Ext.Msg.show({
             title: '.:PRAXIS:.',
@@ -261,19 +405,15 @@ Ext.define('Ext.Praxis.controller.payments.BSPFileDownload.BSPFileDownloadContro
     },
     exportExcel: function () {
         switch (me.panelActual) {
-            case  '-panelGridSumaryMain':
-                me.setFormatParameterDashboard()
-                global.getFile(prototype.url + '/getXLSXDashboard?beanString=' + encodeURI(searchParams.beanString));
-                break;
              case  '-panelGridDataDetail':
-                global.getFile(prototype.url + '/getXLSXDetail?beanString=' + encodeURI(searchParams.beanString));
+                global.getFile(prototype.url + '/getXLSX?beanString=' + encodeURI(searchParams.beanString));
+                break;
+            case  '-panelGridDataARC':
+                global.getFile(prototype.url + '/getXLSXARC?beanString=' + encodeURI(searchParams.beanString));
                 break;
             default:
-                global.Msg(
-                        {msg: 'Under Construction'
-                        });
+                global.Msg( {msg: 'Under Construction' });
         }
-
     },
     buildDate: function (y, m, d) {
         y = y || '';
@@ -312,7 +452,6 @@ Ext.define('Ext.Praxis.controller.payments.BSPFileDownload.BSPFileDownloadContro
 
     },
     btnFilter_click: function (obj) {
-//        console.log('btnFilter_click');
         var option = Ext.getCmp(prototype.id + '-contentFilter');
         if (option.isVisible()) {
             option.setVisible(false);
@@ -503,6 +642,7 @@ Ext.define('Ext.Praxis.controller.payments.BSPFileDownload.BSPFileDownloadContro
         const country  = data.COUNTRY;
         const dateSett = data.DATESETT;
         const customer    = data.CUSTOMER;
+        const filename    = data.NAMEFILE;
 
         if (!country || !dateSett || !customer) {
             Ext.Msg.alert('Error', 'Faltan parámetros para la descarga (Country, Customer o Settlement Date).');
@@ -512,22 +652,48 @@ Ext.define('Ext.Praxis.controller.payments.BSPFileDownload.BSPFileDownloadContro
         const url = prototype.url + '/getCSV'
             + '?country=' + encodeURIComponent(country)
             + '&dateSett='    + encodeURIComponent(dateSett)
-            + '&customer='   + encodeURIComponent(customer);
+            + '&customer='   + encodeURIComponent(customer)
+            + '&filename='   + encodeURIComponent(filename);
 
         console.log('Solicitando:', url);
 
         global.getFile(url); 
     },
     onDownloadAllCSV: function () {
+        let me = this;
+        let url = null;
+
+        switch (me.panelActual) {
+
+            case '-panelGridDataDetail': // BSP
+                console.log('ZIP BSP permitido');
+                url = prototype.url + '/getBulkCSV';
+                break;
+
+            case '-panelGridDataARC': // ARC
+                console.log('ZIP ARC permitido');
+                url = prototype.url + '/getBulkTXTARC';
+                break;
+
+            default:
+                global.Msg({ msg: 'Under Construction' });
+                return;
+        }
+
         if (!searchParams || !searchParams.beanString) {
-            Ext.Msg.alert("Error", "Debe realizar una búsqueda antes de descargar.");
+            Ext.Msg.alert(
+                "Error",
+                "Debe realizar una búsqueda antes de descargar."
+            );
             return;
         }
 
-        const url = prototype.url + "/getBulkCSV";
         console.log("Solicitando ZIP con filtros:", searchParams);
+        console.log("Endpoint:", url);
 
-        this.getFileByPost(url, { beanString: searchParams.beanString });
+        me.getFileByPost(url, {
+            beanString: searchParams.beanString
+        });
     },
     getFileByPost : function (url, params) {
         var form = document.createElement("form");
@@ -549,7 +715,5 @@ Ext.define('Ext.Praxis.controller.payments.BSPFileDownload.BSPFileDownloadContro
         form.submit();
         form.remove();
     }
-
-
 }
 );

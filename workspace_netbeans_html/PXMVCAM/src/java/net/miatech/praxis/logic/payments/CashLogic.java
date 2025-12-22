@@ -47,29 +47,5 @@ public class CashLogic {
     public List<MPF300> loadMPS445(MPF108Filter filter) throws SQLException, Exception {
         return CashDAO.loadMPS445(filter);
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    public List<A2282Filter> loadPX268SQP00675(A2282Filter filter) throws SQLException, Exception {
-        return CashDAO.loadPX268SQP00675(filter);
-    }
-    
-    public List<A2282Filter> loadPX268SQP00907(A2282Filter filter) throws SQLException, Exception {
-        return CashDAO.loadPX268SQP00907(filter);
-    }
-    
-    public List<A2290Filter> loadPX100NEW(A2290Filter filter) throws SQLException, Exception {
-        return CashDAO.loadPX100NEW(filter);
-    }
-    public List<A2290Filter> loadPX100DetailDay(A2290Filter filter) throws SQLException, Exception {
-        return CashDAO.loadPX100DetailDay(filter);
-    }
 
 }

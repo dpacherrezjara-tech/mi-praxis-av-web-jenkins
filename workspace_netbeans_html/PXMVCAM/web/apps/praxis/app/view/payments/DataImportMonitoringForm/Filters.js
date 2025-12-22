@@ -9,7 +9,7 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Filters', {
             xtype: 'form',
             border: false,
             bodyStyle: 'background: transparent',
-            margin: '15px 0 15px 15px',
+            margin: '15px 0 15px 0px',
             layout: 'column',
             defaults: {
                 fieldStyle: 'text-align: center;',
@@ -19,6 +19,31 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Filters', {
                 hidden: false
             },
             items: [
+                
+                {
+                    xtype: 'combo',
+                    id: prototype.id + '-cmbFuente',
+                    width: 180,
+                    fieldLabel: 'Source',
+                    queryMode: 'local',
+                    triggerAction: 'all',
+                    valueField: 'value',
+                    displayField: 'text',
+                    editable: false, 
+                    forceSelection: true,
+                    value: 'BSP',  
+                    
+                    store: {
+                        fields: ['value', 'text'],
+                        data: [
+                            {value: 'BSP', text: 'BSP'},
+                            {value: 'ICCS', text: 'ICCS'},
+                            {value: 'ARC', text: 'ARC'}
+                        ]
+                    }
+                },
+
+                 {xtype: 'tbspacer', width: 10},
 
                 
                   {
@@ -37,7 +62,7 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Filters', {
                     triggerAction: 'all',
                     valueField: 'A006PAIS',
                     displayField: 'A006NOMBRE',
-                    editable: true, // <-- necesario para escribir
+                    editable: true, 
                     typeAhead: true, // <-- autocompleta
                     minChars: 1, // <-- desde la primera letra filtra
                     forceSelection: false, // <-- permite escribir sin seleccionar
@@ -46,7 +71,6 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Filters', {
                     margin: '0 10 0 0'
                 },
                 
-                 {xtype: 'tbspacer', width: 10},
                 {
                     xtype: 'combo',
                     id: prototype.id + '-cmbDateType',
@@ -85,15 +109,8 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Filters', {
                     editable: false,
                     allowBlank: true,
                     width: 280,
-                    fieldStyle: 'text-align:center',
-//                    triggers: {
-//                        clear: {
-//                            cls: 'x-form-clear-trigger',
-//                            handler: function (field) {
-//                                field.reset();
-//                            }
-//                        }
-//                    }
+                    fieldStyle: 'text-align:center'
+
                 },
                  {xtype: 'tbspacer', width: 60}
               

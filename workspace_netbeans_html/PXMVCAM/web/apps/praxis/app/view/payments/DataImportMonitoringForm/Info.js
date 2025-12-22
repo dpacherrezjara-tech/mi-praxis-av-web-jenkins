@@ -49,7 +49,7 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Info', {
                         {
                             xtype: 'grid',
                             id: prototype.id + '-gridDataImport',
-                            width: 1155,
+                            width: 1170,
                             height: 500,
                             columnLines: true,
                             cls: 'modern-grid',
@@ -70,11 +70,12 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Info', {
 
                                 //                                {text: 'ID', dataIndex: 'PROCID', width: 70, align: 'center'},
 
+                                {text: 'Source', dataIndex: 'FUENTE', width:60, align: 'center'},
                                 {text: 'Description', dataIndex: 'PROCDESC', width: 220, align: 'left'},
                                 
                                 {text: 'File Date', dataIndex: 'PROCDATE', width: 90, align: 'center',
                                     renderer: function (value) {
-                                        // value siempre viene como YYYYMMDD → formato 2025-07-01
+                                        // formato 2025-07-01
                                         return value.substring(0, 4) + '-' +
                                                value.substring(4, 6) + '-' +
                                                value.substring(6, 8);
@@ -109,7 +110,7 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Info', {
                                         return text;
                                     }
                                 },
-                                {text: 'Message', dataIndex: 'PROCMESSAG', width: 350, align: 'left'},
+                                {text: 'Message', dataIndex: 'PROCMESSAG', width: 300, align: 'left'},
                                 {
                                     text: 'Begin',
                                     dataIndex: 'PROCINI',
@@ -349,10 +350,10 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Info', {
                                                 style: 'background:#c9daf5; border-color:white',
                                                 renderer: function (value, metaData, record) {
                                                     const id = record.get('LIVE_ID');
-                                                    const enabled = record.get('STATUSRO') === 'A';
+                                                    const enabled = true;
                                                     const status = record.get('LIVE_STATUS');
 
-                                                    const canLog = enabled && status === 'RUNNING';
+                                                    const canLog = enabled;
 
                                                     metaData.style = "text-align:center;";
                                                     metaData.tdCls = "rpa-buttons-cell";
@@ -393,7 +394,7 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Info', {
 
 
 // 
-// CSS PARA COLOREAR LAS FILAS
+// CSS 
 // 
 Ext.util.CSS.createStyleSheet(`
     /* .row-green, .row-yellow, .row-red removed for pure white look */

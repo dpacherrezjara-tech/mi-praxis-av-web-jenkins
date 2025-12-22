@@ -100,10 +100,14 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
                         data: res.data,
                         autoLoad: true
                     });
-
-                    Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
+                    if(meDe.bean.TINPUT == 'I'){
+                        Ext.getCmp(prototype.id + '-gridDataInfoScanICCS').bindStore(storeData);
+                    }else{
+                        Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeData);
+                    }
+                    
                     meDe.storeDataCash = storeData;
-                    Ext.getCmp(prototype.id + '-gridDataInfoScanICCS').bindStore(storeData);
+                    
 //                    meDe.calcularSumAmount();
                     meDe.calcularMontos();
                 } else {
@@ -121,13 +125,20 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         // DETAIL SETTLEMENT
         this.setValue('de-txtStatusCash', this.bean.descSTVAL);
         let cfuente;
-        if (this.bean.TINPUT === 'B' || this.bean.TINPUT === 'A') {
+        if (this.bean.TINPUT === 'B') {
             cfuente = 'BSP';
             Ext.getCmp(prototype.id + '-panelDataInfoScan').show();
+            Ext.getCmp(prototype.id + '-panelDataInfoScanICCS').hide();
+
+        } else if (this.bean.TINPUT === 'A') {
+            Ext.getCmp(prototype.id + '-panelDataInfoScan').show();
+            Ext.getCmp(prototype.id + '-panelDataInfoScanICCS').hide();
+            cfuente = 'ARC';          
 
         } else if (this.bean.TINPUT === 'I') {
             cfuente = 'ICCS';
             Ext.getCmp(prototype.id + '-panelDataInfoScanICCS').show();
+            Ext.getCmp(prototype.id + '-panelDataInfoScan').hide();
         }
         ;
         this.setValue('de-txtSource', cfuente);
@@ -911,12 +922,18 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         return value;
     },
     AddAdjustCash: function () {
-        var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        
+        if(this.bean.TINPUT == 'I'){
+            var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScanICCS');
+        }else {
+            var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        }
+        
         var gridAgent = Ext.getCmp(prototype.id + '-gridDataInfoScanAgent');
-
+        
         var storeScan = gridScan.getStore();
         var storeAgent = gridAgent.getStore();
-
+        
         // === 1️⃣ Verificar selección ===
         var seleccionado = gridScan.getSelectionModel().getSelection()[0];
         if (!seleccionado) {
@@ -974,7 +991,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
     },
 
     onConciliationCashAdjust: function () {
-        var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+//        var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        if(this.bean.TINPUT == 'I'){
+            var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScanICCS');
+        }else {
+            var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        }
         var seleccionado = gridScan.getSelectionModel().getSelection()[0];
 
         if (!seleccionado) {
@@ -993,6 +1015,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         this.bean_scan.ENDDATE = seleccionado.get('ENDDATE');
         this.bean_scan.ADATE = seleccionado.get('ADATE');
         this.bean_scan.TINPUT = seleccionado.get('TINPUT');
+        this.bean_scan.SEQ = seleccionado.get('SEQ');
 
         var paramScan = {beanString: JSON.stringify(this.bean_scan)};
 
@@ -1137,7 +1160,13 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
 
     onConciliationCash: function (element) {
         var me = this;
-        var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+//        var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        
+        if(this.bean.TINPUT == 'I'){
+            var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScanICCS');
+        }else {
+            var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        }
         var storeScan = gridScan.getStore();
         
         // --- Filtrar registros seleccionados
@@ -1224,7 +1253,20 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
 
         const country = this.bean.SCOUNTRY; // Ejemplo: "CO"
         const date = this.bean.ADATE;       // Ejemplo: "20250731"
+        const fuente = this.bean.TINPUT;       // Ejemplo: "20250731"
+        const dateArc = this.bean.DPERIOD;       // Ejemplo: "20250731"
+        const ccust = this.bean.CCUST;       // Ejemplo: "20250731"      
+        const cycle = this.bean.DCYCLE.trim();     
 
+//        const ccustN = this.bean.CCUST;       // Ejemplo: "20250731"
+//        const cycle = this.bean.DCYCLE.trim();       // Ejemplo: "20250731"
+//        let codigoClient = {
+//            '134' : 'AV-134',
+//            '133' : 'LR-134',
+//            '202' : 'TA-134',
+//            '547' : '2K-134'
+//        }
+//        const ccustR = codigoClient[this.bean.CCUST] ? codigoClient[this.bean.CCUST] : '';
         if (!country || !date) {
             Ext.Msg.alert('Error', 'Faltan parámetros para la descarga (SCOUNTRY o ADATE).');
             return;
@@ -1232,7 +1274,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
 
         // Enviamos los dos parámetros al backend
         const url = prototype.url + '/getCSV?country=' + encodeURIComponent(country)
-                + '&date=' + encodeURIComponent(date);
+                + '&date=' + encodeURIComponent(date)+ '&fuente=' + encodeURIComponent(fuente)
+                + '&dateArc=' + encodeURIComponent(dateArc)+ '&ccust=' + encodeURIComponent(ccust) + '&cycle=' + encodeURIComponent(cycle);
 
         console.log('Solicitando:', url);
 

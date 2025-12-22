@@ -77,7 +77,8 @@ Ext.define('Ext.Praxis.controller.payments.DataImportMonitoring.DataImportMonito
         this.searchParams.bean = {
             IN_PROCPAIS: Ext.getCmp(prototype.id + '-cmbIN_COUNTRY').getValue() || '',
             IN_DATETYPE: Ext.getCmp(prototype.id + '-cmbDateType').getValue() || '',
-            IN_PROCDATE: Ext.getCmp(prototype.id + '-txtDATEPICKER').getSubmitValue() || ''
+            IN_PROCDATE: Ext.getCmp(prototype.id + '-txtDATEPICKER').getSubmitValue() || '',
+            IN_PROCFUENTE: Ext.getCmp(prototype.id + '-cmbFuente').getValue() || ''
             
         };
 
@@ -127,7 +128,8 @@ Ext.define('Ext.Praxis.controller.payments.DataImportMonitoring.DataImportMonito
     btnClear_click: function () {
 //        Ext.getCmp(prototype.id + '-cmbIN_COUNTRY').setValue('');
         Ext.getCmp(prototype.id + '-txtDATEPICKER').setValue('');
-        Ext.getCmp(prototype.id + '-cmbDateType').setValue('');
+        //Ext.getCmp(prototype.id + '-cmbDateType').setValue('');
+        Ext.getCmp(prototype.id + '-cmbIN_COUNTRY').setValue('');
         this.btnSearch_click();
     },
 
@@ -203,7 +205,7 @@ Ext.define('Ext.Praxis.controller.payments.DataImportMonitoring.DataImportMonito
                 global.Msg({msg: "⚠ Robot inactivo. No se puede ejecutar acciones."});
                 return;
             }
-            if (status !== "RUNNING" && (action === "stop" || action === "restart" || action === "log")) {
+            if (status !== "RUNNING" && (action === "stop" || action === "restart")) {
                 global.Msg({msg: "⚠ Robot no está corriendo."});
                 return;
             }

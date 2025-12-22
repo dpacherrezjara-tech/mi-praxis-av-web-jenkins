@@ -56,7 +56,7 @@ Ext.define('Ext.Praxis.view.payments.BSPFileDownloadForm.BSPFileDownloadForm', {
                                     items: [
                                         {
                                             xtype: prototype.id + '-options',
-                                            style:'margin-top:20px'
+                                            style:'margin-top:10px'
                                         }
                                         ,{
                                             xtype: prototype.id + '-filters',

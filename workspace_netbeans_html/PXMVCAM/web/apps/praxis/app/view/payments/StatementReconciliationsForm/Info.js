@@ -1610,7 +1610,7 @@
                                                 },
                                                 {
                                                     text: 'Doc. Type',
-                                                    dataIndex: 'F_TDOC',
+                                                    dataIndex: 'TDOC',
                                                     width: 100,
                                                     renderer: function (value, metaData, record) {
                                                         metaData.style = "text-align:center;";
@@ -1633,7 +1633,7 @@
                                                 },
                                                 {
                                                     text: 'Merchant',
-                                                    dataIndex: 'F_MERCHAND',
+                                                    dataIndex: 'MERCHAND',
                                                     width: 100,
                                                     renderer: function (value, metaData) {
                                                         metaData.style = "text-align:center;";
@@ -1643,7 +1643,7 @@
                                                 },
                                                 {
                                                     text: 'Doc SAP BANK',
-                                                    dataIndex: 'F_BANDOC',
+                                                    dataIndex: 'BANDOC',
                                                     width: 100,
                                                     renderer: function (value, metaData) {
                                                         metaData.style = "text-align:center;";
@@ -1653,7 +1653,7 @@
                                                 },
                                                 {
                                                     text: 'Abono Date',
-                                                    dataIndex: 'F_ADATE',
+                                                    dataIndex: 'ADATE',
                                                     width: 100,
                                                     renderer: function (value, metaData) {
                                                         metaData.style = "text-align:center;";
@@ -1663,7 +1663,7 @@
                                                 },
                                                 {
                                                     text: 'Currency',
-                                                    dataIndex: 'F_SCURRENCY',
+                                                    dataIndex: 'SCURRENCY',
                                                     width: 100,
                                                     renderer: function (value, metaData) {
                                                         metaData.style = "text-align:center;";
@@ -1675,7 +1675,7 @@
                                                 },
                                                 {
                                                     text: 'Neto EECC',
-                                                    dataIndex: 'F_NETO',
+                                                    dataIndex: 'NETO',
                                                     width: 160,
                                                     renderer: function (value, metaData) {
                                                         metaData.style = "text-align:right;";
@@ -1689,7 +1689,7 @@
                                                 },
                                                 {
                                                     text: 'Neto Settlement',
-                                                    dataIndex: 'F_NETOC',
+                                                    dataIndex: 'NETOC',
                                                     width: 160,
                                                     renderer: function (value, metaData) {
                                                         metaData.style = "text-align:right;";
@@ -1703,7 +1703,7 @@
                                                 },
                                                 {
                                                     text: 'Source',
-                                                    dataIndex: 'F_CCUSTPRO',
+                                                    dataIndex: 'CCUSTPRO',
                                                     width: 100,
                                                     renderer: function (value, metaData) {
                                                         metaData.style = "text-align:center;";
@@ -1738,9 +1738,7 @@
                                 ]
                             },
                             
-                            
-                            ////////
-                            ///////////7
+                           
                         
                             {
                                 xtype: 'panel',
@@ -1748,7 +1746,7 @@
                                 bodyStyle: 'background-color: #E3EAEF;',
                                 border: false,
                                 height: 'auto',
-                                width: 1180,
+                                width: 1080,
                                 margin: '10 0 0 0',
                                 layout: {
                                     type: 'vbox',
@@ -1761,12 +1759,12 @@
                                         text: '',
                                         padding: '6 0',
                                         style: 'font-weight:bold;text-align:center;',
-                                        width: 1160
+                                        width: 1060
                                     },
                                     {
                                         xtype: 'grid',
                                         id: prototype.id + '-gridDetLiquiCash',
-                                        width: 1160,
+                                        width: 1060,
                                         columnLines: true,
                                         features: [{ ftype: 'summary' }],
                                         columns: {
@@ -1802,16 +1800,6 @@
                                                     text: 'Status',
                                                     dataIndex: 'STVAL',
                                                     width: 95,
-                                                    renderer: function (value, metaData) {
-                                                        metaData.style = "text-align:center;";
-                                                        metaData.tdCls = "x-grid-cell x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                        return value;
-                                                    }
-                                                },
-                                                {
-                                                    text: 'Merchant',
-                                                    dataIndex: 'MERCHAND',
-                                                    width: 100,
                                                     renderer: function (value, metaData) {
                                                         metaData.style = "text-align:center;";
                                                         metaData.tdCls = "x-grid-cell x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
