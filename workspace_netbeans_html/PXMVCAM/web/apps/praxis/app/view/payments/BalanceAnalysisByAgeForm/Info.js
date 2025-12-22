@@ -8997,7 +8997,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                         {
                             xtype: 'panel',
                             border: false,
-                            width: 1700,
+                            width: 1800,
                             id: prototype.id + '-panelGridSumaryDetail',
                             bodyStyle: 'background-color: #F4F7FD;margin-top:20px',
                             padding: '1',
@@ -9012,7 +9012,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                     id: prototype.id + '-gridDataDetail',
 //                                    title: '<span style="font-size:15px; font-weight:bold; color:#1a3e75;">📊 Grilla Detalle</span>',
                                     height: 515,
-                                    width: 1610,
+                                    width: 1730,
                                     hidden: false,
                                     columnLines: true,
                                     viewConfig: {
@@ -9044,6 +9044,19 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                 
                                                 return  value;
                                             }},
+                                            {text: '<span style="color:black;font-weight:bold;">Status</span>', dataIndex: 'STVAL', width: 120, style: 'padding:2px; background: #c9daf5;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+
+                                                    if (value == "1") {
+                                                        return "Match"
+                                                    } else if (value == "5") {
+                                                        return "Match Manual"
+                                                    } else {
+                                                        return  "Sales Without Liqui.";
+                                                    }
+                                                }},
                                             {text: '<span style="color:black;font-weight:bold;">Scountry</span>', dataIndex: 'SCOUNTRY', width: 80,style: 'padding:2px; background: #c9daf5;border-color:white'},
                                             {text: '<span style="color:black;font-weight:bold;">Valdate</span>', dataIndex: 'VALDATE', width: 80,style: 'padding:2px; background: #c9daf5;border-color:white'},
                                             {text: '<span style="color:black;font-weight:bold;">Bandoc</span>', dataIndex: 'BANDOC', width: 80,style: 'padding:2px; background: #c9daf5;border-color:white'},

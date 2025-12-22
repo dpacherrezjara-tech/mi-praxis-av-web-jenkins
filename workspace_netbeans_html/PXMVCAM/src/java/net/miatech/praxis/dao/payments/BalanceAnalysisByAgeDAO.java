@@ -3302,7 +3302,7 @@ public class BalanceAnalysisByAgeDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS390(?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS390(?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -3318,6 +3318,7 @@ public class BalanceAnalysisByAgeDAO {
             cstmt.setString(7, filter.IN_IDCONT);
             cstmt.setString(8, filter.IN_HEADER);
             cstmt.setString(9, filter.IN_PROVISION);
+            cstmt.setString(10, filter.IN_CODEERROR);
 
             cstmt.execute();
 
@@ -3384,17 +3385,17 @@ public class BalanceAnalysisByAgeDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS400(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS400(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(17, Types.INTEGER);
             cstmt.registerOutParameter(18, Types.INTEGER);
             cstmt.registerOutParameter(19, Types.INTEGER);
             cstmt.registerOutParameter(20, Types.INTEGER);
+            cstmt.registerOutParameter(21, Types.INTEGER);
             cstmt.setString(1, filter.IN_CCUST);
             cstmt.setString(2, filter.IN_WSETT);
             cstmt.setString(3, filter.IN_TAXES);
@@ -3411,17 +3412,18 @@ public class BalanceAnalysisByAgeDAO {
             cstmt.setString(14, filter.IN_HEADER);
             cstmt.setString(15, filter.IN_SENT);
             cstmt.setString(16, filter.IN_PROVISION);
-            cstmt.setInt(17, filter.page.PAGNUM);
-            cstmt.setInt(18, filter.page.PAGROW);
-            cstmt.setInt(19, filter.page.TOTPAG);
-            cstmt.setInt(20, filter.page.TOTROW);
+            cstmt.setString(17, filter.IN_CODEERROR);
+            cstmt.setInt(18, filter.page.PAGNUM);
+            cstmt.setInt(19, filter.page.PAGROW);
+            cstmt.setInt(20, filter.page.TOTPAG);
+            cstmt.setInt(21, filter.page.TOTROW);
 
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(17);
-            filter.page.PAGROW = cstmt.getInt(18);
-            filter.page.TOTPAG = cstmt.getInt(19);
-            filter.page.TOTROW = cstmt.getInt(20);
+            filter.page.PAGNUM = cstmt.getInt(18);
+            filter.page.PAGROW = cstmt.getInt(19);
+            filter.page.TOTPAG = cstmt.getInt(20);
+            filter.page.TOTROW = cstmt.getInt(21);
 
             rst = cstmt.getResultSet();
             while (rst.next()) {
@@ -3430,6 +3432,7 @@ public class BalanceAnalysisByAgeDAO {
 
                 bean.CCUST = rst.getString("CCUST").trim();
                 bean.BANDOC = rst.getString("BANDOC").trim();
+                bean.STVAL = rst.getString("STVAL").trim();
                 bean.VALDATE = rst.getString("VALDATE").trim();
                 bean.SCOUNTRY = rst.getString("SCOUNTRY").trim();
                 bean.SCURRENCY = rst.getString("SCURRENCY").trim();
@@ -3592,7 +3595,7 @@ public class BalanceAnalysisByAgeDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS413(?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS413(?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -3608,6 +3611,7 @@ public class BalanceAnalysisByAgeDAO {
             cstmt.setString(7, filter.IN_IDCONT);
             cstmt.setString(8, filter.IN_HEADER);
             cstmt.setString(9, filter.IN_PROVISION);
+            cstmt.setString(10, filter.IN_CODEERROR);
 
             cstmt.execute();
 
@@ -3616,12 +3620,10 @@ public class BalanceAnalysisByAgeDAO {
             while (rst.next()) {
                 bean = new A2356Filter();
                 bean.RN = rst.getInt("RN");
-
+                bean.QUANTITY = rst.getInt("QUANTITY");
                 bean.CERROR = rst.getString("CERROR");
                 bean.DESCRIPTION_CERROR = rst.getString("DESCRIPTION_ERROR");
-                bean.F1_TOTAL_STVAL3 = rst.getInt("F1_TOTAL_STVAL3");
-                bean.F2_TOTAL_PENDING_OVER50 = rst.getInt("F2_TOTAL_PENDING_OVER50");
-                bean.F3_TOTAL_PENDING_SENT = rst.getInt("F3_TOTAL_PENDING_SENT");
+                bean.DESCRIPTION_CERROR = rst.getString("DESCRIPTION_ERROR");
 
                 lstData.add(bean);
             }
@@ -3726,6 +3728,81 @@ public class BalanceAnalysisByAgeDAO {
                     cstmt.close();
                 } catch (SQLException e) {
                     logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstData;
+    }
+
+    public List<A2290Filter> loadMPS449(A2290Filter filter) throws SQLException, Exception {
+
+        List<A2290Filter> lstData = new ArrayList<A2290Filter>(0);
+        A2290Filter beanTkt;
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS449(?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            // ---------------- OBJETOS EN DURO ----------------
+            beanTkt = new A2290Filter();
+            beanTkt.CODE = "A";
+            beanTkt.NAME = "All Codes";
+            lstData.add(beanTkt);
+            
+            beanTkt = new A2290Filter();
+            beanTkt.CODE = "";
+            beanTkt.NAME = "All";
+            lstData.add(beanTkt);
+            // -------------------------------------------------
+
+            while (rst.next()) {
+
+                beanTkt = new A2290Filter();
+
+                beanTkt.CODE = rst.getString("CODE").trim();
+                beanTkt.NAME = rst.getString("CODE").trim() + " - " + rst.getString("NAME").trim();
+
+                lstData.add(beanTkt);
+            }
+
+            rst.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error(
+                            "SQLException -> User:" + session.getUserView().getUserInfo().USR
+                            + " Message: " + e.getMessage(), e
+                    );
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error(
+                            "SQLException -> User:" + session.getUserView().getUserInfo().USR
+                            + " Message: " + e.getMessage(), e
+                    );
                 }
             }
             session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
