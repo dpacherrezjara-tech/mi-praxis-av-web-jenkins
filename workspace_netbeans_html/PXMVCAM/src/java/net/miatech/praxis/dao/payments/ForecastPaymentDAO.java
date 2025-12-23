@@ -143,6 +143,7 @@ public class ForecastPaymentDAO {
                     objRtn.INVOICE1 = rs01.getString("INVOICE1").trim();
                     objRtn.SVFOPNETR = rs01.getDouble("SVFOPNETR");
                     objRtn.FPROC = rs01.getString("FPROC").trim();
+                    objRtn.STVAL = rs01.getString("STVAL").trim();
 
                     objRtn.TOT_SVFOPOT = SVFOPOT;
                     objRtn.TOT_SVFOPNETR = SVFOPNETR;
@@ -199,7 +200,7 @@ public class ForecastPaymentDAO {
         CallableStatement cstmt = null;
         ResultSet rs01 = null;
 
-        String SQLCLL01 = "{CALL PRAXIS.MPS074_V3(?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXIS.MPS074(?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -239,6 +240,7 @@ public class ForecastPaymentDAO {
                 objRtn.MCLOS = rs01.getString("MCLOS").trim();
                 objRtn.SCURRENCY = rs01.getString("SCURRENCY").trim();
                 objRtn.SCURREVEN = rs01.getString("SCURREVEN").trim();
+                objRtn.STVAL = rs01.getString("STVAL").trim();
 
                 objRtn.SVFOPC1 = rs01.getDouble("SUMA_SVFOPC1"); // Si necesitas double, usa getDouble
                 objRtn.SVFOPUSD = rs01.getDouble("SUMA_SVFOPUSD");
@@ -265,7 +267,7 @@ public class ForecastPaymentDAO {
         CallableStatement cstmt = null;
         ResultSet rs01 = null;
 
-        String SQLCLL01 = "{CALL PRAXISMP.MPS074_V4(?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.MPS428(?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -302,9 +304,11 @@ public class ForecastPaymentDAO {
                 objRtn.MCLOS       = rs01.getString("MCLOS").trim();
                 objRtn.SCURRENCY   = rs01.getString("SCURRENCY").trim();
                 objRtn.SCURREVEN   = rs01.getString("SCURREVEN").trim();
+                objRtn.F_STVAL       = rs01.getString("STVAL").trim();
 
                 objRtn.SVFOPNETR   = rs01.getDouble("SUMA_SVFOPNETR");
                 objRtn.SVFOPUSD    = rs01.getDouble("SUMA_SVFOPUSD");
+
 
                 objRtn.IN_DATE_FROM = filter.IN_DATE_FROM;
                 objRtn.IN_DATE_TO   = filter.IN_DATE_TO;

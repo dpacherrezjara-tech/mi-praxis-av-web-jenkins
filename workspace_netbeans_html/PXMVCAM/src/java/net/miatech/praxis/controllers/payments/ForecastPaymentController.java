@@ -258,7 +258,7 @@ public class ForecastPaymentController extends BaseController {
 
             // ===== HOJA TC =====
             String[] columnsTC = {
-                "INVOICE_CC", "SPAYMENT", "SCOUNTRY", "SCARCOD1", "CCUST", "CFUENTE",
+                "INVOICE_CC","STATUS", "SPAYMENT", "SCOUNTRY", "SCARCOD1", "CCUST", "CFUENTE",
                 "SUBFTE", "SCONSOL", "FDESD", "MCLOS", "SCURRENCY", "SCURREVEN",
                 "Suma de SVFOPC1", "Suma de SVFOPUSD"
             };
@@ -274,23 +274,36 @@ public class ForecastPaymentController extends BaseController {
             for (A2295Filter item : listaDataTC) {
                 Row row = sheetTC.createRow(rowIdxTC++);
                 row.createCell(0).setCellValue(item.INVOICE1); // INVOICE_CC
-                row.createCell(1).setCellValue(item.SPAYMENT);
-                row.createCell(2).setCellValue(item.SCOUNTRY);
-                row.createCell(3).setCellValue(item.SCARCOD1);
-                row.createCell(4).setCellValue(item.CCUST);
-                row.createCell(5).setCellValue(item.CFUENTE);
-                row.createCell(6).setCellValue(item.SUBFTE);
-                row.createCell(7).setCellValue(item.SCONSOL);
-                row.createCell(8).setCellValue(item.FDESD);
-                row.createCell(9).setCellValue(item.MCLOS);
-                row.createCell(10).setCellValue(item.SCURRENCY);
-                row.createCell(11).setCellValue(item.SCURREVEN);
+                Cell cellStatus = row.createCell(1);
 
-                Cell c12 = row.createCell(12);
+if ("1".equals(item.STVAL)) {
+    cellStatus.setCellValue("Match");
+} else if ("".equals(item.STVAL)) {
+    cellStatus.setCellValue("Pending");
+} else if ("5".equals(item.STVAL)) {
+    cellStatus.setCellValue("Manual");
+} else {
+    cellStatus.setCellValue(item.STVAL);
+}
+
+                //row.createCell(1).setCellValue(item.STVAL); // INVOICE_CC
+                row.createCell(2).setCellValue(item.SPAYMENT);
+                row.createCell(3).setCellValue(item.SCOUNTRY);
+                row.createCell(4).setCellValue(item.SCARCOD1);
+                row.createCell(5).setCellValue(item.CCUST);
+                row.createCell(6).setCellValue(item.CFUENTE);
+                row.createCell(7).setCellValue(item.SUBFTE);
+                row.createCell(8).setCellValue(item.SCONSOL);
+                row.createCell(9).setCellValue(item.FDESD);
+                row.createCell(10).setCellValue(item.MCLOS);
+                row.createCell(11).setCellValue(item.SCURRENCY);
+                row.createCell(12).setCellValue(item.SCURREVEN);
+
+                Cell c12 = row.createCell(13);
                 c12.setCellValue(item.SVFOPC1);
                 c12.setCellStyle(moneyStyle);
 
-                Cell c13 = row.createCell(13);
+                Cell c13 = row.createCell(14);
                 c13.setCellValue(item.SVFOPUSD);
                 c13.setCellStyle(moneyStyle);
             }
@@ -301,7 +314,7 @@ public class ForecastPaymentController extends BaseController {
 
             // ===== HOJA CASH =====
             String[] columnsCASH = {
-                "INVOICE_CA", "SPAYMENT", "SCOUNTRY", "CCUST", "CFUENTE", "SUBFTE",
+                "INVOICE_CA","STATUS", "SPAYMENT", "SCOUNTRY", "CCUST", "CFUENTE", "SUBFTE",
                 "SCONSOL", "SDATE", "MCLOS", "SCURRENCY", "SCURREVEN",
                 "Suma de SVFOPNETR", "Suma de SVFOPUSD"
             };
@@ -317,22 +330,36 @@ public class ForecastPaymentController extends BaseController {
             for (A2295Filter item : listaDataCASH) {
                 Row row = sheetCASH.createRow(rowIdxCASH++);
                 row.createCell(0).setCellValue(item.INVOICE0); // INVOICE_CA
-                row.createCell(1).setCellValue(item.SPAYMENT);
-                row.createCell(2).setCellValue(item.SCOUNTRY);
-                row.createCell(3).setCellValue(item.CCUST);
-                row.createCell(4).setCellValue(item.CFUENTE);
-                row.createCell(5).setCellValue(item.SUBFTE);
-                row.createCell(6).setCellValue(item.SCONSOL);
-                row.createCell(7).setCellValue(item.SDATE);
-                row.createCell(8).setCellValue(item.MCLOS);
-                row.createCell(9).setCellValue(item.SCURRENCY);
-                row.createCell(10).setCellValue(item.SCURREVEN);
+                
+                                Cell cellStatus = row.createCell(1);
 
-                Cell c11 = row.createCell(11);
+                if ("1".equals(item.F_STVAL)) {
+                    cellStatus.setCellValue("Match");
+                } else if ("".equals(item.F_STVAL)) {
+                    cellStatus.setCellValue("Pending");
+                } else if ("5".equals(item.F_STVAL)) {
+                    cellStatus.setCellValue("Manual");
+                } else {
+                    cellStatus.setCellValue(item.F_STVAL);
+                }
+
+                
+                row.createCell(2).setCellValue(item.SPAYMENT);
+                row.createCell(3).setCellValue(item.SCOUNTRY);
+                row.createCell(4).setCellValue(item.CCUST);
+                row.createCell(5).setCellValue(item.CFUENTE);
+                row.createCell(6).setCellValue(item.SUBFTE);
+                row.createCell(7).setCellValue(item.SCONSOL);
+                row.createCell(8).setCellValue(item.SDATE);
+                row.createCell(9).setCellValue(item.MCLOS);
+                row.createCell(10).setCellValue(item.SCURRENCY);
+                row.createCell(11).setCellValue(item.SCURREVEN);
+
+                Cell c11 = row.createCell(12);
                 c11.setCellValue(item.SVFOPNETR);
                 c11.setCellStyle(moneyStyle);
 
-                Cell c12 = row.createCell(12);
+                Cell c12 = row.createCell(13);
                 c12.setCellValue(item.SVFOPUSD);
                 c12.setCellStyle(moneyStyle);
             }
