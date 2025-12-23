@@ -91,34 +91,34 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
         });
     },
     xpanel_afterrender: function (obj, e) {
-        
+
         let title_module = '<h2 class="label-praxis-module"><span style="font-size: 11pt; font-family: Arial; font-weight: bold;">PAYMENTS CONTROL </span>' + '<br>' + 'Debits Reports' + '</h2>';
         $('#divTitle').html(title_module);
         this.setStoreData();
         this.obtainData();
-        
-        Ext.getCmp(prototype.id + '-QTY_TOTAL_CHGBACK').getEl().on('click', function() {
-             me.onGridDataDetailChgbck();
+
+        Ext.getCmp(prototype.id + '-QTY_TOTAL_CHGBACK').getEl().on('click', function () {
+            me.onGridDataDetailChgbck();
         });
-        
-        Ext.getCmp(prototype.id + '-QTY_TOTAL_PENDING').getEl().on('click', function() {
-             me.onGridDataDetailPending();
+
+        Ext.getCmp(prototype.id + '-QTY_TOTAL_PENDING').getEl().on('click', function () {
+            me.onGridDataDetailPending();
         });
-        
+
         $('#ReportsForm-btnToggleSwitch').on('change', function () {
             let isChecked = $('#ReportsForm-btnToggleSwitch .toggle-input').is(':checked');
 
             if (isChecked) {
-                 Ext.getCmp(prototype.id + '-panelGridChargueIDM').show() 
-                Ext.getCmp(prototype.id + '-panelGridChargueID').hide() 
+                Ext.getCmp(prototype.id + '-panelGridChargueIDM').show()
+                Ext.getCmp(prototype.id + '-panelGridChargueID').hide()
             } else {
-                Ext.getCmp(prototype.id + '-panelGridChargueIDM').hide() 
-                Ext.getCmp(prototype.id + '-panelGridChargueID').show() 
+                Ext.getCmp(prototype.id + '-panelGridChargueIDM').hide()
+                Ext.getCmp(prototype.id + '-panelGridChargueID').show()
             }
-            
-           
+
+
         });
-        
+
     },
     eventKey: function (e, eOpts) {
         if (eOpts.getKey() === 13) {
@@ -136,7 +136,7 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
         let comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
         comboToYear.bindStore(storeComboDataYear);
         comboToYear.setValue(obj.getValue());
-        if( comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue() ){
+        if (comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue()) {
             comboFromMonth.setValue(comboToMonth.getValue())
         }
     },
@@ -145,10 +145,10 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
         let comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYear');
         let comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonth');
         let comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
-        if( comboToYear.getValue() < comboFromYear.getValue()  ){
-           comboFromYear.setValue(comboToYear.getValue()); 
+        if (comboToYear.getValue() < comboFromYear.getValue()) {
+            comboFromYear.setValue(comboToYear.getValue());
         }
-        if( comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue() ){
+        if (comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue()) {
             comboFromMonth.setValue(comboToMonth.getValue())
         }
     },
@@ -181,8 +181,8 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                 comboFromDay.setValue(obj.getValue());
             }
         }
-        if(comboFromDay.getValue() === ''){
-            
+        if (comboFromDay.getValue() === '') {
+
             comboFromDay.setValue(obj.getValue())
         }
     },
@@ -208,7 +208,7 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
 
     },
     obtainData: function () {
-        
+
         Ext.Ajax.request({
             url: prototype.url + '/obtainMessagesDT',
             method: 'POST',
@@ -243,7 +243,7 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
             ]
         }));
         cmbFecFiltro.setValue("SDATE");
-        
+
         var cmbSTVAL = Ext.getCmp(prototype.id + '-cmbSTVAL');
         cmbSTVAL.bindStore(Ext.create('Ext.data.ArrayStore', {
             autoLoad: false,
@@ -256,7 +256,7 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
             ]
         }));
         cmbSTVAL.setValue("");
-        
+
         var cmbTDOC = Ext.getCmp(prototype.id + '-cmbTDOC');
         cmbTDOC.bindStore(Ext.create('Ext.data.ArrayStore', {
             autoLoad: false,
@@ -287,18 +287,18 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
 //                Ext.getBody().unmask('Loading...');
                 var res = Ext.JSON.decode(response.responseText);
 
-                console.log(res,'resresres')
-                
+                console.log(res, 'resresres')
+
                 me.lstBank = res.lstBank;
                 me.lstCard = res.lstCard;
                 me.lstCountry = res.lstCountry;
                 me.lstProcessor = res.listaProcesadores;
                 me.listarCuentasChargeback = res.listarCuentasChargeback;
-                
+
                 let cuentaCBCK_ID = '';
                 let cuentaCBCK_IDM = '';
 
-                Ext.Array.each(me.listarCuentasChargeback, function(item) {
+                Ext.Array.each(me.listarCuentasChargeback, function (item) {
                     if (item.A4451KEY2 === 'CBCK-ID') {
                         cuentaCBCK_ID = item.A4451KEY3;
                     }
@@ -307,28 +307,28 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                     }
                 });
 
-                
+
                 let colTitleID = Ext.getCmp(prototype.id + '-titleChgBackID');
                 if (colTitleID) {
                     colTitleID.setText('<span style="color:black;font-weight:bold;">Chargeback - ID - ' + cuentaCBCK_ID + '</span>');
                 }
-                
+
                 let colTitleIDR = Ext.getCmp(prototype.id + '-titleChgBackReversID');
                 if (colTitleIDR) {
                     colTitleIDR.setText('<span style="color:black;font-weight:bold;">Reverse Chargeback - ID - ' + cuentaCBCK_ID + '</span>');
                 }
 
-                
+
                 let colTitleIDM = Ext.getCmp(prototype.id + '-titleChgBackIDM');
                 if (colTitleIDM) {
                     colTitleIDM.setText('<span style="color:black;font-weight:bold;">Reverse Chargeback - IDM - ' + cuentaCBCK_IDM + '</span>');
-                    
+
                 }
-                
+
                 let colTitleIDMR = Ext.getCmp(prototype.id + '-titleChgBackReversIDM');
                 if (colTitleIDMR) {
                     colTitleIDMR.setText('<span style="color:black;font-weight:bold;">Chargeback - IDM - ' + cuentaCBCK_IDM + '</span>');
-                    
+
                 }
 
                 var storeData = Ext.create('Ext.data.Store', {
@@ -340,13 +340,13 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                     data: me.lstCountry,
                     autoLoad: true
                 });
-                
+
                 var storeData4 = Ext.create('Ext.data.Store', {
                     data: me.lstProcessor,
                     autoLoad: true
                 });
-                
-                
+
+
                 Ext.getCmp(prototype.id + '-cmbBank').bindStore(storeData);
                 Ext.getCmp(prototype.id + '-cmbCountry').bindStore(storeData3);
                 Ext.getCmp(prototype.id + '-cmbProcessor').bindStore(storeData4);
@@ -364,16 +364,16 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
     setFormatParameter: function () {
         me.bean = {};
         me.bean.IN_FECFILTRO = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue() == 'SDATE' ? 'S' : 'A';
-        me.bean.IN_FECHA_FROM = 
-            me.safeValue(Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue()) +
-            me.safeValue(Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue()) +
-            me.safeValue(Ext.getCmp(prototype.id + '-cmbDateDay').getValue());
+        me.bean.IN_FECHA_FROM =
+                me.safeValue(Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue()) +
+                me.safeValue(Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue()) +
+                me.safeValue(Ext.getCmp(prototype.id + '-cmbDateDay').getValue());
 
-         me.bean.IN_FECHA_TO = 
-            me.safeValue(Ext.getCmp(prototype.id + '-cmbDateToYear').getValue()) +
-            me.safeValue(Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue()) +
-            me.safeValue(Ext.getCmp(prototype.id + '-cmbDateToDay').getValue());
-    
+        me.bean.IN_FECHA_TO =
+                me.safeValue(Ext.getCmp(prototype.id + '-cmbDateToYear').getValue()) +
+                me.safeValue(Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue()) +
+                me.safeValue(Ext.getCmp(prototype.id + '-cmbDateToDay').getValue());
+
         me.bean.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
         me.bean.IN_CODEBANK = Ext.getCmp(prototype.id + '-cmbBank').getValue();
         me.bean.IN_STVAL = Ext.getCmp(prototype.id + '-cmbSTVAL').getValue();
@@ -414,7 +414,7 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
         me.bean.IN_SAUTHOC = Ext.getCmp(prototype.id + '-txtAUTHOC').getValue().trim();
         console.log(Ext.getCmp(prototype.id + '-cmbDebitType').getValue(), 'wadafa')
         me.bean.IN_DEBTYPE = Ext.getCmp(prototype.id + '-cmbDebitType').getValue();
-        
+
 
         console.log(me.bean, 'me.beanAAAAAA')
         var beanString = JSON.stringify(me.bean);
@@ -423,25 +423,25 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
             bean: me.bean
         };
     },
-    
+
     setFormatParameter2: function () {
         me.bean = {};
         me.bean.IN_FECFILTRO = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue() == 'SDATE' ? 'S' : 'A';
-        me.bean.IN_FECHA_FROM = 
-             me.safeValue(Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue()) +
-             me.safeValue(Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue()) +
-             me.safeValue(Ext.getCmp(prototype.id + '-cmbDateDay').getValue());
+        me.bean.IN_FECHA_FROM =
+                me.safeValue(Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue()) +
+                me.safeValue(Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue()) +
+                me.safeValue(Ext.getCmp(prototype.id + '-cmbDateDay').getValue());
 
-          me.bean.IN_FECHA_TO = 
-             me.safeValue(Ext.getCmp(prototype.id + '-cmbDateToYear').getValue()) +
-             me.safeValue(Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue()) +
-             me.safeValue(Ext.getCmp(prototype.id + '-cmbDateToDay').getValue());
-     
+        me.bean.IN_FECHA_TO =
+                me.safeValue(Ext.getCmp(prototype.id + '-cmbDateToYear').getValue()) +
+                me.safeValue(Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue()) +
+                me.safeValue(Ext.getCmp(prototype.id + '-cmbDateToDay').getValue());
+
         me.bean.IN_CODPRO = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
-        
+
         me.bean.IN_HEADER = Ext.getCmp(prototype.id + '-txtIHEADER').getValue();
         me.bean.IN_CONTABLE = Ext.getCmp(prototype.id + '-txtIIDCONTABLE').getValue();
-        
+
         var beanString = JSON.stringify(me.bean);
         searchParams = {
             beanString: beanString,
@@ -450,24 +450,24 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
     },
 
     btnSearch_click: function (obj, e) {
-        console.log(me.panelActual,'me.panelActual')
-        if ( me.panelActual == '-panelGridSumaryMain' ){
+        console.log(me.panelActual, 'me.panelActual')
+        if (me.panelActual == '-panelGridSumaryMain') {
             console.log(1)
             this.setFormatParameter2();
             this.setGridSumaryMain()
-        } else if ( me.panelActual == '-panelGridSumaryMainChgbck' ){
-             console.log(2)
+        } else if (me.panelActual == '-panelGridSumaryMainChgbck') {
+            console.log(2)
             this.setFormatParameter2();
             this.setGridSumaryMain()
-        }else{
-             console.log(3)
+        } else {
+            console.log(3)
             this.setFormatParameter();
             this.setGridData();
         }
-        
-        
+
+
         Ext.Ajax.request({
-            url: prototype.url + '/verifyExchangeRates',    
+            url: prototype.url + '/verifyExchangeRates',
             method: 'POST',
             timeout: 60000000,
             params: searchParams,
@@ -504,7 +504,7 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                         // Caso sin errores
                         lbl.tooltip.update('Todo con tipo de cambio.');
                         lbl.setFieldStyle('color: #28a745; font-weight: bold;');
-                        
+
                         lbl2.tooltip.update('Todos los registros cuentan con tipo de cambio.');
                         lbl2.setFieldStyle('color: #28a745; font-weight: bold;');
                     }
@@ -515,7 +515,7 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
             }
         });
 
-        
+
     },
 
     setGridData: function () {
@@ -546,7 +546,7 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                             global.Msg({
                                 msg: 'Data not found.'
                             });
-                        } 
+                        }
                         me.setWidthPie();
                     }
                 }
@@ -556,11 +556,11 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
             Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
         }
     },
-    btnDisplay_click: function(){
+    btnDisplay_click: function () {
         let summaryBoolean = Ext.getCmp(prototype.id + '-panelGridSumaryMain').isVisible()
         let detailBoolean = Ext.getCmp(prototype.id + '-boxMainData').isVisible()
         console.log(summaryBoolean, 'summaryBoolean')
-        if ( !summaryBoolean ){
+        if (!summaryBoolean) {
             Ext.getCmp(prototype.id + '-containerFilters1').hide()
             Ext.getCmp(prototype.id + '-containerFilters2').hide()
             Ext.getCmp(prototype.id + '-lblExchangeMessage2').show()
@@ -568,8 +568,8 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
             this.setFormatParameter2();
             this.setGridSumaryMain()
             Ext.getCmp(prototype.id + '-panelHeight').setHeight(720);
-        }else{
-             Ext.getCmp(prototype.id + '-panelHeight').setHeight(620);
+        } else {
+            Ext.getCmp(prototype.id + '-panelHeight').setHeight(620);
             Ext.getCmp(prototype.id + '-containerFilters1').show()
             Ext.getCmp(prototype.id + '-containerFilters2').show()
             Ext.getCmp(prototype.id + '-lblExchangeMessage2').hide()
@@ -601,7 +601,7 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                     },
                     load: function (obj) {
                         Ext.getCmp(prototype.id + '-contentInfo').unmask();
-                       
+
                         if (obj.data.length === 0) {
                             global.Msg({
                                 msg: 'Data not found.'
@@ -613,41 +613,42 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
 
                                 lstData.push(value.data)
                             }
-                            
+
                             let lastRecord = lstData.length > 0 ? lstData[lstData.length - 1] : null;
-                            console.log(lastRecord,'lastRecord')
+                            console.log(lastRecord, 'lastRecord')
                             let QTY_TOTAL_REFUND = lastRecord.QTY_TOTAL_REFUND;
                             let AMOUNT_TOTAL_REFUND_USD = lastRecord.AMOUNT_TOTAL_REFUND_USD;
                             let AMOUNT_TOTAL_REFUND_SEND = lastRecord.AMOUNT_TOTAL_REFUND_SEND;
                             let AMOUNT_TOTAL_REFUND_SAP = lastRecord.AMOUNT_TOTAL_REFUND_SAP;
                             let AMOUNT_TOTAL_REFUND_PENDING_USD = lastRecord.AMOUNT_TOTAL_REFUND_PENDING_USD;
-                            
-                             let QTY_TOTAL_CHGBACK = lastRecord.QTY_TOTAL_CHGBACK;
+
+                            let QTY_TOTAL_CHGBACK = lastRecord.QTY_TOTAL_CHGBACK;
                             let AMOUNT_TOTAL_CHGBACK_USD = lastRecord.AMOUNT_TOTAL_CHGBACK_USD;
                             let AMOUNT_TOTAL_CHGBACK_SEND = lastRecord.AMOUNT_TOTAL_CHGBACK_SEND;
                             let AMOUNT_TOTAL_CHGBACK_SAP = lastRecord.AMOUNT_TOTAL_CHGBACK_SAP;
                             let AMOUNT_TOTAL_CHGBACK_PENDING_USD = lastRecord.AMOUNT_TOTAL_CHGBACK_PENDING_USD;
-                            
-                             let QTY_TOTAL_REVERSE_CHGBACK = lastRecord.QTY_TOTAL_REVERSE_CHGBACK;
+
+                            let QTY_TOTAL_REVERSE_CHGBACK = lastRecord.QTY_TOTAL_REVERSE_CHGBACK;
                             let AMOUNT_TOTAL_REVERSE_CHGBACK_USD = lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_USD;
                             let AMOUNT_TOTAL_REVERSE_CHGBACK_SEND = lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_SEND;
                             let AMOUNT_TOTAL_REVERSE_CHGBACK_SAP = lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_SAP;
                             let AMOUNT_TOTAL_REVERSE_CHGBACK_PENDING_USD = lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_PENDING_USD;
-                            
-                             let QTY_TOTAL_ACRED = lastRecord.QTY_TOTAL_ACRED;
+
+                            let QTY_TOTAL_ACRED = lastRecord.QTY_TOTAL_ACRED;
                             let AMOUNT_TOTAL_ACRED_USD = lastRecord.AMOUNT_TOTAL_ACRED_USD;
                             let AMOUNT_TOTAL_ACRED_SEND = lastRecord.AMOUNT_TOTAL_ACRED_SEND;
                             let AMOUNT_TOTAL_ACRED_SAP = lastRecord.AMOUNT_TOTAL_ACRED_SAP;
                             let AMOUNT_TOTAL_ACRED_PENDING_USD = lastRecord.AMOUNT_TOTAL_ACRED_PENDING_USD;
-                            
-                             let QTY_TOTAL_PENDING = lastRecord.QTY_TOTAL_PENDING;
+
+                            let QTY_TOTAL_PENDING = lastRecord.QTY_TOTAL_PENDING;
                             let AMOUNT_TOTAL_PENDING_USD = lastRecord.AMOUNT_TOTAL_PENDING_USD;
                             let AMOUNT_TOTAL_PENDING_SEND = lastRecord.AMOUNT_TOTAL_PENDING_SEND;
                             let AMOUNT_TOTAL_PENDING_SAP = lastRecord.AMOUNT_TOTAL_PENDING_SAP;
-                            
+                            let AMOUNT_TOTAL_PENDING_PENDING_USD = lastRecord.AMOUNT_TOTAL_PENDING_PENDING_USD;
+
                             let QTY_TOTAL_GRANT = lastRecord.QTY_TOTAL_GRANT;
                             let AMOUNT_TOTAL_GRANT_USD = lastRecord.AMOUNT_TOTAL_GRANT_USD;
-                            
+
                             console.log(lstData, 'console.log(lstData)')
                             let a = [];
                             let dataRoot = {text: '.', expanded: false, children: []};
@@ -655,58 +656,58 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                             Ext.Object.each(lstData, function (index, value) {
                                 if (a.indexOf(value.strFormatDate) < 0) {
                                     let x = [];
-                                    
+
                                     let V_QTY_REFUND = 0;
                                     let V_AMOUNT_REFUND_USD = 0;
                                     let V_AMOUNT_REFUND_SEND = 0;
                                     let V_AMOUNT_REFUND_SAP = 0;
                                     let V_AMOUNT_REFUND_PENDING_SAP = 0;
 
-                                     let V_QTY_CHGBACK =0;
+                                    let V_QTY_CHGBACK = 0;
                                     let V_AMOUNT_CHGBACK_USD = 0;
                                     let V_AMOUNT_CHGBACK_SEND = 0;
-                                    let V_AMOUNT_CHGBACK_SAP =0;
+                                    let V_AMOUNT_CHGBACK_SAP = 0;
                                     let V_AMOUNT_CHGBACK_PENDING_SAP = 0;
 
-                                     let V_QTY_REVERSE_CHGBACK = 0;
+                                    let V_QTY_REVERSE_CHGBACK = 0;
                                     let V_AMOUNT_REVERSE_CHGBACK_USD = 0;
                                     let V_AMOUNT_REVERSE_CHGBACK_SEND = 0;
                                     let V_AMOUNT_REVERSE_CHGBACK_SAP = 0;
-                                     let V_AMOUNT_REVERSE_PENDING_CHGBACK_SAP = 0;
+                                    let V_AMOUNT_REVERSE_PENDING_CHGBACK_SAP = 0;
 
-                                     let V_QTY_ACRED = 0;
+                                    let V_QTY_ACRED = 0;
                                     let V_AMOUNT_ACRED_USD = 0;
                                     let V_AMOUNT_ACRED_SEND = 0;
                                     let V_AMOUNT_ACRED_SAP = 0;
                                     let V_AMOUNT_ACRED_PENDING_SAP = 0;
 
-                                     let V_QTY_PENDING = 0;
+                                    let V_QTY_PENDING = 0;
                                     let V_AMOUNT_PENDING_USD = 0;
                                     let V_AMOUNT_PENDING_SEND = 0;
                                     let V_AMOUNT_PENDING_SAP = 0;
-                                    
+
                                     let V_QTY_GRANT = 0;
                                     let V_AMOUNT_GRANT = 0;
-                                    
-                                    
-                        
+
+
+
                                     Ext.Object.each(lstData, function (index, valuex) {
                                         if (value.strFormatDate === valuex.strFormatDate) {
-                                             V_QTY_REFUND += valuex.QTY_REFUND;
+                                            V_QTY_REFUND += valuex.QTY_REFUND;
                                             V_AMOUNT_REFUND_USD += valuex.AMOUNT_REFUND_USD;
-                                             V_AMOUNT_REFUND_SEND += valuex.AMOUNT_REFUND_SEND;
-                                            V_AMOUNT_REFUND_SAP+= valuex.AMOUNT_REFUND_SAP;
-                                            V_AMOUNT_REFUND_PENDING_SAP+= valuex.AMOUNT_REFUND_PENDING_SAP;
+                                            V_AMOUNT_REFUND_SEND += valuex.AMOUNT_REFUND_SEND;
+                                            V_AMOUNT_REFUND_SAP += valuex.AMOUNT_REFUND_SAP;
+                                            V_AMOUNT_REFUND_PENDING_SAP += valuex.AMOUNT_REFUND_PENDING_SAP;
 
                                             V_QTY_CHGBACK += valuex.QTY_CHGBACK;
                                             V_AMOUNT_CHGBACK_USD += valuex.AMOUNT_CHGBACK_USD;
-                                           V_AMOUNT_CHGBACK_SEND += valuex.AMOUNT_CHGBACK_SEND;
+                                            V_AMOUNT_CHGBACK_SEND += valuex.AMOUNT_CHGBACK_SEND;
                                             V_AMOUNT_CHGBACK_SAP += valuex.AMOUNT_CHGBACK_SAP;
                                             V_AMOUNT_CHGBACK_PENDING_SAP += valuex.AMOUNT_CHGBACK_PENDING_SAP;
 
                                             V_QTY_REVERSE_CHGBACK += valuex.QTY_REVERSE_CHGBACK;
-                                             V_AMOUNT_REVERSE_CHGBACK_USD += valuex.AMOUNT_REVERSE_CHGBACK_USD;
-                                             V_AMOUNT_REVERSE_CHGBACK_SEND += valuex.AMOUNT_REVERSE_CHGBACK_SEND;
+                                            V_AMOUNT_REVERSE_CHGBACK_USD += valuex.AMOUNT_REVERSE_CHGBACK_USD;
+                                            V_AMOUNT_REVERSE_CHGBACK_SEND += valuex.AMOUNT_REVERSE_CHGBACK_SEND;
                                             V_AMOUNT_REVERSE_CHGBACK_SAP += valuex.AMOUNT_REVERSE_CHGBACK_SAP;
                                             V_AMOUNT_REVERSE_PENDING_CHGBACK_SAP += valuex.AMOUNT_REVERSE_PENDING_CHGBACK_SAP;
 
@@ -716,12 +717,12 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                                             V_AMOUNT_ACRED_SAP += valuex.AMOUNT_ACRED_SAP;
                                             V_AMOUNT_ACRED_PENDING_SAP += valuex.AMOUNT_ACRED_PENDING_SAP;
 
-                                              V_QTY_PENDING += valuex.QTY_PENDING;
-                                             V_AMOUNT_PENDING_USD += valuex.AMOUNT_PENDING_USD;
-                                             V_AMOUNT_PENDING_SEND += valuex.AMOUNT_PENDING_SEND;
-                                             V_AMOUNT_PENDING_SAP += valuex.AMOUNT_PENDING_SAP;
-                                             
-                                             V_QTY_GRANT += valuex.QTY_GRANT;
+                                            V_QTY_PENDING += valuex.QTY_PENDING;
+                                            V_AMOUNT_PENDING_USD += valuex.AMOUNT_PENDING_USD;
+                                            V_AMOUNT_PENDING_SEND += valuex.AMOUNT_PENDING_SEND;
+                                            V_AMOUNT_PENDING_SAP += valuex.AMOUNT_PENDING_SAP;
+
+                                            V_QTY_GRANT += valuex.QTY_GRANT;
                                             V_AMOUNT_GRANT += valuex.AMOUNT_GRANT;
 
                                             console.log("==========")
@@ -733,83 +734,83 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                                     dataRoot.children.push({
                                         strFormatDate: value.strFormatDate,
                                         IN_FECFILTRO: value.IN_FECFILTRO,
-                                        
-                                        QTY_REFUND : V_QTY_REFUND ,
-                                        AMOUNT_REFUND_USD : V_AMOUNT_REFUND_USD ,
-                                        AMOUNT_REFUND_SEND : V_AMOUNT_REFUND_SEND ,
-                                        AMOUNT_REFUND_SAP : V_AMOUNT_REFUND_SAP ,
-                                        AMOUNT_REFUND_PENDING_SAP : V_AMOUNT_REFUND_PENDING_SAP ,
-                                        
-                                        QTY_CHGBACK : V_QTY_CHGBACK ,
-                                        AMOUNT_CHGBACK_USD : V_AMOUNT_CHGBACK_USD ,
-                                        AMOUNT_CHGBACK_SEND : V_AMOUNT_CHGBACK_SEND ,
-                                        AMOUNT_CHGBACK_SAP : V_AMOUNT_CHGBACK_SAP ,
-                                        AMOUNT_CHGBACK_PENDING_SAP : V_AMOUNT_CHGBACK_PENDING_SAP ,
-                                        
-                                        QTY_REVERSE_CHGBACK : V_QTY_REVERSE_CHGBACK ,
-                                        AMOUNT_REVERSE_CHGBACK_USD : V_AMOUNT_REVERSE_CHGBACK_USD ,
-                                        AMOUNT_REVERSE_CHGBACK_SEND : V_AMOUNT_REVERSE_CHGBACK_SEND ,
-                                        AMOUNT_REVERSE_CHGBACK_SAP : V_AMOUNT_REVERSE_CHGBACK_SAP ,
-                                        AMOUNT_REVERSE_PENDING_CHGBACK_SAP : V_AMOUNT_REVERSE_PENDING_CHGBACK_SAP ,
-                                        
-                                        QTY_ACRED : V_QTY_ACRED ,
-                                        AMOUNT_ACRED_USD : V_AMOUNT_ACRED_USD ,
-                                        AMOUNT_ACRED_SEND : V_AMOUNT_ACRED_SEND ,
-                                        AMOUNT_ACRED_SAP : V_AMOUNT_ACRED_SAP,
+
+                                        QTY_REFUND: V_QTY_REFUND,
+                                        AMOUNT_REFUND_USD: V_AMOUNT_REFUND_USD,
+                                        AMOUNT_REFUND_SEND: V_AMOUNT_REFUND_SEND,
+                                        AMOUNT_REFUND_SAP: V_AMOUNT_REFUND_SAP,
+                                        AMOUNT_REFUND_PENDING_SAP: V_AMOUNT_REFUND_PENDING_SAP,
+
+                                        QTY_CHGBACK: V_QTY_CHGBACK,
+                                        AMOUNT_CHGBACK_USD: V_AMOUNT_CHGBACK_USD,
+                                        AMOUNT_CHGBACK_SEND: V_AMOUNT_CHGBACK_SEND,
+                                        AMOUNT_CHGBACK_SAP: V_AMOUNT_CHGBACK_SAP,
+                                        AMOUNT_CHGBACK_PENDING_SAP: V_AMOUNT_CHGBACK_PENDING_SAP,
+
+                                        QTY_REVERSE_CHGBACK: V_QTY_REVERSE_CHGBACK,
+                                        AMOUNT_REVERSE_CHGBACK_USD: V_AMOUNT_REVERSE_CHGBACK_USD,
+                                        AMOUNT_REVERSE_CHGBACK_SEND: V_AMOUNT_REVERSE_CHGBACK_SEND,
+                                        AMOUNT_REVERSE_CHGBACK_SAP: V_AMOUNT_REVERSE_CHGBACK_SAP,
+                                        AMOUNT_REVERSE_PENDING_CHGBACK_SAP: V_AMOUNT_REVERSE_PENDING_CHGBACK_SAP,
+
+                                        QTY_ACRED: V_QTY_ACRED,
+                                        AMOUNT_ACRED_USD: V_AMOUNT_ACRED_USD,
+                                        AMOUNT_ACRED_SEND: V_AMOUNT_ACRED_SEND,
+                                        AMOUNT_ACRED_SAP: V_AMOUNT_ACRED_SAP,
                                         AMOUNT_ACRED_PENDING_SAP: V_AMOUNT_ACRED_PENDING_SAP,
-                                        
-                                        QTY_PENDING : V_QTY_PENDING ,
-                                        AMOUNT_PENDING_USD : V_AMOUNT_PENDING_USD ,
-                                        AMOUNT_PENDING_SEND : V_AMOUNT_PENDING_SEND ,
-                                        AMOUNT_PENDING_SAP : V_AMOUNT_PENDING_SAP ,
-                                        
-                                        QTY_GRANT : V_QTY_GRANT ,
-                                        AMOUNT_GRANT : V_AMOUNT_GRANT,
+
+                                        QTY_PENDING: V_QTY_PENDING,
+                                        AMOUNT_PENDING_USD: V_AMOUNT_PENDING_USD,
+                                        AMOUNT_PENDING_SEND: V_AMOUNT_PENDING_SEND,
+                                        AMOUNT_PENDING_SAP: V_AMOUNT_PENDING_SAP,
+
+                                        QTY_GRANT: V_QTY_GRANT,
+                                        AMOUNT_GRANT: V_AMOUNT_GRANT,
 
                                         expanded: false, children: []
                                     });
-                                    
+
                                     let b = [];
                                     Ext.Object.each(lstData, function (index, value01) {
                                         if (value.strFormatDate === value01.strFormatDate) {
-                                            console.log(value01,'value01')
+                                            console.log(value01, 'value01')
                                             dataRoot.children[a.indexOf(value.strFormatDate)].children.push({
                                                 strFormatDate: value01.strFormatDate,
                                                 CCUST: value01.CCUST,
                                                 IN_FECFILTRO: value01.IN_FECFILTRO,
-                                                
-                                                QTY_REFUND : value01.QTY_REFUND ,
-                                                AMOUNT_REFUND_USD : value01.AMOUNT_REFUND_USD ,
-                                                AMOUNT_REFUND_PENDING_SAP :value01.AMOUNT_REFUND_PENDING_SAP,
-                                                AMOUNT_REFUND_SEND : value01.AMOUNT_REFUND_SEND ,
-                                                AMOUNT_REFUND_SAP : value01.AMOUNT_REFUND_SAP ,
 
-                                                QTY_CHGBACK : value01.QTY_CHGBACK ,
-                                                AMOUNT_CHGBACK_USD : value01.AMOUNT_CHGBACK_USD ,
+                                                QTY_REFUND: value01.QTY_REFUND,
+                                                AMOUNT_REFUND_USD: value01.AMOUNT_REFUND_USD,
+                                                AMOUNT_REFUND_PENDING_SAP: value01.AMOUNT_REFUND_PENDING_SAP,
+                                                AMOUNT_REFUND_SEND: value01.AMOUNT_REFUND_SEND,
+                                                AMOUNT_REFUND_SAP: value01.AMOUNT_REFUND_SAP,
+
+                                                QTY_CHGBACK: value01.QTY_CHGBACK,
+                                                AMOUNT_CHGBACK_USD: value01.AMOUNT_CHGBACK_USD,
                                                 AMOUNT_CHGBACK_PENDING_SAP: value01.AMOUNT_CHGBACK_PENDING_SAP,
-                                                AMOUNT_CHGBACK_SEND : value01.AMOUNT_CHGBACK_SEND ,
-                                                AMOUNT_CHGBACK_SAP : value01.AMOUNT_CHGBACK_SAP ,
+                                                AMOUNT_CHGBACK_SEND: value01.AMOUNT_CHGBACK_SEND,
+                                                AMOUNT_CHGBACK_SAP: value01.AMOUNT_CHGBACK_SAP,
 
-                                                QTY_REVERSE_CHGBACK : value01.QTY_REVERSE_CHGBACK ,
-                                                AMOUNT_REVERSE_CHGBACK_USD : value01.AMOUNT_REVERSE_CHGBACK_USD ,
+                                                QTY_REVERSE_CHGBACK: value01.QTY_REVERSE_CHGBACK,
+                                                AMOUNT_REVERSE_CHGBACK_USD: value01.AMOUNT_REVERSE_CHGBACK_USD,
                                                 AMOUNT_REVERSE_PENDING_CHGBACK_SAP: value01.AMOUNT_REVERSE_PENDING_CHGBACK_SAP,
-                                                AMOUNT_REVERSE_CHGBACK_SEND : value01.AMOUNT_REVERSE_CHGBACK_SEND ,
-                                                AMOUNT_REVERSE_CHGBACK_SAP : value01.AMOUNT_REVERSE_CHGBACK_SAP ,
+                                                AMOUNT_REVERSE_CHGBACK_SEND: value01.AMOUNT_REVERSE_CHGBACK_SEND,
+                                                AMOUNT_REVERSE_CHGBACK_SAP: value01.AMOUNT_REVERSE_CHGBACK_SAP,
 
-                                                QTY_ACRED : value01.QTY_ACRED ,
-                                                AMOUNT_ACRED_USD : value01.AMOUNT_ACRED_USD ,
+                                                QTY_ACRED: value01.QTY_ACRED,
+                                                AMOUNT_ACRED_USD: value01.AMOUNT_ACRED_USD,
                                                 AMOUNT_ACRED_PENDING_SAP: value01.AMOUNT_ACRED_PENDING_SAP,
-                                                AMOUNT_ACRED_SEND : value01.AMOUNT_ACRED_SEND ,
-                                                AMOUNT_ACRED_SAP : value01.AMOUNT_ACRED_SAP,
+                                                AMOUNT_ACRED_SEND: value01.AMOUNT_ACRED_SEND,
+                                                AMOUNT_ACRED_SAP: value01.AMOUNT_ACRED_SAP,
 
-                                                QTY_PENDING : value01.QTY_PENDING ,
-                                                AMOUNT_PENDING_USD : value01.AMOUNT_PENDING_USD ,
-                                                AMOUNT_PENDING_SEND :value01.AMOUNT_PENDING_SEND ,
-                                                AMOUNT_PENDING_SAP : value01.AMOUNT_PENDING_SAP ,
-                                                
-                                                 QTY_GRANT : value01.QTY_GRANT ,
-                                                AMOUNT_GRANT : value01.AMOUNT_GRANT ,
-                                                
+                                                QTY_PENDING: value01.QTY_PENDING,
+                                                AMOUNT_PENDING_USD: value01.AMOUNT_PENDING_USD,
+                                                AMOUNT_PENDING_SEND: value01.AMOUNT_PENDING_SEND,
+                                                AMOUNT_PENDING_SAP: value01.AMOUNT_PENDING_SAP,
+
+                                                QTY_GRANT: value01.QTY_GRANT,
+                                                AMOUNT_GRANT: value01.AMOUNT_GRANT,
+
                                                 leaf: true
                                             });
                                         }
@@ -822,168 +823,243 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                             });
 
                             Ext.getCmp(prototype.id + '-gridSumaryMain').setStore(storeTree);
-                            
-                          
-                            
+
+
+
                             Ext.getCmp(prototype.id + '-QTY_TOTAL_REFUND').setText(Ext.util.Format.number(QTY_TOTAL_REFUND, '0,000'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_REFUND_USD').setText(Ext.util.Format.number(AMOUNT_TOTAL_REFUND_USD, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_REFUND_PENDING_USD').setText(Ext.util.Format.number(AMOUNT_TOTAL_REFUND_PENDING_USD, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_REFUND_SEND').setText(Ext.util.Format.number(AMOUNT_TOTAL_REFUND_SEND, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_REFUND_SAP').setText(Ext.util.Format.number(AMOUNT_TOTAL_REFUND_SAP, '0,000.00'));
-                            
-                            Ext.getCmp(prototype.id + '-QTY_TOTAL_CHGBACK').setText( '<span style="color:#4A90E2; font-weight:bold; text-decoration:underline; cursor:pointer;">' +
-                            Ext.util.Format.number(QTY_TOTAL_CHGBACK, '0,000') +  '</span>',  false);
+
+                            Ext.getCmp(prototype.id + '-QTY_TOTAL_CHGBACK').setText('<span style="color:#4A90E2; font-weight:bold; text-decoration:underline; cursor:pointer;">' +
+                                    Ext.util.Format.number(QTY_TOTAL_CHGBACK, '0,000') + '</span>', false);
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_CHGBACK_USD').setText(Ext.util.Format.number(AMOUNT_TOTAL_CHGBACK_USD, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_CHGBACK_PENDING_USD').setText(Ext.util.Format.number(AMOUNT_TOTAL_CHGBACK_PENDING_USD, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_CHGBACK_SEND').setText(Ext.util.Format.number(AMOUNT_TOTAL_CHGBACK_SEND, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_CHGBACK_SAP').setText(Ext.util.Format.number(AMOUNT_TOTAL_CHGBACK_SAP, '0,000.00'));
-                            
-                             Ext.getCmp(prototype.id + '-QTY_TOTAL_REVERSE_CHGBACK').setText(Ext.util.Format.number(QTY_TOTAL_REVERSE_CHGBACK, '0,000'));
+
+                            Ext.getCmp(prototype.id + '-QTY_TOTAL_REVERSE_CHGBACK').setText(Ext.util.Format.number(QTY_TOTAL_REVERSE_CHGBACK, '0,000'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_REVERSE_CHGBACK_USD').setText(Ext.util.Format.number(AMOUNT_TOTAL_REVERSE_CHGBACK_USD, '0,000.00'));
-                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_REVERSE_CHGBACK_PENDING_USD').setText(Ext.util.Format.number(AMOUNT_TOTAL_REVERSE_CHGBACK_PENDING_USD, '0,000.00'));
+                            Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_REVERSE_CHGBACK_PENDING_USD').setText(Ext.util.Format.number(AMOUNT_TOTAL_REVERSE_CHGBACK_PENDING_USD, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_REVERSE_CHGBACK_SEND').setText(Ext.util.Format.number(AMOUNT_TOTAL_REVERSE_CHGBACK_SEND, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_REVERSE_CHGBACK_SAP').setText(Ext.util.Format.number(AMOUNT_TOTAL_REVERSE_CHGBACK_SAP, '0,000.00'));
-                            
-                             Ext.getCmp(prototype.id + '-QTY_TOTAL_ACRED').setText(Ext.util.Format.number(QTY_TOTAL_ACRED, '0,000'));
+
+                            Ext.getCmp(prototype.id + '-QTY_TOTAL_ACRED').setText(Ext.util.Format.number(QTY_TOTAL_ACRED, '0,000'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_ACRED_USD').setText(Ext.util.Format.number(AMOUNT_TOTAL_ACRED_USD, '0,000.00'));
-                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_ACRED_PENDING_USD').setText(Ext.util.Format.number(AMOUNT_TOTAL_ACRED_PENDING_USD, '0,000.00'));
+                            Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_ACRED_PENDING_USD').setText(Ext.util.Format.number(AMOUNT_TOTAL_ACRED_PENDING_USD, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_ACRED_SEND').setText(Ext.util.Format.number(AMOUNT_TOTAL_ACRED_SEND, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_ACRED_SAP').setText(Ext.util.Format.number(AMOUNT_TOTAL_ACRED_SAP, '0,000.00'));
-                            
-                            Ext.getCmp(prototype.id + '-QTY_TOTAL_PENDING').setText( '<span style="color:white; font-weight:bold; text-decoration:underline; cursor:pointer;">' +
-                            Ext.util.Format.number(QTY_TOTAL_PENDING, '0,000') +  '</span>',  false);
 
-                            Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_PENDING_USD').setText( '<span style="color:white; font-weight:bold; ">' +
-                            Ext.util.Format.number(AMOUNT_TOTAL_PENDING_USD, '0,000') +  '</span>',  false);
-                            
+                            Ext.getCmp(prototype.id + '-QTY_TOTAL_PENDING').setText('<span style="color:white; font-weight:bold; text-decoration:underline; cursor:pointer;">' +
+                                    Ext.util.Format.number(QTY_TOTAL_PENDING, '0,000') + '</span>', false);
+
+                            Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_PENDING_USD').setText('<span style="color:white; font-weight:bold; ">' +
+                                    Ext.util.Format.number(AMOUNT_TOTAL_PENDING_USD, '0,000') + '</span>', false);
+
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_PENDING_SEND').setText(Ext.util.Format.number(AMOUNT_TOTAL_PENDING_SEND, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_PENDING_SAP').setText(Ext.util.Format.number(AMOUNT_TOTAL_PENDING_SAP, '0,000.00'));
-                            
+
                             Ext.getCmp(prototype.id + '-QTY_TOTAL_GRANT').setText(Ext.util.Format.number(QTY_TOTAL_GRANT, '0,000'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_GRANT').setText(Ext.util.Format.number(AMOUNT_TOTAL_GRANT_USD, '0,000.00'));
-                            
-                            
+
+
                             var data = lastRecord;
                             console.log(lastRecord, 'datadata');
                             console.log(obj, 'objobj');
-                            
+
                             let item = {};
                             let item2 = {};
                             let item3 = {};
                             let item4 = {};
                             let item5 = {};
                             let totals = [];
-let totalCantidad = lastRecord.QTY_TOTAL_REFUND +
-    lastRecord.QTY_TOTAL_CHGBACK +
-    lastRecord.QTY_TOTAL_REVERSE_CHGBACK +
-    lastRecord.QTY_TOTAL_ACRED +
-    lastRecord.QTY_TOTAL_PENDING;
+                            let totalCantidad = lastRecord.QTY_TOTAL_REFUND +
+                                    lastRecord.QTY_TOTAL_CHGBACK +
+                                    lastRecord.QTY_TOTAL_REVERSE_CHGBACK +
+                                    lastRecord.QTY_TOTAL_ACRED +
+                                    lastRecord.QTY_TOTAL_PENDING;
 
-let refundMatch = (lastRecord.QTY_TOTAL_REFUND / totalCantidad) * 100;
-let chgbkMatch = (lastRecord.QTY_TOTAL_CHGBACK / totalCantidad) * 100;
-let reverseChgbkMatch = (lastRecord.QTY_TOTAL_REVERSE_CHGBACK / totalCantidad) * 100;
-let acreditMatch = (lastRecord.QTY_TOTAL_ACRED / totalCantidad) * 100;
-let othersPend = (lastRecord.QTY_TOTAL_PENDING / totalCantidad) * 100;
+                            let refundMatch = (lastRecord.QTY_TOTAL_REFUND / totalCantidad) * 100;
+                            let chgbkMatch = (lastRecord.QTY_TOTAL_CHGBACK / totalCantidad) * 100;
+                            let reverseChgbkMatch = (lastRecord.QTY_TOTAL_REVERSE_CHGBACK / totalCantidad) * 100;
+                            let acreditMatch = (lastRecord.QTY_TOTAL_ACRED / totalCantidad) * 100;
+                            let othersPend = (lastRecord.QTY_TOTAL_PENDING / totalCantidad) * 100;
 
-if (obj.data.items.length > 0) {
-    totals.push({
-        LABEL: 'Refund',
-        Perc2: lastRecord.QTY_TOTAL_REFUND,
-        VENDOR: 'Refund:\n' + Ext.util.Format.number(refundMatch, '0.00%')
-    });
-    
-    totals.push({
-        LABEL: 'Pending',
-        Perc2: lastRecord.QTY_TOTAL_PENDING,
-        VENDOR: 'Pending:\n' + Ext.util.Format.number(othersPend, '0.00%')
-    });
-    totals.push({
-        LABEL: 'Chgback',
-        Perc2: lastRecord.QTY_TOTAL_CHGBACK,
-        VENDOR: 'Chgback:\n' + Ext.util.Format.number(chgbkMatch, '0.00%')
-    });
-    totals.push({
-        LABEL: 'Acredit',
-        Perc2: lastRecord.QTY_TOTAL_ACRED,
-        VENDOR: 'Acredit:\n'+ Ext.util.Format.number(acreditMatch, '0.00%')
-    });
-    totals.push({
-        LABEL: 'Chgback Reverse',
-        Perc2: lastRecord.QTY_TOTAL_REVERSE_CHGBACK,
-        VENDOR: 'Chgback Reverse:\n' + Ext.util.Format.number(reverseChgbkMatch, '0.00%')
-    });
-}
+                            if (obj.data.items.length > 0) {
+                                totals.push({
+                                    LABEL: 'Refund',
+                                    Perc2: lastRecord.QTY_TOTAL_REFUND,
+                                    VENDOR: 'Refund:\n' + Ext.util.Format.number(refundMatch, '0.00%')
+                                });
 
-var storeData1er = Ext.create('Ext.data.Store', {
-    data: totals,
-    autoLoad: true
-});
+                                totals.push({
+                                    LABEL: 'Pending',
+                                    Perc2: lastRecord.QTY_TOTAL_PENDING,
+                                    VENDOR: 'Pending:\n' + Ext.util.Format.number(othersPend, '0.00%')
+                                });
+                                totals.push({
+                                    LABEL: 'Chgback',
+                                    Perc2: lastRecord.QTY_TOTAL_CHGBACK,
+                                    VENDOR: 'Chgback:\n' + Ext.util.Format.number(chgbkMatch, '0.00%')
+                                });
+                                totals.push({
+                                    LABEL: 'Acredit',
+                                    Perc2: lastRecord.QTY_TOTAL_ACRED,
+                                    VENDOR: 'Acredit:\n' + Ext.util.Format.number(acreditMatch, '0.00%')
+                                });
+                                totals.push({
+                                    LABEL: 'Chgback Reverse',
+                                    Perc2: lastRecord.QTY_TOTAL_REVERSE_CHGBACK,
+                                    VENDOR: 'Chgback Reverse:\n' + Ext.util.Format.number(reverseChgbkMatch, '0.00%')
+                                });
+                            }
 
-Ext.getCmp(prototype.id + '-displayPolarSM').bindStore(storeData1er);
+                            var storeData1er = Ext.create('Ext.data.Store', {
+                                data: totals,
+                                autoLoad: true
+                            });
+
+                            Ext.getCmp(prototype.id + '-displayPolarSM').bindStore(storeData1er);
+
+
+                            let AMOUNT_PENDING_GLOBAL =
+                                    AMOUNT_TOTAL_REFUND_PENDING_USD +
+                                    AMOUNT_TOTAL_CHGBACK_PENDING_USD +
+                                    AMOUNT_TOTAL_REVERSE_CHGBACK_PENDING_USD +
+                                    AMOUNT_TOTAL_ACRED_PENDING_USD +
+                                    AMOUNT_TOTAL_PENDING_PENDING_USD;
+
+                            let AMOUNT_SENT_GLOBAL =
+                                    AMOUNT_TOTAL_REFUND_SEND +
+                                    AMOUNT_TOTAL_CHGBACK_SEND +
+                                    AMOUNT_TOTAL_REVERSE_CHGBACK_SEND +
+                                    AMOUNT_TOTAL_ACRED_SEND +
+                                    AMOUNT_TOTAL_PENDING_SEND;
+
+                            let AMOUNT_SAP_GLOBAL =
+                                    AMOUNT_TOTAL_REFUND_SAP +
+                                    AMOUNT_TOTAL_CHGBACK_SAP +
+                                    AMOUNT_TOTAL_REVERSE_CHGBACK_SAP +
+                                    AMOUNT_TOTAL_ACRED_SAP +
+                                    AMOUNT_TOTAL_PENDING_SAP;
+
+                            let AMOUNT_SENT_NETO = AMOUNT_SENT_GLOBAL - AMOUNT_SAP_GLOBAL;
+
+                            let TOTAL_GENERAL =
+                                    AMOUNT_PENDING_GLOBAL +
+                                    AMOUNT_SENT_NETO +
+                                    AMOUNT_SAP_GLOBAL;
+
+                            let PERC_PENDING = (AMOUNT_PENDING_GLOBAL / TOTAL_GENERAL) * 100;
+                            let PERC_SENT = (AMOUNT_SENT_NETO / TOTAL_GENERAL) * 100;
+                            let PERC_SAP = (AMOUNT_SAP_GLOBAL / TOTAL_GENERAL) * 100;
+
+                            let totalsT = [];
+
+                            if (TOTAL_GENERAL > 0) {
+
+                                totalsT.push({
+                                    LABEL: 'Pending to Send',
+                                    Perc2: AMOUNT_PENDING_GLOBAL, // monto REAL
+                                    VENDOR: 'Pending to Send:\n' +
+                                            Ext.util.Format.number(PERC_PENDING, '0.00%')
+                                });
+
+                                totalsT.push({
+                                    LABEL: 'Sent',
+                                    Perc2: AMOUNT_SENT_NETO,
+                                    VENDOR: 'Sent (No SAP):\n' +
+                                            Ext.util.Format.number(PERC_SENT, '0.00%')
+                                });
+
+                                totalsT.push({
+                                    LABEL: 'SAP',
+                                    Perc2: AMOUNT_SAP_GLOBAL,
+                                    VENDOR: 'SAP:\n' +
+                                            Ext.util.Format.number(PERC_SAP, '0.00%')
+                                });
+                            }
+
+                            var storeDataTotal = Ext.create('Ext.data.Store', {
+                                data: totals,
+                                autoLoad: true
+                            });
+
+                            Ext.getCmp(prototype.id + '-displayPolarSMTotal')
+                                    .bindStore(storeDataTotal);
+
+
+
+
+
+
+
 //Ext.getCmp(prototype.id + '-lblTittlePaidSumaryMain').setText('Totals Debits: ' + Ext.util.Format.number(totalCantidad, '0,000.00'));
 
-    // Supongamos que ya tienes lastRecord con tus datos
+                            // Supongamos que ya tienes lastRecord con tus datos
 // Supongamos que lastRecord ya contiene tus montos
-let dataBar = [
-    {
-        category: 'Refund',
-        USD: lastRecord.AMOUNT_TOTAL_REFUND_USD,
-        SEND: lastRecord.AMOUNT_TOTAL_REFUND_SEND,
-        SAP: lastRecord.AMOUNT_TOTAL_REFUND_SAP
-    },
-    {
-        category: 'Chargeback',
-        USD: lastRecord.AMOUNT_TOTAL_CHGBACK_USD,
-        SEND: lastRecord.AMOUNT_TOTAL_CHGBACK_SEND,
-        SAP: lastRecord.AMOUNT_TOTAL_CHGBACK_SAP
-    },
-    {
-        category: 'Reverse ChgBck',
-        USD: lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_USD,
-        SEND: lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_SEND,
-        SAP: lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_SAP
-    },
-    {
-        category: 'Acreditaciones',
-        USD: lastRecord.AMOUNT_TOTAL_ACRED_USD,
-        SEND: lastRecord.AMOUNT_TOTAL_ACRED_SEND,
-        SAP: lastRecord.AMOUNT_TOTAL_ACRED_SAP
-    },
-    {
-        category: 'Pendiente',
-        USD: lastRecord.AMOUNT_TOTAL_PENDING_USD,
-        SEND: 0,
-        SAP: 0
-    }
-];
+                            let dataBar = [
+                                {
+                                    category: 'Refund',
+                                    USD: lastRecord.AMOUNT_TOTAL_REFUND_USD,
+                                    SEND: lastRecord.AMOUNT_TOTAL_REFUND_SEND,
+                                    SAP: lastRecord.AMOUNT_TOTAL_REFUND_SAP
+                                },
+                                {
+                                    category: 'Chargeback',
+                                    USD: lastRecord.AMOUNT_TOTAL_CHGBACK_USD,
+                                    SEND: lastRecord.AMOUNT_TOTAL_CHGBACK_SEND,
+                                    SAP: lastRecord.AMOUNT_TOTAL_CHGBACK_SAP
+                                },
+                                {
+                                    category: 'Reverse ChgBck',
+                                    USD: lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_USD,
+                                    SEND: lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_SEND,
+                                    SAP: lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_SAP
+                                },
+                                {
+                                    category: 'Acreditaciones',
+                                    USD: lastRecord.AMOUNT_TOTAL_ACRED_USD,
+                                    SEND: lastRecord.AMOUNT_TOTAL_ACRED_SEND,
+                                    SAP: lastRecord.AMOUNT_TOTAL_ACRED_SAP
+                                },
+                                {
+                                    category: 'Pendiente',
+                                    USD: lastRecord.AMOUNT_TOTAL_PENDING_USD,
+                                    SEND: 0,
+                                    SAP: 0
+                                }
+                            ];
 
 // Asignar store al gráfico
-let chart = Ext.getCmp(prototype.id + '-displayBarSM');
-chart.setStore({
-    fields: ['category', 'USD', 'SEND', 'SAP'],
-    data: dataBar
-});
+                            let chart = Ext.getCmp(prototype.id + '-displayBarSM');
+                            chart.setStore({
+                                fields: ['category', 'USD', 'SEND', 'SAP'],
+                                data: dataBar
+                            });
 
 // Opcional: definir títulos de la serie (se hace aquí porque no se puede en HTML si es dinámico)
-chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
+                            chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
 
 
 //Ext.getCmp(prototype.id + '-displayBarSM').bindStore(chart);
-    
-    
+
+
                         }
 //                        me.setWidthPie();
                     }
                 }
             });
             global.clear();
-            
+
 //            Ext.getCmp(prototype.id + '-gridSumaryMain').bindStore(storeGridDatas);
 //            Ext.getCmp(prototype.id + '-paggin2').bindStore(storeGridDatas);
         }
     },
-    getPeriodoYYYYMM: function(strFormatDate) {
-        if (!strFormatDate) return null;
+    getPeriodoYYYYMM: function (strFormatDate) {
+        if (!strFormatDate)
+            return null;
 
         strFormatDate = strFormatDate.trim();
         let partes = strFormatDate.split('-');
@@ -1001,21 +1077,22 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
         let mes = meses[mesTxt] || '00';
 
         if (dia) {
-            if (dia.length === 1) dia = '0' + dia;
+            if (dia.length === 1)
+                dia = '0' + dia;
             return anio + mes + dia;
         } else {
             return anio + mes;
         }
     },
     onGridDataDetailReverse: function (column, e, rowIndex, colIndex, rowData) {
-        console.log(rowData,'rowData')
+        console.log(rowData, 'rowData')
         let esPadre = rowData.record.childNodes.length ? true : false;
         let rowPadre = rowData.record.data;
         let opcion = colIndex;
         let fecha = this.getPeriodoYYYYMM(rowPadre.strFormatDate);
         me.bean = {};
-        
-        console.log(opcion,'opcion')
+
+        console.log(opcion, 'opcion')
         switch (opcion) {
 
             case 2:
@@ -1023,12 +1100,12 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                 me.bean.IN_CONT = "";
                 me.bean.IN_TDOC = "RC";
                 break;
-        case 4:
+            case 4:
 //                REVERSA CHARBACK SEND
                 me.bean.IN_CONT = "RVPEN";
                 me.bean.IN_TDOC = "RC";
                 break;
-          case 5:
+            case 5:
 //                REVERSA CHARBACK SEND
                 me.bean.IN_CONT = "RVSEND";
                 me.bean.IN_TDOC = "RC";
@@ -1042,14 +1119,14 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                 resultado = 'AV GROUP';
                 break;
         }
-        
-        
+
+
         if (esPadre) {
             me.bean.IN_CCUST = "";
         } else {
-            me.bean.IN_CCUST =rowPadre.CCUST;
+            me.bean.IN_CCUST = rowPadre.CCUST;
         }
-        
+
         me.bean.IN_DATE = fecha;
         me.bean.IN_FECFILTRO = rowPadre.IN_FECFILTRO;
         me.bean.IN_CODPRO = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
@@ -1057,21 +1134,21 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
         me.bean.IN_CONTABLE = Ext.getCmp(prototype.id + '-txtIIDCONTABLE').getValue();
 
         me.paramsDetail.beanString = JSON.stringify(me.bean);
-        
+
         console.log(me.panelActual, 'me.panelActual')
         console.log(me.bean, 'searchParamsDETAILLLL')
-        
+
         this.setGridDataDetail();
     },
     onGridDataDetail: function (column, e, rowIndex, colIndex, rowData) {
-        console.log(rowData,'rowData')
+        console.log(rowData, 'rowData')
         let esPadre = rowData.record.childNodes.length ? true : false;
         let rowPadre = rowData.record.data;
         let opcion = colIndex;
         let fecha = this.getPeriodoYYYYMM(rowPadre.strFormatDate);
         me.bean = {};
-        
-        console.log(opcion,'opcion')
+
+        console.log(opcion, 'opcion')
         switch (opcion) {
             case 1:
 //                GRANT TOTAL CCUST 
@@ -1083,7 +1160,7 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                 me.bean.IN_CONT = "";
                 me.bean.IN_TDOC = "";
                 break;
-             case 4:
+            case 4:
 //                REEMBOLSO QTY
                 me.bean.IN_CONT = "";
                 me.bean.IN_TDOC = "R";
@@ -1092,8 +1169,8 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
 //                REEMBOLSO AMOUNT PEN
                 me.bean.IN_CONT = "RPEN";
                 me.bean.IN_TDOC = "R";
-                 break;
-             case 7:
+                break;
+            case 7:
 //                REEMBOLSO AMOUNT SEND
                 me.bean.IN_CONT = "RSEND";
                 me.bean.IN_TDOC = "R";
@@ -1103,24 +1180,24 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                 me.bean.IN_CONT = "RSAP";
                 me.bean.IN_TDOC = "R";
                 break;
-             case 9:
+            case 9:
 //                CHARBACK
                 me.bean.IN_CONT = "";
                 me.bean.IN_TDOC = "C";
                 break;
             case 11:
 //                CHARBACK SEND
-                 me.bean.IN_CONT = "CPEN";
+                me.bean.IN_CONT = "CPEN";
                 me.bean.IN_TDOC = "C";
                 break;
             case 12:
 //                CHARBACK SEND
-                 me.bean.IN_CONT = "CSEND";
+                me.bean.IN_CONT = "CSEND";
                 me.bean.IN_TDOC = "C";
                 break;
             case 13:
 //                CHARBACK SAP
-                 me.bean.IN_CONT = "CSAP";
+                me.bean.IN_CONT = "CSAP";
                 me.bean.IN_TDOC = "C";
                 break;
             case 14:
@@ -1128,12 +1205,12 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                 me.bean.IN_CONT = "";
                 me.bean.IN_TDOC = "RC";
                 break;
-        case 16:
+            case 16:
 //                REVERSA CHARBACK SEND
                 me.bean.IN_CONT = "RVPEN";
                 me.bean.IN_TDOC = "RC";
                 break;
-          case 17:
+            case 17:
 //                REVERSA CHARBACK SEND
                 me.bean.IN_CONT = "RVSEND";
                 me.bean.IN_TDOC = "RC";
@@ -1148,11 +1225,11 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                 me.bean.IN_CONT = "";
                 me.bean.IN_TDOC = "A";
                 break;
-             case 21:
+            case 21:
 //                ACREDITACIONES SEND
                 me.bean.IN_CONT = "APEN";
                 me.bean.IN_TDOC = "A";
-                 break;
+                break;
             case 22:
 //                ACREDITACIONES SEND
                 me.bean.IN_CONT = "ASEND";
@@ -1172,14 +1249,14 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                 resultado = 'AV GROUP';
                 break;
         }
-        
-        
+
+
         if (esPadre) {
             me.bean.IN_CCUST = "";
         } else {
-            me.bean.IN_CCUST =rowPadre.CCUST;
+            me.bean.IN_CCUST = rowPadre.CCUST;
         }
-        
+
         me.bean.IN_DATE = fecha;
         me.bean.IN_FECFILTRO = rowPadre.IN_FECFILTRO;
         me.bean.IN_CODPRO = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
@@ -1187,20 +1264,20 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
         me.bean.IN_CONTABLE = Ext.getCmp(prototype.id + '-txtIIDCONTABLE').getValue();
 
         me.paramsDetail.beanString = JSON.stringify(me.bean);
-        
+
         console.log(me.panelActual, 'me.panelActual')
         console.log(me.bean, 'searchParamsDETAILLLL')
-        
+
         this.setGridDataDetail();
     },
-    setGridDataDetail: function (){
+    setGridDataDetail: function () {
         win.lblUser_toolTip("Estructura: MPF101");
-        
+
         if (me.panelActual != '-boxDataDetail') {
             me.drillDown.push(me.panelActual);
             me.panelActual = '-boxDataDetail';
         }
-        
+
         Ext.getCmp(prototype.id + '-panelHeight').setHeight(620);
         global.selectedChild(me.childs, prototype.id + me.panelActual);
         var msj = this.validateFields();
@@ -1216,7 +1293,7 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                         obj.proxy.extraParams = me.paramsDetail;
                     },
                     load: function (obj) {
-                        console.log(obj,'objAAAA')
+                        console.log(obj, 'objAAAA')
                         var pag = Ext.getCmp(prototype.id + '-paggin3');
                         var pagData = pag.getPageData();
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
@@ -1266,23 +1343,23 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
     btnBack_click: function (obj, e) {
 
         if (me.drillDown.length > 0) {
-            
-             let summaryBoolean = Ext.getCmp(prototype.id + '-panelGridSumaryMain').isVisible()
-                if ( !summaryBoolean ){
-                    Ext.getCmp(prototype.id + '-containerFilters1').hide()
-                    Ext.getCmp(prototype.id + '-containerFilters2').hide()
-                    Ext.getCmp(prototype.id + '-lblExchangeMessage2').show()
-                    Ext.getCmp(prototype.id + '-pie').hide()
-                    Ext.getCmp(prototype.id + '-panelHeight').setHeight(700);
-                }else{
-                     Ext.getCmp(prototype.id + '-panelHeight').setHeight(620);
-                    Ext.getCmp(prototype.id + '-containerFilters1').show()
-                    Ext.getCmp(prototype.id + '-containerFilters2').show()
-                    Ext.getCmp(prototype.id + '-lblExchangeMessage2').hide()
-                    Ext.getCmp(prototype.id + '-pie').show()
-                }
-            
-            
+
+            let summaryBoolean = Ext.getCmp(prototype.id + '-panelGridSumaryMain').isVisible()
+            if (!summaryBoolean) {
+                Ext.getCmp(prototype.id + '-containerFilters1').hide()
+                Ext.getCmp(prototype.id + '-containerFilters2').hide()
+                Ext.getCmp(prototype.id + '-lblExchangeMessage2').show()
+                Ext.getCmp(prototype.id + '-pie').hide()
+                Ext.getCmp(prototype.id + '-panelHeight').setHeight(700);
+            } else {
+                Ext.getCmp(prototype.id + '-panelHeight').setHeight(620);
+                Ext.getCmp(prototype.id + '-containerFilters1').show()
+                Ext.getCmp(prototype.id + '-containerFilters2').show()
+                Ext.getCmp(prototype.id + '-lblExchangeMessage2').hide()
+                Ext.getCmp(prototype.id + '-pie').show()
+            }
+
+
             me.panelActual = me.drillDown.pop();
             global.selectedChild(me.childs, prototype.id + me.panelActual);
 //            me.setWidthPie();
@@ -1339,10 +1416,10 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
             case  '-panelGridSumaryMain':
                 global.getFile(prototype.url + '/getXLSXDashboard?beanString=' + encodeURI(searchParams.beanString));
                 break;
-                case  '-panelGridSumaryMainChgbck':
+            case  '-panelGridSumaryMainChgbck':
                 global.getFile(prototype.url + '/getXLSXDashboardChgbck?beanString=' + encodeURI(searchParams.beanString));
                 break;
-                case  '-panelGridSumaryMainPending':
+            case  '-panelGridSumaryMainPending':
                 global.getFile(prototype.url + '/getXLSXDashboardPending?beanString=' + encodeURI(searchParams.beanString));
                 break;
             case  '-boxDataDetail':
@@ -1372,15 +1449,15 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
     },
     getPaggin: function () {
         me.pagginActual = '';
-        
-        console.log(me.panelActual,'me.panelActual')
-        
+
+        console.log(me.panelActual, 'me.panelActual')
+
         if (me.panelActual === '-panelGridSumaryMainChgbck') {
-           Ext.getCmp(prototype.id + '-toggleDebit').show() 
+            Ext.getCmp(prototype.id + '-toggleDebit').show()
         } else {
-            Ext.getCmp(prototype.id + '-toggleDebit').hide() 
+            Ext.getCmp(prototype.id + '-toggleDebit').hide()
         }
-        
+
         switch (me.panelActual) {
             case  '-boxMainData':
                 me.pagginActual = '-paggin';
@@ -1397,7 +1474,7 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                 Ext.getCmp(prototype.id + '-cmbDateToMonth').enable();
                 Ext.getCmp(prototype.id + '-cmbDateToDay').enable();
                 Ext.getCmp(prototype.id + '-cmbFecFiltro').enable();
-                
+
                 break;
             case  '-panelGridSumaryMain':
                 me.pagginActual = '-paggin2';
@@ -1407,7 +1484,7 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                 Ext.getCmp(prototype.id + '-txtIHEADER').show()
                 Ext.getCmp(prototype.id + '-txtIIDCONTABLE').show()
                 Ext.getCmp(prototype.id + '-cmbProcessor').show()
-                
+
                 Ext.getCmp(prototype.id + '-cmbDateFromYear').enable();
                 Ext.getCmp(prototype.id + '-cmbDateFromMonth').enable();
                 Ext.getCmp(prototype.id + '-cmbDateDay').enable();
@@ -1415,7 +1492,7 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                 Ext.getCmp(prototype.id + '-cmbDateToYear').enable();
                 Ext.getCmp(prototype.id + '-cmbDateToMonth').enable();
                 Ext.getCmp(prototype.id + '-cmbDateToDay').enable();
-                
+
                 Ext.getCmp(prototype.id + '-cmbFecFiltro').enable();
                 break;
             case  '-boxDataDetail':
@@ -1425,7 +1502,7 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                 Ext.getCmp(prototype.id + '-txtIHEADER').hide()
                 Ext.getCmp(prototype.id + '-txtIIDCONTABLE').hide()
                 Ext.getCmp(prototype.id + '-cmbProcessor').hide()
-                
+
                 Ext.getCmp(prototype.id + '-cmbDateFromYear').disable();
                 Ext.getCmp(prototype.id + '-cmbDateFromMonth').disable();
                 Ext.getCmp(prototype.id + '-cmbDateDay').disable();
@@ -1434,7 +1511,7 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                 Ext.getCmp(prototype.id + '-cmbDateToMonth').disable();
                 Ext.getCmp(prototype.id + '-cmbDateToDay').disable();
                 Ext.getCmp(prototype.id + '-cmbFecFiltro').disable();
-                
+
                 break;
         }
     },
@@ -1462,7 +1539,7 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                     },
                     load: function (obj) {
                         Ext.getCmp(prototype.id + '-contentInfo').unmask();
-                       
+
                         if (obj.data.length === 0) {
                             global.Msg({
                                 msg: 'Data not found.'
@@ -1474,102 +1551,102 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
 
                                 lstData.push(value.data)
                             }
-                            
+
                             let lastRecord = lstData.length > 0 ? lstData[lstData.length - 1] : null;
-                            console.log(lastRecord,'lastRecord')
+                            console.log(lastRecord, 'lastRecord')
                             let QTY_TOTAL_PENDING = lastRecord.QTY_TOTAL_PENDING;
                             let AMOUNT_TOTAL_PENDING_USD_TOTAL = lastRecord.AMOUNT_TOTAL_PENDING_USD_TOTAL;
-                            
-                             let QTY_TOTAL_ACRED_UN_TOTAL = lastRecord.QTY_TOTAL_ACRED_UN_TOTAL;
+
+                            let QTY_TOTAL_ACRED_UN_TOTAL = lastRecord.QTY_TOTAL_ACRED_UN_TOTAL;
                             let AMOUNT_TOTAL_ACRED_UN_USD_TOTAL = lastRecord.AMOUNT_TOTAL_ACRED_UN_USD_TOTAL;
                             let AMOUNT_TOTAL_ACRED_UN_SEND_TOTAL = lastRecord.AMOUNT_TOTAL_ACRED_UN_SEND_TOTAL;
                             let AMOUNT_TOTAL_ACRED_UN_SAP_TOTAL = lastRecord.AMOUNT_TOTAL_ACRED_UN_SAP_TOTAL;
                             let AMOUNT_TOTAL_ACRED_UN_PENDING_USD_TOTAL = lastRecord.AMOUNT_TOTAL_ACRED_UN_PENDING_USD_TOTAL;
-                            
-                             let QTY_TOTAL_CHGBACK_ID = lastRecord.QTY_TOTAL_CHGBACK_ID;
+
+                            let QTY_TOTAL_CHGBACK_ID = lastRecord.QTY_TOTAL_CHGBACK_ID;
                             let AMOUNT_TOTAL_CHGBACK_USD_ID = lastRecord.AMOUNT_TOTAL_CHGBACK_USD_ID;
                             let AMOUNT_TOTAL_CHGBACK_SEND_ID = lastRecord.AMOUNT_TOTAL_CHGBACK_SEND_ID;
                             let AMOUNT_TOTAL_CHGBACK_SAP_ID = lastRecord.AMOUNT_TOTAL_CHGBACK_SAP_ID;
                             let AMOUNT_TOTAL_CHGBACK_PENDING_USD_ID = lastRecord.AMOUNT_TOTAL_CHGBACK_PENDING_USD_ID;
-                            
-                             let QTY_TOTAL_CHGBACK_IDM = lastRecord.QTY_TOTAL_CHGBACK_IDM;
+
+                            let QTY_TOTAL_CHGBACK_IDM = lastRecord.QTY_TOTAL_CHGBACK_IDM;
                             let AMOUNT_TOTAL_CHGBACK_USD_IDM = lastRecord.AMOUNT_TOTAL_CHGBACK_USD_IDM;
                             let AMOUNT_TOTAL_CHGBACK_SEND_IDM = lastRecord.AMOUNT_TOTAL_CHGBACK_SEND_IDM;
                             let AMOUNT_TOTAL_CHGBACK_SAP_IDM = lastRecord.AMOUNT_TOTAL_CHGBACK_SAP_IDM;
                             let AMOUNT_TOTAL_CHGBACK_PENDING_USD_IDM = lastRecord.AMOUNT_TOTAL_CHGBACK_PENDING_USD_IDM;
-                            
+
                             let QTY_TOTAL_PENDING_REAL = lastRecord.QTY_TOTAL_PENDING_REAL;
                             let AMOUNT_TOTAL_PENDING_REAL_USD = lastRecord.AMOUNT_TOTAL_PENDING_REAL_USD;
                             let AMOUNT_TOTAL_PENDING_REAL_SEND = lastRecord.AMOUNT_TOTAL_PENDING_REAL_SEND;
                             let AMOUNT_TOTAL_PENDING_REAL_SAP = lastRecord.AMOUNT_TOTAL_PENDING_REAL_SAP;
                             let AMOUNT_TOTAL_PENDING_REAL_PENDING_USD = lastRecord.AMOUNT_TOTAL_PENDING_REAL_PENDING_USD;
-                            
+
                             console.log(lstData, 'console.log(lstData)')
-                            
+
                             let a = [];
                             let dataRoot = {text: '.', expanded: false, children: []};
-                            
+
 
                             Ext.Object.each(lstData, function (index, value) {
                                 if (a.indexOf(value.strFormatDate) < 0) {
                                     let x = [];
-                                    
-                                     let V_QTY_PENDING =0;
+
+                                    let V_QTY_PENDING = 0;
                                     let V_AMOUNT_PENDING_USD = 0;
-                                    
-                                     let V_QTY_ACRED_UN =0;
+
+                                    let V_QTY_ACRED_UN = 0;
                                     let V_AMOUNT_ACRED_UN_USD = 0;
                                     let V_AMOUNT_ACRED_UN_SEND = 0;
-                                    let V_AMOUNT_ACRED_UN_SAP =0;
+                                    let V_AMOUNT_ACRED_UN_SAP = 0;
                                     let V_AMOUNT_ACRED_UN_PENDING_SAP = 0;
-                                    
-                                    let V_QTY_CHGBACK_ID =0;
+
+                                    let V_QTY_CHGBACK_ID = 0;
                                     let V_AMOUNT_CHGBACK_USD_ID = 0;
                                     let V_AMOUNT_CHGBACK_SEND_ID = 0;
-                                    let V_AMOUNT_CHGBACK_SAP_ID =0;
+                                    let V_AMOUNT_CHGBACK_SAP_ID = 0;
                                     let V_AMOUNT_CHGBACK_PENDING_SAP_ID = 0;
-                                    
-                                    let V_QTY_CHGBACK_IDM =0;
+
+                                    let V_QTY_CHGBACK_IDM = 0;
                                     let V_AMOUNT_CHGBACK_USD_IDM = 0;
                                     let V_AMOUNT_CHGBACK_SEND_IDM = 0;
-                                    let V_AMOUNT_CHGBACK_SAP_IDM =0;
+                                    let V_AMOUNT_CHGBACK_SAP_IDM = 0;
                                     let V_AMOUNT_CHGBACK_PENDING_SAP_IDM = 0;
-                                    
-                                    let V_QTY_PENDING_REAL =0;
+
+                                    let V_QTY_PENDING_REAL = 0;
                                     let V_AMOUNT_PENDING_REAL_USD = 0;
                                     let V_AMOUNT_PENDING_REAL_SEND = 0;
-                                    let V_AMOUNT_PENDING_REAL_SAP =0;
+                                    let V_AMOUNT_PENDING_REAL_SAP = 0;
                                     let V_AMOUNT_PENDING_REAL_PENDING_SAP = 0;
-                        
+
                                     Ext.Object.each(lstData, function (index, valuex) {
                                         if (value.strFormatDate === valuex.strFormatDate) {
-                                            
-                                             V_QTY_PENDING += valuex.QTY_PENDING;
+
+                                            V_QTY_PENDING += valuex.QTY_PENDING;
                                             V_AMOUNT_PENDING_USD += valuex.AMOUNT_PENDING_USD;
-                                            
-                                             V_QTY_ACRED_UN += valuex.QTY_ACRED_UN;
+
+                                            V_QTY_ACRED_UN += valuex.QTY_ACRED_UN;
                                             V_AMOUNT_ACRED_UN_USD += valuex.AMOUNT_ACRED_UN_USD;
-                                             V_AMOUNT_ACRED_UN_SEND += valuex.AMOUNT_ACRED_UN_SEND;
-                                            V_AMOUNT_ACRED_UN_SAP+= valuex.AMOUNT_ACRED_UN_SAP;
-                                            V_AMOUNT_ACRED_UN_PENDING_SAP+= valuex.AMOUNT_ACRED_UN_PENDING_SAP;
-                                            
+                                            V_AMOUNT_ACRED_UN_SEND += valuex.AMOUNT_ACRED_UN_SEND;
+                                            V_AMOUNT_ACRED_UN_SAP += valuex.AMOUNT_ACRED_UN_SAP;
+                                            V_AMOUNT_ACRED_UN_PENDING_SAP += valuex.AMOUNT_ACRED_UN_PENDING_SAP;
+
                                             V_QTY_CHGBACK_ID += valuex.QTY_CHGBACK_ID;
                                             V_AMOUNT_CHGBACK_USD_ID += valuex.AMOUNT_CHGBACK_USD_ID;
-                                             V_AMOUNT_CHGBACK_SEND_ID += valuex.AMOUNT_CHGBACK_SEND_ID;
-                                            V_AMOUNT_CHGBACK_SAP_ID+= valuex.AMOUNT_CHGBACK_SAP_ID;
-                                            V_AMOUNT_CHGBACK_PENDING_SAP_ID+= valuex.AMOUNT_CHGBACK_PENDING_SAP_ID;
-                                            
+                                            V_AMOUNT_CHGBACK_SEND_ID += valuex.AMOUNT_CHGBACK_SEND_ID;
+                                            V_AMOUNT_CHGBACK_SAP_ID += valuex.AMOUNT_CHGBACK_SAP_ID;
+                                            V_AMOUNT_CHGBACK_PENDING_SAP_ID += valuex.AMOUNT_CHGBACK_PENDING_SAP_ID;
+
                                             V_QTY_CHGBACK_IDM += valuex.QTY_CHGBACK_IDM;
                                             V_AMOUNT_CHGBACK_USD_IDM += valuex.AMOUNT_CHGBACK_USD_IDM;
-                                             V_AMOUNT_CHGBACK_SEND_IDM += valuex.AMOUNT_CHGBACK_SEND_IDM;
-                                            V_AMOUNT_CHGBACK_SAP_IDM+= valuex.AMOUNT_CHGBACK_SAP_IDM;
-                                            V_AMOUNT_CHGBACK_PENDING_SAP_IDM+= valuex.AMOUNT_CHGBACK_PENDING_SAP_IDM;
-                                            
-                                             V_QTY_PENDING_REAL += valuex.QTY_PENDING_REAL;
+                                            V_AMOUNT_CHGBACK_SEND_IDM += valuex.AMOUNT_CHGBACK_SEND_IDM;
+                                            V_AMOUNT_CHGBACK_SAP_IDM += valuex.AMOUNT_CHGBACK_SAP_IDM;
+                                            V_AMOUNT_CHGBACK_PENDING_SAP_IDM += valuex.AMOUNT_CHGBACK_PENDING_SAP_IDM;
+
+                                            V_QTY_PENDING_REAL += valuex.QTY_PENDING_REAL;
                                             V_AMOUNT_PENDING_REAL_USD += valuex.AMOUNT_PENDING_REAL_USD;
-                                             V_AMOUNT_PENDING_REAL_SEND += valuex.AMOUNT_PENDING_REAL_SEND;
-                                            V_AMOUNT_PENDING_REAL_SAP+= valuex.AMOUNT_PENDING_REAL_SAP;
-                                            V_AMOUNT_PENDING_REAL_PENDING_SAP+= valuex.AMOUNT_PENDING_REAL_PENDING_SAP;
+                                            V_AMOUNT_PENDING_REAL_SEND += valuex.AMOUNT_PENDING_REAL_SEND;
+                                            V_AMOUNT_PENDING_REAL_SAP += valuex.AMOUNT_PENDING_REAL_SAP;
+                                            V_AMOUNT_PENDING_REAL_PENDING_SAP += valuex.AMOUNT_PENDING_REAL_PENDING_SAP;
 
                                         }
                                     });
@@ -1579,138 +1656,138 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                                     dataRoot.children.push({
                                         strFormatDate: value.strFormatDate,
                                         IN_FECFILTRO: value.IN_FECFILTRO,
-                                        
-                                         QTY_PENDING : V_QTY_PENDING ,
-                                        AMOUNT_PENDING_USD : V_AMOUNT_PENDING_USD ,
-                                        
-                                        QTY_ACRED_UN : V_QTY_ACRED_UN ,
-                                        AMOUNT_ACRED_UN_USD : V_AMOUNT_ACRED_UN_USD ,
-                                        AMOUNT_ACRED_UN_SEND : V_AMOUNT_ACRED_UN_SEND ,
-                                        AMOUNT_ACRED_UN_SAP : V_AMOUNT_ACRED_UN_SAP ,
-                                        AMOUNT_ACRED_UN_PENDING_SAP : V_AMOUNT_ACRED_UN_PENDING_SAP ,
-                                        
-                                        QTY_CHGBACK_ID : V_QTY_CHGBACK_ID ,
-                                        AMOUNT_CHGBACK_USD_ID : V_AMOUNT_CHGBACK_USD_ID ,
-                                        AMOUNT_CHGBACK_SEND_ID : V_AMOUNT_CHGBACK_SEND_ID ,
-                                        AMOUNT_CHGBACK_SAP_ID : V_AMOUNT_CHGBACK_SAP_ID ,
-                                        AMOUNT_CHGBACK_PENDING_SAP_ID : V_AMOUNT_CHGBACK_PENDING_SAP_ID ,
-                                        
-                                        QTY_CHGBACK_IDM : V_QTY_CHGBACK_IDM ,
-                                        AMOUNT_CHGBACK_USD_IDM : V_AMOUNT_CHGBACK_USD_IDM ,
-                                        AMOUNT_CHGBACK_SEND_IDM : V_AMOUNT_CHGBACK_SEND_IDM ,
-                                        AMOUNT_CHGBACK_SAP_IDM : V_AMOUNT_CHGBACK_SAP_IDM ,
-                                        AMOUNT_CHGBACK_PENDING_SAP_IDM  : V_AMOUNT_CHGBACK_PENDING_SAP_IDM ,
-                                        
-                                        QTY_PENDING_REAL  : V_QTY_PENDING_REAL ,
-                                        AMOUNT_PENDING_REAL_USD : V_AMOUNT_PENDING_REAL_USD ,
-                                        AMOUNT_PENDING_REAL_SEND : V_AMOUNT_PENDING_REAL_SEND ,
-                                        AMOUNT_PENDING_REAL_SAP : V_AMOUNT_PENDING_REAL_SAP ,
-                                        AMOUNT_PENDING_REAL_PENDING_SAP  : V_AMOUNT_PENDING_REAL_PENDING_SAP ,
+
+                                        QTY_PENDING: V_QTY_PENDING,
+                                        AMOUNT_PENDING_USD: V_AMOUNT_PENDING_USD,
+
+                                        QTY_ACRED_UN: V_QTY_ACRED_UN,
+                                        AMOUNT_ACRED_UN_USD: V_AMOUNT_ACRED_UN_USD,
+                                        AMOUNT_ACRED_UN_SEND: V_AMOUNT_ACRED_UN_SEND,
+                                        AMOUNT_ACRED_UN_SAP: V_AMOUNT_ACRED_UN_SAP,
+                                        AMOUNT_ACRED_UN_PENDING_SAP: V_AMOUNT_ACRED_UN_PENDING_SAP,
+
+                                        QTY_CHGBACK_ID: V_QTY_CHGBACK_ID,
+                                        AMOUNT_CHGBACK_USD_ID: V_AMOUNT_CHGBACK_USD_ID,
+                                        AMOUNT_CHGBACK_SEND_ID: V_AMOUNT_CHGBACK_SEND_ID,
+                                        AMOUNT_CHGBACK_SAP_ID: V_AMOUNT_CHGBACK_SAP_ID,
+                                        AMOUNT_CHGBACK_PENDING_SAP_ID: V_AMOUNT_CHGBACK_PENDING_SAP_ID,
+
+                                        QTY_CHGBACK_IDM: V_QTY_CHGBACK_IDM,
+                                        AMOUNT_CHGBACK_USD_IDM: V_AMOUNT_CHGBACK_USD_IDM,
+                                        AMOUNT_CHGBACK_SEND_IDM: V_AMOUNT_CHGBACK_SEND_IDM,
+                                        AMOUNT_CHGBACK_SAP_IDM: V_AMOUNT_CHGBACK_SAP_IDM,
+                                        AMOUNT_CHGBACK_PENDING_SAP_IDM: V_AMOUNT_CHGBACK_PENDING_SAP_IDM,
+
+                                        QTY_PENDING_REAL: V_QTY_PENDING_REAL,
+                                        AMOUNT_PENDING_REAL_USD: V_AMOUNT_PENDING_REAL_USD,
+                                        AMOUNT_PENDING_REAL_SEND: V_AMOUNT_PENDING_REAL_SEND,
+                                        AMOUNT_PENDING_REAL_SAP: V_AMOUNT_PENDING_REAL_SAP,
+                                        AMOUNT_PENDING_REAL_PENDING_SAP: V_AMOUNT_PENDING_REAL_PENDING_SAP,
 
                                         expanded: false, children: []
                                     });
-                                    
+
                                     let b = [];
                                     Ext.Object.each(lstData, function (index, value01) {
                                         if (value.strFormatDate === value01.strFormatDate) {
-                                            console.log(value01,'value01')
+                                            console.log(value01, 'value01')
                                             dataRoot.children[a.indexOf(value.strFormatDate)].children.push({
                                                 strFormatDate: value01.strFormatDate,
                                                 CCUST: value01.CCUST,
                                                 IN_FECFILTRO: value01.IN_FECFILTRO,
-                                                
-                                                QTY_PENDING : value01.QTY_PENDING ,
-                                                AMOUNT_PENDING_USD : value01.AMOUNT_PENDING_USD ,
 
-                                                QTY_ACRED_UN : value01.QTY_ACRED_UN ,
-                                                AMOUNT_ACRED_UN_USD : value01.AMOUNT_ACRED_UN_USD ,
-                                                AMOUNT_ACRED_UN_SEND : value01.AMOUNT_ACRED_UN_SEND ,
-                                                AMOUNT_ACRED_UN_SAP : value01.AMOUNT_ACRED_UN_SAP ,
-                                                AMOUNT_ACRED_UN_PENDING_SAP : value01.AMOUNT_ACRED_UN_PENDING_SAP ,
+                                                QTY_PENDING: value01.QTY_PENDING,
+                                                AMOUNT_PENDING_USD: value01.AMOUNT_PENDING_USD,
 
-                                                QTY_CHGBACK_ID : value01.QTY_CHGBACK_ID ,
-                                                AMOUNT_CHGBACK_USD_ID : value01.AMOUNT_CHGBACK_USD_ID ,
-                                                AMOUNT_CHGBACK_SEND_ID : value01.AMOUNT_CHGBACK_SEND_ID ,
-                                                AMOUNT_CHGBACK_SAP_ID : value01.AMOUNT_CHGBACK_SAP_ID ,
-                                                AMOUNT_CHGBACK_PENDING_SAP_ID : value01.AMOUNT_CHGBACK_PENDING_SAP_ID ,
+                                                QTY_ACRED_UN: value01.QTY_ACRED_UN,
+                                                AMOUNT_ACRED_UN_USD: value01.AMOUNT_ACRED_UN_USD,
+                                                AMOUNT_ACRED_UN_SEND: value01.AMOUNT_ACRED_UN_SEND,
+                                                AMOUNT_ACRED_UN_SAP: value01.AMOUNT_ACRED_UN_SAP,
+                                                AMOUNT_ACRED_UN_PENDING_SAP: value01.AMOUNT_ACRED_UN_PENDING_SAP,
 
-                                                QTY_CHGBACK_IDM : value01.QTY_CHGBACK_IDM ,
-                                                AMOUNT_CHGBACK_USD_IDM : value01.AMOUNT_CHGBACK_USD_IDM ,
-                                                AMOUNT_CHGBACK_SEND_IDM : value01.AMOUNT_CHGBACK_SEND_IDM ,
-                                                AMOUNT_CHGBACK_SAP_IDM : value01.AMOUNT_CHGBACK_SAP_IDM ,
-                                                AMOUNT_CHGBACK_PENDING_SAP_IDM  : value01.AMOUNT_CHGBACK_PENDING_SAP_IDM ,
+                                                QTY_CHGBACK_ID: value01.QTY_CHGBACK_ID,
+                                                AMOUNT_CHGBACK_USD_ID: value01.AMOUNT_CHGBACK_USD_ID,
+                                                AMOUNT_CHGBACK_SEND_ID: value01.AMOUNT_CHGBACK_SEND_ID,
+                                                AMOUNT_CHGBACK_SAP_ID: value01.AMOUNT_CHGBACK_SAP_ID,
+                                                AMOUNT_CHGBACK_PENDING_SAP_ID: value01.AMOUNT_CHGBACK_PENDING_SAP_ID,
 
-                                                QTY_PENDING_REAL  : value01.QTY_PENDING_REAL ,
-                                                AMOUNT_PENDING_REAL_USD : value01.AMOUNT_PENDING_REAL_USD ,
-                                                AMOUNT_PENDING_REAL_SEND : value01.AMOUNT_PENDING_REAL_SEND ,
-                                                AMOUNT_PENDING_REAL_SAP : value01.AMOUNT_PENDING_REAL_SAP ,
-                                                AMOUNT_PENDING_REAL_PENDING_SAP  : value01.AMOUNT_PENDING_REAL_PENDING_SAP ,
-                                                
+                                                QTY_CHGBACK_IDM: value01.QTY_CHGBACK_IDM,
+                                                AMOUNT_CHGBACK_USD_IDM: value01.AMOUNT_CHGBACK_USD_IDM,
+                                                AMOUNT_CHGBACK_SEND_IDM: value01.AMOUNT_CHGBACK_SEND_IDM,
+                                                AMOUNT_CHGBACK_SAP_IDM: value01.AMOUNT_CHGBACK_SAP_IDM,
+                                                AMOUNT_CHGBACK_PENDING_SAP_IDM: value01.AMOUNT_CHGBACK_PENDING_SAP_IDM,
+
+                                                QTY_PENDING_REAL: value01.QTY_PENDING_REAL,
+                                                AMOUNT_PENDING_REAL_USD: value01.AMOUNT_PENDING_REAL_USD,
+                                                AMOUNT_PENDING_REAL_SEND: value01.AMOUNT_PENDING_REAL_SEND,
+                                                AMOUNT_PENDING_REAL_SAP: value01.AMOUNT_PENDING_REAL_SAP,
+                                                AMOUNT_PENDING_REAL_PENDING_SAP: value01.AMOUNT_PENDING_REAL_PENDING_SAP,
+
                                                 leaf: true
                                             });
                                         }
                                     });
                                 }
                             });
-                            
+
                             var storeTree = Ext.create('Ext.data.TreeStore', {
                                 root: dataRoot
                             });
-                            
+
                             Ext.getCmp(prototype.id + '-gridSumaryMainPending').setStore(storeTree);
-                            
+
                             Ext.getCmp(prototype.id + '-QTY_TOTAL_GRANT_PENDING').setText(Ext.util.Format.number(QTY_TOTAL_PENDING, '0,000'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_GRANT_PENDING').setText(Ext.util.Format.number(AMOUNT_TOTAL_PENDING_USD_TOTAL, '0,000.00'));
-                          
+
                             Ext.getCmp(prototype.id + '-QTY_TOTAL_ACRE_UNC_QTY').setText(Ext.util.Format.number(QTY_TOTAL_ACRED_UN_TOTAL, '0,000'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_ACRE_UNC_QTY_USD').setText(Ext.util.Format.number(AMOUNT_TOTAL_ACRED_UN_USD_TOTAL, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_ACRE_UNC_QTY_PENDING_USD').setText(Ext.util.Format.number(AMOUNT_TOTAL_ACRED_UN_PENDING_USD_TOTAL, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_ACRE_UNC_QTY_SEND').setText(Ext.util.Format.number(AMOUNT_TOTAL_ACRED_UN_SEND_TOTAL, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_ACRE_UNC_QTY_SAP').setText(Ext.util.Format.number(AMOUNT_TOTAL_ACRED_UN_SAP_TOTAL, '0,000.00'));
-                            
-                          Ext.getCmp(prototype.id + '-QTY_TOTAL_CHGBACK_ID_UNC').setText(Ext.util.Format.number(QTY_TOTAL_CHGBACK_ID, '0,000'));
+
+                            Ext.getCmp(prototype.id + '-QTY_TOTAL_CHGBACK_ID_UNC').setText(Ext.util.Format.number(QTY_TOTAL_CHGBACK_ID, '0,000'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_CHGBACK_ID_UNC_USD').setText(Ext.util.Format.number(AMOUNT_TOTAL_CHGBACK_USD_ID, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_CHGBACK_ID_UNC_PENDING_USD').setText(Ext.util.Format.number(AMOUNT_TOTAL_CHGBACK_PENDING_USD_ID, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_CHGBACK_ID_UNC_SEND').setText(Ext.util.Format.number(AMOUNT_TOTAL_CHGBACK_SEND_ID, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_CHGBACK_ID_UNC_SAP').setText(Ext.util.Format.number(AMOUNT_TOTAL_CHGBACK_SAP_ID, '0,000.00'));
-                            
+
                             Ext.getCmp(prototype.id + '-QTY_TOTAL_CHGBACK_IDM_UNC').setText(Ext.util.Format.number(QTY_TOTAL_CHGBACK_IDM, '0,000'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_CHGBACK_IDM_UNC_USD').setText(Ext.util.Format.number(AMOUNT_TOTAL_CHGBACK_USD_IDM, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_CHGBACK_IDM_UNC_PENDING_USD').setText(Ext.util.Format.number(AMOUNT_TOTAL_CHGBACK_PENDING_USD_IDM, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_CHGBACK_IDM_UNC_SEND').setText(Ext.util.Format.number(AMOUNT_TOTAL_CHGBACK_SEND_IDM, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_CHGBACK_IDM_UNC_SAP').setText(Ext.util.Format.number(AMOUNT_TOTAL_CHGBACK_SAP_IDM, '0,000.00'));
-                            
+
                             Ext.getCmp(prototype.id + '-QTY_PENDING_REAL').setText(Ext.util.Format.number(QTY_TOTAL_PENDING_REAL, '0,000'));
                             Ext.getCmp(prototype.id + '-AMOUNT_PENDING_REAL_USD').setText(Ext.util.Format.number(AMOUNT_TOTAL_PENDING_REAL_USD, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_PENDING_REAL_PENDING_SAP').setText(Ext.util.Format.number(AMOUNT_TOTAL_PENDING_REAL_PENDING_USD, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_PENDING_REAL_SEND').setText(Ext.util.Format.number(AMOUNT_TOTAL_PENDING_REAL_SEND, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_PENDING_REAL_SAP').setText(Ext.util.Format.number(AMOUNT_TOTAL_PENDING_REAL_SAP, '0,000.00'));
-                            
+
                             var data = lastRecord;
                             console.log(lastRecord, 'datadata');
                             console.log(obj, 'objobj');
-                            
+
                             let item = {};
                             let item2 = {};
                             let item3 = {};
                             let item4 = {};
                             let item5 = {};
                             let totals2 = [];
-                            
-                            
+
+
                             let totalsPending = [];
                             let totalCantidadPending = lastRecord.QTY_TOTAL_ACRED_UN_TOTAL +
-                                lastRecord.QTY_TOTAL_CHGBACK_ID  + lastRecord.QTY_TOTAL_CHGBACK_IDM + lastRecord.QTY_TOTAL_PENDING_REAL;
+                                    lastRecord.QTY_TOTAL_CHGBACK_ID + lastRecord.QTY_TOTAL_CHGBACK_IDM + lastRecord.QTY_TOTAL_PENDING_REAL;
 
                             let chgbkPendingID = (lastRecord.QTY_TOTAL_CHGBACK_ID / totalCantidadPending) * 100;
                             let chgbkPendingIDM = (lastRecord.QTY_TOTAL_CHGBACK_IDM / totalCantidadPending) * 100;
                             let acreditacionPending = (lastRecord.QTY_TOTAL_ACRED_UN_TOTAL / totalCantidadPending) * 100;
                             let realPending = (lastRecord.QTY_TOTAL_PENDING_REAL / totalCantidadPending) * 100;
 
-                           if (obj.data.items.length > 0) {
+                            if (obj.data.items.length > 0) {
                                 totalsPending.push({
                                     LABEL: 'Chargeback ID Confirmed',
-                                    Perc2: chgbkPendingID,  // porcentaje calculado
+                                    Perc2: chgbkPendingID, // porcentaje calculado
                                     VENDOR: 'Chargeback ID Confirmed:\n' + Ext.util.Format.number(chgbkPendingID, '0.00%')
                                 });
 
@@ -1740,7 +1817,7 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                             });
 
                             Ext.getCmp(prototype.id + '-displayPolarSMPending').bindStore(storeData1erPending);
-                            
+
                             let dataBarPending = [
                                 {
                                     category: 'Chargeback ID Confirmed',
@@ -1767,7 +1844,7 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                                     SAP: lastRecord.AMOUNT_TOTAL_PENDING_REAL_SAP
                                 }
                             ];
-                            
+
 
                             // Asignar store al gráfico
                             let chart = Ext.getCmp(prototype.id + '-displayBarSMPending');
@@ -1781,15 +1858,15 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
 
 
                             //Ext.getCmp(prototype.id + '-displayBarSMPending').bindStore(chart);
-    
-    
+
+
                         }
 //                        me.setWidthPie();
                     }
                 }
             });
             global.clear();
-            
+
 //            Ext.getCmp(prototype.id + '-gridSumaryMain').bindStore(storeGridDatas);
 //            Ext.getCmp(prototype.id + '-paggin2').bindStore(storeGridDatas);
         }
@@ -1819,7 +1896,7 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                     },
                     load: function (obj) {
                         Ext.getCmp(prototype.id + '-contentInfo').unmask();
-                       
+
                         if (obj.data.length === 0) {
                             global.Msg({
                                 msg: 'Data not found.'
@@ -1831,147 +1908,147 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
 
                                 lstData.push(value.data)
                             }
-                            
+
                             let lastRecord = lstData.length > 0 ? lstData[lstData.length - 1] : null;
-                            console.log(lastRecord,'lastRecord')
-                            
+                            console.log(lastRecord, 'lastRecord')
+
                             let QTY_TOTAL_CHGBACK_TOTAL = lastRecord.QTY_TOTAL_CHGBACK_TOTAL;
                             let AMOUNT_TOTAL_CHGBACK_USD_TOTAL = lastRecord.AMOUNT_TOTAL_CHGBACK_USD_TOTAL;
                             let AMOUNT_TOTAL_CHGBACK_SEND_TOTAL = lastRecord.AMOUNT_TOTAL_CHGBACK_SEND_TOTAL;
                             let AMOUNT_TOTAL_CHGBACK_SAP_TOTAL = lastRecord.AMOUNT_TOTAL_CHGBACK_SAP_TOTAL;
                             let AMOUNT_TOTAL_CHGBACK_PENDING_USD_TOTAL = lastRecord.AMOUNT_TOTAL_CHGBACK_PENDING_USD_TOTAL;
-                            
-                             let QTY_TOTAL_CHGBACK_ID = lastRecord.QTY_TOTAL_CHGBACK_ID;
+
+                            let QTY_TOTAL_CHGBACK_ID = lastRecord.QTY_TOTAL_CHGBACK_ID;
                             let AMOUNT_TOTAL_CHGBACK_USD_ID = lastRecord.AMOUNT_TOTAL_CHGBACK_USD_ID;
                             let AMOUNT_TOTAL_CHGBACK_SEND_ID = lastRecord.AMOUNT_TOTAL_CHGBACK_SEND_ID;
                             let AMOUNT_TOTAL_CHGBACK_SAP_ID = lastRecord.AMOUNT_TOTAL_CHGBACK_SAP_ID;
                             let AMOUNT_TOTAL_CHGBACK_PENDING_USD_ID = lastRecord.AMOUNT_TOTAL_CHGBACK_PENDING_USD_ID;
-                            
+
                             let QTY_TOTAL_CHGBACK_IDM = lastRecord.QTY_TOTAL_CHGBACK_IDM;
                             let AMOUNT_TOTAL_CHGBACK_USD_IDM = lastRecord.AMOUNT_TOTAL_CHGBACK_USD_IDM;
                             let AMOUNT_TOTAL_CHGBACK_SEND_IDM = lastRecord.AMOUNT_TOTAL_CHGBACK_SEND_IDM;
                             let AMOUNT_TOTAL_CHGBACK_SAP_IDM = lastRecord.AMOUNT_TOTAL_CHGBACK_SAP_IDM;
                             let AMOUNT_TOTAL_CHGBACK_PENDING_USD_IDM = lastRecord.AMOUNT_TOTAL_CHGBACK_PENDING_USD_IDM;
-                            
-                             let QTY_TOTAL_CHGBACK_TOTAL_DIFF = lastRecord.QTY_TOTAL_CHGBACK_TOTAL_DIFF;
+
+                            let QTY_TOTAL_CHGBACK_TOTAL_DIFF = lastRecord.QTY_TOTAL_CHGBACK_TOTAL_DIFF;
                             let AMOUNT_TOTAL_CHGBACK_USD_TOTAL_DIFF = lastRecord.AMOUNT_TOTAL_CHGBACK_USD_TOTAL_DIFF;
                             let AMOUNT_TOTAL_CHGBACK_SEND_TOTAL_DIFF = lastRecord.AMOUNT_TOTAL_CHGBACK_SEND_TOTAL_DIFF;
                             let AMOUNT_TOTAL_CHGBACK_SAP_TOTAL_DIFF = lastRecord.AMOUNT_TOTAL_CHGBACK_SAP_TOTAL_DIFF;
                             let AMOUNT_TOTAL_CHGBACK_PENDING_USD_TOTAL_DIFF = lastRecord.AMOUNT_TOTAL_CHGBACK_PENDING_USD_TOTAL_DIFF;
-                            
+
                             let QTY_TOTAL_REVERSE_TOTAL = lastRecord.QTY_TOTAL_REVERSE_TOTAL;
                             let AMOUNT_TOTAL_REVERSE_USD_TOTAL = lastRecord.AMOUNT_TOTAL_REVERSE_USD_TOTAL;
                             let AMOUNT_TOTAL_REVERSE_SEND_TOTAL = lastRecord.AMOUNT_TOTAL_REVERSE_SEND_TOTAL;
                             let AMOUNT_TOTAL_REVERSE_SAP_TOTAL = lastRecord.AMOUNT_TOTAL_REVERSE_SAP_TOTAL;
                             let AMOUNT_TOTAL_REVERSE_PENDING_USD_TOTAL = lastRecord.AMOUNT_TOTAL_REVERSE_PENDING_USD_TOTAL;
-                            
-                             let QTY_TOTAL_REVERSE_CHGBACK_ID = lastRecord.QTY_TOTAL_REVERSE_CHGBACK_ID;
+
+                            let QTY_TOTAL_REVERSE_CHGBACK_ID = lastRecord.QTY_TOTAL_REVERSE_CHGBACK_ID;
                             let AMOUNT_TOTAL_REVERSE_CHGBACK_USD_ID = lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_USD_ID;
                             let AMOUNT_TOTAL_REVERSE_CHGBACK_SEND_ID = lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_SEND_ID;
                             let AMOUNT_TOTAL_REVERSE_CHGBACK_SAP_ID = lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_SAP_ID;
                             let AMOUNT_TOTAL_REVERSE_CHGBACK_PENDING_USD_ID = lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_PENDING_USD_ID;
-                            
+
                             let QTY_TOTAL_REVERSE_CHGBACK_IDM = lastRecord.QTY_TOTAL_REVERSE_CHGBACK_IDM;
                             let AMOUNT_TOTAL_REVERSE_CHGBACK_USD_IDM = lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_USD_IDM;
                             let AMOUNT_TOTAL_REVERSE_CHGBACK_SEND_IDM = lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_SEND_IDM;
                             let AMOUNT_TOTAL_REVERSE_CHGBACK_SAP_IDM = lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_SAP_IDM;
                             let AMOUNT_TOTAL_REVERSE_CHGBACK_PENDING_USD_IDM = lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_PENDING_USD_IDM;
-                            
+
                             let QTY_TOTAL_REVERSE_CHGBACK_TOTAL_DIFF = lastRecord.QTY_TOTAL_REVERSE_CHGBACK_TOTAL_DIFF;
                             let AMOUNT_TOTAL_REVERSE_CHGBACK_USD_TOTAL_DIFF = lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_USD_TOTAL_DIFF;
                             let AMOUNT_TOTAL_REVERSE_CHGBACK_SEND_TOTAL_DIFF = lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_SEND_TOTAL_DIFF;
                             let AMOUNT_TOTAL_REVERSE_CHGBACK_SAP_TOTAL_DIFF = lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_SAP_TOTAL_DIFF;
                             let AMOUNT_TOTAL_REVERSE_CHGBACK_PENDING_USD_TOTAL_DIFF = lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_PENDING_USD_TOTAL_DIFF;
-                            
-                            
+
+
                             let a = [];
                             let dataRoot = {text: '.', expanded: false, children: []};
-                            
+
                             let b = [];
                             let dataRootb = {text: '.', expanded: false, children: []};
 
                             Ext.Object.each(lstData, function (index, value) {
                                 if (a.indexOf(value.strFormatDate) < 0) {
                                     let x = [];
-                                    
-                                    let V_QTY_CHGBACK_TOTAL =0;
+
+                                    let V_QTY_CHGBACK_TOTAL = 0;
                                     let V_AMOUNT_CHGBACK_USD_TOTAL = 0;
                                     let V_AMOUNT_CHGBACK_SEND_TOTAL = 0;
-                                    let V_AMOUNT_CHGBACK_SAP_TOTAL =0;
+                                    let V_AMOUNT_CHGBACK_SAP_TOTAL = 0;
                                     let V_AMOUNT_CHGBACK_PENDING_SAP_TOTAL = 0;
-                                    
-                                    let V_QTY_CHGBACK_ID =0;
+
+                                    let V_QTY_CHGBACK_ID = 0;
                                     let V_AMOUNT_CHGBACK_USD_ID = 0;
                                     let V_AMOUNT_CHGBACK_SEND_ID = 0;
-                                    let V_AMOUNT_CHGBACK_SAP_ID =0;
+                                    let V_AMOUNT_CHGBACK_SAP_ID = 0;
                                     let V_AMOUNT_CHGBACK_PENDING_SAP_ID = 0;
-                                    
-                                    let V_QTY_CHGBACK_IDM =0;
+
+                                    let V_QTY_CHGBACK_IDM = 0;
                                     let V_AMOUNT_CHGBACK_USD_IDM = 0;
                                     let V_AMOUNT_CHGBACK_SEND_IDM = 0;
-                                    let V_AMOUNT_CHGBACK_SAP_IDM =0;
+                                    let V_AMOUNT_CHGBACK_SAP_IDM = 0;
                                     let V_AMOUNT_CHGBACK_PENDING_SAP_IDM = 0;
-                                    
-                                    let V_QTY_CHGBACK_DIFF =0;
+
+                                    let V_QTY_CHGBACK_DIFF = 0;
                                     let V_AMOUNT_CHGBACK_USD_DIFF = 0;
                                     let V_AMOUNT_CHGBACK_SEND_DIFF = 0;
-                                    let V_AMOUNT_CHGBACK_SAP_DIFF =0;
+                                    let V_AMOUNT_CHGBACK_SAP_DIFF = 0;
                                     let V_AMOUNT_CHGBACK_PENDING_SAP_DIFF = 0;
-                                    
+
 //                                    VECROR
 
-                                    let V_QTY_REVERSE_CHGBACK =0;
+                                    let V_QTY_REVERSE_CHGBACK = 0;
                                     let V_AMOUNT_REVERSE_CHGBACK_USD = 0;
                                     let V_AMOUNT_REVERSE_CHGBACK_SEND = 0;
-                                    let V_AMOUNT_REVERSE_CHGBACK_SAP =0;
+                                    let V_AMOUNT_REVERSE_CHGBACK_SAP = 0;
                                     let V_AMOUNT_REVERSE_PENDING_CHGBACK_SAP = 0;
-                                    
-                                    let V_QTY_REVERSE_CHGBACK_ID =0;
+
+                                    let V_QTY_REVERSE_CHGBACK_ID = 0;
                                     let V_AMOUNT_REVERSE_CHGBACK_USD_ID = 0;
                                     let V_AMOUNT_REVERSE_CHGBACK_SEND_ID = 0;
-                                    let V_AMOUNT_REVERSE_CHGBACK_SAP_ID =0;
+                                    let V_AMOUNT_REVERSE_CHGBACK_SAP_ID = 0;
                                     let V_AMOUNT_REVERSE_PENDING_CHGBACK_SAP_ID = 0;
-                                    
-                                    let V_QTY_REVERSE_CHGBACK_IDM =0;
+
+                                    let V_QTY_REVERSE_CHGBACK_IDM = 0;
                                     let V_AMOUNT_REVERSE_CHGBACK_USD_IDM = 0;
                                     let V_AMOUNT_REVERSE_CHGBACK_SEND_IDM = 0;
-                                    let V_AMOUNT_REVERSE_CHGBACK_SAP_IDM =0;
+                                    let V_AMOUNT_REVERSE_CHGBACK_SAP_IDM = 0;
                                     let V_AMOUNT_REVERSE_PENDING_CHGBACK_SAP_IDM = 0;
-                                    
-                                    let V_QTY_REVERSE_CHGBACK_DIFF =0;
+
+                                    let V_QTY_REVERSE_CHGBACK_DIFF = 0;
                                     let V_AMOUNT_REVERSE_CHGBACK_USD_DIFF = 0;
                                     let V_AMOUNT_REVERSE_CHGBACK_SEND_DIFF = 0;
-                                    let V_AMOUNT_REVERSE_CHGBACK_SAP_DIFF =0;
+                                    let V_AMOUNT_REVERSE_CHGBACK_SAP_DIFF = 0;
                                     let V_AMOUNT_REVERSE_PENDING_CHGBACK_SAP_DIFF = 0;
-                        
+
                                     Ext.Object.each(lstData, function (index, valuex) {
                                         if (value.strFormatDate === valuex.strFormatDate) {
-                                             V_QTY_CHGBACK_TOTAL += valuex.QTY_CHGBACK_TOTAL;
+                                            V_QTY_CHGBACK_TOTAL += valuex.QTY_CHGBACK_TOTAL;
                                             V_AMOUNT_CHGBACK_USD_TOTAL += valuex.AMOUNT_CHGBACK_USD_TOTAL;
-                                             V_AMOUNT_CHGBACK_SEND_TOTAL += valuex.AMOUNT_CHGBACK_SEND_TOTAL;
-                                            V_AMOUNT_CHGBACK_SAP_TOTAL+= valuex.AMOUNT_CHGBACK_SAP_TOTAL;
-                                            V_AMOUNT_CHGBACK_PENDING_SAP_TOTAL+= valuex.AMOUNT_CHGBACK_PENDING_SAP_TOTAL;
-                                            
+                                            V_AMOUNT_CHGBACK_SEND_TOTAL += valuex.AMOUNT_CHGBACK_SEND_TOTAL;
+                                            V_AMOUNT_CHGBACK_SAP_TOTAL += valuex.AMOUNT_CHGBACK_SAP_TOTAL;
+                                            V_AMOUNT_CHGBACK_PENDING_SAP_TOTAL += valuex.AMOUNT_CHGBACK_PENDING_SAP_TOTAL;
+
                                             V_QTY_CHGBACK_ID += valuex.QTY_CHGBACK_ID;
                                             V_AMOUNT_CHGBACK_USD_ID += valuex.AMOUNT_CHGBACK_USD_ID;
-                                             V_AMOUNT_CHGBACK_SEND_ID += valuex.AMOUNT_CHGBACK_SEND_ID;
-                                            V_AMOUNT_CHGBACK_SAP_ID+= valuex.AMOUNT_CHGBACK_SAP_ID;
-                                            V_AMOUNT_CHGBACK_PENDING_SAP_ID+= valuex.AMOUNT_CHGBACK_PENDING_SAP_ID;
-                                            
+                                            V_AMOUNT_CHGBACK_SEND_ID += valuex.AMOUNT_CHGBACK_SEND_ID;
+                                            V_AMOUNT_CHGBACK_SAP_ID += valuex.AMOUNT_CHGBACK_SAP_ID;
+                                            V_AMOUNT_CHGBACK_PENDING_SAP_ID += valuex.AMOUNT_CHGBACK_PENDING_SAP_ID;
+
                                             V_QTY_CHGBACK_IDM += valuex.QTY_CHGBACK_IDM;
                                             V_AMOUNT_CHGBACK_USD_IDM += valuex.AMOUNT_CHGBACK_USD_IDM;
-                                             V_AMOUNT_CHGBACK_SEND_IDM += valuex.AMOUNT_CHGBACK_SEND_IDM;
-                                            V_AMOUNT_CHGBACK_SAP_IDM+= valuex.AMOUNT_CHGBACK_SAP_IDM;
-                                            V_AMOUNT_CHGBACK_PENDING_SAP_IDM+= valuex.AMOUNT_CHGBACK_PENDING_SAP_IDM;
-                                            
+                                            V_AMOUNT_CHGBACK_SEND_IDM += valuex.AMOUNT_CHGBACK_SEND_IDM;
+                                            V_AMOUNT_CHGBACK_SAP_IDM += valuex.AMOUNT_CHGBACK_SAP_IDM;
+                                            V_AMOUNT_CHGBACK_PENDING_SAP_IDM += valuex.AMOUNT_CHGBACK_PENDING_SAP_IDM;
+
                                             V_QTY_CHGBACK_DIFF += valuex.QTY_CHGBACK_DIFF;
-                                           V_AMOUNT_CHGBACK_USD_DIFF += valuex.AMOUNT_CHGBACK_USD_DIFF;
-                                           V_AMOUNT_CHGBACK_SEND_DIFF += valuex.AMOUNT_CHGBACK_SEND_DIFF;
-                                           V_AMOUNT_CHGBACK_SAP_DIFF+= valuex.AMOUNT_CHGBACK_SAP_DIFF;
-                                           V_AMOUNT_CHGBACK_PENDING_SAP_DIFF += valuex.AMOUNT_CHGBACK_PENDING_SAP_DIFF;
-                                           
+                                            V_AMOUNT_CHGBACK_USD_DIFF += valuex.AMOUNT_CHGBACK_USD_DIFF;
+                                            V_AMOUNT_CHGBACK_SEND_DIFF += valuex.AMOUNT_CHGBACK_SEND_DIFF;
+                                            V_AMOUNT_CHGBACK_SAP_DIFF += valuex.AMOUNT_CHGBACK_SAP_DIFF;
+                                            V_AMOUNT_CHGBACK_PENDING_SAP_DIFF += valuex.AMOUNT_CHGBACK_PENDING_SAP_DIFF;
+
 //                                           ss
-                                           
+
                                             V_QTY_REVERSE_CHGBACK += valuex.QTY_REVERSE_CHGBACK;
                                             V_AMOUNT_REVERSE_CHGBACK_USD += valuex.AMOUNT_REVERSE_CHGBACK_USD;
                                             V_AMOUNT_REVERSE_CHGBACK_SEND += valuex.AMOUNT_REVERSE_CHGBACK_SEND;
@@ -1979,14 +2056,14 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                                             V_AMOUNT_REVERSE_PENDING_CHGBACK_SAP += valuex.AMOUNT_REVERSE_PENDING_CHGBACK_SAP;
 
                                             V_QTY_REVERSE_CHGBACK_ID += valuex.QTY_REVERSE_CHGBACK_ID;
-                                             V_AMOUNT_REVERSE_CHGBACK_USD_ID += valuex.AMOUNT_REVERSE_CHGBACK_USD_ID;
-                                             V_AMOUNT_REVERSE_CHGBACK_SEND_ID += valuex.AMOUNT_REVERSE_CHGBACK_SEND_ID;
+                                            V_AMOUNT_REVERSE_CHGBACK_USD_ID += valuex.AMOUNT_REVERSE_CHGBACK_USD_ID;
+                                            V_AMOUNT_REVERSE_CHGBACK_SEND_ID += valuex.AMOUNT_REVERSE_CHGBACK_SEND_ID;
                                             V_AMOUNT_REVERSE_CHGBACK_SAP_ID += valuex.AMOUNT_REVERSE_CHGBACK_SAP_ID;
                                             V_AMOUNT_REVERSE_PENDING_CHGBACK_SAP_ID += valuex.AMOUNT_REVERSE_PENDING_CHGBACK_SAP_ID;
 
                                             V_QTY_REVERSE_CHGBACK_IDM += valuex.QTY_REVERSE_CHGBACK_IDM;
                                             V_AMOUNT_REVERSE_CHGBACK_USD_IDM += valuex.AMOUNT_REVERSE_CHGBACK_USD_IDM;
-                                             V_AMOUNT_REVERSE_CHGBACK_SEND_IDM += valuex.AMOUNT_REVERSE_CHGBACK_SEND_IDM;
+                                            V_AMOUNT_REVERSE_CHGBACK_SEND_IDM += valuex.AMOUNT_REVERSE_CHGBACK_SEND_IDM;
                                             V_AMOUNT_REVERSE_CHGBACK_SAP_IDM += valuex.AMOUNT_REVERSE_CHGBACK_SAP_IDM;
                                             V_AMOUNT_REVERSE_PENDING_CHGBACK_SAP_IDM += valuex.AMOUNT_REVERSE_PENDING_CHGBACK_SAP_IDM;
 
@@ -2004,127 +2081,124 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                                     dataRoot.children.push({
                                         strFormatDate: value.strFormatDate,
                                         IN_FECFILTRO: value.IN_FECFILTRO,
-                                        
-                                        QTY_CHGBACK_TOTAL : V_QTY_CHGBACK_TOTAL ,
-                                        AMOUNT_CHGBACK_USD_TOTAL : V_AMOUNT_CHGBACK_USD_TOTAL ,
-                                        AMOUNT_CHGBACK_SEND_TOTAL : V_AMOUNT_CHGBACK_SEND_TOTAL ,
-                                        AMOUNT_CHGBACK_SAP_TOTAL : V_AMOUNT_CHGBACK_SAP_TOTAL ,
-                                        AMOUNT_CHGBACK_PENDING_SAP_TOTAL : V_AMOUNT_CHGBACK_PENDING_SAP_TOTAL ,
-                                        
-                                        QTY_CHGBACK_ID : V_QTY_CHGBACK_ID ,
-                                        AMOUNT_CHGBACK_USD_ID : V_AMOUNT_CHGBACK_USD_ID ,
-                                        AMOUNT_CHGBACK_SEND_ID : V_AMOUNT_CHGBACK_SEND_ID ,
-                                        AMOUNT_CHGBACK_SAP_ID : V_AMOUNT_CHGBACK_SAP_ID ,
-                                        AMOUNT_CHGBACK_PENDING_SAP_ID : V_AMOUNT_CHGBACK_PENDING_SAP_ID ,
-                                        
-                                        QTY_CHGBACK_IDM : V_QTY_CHGBACK_IDM ,
-                                        AMOUNT_CHGBACK_USD_IDM : V_AMOUNT_CHGBACK_USD_IDM ,
-                                        AMOUNT_CHGBACK_SEND_IDM : V_AMOUNT_CHGBACK_SEND_IDM ,
-                                        AMOUNT_CHGBACK_SAP_IDM : V_AMOUNT_CHGBACK_SAP_IDM ,
-                                        AMOUNT_CHGBACK_PENDING_SAP_IDM  : V_AMOUNT_CHGBACK_PENDING_SAP_IDM ,
-                                        
-                                        QTY_CHGBACK_DIFF : V_QTY_CHGBACK_DIFF ,
-                                        AMOUNT_CHGBACK_USD_DIFF : V_AMOUNT_CHGBACK_USD_DIFF ,
-                                        AMOUNT_CHGBACK_SEND_DIFF : V_AMOUNT_CHGBACK_SEND_DIFF ,
-                                        AMOUNT_CHGBACK_SAP_DIFF : V_AMOUNT_CHGBACK_SAP_DIFF ,
-                                        AMOUNT_CHGBACK_PENDING_SAP_DIFF  : V_AMOUNT_CHGBACK_PENDING_SAP_DIFF ,
-                                        
-                                        QTY_REVERSE_CHGBACK : V_QTY_REVERSE_CHGBACK ,
-                                        AMOUNT_REVERSE_CHGBACK_USD : V_AMOUNT_REVERSE_CHGBACK_USD ,
-                                        AMOUNT_REVERSE_CHGBACK_SEND : V_AMOUNT_REVERSE_CHGBACK_SEND ,
-                                        AMOUNT_REVERSE_CHGBACK_SAP : V_AMOUNT_REVERSE_CHGBACK_SAP ,
-                                        AMOUNT_REVERSE_PENDING_CHGBACK_SAP : V_AMOUNT_REVERSE_PENDING_CHGBACK_SAP ,
-                                        
-                                        QTY_REVERSE_CHGBACK_ID : V_QTY_REVERSE_CHGBACK_ID ,
-                                        AMOUNT_REVERSE_CHGBACK_USD_ID : V_AMOUNT_REVERSE_CHGBACK_USD_ID ,
-                                        AMOUNT_REVERSE_CHGBACK_SEND_ID : V_AMOUNT_REVERSE_CHGBACK_SEND_ID ,
-                                        AMOUNT_REVERSE_CHGBACK_SAP_ID : V_AMOUNT_REVERSE_CHGBACK_SAP_ID ,
-                                        AMOUNT_REVERSE_PENDING_CHGBACK_SAP_ID : V_AMOUNT_REVERSE_PENDING_CHGBACK_SAP_ID ,
 
-                                        QTY_REVERSE_CHGBACK_IDM : V_QTY_REVERSE_CHGBACK_IDM ,
-                                        AMOUNT_REVERSE_CHGBACK_USD_IDM : V_AMOUNT_REVERSE_CHGBACK_USD_IDM ,
-                                        AMOUNT_REVERSE_CHGBACK_SEND_IDM : V_AMOUNT_REVERSE_CHGBACK_SEND_IDM ,
-                                        AMOUNT_REVERSE_CHGBACK_SAP_IDM : V_AMOUNT_REVERSE_CHGBACK_SAP_IDM ,
-                                        AMOUNT_REVERSE_PENDING_CHGBACK_SAP_IDM : V_AMOUNT_REVERSE_PENDING_CHGBACK_SAP_IDM ,
+                                        QTY_CHGBACK_TOTAL: V_QTY_CHGBACK_TOTAL,
+                                        AMOUNT_CHGBACK_USD_TOTAL: V_AMOUNT_CHGBACK_USD_TOTAL,
+                                        AMOUNT_CHGBACK_SEND_TOTAL: V_AMOUNT_CHGBACK_SEND_TOTAL,
+                                        AMOUNT_CHGBACK_SAP_TOTAL: V_AMOUNT_CHGBACK_SAP_TOTAL,
+                                        AMOUNT_CHGBACK_PENDING_SAP_TOTAL: V_AMOUNT_CHGBACK_PENDING_SAP_TOTAL,
 
-                                      QTY_REVERSE_CHGBACK_DIFF : V_QTY_REVERSE_CHGBACK_DIFF ,
-                                        AMOUNT_REVERSE_CHGBACK_USD_DIFF : V_AMOUNT_REVERSE_CHGBACK_USD_DIFF ,
-                                        AMOUNT_REVERSE_CHGBACK_SEND_DIFF : V_AMOUNT_REVERSE_CHGBACK_SEND_DIFF ,
-                                        AMOUNT_REVERSE_CHGBACK_SAP_DIFF : V_AMOUNT_REVERSE_CHGBACK_SAP_DIFF ,
-                                        AMOUNT_REVERSE_PENDING_CHGBACK_SAP_DIFF : V_AMOUNT_REVERSE_PENDING_CHGBACK_SAP_DIFF ,
+                                        QTY_CHGBACK_ID: V_QTY_CHGBACK_ID,
+                                        AMOUNT_CHGBACK_USD_ID: V_AMOUNT_CHGBACK_USD_ID,
+                                        AMOUNT_CHGBACK_SEND_ID: V_AMOUNT_CHGBACK_SEND_ID,
+                                        AMOUNT_CHGBACK_SAP_ID: V_AMOUNT_CHGBACK_SAP_ID,
+                                        AMOUNT_CHGBACK_PENDING_SAP_ID: V_AMOUNT_CHGBACK_PENDING_SAP_ID,
 
+                                        QTY_CHGBACK_IDM: V_QTY_CHGBACK_IDM,
+                                        AMOUNT_CHGBACK_USD_IDM: V_AMOUNT_CHGBACK_USD_IDM,
+                                        AMOUNT_CHGBACK_SEND_IDM: V_AMOUNT_CHGBACK_SEND_IDM,
+                                        AMOUNT_CHGBACK_SAP_IDM: V_AMOUNT_CHGBACK_SAP_IDM,
+                                        AMOUNT_CHGBACK_PENDING_SAP_IDM: V_AMOUNT_CHGBACK_PENDING_SAP_IDM,
+
+                                        QTY_CHGBACK_DIFF: V_QTY_CHGBACK_DIFF,
+                                        AMOUNT_CHGBACK_USD_DIFF: V_AMOUNT_CHGBACK_USD_DIFF,
+                                        AMOUNT_CHGBACK_SEND_DIFF: V_AMOUNT_CHGBACK_SEND_DIFF,
+                                        AMOUNT_CHGBACK_SAP_DIFF: V_AMOUNT_CHGBACK_SAP_DIFF,
+                                        AMOUNT_CHGBACK_PENDING_SAP_DIFF: V_AMOUNT_CHGBACK_PENDING_SAP_DIFF,
+
+                                        QTY_REVERSE_CHGBACK: V_QTY_REVERSE_CHGBACK,
+                                        AMOUNT_REVERSE_CHGBACK_USD: V_AMOUNT_REVERSE_CHGBACK_USD,
+                                        AMOUNT_REVERSE_CHGBACK_SEND: V_AMOUNT_REVERSE_CHGBACK_SEND,
+                                        AMOUNT_REVERSE_CHGBACK_SAP: V_AMOUNT_REVERSE_CHGBACK_SAP,
+                                        AMOUNT_REVERSE_PENDING_CHGBACK_SAP: V_AMOUNT_REVERSE_PENDING_CHGBACK_SAP,
+
+                                        QTY_REVERSE_CHGBACK_ID: V_QTY_REVERSE_CHGBACK_ID,
+                                        AMOUNT_REVERSE_CHGBACK_USD_ID: V_AMOUNT_REVERSE_CHGBACK_USD_ID,
+                                        AMOUNT_REVERSE_CHGBACK_SEND_ID: V_AMOUNT_REVERSE_CHGBACK_SEND_ID,
+                                        AMOUNT_REVERSE_CHGBACK_SAP_ID: V_AMOUNT_REVERSE_CHGBACK_SAP_ID,
+                                        AMOUNT_REVERSE_PENDING_CHGBACK_SAP_ID: V_AMOUNT_REVERSE_PENDING_CHGBACK_SAP_ID,
+
+                                        QTY_REVERSE_CHGBACK_IDM: V_QTY_REVERSE_CHGBACK_IDM,
+                                        AMOUNT_REVERSE_CHGBACK_USD_IDM: V_AMOUNT_REVERSE_CHGBACK_USD_IDM,
+                                        AMOUNT_REVERSE_CHGBACK_SEND_IDM: V_AMOUNT_REVERSE_CHGBACK_SEND_IDM,
+                                        AMOUNT_REVERSE_CHGBACK_SAP_IDM: V_AMOUNT_REVERSE_CHGBACK_SAP_IDM,
+                                        AMOUNT_REVERSE_PENDING_CHGBACK_SAP_IDM: V_AMOUNT_REVERSE_PENDING_CHGBACK_SAP_IDM,
+
+                                        QTY_REVERSE_CHGBACK_DIFF: V_QTY_REVERSE_CHGBACK_DIFF,
+                                        AMOUNT_REVERSE_CHGBACK_USD_DIFF: V_AMOUNT_REVERSE_CHGBACK_USD_DIFF,
+                                        AMOUNT_REVERSE_CHGBACK_SEND_DIFF: V_AMOUNT_REVERSE_CHGBACK_SEND_DIFF,
+                                        AMOUNT_REVERSE_CHGBACK_SAP_DIFF: V_AMOUNT_REVERSE_CHGBACK_SAP_DIFF,
+                                        AMOUNT_REVERSE_PENDING_CHGBACK_SAP_DIFF: V_AMOUNT_REVERSE_PENDING_CHGBACK_SAP_DIFF,
 
                                         expanded: false, children: []
                                     });
-                                    
+
                                     let b = [];
                                     Ext.Object.each(lstData, function (index, value01) {
                                         if (value.strFormatDate === value01.strFormatDate) {
-                                            console.log(value01,'value01')
+                                            console.log(value01, 'value01')
                                             dataRoot.children[a.indexOf(value.strFormatDate)].children.push({
                                                 strFormatDate: value01.strFormatDate,
                                                 CCUST: value01.CCUST,
                                                 IN_FECFILTRO: value01.IN_FECFILTRO,
-                                                
-                                                QTY_CHGBACK_TOTAL : value01.QTY_CHGBACK_TOTAL ,
-                                                AMOUNT_CHGBACK_USD_TOTAL : value01.AMOUNT_CHGBACK_USD_TOTAL ,
-                                                AMOUNT_CHGBACK_SEND_TOTAL :value01.AMOUNT_CHGBACK_SEND_TOTAL,
-                                                AMOUNT_CHGBACK_SAP_TOTAL : value01.AMOUNT_CHGBACK_SAP_TOTAL ,
-                                                AMOUNT_CHGBACK_PENDING_SAP_TOTAL : value01.AMOUNT_CHGBACK_PENDING_SAP_TOTAL ,
 
-                                                QTY_CHGBACK_ID : value01.QTY_CHGBACK_ID ,
-                                                AMOUNT_CHGBACK_USD_ID : value01.AMOUNT_CHGBACK_USD_ID ,
-                                                AMOUNT_CHGBACK_SEND_ID :value01.AMOUNT_CHGBACK_SEND_ID,
-                                                AMOUNT_CHGBACK_SAP_ID : value01.AMOUNT_CHGBACK_SAP_ID ,
-                                                AMOUNT_CHGBACK_PENDING_SAP_ID : value01.AMOUNT_CHGBACK_PENDING_SAP_ID ,
-                                                
-                                                QTY_CHGBACK_IDM : value01.QTY_CHGBACK_IDM ,
-                                                AMOUNT_CHGBACK_USD_IDM : value01.AMOUNT_CHGBACK_USD_IDM ,
-                                                AMOUNT_CHGBACK_SEND_IDM :value01.AMOUNT_CHGBACK_SEND_IDM,
-                                                AMOUNT_CHGBACK_SAP_IDM : value01.AMOUNT_CHGBACK_SAP_IDM ,
-                                                AMOUNT_CHGBACK_PENDING_SAP_IDM : value01.AMOUNT_CHGBACK_PENDING_SAP_IDM ,
-                                                
-                                                QTY_CHGBACK_DIFF : value01.QTY_CHGBACK_DIFF ,
-                                                AMOUNT_CHGBACK_USD_DIFF : value01.AMOUNT_CHGBACK_USD_DIFF ,
-                                                AMOUNT_CHGBACK_SEND_DIFF : value01.AMOUNT_CHGBACK_SEND_DIFF ,
-                                                AMOUNT_CHGBACK_SAP_DIFF : value01.AMOUNT_CHGBACK_SAP_DIFF ,
-                                                AMOUNT_CHGBACK_PENDING_SAP_DIFF  : value01.AMOUNT_CHGBACK_PENDING_SAP_DIFF ,
-                                                
-                                                
+                                                QTY_CHGBACK_TOTAL: value01.QTY_CHGBACK_TOTAL,
+                                                AMOUNT_CHGBACK_USD_TOTAL: value01.AMOUNT_CHGBACK_USD_TOTAL,
+                                                AMOUNT_CHGBACK_SEND_TOTAL: value01.AMOUNT_CHGBACK_SEND_TOTAL,
+                                                AMOUNT_CHGBACK_SAP_TOTAL: value01.AMOUNT_CHGBACK_SAP_TOTAL,
+                                                AMOUNT_CHGBACK_PENDING_SAP_TOTAL: value01.AMOUNT_CHGBACK_PENDING_SAP_TOTAL,
+
+                                                QTY_CHGBACK_ID: value01.QTY_CHGBACK_ID,
+                                                AMOUNT_CHGBACK_USD_ID: value01.AMOUNT_CHGBACK_USD_ID,
+                                                AMOUNT_CHGBACK_SEND_ID: value01.AMOUNT_CHGBACK_SEND_ID,
+                                                AMOUNT_CHGBACK_SAP_ID: value01.AMOUNT_CHGBACK_SAP_ID,
+                                                AMOUNT_CHGBACK_PENDING_SAP_ID: value01.AMOUNT_CHGBACK_PENDING_SAP_ID,
+
+                                                QTY_CHGBACK_IDM: value01.QTY_CHGBACK_IDM,
+                                                AMOUNT_CHGBACK_USD_IDM: value01.AMOUNT_CHGBACK_USD_IDM,
+                                                AMOUNT_CHGBACK_SEND_IDM: value01.AMOUNT_CHGBACK_SEND_IDM,
+                                                AMOUNT_CHGBACK_SAP_IDM: value01.AMOUNT_CHGBACK_SAP_IDM,
+                                                AMOUNT_CHGBACK_PENDING_SAP_IDM: value01.AMOUNT_CHGBACK_PENDING_SAP_IDM,
+
+                                                QTY_CHGBACK_DIFF: value01.QTY_CHGBACK_DIFF,
+                                                AMOUNT_CHGBACK_USD_DIFF: value01.AMOUNT_CHGBACK_USD_DIFF,
+                                                AMOUNT_CHGBACK_SEND_DIFF: value01.AMOUNT_CHGBACK_SEND_DIFF,
+                                                AMOUNT_CHGBACK_SAP_DIFF: value01.AMOUNT_CHGBACK_SAP_DIFF,
+                                                AMOUNT_CHGBACK_PENDING_SAP_DIFF: value01.AMOUNT_CHGBACK_PENDING_SAP_DIFF,
+
 //                                                GAAA
 
-                                                  QTY_REVERSE_CHGBACK : value01.QTY_REVERSE_CHGBACK ,
-                                                    AMOUNT_REVERSE_CHGBACK_USD : value01.AMOUNT_REVERSE_CHGBACK_USD ,
-                                                    AMOUNT_REVERSE_CHGBACK_SEND : value01.AMOUNT_REVERSE_CHGBACK_SEND ,
-                                                    AMOUNT_REVERSE_CHGBACK_SAP : value01.AMOUNT_REVERSE_CHGBACK_SAP ,
-                                                    AMOUNT_REVERSE_PENDING_CHGBACK_SAP : value01.AMOUNT_REVERSE_PENDING_CHGBACK_SAP ,
+                                                QTY_REVERSE_CHGBACK: value01.QTY_REVERSE_CHGBACK,
+                                                AMOUNT_REVERSE_CHGBACK_USD: value01.AMOUNT_REVERSE_CHGBACK_USD,
+                                                AMOUNT_REVERSE_CHGBACK_SEND: value01.AMOUNT_REVERSE_CHGBACK_SEND,
+                                                AMOUNT_REVERSE_CHGBACK_SAP: value01.AMOUNT_REVERSE_CHGBACK_SAP,
+                                                AMOUNT_REVERSE_PENDING_CHGBACK_SAP: value01.AMOUNT_REVERSE_PENDING_CHGBACK_SAP,
 
-                                                    QTY_REVERSE_CHGBACK_ID :value01.QTY_REVERSE_CHGBACK_ID ,
-                                                    AMOUNT_REVERSE_CHGBACK_USD_ID : value01.AMOUNT_REVERSE_CHGBACK_USD_ID ,
-                                                    AMOUNT_REVERSE_CHGBACK_SEND_ID :value01.AMOUNT_REVERSE_CHGBACK_SEND_ID ,
-                                                    AMOUNT_REVERSE_CHGBACK_SAP_ID : value01.AMOUNT_REVERSE_CHGBACK_SAP_ID ,
-                                                    AMOUNT_REVERSE_PENDING_CHGBACK_SAP_ID : value01.AMOUNT_REVERSE_PENDING_CHGBACK_SAP_ID ,
+                                                QTY_REVERSE_CHGBACK_ID: value01.QTY_REVERSE_CHGBACK_ID,
+                                                AMOUNT_REVERSE_CHGBACK_USD_ID: value01.AMOUNT_REVERSE_CHGBACK_USD_ID,
+                                                AMOUNT_REVERSE_CHGBACK_SEND_ID: value01.AMOUNT_REVERSE_CHGBACK_SEND_ID,
+                                                AMOUNT_REVERSE_CHGBACK_SAP_ID: value01.AMOUNT_REVERSE_CHGBACK_SAP_ID,
+                                                AMOUNT_REVERSE_PENDING_CHGBACK_SAP_ID: value01.AMOUNT_REVERSE_PENDING_CHGBACK_SAP_ID,
 
-                                                    QTY_REVERSE_CHGBACK_IDM : value01.QTY_REVERSE_CHGBACK_IDM ,
-                                                    AMOUNT_REVERSE_CHGBACK_USD_IDM : value01.AMOUNT_REVERSE_CHGBACK_USD_IDM ,
-                                                    AMOUNT_REVERSE_CHGBACK_SEND_IDM : value01.AMOUNT_REVERSE_CHGBACK_SEND_IDM ,
-                                                    AMOUNT_REVERSE_CHGBACK_SAP_IDM :value01.AMOUNT_REVERSE_CHGBACK_SAP_IDM ,
-                                                    AMOUNT_REVERSE_PENDING_CHGBACK_SAP_IDM : value01.AMOUNT_REVERSE_PENDING_CHGBACK_SAP_IDM ,
+                                                QTY_REVERSE_CHGBACK_IDM: value01.QTY_REVERSE_CHGBACK_IDM,
+                                                AMOUNT_REVERSE_CHGBACK_USD_IDM: value01.AMOUNT_REVERSE_CHGBACK_USD_IDM,
+                                                AMOUNT_REVERSE_CHGBACK_SEND_IDM: value01.AMOUNT_REVERSE_CHGBACK_SEND_IDM,
+                                                AMOUNT_REVERSE_CHGBACK_SAP_IDM: value01.AMOUNT_REVERSE_CHGBACK_SAP_IDM,
+                                                AMOUNT_REVERSE_PENDING_CHGBACK_SAP_IDM: value01.AMOUNT_REVERSE_PENDING_CHGBACK_SAP_IDM,
 
-                                                  QTY_REVERSE_CHGBACK_DIFF : value01.QTY_REVERSE_CHGBACK_DIFF ,
-                                                    AMOUNT_REVERSE_CHGBACK_USD_DIFF : value01.AMOUNT_REVERSE_CHGBACK_USD_DIFF ,
-                                                    AMOUNT_REVERSE_CHGBACK_SEND_DIFF :value01.AMOUNT_REVERSE_CHGBACK_SEND_DIFF ,
-                                                    AMOUNT_REVERSE_CHGBACK_SAP_DIFF : value01.AMOUNT_REVERSE_CHGBACK_SAP_DIFF ,
-                                                    AMOUNT_REVERSE_PENDING_CHGBACK_SAP_DIFF : value01.AMOUNT_REVERSE_PENDING_CHGBACK_SAP_DIFF ,
-                                                
-                                                
+                                                QTY_REVERSE_CHGBACK_DIFF: value01.QTY_REVERSE_CHGBACK_DIFF,
+                                                AMOUNT_REVERSE_CHGBACK_USD_DIFF: value01.AMOUNT_REVERSE_CHGBACK_USD_DIFF,
+                                                AMOUNT_REVERSE_CHGBACK_SEND_DIFF: value01.AMOUNT_REVERSE_CHGBACK_SEND_DIFF,
+                                                AMOUNT_REVERSE_CHGBACK_SAP_DIFF: value01.AMOUNT_REVERSE_CHGBACK_SAP_DIFF,
+                                                AMOUNT_REVERSE_PENDING_CHGBACK_SAP_DIFF: value01.AMOUNT_REVERSE_PENDING_CHGBACK_SAP_DIFF,
+
                                                 leaf: true
                                             });
                                         }
                                     });
                                 }
                             });
-                            
+
                             var storeTree = Ext.create('Ext.data.TreeStore', {
                                 root: dataRoot
                             });
@@ -2132,69 +2206,69 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
 //                            console.log(dataRootb,'dataRootb')
                             Ext.getCmp(prototype.id + '-gridSumaryMainChgbck').setStore(storeTree);
                             Ext.getCmp(prototype.id + '-gridSumaryMainChgbckReverse').setStore(storeTree);
-                            
+
                             Ext.getCmp(prototype.id + '-QTY_TOTAL_CHGBACK_ID').setText(Ext.util.Format.number(QTY_TOTAL_CHGBACK_ID, '0,000'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_CHGBACK_USD_ID').setText(Ext.util.Format.number(AMOUNT_TOTAL_CHGBACK_USD_ID, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_CHGBACK_PENDING_USD_ID').setText(Ext.util.Format.number(AMOUNT_TOTAL_CHGBACK_PENDING_USD_ID, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_CHGBACK_SEND_ID').setText(Ext.util.Format.number(AMOUNT_TOTAL_CHGBACK_SEND_ID, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_CHGBACK_SAP_ID').setText(Ext.util.Format.number(AMOUNT_TOTAL_CHGBACK_SAP_ID, '0,000.00'));
-                            
+
                             Ext.getCmp(prototype.id + '-QTY_TOTAL_REVERSE_CHGBACK_ID').setText(Ext.util.Format.number(QTY_TOTAL_REVERSE_CHGBACK_ID, '0,000'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_REVERSE_CHGBACK_USD_ID').setText(Ext.util.Format.number(AMOUNT_TOTAL_REVERSE_CHGBACK_USD_ID, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_REVERSE_CHGBACK_SEND_ID').setText(Ext.util.Format.number(AMOUNT_TOTAL_REVERSE_CHGBACK_SEND_ID, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_REVERSE_CHGBACK_SAP_ID').setText(Ext.util.Format.number(AMOUNT_TOTAL_REVERSE_CHGBACK_SAP_ID, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_REVERSE_CHGBACK_PENDING_USD_ID').setText(Ext.util.Format.number(AMOUNT_TOTAL_REVERSE_CHGBACK_PENDING_USD_ID, '0,000.00'));
-                            
+
                             Ext.getCmp(prototype.id + '-QTY_TOTAL_CHGBACK_TOTAL_DIFF').setText(Ext.util.Format.number(QTY_TOTAL_CHGBACK_TOTAL_DIFF, '0,000'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_CHGBACK_USD_TOTAL_DIFF').setText(Ext.util.Format.number(AMOUNT_TOTAL_CHGBACK_USD_TOTAL_DIFF, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_CHGBACK_SEND_TOTAL_DIFF').setText(Ext.util.Format.number(AMOUNT_TOTAL_CHGBACK_SEND_TOTAL_DIFF, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_CHGBACK_SAP_TOTAL_DIFF').setText(Ext.util.Format.number(AMOUNT_TOTAL_CHGBACK_SAP_TOTAL_DIFF, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_CHGBACK_PENDING_USD_TOTAL_DIFF').setText(Ext.util.Format.number(AMOUNT_TOTAL_CHGBACK_PENDING_USD_TOTAL_DIFF, '0,000.00'));
-                            
-                            
-                           Ext.getCmp(prototype.id + '-QTY_TOTAL_CHGBACK_IDM').setText(Ext.util.Format.number(QTY_TOTAL_CHGBACK_IDM, '0,000'));
+
+
+                            Ext.getCmp(prototype.id + '-QTY_TOTAL_CHGBACK_IDM').setText(Ext.util.Format.number(QTY_TOTAL_CHGBACK_IDM, '0,000'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_CHGBACK_USD_IDM').setText(Ext.util.Format.number(AMOUNT_TOTAL_CHGBACK_USD_IDM, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_CHGBACK_PENDING_USD_IDM').setText(Ext.util.Format.number(AMOUNT_TOTAL_CHGBACK_PENDING_USD_IDM, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_CHGBACK_SEND_IDM').setText(Ext.util.Format.number(AMOUNT_TOTAL_CHGBACK_SEND_IDM, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_CHGBACK_SAP_IDM').setText(Ext.util.Format.number(AMOUNT_TOTAL_CHGBACK_SAP_IDM, '0,000.00'));
-                            
-                        
+
+
                             Ext.getCmp(prototype.id + '-QTY_TOTAL_REVERSE_CHGBACK_IDM').setText(Ext.util.Format.number(QTY_TOTAL_REVERSE_CHGBACK_IDM, '0,000'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_REVERSE_CHGBACK_USD_IDM').setText(Ext.util.Format.number(AMOUNT_TOTAL_REVERSE_CHGBACK_USD_IDM, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_REVERSE_CHGBACK_SEND_IDM').setText(Ext.util.Format.number(AMOUNT_TOTAL_REVERSE_CHGBACK_SEND_IDM, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_REVERSE_CHGBACK_SAP_IDM').setText(Ext.util.Format.number(AMOUNT_TOTAL_REVERSE_CHGBACK_SAP_IDM, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_REVERSE_CHGBACK_PENDING_USD_IDM').setText(Ext.util.Format.number(AMOUNT_TOTAL_REVERSE_CHGBACK_PENDING_USD_IDM, '0,000.00'));
-                            
-                            
+
+
                             Ext.getCmp(prototype.id + '-QTY_TOTAL_REVERSE_CHGBACK_TOTAL_DIFF').setText(Ext.util.Format.number(QTY_TOTAL_REVERSE_CHGBACK_TOTAL_DIFF, '0,000'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_REVERSE_CHGBACK_USD_TOTAL_DIFF').setText(Ext.util.Format.number(AMOUNT_TOTAL_REVERSE_CHGBACK_USD_TOTAL_DIFF, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_REVERSE_CHGBACK_SEND_TOTAL_DIFF').setText(Ext.util.Format.number(AMOUNT_TOTAL_REVERSE_CHGBACK_SEND_TOTAL_DIFF, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_REVERSE_CHGBACK_SAP_TOTAL_DIFF').setText(Ext.util.Format.number(AMOUNT_TOTAL_REVERSE_CHGBACK_SAP_TOTAL_DIFF, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_REVERSE_CHGBACK_PENDING_USD_TOTAL_DIFF').setText(Ext.util.Format.number(AMOUNT_TOTAL_REVERSE_CHGBACK_PENDING_USD_TOTAL_DIFF, '0,000.00'));
-                            
-                            
-                            
+
+
+
                             var data = lastRecord;
                             console.log(lastRecord, 'datadata');
                             console.log(obj, 'objobj');
-                            
+
                             let totals = [];
                             let totals2 = [];
-                           let totalCantidad =
-                                lastRecord.AMOUNT_TOTAL_CHGBACK_USD_ID +
-                                lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_USD_ID;
+                            let totalCantidad =
+                                    lastRecord.AMOUNT_TOTAL_CHGBACK_USD_ID +
+                                    lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_USD_ID;
 
                             let chgbkMatchID =
-                                (lastRecord.AMOUNT_TOTAL_CHGBACK_USD_ID / totalCantidad) * 100;
+                                    (lastRecord.AMOUNT_TOTAL_CHGBACK_USD_ID / totalCantidad) * 100;
 
                             let chgbkMatchIDM =
-                                (lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_USD_ID / totalCantidad) * 100;
+                                    (lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_USD_ID / totalCantidad) * 100;
 
                             if (obj.data.items.length > 0) {
 
                                 totals.push({
                                     LABEL: 'Chargeback ID',
-                                    Perc2: chgbkMatchID,   // <-- ahora SI es porcentaje
+                                    Perc2: chgbkMatchID, // <-- ahora SI es porcentaje
                                     VENDOR: 'Chgback ID:\n' + Ext.util.Format.number(chgbkMatchID, '0.00%')
                                 });
 
@@ -2204,39 +2278,39 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                                     VENDOR: 'Reverse Chargeback ID:\n' + Ext.util.Format.number(chgbkMatchIDM, '0.00%')
                                 });
                             }
-                            
+
 
                             var storeData1er = Ext.create('Ext.data.Store', {
                                 data: totals,
                                 autoLoad: true
                             });
-                            console.log(totals,'totals')
+                            console.log(totals, 'totals')
                             Ext.getCmp(prototype.id + '-displayPolarSMChgbck').bindStore(storeData1er);
 
-                            
-                            
-                            
+
+
+
 //                            INICIO  displayPolarSMChgbckR
-                            
-                                let totalCantidadReverse = lastRecord.AMOUNT_TOTAL_CHGBACK_USD_IDM + lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_USD_IDM;
+
+                            let totalCantidadReverse = lastRecord.AMOUNT_TOTAL_CHGBACK_USD_IDM + lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_USD_IDM;
 
                             let chgbkReverse = (lastRecord.AMOUNT_TOTAL_CHGBACK_USD_IDM / totalCantidadReverse) * 100;
                             let chgbkIMDUSD = (lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_USD_IDM / totalCantidadReverse) * 100;
 
                             if (obj.data.items.length > 0) {
-                                
+
                                 totals2.push({
                                     LABEL: 'Chargeback IDM',
                                     Perc2: lastRecord.AMOUNT_TOTAL_CHGBACK_USD_IDM,
                                     VENDOR: 'Chargeback IDM:\n' + Ext.util.Format.number(chgbkReverse, '0.00%')
                                 });
-                                
-                                  totals2.push({
+
+                                totals2.push({
                                     LABEL: 'Reverse Chargueback IDM',
                                     Perc2: lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_USD_IDM,
                                     VENDOR: 'Reverse Chargueback IDM:\n' + Ext.util.Format.number(chgbkIMDUSD, '0.00%')
                                 });
-                                
+
                             }
 
                             var storeData1erReverse = Ext.create('Ext.data.Store', {
@@ -2245,10 +2319,10 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                             });
 
                             Ext.getCmp(prototype.id + '-displayPolarSMChgbckR').bindStore(storeData1erReverse);
-                            
+
 //                            FIN
                             //Ext.getCmp(prototype.id + '-lblTittlePaidSumaryMain').setText('Totals Debits: ' + Ext.util.Format.number(totalCantidad, '0,000.00'));
-                                // Supongamos que ya tienes lastRecord con tus datos
+                            // Supongamos que ya tienes lastRecord con tus datos
                             // Supongamos que lastRecord ya contiene tus montos
                             let dataBar = [
                                 {
@@ -2264,7 +2338,7 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                                     SAP: lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_SAP_ID
                                 },
                             ];
-                            
+
 
                             // Asignar store al gráfico
                             let chart = Ext.getCmp(prototype.id + '-displayBarSM1');
@@ -2278,8 +2352,8 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
 
 
                             //Ext.getCmp(prototype.id + '-displayBarSM').bindStore(chart);
-                            
-                             let dataBar2 = [
+
+                            let dataBar2 = [
                                 {
                                     category: 'Chargeback IDM',
                                     USD: lastRecord.AMOUNT_TOTAL_CHGBACK_USD_IDM,
@@ -2293,7 +2367,7 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                                     SAP: lastRecord.AMOUNT_TOTAL_REVERSE_CHGBACK_SAP_IDM
                                 },
                             ];
-                            
+
 
                             // Asignar store al gráfico
                             let chart2 = Ext.getCmp(prototype.id + '-displayBaerSMChgbckR');
@@ -2304,41 +2378,41 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
 
                             // Opcional: definir títulos de la serie (se hace aquí porque no se puede en HTML si es dinámico)
                             chart2.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
-    
-    
+
+
                         }
 //                        me.setWidthPie();
                     }
                 }
             });
             global.clear();
-             this.getPaggin();
-            
+            this.getPaggin();
+
 //            Ext.getCmp(prototype.id + '-gridSumaryMain').bindStore(storeGridDatas);
 //            Ext.getCmp(prototype.id + '-paggin2').bindStore(storeGridDatas);
         }
 
     },
-    onGridDataDetailGrid: function (IN_TDOC,IN_CONT,  column, e, rowIndex, colIndex, rowData) {
-  
-        
-        console.log(rowData,'rowData')
+    onGridDataDetailGrid: function (IN_TDOC, IN_CONT, column, e, rowIndex, colIndex, rowData) {
+
+
+        console.log(rowData, 'rowData')
         let esPadre = rowData.record.childNodes.length ? true : false;
         let rowPadre = rowData.record.data;
         let opcion = colIndex;
         let fecha = this.getPeriodoYYYYMM(rowPadre.strFormatDate);
         me.bean = {};
-        
+
         me.bean.IN_CONT = IN_CONT;
         me.bean.IN_TDOC = IN_TDOC;
-        
-        
+
+
         if (esPadre) {
             me.bean.IN_CCUST = "";
         } else {
-            me.bean.IN_CCUST =rowPadre.CCUST;
+            me.bean.IN_CCUST = rowPadre.CCUST;
         }
-        
+
         me.bean.IN_DATE = fecha;
         me.bean.IN_FECFILTRO = rowPadre.IN_FECFILTRO;
         me.bean.IN_CODPRO = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
@@ -2346,20 +2420,20 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
         me.bean.IN_CONTABLE = Ext.getCmp(prototype.id + '-txtIIDCONTABLE').getValue();
 
         me.paramsDetail.beanString = JSON.stringify(me.bean);
-        
+
         console.log(me.panelActual, 'me.panelActual')
         console.log(me.bean, 'searchParamsDETAILLLL')
-        
+
         this.setGridDataDetaillGrid();
     },
-    setGridDataDetaillGrid: function (){
+    setGridDataDetaillGrid: function () {
         win.lblUser_toolTip("Estructura: MPF101");
-        
+
         if (me.panelActual != '-boxDataDetail') {
             me.drillDown.push(me.panelActual);
             me.panelActual = '-boxDataDetail';
         }
-        
+
         Ext.getCmp(prototype.id + '-panelHeight').setHeight(620);
         global.selectedChild(me.childs, prototype.id + me.panelActual);
         var msj = this.validateFields();
@@ -2375,7 +2449,7 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                         obj.proxy.extraParams = me.paramsDetail;
                     },
                     load: function (obj) {
-                        console.log(obj,'objAAAA')
+                        console.log(obj, 'objAAAA')
                         var pag = Ext.getCmp(prototype.id + '-paggin3');
                         var pagData = pag.getPageData();
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
@@ -2396,17 +2470,16 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
             Ext.getCmp(prototype.id + '-paggin3').bindStore(storeGridDatas);
         }
     },
-    
-    
+
     onGridDataDetailGridPending: function (column, e, rowIndex, colIndex, rowData) {
-        console.log(rowData,'rowData')
+        console.log(rowData, 'rowData')
         let esPadre = rowData.record.childNodes.length ? true : false;
         let rowPadre = rowData.record.data;
         let opcion = colIndex;
         let fecha = this.getPeriodoYYYYMM(rowPadre.strFormatDate);
         me.bean = {};
-        
-        console.log(opcion,'opcion')
+
+        console.log(opcion, 'opcion')
         switch (opcion) {
             case 1:
 //                TOTAL PENDIENTE
@@ -2418,105 +2491,105 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                 me.bean.IN_CONT = "";
                 me.bean.IN_TDOC = "PT";
                 break;
-                
-             case 4:
+
+            case 4:
 //                ID QTY
-                 me.bean.IN_CONT = "";
+                me.bean.IN_CONT = "";
                 me.bean.IN_TDOC = "CI";
                 break;
-             case 6:
+            case 6:
 //                ID PENDING
-                 me.bean.IN_CONT = "IPEN";
+                me.bean.IN_CONT = "IPEN";
                 me.bean.IN_TDOC = "CI";
                 break;
-             case 7:
+            case 7:
 //                 ID SENT
                 me.bean.IN_CONT = "ISEND";
                 me.bean.IN_TDOC = "CI";
                 break;
-             case 8:
+            case 8:
 //                ID SAP
-                 me.bean.IN_CONT = "ISAP";
+                me.bean.IN_CONT = "ISAP";
                 me.bean.IN_TDOC = "CI";
                 break;
-                
+
             case 9:
 //                IDM QTY
-                 me.bean.IN_CONT = "";
+                me.bean.IN_CONT = "";
                 me.bean.IN_TDOC = "CM";
                 break;
             case 11:
 //                IDM PENDING
-                 me.bean.IN_CONT = "MPEN";
+                me.bean.IN_CONT = "MPEN";
                 me.bean.IN_TDOC = "CM";
                 break;
             case 12:
 //                IDM SENT
-                 me.bean.IN_CONT = "MSEND";
+                me.bean.IN_CONT = "MSEND";
                 me.bean.IN_TDOC = "CM";
                 break;
             case 13:
 //                IDM SAP
-                 me.bean.IN_CONT = "MSAP";
+                me.bean.IN_CONT = "MSAP";
                 me.bean.IN_TDOC = "CM";
                 break;
-                
-                
-          case 14:
+
+
+            case 14:
 //                ACRE QTY
-                 me.bean.IN_CONT = "";
+                me.bean.IN_CONT = "";
                 me.bean.IN_TDOC = "AC";
                 break;
-        case 16:
+            case 16:
 //                ACRE PEN
-                 me.bean.IN_CONT = "APEN";
+                me.bean.IN_CONT = "APEN";
                 me.bean.IN_TDOC = "AC";
                 break;
-        case 17:
+            case 17:
 //                ACRE SEND
-                 me.bean.IN_CONT = "ASEND";
+                me.bean.IN_CONT = "ASEND";
                 me.bean.IN_TDOC = "AC";
                 break;
-         case 18:
+            case 18:
 //               ACRE SAP
-                 me.bean.IN_CONT = "ASAP";
+                me.bean.IN_CONT = "ASAP";
                 me.bean.IN_TDOC = "AC";
                 break;
-                
-                
-          case 19:
+
+
+            case 19:
 //                 PENDIN REAL  QTY
-                 me.bean.IN_CONT = "";
+                me.bean.IN_CONT = "";
                 me.bean.IN_TDOC = "PR";
                 break;
-        case 21:
+            case 21:
 //                 PENDIN REAL  PEN
-                 me.bean.IN_CONT = "RPEN";
+                me.bean.IN_CONT = "RPEN";
                 me.bean.IN_TDOC = "PR";
                 break;
-        case 22:
+            case 22:
 //                 PENDIN REAL  SEND
-                 me.bean.IN_CONT = "RSEND";
+                me.bean.IN_CONT = "RSEND";
                 me.bean.IN_TDOC = "PR";
                 break;
-         case 23:
+            case 23:
 //               PENDIN REAL SAP
-                 me.bean.IN_CONT = "RSAP";
+                me.bean.IN_CONT = "RSAP";
                 me.bean.IN_TDOC = "PR";
                 break;
-                
+
             default:
                 resultado = 'AV GROUP';
                 break;
         }
-        
-        
+
+
         if (esPadre) {
             me.bean.IN_CCUST = "";
         } else {
-            me.bean.IN_CCUST =rowPadre.CCUST;
+            me.bean.IN_CCUST = rowPadre.CCUST;
         }
-        
+
         me.bean.IN_DATE = fecha;
         me.bean.IN_FECFILTRO = rowPadre.IN_FECFILTRO;
         me.bean.IN_CODPRO = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
@@ -2524,20 +2597,20 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
         me.bean.IN_CONTABLE = Ext.getCmp(prototype.id + '-txtIIDCONTABLE').getValue();
 
         me.paramsDetail.beanString = JSON.stringify(me.bean);
-        
+
         console.log(me.panelActual, 'me.panelActual')
         console.log(me.bean, 'searchParamsDETAILLLL')
-        
+
         this.setGridDataDetaillGridPending();
     },
-    setGridDataDetaillGridPending: function (){
+    setGridDataDetaillGridPending: function () {
         win.lblUser_toolTip("Estructura: MPF101");
-        
+
         if (me.panelActual != '-boxDataDetail') {
             me.drillDown.push(me.panelActual);
             me.panelActual = '-boxDataDetail';
         }
-        
+
         Ext.getCmp(prototype.id + '-panelHeight').setHeight(620);
         global.selectedChild(me.childs, prototype.id + me.panelActual);
         var msj = this.validateFields();
@@ -2553,7 +2626,7 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
                         obj.proxy.extraParams = me.paramsDetail;
                     },
                     load: function (obj) {
-                        console.log(obj,'objAAAA')
+                        console.log(obj, 'objAAAA')
                         var pag = Ext.getCmp(prototype.id + '-paggin3');
                         var pagData = pag.getPageData();
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
@@ -2574,7 +2647,7 @@ chart.getSeries()[0].setTitle(['Amount USD', 'Amount SEND', 'Amount SAP']);
             Ext.getCmp(prototype.id + '-paggin3').bindStore(storeGridDatas);
         }
     },
-    
+
     /*     
      * Funciones para la paginacion     
      */

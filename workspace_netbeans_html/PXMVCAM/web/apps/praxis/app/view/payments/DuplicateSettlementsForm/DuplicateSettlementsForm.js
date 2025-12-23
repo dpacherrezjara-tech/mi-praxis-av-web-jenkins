@@ -59,7 +59,7 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.DuplicateSettlemen
                                     items: [
                                         {
                                             xtype: prototype.id + '-options',
-                                            style:'margin-top:20px'
+                                            style:'margin-top:10px'
                                         }
                                         ,
                                         {
@@ -70,7 +70,7 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.DuplicateSettlemen
                                         ,
                                         {
                                             xtype: 'panel',
-                                            height: 590,
+                                            height: 570,
                                             layout: 'fit',
                                             items: [
                                                 {
