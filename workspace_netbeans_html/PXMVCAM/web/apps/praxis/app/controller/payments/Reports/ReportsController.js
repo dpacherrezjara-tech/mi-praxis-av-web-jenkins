@@ -982,7 +982,7 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                             }
 
                             var storeDataTotal = Ext.create('Ext.data.Store', {
-                                data: totals,
+                                data: totalsT,
                                 autoLoad: true
                             });
 

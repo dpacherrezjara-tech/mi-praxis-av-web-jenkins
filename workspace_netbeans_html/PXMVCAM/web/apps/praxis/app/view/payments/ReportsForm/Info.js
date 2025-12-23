@@ -920,6 +920,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                                 type: 'vbox',
                                                 align: 'left'
                                             },
+                                            margin: '0 0 0 40',
                                             items: [
                                                 {
                                                     xtype: 'polar',
@@ -991,6 +992,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                                 type: 'vbox',
                                                 align: 'left'
                                             },
+                                            margin: '0 0 0 40',
                                             items: [
                                                 {
                                                     xtype: 'polar',
