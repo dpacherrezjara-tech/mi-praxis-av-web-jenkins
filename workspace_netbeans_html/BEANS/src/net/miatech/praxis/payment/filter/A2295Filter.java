@@ -87,6 +87,7 @@ public class A2295Filter  extends A2295{
     public String SCURREVEN = "";
     public String FDESD = "";
     public String F_STVAL = "";
+    public String FPAGO = "";
     
                 
     public long lngDays = 0;

@@ -259,7 +259,7 @@ public class ForecastPaymentController extends BaseController {
             // ===== HOJA TC =====
             String[] columnsTC = {
                 "INVOICE_CC","STATUS", "SPAYMENT", "SCOUNTRY", "SCARCOD1", "CCUST", "CFUENTE",
-                "SUBFTE", "SCONSOL", "FDESD", "MCLOS", "SCURRENCY", "SCURREVEN",
+                "SUBFTE", "SCONSOL", "FDESD", "MCLOS","FPAGO", "SCURRENCY", "SCURREVEN",
                 "Suma de SVFOPC1", "Suma de SVFOPUSD"
             };
 
@@ -276,15 +276,15 @@ public class ForecastPaymentController extends BaseController {
                 row.createCell(0).setCellValue(item.INVOICE1); // INVOICE_CC
                 Cell cellStatus = row.createCell(1);
 
-if ("1".equals(item.STVAL)) {
-    cellStatus.setCellValue("Match");
-} else if ("".equals(item.STVAL)) {
-    cellStatus.setCellValue("Pending");
-} else if ("5".equals(item.STVAL)) {
-    cellStatus.setCellValue("Manual");
-} else {
-    cellStatus.setCellValue(item.STVAL);
-}
+                if ("1".equals(item.STVAL)) {
+                    cellStatus.setCellValue("Match");
+                } else if ("".equals(item.STVAL)) {
+                    cellStatus.setCellValue("Pending");
+                } else if ("5".equals(item.STVAL)) {
+                    cellStatus.setCellValue("Manual");
+                } else {
+                    cellStatus.setCellValue(item.STVAL);
+                }
 
                 //row.createCell(1).setCellValue(item.STVAL); // INVOICE_CC
                 row.createCell(2).setCellValue(item.SPAYMENT);
@@ -296,14 +296,15 @@ if ("1".equals(item.STVAL)) {
                 row.createCell(8).setCellValue(item.SCONSOL);
                 row.createCell(9).setCellValue(item.FDESD);
                 row.createCell(10).setCellValue(item.MCLOS);
-                row.createCell(11).setCellValue(item.SCURRENCY);
-                row.createCell(12).setCellValue(item.SCURREVEN);
+                row.createCell(11).setCellValue(item.FPAGO);
+                row.createCell(12).setCellValue(item.SCURRENCY);
+                row.createCell(13).setCellValue(item.SCURREVEN);
 
-                Cell c12 = row.createCell(13);
+                Cell c12 = row.createCell(14);
                 c12.setCellValue(item.SVFOPC1);
                 c12.setCellStyle(moneyStyle);
 
-                Cell c13 = row.createCell(14);
+                Cell c13 = row.createCell(15);
                 c13.setCellValue(item.SVFOPUSD);
                 c13.setCellStyle(moneyStyle);
             }
@@ -315,7 +316,7 @@ if ("1".equals(item.STVAL)) {
             // ===== HOJA CASH =====
             String[] columnsCASH = {
                 "INVOICE_CA","STATUS", "SPAYMENT", "SCOUNTRY", "CCUST", "CFUENTE", "SUBFTE",
-                "SCONSOL", "SDATE", "MCLOS", "SCURRENCY", "SCURREVEN",
+                "SCONSOL", "SDATE", "MCLOS","FPAGO", "SCURRENCY", "SCURREVEN",
                 "Suma de SVFOPNETR", "Suma de SVFOPUSD"
             };
 
@@ -352,14 +353,15 @@ if ("1".equals(item.STVAL)) {
                 row.createCell(7).setCellValue(item.SCONSOL);
                 row.createCell(8).setCellValue(item.SDATE);
                 row.createCell(9).setCellValue(item.MCLOS);
-                row.createCell(10).setCellValue(item.SCURRENCY);
-                row.createCell(11).setCellValue(item.SCURREVEN);
+                row.createCell(10).setCellValue(item.FPAGO);
+                row.createCell(11).setCellValue(item.SCURRENCY);
+                row.createCell(12).setCellValue(item.SCURREVEN);
 
-                Cell c11 = row.createCell(12);
+                Cell c11 = row.createCell(13);
                 c11.setCellValue(item.SVFOPNETR);
                 c11.setCellStyle(moneyStyle);
 
-                Cell c12 = row.createCell(13);
+                Cell c12 = row.createCell(14);
                 c12.setCellValue(item.SVFOPUSD);
                 c12.setCellStyle(moneyStyle);
             }

@@ -49,6 +49,7 @@ public class A2295 {
     public String STCON = "";
     public String FCONT = "";
     public String STVAL = "";
+    public String FPAGO = "";
     public String FCONCEP = "";
     public String SVFOP = "";
     public String SVFOPACUM = "";
