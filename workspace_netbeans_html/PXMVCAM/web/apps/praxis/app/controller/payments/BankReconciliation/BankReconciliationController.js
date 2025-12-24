@@ -4421,9 +4421,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
     
     
     onGridCountryCash: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
-        me.drillDown.push(me.panelActual);
-        me.panelActual = '-panelGridDataCountryCash';
-        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        
         this.beanDetDay = {};
         var cant = 0;   
         switch (columnNum) {
@@ -4459,8 +4457,22 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
         this.beanDetDay.strFormatDate = rowData.data.strFormatDate;
         this.beanDetDay.strFecFiltro = rowData.data.strFecFiltro;
 
-        me.paramsDetail.beanString = JSON.stringify(this.beanDetDay);
-        this.setGridDataCountryCash();
+        if( rowData.data.TINPUT == 'I'){
+            me.drillDown.push(me.panelActual);
+            me.panelActual = '-panelGridDataDayCash';
+            global.selectedChild(me.childs, prototype.id + me.panelActual);
+            
+            me.paramsDetail.beanString = JSON.stringify(this.beanDetDay);
+            this.setGridDataDayCash();
+        }else{
+            me.drillDown.push(me.panelActual);
+            me.panelActual = '-panelGridDataCountryCash';
+            global.selectedChild(me.childs, prototype.id + me.panelActual);
+            me.paramsDetail.beanString = JSON.stringify(this.beanDetDay);
+            this.setGridDataCountryCash();
+        }
+        
+        
     },
     
     
@@ -4714,14 +4726,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             Ext.getCmp(prototype.id + '-pagginMPF199').bindStore(storeGridDatas);
         }
     },
-    
 
-    
-    
-    
-    
-    
-    
     //////////////////////////7
     //////////////////////////7
     
