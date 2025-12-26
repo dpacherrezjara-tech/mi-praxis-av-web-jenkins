@@ -9,25 +9,37 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.RejectSequencesDataEntr
     init: function (view) {
     },
     afterRender: async function () {
+        const me = this;
+        if (me.view.option === 'R') {
+            Ext.getCmp(prototype.idDErej + '-chk-reject-all').show();
+        }
+
     },
     onRejectClick: async function () {
         const me = this;
-        const {idCont, corrl} = me.view.obj;
+        const { idCont, corrl } = me.view.obj;
         me.view.setLoading(true);
         const tmp = await global.loadRecordsOnTable('PRAXISMP', 'XTEMPO', me.view.rejected);
         let username = document.getElementById('menuUser').textContent;
+
+        let proceso = me.view.option;
+
+        if (Ext.getCmp(prototype.idDErej + '-chk-reject-all').getValue()) {
+            proceso = 'P';
+        }
+
         let params = {
-            IN_PROCESO: me.view.option,
+            IN_PROCESO: proceso,
             IN_IDCONT: idCont,
             IN_FILESQ: corrl,
             IN_USER: username,
             IN_CUUID: tmp.cuuid,
             IN_FUUID: tmp.fuuid
         };
+
         const formData = new FormData();
         formData.append('params', JSON.stringify(params));
         const res = await global.callStoreGet('PRAXISMP', 'MPS292', params);
-        console.log(res);
         me.notifier.info('Sequences Updated');
         me.view.setLoading(true);
         me.view.reloadForm();

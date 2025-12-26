@@ -104,7 +104,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                 { fieldLabel: 'Status Praxis', name: 'STATUS_PRAXIS', itemId: 'STATUS_PRAXIS' },
                                 { fieldLabel: 'Status SAP', name: 'STATUS_SAP', itemId: 'STATUS_SAP' },
                                 { fieldLabel: 'Acc. Period', name: 'FCONT', itemId: 'FCONT' },
-                                { fieldLabel: 'Date Send', name: 'HSEND', itemId: 'HSEND' }
+                                { fieldLabel: 'Hour Sended', name: 'HSEND', itemId: 'HSEND' }
                             ]
                         },
                         {
@@ -265,35 +265,61 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                                     'MONTO_REVENUE'
                                                 ]
                                             },
-                                            columns: [
-                                                {
-                                                    text: 'RN',
-                                                    locked: true,
-                                                    xtype: 'rownumberer', // Columna de número de fila
-                                                    width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
-                                                },
-                                                { text: 'Bank Doc.', dataIndex: 'BANDOC', flex: 1 },
-                                                { text: 'Referencia', dataIndex: 'REFER', flex: 1 },
-                                                { text: 'Value Date', dataIndex: 'VALDATE', flex: 1 },
-                                                { text: 'Currency', dataIndex: 'MONEDA_PAGO', flex: 0.8 },
-                                                { text: 'Amount', dataIndex: 'MONTO_PAGO', flex: 0.8 },
-                                                { text: 'Rev. Currency', dataIndex: 'MONEDA_REVENUE', flex: 0.8 },
-                                                { text: 'Rev. Amount', dataIndex: 'MONTO_REVENUE', flex: 0.8 },
-                                                {
-                                                    xtype: 'actioncolumn',
-                                                    id: prototype.idDEsequence + '-btnRejectRec',
-                                                    width: 50,
-                                                    text: 'Rej.',
+                                            columns: {
+                                                defaults: {
                                                     align: 'center',
-                                                    items: [
-                                                        {
-                                                            iconCls: 'prx-icon-image-trash',
-                                                            tooltip: 'Reject Sequence',
-                                                            handler: 'onRejectRec'
+                                                    menuDisabled: true,
+                                                    sortable: true
+                                                },
+                                                items: [
+                                                    {
+                                                        text: 'RN',
+                                                        locked: true,
+                                                        xtype: 'rownumberer', // Columna de número de fila
+                                                        width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
+                                                    },
+                                                    { text: 'Bank Doc.', dataIndex: 'BANDOC', width: 120 },
+                                                    { text: 'Referencia', dataIndex: 'REFER', flex: 1 },
+                                                    { text: 'Value<br>Date', dataIndex: 'VALDATE', width: 80 },
+                                                    { text: 'Curr.', dataIndex: 'MONEDA_PAGO', width: 60 },
+                                                    {
+                                                        text: 'Amount', dataIndex: 'MONTO_PAGO', width: 160,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "background-color:#dcdf3a;text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
                                                         }
-                                                    ]
-                                                }
-                                            ]
+
+                                                    },
+                                                    {
+                                                        text: 'Rev.<br>Currency', dataIndex: 'MONEDA_REVENUE', width: 160
+                                                    },
+                                                    {
+                                                        text: 'Rev.<br>Amount', dataIndex: 'MONTO_REVENUE', width: 160,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "background-color:#dcdf3a;text-align:right;";
+                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        xtype: 'actioncolumn',
+                                                        id: prototype.idDEsequence + '-btnRejectRec',
+                                                        width: 50,
+                                                        text: 'Rej.',
+                                                        align: 'center',
+                                                        items: [
+                                                            {
+                                                                iconCls: 'prx-icon-image-trash',
+                                                                tooltip: 'Reject Sequence',
+                                                                handler: 'onRejectRec'
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+
+
                                         },
                                     ]
                                 },
@@ -326,7 +352,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                                         width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
                                                     },
                                                     {
-                                                        text: 'Status', dataIndex: 'STREJ', flex: 0.7,
+                                                        text: 'Status', dataIndex: 'STREJ', width: 130,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "font-weight:bold;";
                                                             const opts = {
@@ -335,11 +361,11 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                                             return opts[value];
                                                         }
                                                     },
-                                                    { text: 'Reference', dataIndex: 'REFER', flex: 1 },
-                                                    { text: 'Bank Doc.', dataIndex: 'BANDOC', flex: 1 },
-                                                    { text: 'Value Date', dataIndex: 'VALDATE', flex: 1 },
-                                                    { text: 'Processor', dataIndex: 'CODPRO', flex: 1 },
-                                                    { text: 'Code', dataIndex: 'CODREC', flex: 1 },
+                                                    { text: 'Reference', dataIndex: 'REFER', width: 150 },
+                                                    { text: 'Bank Doc.', dataIndex: 'BANDOC', width: 90 },
+                                                    { text: 'Value<br>Date', dataIndex: 'VALDATE', width: 80 },
+                                                    { text: 'Processor', dataIndex: 'CODPRO', width: 80 },
+                                                    { text: 'Code', dataIndex: 'CODREC', width: 70 },
                                                     { text: 'Comment', dataIndex: 'OBSERV', flex: 1 }
                                                 ]
                                             }

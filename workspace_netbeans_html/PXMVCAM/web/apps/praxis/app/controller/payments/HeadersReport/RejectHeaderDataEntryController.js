@@ -21,7 +21,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.RejectHeaderDataEntryCo
         }
 
         const fileForm = Ext.getCmp(prototype.idDErej + '-supportFiles');
-        const {idCont, header, status} = me.view.obj;
+        const { idCont, header, status } = me.view.obj;
 
         if (me.soportes.length > 0) {
             me.view.setLoading(true);
@@ -51,12 +51,12 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.RejectHeaderDataEntryCo
                     'Content-Type': 'multipart/form-data'
                 }
             });
-//            console.log(res);
+
             me.notifier.info('Header Updated');
             me.view.setLoading(true);
         } else {
             me.notifier.alert('Error on Maintenance');
-        } 
+        }
         me.view.reloadForm();
         me.view.close();
     },
@@ -81,7 +81,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.RejectHeaderDataEntryCo
         me.view.setLoading(false);
     },
     onDeleteFile: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
-        const {FILENAM} = record.data;
+        const { FILENAM } = record.data;
         const me = this;
         me.soportes = me.soportes.filter(x => x.name !== FILENAM);
         me.loadStoreFiles();
@@ -91,9 +91,9 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.RejectHeaderDataEntryCo
         const grid = Ext.getCmp(prototype.idDErej + '-gridSupports');
         if (me.soportes.length > 0) {
             grid.show();
-            let data = me.soportes.map(x => ({FILENAM: x.name}));
+            let data = me.soportes.map(x => ({ FILENAM: x.name }));
 
-            grid.setStore(new Ext.data.Store({data: data}));
+            grid.setStore(new Ext.data.Store({ data: data }));
         } else {
             grid.hide();
             grid.setStore([]);

@@ -37,6 +37,14 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.RejectSequence
                     marginTop: '10px',
                     marginBottom: '10px'
                 }
+            },
+            {
+                xtype: 'checkbox',
+                boxLabel: 'Re-Process',
+                id: prototype.idDErej + '-chk-reject-all',
+                inputValue: '1',
+                checked: false,
+                hidden: true
             }
         ]
     },
