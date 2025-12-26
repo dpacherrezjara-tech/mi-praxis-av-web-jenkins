@@ -8874,7 +8874,7 @@ public class BankReconciliationDAO {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             executeConciliationSP(cnx, "MPS316");
             executeConciliationSP(cnx, "MPS319");
-            executeConciliationSP(cnx, "MPS316");
+            executeConciliationSP(cnx, "MPS313");
             executeSummarySP(cnx, "MPS322", ccust);
             executeSummarySP(cnx, "MPS343", ccust);
 

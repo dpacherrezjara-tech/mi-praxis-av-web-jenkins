@@ -1800,6 +1800,22 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                                         },
                                                                                     },
                                                                                     {
+                                                                                        text: '<span style="color:white;font-weight:bold;">Download File</span>',
+                                                                                        width: 90,
+                                                                                        align: 'center',
+                                                                                        style: 'padding:2px; background: #6C87A8; border-color:white',
+                                                                                        renderer: function (value, metaData, record) {
+                                                                                            let file = record.get('FILE_NAME');  // o el campo que tú uses para descargar
+
+                                                                                            return `<img src="resources/img/botones/excel-png-office-xlsx-icon-3.png"
+                                                                 style="cursor:pointer; width:18px; height:18px;"
+                                                                >`;
+                                                                                        },
+                                                                                        listeners: {
+                                                                                            click: 'onDownloadBSP'
+                                                                                        }
+                                                                                    },
+                                                                                    {
                                                                                         xtype: 'checkcolumn',
                                                                                         text: 'Select',
                                                                                         dataIndex: 'selected',

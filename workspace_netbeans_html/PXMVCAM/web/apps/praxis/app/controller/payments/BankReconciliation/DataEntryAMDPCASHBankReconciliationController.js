@@ -1258,15 +1258,6 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         const ccust = this.bean.CCUST;       // Ejemplo: "20250731"      
         const cycle = this.bean.DCYCLE.trim();     
 
-//        const ccustN = this.bean.CCUST;       // Ejemplo: "20250731"
-//        const cycle = this.bean.DCYCLE.trim();       // Ejemplo: "20250731"
-//        let codigoClient = {
-//            '134' : 'AV-134',
-//            '133' : 'LR-134',
-//            '202' : 'TA-134',
-//            '547' : '2K-134'
-//        }
-//        const ccustR = codigoClient[this.bean.CCUST] ? codigoClient[this.bean.CCUST] : '';
         if (!country || !date) {
             Ext.Msg.alert('Error', 'Faltan parámetros para la descarga (SCOUNTRY o ADATE).');
             return;
@@ -1281,7 +1272,20 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
 
         global.getFile(url);
     },
+    onDownloadBSP: function (column, e, row, columnIndex, x, rowData) {
+    
+        const country = rowData.data.SCOUNTRY 
+        const date = rowData.data.ADATE    
+        const fuente = "B"      
+        const dateArc = ""      
+        const ccust = ""       
+        const cycle = ""
+        const url = prototype.url + '/getCSV?country=' + encodeURIComponent(country)
+                + '&date=' + encodeURIComponent(date)+ '&fuente=' + encodeURIComponent(fuente)
+                + '&dateArc=' + encodeURIComponent(dateArc)+ '&ccust=' + encodeURIComponent(ccust) + '&cycle=' + encodeURIComponent(cycle);
 
+        global.getFile(url);
+    },
     getExcelCashTicket: function () {
         const grid = Ext.getCmp(prototype.id + '-gridDataInfoScanAgent');
         if (!grid) {
