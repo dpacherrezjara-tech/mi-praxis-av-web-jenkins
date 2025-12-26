@@ -61,7 +61,7 @@ Ext.define('Ext.Praxis.view.payments.ForecastPaymentForm.Info', {
                                             align: 'center'
                                         },
                                         items: [
-                                            {text: 'Country', dataIndex: 'SCOUNTRY', width: 70,
+                                            {text: 'Country', dataIndex: 'SCOUNTRY', width: 60,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -77,6 +77,39 @@ Ext.define('Ext.Praxis.view.payments.ForecastPaymentForm.Info', {
                                                     return value;
                                                 }
                                             },
+                                            /// ESTADOS
+                                                                {
+                        text: 'Status',
+                        dataIndex: 'STVAL',
+                        width: 60,
+                        renderer: function (value, metaData) {
+
+                            metaData.style = "text-align:center;";
+                            metaData.unselectableAttr = "unselectable='off'";
+
+                            switch (value) {
+                                case 1:
+                                case '1':
+                                    return 'Match';
+
+                                case 3:
+                                case '':
+                                    return 'Pending';
+
+                                case 5:
+                                case '5':
+                                    return 'Manual';
+
+                                default:
+                                    return value; // por si viene otro código
+                            }
+                        }
+                    },
+
+                                            
+                                            
+                                             /// /// /// ///
+                                            
                                             {text: 'Roll.', dataIndex: 'SEQ', width: 50,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
@@ -161,7 +194,7 @@ Ext.define('Ext.Praxis.view.payments.ForecastPaymentForm.Info', {
                                                     return value;
                                                 }
                                             },
-                                            {text: 'Cash', dataIndex: 'SVFOPCA', width: 130,
+                                            {text: 'Cash', dataIndex: 'SVFOPCA', width: 110,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;background-color:#d5f4d5;";
                                                     metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -177,7 +210,7 @@ Ext.define('Ext.Praxis.view.payments.ForecastPaymentForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: 'Credit',dataIndex: 'SVFOPCC',width: 130,
+                                                text: 'Credit',dataIndex: 'SVFOPCC',width: 110,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;background-color:#d5f4d5;";
                                                     value = Ext.util.Format.number(value, '0,000.00'); // Ajuste para mostrar números con dos decimales
@@ -208,7 +241,7 @@ Ext.define('Ext.Praxis.view.payments.ForecastPaymentForm.Info', {
                                             },
                                             
                                             {
-                                                text: 'Others<br>Sales', dataIndex: 'SVFOPOT', width: 70,
+                                                text: 'Others<br>Sales', dataIndex: 'SVFOPOT', width: 60,
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     //metaData.style = "text-align:right;color:#057ECB;background-color:#d5f4d5;";
                                                     metaData.style = "text-align:right;";

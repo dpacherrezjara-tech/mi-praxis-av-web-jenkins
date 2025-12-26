@@ -310,23 +310,6 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                     }
                 },
                 {
-                    fieldLabel: 'Header',
-                    xtype: 'textfield',
-                    id: prototype.id + '-txtHeaderText',
-                    labelWidth: 40,
-                    labelStyle: 'text-align: left; font-size: 12px;',
-                    fieldStyle: 'text-align: center; font-size: 12px;',
-                    enforceMaxLength: true,
-                    maskRe: /[0-9A-Za-z]/,
-                    maxLength: 20,
-                    width: 180,
-                    enableKeyEvents: true,
-                    margin: '0 10 0 0',
-                    listeners: {
-                        keypress: 'eventKey'
-                    }
-                },
-                {
                     fieldLabel: 'Acc Prov',
                     xtype: 'textfield',
                     id: prototype.id + '-txtAccprov',
@@ -342,6 +325,29 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Filters', {
                     listeners: {
                         keypress: 'eventKey'
                     }
+                },
+                {
+                    xtype: 'combo',
+                    fieldLabel: 'Code Error',
+                    id: prototype.id + '-cmbCodeError',
+                    labelStyle: 'text-align: left; font-size: 12px;',
+                    fieldStyle: 'text-align: left; font-size: 12px;',
+                    queryMode: 'local',
+                    allowBlank: false,
+                    forceSelection: true,
+                    selectOnFocus: true,
+                    caseSensitive: false,
+                    autoSelect: true,
+                    editable: true,
+                    width: 210,
+                    labelWidth: 65,
+                    typeAhead: true,
+                    valueField: 'CODE',
+                    displayField: 'NAME',
+                    listConfig: {minWidth: 130},
+                    enableKeyEvents: true,
+                    triggerAction: 'all',
+                    margin: '0 10 0 0'
                 },
                 {
                     xtype: 'container',
