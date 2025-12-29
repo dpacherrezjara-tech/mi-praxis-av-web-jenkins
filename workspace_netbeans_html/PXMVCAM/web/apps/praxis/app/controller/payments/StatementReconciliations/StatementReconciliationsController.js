@@ -111,7 +111,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
     xpanel_afterrender: function (obj, e) {
 
 
-        // EVENTO REAL
+        
         var cmpToggle = Ext.getCmp(prototype.id + '-btnToggleSwitchCASH');
         var chkEl = cmpToggle.getEl().down('#chkCash');
 
@@ -278,11 +278,11 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
     setFormatParameter: function () {
         me.bean = {};
 
-//        me.bean.strYearFrom = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue();
-//        me.bean.strMonthFrom = Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue();
-//
-//        me.bean.strYearTo = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue();
-//        me.bean.strMonthTo = Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue();
+        me.bean.strYearFrom = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue();
+        me.bean.strMonthFrom = Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue();
+
+        me.bean.strYearTo = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue();
+        me.bean.strMonthTo = Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue();
         me.bean.IN_TDOC = Ext.getCmp(prototype.id + '-cmbTDOC').getValue();
 
         me.bean.IN_DATE = Ext.getCmp(prototype.id + '-cmbDateSel').getValue();
