@@ -1221,8 +1221,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
             SVFOPNETR: totalAgent
         };
 
+        
+            
         var paramDetail = {};
         paramDetail.beanString = JSON.stringify(beanConciliacion);
+
+        console.log(beanConciliacion,'beanConciliacion')
 
         Ext.Ajax.request({
             url: prototype.url + '/ManualConciliacionCash',
@@ -1230,18 +1234,19 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
             jsonData: beanConciliacion, // 👈 Enviar JSON limpio
             timeout: 60000000,
             headers: {'Content-Type': 'application/json'},
-            beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').mask('Processing Conciliation...'),
+//            beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').mask('Processing Conciliation...'),
             success: function (response) {
-                Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
+//                Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
                 var res = Ext.JSON.decode(response.responseText);
                 if (res.success) {
                     Ext.Msg.alert('Éxito', 'Conciliación procesada correctamente.');
+                    Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').close();
                 } else {
                     global.Msg({msg: res.Mensaje || 'Successfully reconciled.'});
                 }
             },
             failure: function (response) {
-                Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
+//                Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
                 Ext.Msg.alert('Error', 'No se pudo procesar la conciliación. Código: ' + response.status);
             }
         });
