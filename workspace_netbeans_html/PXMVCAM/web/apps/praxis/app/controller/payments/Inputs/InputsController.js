@@ -476,8 +476,15 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
         console.log(rowData.data);
         var beanDetAll = rowData.data;
         beanDetAll.IN_FECHA_FROM = rowData.data.DTRANS;
-        beanDetAll.IN_CONSULTA = Ext.getCmp(prototype.id + '-rbgChangeMDP').getValue().opcion;
-
+//        beanDetAll.IN_CONSULTA = "1";
+        switch (columnNum) {
+            case 4:
+                beanDetAll.IN_CONSULTA = '1';
+                break;
+            case 7:
+                beanDetAll.IN_CONSULTA = '2';
+                break;
+        }
         fte = Ext.getCmp(prototype.id + '-cmbFUENTE').getValue();
         var fte = Ext.getCmp(prototype.id + '-cmbFUENTE').getValue();
         if (fte === 'All') {
@@ -531,7 +538,7 @@ Ext.define('Ext.Praxis.controller.payments.Inputs.InputsController', {
                     Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
 
             beanDetAll.IN_FUENTE = Ext.getCmp(prototype.id + '-cmbFUENTE').getValue();
-            beanDetAll.IN_CONSULTA = Ext.getCmp(prototype.id + '-rbgChangeMDP').getValue().opcion;
+            beanDetAll.IN_CONSULTA = "";
             me.paramsDetail.beanString = JSON.stringify(beanDetAll);
 
             var FUENTE = Ext.getCmp(prototype.id + '-cmbFUENTE').getValue();

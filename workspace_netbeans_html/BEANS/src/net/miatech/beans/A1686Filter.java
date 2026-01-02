@@ -58,6 +58,7 @@ public class A1686Filter extends A1686 {
     public int QRECT = 0;
     public int QRECL = 0;
     public int QRECE = 0;
+    public int QRECEL = 0;
     public int QRECN = 0;
     public int QEXPB = 0;
     public int QBSPT = 0;
