@@ -87,12 +87,11 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DuplicateSettlem
     },
     obtainData: function () {
         var yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 4);
 
         var month = yesterday.getMonth() + 1;
         var day = yesterday.getDate();
         var year = yesterday.getFullYear();
-
+        
         if (month < 10) {
             month = '0' + month;
         }
@@ -110,16 +109,14 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DuplicateSettlem
         Ext.getCmp(prototype.id + '-cmbDateFromDay').bindStore(storeComboDataDay);
 
         Ext.getCmp(prototype.id + '-cmbDateFromYear').setValue(year);
-        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue('01');
-//        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue(month);
+        Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue(month);
 
         Ext.getCmp(prototype.id + '-cmbDateToYear').bindStore(storeComboDataYear);
         Ext.getCmp(prototype.id + '-cmbDateToMonth').bindStore(storeComboDataMonth);
         Ext.getCmp(prototype.id + '-cmbDateToDay').bindStore(storeComboDataDay);
 
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(year);
-        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue('01');
-//        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue(month);
+        Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue(month);
 
         Ext.getCmp(prototype.id + '-cmbDateToDay').setValue('01');
         Ext.getCmp(prototype.id + '-cmbDateFromDay').setValue('01');
@@ -129,16 +126,14 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DuplicateSettlem
         Ext.getCmp(prototype.id + '-cmbDateFromDayRemoved').bindStore(storeComboDataDay);
 
         Ext.getCmp(prototype.id + '-cmbDateFromYearRemoved').setValue(year);
-        Ext.getCmp(prototype.id + '-cmbDateFromMonthRemoved').setValue('01');
-//        Ext.getCmp(prototype.id + '-cmbDateFromMonthRemoved').setValue(month);
+        Ext.getCmp(prototype.id + '-cmbDateFromMonthRemoved').setValue(month);
 
         Ext.getCmp(prototype.id + '-cmbDateToYearRemoved').bindStore(storeComboDataYear);
         Ext.getCmp(prototype.id + '-cmbDateToMonthRemoved').bindStore(storeComboDataMonth);
         Ext.getCmp(prototype.id + '-cmbDateToDayRemoved').bindStore(storeComboDataDay);
 
         Ext.getCmp(prototype.id + '-cmbDateToYearRemoved').setValue(year);
-        Ext.getCmp(prototype.id + '-cmbDateToMonthRemoved').setValue('01');
-//        Ext.getCmp(prototype.id + '-cmbDateToMonthRemoved').setValue(month);
+        Ext.getCmp(prototype.id + '-cmbDateToMonthRemoved').setValue(month);
 
         Ext.getCmp(prototype.id + '-cmbDateToDayRemoved').setValue('01');
         Ext.getCmp(prototype.id + '-cmbDateFromDayRemoved').setValue('01');

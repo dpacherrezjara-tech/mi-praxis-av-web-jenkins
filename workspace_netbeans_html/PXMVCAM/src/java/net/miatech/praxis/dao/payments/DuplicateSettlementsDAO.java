@@ -116,6 +116,7 @@ public class DuplicateSettlementsDAO {
                 beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
                 beanTkt.SEQ = rst.getString("SEQ").trim();
                 beanTkt.FSELEC = rst.getString("FSELEC").trim();
+                beanTkt.checkActive = false;
                 
                 beanTkt.TOTAL = rst.getDouble("TOTAL");
                 beanTkt.SVFOP = rst.getDouble("SVFOP");

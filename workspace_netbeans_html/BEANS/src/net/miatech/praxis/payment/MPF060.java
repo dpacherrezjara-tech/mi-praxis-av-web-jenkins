@@ -32,6 +32,10 @@ public class MPF060 {
      public String SAUTHOC = "";
      public String TERMI = "";
      public String SCURRENCY = "";
+     public String CODPRO = "";
+     public String CCUSTPRO = "";
+     public String PRDA = "";
+     public String LIQUIDACIO = "";
      public String SEQ = "";
      public String FSELEC = "";
      public String USUP = "";
@@ -40,9 +44,18 @@ public class MPF060 {
      public String PGMUP = "";
      
      public int QTY = 0;
+     public long RN = 0;
      public double TOTAL = 0;
      public double SVFOP = 0;
      public double COMISION = 0;
      public double NETO = 0;
+     public double IMPORTEPAG = 0;
+     public double COMISTOTA = 0;
+     public double TOTAL_LIQ = 0;
+     public double TOTAL_COMISION = 0;
+     public double TOTAL_COMISTOTA = 0;
+     public double TOTAL_NETO = 0;
+     public double TOTAL_IMPORTEPAG = 0;
+     public boolean checkActive = true;
     
 }
