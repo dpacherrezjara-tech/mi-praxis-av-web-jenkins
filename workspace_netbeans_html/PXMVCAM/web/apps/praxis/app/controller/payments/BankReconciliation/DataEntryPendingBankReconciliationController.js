@@ -377,14 +377,28 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryPendingBa
     // insert
     
     llenarDataArgentina: function (beanTemp) {
+        var radioGroup = Ext.getCmp(prototype.id + '-rdMonedaGroup');
+        var monedaSeleccionada = radioGroup ? radioGroup.getValue().moneda : 'ARS';
+
+        beanTemp.O_MONEDA = monedaSeleccionada;
         beanTemp.O_RECAUDACION = this.getCleanNumberValue("txtRECAUDACION");
-        beanTemp.O_TASA = this.getCleanNumberValue("txtTASA");
-        beanTemp.O_RENDICION = this.getCleanNumberValue("txtRendicion");
-        beanTemp.O_PAGOTERCERO = this.getCleanNumberValue("txtPagoTercero");
         beanTemp.O_COMISIONMEP = this.getCleanNumberValue("txtComisionMEP");
         beanTemp.O_IVA = this.getCleanNumberValue("txtIVA");
         beanTemp.O_NETORENDIDO = this.getCleanNumberValue("txtNETORENDIDO");
         beanTemp.O_EXCEPTION_CODE = this.getValue("txtExceptionExterior");
+        if (monedaSeleccionada === 'ARS') {
+            // --- MODO PESOS ---
+            beanTemp.O_TASA = this.getCleanNumberValue("txtTASA");
+            beanTemp.O_RENDICION = this.getCleanNumberValue("txtRendicion");
+            beanTemp.O_PAGOTERCERO = this.getCleanNumberValue("txtPagoTercero");
+            beanTemp.O_EVENTO = 0; 
+
+        } else {
+            beanTemp.O_TASA = 0;
+            beanTemp.O_RENDICION = 0;
+            beanTemp.O_PAGOTERCERO = 0;
+            beanTemp.O_EVENTO = this.getCleanNumberValue("txtMontoExento");
+        }
     },
     
     llenarDataIndia: function (beanTemp) {
@@ -432,26 +446,48 @@ calculateNeto: function () {
     var me = this;
     var prototypeId = prototype.id;
 
+    // --- 1. Helper para obtener números limpios ---
     var getNumericValue = function (id) {
-        var val = Ext.getCmp(prototypeId + '-' + id).getValue();
+        var cmp = Ext.getCmp(prototypeId + '-' + id);
+        if (!cmp) return 0; // Seguridad por si el campo no existe
+        
+        var val = cmp.getValue();
         if (typeof val === 'string') {
             val = val.replace(/\./g, '').replace(/,/g, '.');
         }
         return Ext.Number.parseFloat(val) || 0;
     };
 
+    // --- 2. Detectar Moneda Seleccionada ---
+    var radioCmp = Ext.getCmp(prototypeId + '-rdMonedaGroup');
+    // Si por alguna razón no está cargado aún, asumimos 'ARS' por defecto
+    var moneda = radioCmp ? radioCmp.getValue().moneda : 'ARS'; 
+
+    // --- 3. Obtener Valores Comunes (Existen en ambos casos) ---
     var recaudacion = getNumericValue('txtRECAUDACION');
-    var tasa = getNumericValue('txtTASA');
-    var rendicion = getNumericValue('txtRendicion');
-    var pagoTercero = getNumericValue('txtPagoTercero');
     var comisionMEP = getNumericValue('txtComisionMEP');
     var iva = getNumericValue('txtIVA');
     
-    var descuentos = tasa + rendicion + pagoTercero + comisionMEP + iva;
+    var descuentos = 0;
+
+    // --- 4. Lógica Condicional ---
+    if (moneda === 'ARS') {
+        var tasa = getNumericValue('txtTASA');
+        var rendicion = getNumericValue('txtRendicion');
+        var pagoTercero = getNumericValue('txtPagoTercero');
+        
+        descuentos = tasa + rendicion + pagoTercero + comisionMEP + iva;
+
+    } else {
+       var montoExento = getNumericValue('txtMontoExento'); 
+    
+        descuentos = comisionMEP + iva;        
+        descuentos = descuentos + montoExento;
+    }
+
     var netoRendido = recaudacion - descuentos;
     
     var formattedNeto = Ext.util.Format.number(netoRendido, '0,000.00');
-    
     Ext.getCmp(prototypeId + '-txtNETORENDIDO').setValue(formattedNeto);
 },
     
