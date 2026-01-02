@@ -244,7 +244,7 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Filters', {
                     columns: 2,
 //                            width: '120',
 
-//                            hidden: true,
+                            hidden: true,
                     vertical: true,
                     value: '1',
                     items: [

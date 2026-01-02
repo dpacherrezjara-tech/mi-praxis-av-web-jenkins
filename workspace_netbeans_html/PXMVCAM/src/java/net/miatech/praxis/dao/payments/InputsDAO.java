@@ -138,7 +138,7 @@ public class InputsDAO {
         ResultSet rs01 = null;
         Connection cnx = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP02957(?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS455(?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -163,19 +163,12 @@ public class InputsDAO {
                 objRtn.USERAC = session.getUserView().getCustomerInfo().USR;
                 //objRtn.QRECOR = rs01.getInt("TOTAL");
                 objRtn.QEXPT = rs01.getInt("QEXP");
-                objRtn.QEXPB = rs01.getInt("QEXPC");
                 objRtn.QRECT = rs01.getInt("QRECT");
                 objRtn.QRECL = rs01.getInt("QRECL");
                 objRtn.QRECE = rs01.getInt("QRECE");
-                objRtn.QRECN = rs01.getInt("QRECN");
-                objRtn.QBSPT = rs01.getInt("QBSPT");
-                objRtn.QBSPL = rs01.getInt("QBSPL");
-                objRtn.QBSPE = rs01.getInt("QBSPE");
-                objRtn.QBSPN = rs01.getInt("QBSPN");
-                objRtn.QCONT = rs01.getInt("QCONT");
-                objRtn.QCONL = rs01.getInt("QCONL");
-                objRtn.QCONE = rs01.getInt("QCONE");
-                objRtn.QCONN = rs01.getInt("QCONN");
+                objRtn.QRECEL = rs01.getInt("QRECEL");
+                objRtn.QRECN = objRtn.QRECT - objRtn.QRECL;
+
                 lstRtn.add(objRtn);
             }
         } catch (Exception e) {
