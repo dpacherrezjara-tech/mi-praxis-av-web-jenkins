@@ -9,6 +9,8 @@ import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.praxis.dao.payments.DuplicateSettlementsDAO;
 import net.miatech.praxis.interline.filter.SFI021Filter;
 import net.miatech.praxis.payment.A2358;
+import net.miatech.praxis.payment.MPF060Filter;
+import net.miatech.praxis.payment.MPF060;
 
 public class DuplicateSettlementsLogic {
 
@@ -18,27 +20,38 @@ public class DuplicateSettlementsLogic {
         DuplicateSettlementsDAO.setSession(ss);
     }
 
-   public List<A2358Filter> loadPX602SQP04601(A2358Filter filter) throws SQLException, Exception {
-        return DuplicateSettlementsDAO.loadPX602SQP04601(filter);
+   public List<MPF060> loadMPS370(MPF060Filter filter) throws SQLException, Exception {
+        return DuplicateSettlementsDAO.loadMPS370(filter);
     }
    
-   public List<A2358Filter> loadPX602SQP04601Delete(A2358Filter filter) throws SQLException, Exception {
-        return DuplicateSettlementsDAO.loadPX602SQP04601Delete(filter);
+   public String loadMPS371_MPS372(List<MPF060> lst, MPF060Filter filter) throws SQLException, Exception {
+        return DuplicateSettlementsDAO.loadMPS371_MPS372(lst, filter);
     }
    
-   public A2358Filter loadPX602SQP04602(A2358Filter filter) throws Exception {
-        return DuplicateSettlementsDAO.loadPX602SQP04602(filter);
+   public List<MPF060> loadMPS439(MPF060Filter filter) throws SQLException, Exception {
+        return DuplicateSettlementsDAO.loadMPS439(filter);
     }
    
-   public String loadPX602SQP04603(A2358 filter, String option) throws SQLException, Exception {
-        return DuplicateSettlementsDAO.loadPX602SQP04603(filter, option);
+   public List<MPF060> loadMPS373(MPF060Filter filter) throws SQLException, Exception {
+        return DuplicateSettlementsDAO.loadMPS373(filter);
     }
    
-   public String loadPX287MPS106(List<A2358> lst, A2358 filter) throws SQLException, Exception {
-        return DuplicateSettlementsDAO.loadPX287MPS106(lst, filter);
+   public String loadMPS374_MPS375(List<MPF060> lst, MPF060Filter filter) throws SQLException, Exception {
+        return DuplicateSettlementsDAO.loadMPS374_MPS375(lst, filter);
     }
    
-   public String loadPX287MPS106Reverse(List<A2358> lst, A2358 filter) throws SQLException, Exception {
-        return DuplicateSettlementsDAO.loadPX287MPS106Reverse(lst, filter);
-    }
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
 }
