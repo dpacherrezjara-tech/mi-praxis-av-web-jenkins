@@ -948,16 +948,26 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         storeAgent.each(function (r) {
             totalAgent += parseFloat(r.get('SVFOPNETR')) || 0;
         });
-
-        var diferencia = totalScan - totalAgent;
-
+        var scan = Number(totalScan.toFixed(2));
+        var agent = Number(totalAgent.toFixed(2));
+        var diferencia = scan - agent;
+        let invoice = "";
+        if(scan > agent){
+            invoice = "PS"
+        }else{
+            invoice = "PP"
+        }
         // === 3️⃣ Obtener último registro como referencia ===
         var ultimoRegistro = storeAgent.last();
         if (!ultimoRegistro) {
             Ext.Msg.alert('Aviso', 'No hay registros en la grilla Agent para usar como referencia.');
             return;
         }
-
+        if ( diferencia == 0 ) {
+            Ext.Msg.alert('Aviso', 'El ajuste no puede ser 0');
+            return;
+        }
+//        let key = `${rec.get('CCUST')}#${rec.get('TKT')}#${rec.get('TDOC')}#${rec.get('SCARDNCOR')}#${rec.get('SAUTHOC')}#${rec.get('SEQ')}#${rec.get('CORRL')}`;
         // === 4️⃣ Crear nuevo registro desde cero ===
         var newRec = Ext.create(storeAgent.model, {
             // Copiamos algunos campos del último registro
@@ -968,9 +978,15 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
             SDATE: ultimoRegistro.get('SDATE'),
             MCLOS: ultimoRegistro.get('MCLOS'),
             SCOUNTRY: ultimoRegistro.get('SCOUNTRY'),
+            CCUST: ultimoRegistro.get('CCUST'),
             TKT: ultimoRegistro.get('TKT'),
+            TDOCORG: ultimoRegistro.get('TDOC'),
+            SCARDNCOR: ultimoRegistro.get('SCARDNCOR'),
+            SAUTHOC: ultimoRegistro.get('SAUTHOC'),
+            SEQ: ultimoRegistro.get('SEQ'),
+            CORRL: ultimoRegistro.get('CORRL'),
             SCURRENCY: ultimoRegistro.get('SCURRENCY'),
-            INVOICE: ultimoRegistro.get('INVOICE') + 'PP',
+            INVOICE: ultimoRegistro.get('INVOICE') + invoice,
             CFUENTE: ultimoRegistro.get('CFUENTE'),
             SPAYMENT: ultimoRegistro.get('SPAYMENT'),
             SVFOPNETR: diferencia,
@@ -1128,7 +1144,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
                     let duplicados = 0;
 
                     Ext.Array.each(res.data, function (newRecord, index) {
-                        let key = newRecord.TKT + '#' + newRecord.SVFOPNETR + '#' + newRecord.SCURRENCY;
+//                        let key = newRecord.TKT + '#' + newRecord.SVFOPNETR + '#' + newRecord.SCURRENCY;
+                        let key = newRecord.CCUST + '#' + newRecord.TKT + '#' + newRecord.TDOC + '#' + newRecord.SCARDNCOR + '#' + newRecord.SAUTHOC + '#' + newRecord.SEQ + '#' + newRecord.CORRL;
 
                         if (!existingKeys[key]) {
                             newRecord.id = key || Ext.id(null, 'rec-');
@@ -1199,9 +1216,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
             totalAgent += parseFloat(r.get('SVFOPNETR') || 0);
         });
         console.log(seleccionados,' seleccionados')
-        console.log(agentData,' agentData')
+  
+        var scan = Number(totalScan.toFixed(2));
+        var agent = Number(totalAgent.toFixed(2));
         // --- Validar que las sumas coincidan (con pequeña tolerancia)
-        var diferencia = Math.abs(totalScan - totalAgent);
+        var diferencia = Math.abs(scan - agent);
+
         if (diferencia != 0.00) { // puedes ajustar la tolerancia
             Ext.Msg.alert(
                     'Aviso',
@@ -1218,11 +1238,15 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
                 return r.getData();
             }),
             agentList: agentData,
-            SVFOPNETR: totalAgent
+            SVFOPNETR: agent
         };
-
+        console.log(agentData,'agentData')
+        
+            
         var paramDetail = {};
         paramDetail.beanString = JSON.stringify(beanConciliacion);
+
+        console.log(beanConciliacion,'beanConciliacion')
 
         Ext.Ajax.request({
             url: prototype.url + '/ManualConciliacionCash',
@@ -1230,18 +1254,19 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
             jsonData: beanConciliacion, // 👈 Enviar JSON limpio
             timeout: 60000000,
             headers: {'Content-Type': 'application/json'},
-            beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').mask('Processing Conciliation...'),
+//            beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').mask('Processing Conciliation...'),
             success: function (response) {
-                Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
+//                Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
                 var res = Ext.JSON.decode(response.responseText);
                 if (res.success) {
                     Ext.Msg.alert('Éxito', 'Conciliación procesada correctamente.');
+                    Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').close();
                 } else {
                     global.Msg({msg: res.Mensaje || 'Successfully reconciled.'});
                 }
             },
             failure: function (response) {
-                Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
+//                Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
                 Ext.Msg.alert('Error', 'No se pudo procesar la conciliación. Código: ' + response.status);
             }
         });
@@ -1258,15 +1283,6 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         const ccust = this.bean.CCUST;       // Ejemplo: "20250731"      
         const cycle = this.bean.DCYCLE.trim();     
 
-//        const ccustN = this.bean.CCUST;       // Ejemplo: "20250731"
-//        const cycle = this.bean.DCYCLE.trim();       // Ejemplo: "20250731"
-//        let codigoClient = {
-//            '134' : 'AV-134',
-//            '133' : 'LR-134',
-//            '202' : 'TA-134',
-//            '547' : '2K-134'
-//        }
-//        const ccustR = codigoClient[this.bean.CCUST] ? codigoClient[this.bean.CCUST] : '';
         if (!country || !date) {
             Ext.Msg.alert('Error', 'Faltan parámetros para la descarga (SCOUNTRY o ADATE).');
             return;
@@ -1281,7 +1297,20 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
 
         global.getFile(url);
     },
+    onDownloadBSP: function (column, e, row, columnIndex, x, rowData) {
+    
+        const country = rowData.data.SCOUNTRY 
+        const date = rowData.data.ADATE    
+        const fuente = "B"      
+        const dateArc = ""      
+        const ccust = ""       
+        const cycle = ""
+        const url = prototype.url + '/getCSV?country=' + encodeURIComponent(country)
+                + '&date=' + encodeURIComponent(date)+ '&fuente=' + encodeURIComponent(fuente)
+                + '&dateArc=' + encodeURIComponent(dateArc)+ '&ccust=' + encodeURIComponent(ccust) + '&cycle=' + encodeURIComponent(cycle);
 
+        global.getFile(url);
+    },
     getExcelCashTicket: function () {
         const grid = Ext.getCmp(prototype.id + '-gridDataInfoScanAgent');
         if (!grid) {

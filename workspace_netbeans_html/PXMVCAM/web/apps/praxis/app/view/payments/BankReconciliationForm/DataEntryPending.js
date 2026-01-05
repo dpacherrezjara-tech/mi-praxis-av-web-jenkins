@@ -476,116 +476,196 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryPending', {
                     hidden: true
                 },
                 {
-                    xtype: 'panel',
-                    id: prototype.id + '-pnlRENDICIONBSP', // ID CLAVE
-                    layout: 'vbox', 
-                    hidden: true, 
-                    padding: '0 10 0 10', 
+    xtype: 'panel',
+    id: prototype.id + '-pnlRENDICIONBSP',
+    layout: 'vbox',
+    hidden: true,
+    padding: '0 10 0 10',
+    defaults: {
+        xtype: 'panel',
+        layout: 'hbox',
+        border: false,
+        width: 680,
+        margin: '3 0 3 0',
+        defaults: {
+            labelWidth: 200,
+            labelAlign: 'right',
+            fieldStyle: 'text-align: right; font-weight: bold; color: #0B333C;',
+            width: 350
+        }
+    },
+    items: [
+        // --- 1. EL SWITCH (RadioGroup) ---
+        {
+            xtype: 'container', // Usamos container para centrar o ajustar layout
+            layout: 'hbox',
+            margin: '0 0 10 0',
+            items: [{
+                xtype: 'radiogroup',
+                fieldLabel: 'Moneda de Rendición',
+                labelWidth: 200,
+                labelAlign: 'right',
+                id: prototype.id + '-rdMonedaGroup',
+                columns: 2,
+                width: 350,
+                items: [
+                    { boxLabel: 'Pesos (ARS)', name: 'moneda', inputValue: 'ARS', checked: true },
+                    { boxLabel: 'Dólares (USD)', name: 'moneda', inputValue: 'USD' }
+                ],
+                listeners: {
+                    // Esta es la magia: al cambiar, disparamos la función
+                    change: function(field, newValue, oldValue) {
+                        // Asumiendo que tienes un controlador, llamarías a 'onMonedaChange'.
+                        // Aquí pongo la lógica directa para que veas cómo funciona.
+                        var val = newValue.moneda; // 'ARS' o 'USD'
+                        var formPanel = field.up('#' + prototype.id + '-pnlRENDICIONBSP');
+                        
+                        // Referencias a los campos (usando Ext.getCmp o selectores)
+                        var txtRecaudacion = Ext.getCmp(prototype.id + '-txtRECAUDACION');
+                        var txtTasa = Ext.getCmp(prototype.id + '-txtTASA');
+                        var txtRendicion = Ext.getCmp(prototype.id + '-txtRendicion'); // Alicuota
+                        var txtPago = Ext.getCmp(prototype.id + '-txtPagoTercero');
+                        var txtMontoExento = Ext.getCmp(prototype.id + '-txtMontoExento'); // NUEVO CAMPO USD
+                        var txtNeto = Ext.getCmp(prototype.id + '-txtNETORENDIDO');
 
-                    defaults: {
-                        xtype: 'panel',
-                        layout: 'hbox', 
-                        border: false,
-                        width: 680, 
-                        margin: '3 0 3 0',
-                        defaults: {
-                            labelWidth: 200, 
-                            labelAlign: 'right',
-                            // Estilo consistente para todos los campos de entrada
-                            fieldStyle: 'text-align: right; font-weight: bold; color: #0B333C;', 
-                            width: 350
+                        if (val === 'ARS') {
+                            // --- MODO ARS ---
+                            txtRecaudacion.setFieldLabel('Recaudación BSP ARS:');
+                            txtNeto.setFieldLabel('Neto Rendido ARS:');
+                            
+                            // Mostrar campos de ARS
+                            txtTasa.setVisible(true);
+                            txtRendicion.setVisible(true);
+                            txtPago.setVisible(true);
+                            
+                            // Ocultar campos exclusivos de USD
+                            txtMontoExento.setVisible(false);
+                        } else {
+                            // --- MODO USD ---
+                            txtRecaudacion.setFieldLabel('Recaudación BSP USD:');
+                            txtNeto.setFieldLabel('Neto Rendido USD:');
+                            
+                            // Ocultar campos exclusivos de ARS
+                            txtTasa.setVisible(false);
+                            txtRendicion.setVisible(false);
+                            txtPago.setVisible(false);
+                            
+                            // Mostrar campos de USD
+                            txtMontoExento.setVisible(true);
                         }
-                    },
-                    items: [
-                        // Fila 1: Recaudación BSP ARS | TASA AEROPORTUARIA
-                        {
-                            items: [
-                                {
-                                    xtype: 'numberfield', // Cambiado a numberfield para mejor manejo de números
-                                    fieldLabel: 'Recaudación BSP ARS:',
-                                    id: prototype.id + '-txtRECAUDACION',
-                                    decimalPrecision: 2, // 2 decimales
-                                    alwaysDisplayDecimals: true,
-                                    // Llamar a la función de cálculo en cada cambio
-                                    listeners: { change: 'calculateNeto' } 
-                                },
-                                {xtype: 'tbspacer', width: 20},
-                                {
-                                    xtype: 'numberfield',
-                                    fieldLabel: 'TASA AEROPORTUARIA:',
-                                    id: prototype.id + '-txtTASA',
-                                    decimalPrecision: 2,
-                                    alwaysDisplayDecimals: true,
-                                    labelWidth: 150,
-                                    listeners: { change: 'calculateNeto' }
-                                }
-                            ]
-                        },
+                        
+                        // IMPORTANTE: Recalcular el total al cambiar de moneda
+                        // (Necesitas adaptar tu función calculateNeto para saber en qué moneda está)
+                        // me.calculateNeto(); 
+                    }
+                }
+            }]
+        },
 
-                        // Fila 2: Rendicion de Recaudacion | Pago a 3eros
-                        {
-                            items: [
-                                {
-                                    xtype: 'numberfield',
-                                    fieldLabel: 'Rendicion de Recaudacion (Alicuota 1,20%):',
-                                    id: prototype.id + '-txtRendicion',
-                                    decimalPrecision: 2,
-                                    alwaysDisplayDecimals: true,
-                                    listeners: { change: 'calculateNeto' }
-                                },
-                                {xtype: 'tbspacer', width: 20},
-                                {
-                                    xtype: 'numberfield',
-                                    fieldLabel: 'Pago a 3eros (Alicuota 1,20%):',
-                                    id: prototype.id + '-txtPagoTercero',
-                                    decimalPrecision: 2,
-                                    alwaysDisplayDecimals: true,
-                                    labelWidth: 150,
-                                    listeners: { change: 'calculateNeto' }
-                                }
-                            ]
-                        },
-
-                        // Fila 3: Comision MEP | I.V.A.
-                        {
-                            items: [
-                                {
-                                    xtype: 'numberfield',
-                                    fieldLabel: 'Comision MEP:',
-                                    id: prototype.id + '-txtComisionMEP',
-                                    decimalPrecision: 2,
-                                    alwaysDisplayDecimals: true,
-                                    listeners: { change: 'calculateNeto' }
-                                },
-                                {xtype: 'tbspacer', width: 20},
-                                {
-                                    xtype: 'numberfield',
-                                    fieldLabel: 'I.V.A.:',
-                                    id: prototype.id + '-txtIVA',
-                                    decimalPrecision: 2,
-                                    alwaysDisplayDecimals: true,
-                                    labelWidth: 150,
-                                    listeners: { change: 'calculateNeto' }
-                                }
-                            ]
-                        },
-
-                        // Fila 4: Neto Rendido ARS (Campo de resultado)
-                        {
-                            items: [
-                                {
-                                    xtype: 'textfield', // Se deja como textfield porque el formato es de salida
-                                    fieldLabel: 'Neto Rendido ARS:',
-                                    id: prototype.id + '-txtNETORENDIDO',
-                                    readOnly: true, 
-                                    // Estilo de resultado (fondo diferente)
-                                    fieldStyle: 'background-color: #F8F8FF; color: #00008B; font-weight: bold; text-align: right;', 
-                                    width: 400 
-                                }
-                            ]
-                        }
-                    ]
+        // --- FILA 1: Recaudacion | Tasa (ARS) ---
+        {
+            items: [
+                {
+                    xtype: 'numberfield',
+                    fieldLabel: 'Recaudación BSP ARS:', // Etiqueta inicial
+                    id: prototype.id + '-txtRECAUDACION',
+                    decimalPrecision: 2,
+                    alwaysDisplayDecimals: true,
+                    listeners: { change: 'calculateNeto' }
                 },
+                { xtype: 'tbspacer', width: 20 },
+                {
+                    xtype: 'numberfield',
+                    fieldLabel: 'TASA AEROPORTUARIA:',
+                    id: prototype.id + '-txtTASA',
+                    decimalPrecision: 2,
+                    alwaysDisplayDecimals: true,
+                    labelWidth: 150,
+                    listeners: { change: 'calculateNeto' }
+                }
+            ]
+        },
+
+        // --- FILA 2: Rendicion (ARS) | Pago 3ros (ARS) ---
+        {
+            items: [
+                {
+                    xtype: 'numberfield',
+                    fieldLabel: 'Rendicion de Recaudacion (Alicuota 1,20%):',
+                    id: prototype.id + '-txtRendicion',
+                    decimalPrecision: 2,
+                    alwaysDisplayDecimals: true,
+                    listeners: { change: 'calculateNeto' }
+                },
+                { xtype: 'tbspacer', width: 20 },
+                {
+                    xtype: 'numberfield',
+                    fieldLabel: 'Pago a 3ros (Alicuota 1,20%):',
+                    id: prototype.id + '-txtPagoTercero',
+                    decimalPrecision: 2,
+                    alwaysDisplayDecimals: true,
+                    labelWidth: 150,
+                    listeners: { change: 'calculateNeto' }
+                }
+            ]
+        },
+
+        // --- FILA 3 (NUEVA para USD): Monto Exento ---
+        // Inicialmente oculto (hidden: true) porque arranca en ARS
+        {
+            items: [
+                {
+                    xtype: 'numberfield',
+                    fieldLabel: 'Monto exento:',
+                    id: prototype.id + '-txtMontoExento',
+                    decimalPrecision: 2,
+                    hidden: true, // <--- Oculto por defecto (modo ARS)
+                    alwaysDisplayDecimals: true,
+                    listeners: { change: 'calculateNeto' }
+                }
+                // Si necesitas otro campo a la derecha para USD, ponlo aquí
+            ]
+        },
+
+        // --- FILA 4: Comision MEP | I.V.A. (Compartidos) ---
+        {
+            items: [
+                {
+                    xtype: 'numberfield',
+                    fieldLabel: 'Comision MEP:',
+                    id: prototype.id + '-txtComisionMEP',
+                    decimalPrecision: 2,
+                    alwaysDisplayDecimals: true,
+                    listeners: { change: 'calculateNeto' }
+                },
+                { xtype: 'tbspacer', width: 20 },
+                {
+                    xtype: 'numberfield',
+                    fieldLabel: 'I.V.A.:',
+                    id: prototype.id + '-txtIVA',
+                    decimalPrecision: 2,
+                    alwaysDisplayDecimals: true,
+                    labelWidth: 150,
+                    listeners: { change: 'calculateNeto' }
+                }
+            ]
+        },
+
+        // --- FILA 5: Resultado ---
+        {
+            items: [
+                {
+                    xtype: 'textfield',
+                    fieldLabel: 'Neto Rendido ARS:',
+                    id: prototype.id + '-txtNETORENDIDO',
+                    readOnly: true,
+                    fieldStyle: 'background-color: #F8F8FF; color: #00008B; font-weight: bold; text-align: right;',
+                    width: 400
+                }
+            ]
+        }
+    ]
+},
                 
                 {
                     xtype: 'label',

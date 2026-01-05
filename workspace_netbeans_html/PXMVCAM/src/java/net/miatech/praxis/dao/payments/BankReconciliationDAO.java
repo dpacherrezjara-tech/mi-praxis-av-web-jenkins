@@ -8775,8 +8775,7 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         Connection cnx = null;
 
-        // El SP tiene 12 parámetros en total (10 IN, 2 INOUT)
-        String SQL = "{CALL PRAXISMP.MPS450(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}"; 
+        String SQL = "{CALL PRAXISMP.MPS450(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)}"; 
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -8791,18 +8790,20 @@ public class BankReconciliationDAO {
             cstmt.setDouble(7, filter.O_IVA);
             cstmt.setDouble(8, filter.O_NETORENDIDO);
             cstmt.setString(9, filter.O_EXCEPTION_CODE);
-            cstmt.setString(10, session.getUserView().getUserInfo().USR);
+            cstmt.setDouble(10, filter.O_EVENTO);
+            cstmt.setString(11, filter.O_MONEDA);
+            cstmt.setString(12, session.getUserView().getUserInfo().USR);
 
-            cstmt.setInt(11, 0); 
-            cstmt.setString(12, "");
+            cstmt.setInt(13, 0); 
+            cstmt.setString(14, "");
 
-            cstmt.registerOutParameter(11, java.sql.Types.INTEGER);
-            cstmt.registerOutParameter(12, java.sql.Types.VARCHAR);
+            cstmt.registerOutParameter(13, java.sql.Types.INTEGER);
+            cstmt.registerOutParameter(14, java.sql.Types.VARCHAR);
 
             cstmt.execute();
 
-            int sqlCode = cstmt.getInt(11);
-            String sqlMessage = cstmt.getString(12);
+            int sqlCode = cstmt.getInt(13);
+            String sqlMessage = cstmt.getString(14);
 
             if (sqlCode == 1) { 
                  message = sqlMessage; 
@@ -8874,7 +8875,7 @@ public class BankReconciliationDAO {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             executeConciliationSP(cnx, "MPS316");
             executeConciliationSP(cnx, "MPS319");
-            executeConciliationSP(cnx, "MPS316");
+            executeConciliationSP(cnx, "MPS313");
             executeSummarySP(cnx, "MPS322", ccust);
             executeSummarySP(cnx, "MPS343", ccust);
 
@@ -9688,7 +9689,7 @@ public class BankReconciliationDAO {
             ResultSet rst = null;
             Connection cnx = null;
 
-            String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS321(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+            String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS321(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
             try {
                 cnx = session.getCNXIBMDB2().getIBMDB2Connection();
                 for (MPF100Filter agent : listaAgent) {
@@ -9713,11 +9714,13 @@ public class BankReconciliationDAO {
                     cstmt.setString(17, agent.CCUST != null ? agent.CCUST.trim() : "");
                     cstmt.setString(18, agent.TKT != null ? agent.TKT.trim() : "");
                     cstmt.setString(19, agent.TDOC != null ? agent.TDOC.trim() : "");
-                    cstmt.setString(20, agent.SCARDNCOR != null ? agent.SCARDNCOR.trim() : "");
-                    cstmt.setString(21, agent.SAUTHOC != null ? agent.SAUTHOC.trim() : "");
-                    cstmt.setString(22, agent.SEQ != null ? agent.SEQ.trim() : "");
-                    cstmt.setString(23, agent.CORRL != null ? agent.CORRL.trim() : "");
-                    cstmt.setDouble(24, filter.SVFOPNETR);
+                    cstmt.setString(20, agent.TDOCORG != null ? agent.TDOCORG.trim() : "");
+                    cstmt.setString(21, agent.SCARDNCOR != null ? agent.SCARDNCOR.trim() : "");
+                    cstmt.setString(22, agent.SAUTHOC != null ? agent.SAUTHOC.trim() : "");
+                    cstmt.setString(23, agent.SEQ != null ? agent.SEQ.trim() : "");
+                    cstmt.setString(24, agent.CORRL != null ? agent.CORRL.trim() : "");
+                    cstmt.setDouble(25, agent.SVFOPNETR );
+                    cstmt.setDouble(26, filter.SVFOPNETR);
 //                    cstmt.setString(14, agent.TDOC != null ? agent.TDOC.trim() : "");
 //                    cstmt.setDouble(15,agent.SVFOPNETR);
                     cstmt.execute();
