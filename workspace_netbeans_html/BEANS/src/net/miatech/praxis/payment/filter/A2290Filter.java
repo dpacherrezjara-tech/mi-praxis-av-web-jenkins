@@ -1129,6 +1129,8 @@ public class A2290Filter extends A2290 {
     public String O_EXCEPTION_CODE = "";
     public double O_RECAUDACION_INR = 0;
     public double O_RECAUDACION_USD = 0;
+    public double O_EVENTO = 0;
+    public String O_MONEDA = "";
     
     
     public String O_USCR = "";

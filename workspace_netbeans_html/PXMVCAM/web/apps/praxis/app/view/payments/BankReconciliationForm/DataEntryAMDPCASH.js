@@ -1629,10 +1629,12 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                                     clicksToEdit: 1
                                                                                 }
                                                                             ],
+                                                                            
                                                                             features: [{
                                                                                     ftype: 'summary' // 👈 activa el totalizador en el footer
                                                                                 }],
                                                                             viewConfig: {
+                                                                                enableTextSelection: true,
                                                                                 getRowClass: function (record) {
                                                                                     // Si hay comentario -> aplicar clase
                                                                                     if ((record.get('REFERENCE') && record.get('REFERENCE').trim() !== '') ||
