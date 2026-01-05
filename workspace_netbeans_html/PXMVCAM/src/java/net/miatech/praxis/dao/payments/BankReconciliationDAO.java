@@ -9689,7 +9689,7 @@ public class BankReconciliationDAO {
             ResultSet rst = null;
             Connection cnx = null;
 
-            String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS321(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+            String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS321(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
             try {
                 cnx = session.getCNXIBMDB2().getIBMDB2Connection();
                 for (MPF100Filter agent : listaAgent) {
@@ -9714,11 +9714,13 @@ public class BankReconciliationDAO {
                     cstmt.setString(17, agent.CCUST != null ? agent.CCUST.trim() : "");
                     cstmt.setString(18, agent.TKT != null ? agent.TKT.trim() : "");
                     cstmt.setString(19, agent.TDOC != null ? agent.TDOC.trim() : "");
-                    cstmt.setString(20, agent.SCARDNCOR != null ? agent.SCARDNCOR.trim() : "");
-                    cstmt.setString(21, agent.SAUTHOC != null ? agent.SAUTHOC.trim() : "");
-                    cstmt.setString(22, agent.SEQ != null ? agent.SEQ.trim() : "");
-                    cstmt.setString(23, agent.CORRL != null ? agent.CORRL.trim() : "");
-                    cstmt.setDouble(24, filter.SVFOPNETR);
+                    cstmt.setString(20, agent.TDOCORG != null ? agent.TDOCORG.trim() : "");
+                    cstmt.setString(21, agent.SCARDNCOR != null ? agent.SCARDNCOR.trim() : "");
+                    cstmt.setString(22, agent.SAUTHOC != null ? agent.SAUTHOC.trim() : "");
+                    cstmt.setString(23, agent.SEQ != null ? agent.SEQ.trim() : "");
+                    cstmt.setString(24, agent.CORRL != null ? agent.CORRL.trim() : "");
+                    cstmt.setDouble(25, agent.SVFOPNETR );
+                    cstmt.setDouble(26, filter.SVFOPNETR);
 //                    cstmt.setString(14, agent.TDOC != null ? agent.TDOC.trim() : "");
 //                    cstmt.setDouble(15,agent.SVFOPNETR);
                     cstmt.execute();
