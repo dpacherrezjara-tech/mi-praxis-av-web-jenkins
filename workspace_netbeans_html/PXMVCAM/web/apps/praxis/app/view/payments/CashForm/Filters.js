@@ -58,11 +58,13 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Filters', {
                                     displayField: 'name',
                                     enableKeyEvents: true,
                                     triggerAction: 'all',
-                                    value: 'S',
+                                    value: '1',
                                     store: {
                                         fields: ['code', 'name'],
                                         data: [
-                                            {code: 'S', name: 'Sales Date'}
+                                            {code: '1', name: 'Sales Date'},
+                                            {code: '2', name: 'Accounting Date'},
+                                            {code: '3', name: 'Bill Date'}
                                         ]
                                     },
                                     listeners: {
@@ -285,7 +287,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Filters', {
                                             width: 170,
                                             labelWidth: 60,
                                             xtype: 'combo',
-                                            id: prototype.id + '-cmbInputDate',
+                                            id: prototype.id + '-cmbInputDateDetail',
                                             labelStyle: 'text-align: left; font-size: 12px;',
                                             fieldStyle: 'text-align: center; font-size: 12px;',
                                             queryMode: 'local',

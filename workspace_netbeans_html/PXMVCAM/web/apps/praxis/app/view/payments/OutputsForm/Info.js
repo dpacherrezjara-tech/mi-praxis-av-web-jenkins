@@ -82,7 +82,29 @@ Ext.define('Ext.Praxis.view.payments.OutputsForm.Info', {
                                         margin: '10 0 10 0'
                                     },
                                     items: [
-                                        {xtype: 'tbspacer', width: 50},
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Cash',
+                                            margin: '13 0 0 10',
+                                            id: prototype.id + '-CASH',
+                                            width: 25
+                                        },
+                                        {
+                                            xtype: 'component',
+                                            id: prototype.id + '-btnToggleSwitchPayment',
+                                            margin: '13 0 0 10',
+                                            html: '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Modo Alternancia</title><style>.toggle-container{display:inline-block;position:relative;width:30px;height:16px;}.toggle-input{opacity:0;width:0;height:0;}.toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#ccc;transition:.4s;border-radius:16px;}.toggle-slider::before{position:absolute;content:"";height:12px;width:12px;border-radius:50%;left:2px;bottom:2px;background-color:white;transition:.4s;}.toggle-input:checked+.toggle-slider{background-color:#4c7daf;}.toggle-input:checked+.toggle-slider::before{transform:translateX(16px);}</style></head><body><label class="toggle-container"><input type="checkbox" class="toggle-input" checked><span class="toggle-slider"></span></label></body></html>', // ← AGREGADO "checked" aquí
+                                            tooltip: 'Export to Report',
+                                        },
+                                        {
+                                            xtype: 'label',
+                                            text: 'Credito',
+                                            margin: '13 0 0 10',
+                                            id: prototype.id + '-CREDIT',
+                                            width: 60
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'label',
                                             text: 'Search By:',
@@ -198,7 +220,7 @@ Ext.define('Ext.Praxis.view.payments.OutputsForm.Info', {
                                             xtype: 'label',
                                             text: 'Procesador:',
                                             margin: '13 0 0 10',
-                                            hidden:true,
+                                            hidden: true,
                                             id: prototype.id + '-PRO',
                                             width: 70
                                         },
@@ -206,7 +228,7 @@ Ext.define('Ext.Praxis.view.payments.OutputsForm.Info', {
                                             xtype: 'combo',
                                             id: prototype.id + '-cmbCores',
                                             margin: '10 0 0 10',
-                                            hidden:true,
+                                            hidden: true,
                                             editable: false,
                                             style: 'font-weight:bold;color:#0B333C;',
                                             fieldStyle: 'text-align:left;',
@@ -220,6 +242,7 @@ Ext.define('Ext.Praxis.view.payments.OutputsForm.Info', {
                                         {
                                             xtype: 'label',
                                             text: 'Settlement:',
+                                            id: prototype.id + '-txtLIQUI',
                                             padding: '3 0',
                                             width: 70
                                         },
@@ -233,6 +256,7 @@ Ext.define('Ext.Praxis.view.payments.OutputsForm.Info', {
                                         {xtype: 'tbspacer', width: 15},
                                         {
                                             xtype: 'label',
+                                            id: prototype.id + '-txtSALE',
                                             text: 'Sales:',
                                             padding: '3 0',
                                             width: 40
