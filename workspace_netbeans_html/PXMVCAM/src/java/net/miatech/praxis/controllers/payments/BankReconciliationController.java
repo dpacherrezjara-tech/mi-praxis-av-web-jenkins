@@ -4489,6 +4489,32 @@ public class BankReconciliationController extends BaseController {
 
         return new Gson().toJson(map);
     }
+    
+    @RequestMapping(value = "listPendingAmounts")
+    public @ResponseBody String listPendingAmounts(HttpServletRequest request) {
+        System.out.println("-------------- bankreconci : listPendingAmounts -------------");
+        ModelMap map = new ModelMap();
+        Gson gson = new Gson();
+
+        try {
+            String adate = request.getParameter("adate"); 
+
+            System.out.println("Buscando pendientes menores a: " + adate);
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            List<A2290Filter> lst = logic.getPendingAmountsIndia(adate);
+            map.put("success", true);
+            map.put("data", lst);
+            map.put("total", lst.size());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("success", false);
+            map.put("message", e.getMessage());
+        }
+
+        return gson.toJson(map);
+    }
 
 //    @RequestMapping(value = "searchTeleworking")
 //    public @ResponseBody

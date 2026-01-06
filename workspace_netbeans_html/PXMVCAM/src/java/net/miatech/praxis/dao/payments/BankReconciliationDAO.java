@@ -9827,5 +9827,53 @@ public class BankReconciliationDAO {
 
             return bean;
         }
+        
+        //LISTAR INDIA
+        
+        public List<A2290Filter> getPendingAmountsIndia(String dateLimit) throws SQLException, Exception {
+    
+            List<A2290Filter> listaData = new ArrayList<>();
+            Connection cnx = null;
+            CallableStatement cstmt = null;
+            ResultSet rst = null;
+
+            String SQL = "{CALL PRAXISMP.MPS494(?)}";
+
+            try {
+                cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+                cstmt = cnx.prepareCall(SQL);
+
+                cstmt.setString(1, dateLimit);
+                cstmt.execute();
+                rst = cstmt.getResultSet();
+
+                while (rst != null && rst.next()) {
+                    A2290Filter bean = new A2290Filter();
+                    bean.O_SCOUNTRY   = rst.getString("SCOUNTRY");
+                    bean.O_SCURRENCY  = rst.getString("SCURRENCY");
+                    bean.O_ADATE      = rst.getString("ADATE");
+                    bean.O_PAYAMOU    = rst.getDouble("PAYAMOU");
+                    bean.O_STVAL      = rst.getString("STVAL");
+
+                    listaData.add(bean);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw e;
+            } finally {
+                if (rst != null) {
+                    try { rst.close(); } catch (SQLException e) {}
+                }
+                if (cstmt != null) {
+                    try { cstmt.close(); } catch (SQLException e) {}
+                }
+                if (cnx != null) {
+                    session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+                }
+            }
+
+            return listaData;
+        }
 
 }

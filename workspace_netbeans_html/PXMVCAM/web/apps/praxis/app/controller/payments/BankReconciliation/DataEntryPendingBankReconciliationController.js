@@ -248,35 +248,49 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryPendingBa
         var urlAction;
         var exceptionName;
         var beanTemp = {};
-        
-       
-        
+
+        // --- NUEVA VALIDACIÓN PARA INDIA (Código 2) ---
+        if (exceptionCode === '2') {
+            var montoManual = this.getCleanNumberValue("txtRecaudacionUSD");
+            var montoGrid = this.totalGridTemp || 0; // Recuperamos lo que guardó la lupa
+
+            // Calculamos diferencia absoluta para evitar problemas de decimales
+            var diferencia = Math.abs(montoManual - montoGrid);
+
+            // Si hay diferencia (mayor a 1 centavo) o el monto es 0
+            if (diferencia > 0.01 || montoManual === 0) {
+                Ext.Msg.alert('Descuadre', 
+                    'No se puede guardar. El monto reportado (' + Ext.util.Format.usMoney(montoManual) + 
+                    ') no coincide con la selección de la grilla (' + Ext.util.Format.usMoney(montoGrid) + ').'
+                );
+                return; // <--- AQUÍ SE DETIENE TODO, NO GUARDA
+            }
+        }
+        // ----------------------------------------------
+
         switch (exceptionCode) {
-            case '1': 
+            case '1': // ARGENTINA
                 this.llenarDataArgentina(beanTemp);
                 urlAction = '/MaintenanceMPF199insertArgentina';
                 exceptionName = 'Argentina';
                 break;
 
-            case '2': 
+            case '2': // INDIA
                 this.llenarDataIndia(beanTemp);
                 urlAction = '/MaintenanceMPF199insertIndia';
                 exceptionName = 'India';
                 break;
 
-            default: 
+            default: // ALL
                 this.llenarDataInsert(beanTemp);
                 urlAction = '/MaintenanceMPF199insert';
                 exceptionName = 'All';
                 break;
         }
-        
-        console.log(urlAction,"esta es la URL"),
-        console.log(exceptionCode,"esta es la exceptionCode"),
 
-        beanTemp.option = 'I'; // Asegurar que el bean siempre tenga la opción de Insert
+        // ... (Resto del código original de confirmación y envío) ...
+        beanTemp.option = 'I'; 
 
-        // 2. Mensaje de confirmación
         Ext.Msg.show({
             title: '.:PRAXIS:.',
             msg: 'Are you sure to insert data for ' + exceptionName + '?',
@@ -286,8 +300,6 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryPendingBa
             modal: true,
             fn: function (btn) {
                 if (btn === 'yes') {
-                    // Llamar a la función de mantenimiento genérica
-                    beanTemp.option = 'I';
                     this.MaintenanceMPF199Generic(beanTemp, urlAction, exceptionName);
                 }
             }
@@ -401,11 +413,6 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryPendingBa
         }
     },
     
-    llenarDataIndia: function (beanTemp) {
-        beanTemp.O_RECAUDACION_INR = this.getCleanNumberValue("txtRecaudacionINR");
-        beanTemp.O_RECAUDACION_USD = this.getCleanNumberValue("txtRecaudacionUSD");
-        beanTemp.O_EXCEPTION_CODE = this.getValue("txtExceptionExterior");
-    },
     
     getCleanNumberValue: function (id) {
         var val = this.getValue(id);
@@ -526,7 +533,183 @@ calculateNeto: function () {
 
     },
 
+    getStoreMontos: function() {
+        if (this.storeMontos) return this.storeMontos;
 
+        this.storeMontos = Ext.create('Ext.data.Store', {
+            fields: [
+                {name: 'SCOUNTRY',  mapping: 'O_SCOUNTRY'},
+                {name: 'SCURRENCY', mapping: 'O_SCURRENCY'},
+                {name: 'ADATE',     mapping: 'O_ADATE'},
+                {name: 'MONTO',     mapping: 'O_PAYAMOU'}, // OJO: Java manda O_PAYAMOU, Grilla usa MONTO
+                {name: 'STVAL',     mapping: 'O_STVAL'}
+            ],
+            proxy: {
+                type: 'ajax',
+                url: prototype.url + '/listPendingAmounts', // La URL del Controller Java
+                reader: {
+                    type: 'json',
+                    rootProperty: 'data',
+                    successProperty: 'success'
+                },
+                timeout: 60000 
+            },
+            autoLoad: false
+        });
+
+        return this.storeMontos;
+    },
+
+    mostrarVentanaSeleccion: function() {
+    var me = this;
+    var dtField = Ext.getCmp(prototype.id + '-dtValueDate');
+    var valueDateRaw = dtField.getValue();
+
+    if (!valueDateRaw) {
+        Ext.Msg.show({
+            title: 'Atención',
+            msg: 'Por favor, seleccione un <b>Value Date</b> antes de buscar.',
+            buttons: Ext.Msg.OK,
+            icon: Ext.Msg.WARNING
+        });
+        return; 
+    }
+
+    var formattedDate = Ext.Date.format(valueDateRaw, 'Ymd'); 
+
+    var store = me.getStoreMontos();
+    
+    store.removeAll();
+    
+    store.load({
+        params: {
+            adate: formattedDate,
+            scountry: 'IN', 
+            action: 'GET_PENDING' 
+        },
+        callback: function(records, operation, success) {
+            if (!success) {
+                Ext.Msg.alert('Error', 'No se pudieron cargar los datos del servidor.');
+            } else if (records.length === 0) {
+                Ext.toast('No se encontraron registros pendientes para esa fecha.', 'Info');
+            }
+        }
+    });
+
+    // 3. CREAR/MOSTRAR VENTANA (Igual que antes, pero ahora el store se llena solo)
+    var win = Ext.create('Ext.window.Window', {
+        title: 'Selección de Montos Pendientes (' + Ext.Date.format(valueDateRaw, 'd/m/Y') + ')',
+        width: 600,
+        height: 400,
+        modal: true,
+        layout: 'fit',
+        items: [{
+            xtype: 'grid',
+            store: store, // El store ya se está cargando asíncronamente
+            id: prototype.id + '-gridMontos',
+            selModel: {
+                selType: 'checkboxmodel',
+                mode: 'SIMPLE',
+                listeners: {
+                    selectionchange: function(sm, selections) {
+                        var total = 0;
+                        // OJO: Asegúrate que el campo del store se llame 'MONTO' o como venga del backend
+                        Ext.each(selections, function(rec) { 
+                            // Parsear a float por si viene como string del backend
+                            total += parseFloat(rec.get('MONTO')); 
+                        });
+                        
+                        win.down('#displayTotalGrid').setValue(Ext.util.Format.usMoney(total));
+                        win.totalTemp = total;
+                    }
+                }
+            },
+            columns: [
+                { text: 'País', dataIndex: 'SCOUNTRY', width: 60 },
+                { text: 'Moneda', dataIndex: 'SCURRENCY', width: 70 },
+                // Formateamos la fecha visualmente en la grilla
+                { text: 'Fecha', dataIndex: 'ADATE', width: 100, renderer: function(v) { return v; } }, 
+                { text: 'Monto', dataIndex: 'MONTO', flex: 1, renderer: Ext.util.Format.usMoney, align: 'right' },
+                { text: 'Estado', dataIndex: 'STVAL', width: 90 }
+            ],
+            bbar: [
+                '->',
+                {
+                    xtype: 'displayfield',
+                    itemId: 'displayTotalGrid',
+                    fieldLabel: 'Total Seleccionado',
+                    value: '$0.00',
+                    fieldStyle: 'font-weight:bold;color:green;font-size:14px;'
+                },
+                '-',
+                {
+                    text: 'Confirmar',
+                    iconCls: 'fa fa-check', // O tu icono 'prx-icon-save'
+                    handler: function() {
+                        var totalGrid = win.totalTemp || 0;
+                        me.validarYSetearDatos(totalGrid);
+                        win.close();
+                    }
+                }
+            ]
+        }]
+    });
+    
+    win.show();
+},
+
+// === NUEVO: Lógica de Validación ===
+validarYSetearDatos: function(totalGrid) {
+    var cmpMontoUSD = Ext.getCmp(prototype.id + '-txtRecaudacionUSD'); 
+    var cmpSeleccion = Ext.getCmp(prototype.id + '-txtSeleccionados');
+    var btnSave = Ext.getCmp(prototype.id + '-btn-save'); // ID correcto de tu botón Save
+    
+    var montoManual = cmpMontoUSD.getValue();
+
+    // Mostrar total en el campo gris
+    cmpSeleccion.setValue('Total Seleccionado: ' + Ext.util.Format.usMoney(totalGrid));
+
+    // Validar diferencia
+    var diferencia = Math.abs(montoManual - totalGrid);
+
+    if (diferencia < 0.01 && montoManual > 0) {
+        Ext.toast('¡Montos Cuadrados Correctamente!', 'Éxito');
+        if(btnSave) btnSave.enable(); 
+    } else {
+        Ext.Msg.alert('Descuadre', 'El monto reportado ($' + montoManual + ') no coincide con la selección ($' + totalGrid + ').');
+        if(btnSave) btnSave.disable();
+    }
+    
+    // Guardamos el total grid en una variable temporal del controlador para re-validar si cambian el manual
+    this.totalGridTemp = totalGrid; 
+},
+
+// === NUEVO: Listener para el botón Lupa ===
+onLupaClick: function() {
+    this.mostrarVentanaSeleccion();
+},
+
+// === MODIFICACIÓN IMPORTANTE: llenarDataIndia ===
+// Actualiza esta función para leer los nuevos campos
+llenarDataIndia: function (beanTemp) {
+    // Ya no existe INR, se usa Value Date y USD
+    beanTemp.O_ADATE = Ext.util.Format.date(this.getValue("dtValueDate"), 'Ymd'); // Formato DB
+    beanTemp.O_RECAUDACION_USD = this.getCleanNumberValue("txtRecaudacionUSD");
+    beanTemp.O_EXCEPTION_CODE = this.getValue("txtExceptionExterior");
+    // Si necesitas guardar el detalle de los montos seleccionados, deberías hacerlo aquí
+},
+
+validarYSetearDatos: function(totalGrid) {
+    var cmpSeleccion = Ext.getCmp(prototype.id + '-txtSeleccionados');
+    
+    // 1. Guardamos el total en una variable del controlador para usarla al guardar
+    this.totalGridTemp = totalGrid; 
+
+    // 2. Solo actualizamos el texto visual para que el usuario sepa cuánto lleva
+    if (cmpSeleccion) {
+        cmpSeleccion.setValue('Total Seleccionado: ' + Ext.util.Format.usMoney(totalGrid));
+    }
+},
 
 
     DeshabilitarCampoClave: function () {
