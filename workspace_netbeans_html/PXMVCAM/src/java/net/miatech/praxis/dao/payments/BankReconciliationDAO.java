@@ -9852,7 +9852,7 @@ public class BankReconciliationDAO {
                     bean.O_SCOUNTRY   = rst.getString("SCOUNTRY");
                     bean.O_SCURRENCY  = rst.getString("SCURRENCY");
                     bean.O_ADATE      = rst.getString("ADATE");
-                    bean.O_PAYAMOU    = rst.getDouble("PAYAMOU");
+                    bean.O_NETO   = rst.getDouble("NETO");
                     bean.O_STVAL      = rst.getString("STVAL");
 
                     listaData.add(bean);

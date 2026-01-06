@@ -541,12 +541,12 @@ calculateNeto: function () {
                 {name: 'SCOUNTRY',  mapping: 'O_SCOUNTRY'},
                 {name: 'SCURRENCY', mapping: 'O_SCURRENCY'},
                 {name: 'ADATE',     mapping: 'O_ADATE'},
-                {name: 'MONTO',     mapping: 'O_PAYAMOU'}, // OJO: Java manda O_PAYAMOU, Grilla usa MONTO
+                {name: 'MONTO',     mapping: 'O_NETO'}, 
                 {name: 'STVAL',     mapping: 'O_STVAL'}
             ],
             proxy: {
                 type: 'ajax',
-                url: prototype.url + '/listPendingAmounts', // La URL del Controller Java
+                url: prototype.url + '/listPendingAmounts', 
                 reader: {
                     type: 'json',
                     rootProperty: 'data',
