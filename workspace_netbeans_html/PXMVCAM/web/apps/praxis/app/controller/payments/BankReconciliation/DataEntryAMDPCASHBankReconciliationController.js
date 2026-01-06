@@ -1021,7 +1021,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         }
 
         // === Crear el bean con los campos requeridos ===
-        this.bean_scan = this.bean_scan || {}; // asegúrate que exista el objeto
+        this.bean_scan = this.bean_scan || {}; 
         this.bean_scan.SAGENT = seleccionado.get('SAGENT');
         this.bean_scan.SCOUNTRY = seleccionado.get('SCOUNTRY');
         this.bean_scan.SCURRENCY = seleccionado.get('SCURRENCY');
@@ -1050,6 +1050,64 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
                 if (res.success) {
                     global.Msg({msg: res.Mensaje || 'Conciliación completada con éxito.'});
 
+                    var store = gridScan.getStore();
+                    if (store)
+                        store.reload();
+                } else {
+                    global.Msg({msg: res.Mensaje || 'Error en la conciliación.'});
+                }
+            },
+            failure: function (response) {
+                Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
+                Ext.Msg.alert('Error', 'Error en el servidor (' + response.status + ')');
+                console.error('Server-side failure:', response);
+            }
+        });
+    },
+    
+    onConciliationAddAdjust: function () {
+//        var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        if(this.bean.TINPUT === 'I'){
+            var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScanICCS');
+        }else {
+            var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        }
+        var seleccionado = gridScan.getSelectionModel().getSelection()[0];
+
+        if (!seleccionado) {
+            Ext.Msg.alert('Aviso', 'Debe seleccionar una fila para conciliar.');
+            return;
+        }
+
+        // === Crear el bean con los campos requeridos ===
+        this.bean_scan = this.bean_scan || {}; 
+        this.bean_scan.SAGENT = seleccionado.get('SAGENT');
+        this.bean_scan.SCOUNTRY = seleccionado.get('SCOUNTRY');
+        this.bean_scan.SCURRENCY = seleccionado.get('SCURRENCY');
+        this.bean_scan.SPAYMENT = 'CA';
+        this.bean_scan.CBATCH = seleccionado.get('CBATCH');
+        this.bean_scan.STRDATE = seleccionado.get('STRDATE');
+        this.bean_scan.ENDDATE = seleccionado.get('ENDDATE');
+        this.bean_scan.ADATE = seleccionado.get('ADATE');
+        this.bean_scan.TINPUT = seleccionado.get('TINPUT');
+        this.bean_scan.SEQ = seleccionado.get('SEQ');
+
+        var paramScan = {beanString: JSON.stringify(this.bean_scan)};
+
+        Ext.Ajax.request({
+            url: prototype.url + '/ConciliationAddAdjust',
+            method: 'POST',
+            timeout: 60000000,
+            params: paramScan,
+            beforeRequest: function () {
+                Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').mask('Procesando conciliación...');
+            },
+            success: function (response) {
+                Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
+                var res = Ext.JSON.decode(response.responseText || '{}');
+
+                if (res.success) {
+                    global.Msg({msg: res.Mensaje || 'Conciliación completada con éxito.'});
                     var store = gridScan.getStore();
                     if (store)
                         store.reload();

@@ -8989,16 +8989,54 @@ public class BankReconciliationDAO {
 
         return message;
     }
+    
+    public String ConciliationAddAdjust(A2290Filter filter) throws SQLException, Exception {
+        String message = "Update successful.";
+        CallableStatement cstmt = null;
+        Connection cnx = null;
+        int sqlCode = -1;
 
+        String SQL = "{CALL PRAXISMP.MPS491(?, ?, ?, ?, ?, ?, ?, ?)}";
 
-     
-     
-     
-     
-     
-     
-     
-     
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQL);
+
+            cstmt.registerOutParameter(7, Types.INTEGER);
+            cstmt.registerOutParameter(8, Types.VARCHAR);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST.trim());
+            cstmt.setString(2, filter.SCOUNTRY.trim());
+            cstmt.setString(3, filter.SCURRENCY.trim());
+            cstmt.setString(4, filter.ADATE.trim());
+            cstmt.setString(5, filter.CBATCH.trim());
+            cstmt.setString(6, filter.TINPUT.trim());
+            cstmt.setInt(7, sqlCode);
+            cstmt.setString(8, message);
+            
+
+            cstmt.execute();
+
+            sqlCode = cstmt.getInt(7);
+            message = cstmt.getString(8);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            message = e.getMessage();
+        } finally {
+            if (cstmt != null) 
+            try {
+                cstmt.close();
+            } catch (SQLException e) {
+                logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return message;
+    }
+
      ///////
     
     public List<A2290Filter> loadPX269SQP00698DayCash(A2290Filter filter) throws SQLException, Exception {

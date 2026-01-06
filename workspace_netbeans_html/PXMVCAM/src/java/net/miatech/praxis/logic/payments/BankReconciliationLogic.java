@@ -335,6 +335,9 @@ public class BankReconciliationLogic {
      public String ConciliacionAdjust(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.ConciliacionAdjust(filter);
     }
+     public String ConciliationAddAdjust(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.ConciliationAddAdjust(filter);
+    }
     
     
     
