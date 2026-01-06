@@ -2490,6 +2490,14 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                         click: 'onConciliationCashAdjust'
                     }
                 },
+                {
+                    text: 'Add <br> Adjust',
+                    id: prototype.id + '-btn-AddAdjust',
+                    icon: 'prx-icon-add',
+                    listeners: {
+                        click: 'onConciliationAddAdjust'
+                    }
+                },
 //                        {
 //                            text: 'Delete',
 //                            id: prototype.id + '-btn-delete',

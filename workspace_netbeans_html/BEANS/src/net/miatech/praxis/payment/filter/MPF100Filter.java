@@ -361,6 +361,7 @@ public class MPF100Filter extends MPF100 {
 
     public String SAUTHOC1 = "";
     public String SCARCOD1 = "";
+    public String TDOCORG = "";
 
     //A2240
     //A2240
