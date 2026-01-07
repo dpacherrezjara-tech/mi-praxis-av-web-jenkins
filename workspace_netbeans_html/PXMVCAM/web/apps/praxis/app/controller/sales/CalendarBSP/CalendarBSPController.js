@@ -49,7 +49,7 @@ Ext.define('Ext.Praxis.controller.sales.CalendarBSP.CalendarBSPController', {
     afterRender: function () {
         this.setStoreData();
 //        this.btnClear_click();
-//        this.btnSearch_click();
+
     },
     setStoreData: function() {
         var storeComboDataYear = win.getStoreYear(false);
@@ -66,11 +66,7 @@ Ext.define('Ext.Praxis.controller.sales.CalendarBSP.CalendarBSPController', {
             IN_A1529CUTO: IN_A1529CUTO
         };
     },
-////    btnDisplay_click: function() {
-////        global.Msg({
-////            msg: 'Option not available.'
-////        });
-////    },
+
 
 
 
@@ -79,6 +75,7 @@ Ext.define('Ext.Praxis.controller.sales.CalendarBSP.CalendarBSPController', {
 
     btnSearch_click: function(obj, e) {
         this.setFormatParameter();
+        
         this.setGridData();
     },
     setGridData: function(obj, val) {
@@ -126,9 +123,17 @@ Ext.define('Ext.Praxis.controller.sales.CalendarBSP.CalendarBSPController', {
         }).show();
     },
     btnClear_click: function(obj, e) {
-        var year = Ext.getCmp(prototype.id + '-cbxDateYear');
-
-        year.setValue(this.fecha.getFullYear());
+//        var year = Ext.getCmp(prototype.id + '-cbxDateYear');
+//
+//        year.setValue(this.fecha.getFullYear());
+        
+        Ext.getCmp(prototype.id + '-typeCalendar').setValue('');
+        Ext.getCmp(prototype.id + '-IN_A1529ISOC').setValue('');
+        Ext.getCmp(prototype.id + '-cbxDateYear').setValue('');
+        
+        this.btnSearch_click();
+      
+      
     },
     btnExcel_click: function(obj, e) {
         Ext.Msg.show({
