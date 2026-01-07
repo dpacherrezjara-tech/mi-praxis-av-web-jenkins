@@ -4066,6 +4066,8 @@ public class BankReconciliationController extends BaseController {
         }
         return lst;
     }
+    
+    
     @RequestMapping(value = "searchBeanTicketAgent")
     public @ResponseBody
     String searchBeanTicketAgent(ModelMap map, HttpServletRequest request) {
@@ -4085,6 +4087,28 @@ public class BankReconciliationController extends BaseController {
         A2290Filter filter = new A2290Filter();
         Gson gson = new Gson();
         String beanString = "";
+        
+//        try {
+//            logic = new BankReconciliationLogic();
+//            logic.setSession(this.serverSession.getServerSession());
+//
+//            beanString = request.getParameter("beanString");
+//            filter = gson.fromJson(beanString, A2290Filter.class);
+//            filter.page.TOTROW = -1;
+//            filter.page.START = 0;
+//            filter.page.LIMIT = 0;
+//
+//            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+//            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+//
+//                if (!bExcel) {
+//                    filter.page.PAGROW = 20;
+//                    start = (start != 0 ? start : 0);
+//                    filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+//                } else {
+//                    filter.page.PAGROW = -1;
+//                    filter.page.PAGNUM = 1;
+//                }
 
         try {
             logic = new BankReconciliationLogic();
@@ -4092,6 +4116,22 @@ public class BankReconciliationController extends BaseController {
 
             beanString = request.getParameter("beanString");
             filter = gson.fromJson(beanString, A2290Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+            
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            
+              if (!bExcel) {
+                    filter.page.PAGROW = 20;
+                    start = (start != 0 ? start : 0);
+                   filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+               } else {
+                    filter.page.PAGROW = -1;
+                   filter.page.PAGNUM = 1;
+               }
 
             lst = logic.loadPXBeanTicketAgent(filter);
         } catch (Exception e) {

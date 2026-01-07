@@ -6095,6 +6095,7 @@ public class BankReconciliationDAO {
 
         return lstData;
     }
+    
     public List<A2290Filter> loadPXBeanTicketAgent(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstData = new ArrayList<A2290Filter>(0);
@@ -6115,12 +6116,18 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS396(?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS396(?,?,?,?,?,?, ?, ?, ?, ?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
+            
+               // para la paginacion
+            cstmt.registerOutParameter(7, Types.INTEGER);
+            cstmt.registerOutParameter(8, Types.INTEGER);
+            cstmt.registerOutParameter(9, Types.INTEGER);
+            cstmt.registerOutParameter(10, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_SCOUNTRY.trim());
@@ -6128,7 +6135,19 @@ public class BankReconciliationDAO {
             cstmt.setString(4, filter.IN_DATEC.trim());
             cstmt.setString(5, filter.IN_SAGENT.trim());
             cstmt.setString(6, filter.IN_SPAYMENT.trim());
+            cstmt.setInt(7, filter.page.PAGNUM);
+            cstmt.setInt(8, filter.page.PAGROW);
+            cstmt.setInt(9, filter.page.TOTPAG);
+            cstmt.setInt(10, filter.page.TOTROW);
+            
             cstmt.execute();
+            
+            
+           // se actualiza paginacion
+            filter.page.PAGNUM = cstmt.getInt(7);
+            filter.page.PAGROW = cstmt.getInt(8);
+            filter.page.TOTPAG = cstmt.getInt(9);
+            filter.page.TOTROW = cstmt.getInt(10);
 
             rst = cstmt.getResultSet();
 
@@ -6159,6 +6178,13 @@ public class BankReconciliationDAO {
                 beanTkt.CFUENTE = rst.getString("CFUENTE").trim();
                 beanTkt.SPAYMENT = rst.getString("SPAYMENT").trim();
                 beanTkt.tot_VFOP = rst.getDouble("SUM_SVFOPNETR");
+                
+                                // Copiar paginación en cada bean si es necesario
+                beanTkt.page.PAGNUM = filter.page.PAGNUM;
+                beanTkt.page.PAGROW = filter.page.PAGROW;
+                beanTkt.page.TOTPAG = filter.page.TOTPAG;
+                beanTkt.page.TOTROW = filter.page.TOTROW;
+
 
                 lstData.add(beanTkt);
             }
