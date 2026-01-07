@@ -243,6 +243,7 @@ public class A2356 {
         public double AMOUNT_PENDING_USD  = 0;  
         public double AMOUNT_PENDING_SEND  = 0;  
         public double AMOUNT_PENDING_SAP  = 0;  
+        public double AMOUNT_PENDING_PENDING_SAP  = 0;  
         
         public int QTY_TOTAL_REFUND  = 0;  
         public double AMOUNT_TOTAL_REFUND_USD  = 0;  
@@ -272,6 +273,7 @@ public class A2356 {
         public double AMOUNT_TOTAL_PENDING_USD  = 0;  
         public double AMOUNT_TOTAL_PENDING_SEND  = 0;  
         public double AMOUNT_TOTAL_PENDING_SAP  = 0;  
+        public double AMOUNT_TOTAL_PENDING_PENDING_USD  = 0;  
         
         public int QTY_GRANT  = 0;  
         public double AMOUNT_GRANT  = 0;  

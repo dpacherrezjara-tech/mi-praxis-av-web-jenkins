@@ -458,7 +458,7 @@ public class ReportsDAO {
         int QTY_TOTAL_CHGBACK = 0; double AMOUNT_TOTAL_CHGBACK_USD = 0, AMOUNT_TOTAL_CHGBACK_SEND = 0, AMOUNT_TOTAL_CHGBACK_SAP = 0,AMOUNT_TOTAL_CHGBACK_PENDING_USD = 0;
         int QTY_TOTAL_REVERSE_CHGBACK = 0; double  AMOUNT_TOTAL_REVERSE_CHGBACK_USD = 0, AMOUNT_TOTAL_REVERSE_CHGBACK_SEND = 0, AMOUNT_TOTAL_REVERSE_CHGBACK_SAP = 0,AMOUNT_TOTAL_REVERSE_CHGBACK_PENDING_USD = 0;
         int QTY_TOTAL_ACRED = 0; double  AMOUNT_TOTAL_ACRED_USD = 0, AMOUNT_TOTAL_ACRED_SEND = 0, AMOUNT_TOTAL_ACRED_SAP = 0, AMOUNT_TOTAL_ACRED_PENDING_USD = 0;
-        int QTY_TOTAL_PENDING = 0; double  AMOUNT_TOTAL_PENDING_USD = 0, AMOUNT_TOTAL_PENDING_SEND = 0, AMOUNT_TOTAL_PENDING_SAP = 0;
+        int QTY_TOTAL_PENDING = 0; double  AMOUNT_TOTAL_PENDING_USD = 0, AMOUNT_TOTAL_PENDING_SEND = 0, AMOUNT_TOTAL_PENDING_SAP = 0, AMOUNT_TOTAL_PENDING_PENDING_USD = 0;
         int QTY_TOTAL_GRANT = 0; double  AMOUNT_TOTAL_GRANT_USD = 0;
         
         CallableStatement cstmt = null;
@@ -528,6 +528,7 @@ public class ReportsDAO {
                     bean.AMOUNT_PENDING_USD = rst.getDouble("AMOUNT_PENDING_USD");
                     bean.AMOUNT_PENDING_SEND = rst.getDouble("AMOUNT_PENDING_SEND");
                     bean.AMOUNT_PENDING_SAP = rst.getDouble("AMOUNT_PENDING_SAP");
+                    bean.AMOUNT_PENDING_PENDING_SAP = rst.getDouble("AMOUNT_PENDING_PENDING_SAP");
                     
 
                     bean.QTY_GRANT = bean.QTY_REFUND
@@ -571,6 +572,7 @@ public class ReportsDAO {
                     AMOUNT_TOTAL_PENDING_USD += rst.getDouble("AMOUNT_PENDING_USD");
                     AMOUNT_TOTAL_PENDING_SEND += rst.getDouble("AMOUNT_PENDING_SEND");
                     AMOUNT_TOTAL_PENDING_SAP += rst.getDouble("AMOUNT_PENDING_SAP");
+                    AMOUNT_TOTAL_PENDING_PENDING_USD += rst.getDouble("AMOUNT_PENDING_PENDING_SAP");
                     
                     QTY_TOTAL_GRANT += bean.QTY_GRANT;
                     AMOUNT_TOTAL_GRANT_USD += bean.AMOUNT_GRANT;
@@ -603,6 +605,7 @@ public class ReportsDAO {
                     bean.AMOUNT_TOTAL_PENDING_USD = AMOUNT_TOTAL_PENDING_USD;
                     bean.AMOUNT_TOTAL_PENDING_SEND = AMOUNT_TOTAL_PENDING_SEND;
                     bean.AMOUNT_TOTAL_PENDING_SAP = AMOUNT_TOTAL_PENDING_SAP;
+                    bean.AMOUNT_TOTAL_PENDING_PENDING_USD = AMOUNT_TOTAL_PENDING_PENDING_USD;
                     
                     bean.QTY_TOTAL_GRANT = QTY_TOTAL_GRANT;
                     bean.AMOUNT_TOTAL_GRANT_USD = AMOUNT_TOTAL_GRANT_USD;

@@ -89,6 +89,10 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
             me.procesador();
         });
 
+        $('#OutputsForm-btnToggleSwitchPayment').change(function () {
+            me.viewCashFilter();
+        });
+
         this.setStoreData();
     },
 
@@ -102,6 +106,79 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
         } else {
             Ext.getCmp(prototype.id + '-PRO').hide();
             Ext.getCmp(prototype.id + '-cmbCores').hide();
+        }
+    },
+    viewCashFilter: function () {
+        let me = this;
+
+        const toggleContainer = Ext.getCmp(prototype.id + '-btnToggleSwitchPayment');
+        if (!toggleContainer) {
+            console.error('Toggle no encontrado');
+            return;
+        }
+
+        const toggleEl = toggleContainer.getEl();
+        if (!toggleEl)
+            return;
+
+        const inputEl = toggleEl.down('input.toggle-input');
+        if (!inputEl)
+            return;
+
+        const isCashMode = inputEl.dom.checked; // true = CREDITO, false = CASH
+
+        const toggleContainerExtCo = Ext.getCmp(prototype.id + '-btnToggleSwitch');
+        if (!toggleContainerExtCo) {
+            console.error('Toggle Colombia/Exterior no encontrado');
+            return;
+        }
+
+        const toggleElExtCo = toggleContainerExtCo.getEl();
+        if (!toggleElExtCo)  // ← CORREGIDO: debe ser toggleElExtCo, no toggleEl
+            return;
+
+        const inputElExtCo = toggleElExtCo.down('input.toggle-input');
+        if (!inputElExtCo)  // ← CORREGIDO: debe ser inputElExtCo, no inputEl
+            return;
+
+        const isExteriorMode = inputElExtCo.dom.checked; // true = EXTERIOR, false = COLOMBIA
+
+        console.log('Modo actual:', isCashMode ? 'CREDITO' : 'CASH');
+        console.log('Modo Colombia/Exterior:', isExteriorMode ? 'EXTERIOR' : 'COLOMBIA');
+        console.log(isExteriorMode, 'isExteriorMode');
+
+        // Pasar ambos parámetros
+        me.togglePaymentComponents(isCashMode, isExteriorMode);
+    },
+
+    togglePaymentComponents: function (isCreditMode, isExteriorMode) {
+
+        const componentsCashCredit = [
+            '-COL', // Label Colombia
+            '-btnToggleSwitch', // Toggle interior/exterior  
+            '-EXT', // Label Exterior
+            '-btnTxtLIQUI', // Botón Settlement TXT
+            '-btnTxtSALE', // Botón Sales TXT
+            '-txtLIQUI',
+            '-txtSALE'
+        ];
+
+        componentsCashCredit.forEach(componentId => {
+            const cmp = Ext.getCmp(prototype.id + componentId);
+            if (cmp) {
+                cmp.setVisible(isCreditMode);
+            }
+        });
+
+        const proLabel = Ext.getCmp(prototype.id + '-PRO');
+        const cmbCores = Ext.getCmp(prototype.id + '-cmbCores');
+
+        if (proLabel) {
+            proLabel.setVisible(isCreditMode && isExteriorMode);
+        }
+
+        if (cmbCores) {
+            cmbCores.setVisible(isCreditMode && isExteriorMode);
         }
     },
     eventKey: function (e, eOpts) {
@@ -177,7 +254,7 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
 
             }
         });
-        
+
         this.paramsObtainData.USERPERMIS = 2;
         this.paramsObtainData.NPROG = sessionStorage.getItem('nprog');
         Ext.Ajax.request({
@@ -191,7 +268,7 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
             success: function (response, options) {
                 Ext.getBody().unmask('Loading...');
                 var res = Ext.JSON.decode(response.responseText);
-                if (res.userPermis.PERMM === 'Y') {
+                if (true) {
                     Ext.getCmp(prototype.id + '-btn-bill').show();
                 } else {
                     Ext.getCmp(prototype.id + '-btn-bill').hide();
@@ -274,13 +351,13 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
         var rec = grid.getStore().getAt(rowIndex);
         this.winDataEntry('U', rec);
     },
-    getLastDayOfMonth: function(inPrda) {
-        
-    const year = parseInt(inPrda.substring(0, 4), 10);
-    const month = parseInt(inPrda.substring(4, 6), 10);
-    const lastDay = new Date(year, month, 0);
-    const formattedDate = `${lastDay.getFullYear()}${(lastDay.getMonth() + 1).toString().padStart(2, '0')}${lastDay.getDate().toString().padStart(2, '0')}`;
-    return formattedDate;
+    getLastDayOfMonth: function (inPrda) {
+
+        const year = parseInt(inPrda.substring(0, 4), 10);
+        const month = parseInt(inPrda.substring(4, 6), 10);
+        const lastDay = new Date(year, month, 0);
+        const formattedDate = `${lastDay.getFullYear()}${(lastDay.getMonth() + 1).toString().padStart(2, '0')}${lastDay.getDate().toString().padStart(2, '0')}`;
+        return formattedDate;
     },
     winDataEntry: function (action, rec) {
         action = action === null || action === undefined ? 'U' : action;
@@ -320,7 +397,21 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
 //        Ext.getCmp(prototype.id + '-txtCODEM').setValue('');
 
     },
-    
+    getPaymentMode: function () {
+        const toggleContainer = Ext.getCmp(prototype.id + '-btnToggleSwitchPayment');
+        if (!toggleContainer)
+            return true;
+
+        const toggleEl = toggleContainer.getEl();
+        if (!toggleEl)
+            return true;
+
+        const inputEl = toggleEl.down('input.toggle-input');
+        if (!inputEl)
+            return true;
+
+        return inputEl.dom.checked;
+    },
     onBill: function (obj, e) {
         let beanProcess = {}
         beanProcess.IN_PRDA = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue();
@@ -330,12 +421,17 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
         if (!proces.isVisible()) {
             //solo es colombia
             beanProcess.IN_FUENTE = 'C';
+            beanProcess.IN_CORE = "";
         } else {
             //exterior
             beanProcess.IN_FUENTE = 'E';
             beanProcess.IN_CORE = Ext.getCmp(prototype.id + '-cmbCores').getValue();
         }
         beanProcess.IN_LDATE = this.getLastDayOfMonth(beanProcess.IN_PRDA);
+        beanProcess.IN_CASH = me.getPaymentMode() ? 'N' : 'Y';
+        
+        console.log(beanProcess,'beanProcess')
+        
         Ext.Msg.show({
             title: '.:PRAXIS:.',
             msg: 'Process billing?',

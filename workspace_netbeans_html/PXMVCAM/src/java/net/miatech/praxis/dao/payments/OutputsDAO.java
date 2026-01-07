@@ -240,7 +240,7 @@ public class OutputsDAO {
         A2353Filter objRtn = new A2353Filter();
         CallableStatement cstmt = null;
         ResultSet rs01 = null;
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05105_UPDATE(?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS490(?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -254,6 +254,7 @@ public class OutputsDAO {
             cstmt.setString(5, filter.IN_CORE.trim());
             cstmt.setString(6, filter.IN_FUENTE.trim());
             cstmt.setString(7, filter.IN_LDATE.trim());
+            cstmt.setString(8, filter.IN_CASH.trim());
             cstmt.execute();
 
             

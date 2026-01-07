@@ -2,7 +2,6 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.Info', {
     extend: 'Ext.form.Panel',
     alias: 'widget.' + prototype.id + '-info',
     layout: 'border',
-    align: 'center',
     bodyStyle: 'background-color: #F4F7FD;',
     defaults: {
         bodyStyle: 'background: transparent;',
@@ -27,17 +26,17 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.Info', {
                 {
                     xtype: 'panel',
                     id: prototype.id + '-panelMain',
-                     layout: {
+                    layout: {
                         type: 'vbox',
                         align: 'center'
                     },
                     bodyStyle: 'background-color: transparent;',
-                     border: false,
+                    border: false,
                     items: [
                         {
                             xtype: 'panel',
                             border: false,
-                            width: 1327,
+                            width: 1200,
                             id: prototype.id + '-panelGridData',
                             bodyStyle: 'background-color: #F4F7FD;',
                             padding: '1',
@@ -50,10 +49,13 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridMainData',
-                                    height: 510,
-                                    width: 1327,
+                                    height: 490,
+                                    width: 1140,
                                     hidden: false,
                                     columnLines: true,
+                                    viewConfig: {
+                                        enableTextSelection: true
+                                    },
                                     columns: {
                                         defaults: {
                                             menuDisabled: true,
@@ -62,153 +64,217 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.Info', {
                                         },
                                         items: [
                                             {
-                                                xtype: 'checkcolumn', 
-                                                text: 'SEL', 
-                                                width: 50, 
+                                                xtype: 'checkcolumn',
+                                                text: 'SEL',
+                                                width: 50,
                                                 dataIndex: 'checkActive',
                                                 align: 'center',
                                                 menuDisabled: true,
-                                                style: 'padding:2px; background: #3F5675;border-color:white',
+                                                style: 'padding:2px; background: #6C87A8;border-color:white',
                                                 listeners: {
                                                     checkchange: 'markSettlement'
                                                 },
                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                    metaData.style = "text-align:right;background: #6C87A8;color:white";
                                                     return '';
                                                 }
                                             },
-                                            {text: 'STVAL', dataIndex: 'STVAL', width: 150,style: 'padding:2px; background: #3F5675;border-color:white',
+                                            {text: 'Customer', dataIndex: 'CCUST', width: 80, style: 'padding:2px; background: #6C87A8;border-color:white',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    if (value.replace(/\s/g, '') == '0') {
+                                                    if (value === '133') {
+                                                        return '<span>LACSA</span>';
+                                                    } else if (value === '134') {
+                                                        return '<span>AVIANCA</span>';
+                                                    } else if (value === '202') {
+                                                        return '<span>TACA</span>';
+                                                    } else if (value === '547') {
+                                                        return '<span>AEROGAL</span>';
+                                                    } else {
+                                                        return '<span>UNKNOW</span>';
+                                                    }
+                                                },
+                                            },
+                                            {text: 'Status', dataIndex: 'STVAL', width: 150, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    if (value.replace(/\s/g, '') === '0') {
                                                         metaData.style = 'background: #c8e6c9';
                                                         return '<span style="font-weight: bold;">Pending</span>';
-                                                    } else if (value.replace(/\s/g, '') == '1') {
+                                                    } else if (value.replace(/\s/g, '') === '1') {
                                                         metaData.style = 'background: #ffcccb';
                                                         return '<span style="font-weight: bold;">Match</span>';
-                                                    } else if (value.replace(/\s/g, '') == '2') {
+                                                    } else if (value.replace(/\s/g, '') === '2') {
                                                         metaData.style = 'background: #ffd1b3';
                                                         return '<span style="font-weight: bold;">Sales Without Settlement</span>';
-                                                    } else if (value.replace(/\s/g, '') == '3') {
+                                                    } else if (value.replace(/\s/g, '') === '3') {
                                                         metaData.style = 'background: #a2d5f2';
                                                         return '<span style="font-weight: bold;">Settlement Without Sales</span>';
-                                                    } else if (value.replace(/\s/g, '') == '4') {
+                                                    } else if (value.replace(/\s/g, '') === '4') {
                                                         metaData.style = 'background: #a2d5f2';
                                                         return '<span style="font-weight: bold;">Match Diference</span>';
-                                                    } else if (value.replace(/\s/g, '') == '5') {
+                                                    } else if (value.replace(/\s/g, '') === '5') {
                                                         metaData.style = 'background: #a2d5f2';
                                                         return '<span style="font-weight: bold;">Match Manual</span>';
-                                                    } else if (value.replace(/\s/g, '') == '6') {
+                                                    } else if (value.replace(/\s/g, '') === '6') {
                                                         metaData.style = 'background: #a2d5f2';
                                                         return '<span style="font-weight: bold;">Match Forzado</span>';
                                                     } else {
                                                         metaData.style = 'background: #cfcfcf';
                                                         return '<span style="font-weight: bold;">Sin Estado</span>';
                                                     }
-                                                },
+                                                }
                                             },
-                                            {text: 'SCOUNTRY', dataIndex: 'SCOUNTRY', width: 120,style: 'padding:2px; background: #3F5675;border-color:white'},
-                                            {text: 'TDOC', dataIndex: 'TDOC', width: 120,style: 'padding:2px; background: #3F5675;border-color:white'},
-                                            {text: 'CODEBANK', dataIndex: 'CODEBANK', width: 120,style: 'padding:2px; background: #3F5675;border-color:white'},
-                                            {text: 'SCARCOD', dataIndex: 'SCARCOD', width: 120,style: 'padding:2px; background: #3F5675;border-color:white'},
-                                            {text: 'SCARDN', dataIndex: 'SCARDN', width: 150,style: 'padding:2px; background: #3F5675;border-color:white',
-                                                 renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-                                                        metaData.style = "text-align:left;";
-//                                                        value = Ext.util.Format.number(value, '0,000.00');
-                                                        return value;
+                                            {text: 'Fase 2', dataIndex: 'FSELEC', width: 60, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData) {
+                                                    if (value && value.toString().trim() !== '') {
+                                                        metaData.style = 'background:#C8E6C9; color:#1B5E20; font-weight:bold;';
+                                                        return 'YES';
                                                     }
-                                             },
-                                            {text: 'SAUTHOC', dataIndex: 'SAUTHOC', width: 120,style: 'padding:2px; background: #3F5675;border-color:white'},
-                                            {text: 'SEQ', dataIndex: 'SEQ', width: 120,style: 'padding:2px; background: #3F5675;border-color:white'},
-                                             {text: 'SVFOP', dataIndex: 'SVFOP', width: 120,style: 'padding:2px; background: #3F5675;border-color:white',
-                                             renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-                                                metaData.style = "text-align:right;";
-                                                value = Ext.util.Format.number(value, '0,000.00');
-                                                return '<b>' + value + '</b>';
-                                            }},
-                                             
-                                            
-//                                             {text: 'ADATE', dataIndex: 'ADATE', width: 60,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                             
-//                                             {text: 'SDATE', dataIndex: 'SDATE', width: 65,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                             {text: 'SAGENT', dataIndex: 'SAGENT', width: 65,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                             {text: 'MERCHAND', dataIndex: 'MERCHAND', width: 65,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                             {text: 'RED', dataIndex: 'RED', width: 65,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                             {text: 'NETO', dataIndex: 'NETO', width: 65,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                             
-//                                             
-//                                             {text: 'NEGOC', dataIndex: 'NEGOC', width: 65,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                             
-//                                             {text: 'ACCNUMBER', dataIndex: 'ACCNUMBER', width: 65,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                             
-//                                             {text: 'FECR', dataIndex: 'FECR', width: 65,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                             {text: 'HOCR', dataIndex: 'HOCR', width: 65,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                             
-//                                             
-//                                             {text: 'TERMI', dataIndex: 'TERMI', width: 65,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                             {text: 'COMISION', dataIndex: 'COMISION', width: 65,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                             {text: 'TOTAL', dataIndex: 'TOTAL', width: 65,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                             {text: 'SCURRENCY', dataIndex: 'SCURRENCY', width: 65,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                            
-//                                             
-//                                             {text: 'CODEBANK', dataIndex: 'CODEBANK', width: 65,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                             {text: 'Credit Card',style: 'background: #3F5675;border-color:white',
-//                                                defaults: {
-//                                                    menuDisabled: true,
-//                                                    sortable: true,
-//                                                    align: 'center',
-//                                                    border: true
-//                                                },
-//                                                columns: [
-//                                                    {text: 'Code', dataIndex: 'CODE', width: 70,style: 'background: #3F5675;border-color:white'},
-//                                                    {text: 'Number', dataIndex: 'CORE', width: 160, style: 'background: #3F5675;border-color:white'},
-//                                                    {
-//                                                        text: 'Author',
-//                                                        style: 'background: #3F5675;border-color:white',
-//                                                        columns: [
-//                                                            {text: 'Code', dataIndex: 'CODE', width: 90, align:'center',style: 'background: #3F5675;border-color:white'}
-//                                                        ]
-//                                                    }
-//                                                ]
-//                                            },
-//                                            {text: 'Curr', dataIndex: 'RN', width: 60,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                            {text: 'Amount', dataIndex: 'RN', width: 80,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                            {text: 'Comision', dataIndex: 'RN', width: 80,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                            {text: 'Comistota', dataIndex: 'RN', width: 80,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                            {text: 'Sales',style: 'background: #3F5675;border-color:white',
-//                                                defaults: {
-//                                                    menuDisabled: true,
-//                                                    sortable: true,
-//                                                    align: 'center',
-//                                                    border: true
-//                                                },
-//                                                columns: [
-//                                                    {text: 'Merchant', dataIndex: 'CODE', width: 110,style: 'background: #3F5675;border-color:white'},
-//                                                    {text: 'PNR', dataIndex: 'CORE', width: 100, align: 'center',style: 'background: #3F5675;border-color:white'},
-//                                                    {text: 'Agent.', dataIndex: 'CORE', width: 110, style: 'background: #3F5675;border-color:white'},
-//                                                    {text: 'Business.', dataIndex: 'CORE', width: 110, style: 'background: #3F5675;border-color:white'}
-//                                                ]
-//                                            },
-//                                             {text: 'Bank Information',style: 'background: #3F5675;border-color:white',
-//                                                defaults: {
-//                                                    menuDisabled: true,
-//                                                    sortable: true,
-//                                                    align: 'center',
-//                                                    border: true
-//                                                },
-//                                                columns: [
-//                                                    {text: 'Pay. Date', dataIndex: 'CODE', width: 90,style: 'background: #3F5675;border-color:white'},
-//                                                    {text: 'Acc Number', dataIndex: 'CORE', width: 120, align: 'center',style: 'background: #3F5675;border-color:white'},
-//                                                    {text: 'Termi.', dataIndex: 'CORE', width: 120, style: 'background: #3F5675;border-color:white'},
-//                                                    {text: 'ID SAP.', dataIndex: 'CORE', width: 120, style: 'background: #3F5675;border-color:white'},
-//                                                     {text: 'Pen. <br> Day.', dataIndex: 'CORE', width: 120, style: 'background: #3F5675;border-color:white'}
-//                                                ]
-//                                            },
+                                                    return 'NO';
+                                                }
+                                            },
+                                            {text: 'Sale Date', dataIndex: 'SDATE', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                            {text: 'Country', dataIndex: 'SCOUNTRY', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                            {text: 'Document', dataIndex: 'TDOC', width: 80, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    if (value === 'S') {
+                                                        return '<span>Sales</span>';
+                                                    } else if (value === 'R') {
+                                                        return '<span>Refund</span>';
+                                                    } else if (value === 'D') {
+                                                        return '<span>Debito</span>';
+                                                    } else {
+                                                        return '<span>Unknow</span>';
+                                                    }
+                                                }
+                                            },
+                                            {text: 'Code Bank', dataIndex: 'CODEBANK', width: 80, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                            {text: 'CC Type', dataIndex: 'SCARCOD', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                            {text: 'Card Number', dataIndex: 'SCARDN', width: 130, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                            {text: 'Authorization', dataIndex: 'SAUTHOC', width: 100, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                            {text: 'Secuence', dataIndex: 'SEQ', width: 80, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                            {text: 'Amount', dataIndex: 'SVFOP', width: 120, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:right;";
+                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                    return '<b>' + value + '</b>';
+                                                }},
                                         ]
                                     }
                                 }
                             ]
                         },
-                         {
+                        {
+                            xtype: 'panel',
+                            border: false,
+                            width: 1200,
+                            id: prototype.id + '-panelGridDataDeleteGroup',
+                            bodyStyle: 'background-color: #F4F7FD;',
+                            padding: '1',
+                            hidden: false,
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridMainDataDeleteGroup',
+                                    height: 490,
+                                    width: 870,
+                                    hidden: false,
+                                    columnLines: true,
+                                    viewConfig: {
+                                        enableTextSelection: true
+                                    },
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: true,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {text: 'Customer', dataIndex: 'CCUST', width: 80, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    if (value === '133') {
+                                                        return '<span>LACSA</span>';
+                                                    } else if (value === '134') {
+                                                        return '<span>AVIANCA</span>';
+                                                    } else if (value === '202') {
+                                                        return '<span>TACA</span>';
+                                                    } else if (value === '547') {
+                                                        return '<span>AEROGAL</span>';
+                                                    } else {
+                                                        return '<span>UNKNOW</span>';
+                                                    }
+                                                },
+                                            },
+                                            {text: 'Document', dataIndex: 'TDOC', width: 80, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    if (value === 'S') {
+                                                        return '<span>Sales</span>';
+                                                    } else if (value === 'R') {
+                                                        return '<span>Refund</span>';
+                                                    } else if (value === 'D') {
+                                                        return '<span>Debito</span>';
+                                                    } else {
+                                                        return '<span>Unknow</span>';
+                                                    }
+                                                }
+                                            },
+                                            {text: 'Country', dataIndex: 'SCOUNTRY', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                            {text: 'Sale Date', dataIndex: 'SDATE', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                            {text: 'Code Bank', dataIndex: 'CODEBANK', width: 80, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                            {text: 'User Creation', dataIndex: 'USUP', width: 110, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                            {text: 'User Date', dataIndex: 'FEUP', width: 80, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                            {text: 'User Hour', dataIndex: 'HOUP', width: 80, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                            {text: 'Quantity', dataIndex: 'QTY', width: 80, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "color:#057ECB;text-align:center;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                    return value;
+                                                },
+                                                listeners: {
+                                                    click: 'onClickDetailRemoved'
+//                                                    args: ['IN_ERROR']
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:white;font-weight:bold;">Upload File</span>',
+                                                width: 80,
+                                                align: 'center',
+                                                style: 'padding:2px; background: #6C87A8; border-color:white',
+                                                renderer: function (value, metaData, record) {
+
+                                                    return `<img src="resources/img/botones/attach.png"
+                                                                 style="cursor:pointer; width:18px; height:18px;"
+                                                                >`;
+                                                },
+                                                listeners: {
+                                                    click: 'addFileDeleteJustification'
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:white;font-weight:bold;">View</span>',
+                                                width: 60,
+                                                align: 'center',
+                                                style: 'padding:2px; background: #6C87A8; border-color:white',
+                                                renderer: function (value, metaData, record) {
+                                                    let file = record.get('FILE_NAME');
+
+                                                    return `<img src="resources/img/botones/search.png"
+                                                                  style="cursor:pointer; width:14px; height:14px;"
+                                                                >`;
+                                                },
+                                                listeners: {
+                                                    click: 'onViewIMG'
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
                             xtype: 'panel',
                             border: false,
                             width: 1327,
@@ -224,10 +290,13 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridMainDataDelete',
-                                    height: 510,
-                                    width: 1327,
+                                    height: 490,
+                                    width: 1080,
                                     hidden: false,
                                     columnLines: true,
+                                    viewConfig: {
+                                        enableTextSelection: true
+                                    },
                                     columns: {
                                         defaults: {
                                             menuDisabled: true,
@@ -236,147 +305,91 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.Info', {
                                         },
                                         items: [
                                             {
-                                                xtype: 'checkcolumn', 
-                                                text: 'SEL', 
-                                                width: 50, 
+                                                xtype: 'checkcolumn',
+                                                text: 'SEL',
+                                                width: 50,
                                                 dataIndex: 'checkActive',
                                                 align: 'center',
                                                 menuDisabled: true,
-                                                style: 'padding:2px; background: #3F5675;border-color:white',
+                                                style: 'padding:2px; background: #6C87A8;border-color:white',
                                                 listeners: {
                                                     checkchange: 'markSettlementReverse'
                                                 },
                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                    metaData.style = "text-align:right;background: #3F5675;color:white";
+                                                    metaData.style = "text-align:right;background: #6C87A8;color:white";
                                                     return '';
                                                 }
                                             },
-                                            {text: 'STVAL', dataIndex: 'STVAL', width: 150,style: 'padding:2px; background: #3F5675;border-color:white',
+                                            {text: 'Customer', dataIndex: 'CCUST', width: 80, style: 'padding:2px; background: #6C87A8;border-color:white',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    if (value.replace(/\s/g, '') == '0') {
+                                                    if (value === '133') {
+                                                        return '<span>LACSA</span>';
+                                                    } else if (value === '134') {
+                                                        return '<span>AVIANCA</span>';
+                                                    } else if (value === '202') {
+                                                        return '<span>TACA</span>';
+                                                    } else if (value === '547') {
+                                                        return '<span>AEROGAL</span>';
+                                                    } else {
+                                                        return '<span>DD7</span>';
+                                                    }
+                                                },
+                                            },
+                                            {text: 'Status', dataIndex: 'STVAL', width: 150, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    if (value.replace(/\s/g, '') === '0') {
                                                         metaData.style = 'background: #c8e6c9';
                                                         return '<span style="font-weight: bold;">Pending</span>';
-                                                    } else if (value.replace(/\s/g, '') == '1') {
+                                                    } else if (value.replace(/\s/g, '') === '1') {
                                                         metaData.style = 'background: #ffcccb';
                                                         return '<span style="font-weight: bold;">Match</span>';
-                                                    } else if (value.replace(/\s/g, '') == '2') {
+                                                    } else if (value.replace(/\s/g, '') === '2') {
                                                         metaData.style = 'background: #ffd1b3';
                                                         return '<span style="font-weight: bold;">Sales Without Settlement</span>';
-                                                    } else if (value.replace(/\s/g, '') == '3') {
+                                                    } else if (value.replace(/\s/g, '') === '3') {
                                                         metaData.style = 'background: #a2d5f2';
                                                         return '<span style="font-weight: bold;">Settlement Without Sales</span>';
-                                                    } else if (value.replace(/\s/g, '') == '4') {
+                                                    } else if (value.replace(/\s/g, '') === '4') {
                                                         metaData.style = 'background: #a2d5f2';
                                                         return '<span style="font-weight: bold;">Match Diference</span>';
-                                                    } else if (value.replace(/\s/g, '') == '5') {
+                                                    } else if (value.replace(/\s/g, '') === '5') {
                                                         metaData.style = 'background: #a2d5f2';
                                                         return '<span style="font-weight: bold;">Match Manual</span>';
-                                                    } else if (value.replace(/\s/g, '') == '6') {
+                                                    } else if (value.replace(/\s/g, '') === '6') {
                                                         metaData.style = 'background: #a2d5f2';
                                                         return '<span style="font-weight: bold;">Match Forzado</span>';
                                                     } else {
                                                         metaData.style = 'background: #cfcfcf';
                                                         return '<span style="font-weight: bold;">Sin Estado</span>';
                                                     }
-                                                },
+                                                }
                                             },
-                                            {text: 'SCOUNTRY', dataIndex: 'SCOUNTRY', width: 120,style: 'padding:2px; background: #3F5675;border-color:white'},
-                                            {text: 'TDOC', dataIndex: 'TDOC', width: 120,style: 'padding:2px; background: #3F5675;border-color:white'},
-                                            {text: 'CODEBANK', dataIndex: 'CODEBANK', width: 120,style: 'padding:2px; background: #3F5675;border-color:white'},
-                                            {text: 'SCARCOD', dataIndex: 'SCARCOD', width: 120,style: 'padding:2px; background: #3F5675;border-color:white'},
-                                            {text: 'SCARDN', dataIndex: 'SCARDN', width: 150,style: 'padding:2px; background: #3F5675;border-color:white',
-                                                 renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-                                                        metaData.style = "text-align:left;";
-//                                                        value = Ext.util.Format.number(value, '0,000.00');
-                                                        return value;
+                                            {text: 'Sale Date', dataIndex: 'SDATE', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                            {text: 'Country', dataIndex: 'SCOUNTRY', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                            {text: 'Document', dataIndex: 'TDOC', width: 80, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    if (value === 'S') {
+                                                        return '<span>Sales</span>';
+                                                    } else if (value === 'R') {
+                                                        return '<span>Refund</span>';
+                                                    } else if (value === 'D') {
+                                                        return '<span>Debito</span>';
+                                                    } else {
+                                                        return '<span>Unknow</span>';
                                                     }
-                                             },
-                                            {text: 'SAUTHOC', dataIndex: 'SAUTHOC', width: 120,style: 'padding:2px; background: #3F5675;border-color:white'},
-                                            {text: 'SEQ', dataIndex: 'SEQ', width: 120,style: 'padding:2px; background: #3F5675;border-color:white'},
-                                             {text: 'SVFOP', dataIndex: 'SVFOP', width: 120,style: 'padding:2px; background: #3F5675;border-color:white',
-                                             renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-                                                metaData.style = "text-align:right;";
-                                                value = Ext.util.Format.number(value, '0,000.00');
-                                                return '<b>' + value + '</b>';
-                                            }},
-                                             
-                                            
-//                                             {text: 'ADATE', dataIndex: 'ADATE', width: 60,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                             
-//                                             {text: 'SDATE', dataIndex: 'SDATE', width: 65,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                             {text: 'SAGENT', dataIndex: 'SAGENT', width: 65,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                             {text: 'MERCHAND', dataIndex: 'MERCHAND', width: 65,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                             {text: 'RED', dataIndex: 'RED', width: 65,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                             {text: 'NETO', dataIndex: 'NETO', width: 65,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                             
-//                                             
-//                                             {text: 'NEGOC', dataIndex: 'NEGOC', width: 65,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                             
-//                                             {text: 'ACCNUMBER', dataIndex: 'ACCNUMBER', width: 65,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                             
-//                                             {text: 'FECR', dataIndex: 'FECR', width: 65,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                             {text: 'HOCR', dataIndex: 'HOCR', width: 65,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                             
-//                                             
-//                                             {text: 'TERMI', dataIndex: 'TERMI', width: 65,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                             {text: 'COMISION', dataIndex: 'COMISION', width: 65,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                             {text: 'TOTAL', dataIndex: 'TOTAL', width: 65,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                             {text: 'SCURRENCY', dataIndex: 'SCURRENCY', width: 65,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                            
-//                                             
-//                                             {text: 'CODEBANK', dataIndex: 'CODEBANK', width: 65,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                             {text: 'Credit Card',style: 'background: #3F5675;border-color:white',
-//                                                defaults: {
-//                                                    menuDisabled: true,
-//                                                    sortable: true,
-//                                                    align: 'center',
-//                                                    border: true
-//                                                },
-//                                                columns: [
-//                                                    {text: 'Code', dataIndex: 'CODE', width: 70,style: 'background: #3F5675;border-color:white'},
-//                                                    {text: 'Number', dataIndex: 'CORE', width: 160, style: 'background: #3F5675;border-color:white'},
-//                                                    {
-//                                                        text: 'Author',
-//                                                        style: 'background: #3F5675;border-color:white',
-//                                                        columns: [
-//                                                            {text: 'Code', dataIndex: 'CODE', width: 90, align:'center',style: 'background: #3F5675;border-color:white'}
-//                                                        ]
-//                                                    }
-//                                                ]
-//                                            },
-//                                            {text: 'Curr', dataIndex: 'RN', width: 60,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                            {text: 'Amount', dataIndex: 'RN', width: 80,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                            {text: 'Comision', dataIndex: 'RN', width: 80,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                            {text: 'Comistota', dataIndex: 'RN', width: 80,style: 'padding:2px; background: #3F5675;border-color:white'},
-//                                            {text: 'Sales',style: 'background: #3F5675;border-color:white',
-//                                                defaults: {
-//                                                    menuDisabled: true,
-//                                                    sortable: true,
-//                                                    align: 'center',
-//                                                    border: true
-//                                                },
-//                                                columns: [
-//                                                    {text: 'Merchant', dataIndex: 'CODE', width: 110,style: 'background: #3F5675;border-color:white'},
-//                                                    {text: 'PNR', dataIndex: 'CORE', width: 100, align: 'center',style: 'background: #3F5675;border-color:white'},
-//                                                    {text: 'Agent.', dataIndex: 'CORE', width: 110, style: 'background: #3F5675;border-color:white'},
-//                                                    {text: 'Business.', dataIndex: 'CORE', width: 110, style: 'background: #3F5675;border-color:white'}
-//                                                ]
-//                                            },
-//                                             {text: 'Bank Information',style: 'background: #3F5675;border-color:white',
-//                                                defaults: {
-//                                                    menuDisabled: true,
-//                                                    sortable: true,
-//                                                    align: 'center',
-//                                                    border: true
-//                                                },
-//                                                columns: [
-//                                                    {text: 'Pay. Date', dataIndex: 'CODE', width: 90,style: 'background: #3F5675;border-color:white'},
-//                                                    {text: 'Acc Number', dataIndex: 'CORE', width: 120, align: 'center',style: 'background: #3F5675;border-color:white'},
-//                                                    {text: 'Termi.', dataIndex: 'CORE', width: 120, style: 'background: #3F5675;border-color:white'},
-//                                                    {text: 'ID SAP.', dataIndex: 'CORE', width: 120, style: 'background: #3F5675;border-color:white'},
-//                                                     {text: 'Pen. <br> Day.', dataIndex: 'CORE', width: 120, style: 'background: #3F5675;border-color:white'}
-//                                                ]
-//                                            },
+                                                }
+                                            },
+                                            {text: 'Code Bank', dataIndex: 'CODEBANK', width: 80, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                            {text: 'CC Type', dataIndex: 'SCARCOD', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                            {text: 'Card Number', dataIndex: 'SCARDN', width: 130, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                            {text: 'Authorization', dataIndex: 'SAUTHOC', width: 100, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                            {text: 'Secuence', dataIndex: 'SEQ', width: 80, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                            {text: 'Amount', dataIndex: 'SVFOP', width: 120, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:right;";
+                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                    return '<b>' + value + '</b>';
+                                                }},
                                         ]
                                     }
                                 }
@@ -402,7 +415,7 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.Info', {
             },
             items: [
                 {
-                    bodyStyle: 'background: #3F5675; border-radius: 5px;',
+                    bodyStyle: 'background: #6C87A8; border-radius: 5px;',
                     xtype: 'panel',
                     width: '30%',
                     height: '100%',

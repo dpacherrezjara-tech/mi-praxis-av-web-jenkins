@@ -241,6 +241,7 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         me.bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYearDash').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonthDash').getValue();
         me.bean.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountryDashboard').getValue();
         me.bean.IN_SOURCE = Ext.getCmp(prototype.id + '-cmbCfuenteDashboard').getValue();
+        me.bean.IN_TREG = Ext.getCmp(prototype.id + '-cmbInputDate').getValue();
 
         var beanString = JSON.stringify(me.bean);
         searchParams = {

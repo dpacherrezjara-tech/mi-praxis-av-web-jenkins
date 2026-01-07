@@ -67,7 +67,7 @@ public class CashDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS441(?,?,?, ?, ?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS441(?,?,?, ?, ?,?)}";
 
         Connection cnx = null;
         try {
@@ -79,6 +79,7 @@ public class CashDAO {
             cstmt.setString(3, filter.IN_FECHA_TO);
             cstmt.setString(4, filter.IN_COUNTRY);
             cstmt.setString(5, filter.IN_SOURCE);
+            cstmt.setString(6, filter.IN_TREG);
 
             cstmt.execute();
             rst = cstmt.getResultSet();
