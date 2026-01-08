@@ -4,6 +4,8 @@
  */
 package net.miatech.praxis.payment.filter;
 
+import java.util.ArrayList;
+import java.util.List;
 import net.miatech.beans.Pagination;
 import net.miatech.praxis.payment.A2290;
 import net.miatech.utils.Functions;
@@ -1053,6 +1055,20 @@ public class A2290Filter extends A2290 {
     
     //CASH
     
+    public String O_ADATE;
+    public double O_RECAUDACION_INR = 0; 
+    public double O_RECAUDACION_USD = 0;
+    public String O_EXCEPTION_CODE;
+
+    public List<DetalleConciliacion> listaDetalles = new ArrayList<>();
+    public static class DetalleConciliacion {
+        public String SCOUNTRY;
+        public String SCURRENCY;
+        public String ADATE;
+        public double MONTO;
+        public String STVAL;
+    }
+    
     // MAIN_SUMMARY 
     public String IN_SOURCE = "";
     
@@ -1091,7 +1107,6 @@ public class A2290Filter extends A2290 {
     
     
     public String O_STVAL ="";
-    public String O_ADATE ="";
     public String O_TINPUT ="";
     public String O_CONCEPT ="";
     public String O_SAGENT ="";
@@ -1126,9 +1141,6 @@ public class A2290Filter extends A2290 {
     public double O_COMISIONMEP = 0;
     public double O_IVA = 0;
     public double O_NETORENDIDO = 0;
-    public String O_EXCEPTION_CODE = "";
-    public double O_RECAUDACION_INR = 0;
-    public double O_RECAUDACION_USD = 0;
     public double O_EVENTO = 0;
     public String O_MONEDA = "";
     

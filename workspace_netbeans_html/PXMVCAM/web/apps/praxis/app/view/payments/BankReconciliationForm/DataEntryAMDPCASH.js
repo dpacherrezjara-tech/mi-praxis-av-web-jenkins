@@ -1292,9 +1292,11 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                             handler: 'onUpdateCommentsCash'
                                                         }
                                                     ]
-                                                },
+                                                }
                                             ]
                                         },
+                                        
+                                        //ref
                                         {
                                             xtype: 'panel',
                                             layout: 'hbox',
@@ -1559,6 +1561,14 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                                             metaData.style = 'text-align:right; margin-right:3px ';
                                                                                             return '<b>' + Ext.util.Format.number(data.SUM_TKT) + '<b>';
                                                                                         },
+                                                                                        
+                                                                                        // aqui estamos FTG
+//                                                                                          listeners: {
+//                                                                                            click: 'onGridViewTKTAgent'
+//                                                                                        }
+//                                                                                          listeners: {
+//                                                                                            click: 'onGridViewTKTAgent'
+//                                                                                        }
                                                                                         listeners: {
                                                                                             click: 'onGridViewTKTAgent'
                                                                                         }
@@ -2052,6 +2062,8 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                         }
                                     ]
                                 },
+                                
+                                /// aqui emepzamoas
 
                                 {
                                     xtype: 'label',
@@ -2066,20 +2078,78 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                     margin: '0 0 0 20'
                                 },
                                 {
-                                    xtype: 'panel',
-                                    hidden: true,
-                                    id: prototype.id + '-panelDataInfoScanAgent',
-                                    layout: 'vbox',
-                                    border: false,
-                                    width: 1209,
-                                    margin: '0 0 0 20',
-                                    //                                                            height: 180,
-                                    autoScroll: true,
-                                    items: [
+    xtype: 'panel',
+    hidden: true,
+    id: prototype.id + '-panelDataInfoScanAgent',
+    layout: {
+        type: 'vbox',
+        align: 'stretch'
+    },
+    border: false,
+    width: 1160,
+    margin: '0 0 0 20',
+    autoScroll: true,
+    items: [
+
+        // ==================================================
+        // HEADER: LABEL "Tickets" + PAGINADO A LA DERECHA
+        // ==================================================
+        {
+            xtype: 'container',
+            layout: {
+                type: 'hbox',
+                align: 'middle'
+            },
+            margin: '0 0 6 0',
+            items: [
+                
+                {
+                    xtype: 'tbfill'
+                },
+                {
+                    xtype: 'toolbar',
+                    cls: 'x-toolbar-pag',
+                    items: [
+                        {
+                            iconCls: 'prx-icon-pagination-first',
+                            tooltip: 'First Page',
+                            handler: function () {
+                                Ext.getCmp(prototype.id + '-pagginScanAgent').moveFirst();
+                            }
+                        },
+                        {
+                            iconCls: 'prx-icon-pagination-previous',
+                            tooltip: 'Previous Page',
+                            handler: function () {
+                                Ext.getCmp(prototype.id + '-pagginScanAgent').movePrevious();
+                            }
+                        },
+                        {
+                            iconCls: 'prx-icon-pagination-next',
+                            tooltip: 'Next Page',
+                            handler: function () {
+                                Ext.getCmp(prototype.id + '-pagginScanAgent').moveNext();
+                            }
+                        },
+                        {
+                            iconCls: 'prx-icon-pagination-last',
+                            tooltip: 'Last Page',
+                            handler: function () {
+                                Ext.getCmp(prototype.id + '-pagginScanAgent').moveLast();
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+
+
+                                    
+                                        
                                         {
                                             xtype: 'grid',
                                             id: prototype.id + '-gridDataInfoScanAgent',
-                                            width: 1207,
+                                            width: 1160,
                                             height: 200,
                                             columnLines: true,
                                             plugins: [
@@ -2091,6 +2161,8 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                             features: [{
                                                     ftype: 'summary'
                                                 }],
+                                            
+                                            
                                             columns: {
                                                 defaults: {
                                                     menuDisabled: true,
@@ -2281,27 +2353,75 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                         }
                                                     },
 
-                                                    {
-                                                        sortable: false,
-                                                        xtype: 'actioncolumn',
-                                                        width: 40,
-                                                        text: 'Del.',
-                                                        id: prototype.id + '-gridColumnDelete',
-                                                        align: 'center',
-                                                        items: [
-                                                            {
-                                                                iconCls: 'prx-icon-image-trash',
-                                                                tooltip: 'Delete',
-                                                                handler: 'removeTKT'
-                                                            }
-                                                        ]
-                                                    },
+//                                                    {
+//                                                        sortable: false,
+//                                                        xtype: 'actioncolumn',
+//                                                        width: 40,
+//                                                        text: 'Del.',
+//                                                        id: prototype.id + '-gridColumnDelete',
+//                                                        align: 'center',
+//                                                        items: [
+//                                                            {
+//                                                                iconCls: 'prx-icon-image-trash',
+//                                                                tooltip: 'Delete',
+//                                                                handler: 'removeTKT'
+//                                                            }
+//                                                        ]
+//                                                    },
                                                 ]
                                             }
                                         },
-                                    ],
+                                        {
+    xtype: 'container',
+    layout: {
+        type: 'hbox',
+        align: 'middle',
+        pack: 'center'
+    },
+    margin: '6 0 0 10',
+    items: [
+        {
+            xtype: 'label',
+            text: 'Page',
+            margin: '0 5 0 0'
+        },
+        {
+            xtype: 'label',
+            id: prototype.id + '-lbl-currentPageScan',
+            text: '0',
+            style: 'font-weight:bold;',
+            margin: '0 5 0 0'
+        },
+        {
+            xtype: 'label',
+            text: 'of',
+            margin: '0 5 0 0'
+        },
+        {
+            xtype: 'label',
+            id: prototype.id + '-lbl-pageCountScan',
+            text: '0',
+            style: 'font-weight:bold;',
+            margin: '0 20 0 0'
+        },
+        {
+            xtype: 'label',
+            text: 'Total found:',
+            margin: '0 5 0 0'
+        },
+        {
+            xtype: 'label',
+            id: prototype.id + '-lbl-totalScan',
+            text: '0',
+            style: 'font-weight:bold;'
+        }
+    ]
+}
 
-                                },
+
+                                    ]
+
+                                }
                             ]
                         },
                     ]
