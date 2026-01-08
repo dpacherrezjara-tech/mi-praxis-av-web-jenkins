@@ -8889,6 +8889,59 @@ public class BankReconciliationDAO {
         } finally {
         }
 
+        return message; 
+    }
+    
+    public String executeIndiaConciliationBatch(A2290Filter filter) throws Exception {
+        Connection cnx = null;
+        CallableStatement cstmt = null;
+        String message = "Proceso Terminado.";
+        String SQL = "{CALL PRAXISMP.MPS451(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}"; 
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQL);
+            cstmt.registerOutParameter(9, java.sql.Types.INTEGER); // OUT_SQLCODE
+            cstmt.registerOutParameter(10, java.sql.Types.VARCHAR); // OUT_MSG
+
+            int contador = 0;
+
+            for (A2290Filter.DetalleConciliacion detalle : filter.listaDetalles) {
+
+                cstmt.setString(1, filter.O_ADATE);
+                cstmt.setDouble(2, filter.O_RECAUDACION_INR);
+                cstmt.setDouble(3, filter.O_RECAUDACION_USD);
+                cstmt.setString(4, detalle.SCOUNTRY);
+                cstmt.setString(5, detalle.SCURRENCY);
+                cstmt.setString(6, detalle.ADATE);
+                cstmt.setDouble(7, detalle.MONTO);
+                cstmt.setString(8, detalle.STVAL);
+                cstmt.execute();
+                int sqlCode = cstmt.getInt(9);
+                String sqlMessage = cstmt.getString(10);
+
+                if (sqlCode != 1) {
+                        throw new Exception("Error en ítem " + (contador + 1) + ": " + sqlMessage);
+                }
+
+                contador++;
+            }
+
+            cnx.commit(); 
+            message = "Se procesaron " + contador + " registros correctamente.";
+
+        } catch (Exception e) {
+            if (cnx != null) try { cnx.rollback(); } catch (SQLException ex) {}
+            e.printStackTrace();
+            throw new Exception(e.getMessage()); 
+        } finally {
+            if (cstmt != null) try { cstmt.close(); } catch (SQLException e) {}
+            if (cnx != null) {
+                try { cnx.setAutoCommit(true); } catch (SQLException e) {}
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+        }
+
         return message;
     }
     

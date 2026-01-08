@@ -697,13 +697,29 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryPending', {
                                 fieldLabel: 'Value Date:',
                                 id: prototype.id + '-dtValueDate',
                                 labelAlign: 'right',
-                                labelWidth: 100,
+                                labelWidth: 80,
                                 width: 250,
                                 format: 'd/m/Y',
                                 fieldStyle: 'color: #0B333C;',
                                 allowBlank: false
                             },
-                            {xtype: 'tbspacer', width: 20},
+                            {xtype: 'tbspacer', width: 10},
+
+                            {
+                                // --- NEW FIELD: Reportado en INR ---
+                                xtype: 'numberfield',
+                                fieldLabel: 'Reportado INR:', // Label for INR
+                                id: prototype.id + '-txtRecaudacionINR', // ID for INR
+                                decimalPrecision: 2,
+                                alwaysDisplayDecimals: true,
+                                labelAlign: 'right',
+                                labelWidth: 100,
+                                width: 200,
+                                fieldStyle: 'font-weight: bold; color: #0B333C; text-align: right;',
+                                enableKeyEvents: true
+                                // No listeners needed here, validation happens on Save
+                            },
+                            {xtype: 'tbspacer', width: 10},
                             {
                                 xtype: 'numberfield', 
                                 fieldLabel: 'Reportado USD:',
@@ -711,8 +727,8 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryPending', {
                                 decimalPrecision: 2, 
                                 alwaysDisplayDecimals: true,
                                 labelAlign: 'right',
-                                labelWidth: 120,
-                                width: 280,
+                                labelWidth: 100,
+                                width: 200,
                                 fieldStyle: 'font-weight: bold; color: #0B333C; text-align: right;',
                                 enableKeyEvents: true,
                             }

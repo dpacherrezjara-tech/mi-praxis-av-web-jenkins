@@ -347,7 +347,9 @@ public class BankReconciliationLogic {
         return bankReconciliationDAO.ConciliationAddAdjust(filter);
     }
     
-    
+    public String executeIndiaConciliationBatch(A2290Filter bean) throws Exception {
+        return bankReconciliationDAO.executeIndiaConciliationBatch(bean);
+    }
     
     
 

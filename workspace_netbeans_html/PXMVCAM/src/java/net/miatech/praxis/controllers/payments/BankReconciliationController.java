@@ -5682,38 +5682,29 @@ public class BankReconciliationController extends BaseController {
     }
     
     @RequestMapping(value = "MaintenanceMPF199insertIndia")
-    public @ResponseBody
-    String MaintenanceMPF199insertIndia(ModelMap map, HttpServletRequest request) {
-
-        System.out.println("-------------- BANKRECONCILIATIONDATAENTRY : MaintenanceMPF199insertIndia-------------");
-//        String option;
-        A2290Filter filter = new A2290Filter();
+    public @ResponseBody String MaintenanceMPF199insertIndia(HttpServletRequest request) {
+        ModelMap map = new ModelMap();
         Gson gson = new Gson();
-        String msj = "";
-        String beanString = "";
 
         try {
-
+            String beanString = request.getParameter("beanString");
+            A2290Filter bean = gson.fromJson(beanString, A2290Filter.class);
+            if(bean.listaDetalles == null || bean.listaDetalles.isEmpty()){
+                 throw new Exception("No hay registros seleccionados en la lista.");
+            }
             logic = new BankReconciliationLogic();
             logic.setSession(this.serverSession.getServerSession());
-            
-            beanString = request.getParameter("beanString");
-            filter = gson.fromJson(beanString, A2290Filter.class);
-            msj = logic.MPF199UpdateIndia(filter);
+            String msg = logic.executeIndiaConciliationBatch(bean);
 
             map.put("success", true);
-            map.put("Mensaje", msj);
-        }  catch (NumberFormatException | SQLException ex) {
-            map.put("success", false);
-            map.put("Mensaje", ex.getMessage());
-        } catch (Exception ex) {
-            map.put("success", false);
-            map.put("Mensaje", ex.getMessage()); 
-        }
+            map.put("Mensaje", msg);
 
-        return new Gson().toJson(map);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("Mensaje", e.getMessage());
+        }
+        return gson.toJson(map);
     }
-    
     @RequestMapping(value = "conciliacionFaseDos")
     public @ResponseBody
     String conciliacionFaseDos(ModelMap map, HttpServletRequest request) {
