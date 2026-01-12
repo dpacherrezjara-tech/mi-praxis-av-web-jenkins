@@ -320,7 +320,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
             data: '',
             autoLoad: true
         });
-        Ext.getCmp(prototype.id + '-gridDataInfoScanAgent').bindStore(storeDataClear);
+        Ext.getCmp(prototype.id + '-gridDataInfoScanConciliacion').bindStore(storeDataClear);
         this.calcularSumAmount();
         this.calcularMontos();
     },
@@ -931,8 +931,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
 
         Ext.getCmp(prototype.id + '-panelDataInfoScanAgent').show();
         Ext.getCmp(prototype.id + '-labelScanAgent').show();
-
-        Ext.getCmp(prototype.id + '-gridDataInfoScanAgent').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-containerPaginationToolbar').show();
+        Ext.getCmp(prototype.id + '-containerPageSummary').show();
+        var gridAgent = Ext.getCmp(prototype.id + '-gridDataInfoScanAgent');
+        gridAgent.show();
+        Ext.getCmp(prototype.id + '-gridDataInfoScanConciliacion').hide();
+        gridAgent.bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-pagginScanAgent').bindStore(storeGridDatas);
     },
 
@@ -954,7 +958,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
             var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
         }
 
-        var gridAgent = Ext.getCmp(prototype.id + '-gridDataInfoScanAgent');
+        var gridAgent = Ext.getCmp(prototype.id + '-gridDataInfoScanConciliacion');
 
         var storeScan = gridScan.getStore();
         var storeAgent = gridAgent.getStore();
@@ -1186,8 +1190,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
             return;
         }
 
-        let grid = Ext.getCmp(prototype.id + '-gridDataInfoScanAgent');
-        let store = grid.getStore();
+        let gridConciliacion = Ext.getCmp(prototype.id + '-gridDataInfoScanConciliacion');
+        let store = gridConciliacion.getStore();
 
         // --- Construir mapa de registros actuales ---
         let existingKeys = {};
@@ -1211,7 +1215,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
                 if (res.success) {
                     console.log("✅ Respuesta AJAX:", res);
 
-                    let gridCmp = Ext.getCmp(prototype.id + '-gridDataInfoScanAgent');
+                    let gridCmp = Ext.getCmp(prototype.id + '-gridDataInfoScanConciliacion');
                     let store = gridCmp.getStore();
 
                     // 🔹 Convertimos los datos existentes a un mapa por clave compuesta
@@ -1244,6 +1248,11 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
 
 
                     Ext.getCmp(prototype.id + '-panelDataInfoScanAgent').show();
+                    Ext.getCmp(prototype.id + '-containerPaginationToolbar').hide();
+                    Ext.getCmp(prototype.id + '-containerPageSummary').hide();
+                    Ext.getCmp(prototype.id + '-gridDataInfoScanAgent').hide();
+                    gridConciliacion.show();
+
                     meDe.calcularMontos();
 
                 } else {
@@ -1281,7 +1290,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         }
 
         // --- Obtener datos del grid de agentes
-        var gridAgent = Ext.getCmp(prototype.id + '-gridDataInfoScanAgent');
+        var gridAgent = Ext.getCmp(prototype.id + '-gridDataInfoScanConciliacion');
         var storeAgent = gridAgent.getStore();
 
         var agentData = [];
@@ -1334,7 +1343,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         Ext.Ajax.request({
             url: prototype.url + '/ManualConciliacionCash',
             method: 'POST',
-            jsonData: beanConciliacion, // 👈 Enviar JSON limpio
+            jsonData: beanConciliacion,
             timeout: 60000000,
             headers: {'Content-Type': 'application/json'},
 //            beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').mask('Processing Conciliation...'),
