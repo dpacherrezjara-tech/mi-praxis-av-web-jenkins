@@ -596,7 +596,7 @@ calculateNeto: function () {
         }
     });
 
-    // 3. CREAR/MOSTRAR VENTANA
+    // 3. CREAR/MOSTRAR VENTANA 
     var win = Ext.create('Ext.window.Window', {
         title: 'Selección de Montos Pendientes (' + Ext.Date.format(valueDateRaw, 'd/m/Y') + ')',
         width: 600,
