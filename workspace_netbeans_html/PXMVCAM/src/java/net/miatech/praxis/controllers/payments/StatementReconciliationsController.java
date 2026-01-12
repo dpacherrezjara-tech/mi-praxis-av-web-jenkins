@@ -4488,10 +4488,10 @@ public class StatementReconciliationsController extends BaseController {
                 objMPF101 = logic.GET_TOLERANCIA(primerADATE);
                 
 
-                if (!listaDataEECC.isEmpty() && !listaDataLIQUI.isEmpty() && !listaDataLIQUI_SEQ.isEmpty()) {
+                if (!listaDataEECC.isEmpty() && (!listaDataLIQUI.isEmpty() || !listaDataLIQUI_SEQ.isEmpty() ) ) {
                     double netoEECC  = Double.parseDouble(listaDataEECC.get(0).NETOS);
-                    double netoLIQUI = Double.parseDouble(listaDataLIQUI.get(0).NETOS);
-                    double netoLIQUI_SEQ = Double.parseDouble(listaDataLIQUI_SEQ.get(0).NETOS);
+                    double netoLIQUI = !listaDataLIQUI.isEmpty() ? Double.parseDouble(listaDataLIQUI.get(0).NETOS) : 0;
+                    double netoLIQUI_SEQ = !listaDataLIQUI_SEQ.isEmpty() ? Double.parseDouble(listaDataLIQUI_SEQ.get(0).NETOS): 0;
                     if (tolerancia.equals("Y")){
                         isTolerancia = Math.abs(netoEECC - netoLIQUI) <= objMPF101.SVFOPD;
                         isTolerancia_seq = Math.abs(netoEECC - netoLIQUI_SEQ) <= objMPF101.SVFOPD;
