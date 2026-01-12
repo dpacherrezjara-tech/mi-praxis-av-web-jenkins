@@ -4733,7 +4733,7 @@ public class StatementReconciliationsDAO {
         boolean result = false;
         String updateQuery = "UPDATE PRAXISMP.MPF060 "
                 + "SET BANDOC = ?, DATECI = ?, TRANCI = ?, VALDATE = ?, PRDA = ?, STVAL = '5', USUP = ?, FEUP = ?, HOUP = ?, FREGLA = '9' , PGMUP = 'EXCEL-WEB' "
-                + "WHERE STVAL = '3' AND TDOC = 'S' AND " + inQuery;
+                + "WHERE CCUST = '134' AND STVAL = '3' AND TDOC = 'S' AND " + inQuery;
 
         try (Connection connection = session.getCNXIBMDB2().getIBMDB2Connection();
                 PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
@@ -4765,7 +4765,7 @@ public class StatementReconciliationsDAO {
         boolean result = false;
         String updateQuery = "UPDATE PRAXISMP.MPF060 "
                 + "SET BANDOC = ?, DATECI = ?, TRANCI = ?, VALDATE = ?, PRDA = ?, STVAL = '5', USUP = ?, FEUP = ?, HOUP = ?, FREGLA = '9' , PGMUP = 'EXCEL-WEB' "
-                + "WHERE STVAL = '3' AND SEQ = '' AND TDOC = 'S' AND " + inQuery;
+                + "WHERE CCUST = '134' AND STVAL = '3' AND SEQ = '' AND TDOC = 'S' AND " + inQuery;
 
         try (Connection connection = session.getCNXIBMDB2().getIBMDB2Connection();
                 PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
