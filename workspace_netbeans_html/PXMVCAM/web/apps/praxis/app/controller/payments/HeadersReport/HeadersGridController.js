@@ -22,7 +22,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersGridController',
     onUpdateRec: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
         const me = this;
         global.cleanPXobj(record.data);
-        console.log(record.data);
+//        console.log(record.data);
         const dataEntry = Ext.create('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.HeaderDataEntry', {
             id: prototype.id + '-HeaderDataEntry-1',
             praxisId: record.data.IDCONT,

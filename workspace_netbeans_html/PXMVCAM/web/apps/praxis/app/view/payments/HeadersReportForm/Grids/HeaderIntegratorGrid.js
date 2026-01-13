@@ -35,25 +35,17 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Grids.HeaderIntegratorGri
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     //metaData.style = "background-color:#838187";
                     const opts = {
-                        'L': () => {
+                        '0': () => {
                             metaData.style = "background-color:#C2EDC4;font-weight:bold";
-                            return 'Loaded';
+                            return 'Registered';
                         },
-                        'F': () => {
+                        '1': () => {
                             metaData.style = "background-color:#b0d7dc;font-weight:bold";
-                            return 'Formatted';
-                        },
-                        'P': () => {
-                            metaData.style = "background-color:#638be1;color:#ffffff;font-weight:bold";
-                            return 'Processed';
-                        },
-                        'E': () => {
-                            metaData.style = "background-color:#fd5858;color:#dbdb12;font-weight:bold";
-                            return 'Error';
+                            return 'Delivery';
                         }
                     };
                     const key = (value || '').trim();
-                    return opts[key] ? opts[key]() : key;
+                    return opts[key] ? opts[key]() : 'Error';
                 }
             },
             {text: 'Process Status', dataIndex: 'STCAR', width: 130,
@@ -65,19 +57,15 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Grids.HeaderIntegratorGri
                         },
                         '1': () => {
                             metaData.style = "background-color:#638be1;color:#ffffff;font-weight:bold";
-                            return 'Total';
+                            return 'Loaded';
                         },
                         '2': () => {
                             metaData.style = "background-color:#FFF091;color:#ce3232;font-weight:bold"
-                            return 'Partial';
-                        },
-                        '3': () => {
-                            metaData.style = "background-color:#D6F2FF;color:#094385;font-weight:bold"
-                            return 'File not found';
+                            return 'Rejected';
                         }
                     };
                     const key = (value || '').trim();
-                    return opts[key] ? opts[key]() : key;
+                    return opts[key] ? opts[key]() : 'Error';
                 }},
             {text: 'Corrl', dataIndex: 'CORRL', width: 50},
             {text: 'File Type', dataIndex: 'FILETYPE', width: 100},

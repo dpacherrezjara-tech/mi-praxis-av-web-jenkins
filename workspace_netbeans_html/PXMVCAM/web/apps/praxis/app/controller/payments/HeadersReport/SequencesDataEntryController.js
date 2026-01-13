@@ -1,16 +1,10 @@
-Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryController', {
+Ext.define('Ext.Praxis.controller.payments.HeadersReport.SequencesDataEntryController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.HeaderDataEntryController',
-    url: CONTEXTPATH + '/HeadersReport',
-    procesadores: [],
-    request: axios.create({
-        baseURL: CONTEXTPATH + '/HeadersReport',
-        timeout: 0
-    }),
-    dataFiles: [],
+    alias: 'controller.SequencesDataEntryController',
     dataAcc: [],
     dataRej: [],
     notifier: new AWN(),
+    priKey: {},
     init: function (view) {
     },
     afterRender: async function () {
@@ -19,119 +13,108 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
     loadData: async function () {
         const me = this;
         me.view.setLoading(true);
-        const mainForm = Ext.getCmp(prototype.idDEheader + '-mainForm').getForm();
+
+        console.log(me.view.obj);
+
+        const { IDCONT, CORRL } = me.view.obj;
+
+        await me.loadDetail(IDCONT, CORRL);
+
+        me.view.setLoading(false);
+    },
+    loadDetail: async function (idcont, filesq) {
+        const me = this;
+        me.dataAcc = [];
+        me.dataRej = [];
+
+        const form = Ext.getCmp(prototype.idDEsequence + '-interfaceForm').getForm();
+        form.reset();
+        const seqGrid = Ext.getCmp(prototype.idDEsequence + '-gridSequences');
+        const rejGrid = Ext.getCmp(prototype.idDEsequence + '-gridRejections');
+        const newFileGrid = Ext.getCmp(prototype.idDEsequence + '-newFileGrid');
         try {
-            /*
-             const res = await me.request.get('loadHeaderInfo', {
-             
-             });*/
-            const res = await global.callStoreGet('PRAXISMP', 'SPHRP002', {
-                IN_IDCONT: me.view.praxisId
+            const res = await global.callStoreGet('PRAXISMP', 'MPS463', {
+                'IN_IDCONT': idcont,
+                'IN_FILESQ': filesq
             });
-//            console.log("res SPHRP002: ", res)
-            //const {header, files, bandocs, rejections} = res.lstRs.at(0).at(0);
-            const header = res.lstRs.at(0);
-            const files = res.lstRs.at(1);
-            const bandocs = res.lstRs.at(2);
-            const rejections = res.lstRs.at(3);
-            const supports = res.lstRs.at(4);
-            let info = header.at(0);
-            global.cleanPXobj(info);
-            mainForm.reset();
-            mainForm.setValues(info);
-            me.bindData(info, files, bandocs, rejections, supports);
-        } catch (e) {
-            console.error(e);
-            me.view.close();
-        } finally {
-            me.view.setLoading(false);
-        }
-    },
-    bindData: function (info, files, bandocs, rejections, supports) {
-        const me = this;
-        const tab2 = Ext.getCmp(prototype.idDEheader + '-tabMain2');
-        let sts = ['6', '9', 'L', 'R', 'J'];
-        if (sts.includes(info.STCONT)) {
-            Ext.getCmp(prototype.idDEheader + '-btn-save').hide();
-            Ext.getCmp(prototype.idDEheader + '-btnRejectRec').hide();
-            Ext.getCmp(prototype.idDEheader + '-btn-rejectAll').hide();
-            Ext.getCmp(prototype.idDEheader + '-btn-rej-excel').hide();
-            if (info.STCONT !== 'L') {
-                Ext.getCmp(prototype.idDEheader + '-tabAccounted').tab.hide();
-                Ext.getCmp(prototype.idDEheader + '-tabRejected').tab.show();
-                tab2.setActiveTab(1);
-            } else {
-                Ext.getCmp(prototype.idDEheader + '-tabAccounted').tab.show();
-                Ext.getCmp(prototype.idDEheader + '-tabRejected').tab.hide();
-                tab2.setActiveTab(0);
-            }
-        } else {
-            Ext.getCmp(prototype.idDEheader + '-btn-save').show();
-            Ext.getCmp(prototype.idDEheader + '-btnRejectRec').show();
-            Ext.getCmp(prototype.idDEheader + '-btn-rejectAll').show();
-            Ext.getCmp(prototype.idDEheader + '-btn-rej-excel').show();
-        }
-        me.dataFiles = files;
-        me.dataAcc = bandocs;
-        me.dataRej = rejections;
-        me.supports = supports;
-        me.loadStores();
-    },
-    loadStores: function () {
-        const me = this;
-        const filesGrid = Ext.getCmp(prototype.idDEheader + '-gridFiles');
-        const accountedGrid = Ext.getCmp(prototype.idDEheader + '-gridAccounted');
-        const rejectionsGrid = Ext.getCmp(prototype.idDEheader + '-gridRejected');
-        const supportsGrid = Ext.getCmp(prototype.idDEheader + '-gridSupports');
-        const supportsTab = Ext.getCmp(prototype.idDEheader + '-tabSupports');
-        let storeFiles = new Ext.data.Store({
-            data: me.dataFiles
-        });
+            const det = res.lstRs.at(0).at(0);
+            me.dataAcc = res.lstRs.at(1);
+            me.dataRej = res.lstRs.at(2) || [];
+            const newFileDet = res.lstRs.at(3) || [];
 
-        let storeAcc = new Ext.data.Store({
-            pageSize: 50,
-            data: me.dataAcc,
-            proxy: {
-                type: 'memory', // Los datos están cargados en memoria
-                enablePaging: true // Habilitar la paginación en memoria
-            }
-        });
-        let storeRej = new Ext.data.Store({
-            pageSize: 50,
-            data: me.dataRej,
-            proxy: {
-                type: 'memory', // Los datos están cargados en memoria
-                enablePaging: true // Habilitar la paginación en memoria
-            }
-        });
-        filesGrid.setStore(storeFiles);
-        accountedGrid.setStore(storeAcc);
-        rejectionsGrid.setStore(storeRej);
+            global.cleanPXobj(det);
+            form.setValues(det);
 
+            const { STSAP } = det;
+            me.changeView(STSAP);
 
-        if (me.supports.length > 0) {
-            let storeSupports = new Ext.data.Store({
-                data: me.supports
+            let storeSeq = new Ext.data.Store({
+                pageSize: 20,
+                data: me.dataAcc,
+                proxy: {
+                    type: 'memory', // Los datos están cargados en memoria
+                    enablePaging: true // Habilitar la paginación en memoria
+                }
             });
-            supportsGrid.setStore(storeSupports);
-            supportsTab.tab.show();
-        } else {
-            supportsTab.tab.hide();
+
+            let storeRej = new Ext.data.Store({
+                pageSize: 20,
+                data: me.dataRej,
+                proxy: {
+                    type: 'memory', // Los datos están cargados en memoria
+                    enablePaging: true // Habilitar la paginación en memoria
+                }
+            });
+
+            let storeFile = new Ext.data.Store({
+                data: newFileDet
+            });
+
+            seqGrid.setStore(storeSeq);
+            rejGrid.setStore(storeRej);
+            newFileGrid.setStore(storeFile);
+        } catch (error) {
+            console.error(error);
+        }
+    },
+    changeView: function (stsap) {
+        const boxSeq = Ext.getCmp(prototype.idDEsequence + '-boxSequences');
+        const btnRej = Ext.getCmp(prototype.idDEsequence + '-btnRejectRec');
+        const btnCan = Ext.getCmp(prototype.idDEsequence + '-btnCancelRec');
+        const btnSave = Ext.getCmp(prototype.idDEsequence + '-btn-save');
+        const btnReject = Ext.getCmp(prototype.idDEsequence + '-btn-reject');
+        const cbkReject = Ext.getCmp(prototype.idDEsequence + '-chk-reject');
+        const newFileBox = Ext.getCmp(prototype.idDEsequence + '-newFileBox');
+
+        btnRej.hide();
+        boxSeq.hide();
+        btnCan.hide();
+        btnSave.hide();
+        btnReject.hide();
+        cbkReject.hide();
+        newFileBox.hide();
+
+        if (stsap === '1') {
+            boxSeq.show();
+            btnRej.show();
+            btnCan.show();
+            btnSave.show();
         }
 
-        me.view.center();
+        if (stsap === '4') {
+            newFileBox.show();
+        }
     },
-    onCancelClick: function () {
-        this.view.close();
+    reloadGrid: function () {
+        Ext.getCmp(prototype.id + '-SequencesGrid').getStore().load();
     },
+
     onRejectRec: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
-//        console.log('onRejectRec Header ejecutado', record);
-//        console.log('onRejectRec filters', this.view.filters);
         const me = this;
-        const {BANDOC, DATECI, TRANCI, REFER} = record.data;
+        const { BANDOC, DATECI, TRANCI, REFER } = record.data;
 
         const lstErrores = me.view.filters.ERRORES.filter(x => x.TIPO === 'C')
-                .map(x => ({CODREC: x.CODREC, DESCR: `${x.CODREC}-${x.DESCR}`}));
+            .map(x => ({ CODREC: x.CODREC, DESCR: `${x.CODREC}-${x.DESCR}` }));
         lstErrores.push({
             CODREC: "RC00000",
             DESCR: "Comentario Libre",
@@ -172,28 +155,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
                         items: [
                             {
                                 xtype: 'combobox',
-                                labelStyle: 'font-weight:bold;',
-                                fieldLabel: 'Status',
-                                id: prototype.idDEheader + '-cmbStatus',
-                                store: Ext.create('Ext.data.SimpleStore', {
-                                    fields: ['code', 'name'],
-                                    data: [
-                                        ['R', 'Rejected'],
-                                        ['J', 'Justified'],
-                                        ['P', 'Re-Process']
-                                    ]
-                                }),
-                                labelWidth: 60,
-                                width: 190,
-                                displayField: 'name',
-                                valueField: 'code',
-                                queryMode: 'local',
-                                editable: false,
-                                value: 'R'
-                            },
-                            {
-                                xtype: 'combobox',
-                                id: prototype.idDEheader + '-cmbRejectError',
+                                id: prototype.idDEsequence + '-cmbRejectError',
                                 labelStyle: 'font-weight:bold;',
                                 fieldLabel: 'Rejection Error',
                                 store: lstErrores,
@@ -208,9 +170,9 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
                                 listeners: {
                                     change: function (btn) {
                                         if (btn.value === "RC00000") {
-                                            Ext.getCmp(prototype.idDEheader + '-txtFreeText').show();
+                                            Ext.getCmp(prototype.idDEsequence + '-txtFreeText').show();
                                         } else {
-                                            Ext.getCmp(prototype.idDEheader + '-txtFreeText').hide();
+                                            Ext.getCmp(prototype.idDEsequence + '-txtFreeText').hide();
                                         }
                                     }
                                 }
@@ -219,7 +181,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
                     },
                     {
                         xtype: 'textfield',
-                        id: prototype.idDEheader + '-txtFreeText',
+                        id: prototype.idDEsequence + '-txtFreeText',
                         hidden: true,
                         margin: '5 5 5 5',
                         width: 600,
@@ -244,17 +206,16 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
                         marginBottom: '3px'
                     },
                     handler: function (btn) {
-                        let combo = Ext.getCmp(prototype.idDEheader + '-cmbRejectError');
-                        let cmbSts = Ext.getCmp(prototype.idDEheader + '-cmbStatus');
+                        let combo = Ext.getCmp(prototype.idDEsequence + '-cmbRejectError');
                         if (!combo.value) {
                             me.notifier.alert('Select Error');
                             return;
                         }
-                        const {BANDOC, DATECI, TRANCI, REFER, VALDATE, CODPRO} = record.data;
+                        const { BANDOC, DATECI, TRANCI, REFER, VALDATE, CODPRO } = record.data;
 
                         let comment = "";
                         if (combo.value === "RC00000") {
-                            comment = Ext.getCmp(prototype.idDEheader + '-txtFreeText').value;
+                            comment = Ext.getCmp(prototype.idDEsequence + '-txtFreeText').value;
                         } else {
                             comment = me.view.filters.ERRORES.filter(x => x.CODREC === combo.value).at(0).DESCR;
                         }
@@ -265,7 +226,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
                         }
 
                         let obj = {
-                            STREJ: cmbSts.value,
+                            IDCONT: me.view.obj.IDCONT,
                             BANDOC: BANDOC,
                             DATECI: DATECI,
                             TRANCI: TRANCI,
@@ -275,10 +236,10 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
                             CODREC: combo.value,
                             OBSERV: comment
                         };
+                        console.log(me.dataRej);
                         me.dataRej = global.arrayAddUnique(me.dataRej, [obj], ['BANDOC', 'DATECI', 'TRANCI']).data;
-//                        console.log(me.dataRej);
                         me.dataAcc = me.dataAcc.filter(x => !(x.BANDOC === BANDOC && x.DATECI === DATECI && x.TRANCI === TRANCI));
-                        me.loadStores();
+                        me.reloadDataGrids();
                         me.notifier.success(REFER + '<br>Successfully Rejected');
                         btn.up('window').close();
                     }
@@ -296,136 +257,170 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
             ]
         }).show();
     },
+    reloadDataGrids: function () {
+        const me = this;
+        Ext.getCmp(prototype.idDEsequence + '-gridRejections').setStore(new Ext.data.Store({
+            pageSize: 20,
+            data: me.dataRej,
+            proxy: {
+                type: 'memory', // Los datos están cargados en memoria
+                enablePaging: true // Habilitar la paginación en memoria
+            }
+        }));
+        Ext.getCmp(prototype.idDEsequence + '-gridSequences').setStore(new Ext.data.Store({
+            pageSize: 20,
+            data: me.dataAcc,
+            proxy: {
+                type: 'memory', // Los datos están cargados en memoria
+                enablePaging: true // Habilitar la paginación en memoria
+            }
+        }));
+
+        if (me.dataRej.length > 0) {
+            Ext.getCmp(prototype.idDEsequence + '-btn-reject').show();
+            Ext.getCmp(prototype.idDEsequence + '-btn-save').hide();
+            Ext.getCmp(prototype.idDEsequence + '-chk-reject').show();
+        } else {
+            Ext.getCmp(prototype.idDEsequence + '-btn-reject').hide();
+            Ext.getCmp(prototype.idDEsequence + '-btn-save').show();
+            Ext.getCmp(prototype.idDEsequence + '-chk-reject').hide();
+        }
+    },
+    onCancelClick: function () {
+        this.view.close();
+    },
     onChangeReference: function (field, newValue) {
         const me = this;
         let upperValue = newValue.toUpperCase();
         field.setValue(upperValue);
-        const gridAcc = Ext.getCmp(prototype.idDEheader + '-gridAccounted');
+        const gridAcc = Ext.getCmp(prototype.idDEsequence + '-gridSequences');
 
         if (upperValue === '') {
-            gridAcc.setStore(new Ext.data.Store({data: me.dataAcc}));
+            gridAcc.setStore(new Ext.data.Store({ data: me.dataAcc }));
         } else {
-            let newData = me.dataAcc.filter(x => x.REFER.trim() === upperValue);
-            gridAcc.setStore(new Ext.data.Store({data: newData}));
+            let newData = me.dataAcc.filter(x => x.REFER.trim().includes(upperValue));
+            gridAcc.setStore(new Ext.data.Store({ data: newData }));
         }
     },
     onChangeBandoc: function (field, newValue) {
         const me = this;
         let upperValue = newValue.toUpperCase();
         field.setValue(upperValue);
-        const gridAcc = Ext.getCmp(prototype.idDEheader + '-gridAccounted');
+        const gridAcc = Ext.getCmp(prototype.idDEsequence + '-gridSequences');
 
         if (upperValue === '') {
-            gridAcc.setStore(new Ext.data.Store({data: me.dataAcc}));
+            gridAcc.setStore(new Ext.data.Store({ data: me.dataAcc }));
         } else {
-            let newData = me.dataAcc.filter(x => x.BANDOC.trim() === upperValue);
-            gridAcc.setStore(new Ext.data.Store({data: newData}));
+            let newData = me.dataAcc.filter(x => x.BANDOC.trim().includes(upperValue));
+            gridAcc.setStore(new Ext.data.Store({ data: newData }));
         }
-    },
-    maintenanceAccounting: async function (params) {
-        const me = this;
-        //me.view.setLoading(true);
-        const {idCont, header, status} = params;
-//        console.log("PARAMS HEADER:", params);
-        if (status !== 'A') {
-            const newWin = Ext.create('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.RejectHeaderDataEntry', {
-                id: prototype.idDEheader + '-rejectHeader-1',
-                obj: params,
-                reloadForm: () => {
-                    me.loadData();
-                }
-            });
-            newWin.show();
-        } else {
-            me.view.setLoading(true);
-            const formData = new FormData();
-            let username = document.getElementById('menuUser').textContent;
-            let parameters = {
-                IN_IDCONT: idCont,
-                IN_HEADER: header,
-                IN_STATUS: status,
-                IN_MAILBODY: '',
-                IN_USER: username,
-                IN_CUUID: '',
-                IN_FUUID: ''
-            };
-            formData.append('files', []);
-            formData.append('params', JSON.stringify(parameters));
-            await me.request.post(`/maintenanceHeader`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-            me.notifier.info('Updated Successfully');
-            me.view.setLoading(false);
-            me.loadData();
-        }
-    },
-    formatParams: function () {
-        const me = this;
-        const params = Ext.getCmp(prototype.idDEheader + '-mainForm').getForm().getValues();
-        let jsonParams = {
-            idCont: params.IDCONT,
-            header: params.FILENAM.trim()
-        };
-
-        let status = '';
-        if (me.dataRej.length > 0) {
-            jsonParams.rejected = me.dataRej;
-            if (me.dataAcc.length > 0) {
-                status = 'P';
-            } else {
-                status = 'T';
-            }
-        } else {
-            status = 'A';
-        }
-        jsonParams.status = status;
-
-        return jsonParams;
-    },
-    onSaveRecord: function (btn) {
-        let params = this.formatParams();
-//        console.log(params);
-        Ext.Msg.show(
-                {
-                    title: '.:PRAXIS:.',
-                    msg: 'Are you sure to Save?',
-                    buttons: Ext.MessageBox.YESNO,
-                    scope: this,
-                    animateTarget: btn,
-                    icon: Ext.MessageBox.QUESTION,
-                    modal: true,
-                    fn: function (btn) {
-                        if (btn === 'yes') {
-                            this.maintenanceAccounting(params);
-                        }
-                    }
-                });
     },
     onRejectAll: function (btn) {
         const me = this;
         let rejFormat = me.dataAcc.map(x => ({
-                BANDOC: x.BANDOC,
-                DATECI: x.DATECI,
-                TRANCI: x.TRANCI,
-                REFER: x.REFER.trimEnd(),
-                VALDATE: x.VALDATE,
-                CODPRO: x.CODPRO.trimEnd(),
-                CODREC: 'RC00000',
-                OBSERV: 'Rechazo Total',
-                STREJ: 'R'
-            }));
+            IDCONT: me.view.obj.IDCONT,
+            BANDOC: x.BANDOC,
+            DATECI: x.DATECI,
+            TRANCI: x.TRANCI,
+            REFER: x.REFER.trimEnd(),
+            VALDATE: x.VALDATE,
+            CODPRO: x.CODPRO.trimEnd(),
+            CODREC: 'RC00000',
+            OBSERV: 'Rechazo Total'
+        }));
         me.dataRej.push(...rejFormat);
         me.dataAcc = [];
-        me.loadStores();
+        me.reloadDataGrids();
         btn.setDisabled(true);
+    },
+    onSaveFile: async function () {
+        const me = this;
+        Ext.Msg.show(
+            {
+                title: '.:PRAXIS:.',
+                msg: 'Are you sure to save file?',
+                buttons: Ext.MessageBox.YESNO,
+                scope: this,
+                icon: Ext.MessageBox.QUESTION,
+                modal: true,
+                fn: function (btn) {
+                    if (btn === 'yes') {
+                        me.callSuccess();
+                    }
+                }
+            });
+    },
+    onRejectFile: async function () {
+        const me = this;
+        Ext.Msg.show(
+            {
+                title: '.:PRAXIS:.',
+                msg: 'Are you sure to reject file?',
+                buttons: Ext.MessageBox.YESNO,
+                scope: this,
+                icon: Ext.MessageBox.QUESTION,
+                modal: true,
+                fn: function (btn) {
+                    if (btn === 'yes') {
+                        me.callReject();
+                    }
+                }
+            });
+
+
+    },
+    callSuccess: async function () {
+        const me = this;
+        try {
+            const { IDCONT, CORRL } = me.view.obj;
+            const res = await global.callStorePost('PRAXISMP', 'MPS458', {
+                'IN_IDCONT': IDCONT,
+                'IN_CORRL': CORRL
+            });
+
+            me.notifier.info('Updated Successfully');
+
+            me.loadData();
+        } catch (e) {
+            console.error(e);
+            me.notifier.alert('Error on Update.');
+            me.view.close();
+        }
+    },
+    callReject: async function () {
+        const me = this;
+        const chk = Ext.getCmp(prototype.idDEsequence + '-chk-reject');
+        me.view.setLoading(true);
+        try {
+            const { IDCONT, CORRL } = me.view.obj;
+            console.log(me.dataRej);
+            const tmp = await global.loadRecordsOnTable('PRAXISMP', 'XTEMPO', me.dataRej);
+
+            let newFile = chk.value ? 'N' : 'Y';
+            console.log(newFile);
+
+
+            const res = await global.callStorePost('PRAXISMP', 'MPS464', {
+                'IN_IDCONT': IDCONT,
+                'IN_CORRL': CORRL,
+                'IN_CUUID': tmp.cuuid,
+                'IN_FUUID': tmp.fuuid,
+                'IN_SEND': newFile
+            });
+            me.notifier.info('Rejected Successfully');
+            me.view.setLoading(false);
+            me.loadData();
+        } catch (e) {
+            console.error(e);
+            me.notifier.alert('Error on Update.');
+            me.view.close();
+        }
     },
     onRejectByExcel: function () {
         const me = this;
         const newWin = Ext.create('Ext.window.Window', {
             title: 'Massive Reject by Excel',
-            id: prototype.idDEheader + '-modalExcelReject',
+            id: prototype.idDEsequence + '-modalExcelReject',
             width: 550,
             modal: true, // Hace que la ventana sea modal
             layout: 'fit',
@@ -439,7 +434,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
                 items: [
                     {
                         xtype: 'filefield',
-                        id: prototype.idDEheader + '-fileRejections',
+                        id: prototype.idDEsequence + '-fileRejections',
                         name: 'file',
                         width: '90%',
                         labelWidth: 50,
@@ -470,9 +465,9 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
                     },
                     handler: function (btn) {
                         let notifier = new AWN();
-                        const modal = Ext.getCmp(prototype.idDEheader + '-modalExcelReject');
+                        const modal = Ext.getCmp(prototype.idDEsequence + '-modalExcelReject');
                         modal.setLoading(true);
-                        const fileField = Ext.getCmp(prototype.idDEheader + '-fileRejections');
+                        const fileField = Ext.getCmp(prototype.idDEsequence + '-fileRejections');
                         const file = fileField.fileInputEl.dom.files[0];
                         if (!file) {
                             notifier.alert('Error on load File');
@@ -493,7 +488,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
                                         if (obj && codrec) {
                                             let index = me.dataAcc.indexOf(obj);
                                             obj = {
-                                                STREJ: 'R',
+                                                IDCONT: me.view.obj.IDCONT,
                                                 BANDOC: obj.BANDOC,
                                                 DATECI: obj.DATECI,
                                                 TRANCI: obj.TRANCI,
@@ -519,7 +514,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
                                             if (obj) {
                                                 let index = me.dataAcc.indexOf(obj);
                                                 obj = {
-                                                    STREJ: 'R',
+                                                    IDCONT: me.view.obj.IDCONT,
                                                     BANDOC: obj.BANDOC,
                                                     DATECI: obj.DATECI,
                                                     TRANCI: obj.TRANCI,
@@ -548,7 +543,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
                             });
                             
                             if(me.dataAcc.length===0){
-                                Ext.getCmp(prototype.idDEheader + '-btn-rej-excel').setDisabled(true);
+                                Ext.getCmp(prototype.idDEsequence + '-btn-rej-excel').setDisabled(true);
                             }
                             
                             //solo muestra cuando rechazo correctamente
@@ -561,7 +556,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderDataEntryControll
                                 notifier.warning(error + ' documents not found');
                             }
                             //refresca grillas
-                            me.loadStores();
+                            me.reloadDataGrids();
                             modal.setLoading(false);
                             modal.close();
                         });

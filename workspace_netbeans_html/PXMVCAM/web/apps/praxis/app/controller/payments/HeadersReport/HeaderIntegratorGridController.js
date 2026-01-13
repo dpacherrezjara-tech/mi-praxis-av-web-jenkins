@@ -34,7 +34,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderIntegratorGridCon
         const me = this;
         const view = me.view;
         
-        if (record.data.FILETYPE.trim() !== 'REJECTED') {
+        if (record.data.FILETYPE.trim() === 'SUCCESS') {
             global.Msg({msg: 'No data'});
             return;
         }
@@ -69,7 +69,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeaderIntegratorGridCon
         const me = this;
         const view = me.view;
         
-        if (record.data.FILETYPE.trim() !== 'REJECTED') {
+        if (record.data.FILETYPE.trim() === 'SUCCESS') {
             global.Msg({msg: 'No data'});
             return;
         }

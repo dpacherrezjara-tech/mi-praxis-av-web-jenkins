@@ -13,14 +13,34 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersReportController
     }),
     filters: [],
     init: function (view) {
+        this.hasSearched = false; //  Indicador de si ya se realizó una búsqueda
+        this.hasLoadedSequences = false; //  Indicador de si ya se cargó SequencesGrid
     },
     afterRender: async function () {
+        const me = this;
         await this.loadFilters();
-        this.onClickSearchBtn();
+        this.onChangeView(null,{opcion:'2'});
+
+        // --- Cargar HeadersGrid al abrir el componente ---
+        me.onClickSearchBtn();
+        me.hasLoadedHeaders = true;
+
+        // --- Escuchar cuando se muestre la vista Sequences ---
+        const sequenceView = Ext.getCmp(prototype.id + '-viewSecuence');
+
+        // Si las vistas se activan/desactivan con "show"/"hide"
+        if (sequenceView) {
+            sequenceView.on('show', function () {
+                if (!me.hasLoadedSequences) {
+                    me.onClickSearchBtn();
+                    me.hasLoadedSequences = true;
+                }
+            });
+        }
     },
     loadFilters: async function () {
         const me = this;
-        const panelFilter = Ext.getCmp(prototype.id + '-contentFilter');
+        const panelFilter = Ext.getCmp(prototype.id + '-panelFilters');
         panelFilter.setLoading(true);
         try {
             const res = await me.requestMisc.get('loadMdpFilters');
@@ -37,33 +57,50 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersReportController
     },
     onClickSearchBtn: function () {
         const me = this;
+
+        const params = me.formatParams();
         const rb = Ext.getCmp(prototype.id + '-viewOption').getValue().opcion;
+
+        // Si estamos en Headers
         if (rb === '1') {
-            let params = me.formatParams();
-            const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
-            mainPanel.removeAll();
-            const panelDetail = Ext.create('Ext.Praxis.view.payments.HeadersReportForm.Grids.HeadersGrid', {
-                id: prototype.id + '-HeadersGrid-1',
+            const headersContainer = Ext.getCmp(prototype.id + '-HeadersGrid');
+            headersContainer.removeAll();
+            const grid = Ext.create('Ext.Praxis.view.payments.HeadersReportForm.Grids.HeadersGrid', {
+                id: prototype.id + '-HeadersGridCmp',
                 searchParams: params,
                 filters: me.filters
             });
-            mainPanel.add(panelDetail);
-        } else if (rb === '3') {
+            headersContainer.add(grid);
+        }
+
+        // Si estamos en Sequence
+        if (rb === '2') {
+            const sequenceContainer = Ext.getCmp(prototype.id + '-SequencesGrid');
+            sequenceContainer.removeAll();
+            const grid = Ext.create('Ext.Praxis.view.payments.HeadersReportForm.Grids.SequencesGrid', {
+                id: prototype.id + '-SequencesGridCmp',
+                searchParams: params,
+                filters: me.filters
+            });
+            sequenceContainer.add(grid);
+        }
+
+        // Si estamos en Integrador
+        if (rb === '3') {
             let params = me.formatParamsIntegrator();
-            const mainPanel = Ext.getCmp(prototype.id + '-contentIntegrator');
-            mainPanel.removeAll();
+            const integradorContainer = Ext.getCmp(prototype.id + '-contentIntegrator');
+            integradorContainer.removeAll();
             const panelDetail = Ext.create('Ext.Praxis.view.payments.HeadersReportForm.Grids.HeaderIntegratorGrid', {
                 id: prototype.id + '-HeaderIntegratorGrid-1',
                 searchParams: params,
                 filters: me.filters
             });
-            mainPanel.add(panelDetail);
-
-        } 
+            integradorContainer.add(panelDetail);
+        }
 
     },
     onDisplayFilterBtn: function () {
-        const filters = Ext.getCmp(prototype.id + '-contentFilter');
+        const filters = Ext.getCmp(prototype.id + '-panelFilters');
         if (filters.isVisible()) {
             filters.hide();
         } else {
@@ -90,31 +127,71 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersReportController
         });
         win.show();
     },
-    onChangeView: function (field, newValue) {
-        if (newValue.opcion === '2') {
-            Ext.getCmp(prototype.id + '-filterReport').hide();
-            Ext.getCmp(prototype.id + '-mainContent').hide();
-            Ext.getCmp(prototype.id + '-dayPilotCmp').show();
-            Ext.getCmp(prototype.id + '-filterIntegrator').hide();
-            Ext.getCmp(prototype.id + '-contentIntegrator').hide();
-        } else if (newValue.opcion === '3') {
-            Ext.getCmp(prototype.id + '-filterReport').hide();
-            Ext.getCmp(prototype.id + '-mainContent').hide();
-            Ext.getCmp(prototype.id + '-dayPilotCmp').hide();
-            Ext.getCmp(prototype.id + '-filterIntegrator').show();
-            Ext.getCmp(prototype.id + '-contentIntegrator').show();
 
-        } else {
-            Ext.getCmp(prototype.id + '-filterReport').show();
-            Ext.getCmp(prototype.id + '-mainContent').show();
-            Ext.getCmp(prototype.id + '-dayPilotCmp').hide();
-            Ext.getCmp(prototype.id + '-filterIntegrator').hide();
+    onChangeView: function (field, newValue) {
+        const cmbStatus = Ext.getCmp(prototype.id + '-formFilters')
+                ?.down('combobox[name=IN_STSAP]');
+
+        const storeStatusHeaders = [
+            ['', 'All'],
+            ['5', 'SFTP'],
+            ['L', 'Loaded'],
+            ['R', 'Rejected'],
+            ['J', 'Justified'],
+            ['6', 'Partially Rejected'],
+            ['9', 'Partially Justified']
+        ];
+
+        const storeStatusSequences = [
+            ['', 'All'],
+            ['1', 'SFTP'],
+            ['2', 'Loaded'],
+            ['3', 'Rejected'],
+            ['4', 'Partial Rejected'],
+            ['5', 'Partial Loaded']
+        ];
+
+        if (newValue.opcion === '1') {
+            Ext.getCmp(prototype.id + '-viewHeaders').show();
+            Ext.getCmp(prototype.id + '-viewSecuence').hide();
             Ext.getCmp(prototype.id + '-contentIntegrator').hide();
+            Ext.getCmp(prototype.id + '-dayPilotCmp').hide();
+            Ext.getCmp(prototype.id + '-panelFilters').show();
+            Ext.getCmp(prototype.id + '-filterIntegrator').hide();
+            if (cmbStatus) {
+                cmbStatus.getStore().loadData(storeStatusHeaders);
+                cmbStatus.setValue('');
+            }
+        } else if (newValue.opcion === '2') {
+            Ext.getCmp(prototype.id + '-viewHeaders').hide();
+            Ext.getCmp(prototype.id + '-viewSecuence').show();
+            Ext.getCmp(prototype.id + '-contentIntegrator').hide();
+            Ext.getCmp(prototype.id + '-dayPilotCmp').hide();
+            Ext.getCmp(prototype.id + '-panelFilters').show();
+            Ext.getCmp(prototype.id + '-filterIntegrator').hide();
+            if (cmbStatus) {
+                cmbStatus.getStore().loadData(storeStatusSequences);
+                cmbStatus.setValue('');
+            }
+        } else if (newValue.opcion === '3') {
+            Ext.getCmp(prototype.id + '-viewHeaders').hide();
+            Ext.getCmp(prototype.id + '-viewSecuence').hide();
+            Ext.getCmp(prototype.id + '-contentIntegrator').show();
+            Ext.getCmp(prototype.id + '-dayPilotCmp').hide();
+            Ext.getCmp(prototype.id + '-panelFilters').hide();
+            Ext.getCmp(prototype.id + '-filterIntegrator').show();
+        } else if (newValue.opcion === '4') {
+            Ext.getCmp(prototype.id + '-viewHeaders').hide();
+            Ext.getCmp(prototype.id + '-viewSecuence').hide();
+            Ext.getCmp(prototype.id + '-contentIntegrator').hide();
+            Ext.getCmp(prototype.id + '-dayPilotCmp').show();
+            Ext.getCmp(prototype.id + '-panelFilters').hide();
+            Ext.getCmp(prototype.id + '-filterIntegrator').hide();
         }
         this.onClickSearchBtn();
     },
-    
-     onChangeDateSTBtn: function (obj) {
+
+    onChangeDateSTBtn: function (obj) {
         let option = obj.id.split('-').at(-1);
 
         const from = Ext.getCmp(prototype.id + '-datefieldFromST');
