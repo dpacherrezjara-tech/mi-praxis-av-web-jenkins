@@ -63,6 +63,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         console.log(this.bean.CBATCH, "wdaaaaaaaaaaaaaaA")
 
         this.onSearchCompleteDetail();
+        
     },
     ocultarBtnReversa: function () {
         let validacion1 = ['45', '46', '54', '55'].includes(this.bean.CERROR);
@@ -881,6 +882,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
             Ext.Msg.alert('Aviso', 'No se encuentran tickets.');
             return;
         }
+        
+        me.hasScanTicketContext = true;
 
      
         me.beanCashAgent = {};
@@ -893,10 +896,17 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
     
         me.beanCashAgent.beanString = JSON.stringify(me.beanCashAgent);
 
-       
+        me.paramsDetail = {};
+        me.paramsDetail.beanString = me.beanCashAgent.beanString;
+
+        me.panelActual = '-panelGridDataDetalleCashScan';
 
         this.setGridDataScanAgent();
     },
+    
+    
+
+
 
     setGridDataScanAgent: function () {
 
@@ -1403,34 +1413,56 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
 
         global.getFile(url);
     },
+    
+    /////NUEVO EXCEL
+    /////////////
+    
+ 
     getExcelCashTicket: function () {
-        const grid = Ext.getCmp(prototype.id + '-gridDataInfoScanAgent');
-        if (!grid) {
-            Ext.Msg.alert('Error', 'No se encontró la grilla.');
+
+        if (!me.beanCashAgent || !me.beanCashAgent.beanString) {
+            Ext.Msg.alert('Aviso', 'Debe seleccionar primero un Qty. Tkt.');
             return;
         }
 
-        const store = grid.getStore();
-        const data = [];
-        const visibleCols = grid.getColumnManager().getColumns().filter(c => !c.hidden && c.dataIndex);
-
-        store.each(function (rec) {
-            const row = {};
-            visibleCols.forEach(col => {
-                row[col.text] = rec.get(col.dataIndex);
-            });
-            data.push(row);
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Download Excel ?',
+            buttons: Ext.MessageBox.OKCANCEL,
+            icon: Ext.MessageBox.QUESTION,
+            scope: this, 
+            fn: function (btn) {
+                if (btn === 'ok') {
+                    console.log('OK presionado, llamando exportExcel');
+                    this.exportExcel();  
+                }
+            }
         });
 
-        if (data.length === 0) {
-            Ext.Msg.alert('Aviso', 'No hay datos para exportar.');
-            return;
-        }
-        const ws = XLSX.utils.json_to_sheet(data);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Datos");
-        XLSX.writeFile(wb, "InfoScanAgent.xlsx");
     },
+    exportExcel: function () {
+        
+        
+       
+
+        switch (me.panelActual) {
+            case '-panelGridDataDetalleCashScan':
+                console.log('ENTRÓ AL CASE Scan');
+                global.getFile(
+                        prototype.url +
+                        '/getXLSXScan?beanString=' +
+                        encodeURIComponent(me.paramsDetail.beanString)
+                        );
+                break;
+
+            default:
+                console.log('NO ENTRÓ A NINGÚN CASE');
+                global.Msg({msg: 'Under Construction'});
+        }
+    },
+
+
+    //////
 
     obtainData: function () {
         Ext.Ajax.request({

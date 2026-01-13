@@ -5,6 +5,8 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
         'Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHBankReconciliationController'
     ],
     controller: 'DataEntryAMDPCASHBankReconciliationController',
+    
+
     title: 'Bank Reconciliation - Data Entry Form 2',
     header: true,
     height: 920,
@@ -2047,7 +2049,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                     width: 28,
                                                     iconCls: 'prx-icon-excel',
                                                     tooltip: 'Export to Excel',
-                                                    listeners: {click: 'getExcelCashTicket'},
+                                                    listeners: {click: 'getExcelCashTicket'}
 
                                                 },
                                                 {
@@ -2146,7 +2148,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
 
 
                                     
-                                        
+                                                                          
                                         {
                                             xtype: 'grid',
                                             id: prototype.id + '-gridDataInfoScanAgent',
