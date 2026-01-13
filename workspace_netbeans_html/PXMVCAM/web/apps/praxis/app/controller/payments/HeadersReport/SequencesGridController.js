@@ -32,7 +32,22 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.SequencesGridController
     onUpdateSequences: function (grid, td, rowIndex, cellIndex, e, record, tr, eOpts) {
         const me = this;
         global.cleanPXobj(record.data);
+
+        console.log(record.data);
+
+        const dataEntry = Ext.create('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataEntry', {
+            id: prototype.id + '-SequencesDataEntry-1',
+            obj: record.data,
+            filters: me.view.filters,
+            reloadGrid: () => {
+                me.view.getStore().load();
+            }
+        });
+        dataEntry.show();
+
+
         //     console.log("data filters: ", me.view.filters);
+        /*
         const dataEntry = Ext.create('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataEntry', {
             id: prototype.id + '-SequencesDataEntry-1',
             praxisId: record.data.IDCONT,
@@ -132,7 +147,7 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.SequencesGridController
                 }
             }
         }
-        ;
+        ;*/
 
     },
 });

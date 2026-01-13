@@ -4,17 +4,13 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
     extend: 'Ext.window.Window',
     alias: 'widget.SequencesDataEntry',
     requires: [
-        'Ext.grid.*',
-        'Ext.data.*',
-        'Ext.form.field.*',
         'Ext.Praxis.controller.payments.HeadersReport.SequencesDataEntryController'
     ],
     controller: 'SequencesDataEntryController',
     title: 'Sequences Maintenance - Form',
     header: true,
-    width: 1400,
-    minWidth: 950,
-    height: 700,
+    width: 1000,
+    minHeight: 390,
     resizable: true,
     layout: 'fit',
     modal: true,
@@ -25,10 +21,10 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
     items: [
         {
             xtype: 'form',
-            id: prototype.idDEsequence + '-mainFormSequences',
+            id: prototype.idDEsequence + '-interfaceForm',
             layout: {
                 type: 'vbox',
-                pack: 'stretch'
+                pack: 'center'
             },
             border: false,
             width: '100%',
@@ -36,7 +32,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                 xtype: 'fieldset',
                 layout: {
                     type: 'vbox',
-                    pack: 'start'
+                    pack: 'center'
                 },
                 border: true,
                 margin: '2 2 2 2',
@@ -57,440 +53,362 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                         xtype: 'textfield',
                         margin: '2 5 2 5',
                         labelStyle: 'text-align:left;font-weight: bolder;',
-                        fieldStyle: 'text-align:center;',
-                        editable: true
+                        fieldStyle: 'text-align:center;border-style:solid;border-color:#6CB6E7;border-width:1px;background:white;',
+                        editable: false
                     }
                 }
             },
             items: [
-
-                //<editor-fold defaultstate="collapsed" desc="File Details">
                 {
-                    title: '<span style="font-weight: bold; text-decoration-line: underline;font-size:13px;">File Details</span>',
-                    itemId: prototype.idDEsequence + '-fileDetails',
-                    layout: {
-                        type: 'vbox',
-                        align: 'stretch'
-                    },
-                    defaults: {
-                        xtype: 'panel',
-                        layout: {
-                            type: 'hbox',
-                            align: 'stretch'
-                        },
-                        border: false,
-                        bodyStyle: 'background: transparent',
-                        defaults: {
-                            xtype: 'textfield',
-                            labelWidth: 100,
-                            margin: '2 10 2 10',
-                            labelStyle: 'text-align:left;font-weight:bolder;line-height:22px;',
-                            fieldStyle: 'text-align:center;border-style:solid;border-color:#6CB6E7;border-width:1px;background:white;',
-                            flex: 1,
-                            readOnly: true
-                        }
-                    },
+                    title: '<span style="font-weight: bold; text-decoration-line: underline;font-size:13px;">Information</span>',
                     items: [
                         {
                             items: [
-                                { fieldLabel: 'Header ID', name: 'CORRLAV', itemId: 'CORRLAV' },
-                                { fieldLabel: 'Praxis ID', name: 'IDCONT', itemId: 'IDCONT' },
-                                { fieldLabel: 'File Name', name: 'FILENAM', itemId: 'FILENAM' }
-                            ]
-                        },
-                        {
-                            items: [
-                                { fieldLabel: 'Type', name: 'TYPE', itemId: 'TYPE' },
-                                { fieldLabel: 'Status Praxis', name: 'STATUS_PRAXIS', itemId: 'STATUS_PRAXIS' },
-                                { fieldLabel: 'Status SAP', name: 'STATUS_SAP', itemId: 'STATUS_SAP' },
-                                { fieldLabel: 'Acc. Period', name: 'FCONT', itemId: 'FCONT' },
-                                { fieldLabel: 'Hour Sended', name: 'HSEND', itemId: 'HSEND' }
-                            ]
-                        },
-                        {
-                            flex: 1,
-                            layout: {
-                                type: 'hbox',
-                                pack: 'end'
-                            },
-                            items: [
                                 {
-                                    fieldLabel: 'Qty. Sequence', name: 'TOT_SECUENCIAS', itemId: 'TOT_SECUENCIAS',
-                                    width: 180, labelWidth: 100, flex: 0
+                                    fieldLabel: 'Type',
+                                    name: 'TIPOCON',
+                                    labelWidth: 70,
+                                    width: 170,
+                                    listeners: {
+                                        change: function (field, newValue) {
+                                            const opts = {
+                                                'REG': 'Regular',
+                                                'DEB': 'Debit',
+                                                'ADJ': 'Adjustments',
+                                                'ADM': 'ADMs'
+                                            };
+                                            field.setRawValue(opts[newValue] || 'None');
+                                        }
+                                    },
+                                    value: 'None'
                                 },
                                 {
-                                    fieldLabel: 'Rej. Sequence', name: 'REJ_SECUENCIAS', itemId: 'REJ_SECUENCIAS',
-                                    width: 180, labelWidth: 100, flex: 0
-                                }
+                                    fieldLabel: 'Sub-Type',
+                                    name: 'MODO',
+                                    labelWidth: 70,
+                                    width: 170,
+                                    listeners: {
+                                        change: function (field, newValue) {
+                                            const opts = {
+                                                'P': 'PAX COL',
+                                                'A': 'COR COL',
+                                                'C': 'CGO COL',
+                                                'E': 'PAX EXT',
+                                                'G': 'CGO EXT',
+                                                'D': 'DEB COL',
+                                                'B': 'DEB EXT',
+                                                'J': 'ADJ COL',
+                                                'K': 'ADJ EXT',
+                                                'H': 'PAX CASH',
+                                                'M': 'ADM'
+                                            };
+                                            field.setRawValue(opts[newValue] || 'None');
+                                        }
+                                    },
+                                    value: 'None'
+                                },
+                                {
+                                    fieldLabel: 'Client',
+                                    name: 'CCUST',
+                                    labelWidth: 70,
+                                    width: 170
+                                },
+                                {
+                                    fieldLabel: 'Processor',
+                                    name: 'CODPRO',
+                                    labelWidth: 70,
+                                    width: 170,
+                                    value: 'None'
+                                },
+                                {
+                                    fieldLabel: 'Status',
+                                    name: 'STSAP',
+                                    labelWidth: 70,
+                                    width: 170,
+                                    listeners: {
+                                        change: function (field, newValue) {
+                                            const opts = {
+                                                '1': 'SFTP',
+                                                '2': 'Loaded',
+                                                '3': 'Rejected',
+                                                '4': 'Partial Rejected',
+                                                '5': 'Partial Loaded'
+                                            };
+                                            field.setRawValue(opts[newValue] || 'None');
+                                        }
+                                    },
+                                    value: 'None'
+                                },
+
+                            ]
+                        },
+                        {
+                            items: [
+                                {
+                                    fieldLabel: 'Praxis ID',
+                                    name: 'IDCONT',
+                                    labelWidth: 70,
+                                    width: 280
+                                },
+                                {
+                                    fieldLabel: 'Period',
+                                    name: 'FCONT',
+                                    labelWidth: 60,
+                                    width: 130
+                                },
+                                {
+                                    fieldLabel: 'Date Send',
+                                    name: 'FSEND',
+                                    labelWidth: 70,
+                                    width: 150
+                                },
+                                {
+                                    fieldLabel: 'Hour Send',
+                                    name: 'HSEND',
+                                    labelWidth: 70,
+                                    width: 150
+                                },
+
+
+                            ]
+                        },
+                        {
+                            items: [
+
+                                {
+                                    fieldLabel: 'File Name',
+                                    name: 'FILENAM',
+                                    labelWidth: 70,
+                                    width: 330
+                                },
+                                {
+                                    fieldLabel: 'Header',
+                                    name: 'CORRLAV',
+                                    labelWidth: 70,
+                                    width: 250
+                                },
+                                {
+                                    fieldLabel: 'Active Seq',
+                                    name: 'TOT_SECUENCIAS',
+                                    labelWidth: 70,
+                                    width: 130
+                                },
+                                {
+                                    fieldLabel: 'Reject Seq',
+                                    name: 'REJ_SECUENCIAS',
+                                    labelWidth: 70,
+                                    width: 130
+                                },
+
+
                             ]
                         }
                     ]
                 },
-
-                //</editor-fold> 
-
-                //<editor-fold defaultstate="collapsed" desc="Grids">
                 {
-                    xtype: 'panel',
-                    border: false,
-                    width: '100%',
-                    margin: '3 3 3 3',
-                    layout: {
-                        type: 'vbox',
-                        align: 'center'
-                    },
-                    defaults: {
+                    title: '<span style="font-weight: bold; text-decoration-line: underline;font-size:13px;">Data</span>',
+                    defaults: {},
+                    style: {
+                        backgroundColor: '#9ebbd3ff' // Cambiar el color de fondo a gris claro (#f0f0f0)
                     },
                     items: [
                         {
-                            xtype: 'tabpanel',
-                            id: prototype.idDEsequence + '-tabMainSequences2',
+                            xtype: 'panel',
                             width: '100%',
-                            flex: 1,
-                            height: '100%',
+                            margin: '2 2 2 2',
                             border: false,
-                            margin: '0 1 0 1',
-                            bodyStyle: 'background: transparent',
-                            defaults: {
-                                //margin: '0 5 0 5',
-                                height: '100%',
-                                autoScroll: false,
-                                layout: 'fit',
-                                defaults: {
-                                    width: '100%',
-                                    minHeight: 389,
-                                    maxHeight: 390,
-                                    viewConfig: {
-                                        stripeRows: true,
-                                        enableTextSelection: true,
-                                        markDirty: false
-                                    },
-                                    columnLines: true,
-                                    autoScroll: true,
-                                    height: 'auto'
-                                }
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
                             },
                             items: [
-                                //<editor-fold defaultstate="collapsed" desc="Sequences">
                                 {
-                                    title: 'Sequences',
-                                    itemId: 'A',
-                                    id: prototype.idDEsequence + '-tabSequences',
-                                    layout: 'fit',
+                                    xtype: 'tabpanel',
+                                    id: prototype.idDEsequence + '-tabMain',
+                                    width: '100%',
+                                    height: 'auto',
+                                    border: false,
+                                    margin: '0 1 0 1',
+                                    bodyStyle: 'background: transparent',
+                                    defaults: {
+                                        height: 'auto',
+                                        autoScroll: false,
+                                        layout: 'fit',
+                                        defaults: {
+                                            width: '100%',
+                                            minHeight: 100,
+                                            maxHeight: 300,
+                                            viewConfig: {
+                                                stripeRows: true,
+                                                enableTextSelection: true,
+                                                markDirty: false
+                                            },
+                                            columnLines: true,
+                                            autoScroll: true,
+                                            height: 'auto'
+                                        }
+                                    },
                                     items: [
                                         {
-                                            xtype: 'grid',
-                                            border: false,
-                                            id: prototype.idDEsequence + '-gridSequences',
-                                            emptyText: 'No documents available',
-                                            tbar: {
-                                                xtype: 'panel',
-                                                layout: {
-                                                    type: 'hbox',
-                                                    pack: 'end'
-                                                },
-                                                width: '100%',
-                                                items: [
-                                                    {
-                                                        xtype: 'textfield',
-                                                        margin: '2 5 2 5',
-                                                        labelStyle: 'text-align:left;font-weight: bolder;',
-                                                        fieldStyle: 'text-align:center;',
-                                                        editable: true,
-                                                        fieldLabel: 'Reference',
-                                                        labelWidth: 70,
-                                                        width: 200,
-                                                        maxLength: 30,
-                                                        listeners: {
-                                                            change: 'onFilterReference'
-                                                        }
-                                                    },
-                                                    {
-                                                        xtype: 'textfield',
-                                                        margin: '2 5 2 5',
-                                                        labelStyle: 'text-align:left;font-weight: bolder;',
-                                                        fieldStyle: 'text-align:center;',
-                                                        editable: true,
-                                                        fieldLabel: 'Bank Doc.',
-                                                        labelWidth: 80,
-                                                        width: 190,
-                                                        maxLength: 10,
-                                                        listeners: {
-                                                            change: 'onFilterBandoc'
-                                                        }
-                                                    },
-                                                    {
-                                                        xtype: 'button',
-                                                        margin: '2 5 2 5',
-                                                        scale: 'small',
-                                                        text: 'Reject XLSX',
-                                                        id: prototype.idDEsequence + '-btn-rej-excel',
-                                                        iconCls: 'prx-icon-excel',
-                                                        listeners: {
-                                                            click: 'onRejectByExcel'
-                                                        }
-                                                    },
-                                                    {
-                                                        xtype: 'button',
-                                                        margin: '2 5 2 5',
-                                                        scale: 'small',
-                                                        text: 'Reject All',
-                                                        id: prototype.idDEsequence + '-btn-rejectAll',
-                                                        iconCls: 'prx-icon-incomplete',
-                                                        listeners: {
-                                                            click: 'onRejectAll'
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            bbar: {
-                                                xtype: 'pagingtoolbar',
-                                                displayInfo: true,
-                                                items: [
-                                                    {
-                                                        xtype: 'button',
-                                                        itemId: 'refresh',
-                                                        hidden: true // Oculta el botón de refresh
-                                                    }
-                                                ]
-                                            },
-                                            store: {
-                                                fields: [
-                                                    'BANDOC',
-                                                    'REFER',
-                                                    'VALDATE',
-                                                    'MONEDA_PAGO',
-                                                    'MONTO_PAGO',
-                                                    'MONEDA_REVENUE',
-                                                    'MONTO_REVENUE'
-                                                ]
-                                            },
-                                            columns: {
-                                                defaults: {
-                                                    align: 'center',
-                                                    menuDisabled: true,
-                                                    sortable: true
-                                                },
-                                                items: [
-                                                    {
-                                                        text: 'RN',
-                                                        locked: true,
-                                                        xtype: 'rownumberer', // Columna de número de fila
-                                                        width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
-                                                    },
-                                                    { text: 'Bank Doc.', dataIndex: 'BANDOC', width: 120 },
-                                                    { text: 'Referencia', dataIndex: 'REFER', flex: 1 },
-                                                    { text: 'Value<br>Date', dataIndex: 'VALDATE', width: 80 },
-                                                    { text: 'Curr.', dataIndex: 'MONEDA_PAGO', width: 60 },
-                                                    {
-                                                        text: 'Amount', dataIndex: 'MONTO_PAGO', width: 160,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "background-color:#dcdf3a;text-align:right;";
-                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                            return value;
-                                                        }
-
-                                                    },
-                                                    {
-                                                        text: 'Rev.<br>Currency', dataIndex: 'MONEDA_REVENUE', width: 160
-                                                    },
-                                                    {
-                                                        text: 'Rev.<br>Amount', dataIndex: 'MONTO_REVENUE', width: 160,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "background-color:#dcdf3a;text-align:right;";
-                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                            return value;
-                                                        }
-                                                    },
-                                                    {
-                                                        xtype: 'actioncolumn',
-                                                        id: prototype.idDEsequence + '-btnRejectRec',
-                                                        width: 50,
-                                                        text: 'Rej.',
-                                                        align: 'center',
+                                            title: 'Sequences',
+                                            itemId: '1',
+                                            id: prototype.idDEsequence + '-tabSequences',
+                                            items: [
+                                                {
+                                                    xtype: 'grid',
+                                                    border: false,
+                                                    id: prototype.idDEsequence + '-gridSequences',
+                                                    emptyText: 'No documents available',
+                                                    tbar: {
+                                                        xtype: 'panel',
+                                                        id: prototype.idDEsequence + '-boxSequences',
+                                                        layout: {
+                                                            type: 'hbox',
+                                                            pack: 'end'
+                                                        },
+                                                        width: '100%',
                                                         items: [
                                                             {
-                                                                iconCls: 'prx-icon-image-trash',
-                                                                tooltip: 'Reject Sequence',
-                                                                handler: 'onRejectRec'
+                                                                xtype: 'textfield',
+                                                                margin: '2 5 2 5',
+                                                                labelStyle: 'text-align:left;font-weight: bolder;',
+                                                                fieldStyle: 'text-align:center;',
+                                                                editable: true,
+                                                                fieldLabel: 'Reference',
+                                                                labelWidth: 70,
+                                                                width: 200,
+                                                                maxLength: 30,
+                                                                listeners: {
+                                                                    change: 'onChangeReference'
+                                                                }
+                                                            },
+                                                            {
+                                                                xtype: 'textfield',
+                                                                margin: '2 5 2 5',
+                                                                labelStyle: 'text-align:left;font-weight: bolder;',
+                                                                fieldStyle: 'text-align:center;',
+                                                                editable: true,
+                                                                fieldLabel: 'Bank Doc.',
+                                                                labelWidth: 80,
+                                                                width: 190,
+                                                                maxLength: 10,
+                                                                listeners: {
+                                                                    change: 'onChangeBandoc'
+                                                                }
+                                                            },
+                                                            {
+                                                                xtype: 'button',
+                                                                margin: '2 5 2 5',
+                                                                scale: 'small',
+                                                                text: 'Reject XLSX',
+                                                                id: prototype.idDEsequence + '-btn-rej-excel',
+                                                                iconCls: 'prx-icon-excel',
+                                                                listeners: {
+                                                                    click: 'onRejectByExcel'
+                                                                }
+                                                            },
+                                                            {
+                                                                xtype: 'button',
+                                                                margin: '2 5 2 5',
+                                                                scale: 'small',
+                                                                text: 'Reject All',
+                                                                id: prototype.idDEsequence + '-btn-rejectAll',
+                                                                iconCls: 'prx-icon-incomplete',
+                                                                listeners: {
+                                                                    click: 'onRejectAll'
+                                                                }
                                                             }
                                                         ]
+                                                    },
+                                                    columns: {
+                                                        defaults: {
+                                                            align: 'center',
+                                                            menuDisabled: true,
+                                                            sortable: true
+                                                        },
+                                                        items: [
+                                                            { text: 'Processor', dataIndex: 'CODPRO', width: 80 },
+                                                            { text: 'Bank Doc.', dataIndex: 'BANDOC', width: 120 },
+                                                            { text: 'Values<br>Date', dataIndex: 'VALDATE', width: 100 },
+                                                            { text: 'Reference', dataIndex: 'REFER', flex: 1 },
+                                                            {
+                                                                sortable: false,
+                                                                xtype: 'actioncolumn',
+                                                                id: prototype.idDEsequence + '-btnRejectRec',
+                                                                width: 50,
+                                                                text: 'Rej.',
+                                                                align: 'center',
+                                                                items: [
+                                                                    {
+                                                                        iconCls: 'prx-icon-image-trash',
+                                                                        tooltip: 'Reject',
+                                                                        handler: 'onRejectRec'
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    },
+                                                    bbar: {
+                                                        xtype: 'pagingtoolbar',
+                                                        displayInfo: true
                                                     }
-                                                ]
-                                            }
-
-
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            title: 'Rejections',
+                                            itemId: '2',
+                                            id: prototype.idDEsequence + '-tabRejections',
+                                            items: [
+                                                {
+                                                    xtype: 'grid',
+                                                    border: false,
+                                                    id: prototype.idDEsequence + '-gridRejections',
+                                                    columns: {
+                                                        defaults: {
+                                                            align: 'center',
+                                                            menuDisabled: true,
+                                                            sortable: true
+                                                        },
+                                                        items: [
+                                                            { text: 'Processor', dataIndex: 'CODPRO', width: 80 },
+                                                            { text: 'Reference', dataIndex: 'REFER', width: 130 },
+                                                            { text: 'Code', dataIndex: 'CODREC', width: 100 },
+                                                            { text: 'Comment', dataIndex: 'OBSERV', flex: 1 },
+                                                            {
+                                                                sortable: false,
+                                                                xtype: 'actioncolumn',
+                                                                id: prototype.idDEsequence + '-btnCancelRec',
+                                                                width: 60,
+                                                                text: 'Cancel',
+                                                                align: 'center',
+                                                                items: [
+                                                                    {
+                                                                        iconCls: 'prx-icon-image-trash',
+                                                                        tooltip: 'Cancel Rejection',
+                                                                        handler: 'onCancelRejectRec'
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    },
+                                                    bbar: {
+                                                        xtype: 'pagingtoolbar',
+                                                        displayInfo: true
+                                                    }
+                                                }
+                                            ]
                                         },
                                     ]
-                                },
-                                //</editor-fold>   
-
-                                //<editor-fold defaultstate="collapsed" desc="Rejections">
-                                {
-                                    title: 'Rejections',
-                                    itemId: 'C',
-                                    disabled: true,
-                                    id: prototype.idDEsequence + '-tabRejections',
-                                    layout: 'fit',
-                                    items: [
-                                        {
-                                            xtype: 'grid',
-                                            border: false,
-                                            id: prototype.idDEsequence + '-gridRejections',
-                                            emptyText: 'No documents available',
-                                            columns: {
-                                                defaults: {
-                                                    align: 'center',
-                                                    menuDisabled: true,
-                                                    sortable: true
-                                                },
-                                                items: [
-                                                    {
-                                                        text: 'RN',
-                                                        locked: true,
-                                                        xtype: 'rownumberer', // Columna de número de fila
-                                                        width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
-                                                    },
-                                                    {
-                                                        text: 'Status', dataIndex: 'STREJ', width: 130,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "font-weight:bold;";
-                                                            const opts = {
-                                                                'R': 'Rejected'
-                                                            };
-                                                            return opts[value];
-                                                        }
-                                                    },
-                                                    { text: 'Reference', dataIndex: 'REFER', width: 150 },
-                                                    { text: 'Bank Doc.', dataIndex: 'BANDOC', width: 90 },
-                                                    { text: 'Value<br>Date', dataIndex: 'VALDATE', width: 80 },
-                                                    { text: 'Processor', dataIndex: 'CODPRO', width: 80 },
-                                                    { text: 'Code', dataIndex: 'CODREC', width: 70 },
-                                                    { text: 'Comment', dataIndex: 'OBSERV', flex: 1 }
-                                                ]
-                                            }
-                                        }
-                                    ]
-                                },
-                                //</editor-fold>  
-
-                                //<editor-fold defaultstate="collapsed" desc="Derived headers">
-                                {
-                                    title: 'Reprocessing Summary',
-                                    itemId: 'B',
-                                    disabled: true,
-                                    id: prototype.idDEsequence + '-tabDerived',
-                                    layout: 'fit',
-                                    items: [
-                                        {
-                                            xtype: 'grid',
-                                            border: false,
-                                            id: prototype.idDEsequence + '-gridDerived',
-                                            emptyText: 'No documents available',
-                                            tbar: {
-                                                xtype: 'panel',
-                                                layout: {
-                                                    type: 'hbox',
-                                                    pack: 'end'
-                                                },
-                                                width: '100%',
-                                                items: [
-                                                    {
-                                                        xtype: 'textfield',
-                                                        margin: '2 5 2 5',
-                                                        labelStyle: 'text-align:left;font-weight: bolder;',
-                                                        fieldStyle: 'text-align:center;',
-                                                        editable: false,
-                                                        fieldLabel: 'Original State',
-                                                        labelWidth: 100,
-                                                        width: 500,
-                                                        maxLength: 30,
-                                                        name: 'STATUS_ORG',
-                                                        value: 'LOADED', // valor por defecto o dinámico
-                                                        fieldStyle: 'text-align:center;background-color:#43bf68;color:#fff;font-weight:bold;',
-                                                    }
-                                                ]
-                                            },
-                                            columns: {
-                                                defaults: {
-                                                    align: 'center',
-                                                    menuDisabled: true,
-                                                    sortable: true
-                                                },
-                                                items: [
-                                                    {
-                                                        text: 'RN',
-                                                        locked: true,
-                                                        xtype: 'rownumberer', // Columna de número de fila
-                                                        width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
-                                                    },
-                                                    {
-                                                        text: 'Process Origin', dataIndex: 'R_SOURCE', flex: 1,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            //metaData.style = "background-color:#838187";
-                                                            const opts = {
-                                                                'AUTO_SUCCESS': () => {
-                                                                    metaData.style = "background-color:#43bf68;color:#ffffff;font-weight:bold"; // Verde
-                                                                    return 'Auto Process';
-                                                                },
-                                                                'MANUAL_REJECT': () => {
-                                                                    metaData.style = "background-color:#f5a623;color:#000000;font-weight:bold"; // Naranja
-                                                                    return 'Manual Reprocess';
-                                                                }
-                                                            };
-
-                                                            return opts[value]();
-                                                        }
-                                                    },
-                                                    { text: 'Qty. Sequence', dataIndex: 'QTY_SEQUENCES', flex: 0.5 },
-                                                    { text: 'New Header ID', dataIndex: 'NEW_HEADER_ID', flex: 1 },
-                                                    {
-                                                        text: 'New File Name', dataIndex: 'NEW_FILENAME', flex: 1,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            let filename = value;
-                                                            if (!value) {
-                                                                filename = 'Pending File';
-                                                                metaData.style = "background-color:#d4d4d4;color:000";
-                                                            }
-                                                            return filename;
-                                                        }
-                                                    },
-                                                    { text: 'New Praxis ID', dataIndex: 'NEW_PRAXIS_ID', flex: 1 },
-                                                    {
-                                                        text: 'Description', dataIndex: 'R_SOURCE', flex: 2,
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            //metaData.style = "background-color:#838187";
-                                                            const opts = {
-                                                                'AUTO_SUCCESS': () => {
-                                                                    return 'Generated automatically from successful sequences';
-                                                                },
-                                                                'MANUAL_REJECT': () => {
-                                                                    return 'Generated manually from previously rejected sequences';
-                                                                }
-                                                            };
-
-                                                            return opts[value]();
-                                                        }
-                                                    }
-                                                ]
-                                            }
-                                        }
-                                    ]
-                                },
-                                //</editor-fold>  
-
-
-
+                                }
                             ]
                         }
                     ]
-                },
-                //</editor-fold>        
+                }
             ]
         }
     ],
     dockedItems: [
-        //<editor-fold defaultstate="collapsed" desc="Buttons Footer"> 
         {
             xtype: 'toolbar',
             dock: 'bottom',
@@ -509,10 +427,25 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                 {
                     text: 'Save',
                     id: prototype.idDEsequence + '-btn-save',
-                    iconCls: 'prx-icon-image-update',
+                    iconCls: 'prx-icon-complete',
                     listeners: {
-                        click: 'onSaveRecord'
+                        click: 'onSaveFile'
                     }
+                },
+                {
+                    text: 'Reject',
+                    id: prototype.idDEsequence + '-btn-reject',
+                    iconCls: 'prx-icon-incomplete',
+                    listeners: {
+                        click: 'onRejectFile'
+                    }
+                },
+                {
+                    xtype: 'checkbox',
+                    id: prototype.idDEsequence + '-chk-reject',
+                    hidden: true,
+                    boxLabel: 'Without new File',
+                    checked: false
                 },
                 {
                     text: 'Cancel',
@@ -523,50 +456,6 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                     }
                 }
             ]
-        },
-        //</editor-fold> 
-
-        //<editor-fold defaultstate="collapsed" desc="Control Data">
-        {
-            title: '<span style="font-weight: bold; text-decoration-line: underline;font-size:13px;">User Control Data</span>',
-            itemId: prototype.idDEsequence + '-userDetails',
-            dock: 'bottom',
-            //margin: '0 0 5 0',
-            layout: {
-                type: 'vbox',
-                align: 'center',
-                pack: 'end'
-            },
-            flex: 1,
-            defaults: {
-                xtype: 'panel',
-                layout: {
-                    type: 'hbox',
-                    align: 'stretch',
-                    pack: 'end'
-                },
-                flex: 1,
-                border: false,
-                bodyStyle: 'background: #E0F2F7',
-                defaults: {
-                    xtype: 'displayfield',
-                    labelWidth: 90,
-                    margin: '2 10 2 10',
-                    labelStyle: 'text-align:left;font-weight:bolder;line-height:22px;',
-                    width: 300
-                }
-            },
-            items: [
-                {
-                    items: [
-                        { fieldLabel: 'User Created', name: 'USCR', itemId: 'USCR' },
-                        { fieldLabel: 'Date Created', name: 'TSCR', itemId: 'TSCR' },
-                        { fieldLabel: 'User Updated', name: 'USUP', itemId: 'USUP' },
-                        { fieldLabel: 'Date Updated', name: 'TSUP', itemId: 'TSUP' }
-                    ]
-                }
-            ]
         }
-        //</editor-fold> 
     ]
 });
