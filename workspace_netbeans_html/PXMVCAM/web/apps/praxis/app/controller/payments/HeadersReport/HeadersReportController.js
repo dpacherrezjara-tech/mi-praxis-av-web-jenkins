@@ -144,12 +144,11 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersReportController
 
         const storeStatusSequences = [
             ['', 'All'],
-            ['1', 'Send'],
+            ['1', 'SFTP'],
             ['2', 'Loaded'],
-            ['4', 'Total Rejected'],
-            ['5', 'Partial Rejected'],
-            ['R', 'Manual Rejected'],
-            ['L', 'Manual Loaded']
+            ['3', 'Rejected'],
+            ['4', 'Partial Rejected'],
+            ['5', 'Partial Loaded']
         ];
 
         if (newValue.opcion === '1') {
