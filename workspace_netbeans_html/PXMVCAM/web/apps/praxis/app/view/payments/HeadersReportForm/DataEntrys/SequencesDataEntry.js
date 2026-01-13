@@ -64,6 +64,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                     items: [
                         {
                             items: [
+                                /*
                                 {
                                     fieldLabel: 'Type',
                                     name: 'TIPOCON',
@@ -107,6 +108,97 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                     },
                                     value: 'None'
                                 },
+                                */
+                                {
+                                    xtype: 'combobox',
+                                    labelStyle: 'font-weight:bold;',
+                                    fieldLabel: 'Type',
+                                    name: 'TIPOCON',
+                                    labelWidth: 70,
+                                    width: 170,
+                                    store: Ext.create('Ext.data.SimpleStore', {
+                                        fields: ['code', 'name'],
+                                        data: [
+                                            ['REG', 'Regular'],
+                                            ['DEB', 'Debit'],
+                                            ['ADJ', 'Adjustments'],
+                                            ['ADM', 'ADMs']
+                                        ]
+                                    }),
+                                    displayField: 'name',
+                                    valueField: 'code',
+                                    queryMode: 'local',
+                                    readOnly: true,
+                                    border: false,
+                                    value: '',
+                                    listeners: {
+                                        change: function (combo, record, eOpts) {
+                                            var valor = combo.getValue();
+                                            combo.inputWrap.setStyle({
+                                                border: 'none',
+                                                boxShadow: 'none',
+                                                background: 'transparent'
+                                            });
+                                            // Reset estilo base primero
+                                            combo.setFieldStyle('');
+
+                                            // Aplica color dinámicamente según valor
+                                            if (valor === 'REG') {
+                                                combo.setFieldStyle('background:#27F55E;text-align:center;font-weight: bold;color:#000000;border-radius: 15px;');
+                                            } else if (valor === 'DEB') {
+                                                combo.setFieldStyle('background:#DE8849;text-align:center;font-weight: bold;color:#000000;border-radius: 15px;');
+                                            } else if (valor === 'ADJ') {
+                                                combo.setFieldStyle('background:#4980DE;text-align:center;font-weight: bold;color:#000000;border-radius: 15px;');
+                                            } else {
+                                                combo.setFieldStyle('background:#D991CE;text-align:center;font-weight: bold;color:#000000;border-radius: 15px;');
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    xtype: 'combobox',
+                                    labelStyle: 'font-weight:bold;',
+                                    fieldLabel: 'Sub-Type',
+                                    name: 'MODO',
+                                    labelWidth: 70,
+                                    width: 170,
+                                    store: Ext.create('Ext.data.SimpleStore', {
+                                        fields: ['code', 'name'],
+                                        data: [
+                                            ['P', 'PAX COL'],
+                                            ['A', 'COR COL'],
+                                            ['C', 'CGO COL'],
+                                            ['E', 'PAX EXT'],
+                                            ['G', 'CGO EXT'],
+                                            ['D', 'DEB COL'],
+                                            ['B', 'DEB EXT'],
+                                            ['J', 'ADJ COL'],
+                                            ['K', 'ADJ EXT'],
+                                            ['H', 'PAX CASH'],
+                                            ['M', 'ADM']
+                                        ]
+                                    }),
+                                    displayField: 'name',
+                                    valueField: 'code',
+                                    queryMode: 'local',
+                                    readOnly: true,
+                                    border: false,
+                                    value: '',
+                                    listeners: {
+                                        change: function (combo, record, eOpts) {
+                                            var valor = combo.getValue();
+                                            combo.inputWrap.setStyle({
+                                                border: 'none',
+                                                boxShadow: 'none',
+                                                background: 'transparent'
+                                            });
+                                            // Reset estilo base primero
+                                            combo.setFieldStyle('');
+
+                                            combo.setFieldStyle('background:#F5ED89;text-align:center;font-weight: bold;color:#000000;border-radius: 15px;');
+                                        }
+                                    }
+                                },
                                 {
                                     fieldLabel: 'Client',
                                     name: 'CCUST',
@@ -120,6 +212,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                     width: 170,
                                     value: 'None'
                                 },
+                                /*
                                 {
                                     fieldLabel: 'Status',
                                     name: 'STSAP',
@@ -138,6 +231,55 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                         }
                                     },
                                     value: 'None'
+                                },*/
+                                {
+                                    xtype: 'combobox',
+                                    labelStyle: 'font-weight:bold;',
+                                    fieldLabel: 'Status',
+                                    name: 'STSAP',
+                                    labelWidth: 70,
+                                    width: 190,
+                                    store: Ext.create('Ext.data.SimpleStore', {
+                                        fields: ['code', 'name'],
+                                        data: [
+                                            ['1', 'SFTP'],
+                                            ['2', 'Loaded'],
+                                            ['3', 'Rejected'],
+                                            ['4', 'Partial Rejected'],
+                                            ['5', 'Partial Loaded']
+                                        ]
+                                    }),
+                                    displayField: 'name',
+                                    valueField: 'code',
+                                    queryMode: 'local',
+                                    readOnly: true,
+                                    border: false,
+                                    value: '',
+                                    listeners: {
+                                        change: function (combo, record, eOpts) {
+                                            var valor = combo.getValue();
+                                            combo.inputWrap.setStyle({
+                                                border: 'none',
+                                                boxShadow: 'none',
+                                                background: 'transparent'
+                                            });
+                                            // Reset estilo base primero
+                                            combo.setFieldStyle('');
+
+                                            // Aplica color dinámicamente según valor
+                                            if (valor === '1') {
+                                                combo.setFieldStyle('background:#2d8cf0;text-align:center;font-weight: bold;color:#000000;border-radius: 15px;');
+                                            } else if (valor === '2') {
+                                                combo.setFieldStyle('background:#43bf68;text-align:center;font-weight: bold;color:#000000;border-radius: 15px;');
+                                            } else if (valor === '3') {
+                                                combo.setFieldStyle('background:#de5959;text-align:center;font-weight: bold;color:#000000;border-radius: 15px;');
+                                            } else if (valor === '4') {
+                                                combo.setFieldStyle('background:#fcda2d;text-align:center;font-weight: bold;color:#000000;border-radius: 15px;');
+                                            } else if (valor === '5') {
+                                                combo.setFieldStyle('background:#f5a623;text-align:center;font-weight: bold;color:#000000;border-radius: 15px;');
+                                            }
+                                        }
+                                    }
                                 },
 
                             ]
@@ -206,7 +348,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                     ]
                 },
                 {
-                    title: '<span style="font-weight: bold; text-decoration-line: underline;font-size:13px;">Data</span>',
+                    title: '<span style="font-weight: bold; text-decoration-line: underline;font-size:13px;">Details</span>',
                     defaults: {},
                     style: {
                         backgroundColor: '#9ebbd3ff' // Cambiar el color de fondo a gris claro (#f0f0f0)
@@ -364,6 +506,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                                     xtype: 'grid',
                                                     border: false,
                                                     id: prototype.idDEsequence + '-gridRejections',
+                                                    emptyText: 'No documents available',
                                                     columns: {
                                                         defaults: {
                                                             align: 'center',
@@ -400,6 +543,69 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                             ]
                                         },
                                     ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    title: '<span style="font-weight: bold; text-decoration-line: underline;font-size:13px;">New File Information</span>',
+                    defaults: {},
+                    id: prototype.idDEsequence + '-newFileBox',
+                    hidden: true,
+                    style: {
+                        backgroundColor: '#f0f18aff' // Cambiar el color de fondo a gris claro (#f0f0f0)
+                    },
+                    items: [
+                        {
+                            xtype: 'panel',
+                            width: '100%',
+                            margin: '2 2 2 2',
+                            border: false,
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'grid',
+                                    width: '100%',
+                                    border: false,
+                                    id: prototype.idDEsequence + '-newFileGrid',
+                                    emptyText: 'No documents available',
+                                    columns: {
+                                        defaults: {
+                                            align: 'center',
+                                            menuDisabled: true,
+                                            sortable: true
+                                        },
+                                        items: [
+                                            { text: 'New Header', dataIndex: 'HEADER', width: 150 },
+                                            { text: 'New File Name', dataIndex: 'FILENAM', flex: 1 },
+                                            {
+                                                text: 'Origin', dataIndex: 'STCAR', width: 100,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    const opts = {
+                                                        'I': 'Integrator SAP',
+                                                        'W': 'Web Manual'
+                                                    };
+                                                    return opts[value] || 'Other';
+                                                }
+
+                                            },
+                                            {
+                                                text: 'Status', dataIndex: 'STPRO', width: 100,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    const opts = {
+                                                        'S': 'SFTP',
+                                                        'P': 'Pending Send'
+                                                    };
+                                                    return opts[value] || 'Error';
+                                                }
+
+                                            }
+                                        ]
+                                    }
                                 }
                             ]
                         }
