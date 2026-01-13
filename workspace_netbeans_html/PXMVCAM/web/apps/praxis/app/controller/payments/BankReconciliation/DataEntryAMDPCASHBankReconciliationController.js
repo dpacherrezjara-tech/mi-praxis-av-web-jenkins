@@ -773,9 +773,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
     },
 
     removeTKT: function (grid, rowIndex, colIndex) {
-        var store_gridInfoScan = Ext.getCmp(prototype.id + '-gridDataInfoScanAgent').getStore();
+        var store_gridInfoScan = Ext.getCmp(prototype.id + '-gridDataInfoScanConciliacion').getStore();
         store_gridInfoScan.removeAt(rowIndex);
-        Ext.getCmp(prototype.id + '-gridDataInfoScanAgent').getView().refresh();
+        Ext.getCmp(prototype.id + '-gridDataInfoScanConciliacion').getView().refresh();
         this.calcularSumAmount();
         this.calcularMontos();
     },
