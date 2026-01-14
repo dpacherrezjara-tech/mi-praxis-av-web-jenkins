@@ -68,12 +68,16 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Grids.SequencesGrid', {
                             return 'Rejected';
                         },
                         '4': () => {
-                            metaData.style = "background-color:#fcda2d;color:#ffffff;font-weight:bold"; // Amarillo - Rechazo parcial
+                            metaData.style = "background-color:#fcda2d;color:#000000;font-weight:bold"; // Amarillo - Rechazo parcial
                             return 'Partial Rejected';
                         },
                         '5': () => {
                             metaData.style = "background-color:#f5a623;color:#000000;font-weight:bold"; // Naranja - Rechazo manual
                             return 'Partial Loaded';
+                        },
+                        '6': () => {
+                            metaData.style = "background-color:#EB6ECD;color:#000000;font-weight:bold"; // Verde - Cargado con éxito
+                            return 'Reverse Loaded';
                         }
                     };
 
@@ -106,6 +110,25 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Grids.SequencesGrid', {
             },
             { text: 'Qty.<br>Sequence', dataIndex: 'TOT_SECUENCIAS', width: 100 },
             { text: 'Rej.<br>Sequence', dataIndex: 'REJ_SECUENCIAS', width: 100 }
+        ]
+    },
+    tbar: {
+        layout: {
+            pack: 'end'
+        },
+        defaults: {
+            scale: 'medium'
+        },
+        items: [
+            {
+                xtype: 'button',
+                iconCls: 'prx-icon-excel',
+                scale: 'small',
+                tooltip: 'Export to Excel',
+                listeners: {
+                    click: 'downloadExcel'
+                }
+            }
         ]
     },
     bbar: {

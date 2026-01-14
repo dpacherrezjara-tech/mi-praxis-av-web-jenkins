@@ -246,7 +246,8 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                             ['2', 'Loaded'],
                                             ['3', 'Rejected'],
                                             ['4', 'Partial Rejected'],
-                                            ['5', 'Partial Loaded']
+                                            ['5', 'Partial Loaded'],
+                                            ['6', 'Reverse Loaded']
                                         ]
                                     }),
                                     displayField: 'name',
@@ -277,7 +278,10 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                                 combo.setFieldStyle('background:#fcda2d;text-align:center;font-weight: bold;color:#000000;border-radius: 15px;');
                                             } else if (valor === '5') {
                                                 combo.setFieldStyle('background:#f5a623;text-align:center;font-weight: bold;color:#000000;border-radius: 15px;');
+                                            } else{
+                                                combo.setFieldStyle('background:#de5959;text-align:center;font-weight: bold;color:#ffffff;border-radius: 15px;');
                                             }
+                                                
                                         }
                                     }
                                 },
@@ -630,6 +634,15 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                 margin: '5 5 5 5'
             },
             items: [
+                {
+                    text: 'Reverse',
+                    hidden:true,
+                    id: prototype.idDEsequence + '-btn-rejsuc',
+                    iconCls: 'prx-icon-reload',
+                    listeners: {
+                        click: 'onRejectSuccess'
+                    }
+                },
                 {
                     text: 'Save',
                     id: prototype.idDEsequence + '-btn-save',
