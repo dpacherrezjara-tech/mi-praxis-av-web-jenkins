@@ -101,7 +101,8 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Filters', {
                                             ['', 'All'],
                                             ['REG', 'Regular'],
                                             ['DEB', 'Debits'],
-                                            ['ADJ', 'Adjustment']
+                                            ['ADJ', 'Adjustment'],
+                                            ['ADM', 'ADM']
                                         ]
                                     }),
                                     labelWidth: 90,
@@ -137,7 +138,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Filters', {
                                 },
                                 {
                                     xtype: 'textfield',
-                                    fieldLabel: 'Corrl AV',
+                                    fieldLabel: 'Header ID',
                                     labelWidth: 90,
                                     width: 280,
                                     name: 'IN_HEADER',

@@ -8,7 +8,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Grids.FormateoGrid', {
     maxHeight: prototype.height,
     minHeight: 200,
     height: 'auto',
-    width: 1200,
+    width: 1350,
     store: [],
     title: 'Formatted',
     titleAlign: 'center',
@@ -33,24 +33,29 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Grids.FormateoGrid', {
                 width: 60
             },
             {text: 'File ID', dataIndex: 'FILEID', width: 100},
-            {text: 'Date', dataIndex: 'VALDATE', width: 100},
+            {text: 'Reference', dataIndex: 'REFER', width: 150},
+            {text: 'Value<br>Date', dataIndex: 'VALDATE', width: 100},
             {text: 'Seq', dataIndex: 'SEQ', width: 100},
+            {text: 'Record<br>Type', dataIndex: 'TIPOREC', width: 100,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                    const opts = {
+                        'S': 'ReportSAP',
+                        'R': 'Rejection'
+                    };
+                    return opts[value]? opts[value]: 'Error';
+                }
+            },
             {text: 'Status', dataIndex: 'STPRO', width: 150,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                    //metaData.style = "background-color:#838187";
-                    console.log('value', value);
-                    console.log('record', record);
                     const opts = {
-                        'Y': () => {
-//                            metaData.style = "background-color:#638be1;color:#ffffff;font-weight:bold";
-                            return 'PROCESSED';
+                        '0': () => {
+                            return 'Not found';
                         },
-                        'N': () => {
-//                            metaData.style = "background-color:#88d556;font-weight:bold";
-                            return 'NO PROCESSED';
-                        },
+                        '1': () => {
+                            return 'Found';
+                        }
                     };
-                    return opts[value]();
+                    return opts[value]? opts[value](): 'Error';
                 }
             },
             {text: 'Error',
