@@ -148,7 +148,8 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersReportController
             ['2', 'Loaded'],
             ['3', 'Rejected'],
             ['4', 'Partial Rejected'],
-            ['5', 'Partial Loaded']
+            ['5', 'Partial Loaded'],
+            ['6', 'Reverse Loaded']
         ];
 
         if (newValue.opcion === '1') {

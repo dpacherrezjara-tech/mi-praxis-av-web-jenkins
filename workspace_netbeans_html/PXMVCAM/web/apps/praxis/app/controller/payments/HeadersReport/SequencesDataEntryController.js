@@ -85,6 +85,10 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.SequencesDataEntryContr
         const btnReject = Ext.getCmp(prototype.idDEsequence + '-btn-reject');
         const cbkReject = Ext.getCmp(prototype.idDEsequence + '-chk-reject');
         const newFileBox = Ext.getCmp(prototype.idDEsequence + '-newFileBox');
+        
+        const reverseFile = Ext.getCmp(prototype.idDEsequence + '-btn-rejsuc');
+        
+        let username = document.getElementById('menuUser').innerText;
 
         btnRej.hide();
         boxSeq.hide();
@@ -93,12 +97,20 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.SequencesDataEntryContr
         btnReject.hide();
         cbkReject.hide();
         newFileBox.hide();
+        reverseFile.hide();
 
         if (stsap === '1') {
             boxSeq.show();
             btnRej.show();
             btnCan.show();
             btnSave.show();
+        }
+        
+        if (stsap === '2') {
+            if(username==='MPACHECO' || username==='MPACHECOT' 
+                    || username === 'PXAVAPIT' || username === 'AALVAREZT'){
+                reverseFile.show();
+            }
         }
 
         if (stsap === '4') {
@@ -575,5 +587,45 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.SequencesDataEntryContr
             ]
         });
         newWin.show();
+    },
+    onRejectSuccess: function(){
+        const me = this;
+        Ext.Msg.show(
+            {
+                title: '.:PRAXIS:.',
+                msg: 'Are you sure to reject file success?',
+                buttons: Ext.MessageBox.YESNO,
+                scope: this,
+                icon: Ext.MessageBox.QUESTION,
+                modal: true,
+                fn: function (btn) {
+                    if (btn === 'yes') {
+                        me.callRejectSuccess();
+                    }
+                }
+            });
+    },
+    callRejectSuccess: async function(){
+        const me = this;
+        me.view.setLoading(true);
+        try {
+            const { IDCONT, CORRL } = me.view.obj;
+            const tmp = await global.loadRecordsOnTable('PRAXISMP', 'XTEMPO', me.dataAcc);
+            console.log(tmp.cuuid);
+            
+            const res = await global.callStorePost('PRAXISMP', 'MPS465', {
+                'IN_IDCONT': IDCONT,
+                'IN_FILESQ': CORRL,
+                'IN_CUUID': tmp.cuuid,
+                'IN_FUUID': tmp.fuuid
+            });
+            me.notifier.info('Rejected Successfully');
+            me.view.setLoading(false);
+            me.loadData();
+        } catch (e) {
+            console.error(e);
+            me.notifier.alert('Error on Update.');
+            me.view.close();
+        }
     }
 });
