@@ -162,7 +162,7 @@ public class DuplicateSettlementsDAO {
 
         // Verifica si es masivo
         if ("Y".equals(filter.IN_MASSIVE.trim())) {
-            String SQL_MASSIVE = "{CALL PRAXISMP.MPS372(?,?,?,?,?,?,?,?,?,?)}";
+            String SQL_MASSIVE = "{CALL PRAXISMP.MPS372(?,?,?,?,?,?,?,?,?,?,?)}";
 
             try (Connection cnx = session.getCNXIBMDB2().getIBMDB2Connection();
                  CallableStatement cstmt = cnx.prepareCall(SQL_MASSIVE)) {
@@ -176,6 +176,7 @@ public class DuplicateSettlementsDAO {
                 cstmt.setString(8, filter.IN_CODEBANK.trim());
                 cstmt.setString(9, filter.IN_SEQ.trim());
                 cstmt.setString(10, filter.IN_SCARCOD.trim());
+                cstmt.setString(11, filter.IN_SECUENCE.trim());
                 cstmt.execute();
 
             } catch (SQLException e) {
