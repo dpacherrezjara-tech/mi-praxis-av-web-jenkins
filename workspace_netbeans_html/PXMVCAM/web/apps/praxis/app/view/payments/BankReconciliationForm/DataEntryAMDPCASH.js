@@ -5,6 +5,8 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
         'Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHBankReconciliationController'
     ],
     controller: 'DataEntryAMDPCASHBankReconciliationController',
+    
+
     title: 'Bank Reconciliation - Data Entry Form 2',
     header: true,
     height: 920,
@@ -2047,7 +2049,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                     width: 28,
                                                     iconCls: 'prx-icon-excel',
                                                     tooltip: 'Export to Excel',
-                                                    listeners: {click: 'getExcelCashTicket'},
+                                                    listeners: {click: 'getExcelCashTicket'}
 
                                                 },
                                                 {
@@ -2146,7 +2148,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
 
 
                                     
-                                        
+                                                                          
                                         {
                                             xtype: 'grid',
                                             id: prototype.id + '-gridDataInfoScanAgent',
@@ -2230,7 +2232,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                             return value;
                                                         }
                                                     },
-                                                    {text: 'Sales<br>Date', dataIndex: 'SDATE', width: 80, id: prototype.id + '-gridA720FECVTA',
+                                                    {text: 'Sales<br>Date', dataIndex: 'SDATE', width: 80,
                                                         editor: {xtype: 'textfield', editable: false},
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
@@ -2323,7 +2325,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                         }
                                                     },
 
-                                                    {text: 'Invoice', dataIndex: 'INVOICE', width: 132, id: prototype.id + '-columnINVOICE',
+                                                    {text: 'Invoice', dataIndex: 'INVOICE', width: 132, 
                                                         editor: {xtype: 'textfield', editable: false},
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
@@ -2458,7 +2460,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                             return value;
                                                         }
                                                     },
-                                                    {text: 'Sales<br>Date', dataIndex: 'SDATE', width: 80, id: prototype.id + '-gridA720FECVTA',
+                                                    {text: 'Sales<br>Date', dataIndex: 'SDATE', width: 80,
                                                         editor: {xtype: 'textfield', editable: false},
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
@@ -2551,7 +2553,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                         }
                                                     },
 
-                                                    {text: 'Invoice', dataIndex: 'INVOICE', width: 132, id: prototype.id + '-columnINVOICE',
+                                                    {text: 'Invoice', dataIndex: 'INVOICE', width: 132, 
                                                         editor: {xtype: 'textfield', editable: false},
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
