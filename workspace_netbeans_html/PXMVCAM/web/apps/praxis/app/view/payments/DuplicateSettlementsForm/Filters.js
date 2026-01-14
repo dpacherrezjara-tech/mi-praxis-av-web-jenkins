@@ -361,9 +361,9 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.Filters', {
                                             multiSelect: false,
                                             forceSelection: true,
                                             margin: '0 10 0 0'
-                                        },
+                                        }
                                     ]
-                                },
+                                }
                             ]
                         },
                         {
@@ -378,7 +378,7 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.Filters', {
                                 {
                                     xtype: 'fieldset',
                                     title: '<span style="color:#1a4d8f;font-weight:bold;">INPUT FILTERS</span>',
-                                    width: 390,
+                                    width: 550,
                                     style: 'border: 1px solid #1a4d8f; padding: 8px; margin: 5px;',
                                     layout: 'hbox',
                                     items: [
@@ -396,6 +396,33 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.Filters', {
                                             listeners: {
                                                 keypress: 'eventKey'
                                             },
+                                            margin: '0 10 0 0'
+                                        },
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbSecuence',
+                                            fieldLabel: 'With Secuence',
+                                            labelStyle: 'text-align: left; font-size: 12px;',
+                                            fieldStyle: 'text-align: center; font-size: 12px;',
+                                            store: new Ext.data.SimpleStore({
+                                                fields: ['value', 'description'],
+                                                data: [
+                                                    ["", "ALL"],
+                                                    ["Y", "Yes"],
+                                                    ["N", "No"]
+                                                ]
+                                            }),
+                                            width: 150,
+                                            labelWidth: 85  ,
+                                            emptyText: 'All',
+                                            value: '',
+                                            displayField: 'description',
+                                            valueField: 'value',
+                                            queryMode: 'local',
+                                            filterPickList: true,
+                                            editable: true,
+                                            multiSelect: false,
+                                            forceSelection: true,
                                             margin: '0 10 0 0'
                                         },
                                         {

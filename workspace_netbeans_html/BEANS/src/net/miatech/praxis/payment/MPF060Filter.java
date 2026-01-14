@@ -16,6 +16,9 @@ public class MPF060Filter {
     public String IN_FECHA_TO = "";
     public String IN_CCUST = "";
     public String IN_PROCESSOR = "";
+    public String IN_BANDOC = "";
+    public String IN_DATECI = "";
+    public String IN_TRANCI = "";
     public String IN_STATUS = "";
     public String IN_COUNTRY = "";
     public String IN_NEGOC = "";
@@ -23,6 +26,7 @@ public class MPF060Filter {
     public String IN_SEQ = "";
     public String IN_SCARCOD = "";
     public String IN_FASE2 = "";
+    public String IN_SECUENCE = "";
     public String IN_MASSIVE = "";
     public String IN_USUP = "";
     public String IN_FEUP = "";
