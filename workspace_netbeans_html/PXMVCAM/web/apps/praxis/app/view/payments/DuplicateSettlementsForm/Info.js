@@ -50,7 +50,7 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridMainData',
                                     height: 490,
-                                    width: 1140,
+                                    width: 1142,
                                     hidden: false,
                                     columnLines: true,
                                     viewConfig: {
@@ -180,7 +180,7 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridMainDataDeleteGroup',
                                     height: 490,
-                                    width: 870,
+                                    width: 872,
                                     hidden: false,
                                     columnLines: true,
                                     viewConfig: {
