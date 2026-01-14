@@ -1315,12 +1315,19 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
 
         var totalAgent = 0;
         storeAgent.each(function (r) {
-            totalAgent += parseFloat(r.get('SVFOPNETR') || 0);
+            if(r.get('SPAYMENT') == 'CA'){
+                totalAgent += parseFloat(r.get('SVFOPNETR') || 0);
+            }else{
+                totalAgent += parseFloat(r.get('SVFOP') || 0);
+            }
+
         });
         console.log(seleccionados, ' seleccionados')
 
         var scan = Number(totalScan.toFixed(2));
         var agent = Number(totalAgent.toFixed(2));
+        console.log(scan,'scan')
+        console.log(agent,'agent')
         // --- Validar que las sumas coincidan (con pequeña tolerancia)
         var diferencia = Math.abs(scan - agent);
 
@@ -1328,8 +1335,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
             Ext.Msg.alert(
                     'Aviso',
                     'Los montos no coinciden. ' +
-                    '<br><b>Liquidacion:</b> ' + totalScan.toFixed(2) +
-                    '<br><b>Venta:</b> ' + totalAgent.toFixed(2)
+                    '<br><b>Liquidacion:</b> ' + scan +
+                    '<br><b>Venta:</b> ' + agent
                     );
             return;
         }
