@@ -176,7 +176,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         this.setValue('de-txtSTRDATE', this.bean.STARDATE_191);
         this.setValue('de-txtENDDATE', this.bean.ENDDATE_191);
         this.setValue('de-txtNETO191', Ext.util.Format.number(this.bean.NETO_191, '0,000.00'));
+        this.setValue('de-txtNETO1912', Ext.util.Format.number(this.bean.NETO_191, '0,000.00'));
         this.setValue('de-txtPAYAMOU191', Ext.util.Format.number(this.bean.PAYAMOU_191, '0,000.00'));
+        this.setValue('de-txtPAYAMOU1912', Ext.util.Format.number(this.bean.PAYAMOU_191, '0,000.00'));
         this.setValue('de-txtCOMISION191', Ext.util.Format.number(this.bean.NETO_191 - this.bean.PAYAMOU_191, '0,000.00'));
         this.setValue('de-txtQTYTKT191', this.bean.QTYTKT_191);
         this.setValue('txtUSCR', this.bean.USCR);

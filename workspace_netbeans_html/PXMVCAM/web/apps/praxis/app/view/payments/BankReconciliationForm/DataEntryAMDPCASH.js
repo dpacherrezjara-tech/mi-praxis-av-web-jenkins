@@ -5,7 +5,6 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
         'Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHBankReconciliationController'
     ],
     controller: 'DataEntryAMDPCASHBankReconciliationController',
-    
 
     title: 'Bank Reconciliation - Data Entry Form 2',
     header: true,
@@ -117,21 +116,21 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                             readOnly: true,
                                             width: 180,
                                         },
-                                        {xtype: 'tbspacer', width: 70},
+                                        {xtype: 'tbspacer', width: 130},
                                         {
                                             xtype: 'label',
-                                            text: 'Scountry',
+                                            text: 'Currency',
                                             style: 'font-weight:bold;color:#0B333C;',
-                                            width: 90
+                                            width: 60
                                         },
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-de-txtScountry',
+                                            id: prototype.id + '-de-txtScurrency',
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
                                             readOnly: true,
-                                            width: 130,
+                                            width: 100
                                         },
                                         {xtype: 'tbspacer', width: 10},
                                     ]
@@ -144,20 +143,20 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                     margin: '0 2 0 20',
                                     items: [
                                         {xtype: 'tbspacer', width: 7, height: 24},
-                                        {
+                                         {
                                             xtype: 'label',
-                                            text: 'Currency',
+                                            text: 'Scountry',
                                             style: 'font-weight:bold;color:#0B333C;',
-                                            width: 120
+                                            width: 90
                                         },
-                                        {xtype: 'tbspacer', width: 10},
+                                        {xtype: 'tbspacer', width:  40},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-de-txtScurrency',
+                                            id: prototype.id + '-de-txtScountry',
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
                                             readOnly: true,
-                                            width: 100
+                                            width: 100,
                                         },
                                         {xtype: 'tbspacer', width: 100},
                                         {
@@ -191,21 +190,21 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                             readOnly: true,
                                             width: 180
                                         },
-                                        {xtype: 'tbspacer', width: 70},
+                                        {xtype: 'tbspacer', width: 150},
                                         {
                                             xtype: 'label',
-                                            text: 'Bandoc',
+                                            text: 'Neto',
                                             style: 'font-weight:bold;color:#0B333C;',
-                                            width: 90
+                                            width: 40
                                         },
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-de-txtBandoc',
-                                            fieldStyle: 'text-align:center',
+                                            id: prototype.id + '-de-txtNeto',
+                                            fieldStyle: 'text-align:right',
                                             enforceMaxLength: true,
                                             readOnly: true,
-                                            width: 130
+                                            width: 100
                                         },
                                         {xtype: 'tbspacer', width: 10}
                                     ]
@@ -218,16 +217,16 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                     margin: '0 2 0 20',
                                     items: [
                                         {xtype: 'tbspacer', width: 7, height: 24},
-                                        {
+                                         {
                                             xtype: 'label',
-                                            text: 'Neto',
+                                            text: 'Bandoc',
                                             style: 'font-weight:bold;color:#0B333C;',
-                                            width: 120
+                                            width: 90
                                         },
-                                        {xtype: 'tbspacer', width: 10},
+                                        {xtype: 'tbspacer', width: 40},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-de-txtNeto',
+                                            id: prototype.id + '-de-txtBandoc',
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
                                             readOnly: true,
@@ -446,7 +445,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                             id: prototype.id + '-de-txtNetConciliado',
                                             fieldCls: 'detalle-society-textfield',
                                             style: 'font-weight:bold;color:#d5f4d5',
-                                            fieldStyle: 'text-align:center',
+                                            fieldStyle: 'text-align:right',
                                             enforceMaxLength: true,
                                             readOnly: true,
                                             width: 100
@@ -565,7 +564,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                             fieldCls: 'detalle-society-textfield',
                                             margin: '2 0 0 0',
                                             style: 'font-weight:bold;color:#d5f4d5',
-                                            fieldStyle: 'text-align:center',
+                                            fieldStyle: 'text-align:right',
                                             enforceMaxLength: true,
                                             readOnly: true,
                                             width: 100
@@ -595,28 +594,9 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                         {xtype: 'tbspacer', width: 7, height: 24},
                                         {
                                             xtype: 'label',
-                                            text: 'Currency',
-                                            id: prototype.id + '-de-txtFromDateBSUMDATE',
-                                            textAlign: 'center',
-                                            paddingLeft: 3,
-                                            style: 'font-weight:bold;color:#0B333C;',
-                                            width: 120
-                                        },
-                                        {xtype: 'tbspacer', width: 10},
-                                        {
-                                            xtype: 'textfield',
-                                            id: prototype.id + '-de-txtCurrency191',
-                                            style: 'font-weight:bold;color:#0B333C;',
-                                            readOnly: true,
-                                            fieldStyle: 'text-align:center;',
-                                            width: 100
-                                        },
-                                        {xtype: 'tbspacer', width: 50},
-                                        {
-                                            xtype: 'label',
                                             text: 'Country',
                                             style: 'font-weight:bold;color:#0B333C;',
-                                            width: 80
+                                            width: 120
                                         },
                                         {xtype: 'tbspacer', width: 10},
                                         {
@@ -633,7 +613,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                             text: 'Consol',
                                             textAlign: 'center',
                                             style: 'font-weight:bold;color:#0B333C;',
-                                            width: 120
+                                            width: 100
                                         },
                                         {xtype: 'tbspacer', width: 10},
                                         {
@@ -641,45 +621,48 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                             id: prototype.id + '-de-txtSCONSOL_191',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             fieldStyle: 'text-align:center;',
-                                            width: 120,
+                                            width: 100,
                                             maskRe: /[0-9]/,
                                             readOnly: true,
                                             enforceMaxLength: true,
                                             maxLength: 10
                                         },
-                                        {xtype: 'tbspacer', width: 50},
+                                        {xtype: 'tbspacer', width: 340},
                                         {
                                             xtype: 'label',
-                                            text: 'Strdate',
+                                            text: 'Currency',
+                                            id: prototype.id + '-de-txtFromDateBSUMDATE',
+                                            textAlign: 'center',
+                                            paddingLeft: 3,
                                             style: 'font-weight:bold;color:#0B333C;',
-                                            width: 120
+                                            width: 60
                                         },
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-de-txtSTRDATE',
-                                            fieldStyle: 'text-align:center',
-                                            enforceMaxLength: true,
+                                            id: prototype.id + '-de-txtCurrency191',
+                                            style: 'font-weight:bold;color:#0B333C;',
                                             readOnly: true,
-                                            width: 80
+                                            fieldStyle: 'text-align:center;',
+                                            width: 100
                                         },
-                                        {xtype: 'tbspacer', width: 10},
+                                        {xtype: 'tbspacer', width: 20},
                                         {
                                             xtype: 'label',
-                                            text: 'Enddate',
+                                            text: 'Billing Amount',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             width: 100
                                         },
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-de-txtENDDATE',
-                                            fieldStyle: 'text-align:center',
+                                            id: prototype.id + '-de-txtPAYAMOU191',
+                                            fieldStyle: 'text-align:right',
                                             enforceMaxLength: true,
                                             readOnly: true,
-                                            width: 80
+                                            width: 100
                                         },
-                                        {xtype: 'tbspacer', width: 10},
+                                        {xtype: 'tbspacer', width: 10}
                                     ]
                                 },
                                 {
@@ -692,30 +675,14 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                         {xtype: 'tbspacer', width: 7, height: 24},
                                         {
                                             xtype: 'label',
-                                            text: 'Billing Amount',
+                                            text: 'Start Period',
                                             style: 'font-weight:bold;color:#0B333C;',
                                             width: 120
                                         },
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-de-txtPAYAMOU191',
-                                            fieldStyle: 'text-align:center',
-                                            enforceMaxLength: true,
-                                            readOnly: true,
-                                            width: 100
-                                        },
-                                        {xtype: 'tbspacer', width: 50},
-                                        {
-                                            xtype: 'label',
-                                            text: 'Neto',
-                                            style: 'font-weight:bold;color:#0B333C;',
-                                            width: 80
-                                        },
-                                        {xtype: 'tbspacer', width: 10},
-                                        {
-                                            xtype: 'textfield',
-                                            id: prototype.id + '-de-txtNETO191',
+                                            id: prototype.id + '-de-txtSTRDATE',
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
                                             readOnly: true,
@@ -724,25 +691,25 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                         {xtype: 'tbspacer', width: 30},
                                         {
                                             xtype: 'label',
-                                            text: 'Adjustment.',
+                                            text: 'End Period',
                                             style: 'font-weight:bold;color:#0B333C;',
-                                            width: 120
+                                            width: 100
                                         },
                                         {xtype: 'tbspacer', width: 10},
                                         {
                                             xtype: 'textfield',
-                                            id: prototype.id + '-de-txtCOMISION191',
+                                            id: prototype.id + '-de-txtENDDATE',
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
                                             readOnly: true,
-                                            width: 120
+                                            width: 100
                                         },
-                                        {xtype: 'tbspacer', width: 50},
+                                        {xtype: 'tbspacer', width: 350},
                                         {
                                             xtype: 'label',
                                             text: 'QTYTKT',
                                             style: 'font-weight:bold;color:#0B333C;',
-                                            width: 120
+                                            width: 50
                                         },
                                         {xtype: 'tbspacer', width: 10},
                                         {
@@ -751,14 +718,53 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                             fieldStyle: 'text-align:center',
                                             enforceMaxLength: true,
                                             readOnly: true,
+                                            width: 100
+                                        },
+                                        {xtype: 'tbspacer', width: 40},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Adjustment.',
+                                            style: 'font-weight:bold;color:#0B333C;',
                                             width: 80
                                         },
-                                        {xtype: 'tbspacer', width: 50},
-
-                                        {xtype: 'tbspacer', width: 160},
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtCOMISION191',
+                                            fieldStyle: 'text-align:right',
+                                            enforceMaxLength: true,
+                                            readOnly: true,
+                                            width: 100
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
                                     ]
                                 },
-
+                                {
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    border: false,
+                                    margin: '0 2 0 20',
+                                    bodyStyle: 'background:#efe5e5;',
+                                    items: [
+                                        {xtype: 'tbspacer', width: 1060},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Neto',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 30
+                                        },
+                                        {xtype: 'tbspacer', width: 27},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtNETO191',
+                                            fieldStyle: 'text-align:right',
+                                            enforceMaxLength: true,
+                                            readOnly: true,
+                                            width: 100
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                    ]
+                                },
                                 //CONTAIN
                                 {
                                     xtype: 'container',
@@ -1297,7 +1303,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                 }
                                             ]
                                         },
-                                        
+
                                         //ref
                                         {
                                             xtype: 'panel',
@@ -1563,7 +1569,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                                             metaData.style = 'text-align:right; margin-right:3px ';
                                                                                             return '<b>' + Ext.util.Format.number(data.SUM_TKT) + '<b>';
                                                                                         },
-                                                                                        
+
                                                                                         // aqui estamos FTG
 //                                                                                          listeners: {
 //                                                                                            click: 'onGridViewTKTAgent'
@@ -1641,7 +1647,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                                     clicksToEdit: 1
                                                                                 }
                                                                             ],
-                                                                            
+
                                                                             features: [{
                                                                                     ftype: 'summary' // 👈 activa el totalizador en el footer
                                                                                 }],
@@ -1879,20 +1885,42 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                     layout: 'hbox',
                                     hidden: true,
                                     border: false,
-                                    margin: '0 0 0 300',
+                                    margin: '5 0 0 300',
                                     id: prototype.id + '-panelSumAmount',
                                     //bodyStyle: 'background:#efe5e5;',
                                     items: [
-                                        {xtype: 'tbspacer', width: 600},
-
-                                        {xtype: 'tbspacer', width: 30},
+                                        {xtype: 'tbspacer', width: 265},
                                         {
                                             xtype: 'label',
-                                            text: 'Qty Settlement:',
+                                            text: 'Totals',
                                             style: 'font-weight:bold;color:#0B333C;',
-                                            width: 50
+                                            width: 30
                                         },
-                                        {xtype: 'tbspacer', width: 80},
+                                        {xtype: 'tbspacer', width: 33},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtNETO1912',
+                                            fieldStyle: 'text-align:right',
+                                            enforceMaxLength: true,
+                                            readOnly: true,
+                                            width: 113
+                                        },
+                                        {xtype: 'tbspacer', width: 2},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtPAYAMOU1912',
+                                            fieldStyle: 'text-align:right',
+                                            enforceMaxLength: true,
+                                            readOnly: true,
+                                            width: 113
+                                        },
+                                        {xtype: 'tbspacer', width: 50},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Total Settlement:',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 110
+                                        },
                                         {
                                             xtype: 'textfield',
                                             id: prototype.id + '-de-QtyTkt',
@@ -1985,10 +2013,10 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                         },
                                         {
                                             items: [
-                                                {xtype: 'label', text: 'From Date', width: 80, style: 'font-weight:bold;color:#0B333C;'},
+                                                {xtype: 'label', text: 'Start Date', width: 80, style: 'font-weight:bold;color:#0B333C;'},
                                                 {xtype: 'datefield', id: prototype.id + '-txtFromDateCash', fieldStyle: 'text-align:center;', format: 'Y/m/d', width: 110, editable: false},
                                                 {xtype: 'tbspacer', width: 30},
-                                                {xtype: 'label', text: 'To Date', width: 60, style: 'font-weight:bold;color:#0B333C;'},
+                                                {xtype: 'label', text: 'End Date', width: 60, style: 'font-weight:bold;color:#0B333C;'},
                                                 {xtype: 'datefield', id: prototype.id + '-txtToDateCash', fieldStyle: 'text-align:center;', format: 'Y/m/d', width: 110, editable: false},
                                                 {xtype: 'tbspacer', width: 30},
                                                 {xtype: 'label', text: 'Mclos', width: 60, style: 'font-weight:bold;color:#0B333C;'},
@@ -2064,7 +2092,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                         }
                                     ]
                                 },
-                                
+
                                 /// aqui emepzamoas
 
                                 {
@@ -2146,9 +2174,6 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                             ]
                                         },
 
-
-                                    
-                                                                          
                                         {
                                             xtype: 'grid',
                                             id: prototype.id + '-gridDataInfoScanAgent',
@@ -2164,8 +2189,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                             features: [{
                                                     ftype: 'summary'
                                                 }],
-                                            
-                                            
+
                                             columns: {
                                                 defaults: {
                                                     menuDisabled: true,
@@ -2325,7 +2349,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                         }
                                                     },
 
-                                                    {text: 'Invoice', dataIndex: 'INVOICE', width: 132, 
+                                                    {text: 'Invoice', dataIndex: 'INVOICE', width: 132,
                                                         editor: {xtype: 'textfield', editable: false},
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
@@ -2355,7 +2379,6 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                             return value;
                                                         }
                                                     },
-
 //                                                    {
 //                                                        sortable: false,
 //                                                        xtype: 'actioncolumn',
@@ -2374,8 +2397,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                 ]
                                             }
                                         },
-                                        
-                                        
+
                                         {
                                             xtype: 'grid',
                                             id: prototype.id + '-gridDataInfoScanConciliacion',
@@ -2392,8 +2414,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                             features: [{
                                                     ftype: 'summary'
                                                 }],
-                                            
-                                            
+
                                             columns: {
                                                 defaults: {
                                                     menuDisabled: true,
@@ -2553,7 +2574,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                         }
                                                     },
 
-                                                    {text: 'Invoice', dataIndex: 'INVOICE', width: 132, 
+                                                    {text: 'Invoice', dataIndex: 'INVOICE', width: 132,
                                                         editor: {xtype: 'textfield', editable: false},
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:center;";
@@ -2603,52 +2624,52 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                             }
                                         },
                                         {
-    xtype: 'container',
-    id: prototype.id + '-containerPageSummary',
-    layout: {
-        type: 'hbox',
-        align: 'middle',
-        pack: 'center'
-    },
-    margin: '6 0 0 10',
-    items: [
-        {
-            xtype: 'label',
-            text: 'Page',
-            margin: '0 5 0 0'
-        },
-        {
-            xtype: 'label',
-            id: prototype.id + '-lbl-currentPageScan',
-            text: '0',
-            style: 'font-weight:bold;',
-            margin: '0 5 0 0'
-        },
-        {
-            xtype: 'label',
-            text: 'of',
-            margin: '0 5 0 0'
-        },
-        {
-            xtype: 'label',
-            id: prototype.id + '-lbl-pageCountScan',
-            text: '0',
-            style: 'font-weight:bold;',
-            margin: '0 20 0 0'
-        },
-        {
-            xtype: 'label',
-            text: 'Total found:',
-            margin: '0 5 0 0'
-        },
-        {
-            xtype: 'label',
-            id: prototype.id + '-lbl-totalScan',
-            text: '0',
-            style: 'font-weight:bold;'
-        }
-    ]
-}
+                                            xtype: 'container',
+                                            id: prototype.id + '-containerPageSummary',
+                                            layout: {
+                                                type: 'hbox',
+                                                align: 'middle',
+                                                pack: 'center'
+                                            },
+                                            margin: '6 0 0 10',
+                                            items: [
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Page',
+                                                    margin: '0 5 0 0'
+                                                },
+                                                {
+                                                    xtype: 'label',
+                                                    id: prototype.id + '-lbl-currentPageScan',
+                                                    text: '0',
+                                                    style: 'font-weight:bold;',
+                                                    margin: '0 5 0 0'
+                                                },
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'of',
+                                                    margin: '0 5 0 0'
+                                                },
+                                                {
+                                                    xtype: 'label',
+                                                    id: prototype.id + '-lbl-pageCountScan',
+                                                    text: '0',
+                                                    style: 'font-weight:bold;',
+                                                    margin: '0 20 0 0'
+                                                },
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Total found:',
+                                                    margin: '0 5 0 0'
+                                                },
+                                                {
+                                                    xtype: 'label',
+                                                    id: prototype.id + '-lbl-totalScan',
+                                                    text: '0',
+                                                    style: 'font-weight:bold;'
+                                                }
+                                            ]
+                                        }
 
 
                                     ]
@@ -2834,30 +2855,14 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                         click: 'onConciliationCash'
                     }
                 },
-                {
-                    text: 'Conciliacion <br> Adjust',
+                 {
+                    text: 'Conciliacion Adjust',
                     id: prototype.id + '-btn-Adjust',
-                    iconCls: 'prx-icon-update',
+                    icon: 'resources/img/botones/refresh.png',
                     listeners: {
                         click: 'onConciliationCashAdjust'
                     }
                 },
-                {
-                    text: 'Add <br> Adjust',
-                    id: prototype.id + '-btn-AddAdjust',
-                    icon: 'prx-icon-add',
-                    listeners: {
-                        click: 'onConciliationAddAdjust'
-                    }
-                },
-//                        {
-//                            text: 'Delete',
-//                            id: prototype.id + '-btn-delete',
-//                            iconCls: 'prx-icon-delete',
-//                            listeners: {
-//                                click: 'onDeleteClick'
-//                            }
-//                        },
                 {
                     text: 'Reverse Match',
                     id: prototype.id + '-btn-reverse',
@@ -2867,10 +2872,18 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                         click: 'onReverseClick'
                     }
                 },
+               {
+                    text: 'Add Adjust',
+                    id: prototype.id + '-btn-AddAdjust',
+                    iconCls: 'prx-icon-add',
+                    listeners: {
+                        click: 'onConciliationAddAdjust'
+                    }
+                },
                 {
                     text: 'Cancel',
                     id: prototype.id + '-btn-cancel',
-                    iconCls: 'prx-icon-cancel',
+                    icon: 'resources/img/botones/restricted_folder_symbol_stop-16.png',
                     listeners: {
                         click: 'onCancelClick'
                     }
