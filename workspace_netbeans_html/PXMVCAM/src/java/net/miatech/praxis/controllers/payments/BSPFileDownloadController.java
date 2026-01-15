@@ -188,7 +188,7 @@ public class BSPFileDownloadController extends BaseController {
             String[] columns = {
                 "Nbr", "Report ID", "User ID (N/A)", "REF NBR (B*MM*W*C)",
                 "PED (yy/mm/dd)", "Date", "File Name", "Time", "Dist. Name", "Group ID (N/A)",
-                "Lines","Pages"
+                "Lines", "Pages"
             };
 
             for (int i = 0; i < columns.length; i++) {
@@ -230,7 +230,7 @@ public class BSPFileDownloadController extends BaseController {
             throw new SpringException(e);
         }
     }
-    
+
     @RequestMapping(value = "getXLSX")
     public @ResponseBody
     void getXLSX(HttpServletRequest request, HttpServletResponse response) {
@@ -391,7 +391,7 @@ public class BSPFileDownloadController extends BaseController {
                 .toString();
 
         String year = request.getParameter("year");       // ej: 2025
-        String filename = request.getParameter("filename"); // ej: ARC_XXXX.txt
+        String filename = request.getParameter("filename"); // ej: 134_ARC_XXXX.txt
 
         System.out.println("Parámetros → year=" + year + ", filename=" + filename);
 
@@ -405,9 +405,31 @@ public class BSPFileDownloadController extends BaseController {
             return;
         }
 
+        String country = "US";
+        String[] parts = filename.split("_");
+
+        if (parts.length > 0) {
+            String clientCode = parts[0];
+
+            switch (clientCode) {
+                case "202":
+                    country = "SV";
+                    break;
+                case "134":
+                    country = "US";
+                    break;
+                default:
+                    country = "US"; // Por defecto
+                    break;
+            }
+        }
+
+        System.out.println("Cliente detectado: " + (parts.length > 0 ? parts[0] : "N/A") + " → País: " + country);
+
         String folderStr
                 = rutaBase
-                + "\\workspace\\HISTORY-ARC\\US\\"
+                + "\\workspace\\HISTORY-ARC\\"
+                + country + "\\"
                 + year;
 
         Path folderPath = Paths.get(folderStr);
@@ -417,9 +439,19 @@ public class BSPFileDownloadController extends BaseController {
         Path filePath = folderPath.resolve(filename);
 
         if (!Files.exists(filePath)) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            response.getWriter().write("Archivo no encontrado: " + filename);
-            return;
+            // Opcional: buscar en carpeta por defecto si no se encuentra
+            String defaultFolderStr = rutaBase + "\\workspace\\HISTORY-ARC\\US\\" + year;
+            Path defaultFilePath = Paths.get(defaultFolderStr).resolve(filename);
+
+            if (Files.exists(defaultFilePath)) {
+                System.out.println("Archivo encontrado en carpeta por defecto (US): " + defaultFilePath);
+                filePath = defaultFilePath;
+            } else {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                response.getWriter().write("Archivo no encontrado: " + filename
+                        + " (buscado en: " + folderPath + " y " + defaultFilePath.getParent() + ")");
+                return;
+            }
         }
 
         System.out.println("Archivo encontrado: " + filePath);
@@ -632,12 +664,21 @@ public class BSPFileDownloadController extends BaseController {
 
         File tempZip = File.createTempFile("ARC_Files_", ".zip");
         int addedFiles = 0;
+        int skippedInvalidCcust = 0;
 
         try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(tempZip))) {
 
             for (MPF221 item : list) {
 
                 try {
+                    // Validar CCUST primero
+                    String ccust = item.CUSTOMER;
+                    if (!isValidCcust(ccust)) {
+                        System.err.println("CCUST inválido: " + ccust + " - Saltando archivo: " + item.NAMEFILE);
+                        skippedInvalidCcust++;
+                        continue;  // Saltar este registro
+                    }
+
                     // PEDARC = YY/MM/DD → YEAR = 20YY
                     String pedarc = item.PEDARC;
                     if (pedarc == null || pedarc.length() < 2) {
@@ -647,10 +688,19 @@ public class BSPFileDownloadController extends BaseController {
 
                     String year = "20" + pedarc.substring(0, 2);
 
+                    String countryCode = getCountryCode(ccust);
+
+                    if ("UN".equals(countryCode)) {
+                        System.err.println("Código de país desconocido para CCUST válido: " + ccust);
+                        continue;  // Por si acaso
+                    }
+
                     String folderStr
                             = rutaBase
-                            + "\\workspace\\HISTORY-ARC\\US\\"
-                            + year;
+                            + File.separator + "workspace"
+                            + File.separator + "HISTORY-ARC"
+                            + File.separator + countryCode
+                            + File.separator + year;
 
                     String fileName = item.NAMEFILE;
                     if (!fileName.toLowerCase().endsWith(".txt")) {
@@ -678,6 +728,7 @@ public class BSPFileDownloadController extends BaseController {
         }
 
         System.out.println("ARC incluidos en ZIP: " + addedFiles + " de " + list.size());
+        System.out.println("Registros saltados por CCUST inválido: " + skippedInvalidCcust);
 
         if (addedFiles == 0) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -695,6 +746,31 @@ public class BSPFileDownloadController extends BaseController {
         Files.copy(tempZip.toPath(), response.getOutputStream());
         response.flushBuffer();
         tempZip.delete();
+    }
+
+    private boolean isValidCcust(String ccust) {
+        if (ccust == null || ccust.trim().isEmpty()) {
+            return false;
+        }
+
+        String cleanedCcust = ccust.trim();
+        return "134".equals(cleanedCcust) || "202".equals(cleanedCcust);
+    }
+
+    private String getCountryCode(String ccust) {
+        if (ccust == null) {
+            return "UN";
+        }
+
+        ccust = ccust.trim();
+
+        if ("134".equals(ccust)) {
+            return "US";  // Estados Unidos
+        } else if ("202".equals(ccust)) {
+            return "SV";  // El Salvador
+        }
+
+        return "UN";
     }
 
 }

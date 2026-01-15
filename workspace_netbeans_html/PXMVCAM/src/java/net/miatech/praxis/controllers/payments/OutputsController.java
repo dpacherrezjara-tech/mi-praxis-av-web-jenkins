@@ -196,25 +196,25 @@ public class OutputsController extends BaseController {
         }
         return new Gson().toJson(map);
     }
-    
-    @RequestMapping(value = "updateBilledMPF100",  method = RequestMethod.POST)
+
+    @RequestMapping(value = "updateBilledMPF100", method = RequestMethod.POST)
     public @ResponseBody
     String updateRecords(ModelMap map, HttpServletRequest request) {
         System.out.println("-------------- LoadSalesConciliation : updateRecords-------------");
-        
+
         Gson gson = new Gson();
         A2353Filter filter = new A2353Filter();
         A2353Filter result = new A2353Filter();
         String beanString;
         try {
-        Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
-        beanString = request.getParameter("beanString");
-        filter = gson.fromJson(beanString, A2353Filter.class);
+            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2353Filter.class);
 
-        logic = new OutputsLogic();
-        logic.setSession(this.serverSession.getServerSession());
-        UserView user = this.serverSession.getServerSession().getUserView();
-        
+            logic = new OutputsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            UserView user = this.serverSession.getServerSession().getUserView();
+
             result = logic.SQP05105_UPDATE(filter, user);
             map.put("result", result);
             map.put("success", true);
@@ -610,13 +610,18 @@ public class OutputsController extends BaseController {
             } else {
                 name += " - CLIENT AVIANCA";
             }
-            if (filter.IN_FUENTE.equals("C")) {
-                name += " - COLOMBIA";
+
+            if (filter.IN_CASH.equals("Y")) {
+                name += " - CASH";
             } else {
-                name += " - EXTERIOR";
-            }
-            if (!filter.IN_CORE.equals("")) {
-                name += " - PROCES " + filter.IN_CORE;
+                if (filter.IN_FUENTE.equals("C")) {
+                    name += " - COLOMBIA";
+                } else {
+                    name += " - EXTERIOR";
+                }
+                if (!filter.IN_CORE.equals("")) {
+                    name += " - PROCES " + filter.IN_CORE;
+                }
             }
 
             int len = listaData.size();

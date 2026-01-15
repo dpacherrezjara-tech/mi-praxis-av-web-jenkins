@@ -104,6 +104,75 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
             Ext.getCmp(prototype.id + '-cmbCores').hide();
         }
     },
+    viewCashFilter: function () {
+        let me = this;
+
+        const toggleContainer = Ext.getCmp(prototype.id + '-btnToggleSwitchPayment');
+        if (!toggleContainer) {
+            console.error('Toggle no encontrado');
+            return;
+        }
+
+        const toggleEl = toggleContainer.getEl();
+        if (!toggleEl)
+            return;
+
+        const inputEl = toggleEl.down('input.toggle-input');
+        if (!inputEl)
+            return;
+
+        const isCashMode = inputEl.dom.checked; // true = CREDITO, false = CASH
+
+        const toggleContainerExtCo = Ext.getCmp(prototype.id + '-btnToggleSwitch');
+        if (!toggleContainerExtCo) {
+            console.error('Toggle Colombia/Exterior no encontrado');
+            return;
+        }
+
+        const toggleElExtCo = toggleContainerExtCo.getEl();
+        if (!toggleElExtCo)  // ← CORREGIDO: debe ser toggleElExtCo, no toggleEl
+            return;
+
+        const inputElExtCo = toggleElExtCo.down('input.toggle-input');
+        if (!inputElExtCo)  // ← CORREGIDO: debe ser inputElExtCo, no inputEl
+            return;
+
+        const isExteriorMode = inputElExtCo.dom.checked; // true = EXTERIOR, false = COLOMBIA
+
+        console.log('Modo actual:', isCashMode ? 'CREDITO' : 'CASH');
+        console.log('Modo Colombia/Exterior:', isExteriorMode ? 'EXTERIOR' : 'COLOMBIA');
+        console.log(isExteriorMode, 'isExteriorMode');
+
+        // Pasar ambos parámetros
+        me.togglePaymentComponents(isCashMode, isExteriorMode);
+    },
+
+    togglePaymentComponents: function (isCreditMode, isExteriorMode) {
+
+        const componentsCashCredit = [
+            '-COL', // Label Colombia
+            '-btnToggleSwitch', // Toggle interior/exterior  
+            '-EXT', // Label Exterior
+        ];
+
+        componentsCashCredit.forEach(componentId => {
+            const cmp = Ext.getCmp(prototype.id + componentId);
+            if (cmp) {
+                cmp.setVisible(isCreditMode);
+            }
+        });
+
+        const proLabel = Ext.getCmp(prototype.id + '-PRO');
+        const cmbCores = Ext.getCmp(prototype.id + '-cmbCores');
+
+        if (proLabel) {
+            proLabel.setVisible(isCreditMode && isExteriorMode);
+        }
+
+        if (cmbCores) {
+            cmbCores.setVisible(isCreditMode && isExteriorMode);
+        }
+    },
     eventKey: function (e, eOpts) {
         if (eOpts.getKey() === 13) {
             this.btnSearch_click();
@@ -213,12 +282,13 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
         if (!proces.isVisible()) {
             //solo es colombia
             me.bean.IN_FUENTE = 'C';
+            me.bean.IN_CORE = "";
         } else {
             //exterior
             me.bean.IN_FUENTE = 'E';
             me.bean.IN_CORE = Ext.getCmp(prototype.id + '-cmbCores').getValue();
         }
-
+        me.bean.IN_CASH = me.getPaymentMode() ? 'N' : 'Y';
         var beanString = JSON.stringify(me.bean);
         console.log(me.bean);
         searchParams = {

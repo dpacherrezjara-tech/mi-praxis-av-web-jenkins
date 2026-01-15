@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -114,6 +115,83 @@ public class CashController extends BaseController {
             throw new SpringException(e);
         }
         return lst;
+    }
+
+    @RequestMapping(value = "searchCredit")
+    public @ResponseBody
+    String searchCredit(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- Cash Controller : searchCredit-------------");
+        map.put("success", true);
+        List<MPF108> lst = this.getListsearchCredit(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<MPF108> getListsearchCredit(HttpServletRequest request, Boolean bExcel) {
+
+        List<MPF108> lst = new ArrayList<>(0);
+        MPF108Filter filter = new MPF108Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new CashLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, MPF108Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadMPS520(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+
+    @RequestMapping(value = "updateSummary")
+    public @ResponseBody
+    String updateSummary(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- Cash Controller : updateSummary (MPS440) -------------");
+
+        try {
+            String beanString = request.getParameter("beanString");
+            Gson gson = new Gson();
+            MPF108Filter filter = gson.fromJson(beanString, MPF108Filter.class);
+
+            // Ejecutar el stored procedure MPS440
+            logic = new CashLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            Map<String, Object> result = logic.executeMPS440(filter);
+
+            map.put("success", result.get("success"));
+            map.put("message", result.get("message"));
+            map.put("sqlCode", result.get("sqlCode"));
+
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("message", "Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return new Gson().toJson(map);
     }
 
     @RequestMapping(value = "searchDataDetailSource")
@@ -332,7 +410,7 @@ public class CashController extends BaseController {
 
             // ======== CABECERA ===========
             String[] columnas = {
-                "Nbr.", "Ticket", "Status", "Source", "Type", "Form Payment","Sales Date",
+                "Nbr.", "Ticket", "Status", "Source", "Type", "Form Payment", "Sales Date",
                 "Country", "Agent", "Transaction", "Days Pending", "Currency", "SVFOP", "SVFOPNETR"
             };
 
@@ -430,7 +508,7 @@ public class CashController extends BaseController {
             int rowIndex = 0;
 
             String[] columnas = {
-                "Nbr.", "Ticket", "Status", "Source", "Type", "Form Payment","Sales Date",
+                "Nbr.", "Ticket", "Status", "Source", "Type", "Form Payment", "Sales Date",
                 "Country", "Agent", "Transaction", "Days Pending", "Currency", "Amount"
             };
 
@@ -858,7 +936,7 @@ public class CashController extends BaseController {
             throw new SpringException(e);
         }
     }
-    
+
     @RequestMapping(value = "getXLSXDetailPrincipalSource")
     public @ResponseBody
     void getXLSXDetailPrincipalSource(HttpServletRequest request, HttpServletResponse response) {
@@ -900,7 +978,7 @@ public class CashController extends BaseController {
             int rowIndex = 0;
 
             String[] columnas = {
-                "Nbr.", "Ticket", "Status", "Source", "Type", "Form Payment","Sales Date",
+                "Nbr.", "Ticket", "Status", "Source", "Type", "Form Payment", "Sales Date",
                 "Country", "Agent", "Transaction", "Days Pending", "Currency", "Amount"
             };
 
