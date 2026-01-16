@@ -1142,12 +1142,12 @@ public class TemplateReconciliaCreditDAO {
 
         try {
 
-            String SQLCLL02 = "{CALL PRAXISMP.MPS109(?,?,?,?,?,?,?)}";
+            String SQLCLL02 = "{CALL PRAXISMP.MPS109(?,?,?,?,?,?,?,?)}";
 
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL02);
 
-            cstmt.registerOutParameter(7, Types.VARCHAR);
+            cstmt.registerOutParameter(8, Types.VARCHAR);
 
             cstmt.setString(1, filter.IN_CCUST);
             cstmt.setString(2, filter.IN_CODPRO);
@@ -1155,11 +1155,12 @@ public class TemplateReconciliaCreditDAO {
             cstmt.setString(4, filter.IN_FECR);
             cstmt.setString(5, filter.IN_HOCR);
             cstmt.setString(6, filter.IN_CODUNI);
-            cstmt.setString(7, "");
+            cstmt.setString(7, filter.IN_FORCE);
+            cstmt.setString(8, "");
 
             cstmt.execute();
 
-            strMsj = strMsj + "**" + cstmt.getString(7);
+            strMsj = strMsj + "**" + cstmt.getString(8);
 
         } catch (Exception e) {
             e.printStackTrace();

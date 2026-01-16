@@ -21,6 +21,7 @@ public class MPF102Filter {
     public String IN_FECR = "";
     public String IN_HOCR = "";
     public String IN_CODUNI = "";
+    public String IN_FORCE = "";
     
 
 }

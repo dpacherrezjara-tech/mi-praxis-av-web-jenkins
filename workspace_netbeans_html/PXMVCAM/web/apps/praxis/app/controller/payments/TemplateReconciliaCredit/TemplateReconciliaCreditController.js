@@ -968,6 +968,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
                 if (me.checkStateSettlementsReview.get(r.RN) === true) {
                     totalVentas += r.TOTAL || 0;
                     totalComision += r.COMISION || 0;
+                    totalTotal += r.TOTAL || 0;
                 }
             });
         }
@@ -981,6 +982,11 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
         }
 
         let calculo = Math.abs(totalDeposito - (Math.abs(totalTotal) - Math.abs(totalComision) - Math.abs(totalDescuento)));
+
+        console.log(totalDeposito, 'totalDeposito')
+        console.log(totalTotal, 'totalTotal')
+        console.log(totalComision, 'totalComision')
+        console.log(totalDescuento, 'totalDescuento')
 
         let totalImplicado = Math.abs(totalDeposito)
                 + Math.abs(totalVentas)
@@ -2733,16 +2739,19 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
         // Resetear arrays globales de grids hijas
         me.allBandocRecords = [];
         me.allSettlementRecords = [];
+        me.allDiscountRecords = [];
 
         // Resetear stores locales de grids hijas
         me.localBandocStore = null;
         me.localSettlementStore = null;
+        me.localDiscountStore = null;
 
 
 
         // Limpiar maps de selección de grids hijas
         me.checkStateWMHBandoc.clear();
         me.checkStateWMHSettlements.clear();
+        me.checkStateWMHDiscount.clear();
 
         // Resetear campos de resultados
         const resultFields = [
@@ -2798,13 +2807,28 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
 
     // <editor-fold defaultstate="collapsed" desc="Ejecucion">
     verifyConciliationWMH: function () {
+        let checkBox = Ext.getCmp(prototype.id + '-chkMarkForced');
+        let getForce = checkBox ? checkBox.getValue() : false;
+
+        let message, title;
+
+        if (getForce) {
+            title = '.:PRAXIS:. - CONCILIACIÓN FORZADA';
+            message = '¿Está seguro que desea ejecutar la conciliación forzada?<br><br>' +
+                    '<b> ADVERTENCIA:</b> Esta opción permite realizar match a pesar de la diferencia de monto.';
+        } else {
+            title = '.:PRAXIS:.';
+            message = '¿Está seguro que desea ejecutar la conciliación?';
+        }
+
         Ext.Msg.show({
-            title: '.:PRAXIS:.',
-            msg: 'Are you sure you want to execute the conciliation?',
+            title: title,
+            msg: message,
             buttons: Ext.MessageBox.OKCANCEL,
             scope: this,
-            icon: Ext.MessageBox.QUESTION,
+            icon: getForce ? Ext.MessageBox.WARNING : Ext.MessageBox.QUESTION,
             modal: true,
+            width: getForce ? 400 : 300,
             fn: function (btn) {
                 if (btn === 'ok') {
                     this.executeConciliationWMH();
@@ -2824,6 +2848,9 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
 
         let getProcess = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
         let getCustomer = Ext.getCmp(prototype.id + '-typeClient').getValue();
+        let checkBox = Ext.getCmp(prototype.id + '-chkMarkForced');
+        let getForce = checkBox ? "" : "Y";
+        console.log(getForce,'getForce')
         const esVenta = ["VN", "BM", "AB"].includes(getProcess);
 
         let hayCheckBandoc = me.allBandocRecords.some(r => me.checkStateWMHBandoc.get(r.RN) === true);
@@ -2957,14 +2984,15 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
         me.beanConciliation.IN_FECR = `${formattedDate}`;
         me.beanConciliation.IN_HOCR = formattedTime;
         me.beanConciliation.IN_CODUNI = uniqueCode;
-
+        me.beanConciliation.IN_FORCE = getForce;
+        
         console.log(cleanDiscounts);
         console.log(cleanBandoc);
         console.log(cleanSettlements);
         console.log(cleanSale);
         console.log(cleanHeader);
         console.log(me.beanConciliation);
-
+        
         let searchParamsConciliation = {
             beanString: JSON.stringify(me.beanConciliation),
             beanDiscounts: JSON.stringify(cleanDiscounts),
@@ -2978,7 +3006,23 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
             console.log(response);
             if (response.success) {
                 Ext.Msg.alert('Éxito', response.result);
-                me.fetchBandocWMH();
+                
+                Ext.Msg.show({
+                        title: '✅ Éxito',
+                        msg: response.result,
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.INFO,
+                        modal: true,
+                        closable: true,
+                        autoClose: false,
+                        scope: me,
+                        fn: function (btn) {
+                            if (btn === 'ok') {
+                                me.fetchBandocWMH();
+                            }
+                        }
+                    });
+                
             } else {
                 Ext.Msg.alert('Error', response.result || 'Error desconocido');
             }
@@ -3008,12 +3052,25 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
                 let res = Ext.JSON.decode(response.responseText);
 
                 if (res.result && res.result.includes("Operation Succefull")) {
-
-                    global.Msg({msg: "Operation Successful"});
+                    // Mostrar mensaje persistente
+                    Ext.Msg.show({
+                        title: '✅ Éxito',
+                        msg: 'Operation Successful',
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.INFO,
+                        modal: true,
+                        closable: true,
+                        autoClose: false,
+                        scope: me,
+                        fn: function (btn) {
+                            if (btn === 'ok') {
+                            }
+                        }
+                    });
 
                     me.cleanGridsWMH();
-
                     me.updateGridTotalWMH();
+
                 } else {
                     global.Msg({msg: res.result});
                     callback && callback(res);
