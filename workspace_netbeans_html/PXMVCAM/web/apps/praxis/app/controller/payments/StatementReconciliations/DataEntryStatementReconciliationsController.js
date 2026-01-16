@@ -118,6 +118,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.setValue('de-txtSCURRENCYL', this.beanResult.SCURRENCY);
         this.setValue('de-txtACCNUMBERL', this.beanResult.ACCNUMBERL);
         this.setValue('de-txtACCNUMBER', this.beanResult.ACCNUMBER);
+        this.setValue('de-txtCERROR', this.beanResult.CERROR + " - " + this.beanResult.CERROR_DESC);
         this.setValue('de-txtDIFF', Ext.util.Format.number(this.beanResult.DIFF, '0,000.00'));
         this.setValue('txtUSCR', this.beanResult.USCR);
         this.setValue('txtFECR', this.beanResult.FECR);
