@@ -294,7 +294,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                             xtype: 'panel',
                             border: false,
                             width: 1000,
-                            id: prototype.id + '-panelGridDataDetail',
+                            id: prototype.id + '-panelGridDataDetailCash',
                             bodyStyle: 'background-color: #F4F7FD;',
                             padding: '1',
                             hidden: false,
@@ -305,7 +305,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                             items: [
                                 {
                                     xtype: 'grid',
-                                    id: prototype.id + '-gridDataDetailSource',
+                                    id: prototype.id + '-gridDataDetailSourceCash',
                                     minHeight: 200,
                                     width: 790,
                                     hidden: false,

@@ -29,10 +29,29 @@ public class CashLogic {
 
     }
 
+//    CASH
+    
     public List<MPF108> loadMPS441(MPF108Filter filter) throws SQLException, Exception {
         return CashDAO.loadMPS441(filter);
     }
 
+    public List<MPF300> loadMPS442(MPF108Filter filter) throws SQLException, Exception {
+        return CashDAO.loadMPS442(filter);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     public List<MPF108> loadMPS520(MPF108Filter filter) throws SQLException, Exception {
         return CashDAO.loadMPS520(filter);
     }
@@ -47,9 +66,7 @@ public class CashLogic {
     
     
 
-    public List<MPF300> loadMPS442(MPF108Filter filter) throws SQLException, Exception {
-        return CashDAO.loadMPS442(filter);
-    }
+    
 
     public List<MPF300> loadMPS443(MPF108Filter filter) throws SQLException, Exception {
         return CashDAO.loadMPS443(filter);

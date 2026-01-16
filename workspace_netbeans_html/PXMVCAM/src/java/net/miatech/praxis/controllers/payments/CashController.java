@@ -69,6 +69,7 @@ public class CashController extends BaseController {
         return "sales/Cash/form_index";
     }
 
+//    CASH
     @RequestMapping(value = "search")
     public @ResponseBody
     String search(ModelMap map, HttpServletRequest request) {
@@ -116,6 +117,46 @@ public class CashController extends BaseController {
         }
         return lst;
     }
+    
+    @RequestMapping(value = "searchDataDetailSourceCash")
+    public @ResponseBody
+    String searchDataDetailSourceCash(ModelMap map, HttpServletRequest request) throws Exception {
+        Functions.msjConsola("PRAXISMP", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+        map.put("success", true);
+        List<MPF300> lst = this.getListDataDetailSource(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<MPF300> getListDataDetailSource(HttpServletRequest request, Boolean bExcel) {
+
+        List<MPF300> lst = new ArrayList<>(0);
+        MPF108Filter filter = new MPF108Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new CashLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, MPF108Filter.class);
+
+            lst = logic.loadMPS442(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    
+    
+    
+    
+    
+    
+    
 
     @RequestMapping(value = "searchCredit")
     public @ResponseBody
@@ -194,38 +235,7 @@ public class CashController extends BaseController {
         return new Gson().toJson(map);
     }
 
-    @RequestMapping(value = "searchDataDetailSource")
-    public @ResponseBody
-    String searchDataDetailSource(ModelMap map, HttpServletRequest request) throws Exception {
-        Functions.msjConsola("PRAXISMP", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
-        map.put("success", true);
-        List<MPF300> lst = this.getListDataDetailSource(request, false);
-        System.out.println("Total : " + lst.size());
-        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
-        map.put("data", lst);
-        return new Gson().toJson(map);
-    }
-
-    public List<MPF300> getListDataDetailSource(HttpServletRequest request, Boolean bExcel) {
-
-        List<MPF300> lst = new ArrayList<>(0);
-        MPF108Filter filter = new MPF108Filter();
-        Gson gson = new Gson();
-        String beanString = "";
-
-        try {
-            logic = new CashLogic();
-            logic.setSession(this.serverSession.getServerSession());
-
-            beanString = request.getParameter("beanString");
-            filter = gson.fromJson(beanString, MPF108Filter.class);
-
-            lst = logic.loadMPS442(filter);
-        } catch (Exception e) {
-            throw new SpringException(e);
-        }
-        return lst;
-    }
+    
 
     @RequestMapping(value = "searchDataDetailPrincipal")
     public @ResponseBody

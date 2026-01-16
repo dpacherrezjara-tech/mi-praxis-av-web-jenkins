@@ -3,6 +3,11 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
     alias: 'controller.CashController',
     isDashboardCash: true,
     isDashboardCredit: true,
+    IN_SOCIETY_CASH: '',
+    IN_SOCIETY_CREDIT: '',
+
+
+
 
     fecha: new Date(),
     bean: {},
@@ -11,7 +16,7 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
     lstCountry: [],
     panelActual: '',
     me: '',
-    IN_SOCIETY: '',
+    
     searchParams: {},
     searchParamsSecundary: {},
     paramsDetailSource: {},
@@ -100,7 +105,6 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         me.obtainData();
         me.btnSearch_click();
     },
-
     // <editor-fold defaultstate="collapsed" desc="Obtener Data ">
     obtainData: function () {
 
@@ -188,7 +192,30 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         });
     },
     // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Buscar en Credito o Cash ">
+    btnSearch_click: function (obj, e) {
+        let seg = Ext.getCmp(prototype.id + '-segViewMode');
+        let selected = seg.getValue();
+        this.drillDown = [];
 
+        if (selected === 0) {
+            Ext.getCmp(prototype.id + '-panelCash').setVisible(true);
+            Ext.getCmp(prototype.id + '-panelCredit').setVisible(false);
+            if (me.isDashboardCash) {
+                this.setFormatParameterDashboard();
+                this.setGridDataDashboard();
+            } else {
+                this.setFormatParameterDetailSecundary();
+                this.setGridDataDetailSecundary();
+            }
+        } else if (selected === 1) {
+            Ext.getCmp(prototype.id + '-panelCash').setVisible(false);
+            Ext.getCmp(prototype.id + '-panelCredit').setVisible(true);
+            this.setFormatParameterDashboardCredit();
+            this.setGridDataDashboardCredit();
+        }
+    },
+    // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Helpers ">
     selectComboFromYearCash: function (obj) {
         var comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYearCash');
@@ -219,7 +246,7 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         comboToYear.bindStore(storeComboDataYear);
         comboToYear.setValue(obj.getValue());
         if (comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue()) {
-            comboFromMonth.setValue(comboToMonth.getValue())
+            comboFromMonth.setValue(comboToMonth.getValue());
         }
     },
     selectComboFromMonthCredit: function (obj) {
@@ -251,7 +278,59 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         }
     },
     // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Actualizar Sumario">
+    updateSummarySales: function () {
 
+        Ext.getCmp(prototype.id + '-boxConsultas').mask('Updating sales summary...');
+
+        // Obtener parámetros necesarios
+        var params = {
+            beanString: JSON.stringify({
+                IN_CCUST: '134'
+            })
+        };
+
+        // Llamar al endpoint para ejecutar el SP
+        Ext.Ajax.request({
+            url: prototype.url + '/updateSummary',
+            method: 'POST',
+            params: params,
+            timeout: 300000, // 5 minutos (el SP puede tomar tiempo)
+            success: function (response, options) {
+                Ext.getCmp(prototype.id + '-boxConsultas').unmask();
+
+                var res = Ext.JSON.decode(response.responseText);
+                if (res.success) {
+                    global.Msg({
+                        msg: 'Sales summary updated successfully!',
+                        icon: Ext.Msg.INFO,
+                        buttons: Ext.Msg.OK
+                    });
+
+                    me.btnSearch_click();
+
+                    console.log('MPS440 executed:', res.message);
+                } else {
+                    global.Msg({
+                        msg: 'Error updating summary: ' + res.message,
+                        icon: Ext.Msg.ERROR
+                    });
+                }
+            },
+            failure: function (response, options) {
+                Ext.getCmp(prototype.id + '-boxConsultas').unmask();
+                global.Msg({
+                    msg: 'Server error: ' + response.statusText,
+                    icon: Ext.Msg.ERROR
+                });
+            }
+        });
+    },
+    // </editor-fold>
+    
+    
+    
+    // SOLO CASH
     // <editor-fold defaultstate="collapsed" desc="Mostrar Filtros Detalle Cash ">
     showFiltersCash: function () {
         var toggleComponent = Ext.getCmp(prototype.id + '-btnToggleSwitchCashCD');
@@ -329,105 +408,7 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         }
     },
     // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="Mostrar Filtros Detalle Credito ">
-    showFiltersCredit: function () {
-        var toggleComponent = Ext.getCmp(prototype.id + '-btnToggleSwitchCreditCD');
-        if (!toggleComponent) {
-            console.error('Toggle component not found');
-            return;
-        }
-
-        var checkbox = toggleComponent.getEl().down('input[type="checkbox"]');
-        if (checkbox) {
-            var isChecked = checkbox.dom.checked;
-
-            var dayFromCredit = Ext.getCmp(prototype.id + '-cmbDateFromDayCredit');
-            var dayToCredit = Ext.getCmp(prototype.id + '-cmbDateToDayCredit');
-            var monthFromCredit = Ext.getCmp(prototype.id + '-cmbDateFromMonthCredit');
-            var monthToCredit = Ext.getCmp(prototype.id + '-cmbDateToMonthCredit');
-            var yearFromCredit = Ext.getCmp(prototype.id + '-cmbDateFromYearCredit');
-            var yearToCredit = Ext.getCmp(prototype.id + '-cmbDateToYearCredit');
-            var societyCredit = Ext.getCmp(prototype.id + '-typeSocietyCredit');
-            var inputDateCredit = Ext.getCmp(prototype.id + '-cmbInputDateCredit');
-
-            if (isChecked) {
-
-                var fechaHoy = new Date();
-                var yearActual = fechaHoy.getFullYear();
-                var monthActual = String(fechaHoy.getMonth() + 1).padStart(2, '0');
-                var dayActual = String(fechaHoy.getDate()).padStart(2, '0');
-
-                yearFromCredit.setValue(yearActual);
-                monthFromCredit.setValue(monthActual);
-                dayFromCredit.setValue('01');  // Primero del mes
-
-                yearToCredit.setValue(yearActual);
-                monthToCredit.setValue(monthActual);
-                dayToCredit.setValue(dayActual);  // Día actual
-
-//                Ext.getCmp(prototype.id + '-titleFieldsetAccounting').setVisible(true);
-                Ext.getCmp(prototype.id + '-titleFieldsetSaleCredit').setVisible(true);
-                dayFromCredit.setDisabled(false);
-                dayToCredit.setDisabled(false);
-                societyCredit.setDisabled(false);
-                inputDateCredit.setDisabled(true);
-                inputDateCredit.setValue('1');
-
-                monthFromCredit.setDisabled(false);
-                monthToCredit.setDisabled(false);
-
-                me.isDashboardCredit = false;
-
-            } else {
-                var yearActual = new Date().getFullYear();
-
-                yearFromCredit.setValue(yearActual);
-                monthFromCredit.setValue('01');  // Enero
-                dayFromCredit.setValue('');  // Vacío o '01'
-
-                yearToCredit.setValue(yearActual);
-                monthToCredit.setValue('12');  // Diciembre
-                dayToCredit.setValue('');  // Vacío o '31'
-
-//                Ext.getCmp(prototype.id + '-titleFieldsetAccounting').setVisible(false);
-                Ext.getCmp(prototype.id + '-titleFieldsetSaleCredit').setVisible(false);
-                dayFromCredit.setDisabled(true);
-                dayToCredit.setDisabled(true);
-                societyCredit.setDisabled(true);
-                inputDateCredit.setDisabled(false);
-
-                me.isDashboardCredit = true;
-            }
-        }
-    },
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="Buscar en Credito o Cash ">
-    btnSearch_click: function (obj, e) {
-        let seg = Ext.getCmp(prototype.id + '-segViewMode');
-        let selected = seg.getValue();
-        this.drillDown = [];
-
-        if (selected === 0) {
-            Ext.getCmp(prototype.id + '-panelCash').setVisible(true);
-            Ext.getCmp(prototype.id + '-panelCredit').setVisible(false);
-            if (me.isDashboardCash) {
-                this.setFormatParameterDashboard();
-                this.setGridDataDashboard();
-            } else {
-                this.setFormatParameterDetailSecundary();
-                this.setGridDataDetailSecundary();
-            }
-        } else if (selected === 1) {
-            Ext.getCmp(prototype.id + '-panelCash').setVisible(false);
-            Ext.getCmp(prototype.id + '-panelCredit').setVisible(true);
-            this.setFormatParameterDashboardCredit();
-            this.setGridDataDashboardCredit();
-        }
-    },
-    // </editor-fold>
-
+    
     // <editor-fold defaultstate="collapsed" desc="Mostrando Dashboard Cash ">
     setFormatParameterDashboard: function () {
         me.bean = {};
@@ -604,6 +585,216 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         me.getPaggin();
     },
     // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Mostrando Bajada por Fuente Cash ">
+    onGridDataDetailSource: function (column, e, rowIndex, colIndex, rowData) {
+        let esPadre = rowData.record.childNodes.length ? true : false;
+        let rowPadre = rowData.record.data;
+        let fecha = this.getPeriodoYYYYMM(rowPadre.strFormatDate);
+        me.bean = {};
+
+        if (esPadre) {
+            me.bean.IN_SOCIETY = "";
+        } else {
+            me.bean.IN_SOCIETY = rowPadre.CCUST;
+        }
+
+        me.bean.IN_FECHA_FROM = fecha;
+        me.bean.IN_FECHA_TO = fecha;
+        me.bean.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountryCash').getValue();
+        me.bean.IN_SOURCE = Ext.getCmp(prototype.id + '-cmbCfuenteCash').getValue();
+        me.bean.IN_TREG = Ext.getCmp(prototype.id + '-cmbInputDateCash').getValue();
+        me.IN_SOCIETY_CASH = me.bean.IN_SOCIETY;
+        me.paramsDetailSource.beanString = JSON.stringify(me.bean);
+        console.log(me.bean, 'searchParams');
+        this.setGridDataDetailSource();
+    },
+    setGridDataDetailSource: function () {
+        if (me.panelActual !== '-panelGridDataDetailCash') {
+            me.drillDown.push(me.panelActual);
+            me.panelActual = '-panelGridDataDetailCash';
+            global.selectedChild(me.childs, prototype.id + me.panelActual);
+        }
+
+        win.lblUser_toolTip("Estructura: MPF300");
+        console.log(me.panelActual, 'me.panelActual');
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+            proxy: {
+                url: prototype.url + '/searchDataDetailSourceCash'
+            }, listeners: {
+                beforeload: function (obj) {
+                    obj.proxy.extraParams = me.paramsDetailSource;
+                },
+                load: function (obj) {
+
+                    if (obj.data.length === 0) {
+                        global.Msg({msg: 'Data not found.'});
+                        return;
+                    }
+
+                    // Último registro
+                    let lastRecord = obj.last();
+                    let lastData = lastRecord.data;
+
+                    let TOTAL_QSALES = lastData.TOTAL_QSALES;
+                    let TOTAL_QMATCH = lastData.TOTAL_QMATCH;
+                    let TOTAL_QMANUAL = lastData.TOTAL_QMANUAL;
+                    let TOTAL_QPEND = lastData.TOTAL_QPEND;
+                    let TOTAL_PCT_MATCH = lastData.TOTAL_PCT_MATCH;
+                    let TOTAL_QPOLIPE = lastData.TOTAL_QPOLIPE;
+                    let TOTAL_QPOLIC = lastData.TOTAL_QPOLIC;
+
+                    Ext.getCmp(prototype.id + '-TOTAL_QSALES_SOURCE').setText(Ext.util.Format.number(TOTAL_QSALES, '0,000'));
+                    Ext.getCmp(prototype.id + '-TOTAL_QMATCH_SOURCE').setText(Ext.util.Format.number(TOTAL_QMATCH, '0,000'));
+                    Ext.getCmp(prototype.id + '-TOTAL_PCT_MATCH_SOURCE').setText(Ext.util.Format.number(TOTAL_PCT_MATCH, '0.00') + ' %');
+                    Ext.getCmp(prototype.id + '-TOTAL_QMANUAL_SOURCE').setText(Ext.util.Format.number(TOTAL_QMANUAL, '0,000'));
+                    Ext.getCmp(prototype.id + '-TOTAL_QPEND_SOURCE').setText(Ext.util.Format.number(TOTAL_QPEND, '0,000'));
+                    Ext.getCmp(prototype.id + '-TOTAL_QPOLIPE_SOURCE').setText(Ext.util.Format.number(TOTAL_QPOLIPE, '0,000'));
+                    Ext.getCmp(prototype.id + '-TOTAL_QPOLIC_SOURCE').setText(Ext.util.Format.number(TOTAL_QPOLIC, '0,000'));
+
+                    let lst = obj.data.items.map(v => v.data);
+
+                    let dataBar = [];
+
+                    Ext.Array.each(lst, function (value) {
+
+                        let matchTotal = value.QMATCH + value.QMANUAL;
+
+                        dataBar.push({
+                            source: value.CFUENTE,
+                            TicketTotal: value.QSALES,
+                            TicketMatch: matchTotal,
+                            TicketPending: value.QPEND
+                        });
+                    });
+
+                    dataBar.sort(function (a, b) {
+                        return b.TicketTotal - a.TicketTotal;
+                    });
+
+                    let chart = Ext.getCmp(prototype.id + '-displayBarSMSource');
+
+                    chart.setStore({
+                        fields: ['source', 'TicketTotal', 'TicketMatch', 'TicketPending'],
+                        data: dataBar
+                    });
+
+                    let serie = chart.getSeries()[0];
+
+                    serie.setXField('source');
+                    serie.setYField(['TicketTotal', 'TicketMatch', 'TicketPending']);
+                    serie.setTitle(['Total', 'Match', 'Pending']);
+
+                }
+            }
+        });
+        global.clear();
+        Ext.getCmp(prototype.id + '-gridDataDetailSourceCash').bindStore(storeGridDatas);
+        me.getPaggin();
+    },
+    // </editor-fold>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    // <editor-fold defaultstate="collapsed" desc="Mostrar Filtros Detalle Credito ">
+    showFiltersCredit: function () {
+        var toggleComponent = Ext.getCmp(prototype.id + '-btnToggleSwitchCreditCD');
+        if (!toggleComponent) {
+            console.error('Toggle component not found');
+            return;
+        }
+
+        var checkbox = toggleComponent.getEl().down('input[type="checkbox"]');
+        if (checkbox) {
+            var isChecked = checkbox.dom.checked;
+
+            var dayFromCredit = Ext.getCmp(prototype.id + '-cmbDateFromDayCredit');
+            var dayToCredit = Ext.getCmp(prototype.id + '-cmbDateToDayCredit');
+            var monthFromCredit = Ext.getCmp(prototype.id + '-cmbDateFromMonthCredit');
+            var monthToCredit = Ext.getCmp(prototype.id + '-cmbDateToMonthCredit');
+            var yearFromCredit = Ext.getCmp(prototype.id + '-cmbDateFromYearCredit');
+            var yearToCredit = Ext.getCmp(prototype.id + '-cmbDateToYearCredit');
+            var societyCredit = Ext.getCmp(prototype.id + '-typeSocietyCredit');
+            var inputDateCredit = Ext.getCmp(prototype.id + '-cmbInputDateCredit');
+
+            if (isChecked) {
+
+                var fechaHoy = new Date();
+                var yearActual = fechaHoy.getFullYear();
+                var monthActual = String(fechaHoy.getMonth() + 1).padStart(2, '0');
+                var dayActual = String(fechaHoy.getDate()).padStart(2, '0');
+
+                yearFromCredit.setValue(yearActual);
+                monthFromCredit.setValue(monthActual);
+                dayFromCredit.setValue('01');  // Primero del mes
+
+                yearToCredit.setValue(yearActual);
+                monthToCredit.setValue(monthActual);
+                dayToCredit.setValue(dayActual);  // Día actual
+
+//                Ext.getCmp(prototype.id + '-titleFieldsetAccounting').setVisible(true);
+                Ext.getCmp(prototype.id + '-titleFieldsetSaleCredit').setVisible(true);
+                dayFromCredit.setDisabled(false);
+                dayToCredit.setDisabled(false);
+                societyCredit.setDisabled(false);
+                inputDateCredit.setDisabled(true);
+                inputDateCredit.setValue('1');
+
+                monthFromCredit.setDisabled(false);
+                monthToCredit.setDisabled(false);
+
+                me.isDashboardCredit = false;
+
+            } else {
+                var yearActual = new Date().getFullYear();
+
+                yearFromCredit.setValue(yearActual);
+                monthFromCredit.setValue('01');  // Enero
+                dayFromCredit.setValue('');  // Vacío o '01'
+
+                yearToCredit.setValue(yearActual);
+                monthToCredit.setValue('12');  // Diciembre
+                dayToCredit.setValue('');  // Vacío o '31'
+
+//                Ext.getCmp(prototype.id + '-titleFieldsetAccounting').setVisible(false);
+                Ext.getCmp(prototype.id + '-titleFieldsetSaleCredit').setVisible(false);
+                dayFromCredit.setDisabled(true);
+                dayToCredit.setDisabled(true);
+                societyCredit.setDisabled(true);
+                inputDateCredit.setDisabled(false);
+
+                me.isDashboardCredit = true;
+            }
+        }
+    },
+    // </editor-fold>
+
+    
+
+    
+    
+    
 
     // <editor-fold defaultstate="collapsed" desc="Mostrando Detalle Cash ">
     setFormatParameterDetailSecundary: function () {
@@ -843,55 +1034,7 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
     // </editor-fold>
 
 
-    // <editor-fold defaultstate="collapsed" desc="Actualizar Sumario">
-    updateSummarySales: function () {
-
-        Ext.getCmp(prototype.id + '-boxConsultas').mask('Updating sales summary...');
-
-        // Obtener parámetros necesarios
-        var params = {
-            beanString: JSON.stringify({
-                IN_CCUST: '134'
-            })
-        };
-
-        // Llamar al endpoint para ejecutar el SP
-        Ext.Ajax.request({
-            url: prototype.url + '/updateSummary',
-            method: 'POST',
-            params: params,
-            timeout: 300000, // 5 minutos (el SP puede tomar tiempo)
-            success: function (response, options) {
-                Ext.getCmp(prototype.id + '-boxConsultas').unmask();
-
-                var res = Ext.JSON.decode(response.responseText);
-                if (res.success) {
-                    global.Msg({
-                        msg: 'Sales summary updated successfully!',
-                        icon: Ext.Msg.INFO,
-                        buttons: Ext.Msg.OK
-                    });
-
-                    me.btnSearch_click();
-
-                    console.log('MPS440 executed:', res.message);
-                } else {
-                    global.Msg({
-                        msg: 'Error updating summary: ' + res.message,
-                        icon: Ext.Msg.ERROR
-                    });
-                }
-            },
-            failure: function (response, options) {
-                Ext.getCmp(prototype.id + '-boxConsultas').unmask();
-                global.Msg({
-                    msg: 'Server error: ' + response.statusText,
-                    icon: Ext.Msg.ERROR
-                });
-            }
-        });
-    },
-    // </editor-fold>
+    
 
 
 
@@ -1004,110 +1147,7 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         Ext.getCmp(prototype.id + '-paggin3').bindStore(storeGridDatas);
         me.getPaggin();
     },
-    onGridDataDetailSource: function (column, e, rowIndex, colIndex, rowData) {
-        let esPadre = rowData.record.childNodes.length ? true : false;
-        let rowPadre = rowData.record.data;
-        let fecha = this.getPeriodoYYYYMM(rowPadre.strFormatDate);
-        me.bean = {};
-
-        if (esPadre) {
-            me.bean.IN_SOCIETY = "";
-        } else {
-            me.bean.IN_SOCIETY = rowPadre.CCUST;
-        }
-
-        me.bean.IN_FECHA_FROM = fecha;
-        me.bean.IN_FECHA_TO = fecha;
-        me.bean.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountryDashboard').getValue();
-        me.bean.IN_SOURCE = Ext.getCmp(prototype.id + '-cmbCfuenteDashboard').getValue();
-        me.IN_SOCIETY = me.bean.IN_SOCIETY;
-        me.paramsDetailSource.beanString = JSON.stringify(me.bean);
-        console.log(me.bean, 'searchParams');
-        this.setGridDataDetailSource();
-    },
-    setGridDataDetailSource: function () {
-        if (me.panelActual !== '-panelGridDataDetail') {
-            me.drillDown.push(me.panelActual);
-            me.panelActual = '-panelGridDataDetail';
-            global.selectedChild(me.childs, prototype.id + me.panelActual);
-        }
-
-        win.lblUser_toolTip("Estructura: MPF300");
-        console.log(me.panelActual, 'me.panelActual')
-        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
-            proxy: {
-                url: prototype.url + '/searchDataDetailSource'
-            }, listeners: {
-                beforeload: function (obj) {
-                    obj.proxy.extraParams = me.paramsDetailSource;
-                },
-                load: function (obj) {
-
-                    if (obj.data.length === 0) {
-                        global.Msg({msg: 'Data not found.'});
-                        return;
-                    }
-
-                    // Último registro
-                    let lastRecord = obj.last();
-                    let lastData = lastRecord.data;
-
-                    let TOTAL_QSALES = lastData.TOTAL_QSALES;
-                    let TOTAL_QMATCH = lastData.TOTAL_QMATCH;
-                    let TOTAL_QMANUAL = lastData.TOTAL_QMANUAL;
-                    let TOTAL_QPEND = lastData.TOTAL_QPEND;
-                    let TOTAL_PCT_MATCH = lastData.TOTAL_PCT_MATCH;
-                    let TOTAL_QPOLIPE = lastData.TOTAL_QPOLIPE;
-                    let TOTAL_QPOLIC = lastData.TOTAL_QPOLIC;
-
-                    Ext.getCmp(prototype.id + '-TOTAL_QSALES_SOURCE').setText(Ext.util.Format.number(TOTAL_QSALES, '0,000'));
-                    Ext.getCmp(prototype.id + '-TOTAL_QMATCH_SOURCE').setText(Ext.util.Format.number(TOTAL_QMATCH, '0,000'));
-                    Ext.getCmp(prototype.id + '-TOTAL_PCT_MATCH_SOURCE').setText(Ext.util.Format.number(TOTAL_PCT_MATCH, '0.00') + ' %');
-                    Ext.getCmp(prototype.id + '-TOTAL_QMANUAL_SOURCE').setText(Ext.util.Format.number(TOTAL_QMANUAL, '0,000'));
-                    Ext.getCmp(prototype.id + '-TOTAL_QPEND_SOURCE').setText(Ext.util.Format.number(TOTAL_QPEND, '0,000'));
-                    Ext.getCmp(prototype.id + '-TOTAL_QPOLIPE_SOURCE').setText(Ext.util.Format.number(TOTAL_QPOLIPE, '0,000'));
-                    Ext.getCmp(prototype.id + '-TOTAL_QPOLIC_SOURCE').setText(Ext.util.Format.number(TOTAL_QPOLIC, '0,000'));
-
-                    let lst = obj.data.items.map(v => v.data);
-
-                    let dataBar = [];
-
-                    Ext.Array.each(lst, function (value) {
-
-                        let matchTotal = value.QMATCH + value.QMANUAL;
-
-                        dataBar.push({
-                            source: value.CFUENTE,
-                            TicketTotal: value.QSALES,
-                            TicketMatch: matchTotal,
-                            TicketPending: value.QPEND
-                        });
-                    });
-
-                    dataBar.sort(function (a, b) {
-                        return b.TicketTotal - a.TicketTotal;
-                    });
-
-                    let chart = Ext.getCmp(prototype.id + '-displayBarSMSource');
-
-                    chart.setStore({
-                        fields: ['source', 'TicketTotal', 'TicketMatch', 'TicketPending'],
-                        data: dataBar
-                    });
-
-                    let serie = chart.getSeries()[0];
-
-                    serie.setXField('source');
-                    serie.setYField(['TicketTotal', 'TicketMatch', 'TicketPending']);
-                    serie.setTitle(['Total', 'Match', 'Pending']);
-
-                }
-            }
-        });
-        global.clear();
-        Ext.getCmp(prototype.id + '-gridDataDetailSource').bindStore(storeGridDatas);
-        me.getPaggin();
-    },
+    
     onEditClick: function (grid, rowIndex, colIndex) {
         var rec = grid.getStore().getAt(rowIndex);
         this.winDataEntry('U', rec);

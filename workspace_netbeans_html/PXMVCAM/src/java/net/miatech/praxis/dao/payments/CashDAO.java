@@ -52,7 +52,9 @@ public class CashDAO {
     public void setSession(IServerSession ss) {
         session = ss;
     }
-
+    
+//    CASH
+    
     public List<MPF108> loadMPS441(MPF108Filter filter) throws SQLException, Exception {
 
         List<MPF108> lstData = new ArrayList<>();
@@ -68,7 +70,7 @@ public class CashDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS441(?,?,?, ?, ?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS441(?,?,?, ?, ?,?)}";
 
         Connection cnx = null;
         try {
@@ -80,6 +82,7 @@ public class CashDAO {
             cstmt.setString(3, filter.IN_FECHA_TO);
             cstmt.setString(4, filter.IN_COUNTRY);
             cstmt.setString(5, filter.IN_SOURCE);
+            cstmt.setString(6, filter.IN_TREG);
 
             cstmt.execute();
             rst = cstmt.getResultSet();
@@ -148,6 +151,128 @@ public class CashDAO {
 
         return lstData;
     }
+    
+    public List<MPF300> loadMPS442(MPF108Filter filter) throws SQLException, Exception {
+
+        List<MPF300> lstData = new ArrayList<MPF300>(0);
+        MPF300 bean;
+
+        int totalQSales = 0;
+        int totalQMatch = 0;
+        int totalQManual = 0;
+        int totalQPend = 0;
+        int totalQPolipe = 0;
+        int totalQPolic = 0;
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS442(?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.IN_SOCIETY);
+            cstmt.setString(3, filter.IN_FECHA_FROM);
+            cstmt.setString(4, filter.IN_FECHA_TO);
+            cstmt.setString(5, filter.IN_COUNTRY);
+            cstmt.setString(6, filter.IN_SOURCE);
+            cstmt.setString(7, filter.IN_TREG);
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+            while (rst.next()) {
+                bean = new MPF300();
+                bean.RN = rst.getInt("RN");
+                bean.SDATE = rst.getString("SDATE").trim();
+                bean.CFUENTE = rst.getString("CFUENTE");
+                bean.QSALES = rst.getInt("QSALES");
+                bean.QMATCH = rst.getInt("QMATCH");
+                bean.QMANUAL = rst.getInt("QMANUAL");
+                bean.QPEND = rst.getInt("QPEND");
+                bean.QPOLIPE = rst.getInt("QPOLIPE");
+                bean.QPOLIC = rst.getInt("QPOLIC");
+
+                int matchTotal = bean.QMATCH + bean.QMANUAL;
+                if (bean.QSALES > 0) {
+                    bean.PCT_MATCH = (matchTotal * 100.0) / bean.QSALES;
+                } else {
+                    bean.PCT_MATCH = 0.0;
+                }
+
+                totalQSales += bean.QSALES;
+                totalQMatch += bean.QMATCH;
+                totalQManual += bean.QMANUAL;
+                totalQPend += bean.QPEND;
+                totalQPolipe += bean.QPOLIPE;
+                totalQPolic += bean.QPOLIC;
+
+                bean.TOTAL_QSALES = totalQSales;
+                bean.TOTAL_QMATCH = totalQMatch;
+                bean.TOTAL_QMANUAL = totalQManual;
+                bean.TOTAL_QPEND = totalQPend;
+                bean.TOTAL_QPOLIPE = totalQPolipe;
+                bean.TOTAL_QPOLIC = totalQPolic;
+
+                int totalMatch = totalQMatch + totalQManual;
+
+                if (totalQSales > 0) {
+                    bean.TOTAL_PCT_MATCH = (totalMatch * 100.0) / totalQSales;
+                } else {
+                    bean.TOTAL_PCT_MATCH = 0.0;
+                }
+
+                lstData.add(bean);
+            }
+            rst.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstData;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     public List<MPF108> loadMPS520(MPF108Filter filter) throws SQLException, Exception {
 
@@ -298,105 +423,7 @@ public class CashDAO {
         return result;
     }
 
-    public List<MPF300> loadMPS442(MPF108Filter filter) throws SQLException, Exception {
-
-        List<MPF300> lstData = new ArrayList<MPF300>(0);
-        MPF300 bean;
-
-        int totalQSales = 0;
-        int totalQMatch = 0;
-        int totalQManual = 0;
-        int totalQPend = 0;
-        int totalQPolipe = 0;
-        int totalQPolic = 0;
-
-        CallableStatement cstmt = null;
-        ResultSet rst = null;
-
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS442(?,?,?,?,?,?)}";
-
-        Connection cnx = null;
-        try {
-            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-            cstmt = cnx.prepareCall(SQLCLL01);
-
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            cstmt.setString(2, filter.IN_SOCIETY);
-            cstmt.setString(3, filter.IN_FECHA_FROM);
-            cstmt.setString(4, filter.IN_FECHA_TO);
-            cstmt.setString(5, filter.IN_COUNTRY);
-            cstmt.setString(6, filter.IN_SOURCE);
-            cstmt.execute();
-
-            rst = cstmt.getResultSet();
-            while (rst.next()) {
-                bean = new MPF300();
-                bean.RN = rst.getInt("RN");
-                bean.SDATE = rst.getString("SDATE").trim();
-                bean.CFUENTE = rst.getString("CFUENTE");
-                bean.QSALES = rst.getInt("QSALES");
-                bean.QMATCH = rst.getInt("QMATCH");
-                bean.QMANUAL = rst.getInt("QMANUAL");
-                bean.QPEND = rst.getInt("QPEND");
-                bean.QPOLIPE = rst.getInt("QPOLIPE");
-                bean.QPOLIC = rst.getInt("QPOLIC");
-
-                int matchTotal = bean.QMATCH + bean.QMANUAL;
-                if (bean.QSALES > 0) {
-                    bean.PCT_MATCH = (matchTotal * 100.0) / bean.QSALES;
-                } else {
-                    bean.PCT_MATCH = 0.0;
-                }
-
-                totalQSales += bean.QSALES;
-                totalQMatch += bean.QMATCH;
-                totalQManual += bean.QMANUAL;
-                totalQPend += bean.QPEND;
-                totalQPolipe += bean.QPOLIPE;
-                totalQPolic += bean.QPOLIC;
-
-                bean.TOTAL_QSALES = totalQSales;
-                bean.TOTAL_QMATCH = totalQMatch;
-                bean.TOTAL_QMANUAL = totalQManual;
-                bean.TOTAL_QPEND = totalQPend;
-                bean.TOTAL_QPOLIPE = totalQPolipe;
-                bean.TOTAL_QPOLIC = totalQPolic;
-
-                int totalMatch = totalQMatch + totalQManual;
-
-                if (totalQSales > 0) {
-                    bean.TOTAL_PCT_MATCH = (totalMatch * 100.0) / totalQSales;
-                } else {
-                    bean.TOTAL_PCT_MATCH = 0.0;
-                }
-
-                lstData.add(bean);
-            }
-            rst.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (rst != null) {
-                try {
-                    rst.close();
-                } catch (SQLException e) {
-                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
-                }
-            }
-            if (cstmt != null) {
-                try {
-                    cstmt.close();
-                } catch (SQLException e) {
-                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
-                }
-            }
-            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
-            pasarGarbageCollector();
-        }
-
-        return lstData;
-    }
+    
 
     public List<MPF300> loadMPS443(MPF108Filter filter) throws SQLException, Exception {
 

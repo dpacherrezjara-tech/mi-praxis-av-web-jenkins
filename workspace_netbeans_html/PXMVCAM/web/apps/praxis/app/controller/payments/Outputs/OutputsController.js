@@ -121,7 +121,7 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
         if (!inputEl)
             return;
 
-        const isCashMode = inputEl.dom.checked; // true = CREDITO, false = CASH
+        const isCashMode = inputEl.dom.checked; 
 
         const toggleContainerExtCo = Ext.getCmp(prototype.id + '-btnToggleSwitch');
         if (!toggleContainerExtCo) {
@@ -130,14 +130,14 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
         }
 
         const toggleElExtCo = toggleContainerExtCo.getEl();
-        if (!toggleElExtCo)  // ← CORREGIDO: debe ser toggleElExtCo, no toggleEl
+        if (!toggleElExtCo)
             return;
 
         const inputElExtCo = toggleElExtCo.down('input.toggle-input');
-        if (!inputElExtCo)  // ← CORREGIDO: debe ser inputElExtCo, no inputEl
+        if (!inputElExtCo)
             return;
 
-        const isExteriorMode = inputElExtCo.dom.checked; // true = EXTERIOR, false = COLOMBIA
+        const isExteriorMode = inputElExtCo.dom.checked;
 
         console.log('Modo actual:', isCashMode ? 'CREDITO' : 'CASH');
         console.log('Modo Colombia/Exterior:', isExteriorMode ? 'EXTERIOR' : 'COLOMBIA');
