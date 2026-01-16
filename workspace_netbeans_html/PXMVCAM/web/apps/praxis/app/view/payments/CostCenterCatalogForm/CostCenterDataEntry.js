@@ -239,6 +239,15 @@ Ext.define('Ext.Praxis.view.payments.CostCenterCatalogForm.CostCenterDataEntry',
                     }
                 },
                 {
+                    text: 'Save',
+                    iconCls: 'prx-icon-image-update',
+                    id: prototype.idDE1 + '-btn-save',
+                    hidden: true,
+                    listeners: {
+                        click: 'onSaveClick'
+                    }
+                },
+                {
                     text: 'Cancel',
                     id: prototype.idDE1 + '-btn-cancel',
                     iconCls: 'prx-icon-cancel',
