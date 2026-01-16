@@ -4613,6 +4613,7 @@ public class StatementReconciliationsDAO {
                 beanTkt.NETOS = rst.getString("NETO").trim();
                 beanTkt.VALDATE = rst.getString("VALDATE").trim();
                 beanTkt.PRDA = rst.getString("PRDA").trim();
+                beanTkt.TDOC = rst.getString("TDOC").trim();
                 listBeanTkt.add(beanTkt);
             }
             rst.close();
@@ -4625,20 +4626,21 @@ public class StatementReconciliationsDAO {
         return listBeanTkt;
     }
 
-    public List<MPF101> CONFILIQ(String QUERY) throws SQLException, Exception {
+    public List<MPF101> CONFILIQ(String QUERY, String TDOC) throws SQLException, Exception {
 
         List<MPF101> listBeanTkt = new ArrayList<MPF101>(0);
         MPF101 beanTkt = new MPF101();
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL PRAXISMP.CONFILIQ(?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.CONFILIQ(?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
             cstmt.setString(1, QUERY);
+            cstmt.setString(2, TDOC);
             cstmt.execute();
 
             rst = cstmt.getResultSet();
@@ -4659,20 +4661,21 @@ public class StatementReconciliationsDAO {
         return listBeanTkt;
     }
     
-    public List<MPF101> CONFILIQ_SEQ(String QUERY) throws SQLException, Exception {
+    public List<MPF101> CONFILIQ_SEQ(String QUERY, String TDOC) throws SQLException, Exception {
 
         List<MPF101> listBeanTkt = new ArrayList<MPF101>(0);
         MPF101 beanTkt = new MPF101();
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL PRAXISMP.CONFILIQ_SEQ(?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.CONFILIQ_SEQ(?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
             cstmt.setString(1, QUERY);
+            cstmt.setString(2, TDOC);
             cstmt.execute();
 
             rst = cstmt.getResultSet();
@@ -4729,11 +4732,11 @@ public class StatementReconciliationsDAO {
         return val;
     }
 
-    public boolean CONCILIA2(String inQuery, String inBandoc, String inDateci, String inTranci,String inValdate, String inPrda) throws SQLException, Exception {
+    public boolean CONCILIA2(String inQuery, String inBandoc, String inDateci, String inTranci,String inValdate, String inPrda,String Tdoc) throws SQLException, Exception {
         boolean result = false;
         String updateQuery = "UPDATE PRAXISMP.MPF060 "
                 + "SET BANDOC = ?, DATECI = ?, TRANCI = ?, VALDATE = ?, PRDA = ?, STVAL = '5', USUP = ?, FEUP = ?, HOUP = ?, FREGLA = '9' , PGMUP = 'EXCEL-WEB' "
-                + "WHERE CCUST = '134' AND STVAL = '3' AND TDOC = 'S' AND " + inQuery;
+                + "WHERE CCUST = '134' AND STVAL = '3' AND TDOC = '" + Tdoc + "' AND " + inQuery;
 
         try (Connection connection = session.getCNXIBMDB2().getIBMDB2Connection();
                 PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
@@ -4761,11 +4764,11 @@ public class StatementReconciliationsDAO {
         return result;
     }
     
-    public boolean CONCILIA2_SEQ(String inQuery, String inBandoc, String inDateci, String inTranci,String inValdate, String inPrda) throws SQLException, Exception {
+    public boolean CONCILIA2_SEQ(String inQuery, String inBandoc, String inDateci, String inTranci,String inValdate, String inPrda, String Tdoc) throws SQLException, Exception {
         boolean result = false;
         String updateQuery = "UPDATE PRAXISMP.MPF060 "
                 + "SET BANDOC = ?, DATECI = ?, TRANCI = ?, VALDATE = ?, PRDA = ?, STVAL = '5', USUP = ?, FEUP = ?, HOUP = ?, FREGLA = '9' , PGMUP = 'EXCEL-WEB' "
-                + "WHERE CCUST = '134' AND STVAL = '3' AND SEQ = '' AND TDOC = 'S' AND " + inQuery;
+                + "WHERE CCUST = '134' AND STVAL = '3' AND SEQ = '' AND TDOC = '" + Tdoc + "' AND " + inQuery;
 
         try (Connection connection = session.getCNXIBMDB2().getIBMDB2Connection();
                 PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {

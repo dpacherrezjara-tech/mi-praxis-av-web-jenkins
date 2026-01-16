@@ -62,9 +62,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                     Ext.getCmp(prototype.id + '-cmbSCARCOD').bindStore(
                             Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
                     Ext.getCmp(prototype.id + '-cmbSCARCOD').setValue('');
-                    if(res.userPermis.PERMM === 'Y'){
+                    if (res.userPermis.PERMM === 'Y') {
                         Ext.getCmp(prototype.id + '-btn-reverse').show();
-                    }else{
+                    } else {
                         Ext.getCmp(prototype.id + '-btn-reverse').hide();
                     }
                 } else
@@ -81,15 +81,16 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1055);
             Ext.getCmp(prototype.id + '-panelScanCard').hide();
             Ext.getCmp(prototype.id + '-panelScanCard2').hide();
+            Ext.getCmp(prototype.id + '-panelScanCard3').hide();
             Ext.getCmp(prototype.id + '-btn-update').hide();
             this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETOC, '0,000.00'));
             this.setValue('de-txtCOREP', this.beanResult.COREP);
         } else {
-            
+
             Ext.getCmp(prototype.id + '-btn-update').show();
             this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETOL, '0,000.00'));
             this.setValue('de-txtCOREP', this.beanResult.COREP);
-            
+
         }
         this.setValue('de-txtdescTDOC', this.beanResult.descTDOC);
         this.setValue('de-txtTDOC', this.beanResult.TDOC);
@@ -168,9 +169,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         meDE.bean.data.IN_RED = meDE.bean.data.RED;
         meDE.bean.data.IN_STVAL = meDE.bean.data.STVAL;
         meDE.bean.data.SCURRENCY = meDE.bean.data.SCURRENCY;
-        if (meDE.bean.data.IN_STVAL === 'Match' ) {
+        if (meDE.bean.data.IN_STVAL === 'Match') {
             meDE.bean.data.IN_STVAL = '1';
-        } else if ( meDE.bean.data.IN_STVAL === 'Match Manual' ){
+        } else if (meDE.bean.data.IN_STVAL === 'Match Manual') {
             meDE.bean.data.IN_STVAL = '5';
         } else {
             meDE.bean.data.IN_STVAL = 'P';
@@ -207,9 +208,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.beanScan.IN_ACCNUMBER = meDE.beanResult.ACCNUMBER;
         this.beanScan.IN_TDOC = meDE.beanResult.TDOC;
 
-        if (this.beanScan.IN_STVAL === 'Match' ) {
+        if (this.beanScan.IN_STVAL === 'Match') {
             this.beanScan.IN_STVAL = '1';
-        } else if ( this.beanScan.IN_STVAL === 'Match Manual' ){
+        } else if (this.beanScan.IN_STVAL === 'Match Manual') {
             this.beanScan.IN_STVAL = '5';
         } else {
             this.beanScan.IN_STVAL = 'P';
@@ -514,6 +515,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.beanScan.IN_FROMSDATE = (Ext.getCmp(prototype.id + '-txtFromSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromSDATE').getValue(), 'Ymd');
         this.beanScan.IN_TOSDATE = (Ext.getCmp(prototype.id + '-txtToSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToSDATE').getValue(), 'Ymd');
         this.beanScan.IN_SCARCOD = Ext.getCmp(prototype.id + '-cmbSCARCOD').getValue();
+        this.beanScan.IN_TDOC = Ext.getCmp(prototype.id + '-cmbTDOCSCAN').getValue();
 
         this.beanScan.IN_ACCNUMBER = Ext.getCmp(prototype.id + '-txtACCNUMBER').getValue();
         if (this.beanScan.IN_ACCNUMBER === '') {
@@ -542,15 +544,15 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.beanScan.IN_BANDOC = meDE.bean.data.BANDOC;
         this.beanScan.IN_strNETO = Ext.getCmp(prototype.id + '-txtNETO').getValue();
         this.beanScan.IN_STVAL = meDE.bean.data.STVAL;
-        
+
         this.beanScan.IN_TERMI = Ext.getCmp(prototype.id + '-txtTERMI').getValue();
         this.beanScan.IN_SAGENT = Ext.getCmp(prototype.id + '-txtSAGENT').getValue();
         this.beanScan.IN_SEQ = Ext.getCmp(prototype.id + '-txtSEQ').getValue();
         this.beanScan.IN_RED = Ext.getCmp(prototype.id + '-txtRED').getValue();
-        
-        if (this.beanScan.IN_STVAL === 'Match' ) {
+
+        if (this.beanScan.IN_STVAL === 'Match') {
             this.beanScan.IN_STVAL = '1';
-        } else if ( this.beanScan.IN_STVAL === 'Match Manual' ){
+        } else if (this.beanScan.IN_STVAL === 'Match Manual') {
             this.beanScan.IN_STVAL = '5';
         } else {
             this.beanScan.IN_STVAL = 'P';
@@ -583,13 +585,13 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 arrayNormal.push(value.data);
             }
         }
-        console.log(arrayNormal,'arrayNormal')
+        console.log(arrayNormal, 'arrayNormal')
         let listAux = {};
 
         for (let value of arrayNormal) {
             listAux[`${value.descSTVAL}#${value.CCUST}#${value.descTDOC}#${value.SDATE}#${value.SAGENT}#${value.TERMI}#${value.SCARCOD}#${value.SCARDN}#${value.SAUTHOC}#${value.SCURRENCY}#${value.NETO}#${value.RED}#${value.SEQ}`] = "repetido";
         }
-        
+
         var beanString = JSON.stringify(this.beanScan);
         Ext.Ajax.request({
             url: prototype.url + '/searchBean_DETAIL_CO',
@@ -697,32 +699,32 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     },
     onUpdateClick: function (btn) {
         var deci = this.preexecuteOption();
-        if (deci) {
-            Ext.Msg.show({
-                title: '.:Confirmation:.',
-                msg: 'Are you sure to Update?',
-                buttons: Ext.MessageBox.YESNO,
-                scope: this,
-                icon: Ext.MessageBox.QUESTION,
-                modal: true,
-                fn: function (btn) {
-                    if (btn === 'yes') {
-                        var beanTemp = {};
-                        beanTemp = this.llenarData();
-                        var msjResult = this.validacionInsert(beanTemp);
-                        if (msjResult === '') {
-                            beanTemp.option = 'U';
-                            this.maintenanceBean(beanTemp);
-                        } else {
-                            global.Msg({msg: msjResult});
-                        }
-                    }
-                }
-            });
-        }
+//        if (deci) {
+//            Ext.Msg.show({
+//                title: '.:Confirmation:.',
+//                msg: 'Are you sure to Update?',
+//                buttons: Ext.MessageBox.YESNO,
+//                scope: this,
+//                icon: Ext.MessageBox.QUESTION,
+//                modal: true,
+//                fn: function (btn) {
+//                    if (btn === 'yes') {
+//                        var beanTemp = {};
+//                        beanTemp = this.llenarData();
+//                        var msjResult = this.validacionInsert(beanTemp);
+//                        if (msjResult === '') {
+//                            beanTemp.option = 'U';
+//                            this.maintenanceBean(beanTemp);
+//                        } else {
+//                            global.Msg({msg: msjResult});
+//                        }
+//                    }
+//                }
+//            });
+//        }
     },
     onReverseClick: function (btn) {
-        
+
 
         Ext.Msg.show({
             title: '.:Confirmation:.',
@@ -738,7 +740,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                     this.reverseOption();
                 }
             }
-        }); 
+        });
     },
     onDeleteClick: function (btn) {
         Ext.Msg.show({
@@ -759,19 +761,19 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         });
     },
     onCancelClick: function (btn) {
-        
+
         this.view.close();
-        
+
     },
     // </editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="executeOption">
-    reverseOption: function (){
+    reverseOption: function () {
         let datos = {}
         datos.IN_BANDOC = Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue().trim()
         datos.IN_DATECI = Ext.getCmp(prototype.id + '-de-txtDATECI').getValue().trim()
         datos.IN_TRANCI = Ext.getCmp(prototype.id + '-de-txtTRANCI').getValue().trim()
-        console.log(datos,'reverseOption')
+        console.log(datos, 'reverseOption')
         Ext.Ajax.request({
             url: prototype.url + '/reverseOption',
             method: 'POST',
@@ -788,14 +790,14 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                         title: objResult.MESSAGE,
                         width: 500,
                         height: 380,
-                        modal: true,  // Hace que la ventana sea modal
+                        modal: true, // Hace que la ventana sea modal
                         closable: true,
                         layout: 'fit',
                         items: [
                             {
                                 xtype: 'panel',
-            //                    bodyPadding: 10,
-                                tpl: new Ext.XTemplate( `
+                                //                    bodyPadding: 10,
+                                tpl: new Ext.XTemplate(`
                                     <style>
                                         .styled-table {
                                             width: 100%;
@@ -870,26 +872,26 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                                             </tr>
                                         </tbody>
                                     </table>`
-                                ),
+                                        ),
                                 data: objResult
                             }
                         ],
                         buttons: [
                             {
                                 text: 'Cerrar',
-                                handler: function() {
+                                handler: function () {
                                     meDE.gridRefresh()
                                     this.up('window').close();
                                     Ext.getCmp(prototype.id + '-dataEntry').close();
-                                    
-                                    
-                                    
+
+
+
                                 }
                             }
                         ]
                     }).show();
-                    
-                    
+
+
                 } else
                     global.Msg({msg: res.sesion});
             },
@@ -901,12 +903,142 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     },
     gridRefresh: function () {
         console.log(panelActual, 'panel de parent control')
-        switch(panelActual){
+        switch (panelActual) {
             case '-boxDetDetails':
-                    controllerParent.setGridDataDetBANDOC();
-                    console.log('entra a')
+                controllerParent.setGridDataDetBANDOC();
+                console.log('entra a')
                 break;
         }
+    },
+    validateTolerance: function (montoExtracto,montoLiquidacion,diferencia) {
+
+//        var montoExtracto = 1250.00;
+//        var montoLiquidacion = 1200.00;
+//        var diferencia = montoExtracto - montoLiquidacion;
+
+//        win.down('#dfMontoExtracto').setValue(montoExtracto.toFixed(2));
+//        win.down('#dfMontoLiquidacion').setValue(montoLiquidacion.toFixed(2));
+//        win.down('#dfDiferencia').setValue(diferencia.toFixed(2));
+        var win = Ext.create('Ext.window.Window', {
+            title: 'Conciliation',
+            modal: true,
+            width: 600,
+            bodyPadding: 18,
+            resizable: false,
+            closable: true,
+            layout: {
+                type: 'hbox',
+                align: 'stretch'
+            },
+            bodyStyle: 'background-color: #F9FAFB; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);',
+            defaults: {
+                labelAlign: 'right',
+                labelWidth: 90,
+                margin: '10 0 10 0',
+                style: 'background-color:white; border-radius:6px;'
+            },
+            items: [
+                {
+                    xtype: 'container',
+                    itemId: 'cntMontos',
+                    layout: {
+                        type: 'vbox',
+                        align: 'stretch'
+                    },
+                    margin: '0 0 0 20',
+                    defaults: {
+                        xtype: 'displayfield',
+                        labelWidth: 140,
+                        labelAlign: 'left',
+                        fieldStyle: 'font-weight:bold;',
+                        margin: '4 0'
+                    },
+                    items: [
+                        {
+                            fieldLabel: 'Monto Extracto',
+                            itemId: 'dfMontoExtracto',
+                            value: Ext.util.Format.number(montoExtracto, '0,0.00')
+                        },
+                        {
+                            fieldLabel: 'Monto Liquidación',
+                            itemId: 'dfMontoLiquidacion',
+                            value: Ext.util.Format.number(montoLiquidacion, '0,0.00')
+                        },
+                        {
+                            fieldLabel: 'Diferencia',
+                            itemId: 'dfDiferencia',
+                            value: Ext.util.Format.number(diferencia, '0,0.00')
+                        }
+                    ]
+                },
+                {
+                    xtype: 'container',
+                    layout: {
+                        type: 'hbox',
+                        align: 'middle'
+                    },
+                    margin: '10 0 0 20',
+                    items: [
+                        {
+                            xtype: 'checkbox',
+                            itemId: 'chkTolerance',
+                            boxLabel: 'Tolerance',
+                            checked: true,
+                            listeners: {
+                                change: 'changeTolerance'
+                            }
+                        }
+                    ]
+                }
+            ],
+            buttons: [
+                {
+                    text: 'Cancel',
+                    iconCls: 'x-fa fa-times',
+                    scale: 'medium',
+                    style: `
+                        background-color: #A9B4C2;
+                        color: white;
+                        font-weight: bold;
+                        border-radius: 6px;
+                        padding: 6px 18px;
+                    `,
+                    handler: function () {
+                        win.close();
+                    }
+                },
+                {
+                    text: 'Conciliar',
+                    iconCls: 'x-fa fa-file-excel',
+                    scale: 'medium',
+                    style: `
+                        background-color: #1E88E5;
+                        color: white;
+                        font-weight: bold;
+                        border-radius: 6px;
+                        padding: 6px 22px;
+                    `,
+                    handler: function () {
+                        let tolerancia = win.down('#chkTolerance').getValue();
+                        let beanTemp = {}
+                        beanTemp.option = 'U';
+                        if(tolerancia){
+                            if (Math.abs(diferencia) > 100) {
+                                Ext.Msg.alert('Error', 'Diferencia mayor a la tolerancia');
+                                return false;
+                            }
+                            this.maintenanceBean(beanTemp);
+                        }else{
+                            this.maintenanceBean(beanTemp);
+                        }
+                        win.close();
+                    },
+                    scope: this
+                }
+            ]
+        });
+
+        win.show();
     },
     preexecuteOption: function () {
         //Modificacion
@@ -929,17 +1061,17 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             return false;
         }
 
-        if (DIFF == 0) {
-            console.log('entra a DIF = 0', DIFF);
-            return true;
-        } else if (DIFF !== 0 && DIFF < 100) {
-            console.log('entra a DIF < 100', DIFF);
-            return true;
-        } else {
-            console.log('entra a ELSE', DIFF);
-            global.Msg({msg: 'The Sum Amount is not equal to the Transaction Amount Stattement.'});
-            return false;
-        }
+//        if (DIFF == 0) {
+//            console.log('entra a DIF = 0', DIFF);
+//            return true;
+//        } else if (DIFF !== 0 && DIFF <= 100) {
+//            console.log('entra a DIF < 100', DIFF);
+//            return true;
+//        } else {
+//            console.log('entra a ELSE', DIFF);
+//            global.Msg({msg: 'The Sum Amount is not equal to the Transaction Amount Stattement.'});
+//            return false;
+//        }
 
         if (Array.isArray(datos) && datos.length === 0) {
             global.Msg({msg: 'There is no data in the scan.'});
@@ -950,7 +1082,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             global.Msg({msg: 'The bank account on the Statement is not the same in the Settlement.'});
             return false;
         }
-
+        this.validateTolerance(ASVFOP,BSVFOP,DIFF);
     },
     maintenanceBean: function (option) {
 
@@ -996,8 +1128,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     procesarRegistros: function (grilla) {
         var listaDeDatos = [];
         grilla.getStore().each(function (record) {
-        console.log(record.get('TDOC'), 'recorget tdoc')  
-        console.log(record.get('SCARCOD'), 'recorget tdoc')  
+            console.log(record.get('TDOC'), 'recorget tdoc')
+            console.log(record.get('SCARCOD'), 'recorget tdoc')
             let registro = {
                 CODEBANK: Ext.getCmp(prototype.id + '-de-txtCODEBANK').getValue(),
                 VALDATE: Ext.getCmp(prototype.id + '-de-txtVALDATE').getValue(),

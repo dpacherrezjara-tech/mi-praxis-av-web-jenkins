@@ -176,23 +176,23 @@ public class StatementReconciliationsLogic {
         return StatementReconciliationsDAO.CONFIEC(BANDOC);
     }
     
-    public List<MPF101> CONFILIQ(String Query) throws SQLException, Exception {
-        return StatementReconciliationsDAO.CONFILIQ(Query);
+    public List<MPF101> CONFILIQ(String Query, String TDOC) throws SQLException, Exception {
+        return StatementReconciliationsDAO.CONFILIQ(Query, TDOC);
     }
-    public List<MPF101> CONFILIQ_SEQ(String Query) throws SQLException, Exception {
-        return StatementReconciliationsDAO.CONFILIQ_SEQ(Query);
+    public List<MPF101> CONFILIQ_SEQ(String Query, String TDOC) throws SQLException, Exception {
+        return StatementReconciliationsDAO.CONFILIQ_SEQ(Query, TDOC);
     }
     
     public boolean CONCILIA1(String QUERY ,String ban,String dateci,String tranci,int qty,String netos) throws SQLException, Exception {
         return StatementReconciliationsDAO.CONCILIA1( QUERY , ban, dateci, tranci, qty, netos);
     }
     
-    public boolean CONCILIA2(String QUERY ,String ban,String dateci,String tranci,String valdate,String prda) throws SQLException, Exception {
-        return StatementReconciliationsDAO.CONCILIA2( QUERY , ban, dateci, tranci, valdate, prda);
+    public boolean CONCILIA2(String QUERY ,String ban,String dateci,String tranci,String valdate,String prda,String Tdoc) throws SQLException, Exception {
+        return StatementReconciliationsDAO.CONCILIA2( QUERY , ban, dateci, tranci, valdate, prda, Tdoc);
     }
     
-    public boolean CONCILIA2_SEQ(String QUERY ,String ban,String dateci,String tranci,String valdate,String prda) throws SQLException, Exception {
-        return StatementReconciliationsDAO.CONCILIA2_SEQ( QUERY , ban, dateci, tranci, valdate, prda);
+    public boolean CONCILIA2_SEQ(String QUERY ,String ban,String dateci,String tranci,String valdate,String prda,String Tdoc) throws SQLException, Exception {
+        return StatementReconciliationsDAO.CONCILIA2_SEQ( QUERY , ban, dateci, tranci, valdate, prda, Tdoc);
     }
     
     public MPF101 GET_TOLERANCIA(String Adate) throws SQLException, Exception {

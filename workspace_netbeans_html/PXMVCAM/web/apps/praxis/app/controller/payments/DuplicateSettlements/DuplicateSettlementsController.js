@@ -79,6 +79,15 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DuplicateSettlem
             '#DuplicateSettlementsForm-cmbDateFromDay': {
                 select: this.selectComboFromDay
             },
+            '#DuplicateSettlementsForm-cmbDateFromYearRemoved': {
+                select: this.selectComboFromYearRemoved
+            },
+            '#DuplicateSettlementsForm-cmbDateFromMonthRemoved': {
+                select: this.selectComboFromMonthRemoved
+            },
+            '#DuplicateSettlementsForm-cmbDateFromDayRemoved': {
+                select: this.selectComboFromDayRemoved
+            },
         });
     },
     xpanel_afterrender: function (obj, e) {
@@ -248,6 +257,7 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DuplicateSettlem
         me.bean.IN_SEQ = Ext.getCmp(prototype.id + '-txtSecuence').getValue() || '';
         me.bean.IN_SCARCOD = Ext.getCmp(prototype.id + '-txtCardType').getValue() || '';
         me.bean.IN_FASE2 = Ext.getCmp(prototype.id + '-cmbFase2').getValue() || '';
+        me.bean.IN_SECUENCE = Ext.getCmp(prototype.id + '-cmbSecuence').getValue() || '';
 
         var beanString = JSON.stringify(me.bean);
         searchParams = {
@@ -1086,6 +1096,30 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DuplicateSettlem
     selectComboFromDay: function (obj) {
         console.log(obj, 'obj day from')
         var comboToDay = Ext.getCmp(prototype.id + '-cmbDateToDay');
+        comboToDay.setValue(obj.getValue());
+    },
+    
+    selectComboFromMonthRemoved: function (obj) {
+        var comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonthRemoved');
+        comboToMonth.setValue(obj.getValue());
+        if (obj.getValue() !== '') {
+            Ext.getCmp(prototype.id + '-cmbDateFromDayRemoved').setDisabled(false);
+        }
+    },
+    selectComboFromYearRemoved: function (obj) {
+        var comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYearRemoved');
+        var storeComboDataYear = win.getStoreYear2(false, obj.getValue());
+        let comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYearRemoved');
+        let comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonthRemoved');
+        let comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonthRemoved');
+        comboToYear.bindStore(storeComboDataYear);
+        comboToYear.setValue(obj.getValue());
+        if (comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue()) {
+            comboFromMonth.setValue(comboToMonth.getValue());
+        }
+    },
+    selectComboFromDayRemoved: function (obj) {
+        var comboToDay = Ext.getCmp(prototype.id + '-cmbDateToDayRemoved');
         comboToDay.setValue(obj.getValue());
     },
 }

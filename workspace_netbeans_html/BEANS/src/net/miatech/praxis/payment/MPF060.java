@@ -19,6 +19,7 @@ public class MPF060 {
      public String SDATE = "";
      public String SAGENT = "";
      public String MERCHAND = "";
+     public String MONEDAPAGO = "";
      public String RED = "";
      public String TDOC = "";
      public String SCOUNTRY = "";
@@ -42,6 +43,8 @@ public class MPF060 {
      public String FEUP = "";
      public String HOUP = "";
      public String PGMUP = "";
+     public String TFILE = "";
+     public String CODUNI = "";
      
      public int QTY = 0;
      public long RN = 0;

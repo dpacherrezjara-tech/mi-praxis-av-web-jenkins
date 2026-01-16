@@ -4483,8 +4483,9 @@ public class StatementReconciliationsController extends BaseController {
                 System.out.println(QUERY);
                 String primerADATE = uniqueADATE.iterator().next();
                 listaDataEECC = logic.CONFIEC(BANDOC);
-                listaDataLIQUI = logic.CONFILIQ(QUERY);
-                listaDataLIQUI_SEQ = logic.CONFILIQ_SEQ(QUERY);
+                String TDOC = listaDataEECC.get(0).TDOC;
+                listaDataLIQUI = logic.CONFILIQ(QUERY, TDOC);
+                listaDataLIQUI_SEQ = logic.CONFILIQ_SEQ(QUERY,TDOC);
                 objMPF101 = logic.GET_TOLERANCIA(primerADATE);
                 
 
@@ -4511,7 +4512,7 @@ public class StatementReconciliationsController extends BaseController {
                             String prda = listaDataEECC.get(a).PRDA;
 
                             boolean conci1 = logic.CONCILIA1(QUERY, ban, dateci, tranci, qty, netos);
-                            boolean conci2 = logic.CONCILIA2(QUERY, ban, dateci, tranci, valdate, prda);
+                            boolean conci2 = logic.CONCILIA2(QUERY, ban, dateci, tranci, valdate, prda,TDOC);
 
                             if (conci1 && conci2) {
                                 message = "Bandoc: " + BANDOC.trim() + " whith amount: " + listaDataLIQUI.get(0).NETOS + " has concilied with " + listaDataLIQUI.get(0).QTY + " settlements.";
@@ -4531,7 +4532,7 @@ public class StatementReconciliationsController extends BaseController {
                             String prda = listaDataEECC.get(a).PRDA;
 
                             boolean conci1 = logic.CONCILIA1(QUERY, ban, dateci, tranci, qty, netos);
-                            boolean conci2 = logic.CONCILIA2_SEQ(QUERY, ban, dateci, tranci, valdate, prda);
+                            boolean conci2 = logic.CONCILIA2_SEQ(QUERY, ban, dateci, tranci, valdate, prda,TDOC);
 
                             if (conci1 && conci2) {
                                 message = "Bandoc: " + BANDOC.trim() + " whith amount: " + listaDataLIQUI_SEQ.get(0).NETOS + " has concilied with " + listaDataLIQUI_SEQ.get(0).QTY + " settlements.";
