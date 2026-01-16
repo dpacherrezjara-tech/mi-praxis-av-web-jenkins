@@ -338,7 +338,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.Filters', {
                                             labelWidth: 60,
                                             enableKeyEvents: true,
                                             margin: '0 10px 0 0',
-                                            listeners: {keypress: 'searchBandocWMH'}
+                                            listeners: {keypress: 'searchSettlementsWMH'}
                                         },
                                         {
                                             xtype: 'textfield',
@@ -353,7 +353,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.Filters', {
                                             labelWidth: 60,
                                             enableKeyEvents: true,
                                             margin: '0 10px 0 0',
-                                            listeners: {keypress: 'searchBandocWMH'}
+                                            listeners: {keypress: 'searchSettlementsWMH'}
                                         },
                                         {
                                             xtype: 'button',
@@ -427,6 +427,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.Filters', {
                                             labelWidth: 60,
                                             enableKeyEvents: true,
                                             margin: '0 10px 0 0',
+                                            listeners: {keypress: 'searchDiscountsWMH'}
                                         },
                                         {
                                             xtype: 'textfield',
@@ -441,16 +442,17 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.Filters', {
                                             labelWidth: 60,
                                             enableKeyEvents: true,
                                             margin: '0 10px 0 0',
+                                            listeners: {keypress: 'searchDiscountsWMH'}
                                         },
                                         {
                                             xtype: 'checkboxfield',
                                             id: prototype.id + '-chkMarkhELP',
-                                            cls: 'segcheck',
                                             fieldLabel: '<span>Help</span>',
                                             labelAlign: 'left',
                                             labelWidth: 30,
                                             checked: true,
-                                            margin: '0 10px 0 0'
+                                            margin: '0 10px 0 0',
+                                            listeners: {change: 'searchDiscountsWMH'},
                                         },
                                         {
                                             xtype: 'button',
