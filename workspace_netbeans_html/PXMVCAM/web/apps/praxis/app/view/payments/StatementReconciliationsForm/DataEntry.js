@@ -981,6 +981,49 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                 },
                                             ]
                                         },
+                                        {
+                                            xtype: 'panel',
+                                            id: prototype.id + '-panelScanCard3',
+                                            layout: 'hbox',
+                                            border: false,
+                                            margin: '0 2 0 10',
+                                            bodyStyle: 'background:#;',
+                                            items: [
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Doc Type:',
+                                                    textAlign: 'center',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    margin: '6 4 4 4',
+                                                    width: 70
+                                                },
+//                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'combo',
+                                                    id: prototype.id + '-cmbTDOCSCAN',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    fieldStyle: 'text-align:left;',
+                                                    queryMode: 'local',
+                                                    triggerAction: 'all',
+                                                    valueField: 'value',
+                                                    margin: '6 0 0 4',
+                                                    displayField: 'description',
+                                                    width: 90,
+                                                    labelWidth: 10,
+                                                    hiddenLabel: false,
+                                                    editable: false,
+                                                    value: 'S',
+                                                    store: {
+                                                        fields: ['value', 'description'],
+                                                        data: [
+                                                            {value: 'S', description: 'Sales'},
+                                                            {value: 'D', description: 'Debits'}
+                                                        ]
+                                                    }
+                                                },
+                                            ],
+                                        },
                                         //</editor-fold>
                                         //<editor-fold defaultstate="collapsed" desc="Detail new Setlement">
                                         {xtype: 'tbspacer', height: 5},
