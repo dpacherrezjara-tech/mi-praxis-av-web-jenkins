@@ -980,12 +980,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
             });
         }
 
-        let calculo = Math.abs(
-                totalDeposito
-                - Math.abs(totalComision)
-                - Math.abs(totalDescuento)
-                - Math.abs(totalVentas)
-                );
+        let calculo = Math.abs(totalDeposito - (Math.abs(totalTotal) - Math.abs(totalComision) - Math.abs(totalDescuento)));
 
         let totalImplicado = Math.abs(totalDeposito)
                 + Math.abs(totalVentas)
@@ -1444,6 +1439,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
 
         let netoTotal = 0;
         me.allBandocRecords.forEach(r => {
+            console.log('RN:', r.RN, 'NETO:', r.NETO);
             if (me.checkStateWMHBandoc.get(r.RN) === true) {
                 netoTotal += r.NETO || 0;
             }
@@ -1482,11 +1478,15 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
         let getCustomer = Ext.getCmp(prototype.id + '-typeClient').getValue();
         let getDateFrom = Ext.Date.format(Ext.getCmp(prototype.id + '-txtFromSett').getValue(), 'Ymd');
         let getDateTo = Ext.Date.format(Ext.getCmp(prototype.id + '-txtToSett').getValue(), 'Ymd');
+        let getMerchand = Ext.getCmp(prototype.id + '-txtMerchand').getValue();
+        let getLiquidacio = Ext.getCmp(prototype.id + '-txtLiquidacio').getValue();
 
         me.beanSettlements.IN_CCUST = getCustomer;
         me.beanSettlements.IN_FECHA_FROM = getDateFrom;
         me.beanSettlements.IN_FECHA_TO = getDateTo;
         me.beanSettlements.IN_PROCESSOR = getProcess;
+        me.beanSettlements.IN_MERCHAND = getMerchand;
+        me.beanSettlements.IN_LIQUIDACIO = getLiquidacio;
 
         let searchParamsSettlements = {
             beanString: JSON.stringify(me.beanSettlements)
@@ -1662,6 +1662,8 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
         let getCustomer = Ext.getCmp(prototype.id + '-typeClient').getValue();
         let getDateFrom = Ext.Date.format(Ext.getCmp(prototype.id + '-txtFromDisc').getValue(), 'Ymd');
         let getDateTo = Ext.Date.format(Ext.getCmp(prototype.id + '-txtToDisc').getValue(), 'Ymd');
+        let getMerchand = Ext.getCmp(prototype.id + '-txtMerchandDiscount').getValue();
+        let getLiquidacio = Ext.getCmp(prototype.id + '-txtLiquidacioDiscount').getValue();
 
         let merchands = [];
         let liquidaciones = [];
@@ -1669,7 +1671,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
         if (me.allSettlementRecords && me.allSettlementRecords.length > 0) {
             me.allSettlementRecords.forEach(sett => {
 
-                if (me.checkStateWMHDiscount.get(sett.RN) === true) {
+                if (me.checkStateWMHSettlements.get(sett.RN) === true) {
 
                     let merch = (sett.MERCHAND || '').toString().trim();
                     let liq = (sett.LIQUIDACIO || '').toString().trim();
@@ -1689,6 +1691,8 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
         me.beanDiscounts.IN_CODPRO = getProcess;
         me.beanDiscounts.IN_DATEFROM = getDateFrom;
         me.beanDiscounts.IN_DATETO = getDateTo;
+        me.beanDiscounts.IN_MERCHAND = getMerchand;
+        me.beanDiscounts.IN_LIQUIDACIO = getLiquidacio;
 
         let searchParamsDiscounts = {
             beanString: JSON.stringify(me.beanDiscounts),
@@ -1849,11 +1853,15 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
         let getCustomer = Ext.getCmp(prototype.id + '-typeClient').getValue();
         let getDateFrom = Ext.Date.format(Ext.getCmp(prototype.id + '-txtFromDisc').getValue(), 'Ymd');
         let getDateTo = Ext.Date.format(Ext.getCmp(prototype.id + '-txtToDisc').getValue(), 'Ymd');
+        let getMerchand = Ext.getCmp(prototype.id + '-txtMerchandDiscount').getValue();
+        let getLiquidacio = Ext.getCmp(prototype.id + '-txtLiquidacioDiscount').getValue();
 
         me.beanDiscounts.IN_CCUST = getCustomer;
         me.beanDiscounts.IN_PROCESSOR = getProcess;
         me.beanDiscounts.IN_DATEFROM = getDateFrom;
         me.beanDiscounts.IN_DATETO = getDateTo;
+        me.beanDiscounts.IN_MERCHAND = getMerchand;
+        me.beanDiscounts.IN_LIQUIDACIO = getLiquidacio;
 
         let searchParamsDiscounts = {
             beanString: JSON.stringify(me.beanDiscounts)
@@ -2223,6 +2231,13 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
         if (!me.allSaleRecords || me.allSaleRecords.length === 0)
             return;
 
+        store.each(record => {
+            let rn = record.get('RN');
+            let estado = me.checkStateWMHSale.get(rn) === true;
+            record.set('checkActive', estado);
+            record.commit();
+        });
+
         let lastGlobal = me.allSaleRecords[me.allSaleRecords.length - 1];
         let lastVisible = store.getAt(store.getCount() - 1);
 
@@ -2375,9 +2390,8 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
         if (hayDatosReales) {
             calculo = Math.abs(
                     totalDeposito
-                    - Math.abs(totalComision)
-                    - Math.abs(totalDescuento)
-                    - Math.abs(totalTotal)
+                    - (Math.abs(totalTotal) - Math.abs(totalComision) - Math.abs(totalDescuento))
+
                     );
 
             totalImplicado = Math.abs(totalDeposito)

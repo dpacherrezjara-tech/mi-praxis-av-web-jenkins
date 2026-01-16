@@ -1226,6 +1226,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.Info', {
                                                                     {
                                                                         iconCls: 'prx-icon-edit',
                                                                         tooltip: 'Edit',
+                                                                        disabled:true,
                                                                         handler: 'onEditClick'
                                                                     }
                                                                 ],
