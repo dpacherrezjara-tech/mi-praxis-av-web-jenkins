@@ -922,7 +922,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         var win = Ext.create('Ext.window.Window', {
             title: 'Conciliation',
             modal: true,
-            width: 600,
+            width: 400,
             bodyPadding: 18,
             resizable: false,
             closable: true,
@@ -935,7 +935,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 labelAlign: 'right',
                 labelWidth: 90,
                 margin: '10 0 10 0',
-                style: 'background-color:white; border-radius:6px;'
+                style: 'background-color:F9FAFB; border-radius:6px;'
             },
             items: [
                 {
