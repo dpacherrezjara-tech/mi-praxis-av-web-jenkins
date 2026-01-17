@@ -905,7 +905,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Filters', {
                                     id: prototype.id + '-titleFieldsetSaleCredit',
                                     hidden: true,
                                     title: '<span style="color:#1a4d8f;font-weight:bold;">FILTER SALE</span>',
-                                    width: 1380,
+                                    width: 1490,
                                     style: 'border: 1px solid #1a4d8f; padding: 8px; margin: 5px;',
                                     layout: 'hbox',
                                     items: [
@@ -1083,6 +1083,23 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Filters', {
                                             enforceMaxLength: true,
                                             maxLength: 8,
                                             labelWidth: 35,
+                                            width: 100,
+                                            enableKeyEvents: true,
+                                            listeners: {
+                                                keypress: 'eventKey'
+                                            },
+                                            margin: '0 10 0 0'
+                                        },
+                                        {
+                                            xtype: 'textfield',
+                                            fieldLabel: 'Currency:',
+                                            id: prototype.id + '-txtCURRENCYCredit',
+                                            labelStyle: 'text-align: left; font-size: 12px;',
+                                            fieldStyle: 'text-align: center; font-size: 12px;',
+                                            maskRe: /[A-Za-z0-9]/,
+                                            enforceMaxLength: true,
+                                            maxLength: 3,
+                                            labelWidth: 54,
                                             width: 100,
                                             enableKeyEvents: true,
                                             listeners: {

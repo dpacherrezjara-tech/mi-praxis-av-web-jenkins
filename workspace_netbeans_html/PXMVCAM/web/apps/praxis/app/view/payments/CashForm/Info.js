@@ -33,7 +33,8 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                     bodyStyle: 'background: transparent',
                     border: false,
                     items: [
-                        // <editor-fold defaultstate="collapsed" desc="SUMARIO PRINCIPAL">
+//                        CASH
+                        // <editor-fold defaultstate="collapsed" desc="SUMARIO PRINCIPAL CASH">
                         {
                             xtype: 'panel',
                             border: false,
@@ -289,7 +290,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                             ]
                         },
                         // </editor-fold>
-                        // <editor-fold defaultstate="collapsed" desc="SUMARIO AGRUPADO POR FUENTE">
+                        // <editor-fold defaultstate="collapsed" desc="SUMARIO AGRUPADO POR FUENTE CASH">
                         {
                             xtype: 'panel',
                             border: false,
@@ -307,7 +308,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetailSourceCash',
                                     minHeight: 200,
-                                    width: 790,
+                                    width: 792,
                                     hidden: false,
                                     columnLines: true,
                                     viewConfig: {
@@ -320,8 +321,8 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                             align: 'center'
                                         },
                                         items: [
-                                            {text: '<span style="color:black;font-weight:bold;">Nbr</span>', dataIndex: 'RN', width: 40, style: 'padding:2px; background: #6C87A8;'},
-                                            {text: '<span style="color:black;font-weight:bold;">Source</span>', dataIndex: 'CFUENTE', width: 60, style: 'padding:2px; background: #6C87A8;',
+                                            {text: '<span style="color:black;font-weight:bold;">Nbr</span>', dataIndex: 'RN', width: 40, style: 'padding:2px; background: #c9daf5;'},
+                                            {text: '<span style="color:black;font-weight:bold;">Source</span>', dataIndex: 'CFUENTE', width: 60, style: 'padding:2px; background: #c9daf5;',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
@@ -339,7 +340,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                                     return  value;
                                                 }},
                                             {
-                                                text: '<span style="color:black;font-weight:bold;">Tickets</span>', menuDisabled: true, style: 'background:#6C87A8;color:black !important',
+                                                text: '<span style="color:black;font-weight:bold;">Tickets</span>', menuDisabled: true, style: 'background:#c9daf5;color:black !important',
                                                 columns: [
                                                     {
                                                         text: '<span style="color:black;font-weight:bold;">Total</span>',
@@ -464,7 +465,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                         {
                                             width: 102,
                                             id: prototype.id + '-SPACESOURCE',
-                                            style: 'background:#6C87A8; text-align:center; font-weight:bold; color:black;',
+                                            style: 'background:#c9daf5; text-align:center; font-weight:bold; color:black;',
                                             html: 'Totals'
                                         },
                                         {width: 100, id: prototype.id + '-TOTAL_QSALES_SOURCE', style: 'background: #F9D88C;text-align:right'},
@@ -524,12 +525,12 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                             ]
                         },
                         // </editor-fold>
-                        // <editor-fold defaultstate="collapsed" desc="DETALLE PENDIENTE PRINCIPAL">
+                        // <editor-fold defaultstate="collapsed" desc="DETALLE PENDIENTE PRINCIPAL SOURCE CASH">
                         {
                             xtype: 'panel',
                             border: false,
                             width: 1300,
-                            id: prototype.id + '-panelGridDataDetailPrincipal',
+                            id: prototype.id + '-panelGridDataDetailPrincipalSourceCash',
                             bodyStyle: 'background-color: #F4F7FD;',
                             padding: '1',
                             hidden: false,
@@ -540,9 +541,9 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                             items: [
                                 {
                                     xtype: 'grid',
-                                    id: prototype.id + '-gridDataDetailPrincipal',
+                                    id: prototype.id + '-gridDataDetailPrincipalSourceCash',
                                     minHeight: 200,
-                                    width: 1239,
+                                    width: 1243,
                                     hidden: false,
                                     columnLines: true,
                                     viewConfig: {
@@ -555,14 +556,14 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                             align: 'center'
                                         },
                                         items: [
-                                            {text: '<span style="color:black;font-weight:bold;">Nbr</span>', dataIndex: 'RN', width: 40, style: 'padding:2px; background: #6C87A8;'},
-                                            {text: '<span style="color:black;font-weight:bold;">Ticket</span>', dataIndex: 'strTicket', width: 120, style: 'padding:2px; background: #6C87A8;',
+                                            {text: '<span style="color:white;font-weight:bold;">Nbr</span>', dataIndex: 'RN', width: 40, style: 'padding:2px; background: #6C87A8;'},
+                                            {text: '<span style="color:white;font-weight:bold;">Ticket</span>', dataIndex: 'strTicket', width: 120, style: 'padding:2px; background: #6C87A8;',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
                                                     return  value;
                                                 }},
-                                            {text: '<span style="color:black;font-weight:bold;">Status</span>', dataIndex: 'STVAL', width: 120, style: 'padding:2px; background: #6C87A8;',
+                                            {text: '<span style="color:white;font-weight:bold;">Status</span>', dataIndex: 'STVAL', width: 120, style: 'padding:2px; background: #6C87A8;',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
@@ -575,62 +576,62 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                                         return  "Sales Without Liqui.";
                                                     }
                                                 }},
-                                            {text: '<span style="color:black;font-weight:bold;">Source</span>', dataIndex: 'CFUENTE', width: 60, style: 'padding:2px; background: #6C87A8;',
+                                            {text: '<span style="color:white;font-weight:bold;">Source</span>', dataIndex: 'CFUENTE', width: 60, style: 'padding:2px; background: #6C87A8;',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
                                                     return  value;
                                                 }},
-                                            {text: '<span style="color:black;font-weight:bold;">Type</span>', dataIndex: 'strPEM', width: 80, style: 'padding:2px; background: #6C87A8;',
+                                            {text: '<span style="color:white;font-weight:bold;">Type</span>', dataIndex: 'strPEM', width: 80, style: 'padding:2px; background: #6C87A8;',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
                                                     return  value;
                                                 }},
-                                            {text: '<span style="color:black;font-weight:bold;">Form Payment</span>', dataIndex: 'SPAYMENT', width: 100, style: 'padding:2px; background: #6C87A8;',
+                                            {text: '<span style="color:white;font-weight:bold;">Form Payment</span>', dataIndex: 'SPAYMENT', width: 100, style: 'padding:2px; background: #6C87A8;',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
                                                     return  value;
                                                 }},
-                                            {text: '<span style="color:black;font-weight:bold;">Sales Date</span>', dataIndex: 'SDATE', width: 80, style: 'padding:2px; background: #6C87A8;',
+                                            {text: '<span style="color:white;font-weight:bold;">Sales Date</span>', dataIndex: 'SDATE', width: 80, style: 'padding:2px; background: #6C87A8;',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
                                                     return  value;
                                                 }},
-                                            {text: '<span style="color:black;font-weight:bold;">Country</span>', dataIndex: 'SCOUNTRY', width: 70, style: 'padding:2px; background: #6C87A8;',
+                                            {text: '<span style="color:white;font-weight:bold;">Country</span>', dataIndex: 'SCOUNTRY', width: 70, style: 'padding:2px; background: #6C87A8;',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
                                                     return  value;
                                                 }},
-                                            {text: '<span style="color:black;font-weight:bold;">Agent</span>', dataIndex: 'SAGENT', width: 90, style: 'padding:2px; background: #6C87A8;',
+                                            {text: '<span style="color:white;font-weight:bold;">Agent</span>', dataIndex: 'SAGENT', width: 90, style: 'padding:2px; background: #6C87A8;',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
                                                     return  value;
                                                 }},
-                                            {text: '<span style="color:black;font-weight:bold;">Transaction</span>', dataIndex: 'TRNCU', width: 90, style: 'padding:2px; background: #6C87A8;',
+                                            {text: '<span style="color:white;font-weight:bold;">Transaction</span>', dataIndex: 'TRNCU', width: 90, style: 'padding:2px; background: #6C87A8;',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
                                                     return  value;
                                                 }},
-                                            {text: '<span style="color:black;font-weight:bold;">Days Pending</span>', dataIndex: 'DIFFDAYS', width: 94, style: 'padding:2px; background: #6C87A8;',
+                                            {text: '<span style="color:white;font-weight:bold;">Days Pending</span>', dataIndex: 'DIFFDAYS', width: 94, style: 'padding:2px; background: #6C87A8;',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
                                                     return  value;
                                                 }},
-                                            {text: '<span style="color:black;font-weight:bold;">Currency</span>', dataIndex: 'SCURRENCY', width: 75, style: 'padding:2px; background: #6C87A8;',
+                                            {text: '<span style="color:white;font-weight:bold;">Currency</span>', dataIndex: 'SCURRENCY', width: 75, style: 'padding:2px; background: #6C87A8;',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
                                                     return  value;
                                                 }},
                                             {
-                                                text: '<span style="color:black;font-weight:bold;">SVFOP</span>',
+                                                text: '<span style="color:white;font-weight:bold;">SVFOP</span>',
                                                 dataIndex: 'SVFOP',
                                                 width: 110,
                                                 align: 'center',
@@ -641,7 +642,140 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: '<span style="color:black;font-weight:bold;">SVFOPNETR</span>',
+                                                text: '<span style="color:white;font-weight:bold;">SVFOPNETR</span>',
+                                                dataIndex: 'SVFOPNETR',
+                                                width: 110,
+                                                align: 'center',
+                                                style: 'background:#6C87A8;',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "color:#2B2B2B;text-align:right;";
+                                                    return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        // </editor-fold>
+                        // <editor-fold defaultstate="collapsed" desc="DETALLE PENDIENTE PRINCIPAL CASH">
+                        {
+                            xtype: 'panel',
+                            border: false,
+                            width: 1300,
+                            id: prototype.id + '-panelGridDataDetailPrincipalCash',
+                            bodyStyle: 'background-color: #F4F7FD;',
+                            padding: '1',
+                            hidden: false,
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridDataDetailPrincipalCash',
+                                    minHeight: 200,
+                                    width: 1242,
+                                    hidden: false,
+                                    columnLines: true,
+                                    viewConfig: {
+                                        enableTextSelection: true
+                                    },
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: true,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {text: '<span style="color:white;font-weight:bold;">Nbr</span>', dataIndex: 'RN', width: 40, style: 'padding:2px; background: #6C87A8;'},
+                                            {text: '<span style="color:white;font-weight:bold;">Ticket</span>', dataIndex: 'strTicket', width: 120, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Status</span>', dataIndex: 'STVAL', width: 120, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+
+                                                    if (value == "1") {
+                                                        return "Match"
+                                                    } else if (value == "5") {
+                                                        return "Match Manual"
+                                                    } else {
+                                                        return  "Sales Without Liqui.";
+                                                    }
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Source</span>', dataIndex: 'CFUENTE', width: 60, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Type</span>', dataIndex: 'strPEM', width: 80, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Form Payment</span>', dataIndex: 'SPAYMENT', width: 100, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Sales Date</span>', dataIndex: 'SDATE', width: 80, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Country</span>', dataIndex: 'SCOUNTRY', width: 70, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Agent</span>', dataIndex: 'SAGENT', width: 90, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Transaction</span>', dataIndex: 'TRNCU', width: 90, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Days Pending</span>', dataIndex: 'DIFFDAYS', width: 94, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Currency</span>', dataIndex: 'SCURRENCY', width: 75, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {
+                                                text: '<span style="color:white;font-weight:bold;">SVFOP</span>',
+                                                dataIndex: 'SVFOP',
+                                                width: 110,
+                                                align: 'center',
+                                                style: 'background:#6C87A8;',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "color:#2B2B2B;text-align:right;";
+                                                    return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:white;font-weight:bold;">SVFOPNETR</span>',
                                                 dataIndex: 'SVFOPNETR',
                                                 width: 110,
                                                 align: 'center',
@@ -807,139 +941,8 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                             ]
                         },
                         // </editor-fold>
-                        // <editor-fold defaultstate="collapsed" desc="DETALLE PENDIENTE PRINCIPAL SOURCE">
-                        {
-                            xtype: 'panel',
-                            border: false,
-                            width: 1300,
-                            id: prototype.id + '-panelGridDataDetailPrincipalSource',
-                            bodyStyle: 'background-color: #F4F7FD;',
-                            padding: '1',
-                            hidden: false,
-                            layout: {
-                                type: 'vbox',
-                                align: 'center'
-                            },
-                            items: [
-                                {
-                                    xtype: 'grid',
-                                    id: prototype.id + '-gridDataDetailPrincipalSource',
-                                    minHeight: 200,
-                                    width: 1239,
-                                    hidden: false,
-                                    columnLines: true,
-                                    viewConfig: {
-                                        enableTextSelection: true
-                                    },
-                                    columns: {
-                                        defaults: {
-                                            menuDisabled: true,
-                                            sortable: true,
-                                            align: 'center'
-                                        },
-                                        items: [
-                                            {text: '<span style="color:black;font-weight:bold;">Nbr</span>', dataIndex: 'RN', width: 40, style: 'padding:2px; background: #6C87A8;'},
-                                            {text: '<span style="color:black;font-weight:bold;">Ticket</span>', dataIndex: 'strTicket', width: 120, style: 'padding:2px; background: #6C87A8;',
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    var data = record.data;
-                                                    metaData.style = "text-align:center;";
-                                                    return  value;
-                                                }},
-                                            {text: '<span style="color:black;font-weight:bold;">Status</span>', dataIndex: 'STVAL', width: 120, style: 'padding:2px; background: #6C87A8;',
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    var data = record.data;
-                                                    metaData.style = "text-align:center;";
-
-                                                    if (value == "1") {
-                                                        return "Match"
-                                                    } else if (value == "5") {
-                                                        return "Match Manual"
-                                                    } else {
-                                                        return  "Sales Without Liqui.";
-                                                    }
-                                                }},
-                                            {text: '<span style="color:black;font-weight:bold;">Source</span>', dataIndex: 'CFUENTE', width: 60, style: 'padding:2px; background: #6C87A8;',
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    var data = record.data;
-                                                    metaData.style = "text-align:center;";
-                                                    return  value;
-                                                }},
-                                            {text: '<span style="color:black;font-weight:bold;">Type</span>', dataIndex: 'strPEM', width: 80, style: 'padding:2px; background: #6C87A8;',
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    var data = record.data;
-                                                    metaData.style = "text-align:center;";
-                                                    return  value;
-                                                }},
-                                            {text: '<span style="color:black;font-weight:bold;">Form Payment</span>', dataIndex: 'SPAYMENT', width: 100, style: 'padding:2px; background: #6C87A8;',
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    var data = record.data;
-                                                    metaData.style = "text-align:center;";
-                                                    return  value;
-                                                }},
-                                            {text: '<span style="color:black;font-weight:bold;">Sales Date</span>', dataIndex: 'SDATE', width: 80, style: 'padding:2px; background: #6C87A8;',
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    var data = record.data;
-                                                    metaData.style = "text-align:center;";
-                                                    return  value;
-                                                }},
-                                            {text: '<span style="color:black;font-weight:bold;">Country</span>', dataIndex: 'SCOUNTRY', width: 70, style: 'padding:2px; background: #6C87A8;',
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    var data = record.data;
-                                                    metaData.style = "text-align:center;";
-                                                    return  value;
-                                                }},
-                                            {text: '<span style="color:black;font-weight:bold;">Agent</span>', dataIndex: 'SAGENT', width: 90, style: 'padding:2px; background: #6C87A8;',
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    var data = record.data;
-                                                    metaData.style = "text-align:center;";
-                                                    return  value;
-                                                }},
-                                            {text: '<span style="color:black;font-weight:bold;">Transaction</span>', dataIndex: 'TRNCU', width: 90, style: 'padding:2px; background: #6C87A8;',
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    var data = record.data;
-                                                    metaData.style = "text-align:center;";
-                                                    return  value;
-                                                }},
-                                            {text: '<span style="color:black;font-weight:bold;">Days Pending</span>', dataIndex: 'DIFFDAYS', width: 94, style: 'padding:2px; background: #6C87A8;',
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    var data = record.data;
-                                                    metaData.style = "text-align:center;";
-                                                    return  value;
-                                                }},
-                                            {text: '<span style="color:black;font-weight:bold;">Currency</span>', dataIndex: 'SCURRENCY', width: 75, style: 'padding:2px; background: #6C87A8;',
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    var data = record.data;
-                                                    metaData.style = "text-align:center;";
-                                                    return  value;
-                                                }},
-                                            {
-                                                text: '<span style="color:black;font-weight:bold;">SVFOP</span>',
-                                                dataIndex: 'SVFOP',
-                                                width: 110,
-                                                align: 'center',
-                                                style: 'background:#6C87A8;',
-                                                renderer: function (value, metaData) {
-                                                    metaData.style = "color:#2B2B2B;text-align:right;";
-                                                    return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
-                                                }
-                                            },
-                                            {
-                                                text: '<span style="color:black;font-weight:bold;">SVFOPNETR</span>',
-                                                dataIndex: 'SVFOPNETR',
-                                                width: 110,
-                                                align: 'center',
-                                                style: 'background:#6C87A8;',
-                                                renderer: function (value, metaData) {
-                                                    metaData.style = "color:#2B2B2B;text-align:right;";
-                                                    return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
-                                                }
-                                            }
-                                        ]
-                                    }
-                                }
-                            ]
-                        },
-                        // </editor-fold>
+                       
+//                        CREDITO
                         // <editor-fold defaultstate="collapsed" desc="SUMARIO PRINCIPAL CREDITO">
                         {
                             xtype: 'panel',
@@ -973,7 +976,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                         },
                                         items: [
                                             {
-                                                text: '<span style="color:black;font-weight:bold;">Month</span>', style: 'background:#6C87A8;color:black !important',
+                                                text: '<span style="color:black;font-weight:bold;">Month</span>', style: 'background:#c9daf5;color:black !important',
                                                 dataIndex: 'strFormatDate', width: 100, align: 'center', xtype: 'treecolumn',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:left;";
@@ -982,7 +985,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                                 }
                                             },
                                             {
-                                                text: '<span style="color:black;font-weight:bold;">Society</span>', style: 'background:#6C87A8;color:black !important',
+                                                text: '<span style="color:black;font-weight:bold;">Society</span>', style: 'background:#c9daf5;color:black !important',
                                                 dataIndex: 'CCUST',
                                                 width: 85,
                                                 align: 'center', // centra a nivel de columna (por defecto)
@@ -998,11 +1001,11 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                                     return displayText;
                                                 },
                                                 listeners: {
-                                                    click: 'onGridDataDetailSource'
+                                                    click: 'onGridDataDetailSourceCredito'
                                                 }
                                             },
                                             {
-                                                text: '<span style="color:black;font-weight:bold;">Tickets</span>', menuDisabled: true, style: 'background:#6C87A8;color:black !important',
+                                                text: '<span style="color:black;font-weight:bold;">Tickets</span>', menuDisabled: true, style: 'background:#c9daf5;color:black !important',
                                                 columns: [
                                                     {
                                                         text: '<span style="color:black;font-weight:bold;">Total</span>',
@@ -1127,7 +1130,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                         {
                                             width: 185,
                                             id: prototype.id + '-SPACE1',
-                                            style: 'background:#6C87A8; text-align:center; font-weight:bold; color:black;',
+                                            style: 'background:#c9daf5; text-align:center; font-weight:bold; color:black;',
                                             html: 'Totals'
                                         },
                                         {width: 100, id: prototype.id + '-TOTAL_QSALESCREDIT', style: 'background: #F9D88C;text-align:right'},
@@ -1194,7 +1197,658 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                     ]
                                 }
                             ]
-                        }
+                        },
+                        // </editor-fold>
+                        // <editor-fold defaultstate="collapsed" desc="SUMARIO AGRUPADO POR FUENTE CREDITO">
+                        {
+                            xtype: 'panel',
+                            border: false,
+                            width: 1000,
+                            id: prototype.id + '-panelGridDataDetailCredit',
+                            bodyStyle: 'background-color: #F4F7FD;',
+                            padding: '1',
+                            hidden: false,
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridDataDetailSourceCredit',
+                                    minHeight: 200,
+                                    width: 792,
+                                    hidden: false,
+                                    columnLines: true,
+                                    viewConfig: {
+                                        enableTextSelection: true
+                                    },
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: true,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {text: '<span style="color:black;font-weight:bold;">Nbr</span>', dataIndex: 'RN', width: 40, style: 'padding:2px; background: #c9daf5;'},
+                                            {text: '<span style="color:black;font-weight:bold;">Source</span>', dataIndex: 'CFUENTE', width: 60, style: 'padding:2px; background: #c9daf5;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+
+                                                    if (value == 'TA01') {
+                                                        return  '202';
+                                                    } else if (value == 'AV01') {
+                                                        return  '134';
+                                                    } else if (value == 'LR01') {
+                                                        return  '133';
+                                                    } else if (value == '2K01') {
+                                                        return  '547';
+                                                    }
+
+                                                    return  value;
+                                                }},
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Tickets</span>', menuDisabled: true, style: 'background:#c9daf5;color:black !important',
+                                                columns: [
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Total</span>',
+                                                        dataIndex: 'QSALES', width: 100, style: 'background:#F9D88C;color:black !important', align: 'center ', menuDisabled: true, //flex: 1
+
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "color:#2B2B2B;text-align:right;";
+                                                            value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                            return  value;
+                                                        },
+                                                    },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Match</span>', menuDisabled: true, style: 'background:#D1FBD2;color:black !important',
+                                                        menuDisabled: true,
+                                                        columns: [
+                                                            {
+                                                                text: '<span style="color:black;font-weight:bold;">Auto</span>', dataIndex: 'QMATCH',
+                                                                style: 'background:#D1FBD2;color:black !important', width: 100, align: 'center', menuDisabled: true,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "color:#2B2B2B;text-align:right;";
+                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                    return  value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: '<span style="color:black;font-weight:bold;">%</span>',
+                                                                dataIndex: 'PCT_MATCH',
+                                                                style: 'background:#D1FBD2;color:black !important',
+                                                                width: 70,
+                                                                align: 'center',
+                                                                menuDisabled: true,
+
+                                                                renderer: function (value, metaData, record) {
+
+                                                                    metaData.style = "color:#2B2B2B;text-align:right;";
+
+                                                                    if (value === null || value === undefined) {
+                                                                        return '<b>0.00 %</b>';
+                                                                    }
+
+                                                                    // Formatear con 2 decimales
+                                                                    let pct = Ext.util.Format.number(value, '0.00');
+
+                                                                    return '<b>' + pct + ' %</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: '<span style="color:black;font-weight:bold;">Manual</span>', dataIndex: 'QMANUAL',
+                                                                style: 'background:#D1FBD2;color:black !important', width: 100, align: 'center', menuDisabled: true,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "color:#2B2B2B;text-align:right;";
+                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                    return  value;
+                                                                }
+                                                            },
+                                                            {
+                                                                text: '<span style="color:black;font-weight:bold;">W/O Settlement</span>', dataIndex: 'QPEND',
+                                                                style: 'background:#FFA8A8;color:black !important', width: 120, align: 'center', menuDisabled: true,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                    return value;
+                                                                },
+                                                                listeners: {
+                                                                    click: 'onGridDataDetailPrincipalSourceCredit',
+                                                                    args: ['']
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Accounted</span>', menuDisabled: true, style: 'background:#D1FBD2;color:black !important',
+                                                        menuDisabled: true,
+                                                        columns: [
+                                                            {
+                                                                text: '<span style="color:black;font-weight:bold;">Pending</span>', dataIndex: 'QPOLIPE',
+                                                                style: 'background:#FFA8A8;color:black !important', width: 100, align: 'center', menuDisabled: true,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
+                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                    return value;
+                                                                },
+                                                                listeners: {
+                                                                    click: 'onGridDataDetailPrincipalSourceCredit',
+                                                                    args: ['C']
+                                                                }
+                                                            },
+                                                            {
+                                                                text: '<span style="color:black;font-weight:bold;">Processed</span>', dataIndex: 'QPOLIC',
+                                                                style: 'background:#D1FBD2;color:black !important', width: 100, align: 'center', menuDisabled: true,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "color:#2B2B2B;text-align:right;";
+                                                                    value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                    return  value;
+                                                                },
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    xtype: 'panel',
+                                    id: prototype.id + '-SummaryMainDataSourceCredit',
+                                    align: 'left',
+                                    margin: '0 0 0 0 ',
+                                    layout: {
+                                        type: 'hbox',
+                                        align: 'center'
+                                    },
+                                    defaults: {
+                                        xtype: 'label',
+                                        align: 'left',
+                                        html: '' + '&nbsp',
+                                        height: 25,
+                                        padding: '5 5 5 0',
+                                        style: 'background:#A0BFD3;color:#244066;text-align:right;font-weight:bold;border: 0.3px #4A6371 solid;font-size:11px'
+                                    },
+                                    items: [
+                                        {
+                                            width: 102,
+                                            id: prototype.id + '-SPACESOURCECredit',
+                                            style: 'background:#c9daf5; text-align:center; font-weight:bold; color:black;',
+                                            html: 'Totals'
+                                        },
+                                        {width: 100, id: prototype.id + '-TOTAL_QSALES_SOURCECredit', style: 'background: #F9D88C;text-align:right'},
+                                        {width: 100, id: prototype.id + '-TOTAL_QMATCH_SOURCECredit', style: 'background: #D1FBD2;text-align:right'},
+                                        {width: 70, id: prototype.id + '-TOTAL_PCT_MATCH_SOURCECredit', style: 'background: #D1FBD2;text-align:right'},
+                                        {width: 100, id: prototype.id + '-TOTAL_QMANUAL_SOURCECredit', style: 'background: #D1FBD2;text-align:right'},
+                                        {width: 120, id: prototype.id + '-TOTAL_QPEND_SOURCECredit', style: 'background: #FFA8A8;text-align:right'},
+                                        {width: 100, id: prototype.id + '-TOTAL_QPOLIPE_SOURCECredit', style: 'background: #FFA8A8;text-align:right'},
+                                        {width: 100, id: prototype.id + '-TOTAL_QPOLIC_SOURCECredit', style: 'background: #D1FBD2;text-align:right'}
+                                    ]
+                                },
+                                {
+                                    xtype: 'panel',
+                                    bodyStyle: 'background-color: #E3EAEF;',
+                                    border: false,
+                                    margin: '20 0 0 0',
+                                    layout: {
+                                        type: 'hbox'
+                                    },
+                                    items: [
+                                        {
+                                            xtype: 'cartesian',
+                                            id: prototype.id + '-displayBarSMSourceCredit',
+                                            width: 1100,
+                                            height: 260,
+                                            insetPadding: 10,
+                                            border: false,
+                                            background: '#FFFFFF',
+                                            legend: {docked: 'bottom'},
+                                            axes: [
+                                                {type: 'numeric', position: 'left', title: 'Cantidad', grid: true},
+                                                {type: 'category', position: 'bottom', title: 'Source'}
+                                            ],
+                                            series: [{
+                                                    type: 'bar',
+                                                    xField: 'source',
+                                                    yField: ['TicketTotal', 'TicketMatch', 'TicketPending'],
+                                                    title: ['Ticket Total', 'Ticket Match', 'Ticket Pending'],
+                                                    stacked: false,
+                                                    style: {opacity: 0.95},
+                                                    colors: ['#F9D88C', '#B8E986', '#FFA8A8'],
+                                                    highlightCfg: {fillStyle: '#FFF2A8'},
+                                                    tooltip: {
+                                                        trackMouse: true,
+                                                        renderer: function (tooltip, record, item) {
+                                                            tooltip.setHtml(
+                                                                    item.series.getTitle()[item.series.getYFieldIndex(item.field)]
+                                                                    + ': ' +
+                                                                    Ext.util.Format.number(record.get(item.field), '0,0')
+                                                                    );
+                                                        }
+                                                    }
+                                                }]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        // </editor-fold>
+                        // <editor-fold defaultstate="collapsed" desc="DETALLE PENDIENTE PRINCIPAL SOURCE CREDITO">
+                        {
+                            xtype: 'panel',
+                            border: false,
+                            width: 1300,
+                            id: prototype.id + '-panelGridDataDetailPrincipalSourceCredit',
+                            bodyStyle: 'background-color: #F4F7FD;',
+                            padding: '1',
+                            hidden: false,
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridDataDetailPrincipalSourceCredit',
+                                    minHeight: 200,
+                                    width: 1243,
+                                    hidden: false,
+                                    columnLines: true,
+                                    viewConfig: {
+                                        enableTextSelection: true
+                                    },
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: true,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {text: '<span style="color:white;font-weight:bold;">Nbr</span>', dataIndex: 'RN', width: 40, style: 'padding:2px; background: #6C87A8;'},
+                                            {text: '<span style="color:white;font-weight:bold;">Ticket</span>', dataIndex: 'strTicket', width: 120, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Status</span>', dataIndex: 'STVAL', width: 120, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+
+                                                    if (value == "1") {
+                                                        return "Match"
+                                                    } else if (value == "5") {
+                                                        return "Match Manual"
+                                                    } else {
+                                                        return  "Sales Without Liqui.";
+                                                    }
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Source</span>', dataIndex: 'CFUENTE', width: 60, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Type</span>', dataIndex: 'strPEM', width: 80, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Form Payment</span>', dataIndex: 'SPAYMENT', width: 100, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Sales Date</span>', dataIndex: 'SDATE', width: 80, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Country</span>', dataIndex: 'SCOUNTRY', width: 70, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Agent</span>', dataIndex: 'SAGENT', width: 90, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Transaction</span>', dataIndex: 'TRNCU', width: 90, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Days Pending</span>', dataIndex: 'DIFFDAYS', width: 94, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Currency</span>', dataIndex: 'SCURRENCY', width: 75, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {
+                                                text: '<span style="color:white;font-weight:bold;">SVFOP</span>',
+                                                dataIndex: 'SVFOP',
+                                                width: 110,
+                                                align: 'center',
+                                                style: 'background:#6C87A8;',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "color:#2B2B2B;text-align:right;";
+                                                    return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:white;font-weight:bold;">SVFOPNETR</span>',
+                                                dataIndex: 'SVFOPNETR',
+                                                width: 110,
+                                                align: 'center',
+                                                style: 'background:#6C87A8;',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "color:#2B2B2B;text-align:right;";
+                                                    return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        // </editor-fold>
+                        // <editor-fold defaultstate="collapsed" desc="DETALLE PENDIENTE PRINCIPAL CREDITO">
+                        {
+                            xtype: 'panel',
+                            border: false,
+                            width: 1300,
+                            id: prototype.id + '-panelGridDataDetailPrincipalCredit',
+                            bodyStyle: 'background-color: #F4F7FD;',
+                            padding: '1',
+                            hidden: false,
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridDataDetailPrincipalCredit',
+                                    minHeight: 200,
+                                    width: 1242,
+                                    hidden: false,
+                                    columnLines: true,
+                                    viewConfig: {
+                                        enableTextSelection: true
+                                    },
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: true,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {text: '<span style="color:white;font-weight:bold;">Nbr</span>', dataIndex: 'RN', width: 40, style: 'padding:2px; background: #6C87A8;'},
+                                            {text: '<span style="color:white;font-weight:bold;">Ticket</span>', dataIndex: 'strTicket', width: 120, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Status</span>', dataIndex: 'STVAL', width: 120, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+
+                                                    if (value == "1") {
+                                                        return "Match"
+                                                    } else if (value == "5") {
+                                                        return "Match Manual"
+                                                    } else {
+                                                        return  "Sales Without Liqui.";
+                                                    }
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Source</span>', dataIndex: 'CFUENTE', width: 60, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Type</span>', dataIndex: 'strPEM', width: 80, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Form Payment</span>', dataIndex: 'SPAYMENT', width: 100, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Sales Date</span>', dataIndex: 'SDATE', width: 80, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Country</span>', dataIndex: 'SCOUNTRY', width: 70, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Agent</span>', dataIndex: 'SAGENT', width: 90, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Transaction</span>', dataIndex: 'TRNCU', width: 90, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Days Pending</span>', dataIndex: 'DIFFDAYS', width: 94, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Currency</span>', dataIndex: 'SCURRENCY', width: 75, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {
+                                                text: '<span style="color:white;font-weight:bold;">SVFOP</span>',
+                                                dataIndex: 'SVFOP',
+                                                width: 110,
+                                                align: 'center',
+                                                style: 'background:#6C87A8;',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "color:#2B2B2B;text-align:right;";
+                                                    return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:white;font-weight:bold;">SVFOPNETR</span>',
+                                                dataIndex: 'SVFOPNETR',
+                                                width: 110,
+                                                align: 'center',
+                                                style: 'background:#6C87A8;',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "color:#2B2B2B;text-align:right;";
+                                                    return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        // </editor-fold>
+                        // <editor-fold defaultstate="collapsed" desc="DETALLE SECUNDARIO CREDITO">
+                        {
+                            xtype: 'panel',
+                            border: false,
+                            width: 1400,
+                            id: prototype.id + '-panelGridDataDetailSecundaryCredit',
+                            bodyStyle: 'background-color: #F4F7FD;',
+                            padding: '1',
+                            hidden: false,
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridDataDetailSecundaryCredit',
+                                    height: 500,
+                                    width: 1262,
+                                    hidden: false,
+                                    columnLines: true,
+                                    viewConfig: {
+                                        enableTextSelection: true
+                                    },
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: true,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {text: '<span style="color:white;font-weight:bold;">Nbr</span>', dataIndex: 'RN', width: 40, style: 'padding:2px; background: #6C87A8;'},
+                                            {text: '<span style="color:white;font-weight:bold;">Ticket</span>', dataIndex: 'strTicket', width: 120, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Status</span>', dataIndex: 'STVAL', width: 120, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+
+                                                    if (value == "1") {
+                                                        return "Match"
+                                                    } else if (value == "5") {
+                                                        return "Match Manual"
+                                                    } else {
+                                                        return  "Sales Without Liqui.";
+                                                    }
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Source</span>', dataIndex: 'CFUENTE', width: 60, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Type</span>', dataIndex: 'strPEM', width: 80, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Form Payment</span>', dataIndex: 'SPAYMENT', width: 100, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Sales Date</span>', dataIndex: 'SDATE', width: 80, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Country</span>', dataIndex: 'SCOUNTRY', width: 70, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Agent</span>', dataIndex: 'SAGENT', width: 90, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Transaction</span>', dataIndex: 'TRNCU', width: 90, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {text: '<span style="color:white;font-weight:bold;">Days Pending</span>', dataIndex: 'DIFFDAYS', width: 94, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+
+                                            {text: '<span style="color:white;font-weight:bold;">Currency</span>', dataIndex: 'SCURRENCY', width: 75, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }},
+                                            {
+                                                text: '<span style="color:white;font-weight:bold;">SVFOP</span>',
+                                                dataIndex: 'SVFOP',
+                                                width: 90,
+                                                align: 'center',
+                                                style: 'background:#6C87A8;',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "color:#2B2B2B;text-align:right;";
+                                                    return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:white;font-weight:bold;">SVFOPNETR</span>',
+                                                dataIndex: 'SVFOPNETR',
+                                                width: 90,
+                                                align: 'center',
+                                                style: 'background:#6C87A8;',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "color:#2B2B2B;text-align:right;";
+                                                    return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
+                                                }
+                                            },
+                                            {
+                                                sortable: false,
+                                                xtype: 'actioncolumn',
+                                                id: prototype.id + '-gridEdit_SECUNDARY',
+                                                width: 60,
+                                                style: 'padding:2px; background: #6C87A8;',
+                                                text: '<span style="color:white;font-weight:bold;">View</span>',
+                                                align: 'center',
+                                                items: [
+                                                    {
+                                                        iconCls: 'prx-icon-edit',
+                                                        tooltip: 'View',
+                                                        handler: 'onEditClick'
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
                         // </editor-fold>
                     ]
                 }

@@ -39,23 +39,45 @@ public class CashLogic {
         return CashDAO.loadMPS442(filter);
     }
     
+    public List<MPF300> loadMPS443(MPF108Filter filter) throws SQLException, Exception {
+        return CashDAO.loadMPS443(filter);
+    }
     
+    public List<MPF300> loadMPS444(MPF108Filter filter) throws SQLException, Exception {
+        return CashDAO.loadMPS444(filter);
+    }
     
+    public List<MPF300> loadMPS445(MPF108Filter filter) throws SQLException, Exception {
+        return CashDAO.loadMPS445(filter);
+    }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
+//    CREDITO
     
     public List<MPF108> loadMPS520(MPF108Filter filter) throws SQLException, Exception {
         return CashDAO.loadMPS520(filter);
     }
+    
+    public List<MPF300> loadMPS521(MPF108Filter filter) throws SQLException, Exception {
+        return CashDAO.loadMPS521(filter);
+    }
+    
+    public List<MPF300> loadMPS522(MPF108Filter filter) throws SQLException, Exception {
+        return CashDAO.loadMPS522(filter);
+    }
+    
+    public List<MPF300> loadMPS523(MPF108Filter filter) throws SQLException, Exception {
+        return CashDAO.loadMPS523(filter);
+    }
+    
+    public List<MPF300> loadMPS524(MPF108Filter filter) throws SQLException, Exception {
+        return CashDAO.loadMPS524(filter);
+    }
+    
 
+    
+    
+    
+    
     public Map<String, Object> executeMPS440(MPF108Filter filter) throws SQLException, Exception {
         return CashDAO.executeMPS440(filter);
     }
@@ -68,16 +90,10 @@ public class CashLogic {
 
     
 
-    public List<MPF300> loadMPS443(MPF108Filter filter) throws SQLException, Exception {
-        return CashDAO.loadMPS443(filter);
-    }
+    
 
-    public List<MPF300> loadMPS444(MPF108Filter filter) throws SQLException, Exception {
-        return CashDAO.loadMPS444(filter);
-    }
+    
 
-    public List<MPF300> loadMPS445(MPF108Filter filter) throws SQLException, Exception {
-        return CashDAO.loadMPS445(filter);
-    }
+    
 
 }
