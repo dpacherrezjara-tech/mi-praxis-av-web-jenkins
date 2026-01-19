@@ -25,7 +25,17 @@ public class MPF108Filter {
     public String IN_STATUS = "";
     public String IN_AGENT = "";
     public String IN_TICKET = "";
+    public String IN_PNR = "";
+    public String IN_SCARDN = "";
+    public String IN_SCARDNCOR = "";
+    public String IN_AUTHORIZATION = "";
+    public String IN_CCTYPE = "";
+    public double IN_AMOUNT = 0;
+    public String IN_INVOICE = "";
+    public String IN_CURRENCY = "";
+    public String IN_BANDOC = "";
     public String IN_STATUSACC = "";
+    public String IN_TDOC = "";
     public String IN_SPAYMENT = "";
     
 }

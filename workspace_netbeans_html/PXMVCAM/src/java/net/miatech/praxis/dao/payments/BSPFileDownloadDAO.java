@@ -109,11 +109,13 @@ public class BSPFileDownloadDAO {
                 bean = new MPF218();
                 bean.RN = rst.getLong("RN");
                 bean.CUSTOMER = rst.getString("CCUST").trim();
+                String fileName = rst.getString("NAMEFILE").trim();
                 bean.COUNTRY = rst.getString("COUNTRY").trim();
+
                 bean.DATEPROC = rst.getString("DATEPROC").trim();
                 bean.DATESETT = rst.getString("DATESETT").trim();
                 bean.DATEUPLO = rst.getString("DATEUPLO").trim();
-                bean.NAMEFILE = rst.getString("NAMEFILE").trim();
+                bean.NAMEFILE = fileName;
                 bean.TYPEFILE = rst.getString("TYPEFILE").trim();
                 bean.SIZEFILE = rst.getString("SIZEFILE").trim();
 
@@ -121,6 +123,7 @@ public class BSPFileDownloadDAO {
                 bean.page.PAGROW = filter.page.PAGROW;
                 bean.page.TOTPAG = filter.page.TOTPAG;
                 bean.page.TOTROW = filter.page.TOTROW;
+
                 lstData.add(bean);
             }
             rst.close();
@@ -148,7 +151,29 @@ public class BSPFileDownloadDAO {
 
         return lstData;
     }
-    
+
+    private String determineCountryFromFileName(String fileName) {
+        if (fileName == null || fileName.isEmpty()) {
+            return ""; // Valor por defecto
+        }
+
+        String[] parts = fileName.split("_");
+        if (parts.length > 0) {
+            String clientCode = parts[0];
+
+            switch (clientCode) {
+                case "202":
+                    return "SV";  // El Salvador
+                case "134":
+                    return "US";  // Estados Unidos
+                default:
+                    return "";
+            }
+        }
+
+        return ""; // Si no se puede determinar
+    }
+
     public List<MPF221> loadMPS446(MPF221Filter filter) throws SQLException, Exception {
 
         List<MPF221> lstData = new ArrayList<MPF221>(0);

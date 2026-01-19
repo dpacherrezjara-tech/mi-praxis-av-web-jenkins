@@ -667,61 +667,102 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryPending', {
     ]
 },
                 
-                {
-                    xtype: 'label',
-                    text: 'Conversion IND a USD',
-                    id: prototype.id + '-titleBspIndia',
-                    style: 'font-weight:bold;color:#0B333C;text-decoration-line: underline;',
-                    fontSize: '11',
-                    width: 234,
-                    margin: '10 2 4 8',
-                    hidden: true
-                },
-                {
-                    xtype: 'panel',
-                    id: prototype.id + '-pnlConversionIND', 
-                    layout: 'vbox', 
-                    hidden: true, 
-                    padding: '0 10 0 10', 
+            {
+                xtype: 'label',
+                text: 'Conversion IND a USD & Conciliación',
+                id: prototype.id + '-titleBspIndia',
+                style: 'font-weight:bold;color:#0B333C;text-decoration-line: underline; text-transform: uppercase;',
+                fontSize: '12',
+                width: '100%',
+                margin: '10 2 10 8',
+                hidden: true // Oculto por defecto, se muestra al seleccionar INDIA
+            },
+            {
+                xtype: 'panel',
+                id: prototype.id + '-pnlConversionIND', 
+                layout: 'vbox', 
+                hidden: true, // Oculto por defecto
+                border: false,
+                padding: '0 10 10 10', 
+                width: '100%',
+                items: [
+                    {
+                        xtype: 'container',
+                        layout: 'hbox',
+                        width: '100%',
+                        margin: '0 0 5 0',
+                        items: [
+                            {
+                                xtype: 'datefield',
+                                fieldLabel: 'Value Date:',
+                                id: prototype.id + '-dtValueDate',
+                                labelAlign: 'right',
+                                labelWidth: 80,
+                                width: 250,
+                                format: 'd/m/Y',
+                                fieldStyle: 'color: #0B333C;',
+                                allowBlank: false
+                            },
+                            {xtype: 'tbspacer', width: 10},
 
-                    defaults: {
-                        xtype: 'panel',
-                        layout: 'hbox', 
-                        border: false,
-                        width: 680, 
-                        margin: '3 0 3 0',
-                        defaults: {
-                            labelWidth: 200, 
-                            labelAlign: 'right',
-                            fieldStyle: 'text-align: right; font-weight: bold; color: #0B333C;', 
-                            width: 350
-                        }
+                            {
+                                // --- NEW FIELD: Reportado en INR ---
+                                xtype: 'numberfield',
+                                fieldLabel: 'Reportado INR:', // Label for INR
+                                id: prototype.id + '-txtRecaudacionINR', // ID for INR
+                                decimalPrecision: 2,
+                                alwaysDisplayDecimals: true,
+                                labelAlign: 'right',
+                                labelWidth: 100,
+                                width: 200,
+                                fieldStyle: 'font-weight: bold; color: #0B333C; text-align: right;',
+                                enableKeyEvents: true
+                                // No listeners needed here, validation happens on Save
+                            },
+                            {xtype: 'tbspacer', width: 10},
+                            {
+                                xtype: 'numberfield', 
+                                fieldLabel: 'Reportado USD:',
+                                id: prototype.id + '-txtRecaudacionUSD',
+                                decimalPrecision: 2, 
+                                alwaysDisplayDecimals: true,
+                                labelAlign: 'right',
+                                labelWidth: 100,
+                                width: 200,
+                                fieldStyle: 'font-weight: bold; color: #0B333C; text-align: right;',
+                                enableKeyEvents: true,
+                            }
+                        ]
                     },
-                    items: [
-                        {
-                            items: [
-                                {
-                                    xtype: 'numberfield', 
-                                    fieldLabel: 'Reportado en INR:',
-                                    id: prototype.id + '-txtRecaudacionINR',
-                                    decimalPrecision: 2, 
-                                    alwaysDisplayDecimals: true,
-                                },
-                                {xtype: 'tbspacer', width: 20},
-                                {
-                                    xtype: 'numberfield',
-                                    fieldLabel: 'Reportado en USD:',
-                                    id: prototype.id + '-txtRecaudacionUSD',
-                                    decimalPrecision: 2,
-                                    alwaysDisplayDecimals: true,
-                                    labelWidth: 150,
+                    {
+                        xtype: 'container',
+                        layout: 'hbox',
+                        width: '100%',
+                        items: [
+                            {
+                                xtype: 'triggerfield',
+                                fieldLabel: 'Conciliación:',
+                                id: prototype.id + '-txtSeleccionados',
+                                labelAlign: 'right',
+                                labelWidth: 100,
+                                width: 550, 
+                                editable: false, 
+                                emptyText: 'Click en la lupa para seleccionar...',
+                                triggerCls: 'x-form-search-trigger', 
+                                fieldStyle: 'background-color: #f0f0f0; color: #0B333C; font-weight: bold;',
+                                onTriggerClick: function() {
+                                    // Llama al controlador
+                                    this.up('window').getController().onLupaClick();
                                 }
-                            ]
-                        },
-
-                        
-                    ]
-                }
+                            }
+                        ]
+                    },
+                    {
+                        xtype: 'displayfield',
+                        value: '<span style="color:gray; font-size:10px; margin-left: 105px;">* La suma debe coincidir para guardar.</span>'
+                    }
+                ]
+            }
 
 
 

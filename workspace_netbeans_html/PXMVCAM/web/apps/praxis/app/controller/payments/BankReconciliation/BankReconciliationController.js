@@ -3377,8 +3377,11 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
                 case '-panelGridDataDetalleCash':
                     me.pagginActual = '-paggin21';
                     break;
-                 case '-panelGridDataMPF199':
+                case '-panelGridDataMPF199':
                     me.pagginActual = '-pagginMPF199';
+                    break;
+                case '-panelDataInfoScanAgent':
+                    me.pagginActual = '-pagginScanAgent';
                     break;
             }
         }

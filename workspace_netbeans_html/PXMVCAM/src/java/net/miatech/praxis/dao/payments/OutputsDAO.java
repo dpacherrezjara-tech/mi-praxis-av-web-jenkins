@@ -186,7 +186,7 @@ public class OutputsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05105_V1(?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS493(?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -199,6 +199,7 @@ public class OutputsDAO {
             cstmt.setString(4, filter.IN_DATE.trim());
             cstmt.setString(5, filter.IN_CORE.trim());
             cstmt.setString(6, filter.IN_FUENTE.trim());
+            cstmt.setString(7, filter.IN_CASH.trim());
             cstmt.execute();
 
             rst = cstmt.getResultSet();

@@ -6,6 +6,7 @@
 package net.miatech.praxis.logic.payments;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import net.miatech.beans.spring.UserView;
@@ -306,6 +307,13 @@ public class BankReconciliationLogic {
         return bankReconciliationDAO.loadLISTAR_MPF199(filter);
     }
     
+    public List<A2290Filter> getPendingAmountsIndia(String dateLimit) throws SQLException, Exception {
+    if (dateLimit == null || dateLimit.isEmpty()) {
+        return new ArrayList<>(); 
+    }
+    return bankReconciliationDAO.getPendingAmountsIndia(dateLimit);
+}
+    
     public List<A2290Filter> loadLISTAR_MPF223(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadLISTAR_MPF223(filter);
     }
@@ -339,7 +347,9 @@ public class BankReconciliationLogic {
         return bankReconciliationDAO.ConciliationAddAdjust(filter);
     }
     
-    
+    public String executeIndiaConciliationBatch(A2290Filter bean) throws Exception {
+        return bankReconciliationDAO.executeIndiaConciliationBatch(bean);
+    }
     
     
 
