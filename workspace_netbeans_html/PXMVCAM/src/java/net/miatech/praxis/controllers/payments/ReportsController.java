@@ -2327,4 +2327,46 @@ public class ReportsController extends BaseController {
             throw new SpringException(e);
         }
     }
+    
+    
+    ///REVERSA CALLSTORE MPS479
+    
+    
+    
+        @RequestMapping(value = "callStoreMPS479", method = RequestMethod.POST)
+    @ResponseBody
+    public String callStoreMPS479(ModelMap map, HttpServletRequest request) {
+
+        System.out.println("-------------- BOTON DE REVERSA FASE2 : callStoreMPS479 -------------");
+
+        try {
+            ReportsLogic logic = new ReportsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            // Ejecuta el procedimiento almacenado
+            String mensaje = logic.callStoreMPS479();
+
+            map.put("success", true);
+            map.put(
+                "message",
+                (mensaje != null && !mensaje.trim().isEmpty())
+                    ? mensaje
+                    : "Proceso ejecutado correctamente."
+            );
+        } catch (SQLException ex) {
+            map.put("success", false);
+            map.put("message", "Error SQL: " + ex.getMessage());
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("message", "Error general: " + ex.getMessage());
+        }
+
+        return new Gson().toJson(map);
+    }
+
+
+    
+    
+    
+    
 }

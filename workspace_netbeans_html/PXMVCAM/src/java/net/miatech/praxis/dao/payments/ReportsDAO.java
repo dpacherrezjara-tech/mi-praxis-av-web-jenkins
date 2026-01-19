@@ -1457,6 +1457,66 @@ public class ReportsDAO {
 
         return lstData;
     }
+        
+        
+        /////
+        
+        
+    // LLAMAMOS  callStoreMPS479
+        
+        
+        public String callStoreMPS479() throws SQLException, Exception {
+        String message = "";
+        CallableStatement cstmt = null;
+        Connection cnx = null;
+
+        String SQL = "{CALL PRAXISMP.MPS479( ?, ?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQL);
+
+            cstmt.registerOutParameter(2, Types.VARCHAR);
+
+              cstmt.setString(1, "");   
+
+            // Parámetro INOUT
+              cstmt.setString(2, "");
+
+
+            // Ejecutamos el SP
+            cstmt.execute();
+
+ 
+
+            return cstmt.getString(2);
+    
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            message = "Error al ejecutar MPS479: " + e.getMessage();
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+            pasarGarbageCollector();
+        }
+
+        return message;
+    }
+
+    
+
+        
+        
     
 
 }

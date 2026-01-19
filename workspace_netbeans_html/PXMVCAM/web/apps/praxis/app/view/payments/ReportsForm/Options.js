@@ -101,6 +101,28 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Options', {
                             iconCls: 'prx-icon-excel',
                             tooltip: 'Export to Excel'
                         },
+                        
+                        ///BOTON REVERSA
+                        
+                        {
+                            xtype: 'button',
+                            id: prototype.id + '-btnCALLSTORE',
+                            style: 'background:#E3EAF9',
+                            border: false,
+                            width: 15,
+                            height: 15,
+                            padding: '0 0 0 0', 
+                            margin: '8 5 0 0',
+                            icon: 'resources/img/botones/build.png',
+                            tooltip: 'CALL STORE MPS479',
+                            handler: 'btnCallStore_click'
+                        },
+                        
+                        
+                        
+                        ////
+                        
+                        
                         {
                             xtype:'button',
                             id: prototype.id+'-btnDisplay',

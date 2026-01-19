@@ -67,4 +67,11 @@ public class ReportsLogic {
     public List<A2356Filter> loadSQP05120_DETAILPending(A2356Filter filter) throws SQLException, Exception {
         return banksCatalogDAO.loadSQP05120_DETAILPending(filter);
     }
+    
+    ///
+    
+    
+    public String callStoreMPS479() throws SQLException, Exception {
+            return banksCatalogDAO.callStoreMPS479();
+        }
 }
