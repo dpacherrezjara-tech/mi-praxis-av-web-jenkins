@@ -31,6 +31,7 @@ public class MPF102 {
     public String CODEBANK = "";
     public String USUP = "";
     
+    public long RN = 0;
     public double  NETO = 0;
     public double  TOTAL_NETO = 0;
     public boolean checkActive = true;

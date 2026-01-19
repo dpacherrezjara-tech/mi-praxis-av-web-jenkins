@@ -16,6 +16,8 @@ public class MPF060Filter {
     public String IN_FECHA_TO = "";
     public String IN_CCUST = "";
     public String IN_PROCESSOR = "";
+    public String IN_MERCHAND = "";
+    public String IN_LIQUIDACIO = "";
     public String IN_BANDOC = "";
     public String IN_DATECI = "";
     public String IN_TRANCI = "";

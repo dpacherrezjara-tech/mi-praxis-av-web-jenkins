@@ -399,6 +399,7 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DuplicateSettlem
         me.beanDelete.IN_SEQ = Ext.getCmp(prototype.id + '-txtSecuence').getValue() || '';
         me.beanDelete.IN_SCARCOD = Ext.getCmp(prototype.id + '-txtCardType').getValue() || '';
         me.beanDelete.IN_MASSIVE = 'N';
+        me.beanDelete.IN_SECUENCE = Ext.getCmp(prototype.id + '-cmbSecuence').getValue() || '';
 
         me.searchParamsDelete = {
             beanString: JSON.stringify(me.beanDelete),
@@ -426,6 +427,7 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DuplicateSettlem
         me.beanDelete.IN_SEQ = Ext.getCmp(prototype.id + '-txtSecuence').getValue() || '';
         me.beanDelete.IN_SCARCOD = Ext.getCmp(prototype.id + '-txtCardType').getValue() || '';
         me.beanDelete.IN_MASSIVE = 'Y';
+        me.beanDelete.IN_SECUENCE = Ext.getCmp(prototype.id + '-cmbSecuence').getValue() || '';
 
         me.searchParamsDelete = {
             beanString: JSON.stringify(me.beanDelete),

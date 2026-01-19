@@ -100,7 +100,7 @@ public class TemplateReconciliaCreditDAO {
                 while (rst.next()) {
 
                     record = new MPF102();
-
+                    record.RN = rst.getLong("RN");
                     record.CCUST = rst.getString("CCUST");
                     record.BANDOC = rst.getString("BANDOC");
                     record.DATECI = rst.getString("DATECI");
@@ -167,33 +167,35 @@ public class TemplateReconciliaCreditDAO {
         double TOTAL_NETO = 0;
         double TOTAL_IMPORTEPAG = 0;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS113(?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS113(?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(5, Types.INTEGER);
-            cstmt.registerOutParameter(6, Types.INTEGER);
             cstmt.registerOutParameter(7, Types.INTEGER);
             cstmt.registerOutParameter(8, Types.INTEGER);
+            cstmt.registerOutParameter(9, Types.INTEGER);
+            cstmt.registerOutParameter(10, Types.INTEGER);
 
             cstmt.setString(1, filter.IN_CCUST);
             cstmt.setString(2, filter.IN_FECHA_FROM);
             cstmt.setString(3, filter.IN_FECHA_TO);
             cstmt.setString(4, filter.IN_PROCESSOR);
+            cstmt.setString(5, filter.IN_MERCHAND);
+            cstmt.setString(6, filter.IN_LIQUIDACIO);
 
-            cstmt.setInt(5, filter.page.PAGNUM);
-            cstmt.setInt(6, filter.page.PAGROW);
-            cstmt.setInt(7, filter.page.TOTPAG);
-            cstmt.setInt(8, filter.page.TOTROW);
+            cstmt.setInt(7, filter.page.PAGNUM);
+            cstmt.setInt(8, filter.page.PAGROW);
+            cstmt.setInt(9, filter.page.TOTPAG);
+            cstmt.setInt(10, filter.page.TOTROW);
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(5);
-            filter.page.PAGROW = cstmt.getInt(6);
-            filter.page.TOTPAG = cstmt.getInt(7);
-            filter.page.TOTROW = cstmt.getInt(8);
+            filter.page.PAGNUM = cstmt.getInt(7);
+            filter.page.PAGROW = cstmt.getInt(8);
+            filter.page.TOTPAG = cstmt.getInt(9);
+            filter.page.TOTROW = cstmt.getInt(10);
 
             rst = cstmt.getResultSet();
 
@@ -292,17 +294,17 @@ public class TemplateReconciliaCreditDAO {
         double TOTAL_IMPORTE = 0;
         double TOTAL_IMPORTEPAG = 0;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS112(?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS112(?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(7, Types.INTEGER);
-            cstmt.registerOutParameter(8, Types.INTEGER);
             cstmt.registerOutParameter(9, Types.INTEGER);
             cstmt.registerOutParameter(10, Types.INTEGER);
+            cstmt.registerOutParameter(11, Types.INTEGER);
+            cstmt.registerOutParameter(12, Types.INTEGER);
 
             cstmt.setString(1, filter.IN_CCUST);
             cstmt.setString(2, filter.IN_DATEFROM);
@@ -310,17 +312,19 @@ public class TemplateReconciliaCreditDAO {
             cstmt.setString(4, filter.IN_CODPRO);
             cstmt.setString(5, filter.merchandIn);
             cstmt.setString(6, filter.liquidationIn);
+            cstmt.setString(7, filter.IN_MERCHAND);
+            cstmt.setString(8, filter.IN_LIQUIDACIO);
 
-            cstmt.setInt(7, filter.page.PAGNUM);
-            cstmt.setInt(8, filter.page.PAGROW);
-            cstmt.setInt(9, filter.page.TOTPAG);
-            cstmt.setInt(10, filter.page.TOTROW);
+            cstmt.setInt(9, filter.page.PAGNUM);
+            cstmt.setInt(10, filter.page.PAGROW);
+            cstmt.setInt(11, filter.page.TOTPAG);
+            cstmt.setInt(12, filter.page.TOTROW);
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(7);
-            filter.page.PAGROW = cstmt.getInt(8);
-            filter.page.TOTPAG = cstmt.getInt(9);
-            filter.page.TOTROW = cstmt.getInt(10);
+            filter.page.PAGNUM = cstmt.getInt(9);
+            filter.page.PAGROW = cstmt.getInt(10);
+            filter.page.TOTPAG = cstmt.getInt(11);
+            filter.page.TOTROW = cstmt.getInt(12);
 
             rst = cstmt.getResultSet();
             if (rst.next()) {
@@ -583,33 +587,35 @@ public class TemplateReconciliaCreditDAO {
         double TOTAL_IMPORTE = 0;
         double TOTAL_IMPORTEPAG = 0;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS484(?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS484(?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(5, Types.INTEGER);
-            cstmt.registerOutParameter(6, Types.INTEGER);
             cstmt.registerOutParameter(7, Types.INTEGER);
             cstmt.registerOutParameter(8, Types.INTEGER);
+            cstmt.registerOutParameter(9, Types.INTEGER);
+            cstmt.registerOutParameter(10, Types.INTEGER);
 
             cstmt.setString(1, filter.IN_CCUST);
             cstmt.setString(2, filter.IN_PROCESSOR);
             cstmt.setString(3, filter.IN_DATECI);
             cstmt.setString(4, filter.IN_TRANCI);
+            cstmt.setString(5, filter.IN_MERCHAND);
+            cstmt.setString(6, filter.IN_LIQUIDACIO);
 
-            cstmt.setInt(5, filter.page.PAGNUM);
-            cstmt.setInt(6, filter.page.PAGROW);
-            cstmt.setInt(7, filter.page.TOTPAG);
-            cstmt.setInt(8, filter.page.TOTROW);
+            cstmt.setInt(7, filter.page.PAGNUM);
+            cstmt.setInt(8, filter.page.PAGROW);
+            cstmt.setInt(9, filter.page.TOTPAG);
+            cstmt.setInt(10, filter.page.TOTROW);
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(5);
-            filter.page.PAGROW = cstmt.getInt(6);
-            filter.page.TOTPAG = cstmt.getInt(7);
-            filter.page.TOTROW = cstmt.getInt(8);
+            filter.page.PAGNUM = cstmt.getInt(7);
+            filter.page.PAGROW = cstmt.getInt(8);
+            filter.page.TOTPAG = cstmt.getInt(9);
+            filter.page.TOTROW = cstmt.getInt(10);
 
             rst = cstmt.getResultSet();
             if (rst.next()) {
@@ -1136,12 +1142,12 @@ public class TemplateReconciliaCreditDAO {
 
         try {
 
-            String SQLCLL02 = "{CALL PRAXISMP.MPS109(?,?,?,?,?,?,?)}";
+            String SQLCLL02 = "{CALL PRAXISMP.MPS109(?,?,?,?,?,?,?,?)}";
 
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL02);
 
-            cstmt.registerOutParameter(7, Types.VARCHAR);
+            cstmt.registerOutParameter(8, Types.VARCHAR);
 
             cstmt.setString(1, filter.IN_CCUST);
             cstmt.setString(2, filter.IN_CODPRO);
@@ -1149,11 +1155,12 @@ public class TemplateReconciliaCreditDAO {
             cstmt.setString(4, filter.IN_FECR);
             cstmt.setString(5, filter.IN_HOCR);
             cstmt.setString(6, filter.IN_CODUNI);
-            cstmt.setString(7, "");
+            cstmt.setString(7, filter.IN_FORCE);
+            cstmt.setString(8, "");
 
             cstmt.execute();
 
-            strMsj = strMsj + "**" + cstmt.getString(7);
+            strMsj = strMsj + "**" + cstmt.getString(8);
 
         } catch (Exception e) {
             e.printStackTrace();

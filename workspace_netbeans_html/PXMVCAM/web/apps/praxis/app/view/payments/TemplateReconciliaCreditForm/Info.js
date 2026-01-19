@@ -672,6 +672,26 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.Info', {
                                                             },
                                                             items: [
                                                                 {
+                                                                    xtype: 'checkboxfield',
+                                                                    id: prototype.id + '-chkMarkForced',
+                                                                    fieldLabel: '<span>Forced</span>',
+                                                                    labelAlign: 'left',
+                                                                    labelWidth: 40,
+                                                                    checked: false,
+                                                                    margin: '0 10px 0 0',
+                                                                    listeners: {
+                                                                        afterrender: function (cmp) {
+                                                                            Ext.tip.QuickTipManager.register({
+                                                                                target: cmp.getEl(),
+                                                                                title: 'Forzado',
+                                                                                text: 'Al marcar esta opción, el proceso se ejecutará en modo forzado ignorando algunas validaciones.',
+                                                                                width: 300,
+                                                                                dismissDelay: 5000
+                                                                            });
+                                                                        }
+                                                                    }
+                                                                },
+                                                                {
                                                                     xtype: 'button',
                                                                     id: prototype.id + '-btnExecute',
                                                                     width: 110,
@@ -1025,7 +1045,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.Info', {
                                                                     return '';
                                                                 },
                                                                 listeners: {
-                                                                    checkchange: 'updateGridDiscountWMH' 
+                                                                    checkchange: 'updateGridDiscountWMH'
                                                                 }
                                                             },
                                                             {
@@ -1226,6 +1246,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.Info', {
                                                                     {
                                                                         iconCls: 'prx-icon-edit',
                                                                         tooltip: 'Edit',
+                                                                        disabled: true,
                                                                         handler: 'onEditClick'
                                                                     }
                                                                 ],
