@@ -595,7 +595,6 @@ public class MPF100Filter extends MPF100 {
     public double NETOC = 0;
    private List<MPF100Filter> mainRecords = new ArrayList<>();
     private List<MPF100Filter> agentList = new ArrayList<>();
-    public String TDOCORG = "";
 
     public List<MPF100Filter> getMainRecords() {
         return mainRecords;
