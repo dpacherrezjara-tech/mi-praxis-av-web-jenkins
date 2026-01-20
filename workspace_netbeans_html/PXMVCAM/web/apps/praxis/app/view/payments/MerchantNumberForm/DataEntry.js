@@ -8,7 +8,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
     title: 'Merchant Number - Data Entry Form',
     header: true,
     height: 900,
-    width: 1400,
+    width: 1500,
     resizable: false,
     layout: 'fit',
     modal: true,
@@ -34,28 +34,28 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                         anchor: '100%'
                     },
                     items: [
-                            {
-                                xtype: 'panel',
-                                layout: {
-                                    type: 'hbox',
-                                    pack: 'center' 
+                        {
+                            xtype: 'panel',
+                            layout: {
+                                type: 'hbox',
+                                pack: 'center'
+                            },
+                            border: false,
+                            bodyStyle: 'background:#E5ECEF;',
+                            margin: '20 2 4 20',
+                            defaults: {
+                                anchor: '100%',
+                                width: 1129
+                            },
+                            items: [
+
+                                {xtype: 'tbspacer', width: 60},
+                                {
+                                    xtype: 'label',
+                                    text: 'Merchant Nbr.',
+                                    style: 'font-weight:bold;',
+                                    width: 110
                                 },
-                                border: false,
-                                bodyStyle: 'background:#E5ECEF;',
-                                margin: '20 2 4 20',
-                                defaults: {
-                                    anchor: '100%',
-                                    width: 1129
-                                },
-                                items: [
-                                    
-                                    {xtype: 'tbspacer', width: 60},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Merchant Nbr.',
-                                        style: 'font-weight:bold;',
-                                        width: 110
-                                    },
 //                                    {
 //                                        xtype: 'label',
 //                                        text: '(*)',
@@ -66,672 +66,668 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
 //                                            'data-qtip': 'Mandatory Field'
 //                                        }
 //                                    },
-                                    {xtype: 'tbspacer', width: 10},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-de-txtMERCHN',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 16,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 130
-                                    },
-                                    {xtype: 'tbspacer', width: 120},
-                                    
-                                    {
-                                        xtype: 'label',
-                                        text: 'Branch Affiliate',
-                                        style: 'font-weight:bold;',
-                                        width: 115
-                                    },
-                                    {xtype: 'tbspacer', width: 5},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-de-txtAFBRANCH',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 16,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 130,
-                                    },
-                                    {xtype: 'tbspacer', width: 120},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Mode Down. Report',
-                                        style: 'font-weight:bold;',
-                                        width: 80
-                                    },
-                                    {xtype: 'tbspacer', width: 5},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-de-txtDOWNREPORT',
-                                        fieldStyle: 'text-align:left',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 60,
-//                                        maxLength: 15,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 160
-                                    },
-                                    
-                                    
-                                ]
-                            },
-                            {
-                                xtype: 'panel',
-                                layout: 'hbox',
-                                border: false,
-                                bodyStyle: 'background:#E5ECEF;',
-                                margin: '20 2 4 20',
-                                defaults: {
-                                    anchor: '100%',
-                                    width: 1129
-                                },
-                                items: [
-                                    {xtype: 'tbspacer', width: 60},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Code AP',
-                                        style: 'font-weight:bold;',
-                                        width: 110
-                                    },
-                                    {xtype: 'tbspacer', width: 10},
-                                    {
-                                        xtype: 'combo',
-                                        id: prototype.id + '-de-txtAPCODE',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 45,
-                                        valueField: 'VALUE',
-                                        displayField: 'NAME',
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 130
-                                    },
-                                    {xtype: 'tbspacer', width: 120},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Acquirer/Processor',
-                                        style: 'font-weight:bold;',
-                                        width: 115
-                                    },
-                                    {xtype: 'tbspacer', width: 5},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-de-txtACQPROC',
-                                        fieldStyle: 'text-align:left',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 30,
-//                                        maxLength: 15,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 130
-                                    },
-                                    {xtype: 'tbspacer', width: 120},
-                                ]
-                            },
-                            { xtype: 'tbspacer', width: 30, height:30 },
-                            
-                            {
-    xtype: 'container',
-    layout: {
-        type: 'hbox',
-        align: 'stretch' // Asegura que los paneles se alineen correctamente
-    },
-    items: [
-        {
-            xtype: 'container',
-            layout: {
-                type: 'vbox',
-                align: 'stretch'
-            },
-            flex: 1, // Ocupa la mitad del espacio disponible
-            margin: '0 10 0 0', // Margen derecho para separar los contenedores
-            items: [
-                {
-                    xtype: 'panel',
-                    layout: {
-                        type: 'vbox',
-                        align: 'stretch'
-                    },
-                    border: true, // Borde para el marco
-                    bodyStyle: 'background: #E0F7FA; padding: 10px;', // Fondo verde claro y padding interno
-                    margin: '0 0 10 0', // Margen inferior para separar del siguiente panel
-                    items: [
-                        {
-                            xtype: 'label',
-                            text: 'Credit Card', // Título dentro del cuadro
-                            style: 'font-weight: bold; font-size: 16px; color: #333; text-align: center; margin-bottom: 10px;'
-                        },
-                        {
-                            xtype: 'panel',
-                            layout: {
-                                type: 'hbox',
-                                pack: 'center'
-                            },
-                            border: false,
-                            bodyStyle: 'background: transparent;', // Fondo transparente
-                            margin: '0 0 4 0',
-                            defaults: {
-                                anchor: '100%',
-                                width: 1129
-                            },
-                            items: [
-                                { xtype: 'tbspacer', width: 60 },
+                                {xtype: 'tbspacer', width: 10},
                                 {
-                                    xtype: 'label',
-                                    text: 'Franchise 1',
-                                    style: 'font-weight: bold;',
-                                    width: 80
-                                },
-                                { xtype: 'tbspacer', width: 5 },
-                                {
-                                    xtype: 'combo',
-                                    id: prototype.id + '-de-txtFRANCH1',
-                                    fieldStyle: 'text-align: center;',
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-de-txtMERCHN',
+                                    fieldStyle: 'text-align:center',
                                     enforceMaxLength: true,
                                     editable: false,
                                     enabled: false,
-                                    valueField: 'CODE',
-                                    displayField: 'NAME',
-                                    maxLength: 45,
+                                    maxLength: 16,
                                     maskRe: /[a-zA-Z0-9]/,
                                     readOnly: false,
                                     width: 130
                                 },
-                                { xtype: 'tbspacer', width: 30 },
-                                {
-                                    xtype: 'label',
-                                    text: 'Franchise 2',
-                                    style: 'font-weight: bold;',
-                                    width: 80
-                                },
-                                { xtype: 'tbspacer', width: 5 },
-                                {
-                                    xtype: 'combo',
-                                    id: prototype.id + '-de-txtFRANCH2',
-                                    fieldStyle: 'text-align: center;',
-                                    enforceMaxLength: true,
-                                    editable: false,
-                                    enabled: false,
-                                    valueField: 'CODE',
-                                    displayField: 'NAME',
-                                    maxLength: 45,
-                                    maskRe: /[a-zA-Z0-9]/,
-                                    readOnly: false,
-                                    width: 130
-                                }
-                            ]
-                        },
-                        {
-                            xtype: 'panel',
-                            layout: {
-                                type: 'hbox',
-                                pack: 'center'
-                            },
-                            border: false,
-                            bodyStyle: 'background: transparent;', // Fondo transparente
-                            margin: '0 0 4 0',
-                            defaults: {
-                                anchor: '100%',
-                                width: 1129
-                            },
-                            items: [
-                                { xtype: 'tbspacer', width: 60 },
-                                {
-                                    xtype: 'label',
-                                    text: 'Franchise 3',
-                                    style: 'font-weight: bold;',
-                                    width: 80
-                                },
-                                { xtype: 'tbspacer', width: 5 },
-                                {
-                                    xtype: 'combo',
-                                    id: prototype.id + '-de-txtFRANCH3',
-                                    fieldStyle: 'text-align: center;',
-                                    enforceMaxLength: true,
-                                    editable: false,
-                                    enabled: false,
-                                    valueField: 'CODE',
-                                    displayField: 'NAME',
-                                    maxLength: 45,
-                                    maskRe: /[a-zA-Z0-9]/,
-                                    readOnly: false,
-                                    width: 130
-                                },
-                                { xtype: 'tbspacer', width: 30 },
-                                {
-                                    xtype: 'label',
-                                    text: 'Franchise 4',
-                                    style: 'font-weight: bold;',
-                                    width: 80
-                                },
-                                { xtype: 'tbspacer', width: 5 },
-                                {
-                                    xtype: 'combo',
-                                    id: prototype.id + '-de-txtFRANCH4',
-                                    fieldStyle: 'text-align: center;',
-                                    enforceMaxLength: true,
-                                    editable: false,
-                                    enabled: false,
-                                    valueField: 'CODE',
-                                    displayField: 'NAME',
-                                    maxLength: 45,
-                                    maskRe: /[a-zA-Z0-9]/,
-                                    readOnly: false,
-                                    width: 130
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-    xtype: 'container',
-    layout: {
-        type: 'vbox',
-        align: 'stretch'
-    },
-    flex: 1,
-    margin: '0 0 0 10',
-    items: [
-        {
-            xtype: 'panel',
-            layout: {
-                type: 'vbox',
-                align: 'stretch'
-            },
-            border: true,
-            bodyStyle: 'background: #FFF3E0; padding: 10px;',
-            margin: '0 0 10 0',
-            items: [
-                {
-                    xtype: 'label',
-                    text: 'Equivalent',
-                    style: 'font-weight: bold; font-size: 16px; color: #333; text-align: center; margin-bottom: 10px;'
-                },
-                {
-                    xtype: 'panel',
-                    layout: {
-                        type: 'hbox',
-                        pack: 'center'
-                    },
-                    border: false,
-                    bodyStyle: 'background: transparent;',
-                    margin: '0 0 4 0',
-                    defaults: {
-                        anchor: '100%',
-                        width: 1129
-                    },
-                    items: [
-                        { xtype: 'tbspacer', width: 10 },
-                        { xtype: 'label', text: 'Equivalent 1', style: 'font-weight: bold;', width: 90 },
-                        { xtype: 'tbspacer', width: 5 },
-                        { xtype: 'combo', id: prototype.id + '-de-txtEquivalent1', fieldStyle: 'text-align: center;', enforceMaxLength: true, editable: false, enabled: false, valueField: 'CODE', displayField: 'NAME', maxLength: 45, maskRe: /[a-zA-Z0-9]/, readOnly: false, width: 130 },
-                        { xtype: 'tbspacer', width: 30 },
-                        { xtype: 'label', text: 'Equivalent 2', style: 'font-weight: bold;', width: 90 },
-                        { xtype: 'tbspacer', width: 5 },
-                        { xtype: 'combo', id: prototype.id + '-de-txtEquivalent2', fieldStyle: 'text-align: center;', enforceMaxLength: true, editable: false, enabled: false, valueField: 'CODE', displayField: 'NAME', maxLength: 45, maskRe: /[a-zA-Z0-9]/, readOnly: false, width: 130 },
-                        { xtype: 'tbspacer', width: 30 },
-                        { xtype: 'label', text: 'Equivalent 3', style: 'font-weight: bold;', width: 90 },
-                        { xtype: 'tbspacer', width: 5 },
-                        { xtype: 'combo', id: prototype.id + '-de-txtEquivalent3', fieldStyle: 'text-align: center;', enforceMaxLength: true, editable: false, enabled: false, valueField: 'CODE', displayField: 'NAME', maxLength: 45, maskRe: /[a-zA-Z0-9]/, readOnly: false, width: 130 }
-                    ]
-                },
-                {
-                    xtype: 'panel',
-                    layout: {
-                        type: 'hbox',
-                        pack: 'center'
-                    },
-                    border: false,
-                    bodyStyle: 'background: transparent;',
-                    margin: '0 0 4 0',
-                    defaults: {
-                        anchor: '100%',
-                        width: 1129
-                    },
-                    items: [
-                        { xtype: 'tbspacer', width: 10 },
-                        { xtype: 'label', text: 'Equivalent 4', style: 'font-weight: bold;', width: 90 },
-                        { xtype: 'tbspacer', width: 5 },
-                        { xtype: 'combo', id: prototype.id + '-de-txtEquivalent4', fieldStyle: 'text-align: center;', enforceMaxLength: true, editable: false, enabled: false, valueField: 'CODE', displayField: 'NAME', maxLength: 45, maskRe: /[a-zA-Z0-9]/, readOnly: false, width: 130 },
-                        { xtype: 'tbspacer', width: 30 },
-                        { xtype: 'label', text: 'Equivalent 5', style: 'font-weight: bold;', width: 90 },
-                        { xtype: 'tbspacer', width: 5 },
-                        { xtype: 'combo', id: prototype.id + '-de-txtEquivalent5', fieldStyle: 'text-align: center;', enforceMaxLength: true, editable: false, enabled: false, valueField: 'CODE', displayField: 'NAME', maxLength: 45, maskRe: /[a-zA-Z0-9]/, readOnly: false, width: 130 },
-                        { xtype: 'tbspacer', width: 30 },
-                        { xtype: 'label', text: 'Equivalent 6', style: 'font-weight: bold;', width: 90 },
-                        { xtype: 'tbspacer', width: 5 },
-                        { xtype: 'combo', id: prototype.id + '-de-txtEquivalent6', fieldStyle: 'text-align: center;', enforceMaxLength: true, editable: false, enabled: false, valueField: 'CODE', displayField: 'NAME', maxLength: 45, maskRe: /[a-zA-Z0-9]/, readOnly: false, width: 130 }
-                    ]
-                },
-                {
-                    xtype: 'panel',
-                    layout: {
-                        type: 'hbox',
-                        pack: 'center'
-                    },
-                    border: false,
-                    bodyStyle: 'background: transparent;',
-                    margin: '0 0 4 0',
-                    defaults: {
-                        anchor: '100%',
-                        width: 1129
-                    },
-                    items: [
-                        { xtype: 'tbspacer', width: 10 },
-                        { xtype: 'label', text: 'Equivalent 7', style: 'font-weight: bold;', width: 90 },
-                        { xtype: 'tbspacer', width: 5 },
-                        { xtype: 'combo', id: prototype.id + '-de-txtEquivalent7', fieldStyle: 'text-align: center;', enforceMaxLength: true, editable: false, enabled: false, valueField: 'CODE', displayField: 'NAME', maxLength: 45, maskRe: /[a-zA-Z0-9]/, readOnly: false, width: 130 },
-                        { xtype: 'tbspacer', width: 30 },
-                        { xtype: 'label', text: 'Equivalent 8', style: 'font-weight: bold;', width: 90 },
-                        { xtype: 'tbspacer', width: 5 },
-                        { xtype: 'combo', id: prototype.id + '-de-txtEquivalent8', fieldStyle: 'text-align: center;', enforceMaxLength: true, editable: false, enabled: false, valueField: 'CODE', displayField: 'NAME', maxLength: 45, maskRe: /[a-zA-Z0-9]/, readOnly: false, width: 130 },
-                        { xtype: 'tbspacer', width: 30 },
-                        { xtype: 'label', text: 'Equivalent 9', style: 'font-weight: bold;', width: 90 },
-                        { xtype: 'tbspacer', width: 5 },
-                        { xtype: 'combo', id: prototype.id + '-de-txtEquivalent9', fieldStyle: 'text-align: center;', enforceMaxLength: true, editable: false, enabled: false, valueField: 'CODE', displayField: 'NAME', maxLength: 45, maskRe: /[a-zA-Z0-9]/, readOnly: false, width: 130 }
-                    ]
-                }
-            ]
-        }
-    ]
-}
+                                {xtype: 'tbspacer', width: 120},
 
-    ]
-},
-                            
-                            
-                            
-                            {
-                                xtype: 'panel',
-                                layout: 'hbox',
-                                id: prototype.id + '-panelTabMain',
-                                border: false,
-                                margin: '35 0 0 0',
-                                
-                                //bodyStyle: 'background:#efe5e5;',
-                                items: [
-                                    {
-                                        xtype: 'tabpanel',
-                                        id: prototype.id + '-tabMain',
-                                        deferredRender: true,
-                                        width: 1260,
-                                        border: false,
-    //                                            height: 182, //820
-    //                                            anchor: '100%',
-                                        margin: '0 0 0 0',
-                                        autoScroll: true,
-                                        bodyStyle: 'background: transparent',
-                                        items: [
-                                            {
-                                                xtype: 'panel',
-                                                title: 'Merchant',
-                                                id: prototype.id + '-panelMerchant',
-                                                layout: 'vbox',
-                                                border: false,
-                                                width: 1260,
-                        //                                                            height: 180,
-                                                hidden: false,
-                                                autoScroll: true,
-                                                items: [
-                                                    {
-                                                        xtype: 'grid',
-                                                        id: prototype.id + '-gridDataInfoMerchant',
-                                                        width: 1260,
-                                                        height: 350,
-                                                        columnLines: true,
- 
-                                                        plugins: [
+                                {
+                                    xtype: 'label',
+                                    text: 'Branch Affiliate',
+                                    style: 'font-weight:bold;',
+                                    width: 115
+                                },
+                                {xtype: 'tbspacer', width: 5},
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-de-txtAFBRANCH',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 16,
+                                    maskRe: /[a-zA-Z0-9]/,
+                                    readOnly: false,
+                                    width: 130,
+                                },
+                                {xtype: 'tbspacer', width: 120},
+                                {
+                                    xtype: 'label',
+                                    text: 'Mode Down. Report',
+                                    style: 'font-weight:bold;',
+                                    width: 80
+                                },
+                                {xtype: 'tbspacer', width: 5},
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-de-txtDOWNREPORT',
+                                    fieldStyle: 'text-align:left',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 60,
+//                                        maxLength: 15,
+                                    maskRe: /[a-zA-Z0-9]/,
+                                    readOnly: false,
+                                    width: 160
+                                },
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            layout: 'hbox',
+                            border: false,
+                            bodyStyle: 'background:#E5ECEF;',
+                            margin: '20 2 4 20',
+                            defaults: {
+                                anchor: '100%',
+                                width: 1129
+                            },
+                            items: [
+                                {xtype: 'tbspacer', width: 60},
+                                {
+                                    xtype: 'label',
+                                    text: 'Code AP',
+                                    style: 'font-weight:bold;',
+                                    width: 110
+                                },
+                                {xtype: 'tbspacer', width: 10},
+                                {
+                                    xtype: 'combo',
+                                    id: prototype.id + '-de-txtAPCODE',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 45,
+                                    valueField: 'VALUE',
+                                    displayField: 'NAME',
+                                    maskRe: /[a-zA-Z0-9]/,
+                                    readOnly: false,
+                                    width: 130
+                                },
+                                {xtype: 'tbspacer', width: 120},
+                                {
+                                    xtype: 'label',
+                                    text: 'Acquirer/Processor',
+                                    style: 'font-weight:bold;',
+                                    width: 115
+                                },
+                                {xtype: 'tbspacer', width: 5},
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-de-txtACQPROC',
+                                    fieldStyle: 'text-align:left',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 30,
+//                                        maxLength: 15,
+                                    maskRe: /[a-zA-Z0-9]/,
+                                    readOnly: false,
+                                    width: 130
+                                },
+                                {xtype: 'tbspacer', width: 120},
+                            ]
+                        },
+                        {xtype: 'tbspacer', width: 30, height: 30},
+
+                        {
+                            xtype: 'container',
+                            layout: {
+                                type: 'hbox',
+                                align: 'stretch' // Asegura que los paneles se alineen correctamente
+                            },
+                            items: [
+                                {
+                                    xtype: 'container',
+                                    layout: {
+                                        type: 'vbox',
+                                        align: 'stretch'
+                                    },
+                                    flex: 1, // Ocupa la mitad del espacio disponible
+                                    margin: '0 10 0 0', // Margen derecho para separar los contenedores
+                                    items: [
+                                        {
+                                            xtype: 'panel',
+                                            layout: {
+                                                type: 'vbox',
+                                                align: 'stretch'
+                                            },
+                                            border: true, // Borde para el marco
+                                            bodyStyle: 'background: #E0F7FA; padding: 10px;', // Fondo verde claro y padding interno
+                                            margin: '0 0 10 0', // Margen inferior para separar del siguiente panel
+                                            items: [
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Credit Card', // Título dentro del cuadro
+                                                    style: 'font-weight: bold; font-size: 16px; color: #333; text-align: center; margin-bottom: 10px;'
+                                                },
+                                                {
+                                                    xtype: 'panel',
+                                                    layout: {
+                                                        type: 'hbox',
+                                                        pack: 'center'
+                                                    },
+                                                    border: false,
+                                                    bodyStyle: 'background: transparent;', // Fondo transparente
+                                                    margin: '0 0 4 0',
+                                                    defaults: {
+                                                        anchor: '100%',
+                                                        width: 1129
+                                                    },
+                                                    items: [
+                                                        {xtype: 'tbspacer', width: 60},
+                                                        {
+                                                            xtype: 'label',
+                                                            text: 'Franchise 1',
+                                                            style: 'font-weight: bold;',
+                                                            width: 80
+                                                        },
+                                                        {xtype: 'tbspacer', width: 5},
+                                                        {
+                                                            xtype: 'combo',
+                                                            id: prototype.id + '-de-txtFRANCH1',
+                                                            fieldStyle: 'text-align: center;',
+                                                            enforceMaxLength: true,
+                                                            editable: false,
+                                                            enabled: false,
+                                                            valueField: 'CODE',
+                                                            displayField: 'NAME',
+                                                            maxLength: 45,
+                                                            maskRe: /[a-zA-Z0-9]/,
+                                                            readOnly: false,
+                                                            width: 130
+                                                        },
+                                                        {xtype: 'tbspacer', width: 30},
+                                                        {
+                                                            xtype: 'label',
+                                                            text: 'Franchise 2',
+                                                            style: 'font-weight: bold;',
+                                                            width: 80
+                                                        },
+                                                        {xtype: 'tbspacer', width: 5},
+                                                        {
+                                                            xtype: 'combo',
+                                                            id: prototype.id + '-de-txtFRANCH2',
+                                                            fieldStyle: 'text-align: center;',
+                                                            enforceMaxLength: true,
+                                                            editable: false,
+                                                            enabled: false,
+                                                            valueField: 'CODE',
+                                                            displayField: 'NAME',
+                                                            maxLength: 45,
+                                                            maskRe: /[a-zA-Z0-9]/,
+                                                            readOnly: false,
+                                                            width: 130
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    xtype: 'panel',
+                                                    layout: {
+                                                        type: 'hbox',
+                                                        pack: 'center'
+                                                    },
+                                                    border: false,
+                                                    bodyStyle: 'background: transparent;', // Fondo transparente
+                                                    margin: '0 0 4 0',
+                                                    defaults: {
+                                                        anchor: '100%',
+                                                        width: 1129
+                                                    },
+                                                    items: [
+                                                        {xtype: 'tbspacer', width: 60},
+                                                        {
+                                                            xtype: 'label',
+                                                            text: 'Franchise 3',
+                                                            style: 'font-weight: bold;',
+                                                            width: 80
+                                                        },
+                                                        {xtype: 'tbspacer', width: 5},
+                                                        {
+                                                            xtype: 'combo',
+                                                            id: prototype.id + '-de-txtFRANCH3',
+                                                            fieldStyle: 'text-align: center;',
+                                                            enforceMaxLength: true,
+                                                            editable: false,
+                                                            enabled: false,
+                                                            valueField: 'CODE',
+                                                            displayField: 'NAME',
+                                                            maxLength: 45,
+                                                            maskRe: /[a-zA-Z0-9]/,
+                                                            readOnly: false,
+                                                            width: 130
+                                                        },
+                                                        {xtype: 'tbspacer', width: 30},
+                                                        {
+                                                            xtype: 'label',
+                                                            text: 'Franchise 4',
+                                                            style: 'font-weight: bold;',
+                                                            width: 80
+                                                        },
+                                                        {xtype: 'tbspacer', width: 5},
+                                                        {
+                                                            xtype: 'combo',
+                                                            id: prototype.id + '-de-txtFRANCH4',
+                                                            fieldStyle: 'text-align: center;',
+                                                            enforceMaxLength: true,
+                                                            editable: false,
+                                                            enabled: false,
+                                                            valueField: 'CODE',
+                                                            displayField: 'NAME',
+                                                            maxLength: 45,
+                                                            maskRe: /[a-zA-Z0-9]/,
+                                                            readOnly: false,
+                                                            width: 130
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    xtype: 'container',
+                                    layout: {
+                                        type: 'vbox',
+                                        align: 'stretch'
+                                    },
+                                    flex: 1,
+                                    margin: '0 0 0 10',
+                                    items: [
+                                        {
+                                            xtype: 'panel',
+                                            layout: {
+                                                type: 'vbox',
+                                                align: 'stretch'
+                                            },
+                                            border: true,
+                                            bodyStyle: 'background: #FFF3E0; padding: 10px;',
+                                            margin: '0 0 10 0',
+                                            items: [
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Equivalent',
+                                                    style: 'font-weight: bold; font-size: 16px; color: #333; text-align: center; margin-bottom: 10px;'
+                                                },
+                                                {
+                                                    xtype: 'panel',
+                                                    layout: {
+                                                        type: 'hbox',
+                                                        pack: 'center'
+                                                    },
+                                                    border: false,
+                                                    bodyStyle: 'background: transparent;',
+                                                    margin: '0 0 4 0',
+                                                    defaults: {
+                                                        anchor: '100%',
+                                                        width: 1129
+                                                    },
+                                                    items: [
+                                                        {xtype: 'tbspacer', width: 10},
+                                                        {xtype: 'label', text: 'Equivalent 1', style: 'font-weight: bold;', width: 90},
+                                                        {xtype: 'tbspacer', width: 5},
+                                                        {xtype: 'combo', id: prototype.id + '-de-txtEquivalent1', fieldStyle: 'text-align: center;', enforceMaxLength: true, editable: false, enabled: false, valueField: 'CODE', displayField: 'NAME', maxLength: 45, maskRe: /[a-zA-Z0-9]/, readOnly: false, width: 130},
+                                                        {xtype: 'tbspacer', width: 30},
+                                                        {xtype: 'label', text: 'Equivalent 2', style: 'font-weight: bold;', width: 90},
+                                                        {xtype: 'tbspacer', width: 5},
+                                                        {xtype: 'combo', id: prototype.id + '-de-txtEquivalent2', fieldStyle: 'text-align: center;', enforceMaxLength: true, editable: false, enabled: false, valueField: 'CODE', displayField: 'NAME', maxLength: 45, maskRe: /[a-zA-Z0-9]/, readOnly: false, width: 130},
+                                                        {xtype: 'tbspacer', width: 30},
+                                                        {xtype: 'label', text: 'Equivalent 3', style: 'font-weight: bold;', width: 90},
+                                                        {xtype: 'tbspacer', width: 5},
+                                                        {xtype: 'combo', id: prototype.id + '-de-txtEquivalent3', fieldStyle: 'text-align: center;', enforceMaxLength: true, editable: false, enabled: false, valueField: 'CODE', displayField: 'NAME', maxLength: 45, maskRe: /[a-zA-Z0-9]/, readOnly: false, width: 130}
+                                                    ]
+                                                },
+                                                {
+                                                    xtype: 'panel',
+                                                    layout: {
+                                                        type: 'hbox',
+                                                        pack: 'center'
+                                                    },
+                                                    border: false,
+                                                    bodyStyle: 'background: transparent;',
+                                                    margin: '0 0 4 0',
+                                                    defaults: {
+                                                        anchor: '100%',
+                                                        width: 1129
+                                                    },
+                                                    items: [
+                                                        {xtype: 'tbspacer', width: 10},
+                                                        {xtype: 'label', text: 'Equivalent 4', style: 'font-weight: bold;', width: 90},
+                                                        {xtype: 'tbspacer', width: 5},
+                                                        {xtype: 'combo', id: prototype.id + '-de-txtEquivalent4', fieldStyle: 'text-align: center;', enforceMaxLength: true, editable: false, enabled: false, valueField: 'CODE', displayField: 'NAME', maxLength: 45, maskRe: /[a-zA-Z0-9]/, readOnly: false, width: 130},
+                                                        {xtype: 'tbspacer', width: 30},
+                                                        {xtype: 'label', text: 'Equivalent 5', style: 'font-weight: bold;', width: 90},
+                                                        {xtype: 'tbspacer', width: 5},
+                                                        {xtype: 'combo', id: prototype.id + '-de-txtEquivalent5', fieldStyle: 'text-align: center;', enforceMaxLength: true, editable: false, enabled: false, valueField: 'CODE', displayField: 'NAME', maxLength: 45, maskRe: /[a-zA-Z0-9]/, readOnly: false, width: 130},
+                                                        {xtype: 'tbspacer', width: 30},
+                                                        {xtype: 'label', text: 'Equivalent 6', style: 'font-weight: bold;', width: 90},
+                                                        {xtype: 'tbspacer', width: 5},
+                                                        {xtype: 'combo', id: prototype.id + '-de-txtEquivalent6', fieldStyle: 'text-align: center;', enforceMaxLength: true, editable: false, enabled: false, valueField: 'CODE', displayField: 'NAME', maxLength: 45, maskRe: /[a-zA-Z0-9]/, readOnly: false, width: 130}
+                                                    ]
+                                                },
+                                                {
+                                                    xtype: 'panel',
+                                                    layout: {
+                                                        type: 'hbox',
+                                                        pack: 'center'
+                                                    },
+                                                    border: false,
+                                                    bodyStyle: 'background: transparent;',
+                                                    margin: '0 0 4 0',
+                                                    defaults: {
+                                                        anchor: '100%',
+                                                        width: 1129
+                                                    },
+                                                    items: [
+                                                        {xtype: 'tbspacer', width: 10},
+                                                        {xtype: 'label', text: 'Equivalent 7', style: 'font-weight: bold;', width: 90},
+                                                        {xtype: 'tbspacer', width: 5},
+                                                        {xtype: 'combo', id: prototype.id + '-de-txtEquivalent7', fieldStyle: 'text-align: center;', enforceMaxLength: true, editable: false, enabled: false, valueField: 'CODE', displayField: 'NAME', maxLength: 45, maskRe: /[a-zA-Z0-9]/, readOnly: false, width: 130},
+                                                        {xtype: 'tbspacer', width: 30},
+                                                        {xtype: 'label', text: 'Equivalent 8', style: 'font-weight: bold;', width: 90},
+                                                        {xtype: 'tbspacer', width: 5},
+                                                        {xtype: 'combo', id: prototype.id + '-de-txtEquivalent8', fieldStyle: 'text-align: center;', enforceMaxLength: true, editable: false, enabled: false, valueField: 'CODE', displayField: 'NAME', maxLength: 45, maskRe: /[a-zA-Z0-9]/, readOnly: false, width: 130},
+                                                        {xtype: 'tbspacer', width: 30},
+                                                        {xtype: 'label', text: 'Equivalent 9', style: 'font-weight: bold;', width: 90},
+                                                        {xtype: 'tbspacer', width: 5},
+                                                        {xtype: 'combo', id: prototype.id + '-de-txtEquivalent9', fieldStyle: 'text-align: center;', enforceMaxLength: true, editable: false, enabled: false, valueField: 'CODE', displayField: 'NAME', maxLength: 45, maskRe: /[a-zA-Z0-9]/, readOnly: false, width: 130}
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+
+                            ]
+                        },
+
+                        {
+                            xtype: 'panel',
+                            layout: 'hbox',
+                            id: prototype.id + '-panelTabMain',
+                            border: false,
+                            margin: '35 0 0 0',
+
+                            //bodyStyle: 'background:#efe5e5;',
+                            items: [
+                                {
+                                    xtype: 'tabpanel',
+                                    id: prototype.id + '-tabMain',
+                                    deferredRender: true,
+                                    width: 1400,
+                                    border: false,
+                                    //                                            height: 182, //820
+                                    //                                            anchor: '100%',
+                                    margin: '0 0 0 0',
+                                    autoScroll: true,
+                                    bodyStyle: 'background: transparent',
+                                    items: [
+                                        {
+                                            xtype: 'panel',
+                                            title: 'Merchant',
+                                            id: prototype.id + '-panelMerchant',
+                                            layout: 'vbox',
+                                            border: false,
+                                            width: 1260,
+                                            //                                                            height: 180,
+                                            hidden: false,
+                                            autoScroll: true,
+                                            items: [
+                                                {
+                                                    xtype: 'grid',
+                                                    id: prototype.id + '-gridDataInfoMerchant',
+                                                    width: 1260,
+                                                    height: 350,
+                                                    columnLines: true,
+
+                                                    plugins: [
+                                                        {
+
+                                                            ptype: 'cellediting',
+                                                            clicksToEdit: 1
+
+                                                        }
+                                                    ],
+                                                    columns: {
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: true,
+                                                            align: 'center'
+                                                        },
+                                                        items: [
+
                                                             {
-                                                                
-                                                                ptype: 'cellediting',
-                                                                clicksToEdit: 1
-                                                                
-                                                            }
-                                                        ],
-                                                        columns: {
-                                                            defaults: {
-                                                                menuDisabled: true,
-                                                                sortable: true,
-                                                                align: 'center'
+                                                                text: 'Merchant', dataIndex: 'CMERCHAN', width: 180,
+                                                                editor: {
+                                                                    xtype: 'textfield',
+                                                                    editable: true,
+                                                                    allowBlank: false,
+                                                                    enableKeyEvents: true,
+//                                                                        maskRe: /[0-9\.-]/,
+                                                                    selectOnFocus: true
+                                                                },
                                                             },
-                                                            items: [
-                                                                
-                                                                {
-                                                                    text: 'Merchant', dataIndex: 'CMERCHAN', width: 180,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
+                                                            {
+                                                                text: 'Merchant Branch', dataIndex: 'SUCMERCH', width: 130,
+                                                                editor: {
+                                                                    xtype: 'textfield',
+                                                                    editable: true,
+                                                                    allowBlank: false,
+                                                                    enableKeyEvents: true,
 //                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
+                                                                    selectOnFocus: true
                                                                 },
-                                                                {
-                                                                    text: 'Merchant Branch', dataIndex: 'SUCMERCH', width: 130,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
+                                                            },
+                                                            {
+                                                                text: 'Code <br> Proces', dataIndex: 'CODE', width: 90,
+                                                                editor: {
+                                                                    xtype: 'textfield',
+                                                                    editable: true,
+                                                                    allowBlank: false,
+                                                                    enableKeyEvents: true,
 //                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
+                                                                    selectOnFocus: true
                                                                 },
-                                                                {
-                                                                    text: 'Code <br> Proces', dataIndex: 'CODE', width: 90,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
+                                                            },
+                                                            {
+                                                                text: 'Name Proces', dataIndex: 'CORE', width: 200,
+                                                                editor: {
+                                                                    xtype: 'textfield',
+                                                                    editable: true,
+                                                                    allowBlank: false,
+                                                                    enableKeyEvents: true,
 //                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
+                                                                    selectOnFocus: true
                                                                 },
-                                                                {
-                                                                    text: 'Name Proces', dataIndex: 'CORE', width: 200,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
+                                                            },
+                                                            {
+                                                                text: 'Bank Code', dataIndex: 'CODEBANK', width: 96,
+                                                                editor: {
+                                                                    xtype: 'textfield',
+                                                                    editable: true,
+                                                                    allowBlank: false,
+                                                                    enableKeyEvents: true,
 //                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
+                                                                    selectOnFocus: true
                                                                 },
-                                                                {
-                                                                    text: 'Bank Code', dataIndex: 'CODEBANK', width: 96,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                },
-                                                                {
-                                                                    text: 'Acc. Number', dataIndex: 'ACCNUMB', width: 130,
-                                                                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                        var data = record.data;
-                                                                        metaData.style = "text-align:left;";
+                                                            },
+                                                            {
+                                                                text: 'Acc. Number', dataIndex: 'ACCNUMB', width: 130,
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    var data = record.data;
+                                                                    metaData.style = "text-align:left;";
 
-                                                                        return  value;
-                                                                    },
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
+                                                                    return  value;
+                                                                },
+                                                                editor: {
+                                                                    xtype: 'textfield',
+                                                                    editable: true,
+                                                                    allowBlank: false,
+                                                                    enableKeyEvents: true,
 //                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                    
+                                                                    selectOnFocus: true
                                                                 },
-                                                                {
-                                                                    text: 'Bank <br> Company', dataIndex: 'BANKCM', width: 80,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
+
+                                                            },
+                                                            {
+                                                                text: 'Bank <br> Company', dataIndex: 'BANKCM', width: 80,
+                                                                editor: {
+                                                                    xtype: 'textfield',
+                                                                    editable: true,
+                                                                    allowBlank: false,
+                                                                    enableKeyEvents: true,
 //                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
+                                                                    selectOnFocus: true
                                                                 },
-                                                                {
-                                                                    text: 'Agent.', dataIndex: 'SAGENT', width: 79,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
+                                                            },
+                                                            {
+                                                                text: 'Agent.', dataIndex: 'SAGENT', width: 79,
+                                                                editor: {
+                                                                    xtype: 'textfield',
+                                                                    editable: true,
+                                                                    allowBlank: false,
+                                                                    enableKeyEvents: true,
 //                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
+                                                                    selectOnFocus: true
                                                                 },
-                                                                {
-                                                                    sortable: false,
-                                                                    xtype: 'actioncolumn',
-                                                                    id: prototype.id + '-gridMERCHView',
-                                                                    width: 40,
-                                                                    text: 'View',
-                                                                    align: 'center',
-                                                                    items: [
-                                                                        {
-                                                                            iconCls: 'prx-icon-edit',
-                                                                            tooltip: 'Edit',
-                                                                            handler: 'onViewMerchClick'
-                                                                        }
-                                                                    ]
+                                                            },
+                                                            {
+                                                                sortable: false,
+                                                                xtype: 'actioncolumn',
+                                                                id: prototype.id + '-gridMERCHView',
+                                                                width: 40,
+                                                                text: 'View',
+                                                                align: 'center',
+                                                                items: [
+                                                                    {
+                                                                        iconCls: 'prx-icon-edit',
+                                                                        tooltip: 'Edit',
+                                                                        handler: 'onViewMerchClick'
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                xtype: 'actioncolumn',
+                                                                width: 60,
+                                                                text: 'Update',
+                                                                align: 'center',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    var data = record.data;
+                                                                    metaData.style = "background-color: #F0F0F0 !important;";
+                                                                    return  value;
                                                                 },
-                                                                {
-                                                                    xtype: 'actioncolumn',
-                                                                    width: 60,
-                                                                    text: 'Update',
-                                                                    align: 'center',
-                                                                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                        var data = record.data;
-                                                                        metaData.style = "background-color: #F0F0F0 !important;";
-                                                                        return  value;
-                                                                    },
-                                                                    items: [{
+                                                                items: [{
                                                                         icon: 'resources/img/botones/icon-for-update-28-removebg-preview.png',
                                                                         tooltip: 'Manda el registro actual al historico y crea un nuevo registro en Merchant',
                                                                         handler: 'onViewMerchClick'
                                                                     }]
-                                                                },
-                                                                {
-                                                                    sortable: false,
-                                                                    xtype: 'actioncolumn',
-                                                                    id: prototype.id + '-gridCreateVigente',
-                                                                    width: 60,
-                                                                    text: 'Create',
-                                                                    align: 'center',
-                                                                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                        var data = record.data;
-                                                                        metaData.style = "background-color: #003366 !important;";
+                                                            },
+                                                            {
+                                                                sortable: false,
+                                                                xtype: 'actioncolumn',
+                                                                id: prototype.id + '-gridCreateVigente',
+                                                                width: 60,
+                                                                text: 'Create',
+                                                                align: 'center',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    var data = record.data;
+                                                                    metaData.style = "background-color: #003366 !important;";
 
-                                                                        return  value;
-                                                                    },
-                                                                    items: [
-                                                                        {
-                                                                            icon: 'resources/img/botones/add.png', // Ruta a tu imagen
-                                                                            tooltip: 'Manda todos los registros al historico y solo se crea 1 nuevo Merchant',
-                                                                            handler: 'onViewMerchClick',
-                                                                            style: 'background-color: #fff3cd;',
-                                                                        }
-                                                                    ]
+                                                                    return  value;
                                                                 },
-                                                                 {
-                                                                    sortable: false,
-                                                                    xtype: 'actioncolumn',
-                                                                    id: prototype.id + '-gridDeleteMerch',
-                                                                    width: 60,
-                                                                    text: 'Delete',
-                                                                    align: 'center',
-                                                                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                        var data = record.data;
+                                                                items: [
+                                                                    {
+                                                                        icon: 'resources/img/botones/add.png', // Ruta a tu imagen
+                                                                        tooltip: 'Manda todos los registros al historico y solo se crea 1 nuevo Merchant',
+                                                                        handler: 'onViewMerchClick',
+                                                                        style: 'background-color: #fff3cd;',
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                sortable: false,
+                                                                xtype: 'actioncolumn',
+                                                                id: prototype.id + '-gridDeleteMerch',
+                                                                width: 60,
+                                                                text: 'Delete',
+                                                                align: 'center',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    var data = record.data;
 //                                                                        metaData.style = "background-color: #003366 !important;";
 
-                                                                        return  value;
-                                                                    },
-                                                                    items: [
-                                                                        {
-                                                                            icon: 'resources/img/botones/1337983423_Cancel__Red.png', // Ruta a tu imagen
-                                                                            tooltip: 'Manda el registro actual al historico y no crea Merchant',
-                                                                            handler: 'onViewMerchClick',
-                                                                            style: 'background-color: #fff3cd;',
-                                                                        }
-                                                                    ]
-                                                                }
-                                                            ]
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                xtype: 'panel',
-                                                title: 'Bancos',
-                                                id: prototype.id + '-panelBANCOS',
-                                                layout: 'vbox',
-                                                border: false,
-                                                width: 1129,
-                        //                                                            height: 180,
-                                                autoScroll: true,
-                                                items: [
-                                                    {
-                                                        xtype: 'grid',
-                                                        id: prototype.id + '-gridDataInfoBANCOS',
-                                                        width: 1129,
-                                                        height: 350,
-                                                        columnLines: true,
-                                                        
-                                                        plugins: [
-                                                            {
-                                                                
-                                                                ptype: 'cellediting',
-                                                                clicksToEdit: 1
-                                                                
-                                                            }
-                                                        ],
-                                                        columns: {
-                                                            defaults: {
-                                                                menuDisabled: true,
-                                                                sortable: true,
-                                                                align: 'center'
-                                                            },
-                                                            items: [
-                                                                {
-                                                                    text: 'Bank Code', dataIndex: 'CODEBANK', width: 100,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
+                                                                    return  value;
                                                                 },
-                                                                {
-                                                                    text: 'Bank Name', dataIndex: 'BANKNAM', width: 305, align: 'left',
+                                                                items: [
+                                                                    {
+                                                                        icon: 'resources/img/botones/1337983423_Cancel__Red.png', // Ruta a tu imagen
+                                                                        tooltip: 'Manda el registro actual al historico y no crea Merchant',
+                                                                        handler: 'onViewMerchClick',
+                                                                        style: 'background-color: #fff3cd;',
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            xtype: 'panel',
+                                            title: 'Bancos',
+                                            id: prototype.id + '-panelBANCOS',
+                                            layout: 'vbox',
+                                            border: false,
+                                            width: 1129,
+                                            //                                                            height: 180,
+                                            autoScroll: true,
+                                            items: [
+                                                {
+                                                    xtype: 'grid',
+                                                    id: prototype.id + '-gridDataInfoBANCOS',
+                                                    width: 1129,
+                                                    height: 350,
+                                                    columnLines: true,
+
+                                                    plugins: [
+                                                        {
+
+                                                            ptype: 'cellediting',
+                                                            clicksToEdit: 1
+
+                                                        }
+                                                    ],
+                                                    columns: {
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: true,
+                                                            align: 'center'
+                                                        },
+                                                        items: [
+                                                            {
+                                                                text: 'Bank Code', dataIndex: 'CODEBANK', width: 100,
+                                                                editor: {
+                                                                    xtype: 'textfield',
+                                                                    editable: true,
+                                                                    allowBlank: false,
+                                                                    enableKeyEvents: true,
+//                                                                        maskRe: /[0-9\.-]/,
+                                                                    selectOnFocus: true
+                                                                },
+                                                            },
+                                                            {
+                                                                text: 'Bank Name', dataIndex: 'BANKNAM', width: 305, align: 'left',
 //                                                                    editor: {
 //                                                                        xtype: 'textfield',
 //                                                                        editable: true,
@@ -740,173 +736,173 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
 ////                                                                        maskRe: /[0-9\.-]/,
 //                                                                        selectOnFocus: true
 //                                                                    },
-                                                                },
-                                                                {
-                                                                    text: 'Bank Company', dataIndex: 'BANKCM', width: 100,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                },
-                                                                {
-                                                                    text: 'Deposit Currency', dataIndex: 'BANKCUR', width: 130,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                },
-                                                                {
-                                                                    text: 'Account Number', dataIndex: 'ACCNUMB', width: 120,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                },
-                                                                {
-                                                                    text: 'Auxiliary Bank<br>Accounting Account', dataIndex: 'ACCNUMA', width: 160,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                },
-                                                                {
-                                                                    text: 'Profit Center Bank', dataIndex: 'BENCEN', width: 160,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
-//                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
-                                                                },
-                                                                {
-                                                                    sortable: false,
-                                                                    xtype: 'actioncolumn',
-                                                                    id: prototype.id + '-gridBANKView',
-                                                                    width: 40,
-                                                                    text: 'View',
-                                                                    align: 'center',
-                                                                    items: [
-                                                                        {
-                                                                            iconCls: 'prx-icon-edit',
-                                                                            tooltip: 'Edit',
-                                                                            handler: 'onViewBANKClick'
-                                                                        }
-                                                                    ]
-                                                                }
-                                                            ]
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                xtype: 'panel',
-                                                title: 'IATAS',
-                                                id: prototype.id + '-panelIATAS',
-                                                layout: 'vbox',
-                                                border: false,
-                                                width: 1129,
-                        //                                                            height: 180,
-                                                hidden: false,
-                                                autoScroll: true,
-                                                items: [
-                                                    {
-                                                        xtype: 'grid',
-                                                        id: prototype.id + '-gridDataInfoIATAS',
-                                                        width: 1129,
-                                                        height: 350,
-                                                        columnLines: true,
- 
-                                                        plugins: [
-                                                            {
-                                                                
-                                                                ptype: 'cellediting',
-                                                                clicksToEdit: 1
-                                                                
-                                                            }
-                                                        ],
-                                                        columns: {
-                                                            defaults: {
-                                                                menuDisabled: true,
-                                                                sortable: true,
-                                                                align: 'center'
                                                             },
-                                                            items: [
-                                                                
-                                                                {
-                                                                    text: 'Debtor SAP', dataIndex: 'DEUSAP', width: 126,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
+                                                            {
+                                                                text: 'Bank Company', dataIndex: 'BANKCM', width: 100,
+                                                                editor: {
+                                                                    xtype: 'textfield',
+                                                                    editable: true,
+                                                                    allowBlank: false,
+                                                                    enableKeyEvents: true,
 //                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
+                                                                    selectOnFocus: true
                                                                 },
-                                                                {
-                                                                    text: 'IATA', dataIndex: 'SAGENT', width: 111,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
+                                                            },
+                                                            {
+                                                                text: 'Deposit Currency', dataIndex: 'BANKCUR', width: 130,
+                                                                editor: {
+                                                                    xtype: 'textfield',
+                                                                    editable: true,
+                                                                    allowBlank: false,
+                                                                    enableKeyEvents: true,
 //                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
+                                                                    selectOnFocus: true
                                                                 },
-                                                                {
-                                                                    text: 'Channel', dataIndex: 'CANAL', width: 96,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
+                                                            },
+                                                            {
+                                                                text: 'Account Number', dataIndex: 'ACCNUMB', width: 120,
+                                                                editor: {
+                                                                    xtype: 'textfield',
+                                                                    editable: true,
+                                                                    allowBlank: false,
+                                                                    enableKeyEvents: true,
 //                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
+                                                                    selectOnFocus: true
                                                                 },
-                                                                {
-                                                                    text: 'Process', dataIndex: 'PROCES', width: 110,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
+                                                            },
+                                                            {
+                                                                text: 'Auxiliary Bank<br>Accounting Account', dataIndex: 'ACCNUMA', width: 160,
+                                                                editor: {
+                                                                    xtype: 'textfield',
+                                                                    editable: true,
+                                                                    allowBlank: false,
+                                                                    enableKeyEvents: true,
 //                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
+                                                                    selectOnFocus: true
                                                                 },
-                                                                {
-                                                                    text: 'Country C.', dataIndex: 'SCOUNTRY', width: 67,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
+                                                            },
+                                                            {
+                                                                text: 'Profit Center Bank', dataIndex: 'BENCEN', width: 160,
+                                                                editor: {
+                                                                    xtype: 'textfield',
+                                                                    editable: true,
+                                                                    allowBlank: false,
+                                                                    enableKeyEvents: true,
 //                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
+                                                                    selectOnFocus: true
                                                                 },
-                                                                {
-                                                                    text: 'Country', dataIndex: 'NAME', width: 135, align: 'left',
+                                                            },
+                                                            {
+                                                                sortable: false,
+                                                                xtype: 'actioncolumn',
+                                                                id: prototype.id + '-gridBANKView',
+                                                                width: 40,
+                                                                text: 'View',
+                                                                align: 'center',
+                                                                items: [
+                                                                    {
+                                                                        iconCls: 'prx-icon-edit',
+                                                                        tooltip: 'Edit',
+                                                                        handler: 'onViewBANKClick'
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            xtype: 'panel',
+                                            title: 'IATAS',
+                                            id: prototype.id + '-panelIATAS',
+                                            layout: 'vbox',
+                                            border: false,
+                                            width: 1129,
+                                            //                                                            height: 180,
+                                            hidden: false,
+                                            autoScroll: true,
+                                            items: [
+                                                {
+                                                    xtype: 'grid',
+                                                    id: prototype.id + '-gridDataInfoIATAS',
+                                                    width: 1129,
+                                                    height: 350,
+                                                    columnLines: true,
+
+                                                    plugins: [
+                                                        {
+
+                                                            ptype: 'cellediting',
+                                                            clicksToEdit: 1
+
+                                                        }
+                                                    ],
+                                                    columns: {
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: true,
+                                                            align: 'center'
+                                                        },
+                                                        items: [
+
+                                                            {
+                                                                text: 'Debtor SAP', dataIndex: 'DEUSAP', width: 126,
+                                                                editor: {
+                                                                    xtype: 'textfield',
+                                                                    editable: true,
+                                                                    allowBlank: false,
+                                                                    enableKeyEvents: true,
+//                                                                        maskRe: /[0-9\.-]/,
+                                                                    selectOnFocus: true
+                                                                },
+                                                            },
+                                                            {
+                                                                text: 'IATA', dataIndex: 'SAGENT', width: 111,
+                                                                editor: {
+                                                                    xtype: 'textfield',
+                                                                    editable: true,
+                                                                    allowBlank: false,
+                                                                    enableKeyEvents: true,
+//                                                                        maskRe: /[0-9\.-]/,
+                                                                    selectOnFocus: true
+                                                                },
+                                                            },
+                                                            {
+                                                                text: 'Channel', dataIndex: 'CANAL', width: 96,
+                                                                editor: {
+                                                                    xtype: 'textfield',
+                                                                    editable: true,
+                                                                    allowBlank: false,
+                                                                    enableKeyEvents: true,
+//                                                                        maskRe: /[0-9\.-]/,
+                                                                    selectOnFocus: true
+                                                                },
+                                                            },
+                                                            {
+                                                                text: 'Process', dataIndex: 'PROCES', width: 110,
+                                                                editor: {
+                                                                    xtype: 'textfield',
+                                                                    editable: true,
+                                                                    allowBlank: false,
+                                                                    enableKeyEvents: true,
+//                                                                        maskRe: /[0-9\.-]/,
+                                                                    selectOnFocus: true
+                                                                },
+                                                            },
+                                                            {
+                                                                text: 'Country C.', dataIndex: 'SCOUNTRY', width: 67,
+                                                                editor: {
+                                                                    xtype: 'textfield',
+                                                                    editable: true,
+                                                                    allowBlank: false,
+                                                                    enableKeyEvents: true,
+//                                                                        maskRe: /[0-9\.-]/,
+                                                                    selectOnFocus: true
+                                                                },
+                                                            },
+                                                            {
+                                                                text: 'Country', dataIndex: 'NAME', width: 135, align: 'left',
 //                                                                    editor: {
 //                                                                        xtype: 'textfield',
 //                                                                        editable: true,
@@ -915,677 +911,842 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
 ////                                                                        maskRe: /[0-9\.-]/,
 //                                                                        selectOnFocus: true
 //                                                                    },
-                                                                },
-                                                                {
-                                                                    text: 'Sales Comp.', dataIndex: 'SOCIETY', width: 90,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
+                                                            },
+                                                            {
+                                                                text: 'Sales Comp.', dataIndex: 'SOCIETY', width: 90,
+                                                                editor: {
+                                                                    xtype: 'textfield',
+                                                                    editable: true,
+                                                                    allowBlank: false,
+                                                                    enableKeyEvents: true,
 //                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
+                                                                    selectOnFocus: true
                                                                 },
-                                                                {
-                                                                    text: 'Currency', dataIndex: 'SCURRENCY', width: 100,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
+                                                            },
+                                                            {
+                                                                text: 'Currency', dataIndex: 'SCURRENCY', width: 100,
+                                                                editor: {
+                                                                    xtype: 'textfield',
+                                                                    editable: true,
+                                                                    allowBlank: false,
+                                                                    enableKeyEvents: true,
 //                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
+                                                                    selectOnFocus: true
                                                                 },
-                                                                {
-                                                                    text: 'Profit Center', dataIndex: 'SBENCEN', width: 150,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
+                                                            },
+                                                            {
+                                                                text: 'Profit Center', dataIndex: 'SBENCEN', width: 150,
+                                                                editor: {
+                                                                    xtype: 'textfield',
+                                                                    editable: true,
+                                                                    allowBlank: false,
+                                                                    enableKeyEvents: true,
 //                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
+                                                                    selectOnFocus: true
                                                                 },
-                                                                {
-                                                                    text: 'Cost Center', dataIndex: 'COSTCEN', width: 90,
-                                                                    editor: {
-                                                                        xtype: 'textfield',
-                                                                        editable: true,
-                                                                        allowBlank: false,
-                                                                        enableKeyEvents: true,
+                                                            },
+                                                            {
+                                                                text: 'Cost Center', dataIndex: 'COSTCEN', width: 90,
+                                                                editor: {
+                                                                    xtype: 'textfield',
+                                                                    editable: true,
+                                                                    allowBlank: false,
+                                                                    enableKeyEvents: true,
 //                                                                        maskRe: /[0-9\.-]/,
-                                                                        selectOnFocus: true
-                                                                    },
+                                                                    selectOnFocus: true
                                                                 },
-                                                                {
-                                                                    sortable: false,
-                                                                    xtype: 'actioncolumn',
-                                                                    id: prototype.id + '-gridIATAView',
-                                                                    width: 40,
-                                                                    text: 'View',
-                                                                    align: 'center',
-                                                                    items: [
-                                                                        {
-                                                                            iconCls: 'prx-icon-edit',
-                                                                            tooltip: 'Edit',
-                                                                            handler: 'onViewIATAClick'
-                                                                        }
-                                                                    ]
-                                                                }
-                                                            ]
-                                                        }
+                                                            },
+                                                            {
+                                                                sortable: false,
+                                                                xtype: 'actioncolumn',
+                                                                id: prototype.id + '-gridIATAView',
+                                                                width: 40,
+                                                                text: 'View',
+                                                                align: 'center',
+                                                                items: [
+                                                                    {
+                                                                        iconCls: 'prx-icon-edit',
+                                                                        tooltip: 'Edit',
+                                                                        handler: 'onViewIATAClick'
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
                                                     }
-                                                ]
-                                            },
-                                            
-                                            
-                                        ]
-                                    }
-                                ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            xtype: 'panel',
+                                            title: 'Tax Merchant',
+                                            id: prototype.id + '-panelTaxMerchant',
+                                            layout: 'vbox',
+                                            border: false,
+                                            width: 1350,
+                                            hidden: false,
+                                            autoScroll: true,
+                                            items: [
+                                                {
+                                                    xtype: 'grid',
+                                                    id: prototype.id + '-gridDataDetailTax',
+                                                    height: 150,
+                                                    width: 1350,
+                                                    hidden: false,
+                                                    columnLines: true,
+                                                    viewConfig: {
+                                                        enableTextSelection: true
+                                                    },
+                                                    columns: {
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: true,
+                                                            align: 'center'
+                                                        },
+                                                        items: [
+                                                            {
+                                                                text: '<span style="color:white;font-weight:bold;">Proceso</span>',
+                                                                dataIndex: 'PROCESO',
+                                                                width: 65,
+                                                                style: 'padding:2px; background: #6C87A8;border-color:white'
+                                                            },
+                                                            {
+                                                                text: '<span style="color:white;font-weight:bold;">Merchant</span>',
+                                                                dataIndex: 'MERCHANT',
+                                                                width: 65,
+                                                                style: 'padding:2px; background: #6C87A8;border-color:white'
+                                                            },
+                                                            {
+                                                                text: '<span style="color:white;font-weight:bold;">Sales <br> Agent</span>',
+                                                                dataIndex: 'SALE_AGENT',
+                                                                width: 65,
+                                                                style: 'padding:2px; background: #6C87A8;border-color:white'
+                                                            },
+                                                            {
+                                                                text: '<span style="color:white;font-weight:bold;">Society</span>',
+                                                                dataIndex: 'SOCIETY',
+                                                                width: 65,
+                                                                style: 'padding:2px; background: #6C87A8;border-color:white'
+                                                            },
+                                                            {
+                                                                text: '<span style="color:white;font-weight:bold;">Currency</span>',
+                                                                dataIndex: 'CURRENCY',
+                                                                width: 65,
+                                                                style: 'padding:2px; background: #6C87A8;border-color:white'
+                                                            },
+                                                            {
+                                                                text: '<span style="color:white;font-weight:bold;">Sales <br> Profit</span>',
+                                                                dataIndex: 'SALE_PROFIT',
+                                                                width: 65,
+                                                                style: 'padding:2px; background: #6C87A8;border-color:white'
+                                                            },
+                                                            {
+                                                                text: '<span style="color:white;font-weight:bold;">Country</span>',
+                                                                dataIndex: 'COUNTRY',
+                                                                width: 65,
+                                                                style: 'padding:2px; background: #6C87A8;border-color:white'
+                                                            },
+                                                            {
+                                                                text: '<span style="color:white;font-weight:bold;">Statement <br> Profit</span>',
+                                                                dataIndex: 'STATEMENT_PROFIT',
+                                                                width: 65,
+                                                                style: 'padding:2px; background: #6C87A8;border-color:white'
+                                                            },
+                                                            {
+                                                                text: '<span style="color:white;font-weight:bold;">Cost <br> Center</span>',
+                                                                dataIndex: 'COST_CENTER',
+                                                                width: 65,
+                                                                style: 'padding:2px; background: #6C87A8;border-color:white'
+                                                            },
+                                                            {
+                                                                text: '<span style="color:white;font-weight:bold;">Acquirer</span>',
+                                                                dataIndex: 'ACQUIRER',
+                                                                width: 65,
+                                                                style: 'padding:2px; background: #6C87A8;border-color:white'
+                                                            },
+                                                            {
+                                                                text: '<span style="color:white;font-weight:bold;">Processor</span>',
+                                                                dataIndex: 'PROCESSOR',
+                                                                width: 65,
+                                                                style: 'padding:2px; background: #6C87A8;border-color:white'
+                                                            },
+                                                            {
+                                                                text: '<span style="color:white;font-weight:bold;">Channel</span>',
+                                                                dataIndex: 'CHANNEL',
+                                                                width: 65,
+                                                                style: 'padding:2px; background: #6C87A8;border-color:white'
+                                                            },
+                                                            {
+                                                                text: '<span style="color:white;font-weight:bold;">Company</span>',
+                                                                dataIndex: 'COMPANY',
+                                                                width: 65,
+                                                                style: 'padding:2px; background: #6C87A8;border-color:white'
+                                                            },
+                                                            {
+                                                                text: '<span style="color:white;font-weight:bold;">Bank Currency</span>',
+                                                                dataIndex: 'BANK_CURRENCY',
+                                                                width: 65,
+                                                                style: 'padding:2px; background: #6C87A8;border-color:white'
+                                                            },
+                                                            {
+                                                                text: '<span style="color:white;font-weight:bold;">Bank Profit</span>',
+                                                                dataIndex: 'BANK_PROFIT',
+                                                                width: 65,
+                                                                style: 'padding:2px; background: #6C87A8;border-color:white'
+                                                            },
+                                                            {
+                                                                text: '<span style="color:white;font-weight:bold;">NIT Code</span>',
+                                                                dataIndex: 'NIT_CODE',
+                                                                width: 65,
+                                                                style: 'padding:2px; background: #6C87A8;border-color:white'
+                                                            },
+                                                            {
+                                                                text: '<span style="color:white;font-weight:bold;">NIT Description</span>',
+                                                                dataIndex: 'NIT_DESCRIPTION',
+                                                                width: 65,
+                                                                style: 'padding:2px; background: #6C87A8;border-color:white'
+                                                            },
+                                                            {
+                                                                text: '<span style="color:white;font-weight:bold;">Code</span>',
+                                                                dataIndex: 'CODE',
+                                                                width: 65,
+                                                                style: 'padding:2px; background: #6C87A8;border-color:white'
+                                                            },
+                                                            {
+                                                                text: '<span style="color:white;font-weight:bold;">Account</span>',
+                                                                dataIndex: 'ACCOUNT',
+                                                                width: 65,
+                                                                style: 'padding:2px; background: #6C87A8;border-color:white'
+                                                            },
+                                                            {
+                                                                text: '<span style="color:white;font-weight:bold;">Type <br> Memoline</span>',
+                                                                dataIndex: 'TYPE_MEMOLINE',
+                                                                width: 65,
+                                                                style: 'padding:2px; background: #6C87A8;border-color:white'
+                                                            },
+                                                            {
+                                                                sortable: false,
+                                                                xtype: 'actioncolumn',
+                                                                id: prototype.id + '-gridMerchantTax',
+                                                                width: 40,
+                                                                text: 'View',
+                                                                align: 'center',
+                                                                items: [
+                                                                    {
+                                                                        iconCls: 'prx-icon-edit',
+                                                                        tooltip: 'Edit',
+                                                                        handler: 'onViewMerchTaxClick'
+                                                                    }
+                                                                ]
+                                                            },
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            layout: {
+                                type: 'hbox',
+                                pack: 'center'
                             },
-                            {
-                                xtype: 'panel',
-                                layout: {
-                                    type: 'hbox',
-                                    pack: 'center' 
-                                },
-                                id: prototype.id + '-bankSection',
-                                border: false,
-                                bodyStyle: 'background:#E5ECEF;',
-                                margin: '20 2 4 20',
-                                defaults: {
-                                    anchor: '100%',
-                                    width: 1129
-                                },
-                                items: [
-                                    {
-                                        xtype: 'label',
-                                        text: 'BANK SECTION',
-                                        style: 'font-weight:bold; text-decoration:underline',
-                                        width: 115
-                                    },
-                                ]
+                            id: prototype.id + '-bankSection',
+                            border: false,
+                            bodyStyle: 'background:#E5ECEF;',
+                            margin: '20 2 4 20',
+                            defaults: {
+                                anchor: '100%',
+                                width: 1129
                             },
-                            {
-                                xtype: 'panel',
-                                layout: {
-                                    type: 'hbox',
-                                    pack: 'center' 
+                            items: [
+                                {
+                                    xtype: 'label',
+                                    text: 'BANK SECTION',
+                                    style: 'font-weight:bold; text-decoration:underline',
+                                    width: 115
                                 },
-                                id: prototype.id + '-bSection_1',
-                                border: false,
-                                bodyStyle: 'background:#E5ECEF;',
-                                margin: '20 2 4 20',
-                                defaults: {
-                                    anchor: '100%',
-                                    width: 1129
-                                },
-                                items: [
-                                    {xtype: 'tbspacer', width: 60},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Bank Code',
-                                        style: 'font-weight:bold;',
-                                        width: 115
-                                    },
-                                    {xtype: 'tbspacer', width: 5},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-CODEBANK',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 4,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 130
-                                    },
-                                    {xtype: 'tbspacer', width: 120},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Bank Name',
-                                        style: 'font-weight:bold;',
-                                        width: 120
-                                    },
-                                    {xtype: 'tbspacer', width: 10},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-BANKNAM',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 50,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 120
-                                    },
-                                    {xtype: 'tbspacer', width: 120},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Bank Company',
-                                        style: 'font-weight:bold;',
-                                        width: 80
-                                    },
-                                    {xtype: 'tbspacer', width: 10},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-BANKCM',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 4,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 155
-                                    }, 
-                                ]
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            layout: {
+                                type: 'hbox',
+                                pack: 'center'
                             },
-                            {
-                                xtype: 'panel',
-                                layout: {
-                                    type: 'hbox',
-                                    pack: 'center' 
-                                },
-                                id: prototype.id + '-bSection_2',
-                                border: false,
-                                bodyStyle: 'background:#E5ECEF;',
-                                margin: '20 2 4 20',
-                                defaults: {
-                                    anchor: '100%',
-                                    width: 1129
-                                },
-                                items: [
-                                    {xtype: 'tbspacer', width: 60},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Deposit Curr.',
-                                        style: 'font-weight:bold;',
-                                        width: 115
-                                    },
-                                    {xtype: 'tbspacer', width: 5},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-BANKCUR',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 3,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 130
-                                    },
-                                    {xtype: 'tbspacer', width: 120},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Acc. Number',
-                                        style: 'font-weight:bold;',
-                                        width: 120
-                                    },
-                                    {xtype: 'tbspacer', width: 10},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-ACCNUMB',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 25,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 150
-                                    },
-                                    {xtype: 'tbspacer', width: 100},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Aux Bank Acc',
-                                        style: 'font-weight:bold;',
-                                        width: 80
-                                    },
-                                    {xtype: 'tbspacer', width: 10},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-ACCNUMA',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 6,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 155
-                                    }, 
-                                ]
+                            id: prototype.id + '-bSection_1',
+                            border: false,
+                            bodyStyle: 'background:#E5ECEF;',
+                            margin: '20 2 4 20',
+                            defaults: {
+                                anchor: '100%',
+                                width: 1129
                             },
-                            {
-                                xtype: 'panel',
-                                layout: {
-                                    type: 'hbox',
-                                    pack: 'center' 
+                            items: [
+                                {xtype: 'tbspacer', width: 60},
+                                {
+                                    xtype: 'label',
+                                    text: 'Bank Code',
+                                    style: 'font-weight:bold;',
+                                    width: 115
                                 },
-                                border: false,
-                                bodyStyle: 'background:#E5ECEF;',
-                                margin: '20 2 4 20',
-                                defaults: {
-                                    anchor: '100%',
-                                    width: 1129
+                                {xtype: 'tbspacer', width: 5},
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-CODEBANK',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 4,
+                                    maskRe: /[a-zA-Z0-9]/,
+                                    readOnly: false,
+                                    width: 130
                                 },
-                                id: prototype.id + '-bSection_3',
-                                items: [
-                                    {xtype: 'tbspacer', width: 60},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Acc. Numb Old',
-                                        style: 'font-weight:bold;',
-                                        width: 90
-                                    },
-                                    {xtype: 'tbspacer', width: 30},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-ACCNUMOLD',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 25,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 150
-                                    },
-                                    {xtype: 'tbspacer', width: 100},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Date Discount.',
-                                        style: 'font-weight:bold;',
-                                        width: 115
-                                    },
-                                    {xtype: 'tbspacer', width: 15},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-DDISCON',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 8,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 120
-                                    },
-                                    {xtype: 'tbspacer', width: 120},
-                                    {
-                                        xtype: 'label',
-                                        text: 'ID Fiscal',
-                                        style: 'font-weight:bold;',
-                                        width: 80
-                                    },
-                                    {xtype: 'tbspacer', width: 10},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-IDFISCAL',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 20,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 155
-                                    }, 
-                                ]
+                                {xtype: 'tbspacer', width: 120},
+                                {
+                                    xtype: 'label',
+                                    text: 'Bank Name',
+                                    style: 'font-weight:bold;',
+                                    width: 120
+                                },
+                                {xtype: 'tbspacer', width: 10},
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-BANKNAM',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 50,
+                                    maskRe: /[a-zA-Z0-9]/,
+                                    readOnly: false,
+                                    width: 120
+                                },
+                                {xtype: 'tbspacer', width: 120},
+                                {
+                                    xtype: 'label',
+                                    text: 'Bank Company',
+                                    style: 'font-weight:bold;',
+                                    width: 80
+                                },
+                                {xtype: 'tbspacer', width: 10},
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-BANKCM',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 4,
+                                    maskRe: /[a-zA-Z0-9]/,
+                                    readOnly: false,
+                                    width: 155
+                                },
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            layout: {
+                                type: 'hbox',
+                                pack: 'center'
                             },
-                            {
-                                xtype: 'panel',
-                                layout: {
-                                    type: 'hbox',
-                                    pack: 'center' 
-                                },
-                                border: false,
-                                bodyStyle: 'background:#E5ECEF;',
-                                margin: '20 2 4 20',
-                                defaults: {
-                                    anchor: '100%',
-                                    width: 1129
-                                },
-                                id: prototype.id + '-bSection_4',
-                                items: [
-                                    {xtype: 'tbspacer', width: 60},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Prof. Cent',
-                                        style: 'font-weight:bold;',
-                                        width: 115
-                                    },
-                                    {xtype: 'tbspacer', width: 5},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-BENCEN',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 8,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 130
-                                    },
-                                    {xtype: 'tbspacer', width: 120},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Cod. Proccesing.',
-                                        style: 'font-weight:bold;',
-                                        width: 87
-                                    },
-                                    {xtype: 'tbspacer', width: 5},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-CODPRO',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: true,
-                                        enabled: false,
-                                        maxLength: 3,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 152
-                                    },
-                                    {xtype: 'tbspacer', width: 120},
-                                    {
-                                        xtype: 'label',
-                                        text: 'ID B. Cen.',
-                                        style: 'font-weight:bold;',
-                                        width: 87
-                                    },
-                                    {xtype: 'tbspacer', width: 5},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-IDFBENEF',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 8,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 152
-                                    },
-                                ]
+                            id: prototype.id + '-bSection_2',
+                            border: false,
+                            bodyStyle: 'background:#E5ECEF;',
+                            margin: '20 2 4 20',
+                            defaults: {
+                                anchor: '100%',
+                                width: 1129
                             },
-                            {
-                                xtype: 'panel',
-                                layout: {
-                                    type: 'hbox',
-                                    pack: 'center' 
+                            items: [
+                                {xtype: 'tbspacer', width: 60},
+                                {
+                                    xtype: 'label',
+                                    text: 'Deposit Curr.',
+                                    style: 'font-weight:bold;',
+                                    width: 115
                                 },
-                                id: prototype.id + '-iataSection',
-                                border: false,
-                                bodyStyle: 'background:#E5ECEF;',
-                                margin: '20 2 4 20',
-                                defaults: {
-                                    anchor: '100%',
-                                    width: 1129
+                                {xtype: 'tbspacer', width: 5},
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-BANKCUR',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 3,
+                                    maskRe: /[a-zA-Z0-9]/,
+                                    readOnly: false,
+                                    width: 130
                                 },
-                                items: [
-                                    {
-                                        xtype: 'label',
-                                        text: 'IATA SECTION',
-                                        style: 'font-weight:bold; text-decoration:underline',
-                                        width: 115
-                                    },
-                                ]
+                                {xtype: 'tbspacer', width: 120},
+                                {
+                                    xtype: 'label',
+                                    text: 'Acc. Number',
+                                    style: 'font-weight:bold;',
+                                    width: 120
+                                },
+                                {xtype: 'tbspacer', width: 10},
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-ACCNUMB',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 25,
+                                    maskRe: /[a-zA-Z0-9]/,
+                                    readOnly: false,
+                                    width: 150
+                                },
+                                {xtype: 'tbspacer', width: 100},
+                                {
+                                    xtype: 'label',
+                                    text: 'Aux Bank Acc',
+                                    style: 'font-weight:bold;',
+                                    width: 80
+                                },
+                                {xtype: 'tbspacer', width: 10},
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-ACCNUMA',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 6,
+                                    maskRe: /[a-zA-Z0-9]/,
+                                    readOnly: false,
+                                    width: 155
+                                },
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            layout: {
+                                type: 'hbox',
+                                pack: 'center'
                             },
-                            {
-                                xtype: 'panel',
-                                layout: {
-                                    type: 'hbox',
-                                    pack: 'center' 
-                                },
-                                id: prototype.id + '-iSection_1',
-                                border: false,
-                                bodyStyle: 'background:#E5ECEF;',
-                                margin: '20 2 4 20',
-                                defaults: {
-                                    anchor: '100%',
-                                    width: 1129
-                                },
-                                items: [
-                                    {xtype: 'tbspacer', width: 60},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Debt. SAP',
-                                        style: 'font-weight:bold;',
-                                        width: 115
-                                    },
-                                    {xtype: 'tbspacer', width: 5},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-DEUSAP',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 9,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 130
-                                    },
-                                    {xtype: 'tbspacer', width: 120},
-                                    {
-                                        xtype: 'label',
-                                        text: 'IATA',
-                                        style: 'font-weight:bold;',
-                                        width: 120
-                                    },
-                                    {xtype: 'tbspacer', width: 10},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-SAGENT',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 8,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 120
-                                    },
-                                    {xtype: 'tbspacer', width: 120},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Channel',
-                                        style: 'font-weight:bold;',
-                                        width: 80
-                                    },
-                                    {xtype: 'tbspacer', width: 10},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-CANAL',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 15,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 155
-                                    }, 
-                                ]
+                            border: false,
+                            bodyStyle: 'background:#E5ECEF;',
+                            margin: '20 2 4 20',
+                            defaults: {
+                                anchor: '100%',
+                                width: 1129
                             },
-                            {
-                                xtype: 'panel',
-                                layout: {
-                                    type: 'hbox',
-                                    pack: 'center' 
+                            id: prototype.id + '-bSection_3',
+                            items: [
+                                {xtype: 'tbspacer', width: 60},
+                                {
+                                    xtype: 'label',
+                                    text: 'Acc. Numb Old',
+                                    style: 'font-weight:bold;',
+                                    width: 90
                                 },
-                                id: prototype.id + '-iSection_2',
-                                border: false,
-                                bodyStyle: 'background:#E5ECEF;',
-                                margin: '20 2 4 20',
-                                defaults: {
-                                    anchor: '100%',
-                                    width: 1129
+                                {xtype: 'tbspacer', width: 30},
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-ACCNUMOLD',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 25,
+                                    maskRe: /[a-zA-Z0-9]/,
+                                    readOnly: false,
+                                    width: 150
                                 },
-                                items: [
-                                    {xtype: 'tbspacer', width: 60},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Process',
-                                        style: 'font-weight:bold;',
-                                        width: 115
-                                    },
-                                    {xtype: 'tbspacer', width: 5},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-PROCES',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 40,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 130
-                                    },
-                                    {xtype: 'tbspacer', width: 120},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Country',
-                                        style: 'font-weight:bold;',
-                                        width: 120
-                                    },
-                                    {xtype: 'tbspacer', width: 10},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-SCOUNTRY',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 2,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 120
-                                    },
-                                    {xtype: 'tbspacer', width: 120},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Sales Comp.',
-                                        style: 'font-weight:bold;',
-                                        width: 80
-                                    },
-                                    {xtype: 'tbspacer', width: 10},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-SOCIETY',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 4,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 155
-                                    }, 
-                                ]
+                                {xtype: 'tbspacer', width: 100},
+                                {
+                                    xtype: 'label',
+                                    text: 'Date Discount.',
+                                    style: 'font-weight:bold;',
+                                    width: 115
+                                },
+                                {xtype: 'tbspacer', width: 15},
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-DDISCON',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 8,
+                                    maskRe: /[a-zA-Z0-9]/,
+                                    readOnly: false,
+                                    width: 120
+                                },
+                                {xtype: 'tbspacer', width: 120},
+                                {
+                                    xtype: 'label',
+                                    text: 'ID Fiscal',
+                                    style: 'font-weight:bold;',
+                                    width: 80
+                                },
+                                {xtype: 'tbspacer', width: 10},
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-IDFISCAL',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 20,
+                                    maskRe: /[a-zA-Z0-9]/,
+                                    readOnly: false,
+                                    width: 155
+                                },
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            layout: {
+                                type: 'hbox',
+                                pack: 'center'
                             },
-                            {
-                                xtype: 'panel',
-                                layout: {
-                                    type: 'hbox',
-                                    pack: 'center' 
-                                },
-                                border: false,
-                                bodyStyle: 'background:#E5ECEF;',
-                                margin: '20 2 4 20',
-                                defaults: {
-                                    anchor: '100%',
-                                    width: 1129
-                                },
-                                id: prototype.id + '-iSection_3',
-                                items: [
-                                    {xtype: 'tbspacer', width: 60},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Currency',
-                                        style: 'font-weight:bold;',
-                                        width: 115
-                                    },
-                                    {xtype: 'tbspacer', width: 5},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-SCURRENCY',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 3,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 130
-                                    },
-                                    {xtype: 'tbspacer', width: 120},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Prof. Cent.',
-                                        style: 'font-weight:bold;',
-                                        width: 120
-                                    },
-                                    {xtype: 'tbspacer', width: 10},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-SBENCEN',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 8,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 120
-                                    },
-                                    {xtype: 'tbspacer', width: 120},
-                                    {
-                                        xtype: 'label',
-                                        text: 'Cost. Cent.',
-                                        style: 'font-weight:bold;',
-                                        width: 80
-                                    },
-                                    {xtype: 'tbspacer', width: 10},
-                                    {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-COSTCEN',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        editable: false,
-                                        enabled: false,
-                                        maxLength: 10,
-                                        maskRe: /[a-zA-Z0-9]/,
-                                        readOnly: false,
-                                        width: 155
-                                    },
-                                ]
+                            border: false,
+                            bodyStyle: 'background:#E5ECEF;',
+                            margin: '20 2 4 20',
+                            defaults: {
+                                anchor: '100%',
+                                width: 1129
                             },
-                            {
-                                xtype: 'panel',
-                                layout: {
-                                    type: 'hbox',
-                                    pack: 'center' 
+                            id: prototype.id + '-bSection_4',
+                            items: [
+                                {xtype: 'tbspacer', width: 60},
+                                {
+                                    xtype: 'label',
+                                    text: 'Prof. Cent',
+                                    style: 'font-weight:bold;',
+                                    width: 115
                                 },
-                                border: false,
-                                bodyStyle: 'background:#E5ECEF;',
-                                margin: '20 2 4 20',
-                                defaults: {
-                                    anchor: '100%',
-                                    width: 1129
+                                {xtype: 'tbspacer', width: 5},
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-BENCEN',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 8,
+                                    maskRe: /[a-zA-Z0-9]/,
+                                    readOnly: false,
+                                    width: 130
                                 },
-                                items: []
-                            }
+                                {xtype: 'tbspacer', width: 120},
+                                {
+                                    xtype: 'label',
+                                    text: 'Cod. Proccesing.',
+                                    style: 'font-weight:bold;',
+                                    width: 87
+                                },
+                                {xtype: 'tbspacer', width: 5},
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-CODPRO',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: true,
+                                    enabled: false,
+                                    maxLength: 3,
+                                    maskRe: /[a-zA-Z0-9]/,
+                                    readOnly: false,
+                                    width: 152
+                                },
+                                {xtype: 'tbspacer', width: 120},
+                                {
+                                    xtype: 'label',
+                                    text: 'ID B. Cen.',
+                                    style: 'font-weight:bold;',
+                                    width: 87
+                                },
+                                {xtype: 'tbspacer', width: 5},
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-IDFBENEF',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 8,
+                                    maskRe: /[a-zA-Z0-9]/,
+                                    readOnly: false,
+                                    width: 152
+                                },
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            layout: {
+                                type: 'hbox',
+                                pack: 'center'
+                            },
+                            id: prototype.id + '-iataSection',
+                            border: false,
+                            bodyStyle: 'background:#E5ECEF;',
+                            margin: '20 2 4 20',
+                            defaults: {
+                                anchor: '100%',
+                                width: 1129
+                            },
+                            items: [
+                                {
+                                    xtype: 'label',
+                                    text: 'IATA SECTION',
+                                    style: 'font-weight:bold; text-decoration:underline',
+                                    width: 115
+                                },
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            layout: {
+                                type: 'hbox',
+                                pack: 'center'
+                            },
+                            id: prototype.id + '-iSection_1',
+                            border: false,
+                            bodyStyle: 'background:#E5ECEF;',
+                            margin: '20 2 4 20',
+                            defaults: {
+                                anchor: '100%',
+                                width: 1129
+                            },
+                            items: [
+                                {xtype: 'tbspacer', width: 60},
+                                {
+                                    xtype: 'label',
+                                    text: 'Debt. SAP',
+                                    style: 'font-weight:bold;',
+                                    width: 115
+                                },
+                                {xtype: 'tbspacer', width: 5},
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-DEUSAP',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 9,
+                                    maskRe: /[a-zA-Z0-9]/,
+                                    readOnly: false,
+                                    width: 130
+                                },
+                                {xtype: 'tbspacer', width: 120},
+                                {
+                                    xtype: 'label',
+                                    text: 'IATA',
+                                    style: 'font-weight:bold;',
+                                    width: 120
+                                },
+                                {xtype: 'tbspacer', width: 10},
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-SAGENT',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 8,
+                                    maskRe: /[a-zA-Z0-9]/,
+                                    readOnly: false,
+                                    width: 120
+                                },
+                                {xtype: 'tbspacer', width: 120},
+                                {
+                                    xtype: 'label',
+                                    text: 'Channel',
+                                    style: 'font-weight:bold;',
+                                    width: 80
+                                },
+                                {xtype: 'tbspacer', width: 10},
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-CANAL',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 15,
+                                    maskRe: /[a-zA-Z0-9]/,
+                                    readOnly: false,
+                                    width: 155
+                                },
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            layout: {
+                                type: 'hbox',
+                                pack: 'center'
+                            },
+                            id: prototype.id + '-iSection_2',
+                            border: false,
+                            bodyStyle: 'background:#E5ECEF;',
+                            margin: '20 2 4 20',
+                            defaults: {
+                                anchor: '100%',
+                                width: 1129
+                            },
+                            items: [
+                                {xtype: 'tbspacer', width: 60},
+                                {
+                                    xtype: 'label',
+                                    text: 'Process',
+                                    style: 'font-weight:bold;',
+                                    width: 115
+                                },
+                                {xtype: 'tbspacer', width: 5},
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-PROCES',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 40,
+                                    maskRe: /[a-zA-Z0-9]/,
+                                    readOnly: false,
+                                    width: 130
+                                },
+                                {xtype: 'tbspacer', width: 120},
+                                {
+                                    xtype: 'label',
+                                    text: 'Country',
+                                    style: 'font-weight:bold;',
+                                    width: 120
+                                },
+                                {xtype: 'tbspacer', width: 10},
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-SCOUNTRY',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 2,
+                                    maskRe: /[a-zA-Z0-9]/,
+                                    readOnly: false,
+                                    width: 120
+                                },
+                                {xtype: 'tbspacer', width: 120},
+                                {
+                                    xtype: 'label',
+                                    text: 'Sales Comp.',
+                                    style: 'font-weight:bold;',
+                                    width: 80
+                                },
+                                {xtype: 'tbspacer', width: 10},
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-SOCIETY',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 4,
+                                    maskRe: /[a-zA-Z0-9]/,
+                                    readOnly: false,
+                                    width: 155
+                                },
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            layout: {
+                                type: 'hbox',
+                                pack: 'center'
+                            },
+                            border: false,
+                            bodyStyle: 'background:#E5ECEF;',
+                            margin: '20 2 4 20',
+                            defaults: {
+                                anchor: '100%',
+                                width: 1129
+                            },
+                            id: prototype.id + '-iSection_3',
+                            items: [
+                                {xtype: 'tbspacer', width: 60},
+                                {
+                                    xtype: 'label',
+                                    text: 'Currency',
+                                    style: 'font-weight:bold;',
+                                    width: 115
+                                },
+                                {xtype: 'tbspacer', width: 5},
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-SCURRENCY',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 3,
+                                    maskRe: /[a-zA-Z0-9]/,
+                                    readOnly: false,
+                                    width: 130
+                                },
+                                {xtype: 'tbspacer', width: 120},
+                                {
+                                    xtype: 'label',
+                                    text: 'Prof. Cent.',
+                                    style: 'font-weight:bold;',
+                                    width: 120
+                                },
+                                {xtype: 'tbspacer', width: 10},
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-SBENCEN',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 8,
+                                    maskRe: /[a-zA-Z0-9]/,
+                                    readOnly: false,
+                                    width: 120
+                                },
+                                {xtype: 'tbspacer', width: 120},
+                                {
+                                    xtype: 'label',
+                                    text: 'Cost. Cent.',
+                                    style: 'font-weight:bold;',
+                                    width: 80
+                                },
+                                {xtype: 'tbspacer', width: 10},
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-COSTCEN',
+                                    fieldStyle: 'text-align:center',
+                                    enforceMaxLength: true,
+                                    editable: false,
+                                    enabled: false,
+                                    maxLength: 10,
+                                    maskRe: /[a-zA-Z0-9]/,
+                                    readOnly: false,
+                                    width: 155
+                                },
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            layout: {
+                                type: 'hbox',
+                                pack: 'center'
+                            },
+                            border: false,
+                            bodyStyle: 'background:#E5ECEF;',
+                            margin: '20 2 4 20',
+                            defaults: {
+                                anchor: '100%',
+                                width: 1129
+                            },
+                            items: []
+                        }
 //                        {
 //                            xtype: 'panel',
 //                            layout: 'hbox',
@@ -2274,11 +2435,11 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
                 // <editor-fold defaultstate="collapsed" desc="ControlData">
                 {
                     xtype: 'panel',
-                    
+
                     border: false,
                     layout: {
                         type: 'hbox',
-                        pack: 'center' 
+                        pack: 'center'
                     },
 //                                bodyStyle: 'background:#E5ECEF;',
 //                                bodyStyle: 'background:#efe5e5',
@@ -2308,7 +2469,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
 //                            layout: 'hbox',
                             layout: {
                                 type: 'hbox',
-                                pack: 'center' 
+                                pack: 'center'
                             },
                             border: false,
                             margin: '30 0 4 0',
@@ -2373,7 +2534,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntry', {
 //                            layout: 'hbox',
                             layout: {
                                 type: 'hbox',
-                                pack: 'center' 
+                                pack: 'center'
                             },
                             margin: '5 0 10 0',
                             defaults: {

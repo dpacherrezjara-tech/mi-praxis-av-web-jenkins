@@ -7,6 +7,7 @@ package net.miatech.praxis.logic.payments;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.praxis.MPF108;
 import net.miatech.praxis.MPF108Filter;
@@ -17,7 +18,7 @@ import net.miatech.praxis.payment.filter.A2290Filter;
 
 /**
  *
- * @author 
+ * @author
  */
 public class CashLogic {
 
@@ -27,11 +28,13 @@ public class CashLogic {
         CashDAO.setSession(ss);
 
     }
+
+//    CASH
     
     public List<MPF108> loadMPS441(MPF108Filter filter) throws SQLException, Exception {
         return CashDAO.loadMPS441(filter);
     }
-    
+
     public List<MPF300> loadMPS442(MPF108Filter filter) throws SQLException, Exception {
         return CashDAO.loadMPS442(filter);
     }
@@ -47,5 +50,50 @@ public class CashLogic {
     public List<MPF300> loadMPS445(MPF108Filter filter) throws SQLException, Exception {
         return CashDAO.loadMPS445(filter);
     }
+    
+//    CREDITO
+    
+    public List<MPF108> loadMPS520(MPF108Filter filter) throws SQLException, Exception {
+        return CashDAO.loadMPS520(filter);
+    }
+    
+    public List<MPF300> loadMPS521(MPF108Filter filter) throws SQLException, Exception {
+        return CashDAO.loadMPS521(filter);
+    }
+    
+    public List<MPF300> loadMPS522(MPF108Filter filter) throws SQLException, Exception {
+        return CashDAO.loadMPS522(filter);
+    }
+    
+    public List<MPF300> loadMPS523(MPF108Filter filter) throws SQLException, Exception {
+        return CashDAO.loadMPS523(filter);
+    }
+    
+    public List<MPF300> loadMPS524(MPF108Filter filter) throws SQLException, Exception {
+        return CashDAO.loadMPS524(filter);
+    }
+    
+
+    
+    
+    
+    
+    public Map<String, Object> executeMPS440(MPF108Filter filter) throws SQLException, Exception {
+        return CashDAO.executeMPS440(filter);
+    }
+    
+    
+    
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
 
 }

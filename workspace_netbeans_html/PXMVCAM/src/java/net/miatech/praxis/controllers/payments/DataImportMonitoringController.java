@@ -92,13 +92,10 @@ public class DataImportMonitoringController extends BaseController {
         DataImportMonitoringLogic logic = new DataImportMonitoringLogic();
         logic.setSession(this.serverSession.getServerSession());
 
-        // 1. DATOS AS400 (DB2)
         List<MPFER90> listDB = logic.getListMonitoringRPA_DB(filter);
 
-        // 2. DATOS API RPA (SPRING WS)
         RobotLiveDTO[] live = ws.getJson("rpa/list", RobotLiveDTO[].class);
 
-        // 3. MERGE AQUÍ MISMO (como tu compañero)
         mergeRPA(listDB, live);
 
         map.put("success", true);

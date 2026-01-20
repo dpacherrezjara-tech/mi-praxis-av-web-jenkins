@@ -24,6 +24,7 @@ import net.miatech.praxis.A003;
 import net.miatech.praxis.interline.filter.SFI021Filter;
 import net.miatech.praxis.interline.filter.WRF016Filter;
 import net.miatech.praxis.payment.A4202;
+import net.miatech.praxis.payment.MPF154;
 import net.miatech.praxis.payment.filter.A2280Filter;
 import net.miatech.praxis.payment.filter.A2287Filter;
 import net.miatech.praxis.payment.filter.A2290Filter;
@@ -1769,4 +1770,80 @@ public class MerchantNumberDAO {
         return strMsj;
     }
     
+    public List<MPF154> loadMPS527(A2354Filter filter) throws SQLException, Exception {
+
+        MPF154 objRtn = new MPF154();
+        CallableStatement cstmt01 = null;
+        ResultSet rs01 = null;
+        List<MPF154> lstRtn = new ArrayList<MPF154>(0);
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS527(?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt01 = cnx.prepareCall(SQLCLL01);
+
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt01.setString(2, filter.CMERCHAN.trim());
+
+            cstmt01.execute();
+
+            rs01 = cstmt01.getResultSet();
+            while (rs01.next()) {
+                objRtn = new MPF154();
+                objRtn.PROCESO = rs01.getString("PROCESO").trim();
+                objRtn.MERCHANT = rs01.getString("MERCHANT").trim();
+                objRtn.SALE_AGENT = rs01.getString("SALE_AGENT").trim();
+                objRtn.SOCIETY = rs01.getString("SOCIETY").trim();
+                objRtn.CURRENCY = rs01.getString("CURRENCY").trim();
+                objRtn.SALE_PROFIT = rs01.getString("SALE_PROFIT").trim();
+                objRtn.COUNTRY = rs01.getString("COUNTRY").trim();
+                objRtn.STATEMENT_PROFIT = rs01.getString("STATEMENT_PROFIT").trim();
+                objRtn.COST_CENTER = rs01.getString("COST_CENTER").trim();
+                objRtn.ACQUIRER = rs01.getString("ACQUIRER").trim();
+                objRtn.PROCESSOR = rs01.getString("PROCESSOR").trim();
+                objRtn.CHANNEL = rs01.getString("CHANNEL").trim();
+                objRtn.COMPANY = rs01.getString("COMPANY").trim();
+                objRtn.BANK_CURRENCY = rs01.getString("BANK_CURRENCY").trim();
+                objRtn.BANK_PROFIT = rs01.getString("BANK_PROFIT").trim();
+                objRtn.NIT_CODE = rs01.getString("NIT_CODE").trim();
+                objRtn.NIT_DESCRIPTION = rs01.getString("NIT_DESCRIPTION").trim();
+                objRtn.CODE = rs01.getString("CODE").trim();
+                objRtn.ACCOUNT = rs01.getString("ACCOUNT").trim();
+                objRtn.TYPE_CB = rs01.getString("TYPE_CB").trim();
+                objRtn.TYPE_MEMOLINE = rs01.getString("TYPE_MEMOLINE").trim();
+                objRtn.MEMOLINE = rs01.getString("MEMOLINE").trim();
+
+                objRtn.USCR = rs01.getString("USCR");
+                objRtn.FECR = rs01.getString("FECR");
+                objRtn.HOCR = rs01.getString("HOCR");
+                objRtn.USUP = rs01.getString("USUP");
+                objRtn.FEUP = rs01.getString("FEUP");
+                objRtn.HOUP = rs01.getString("HOUP");
+
+                lstRtn.add(objRtn);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rs01 != null) {
+                try {
+                    rs01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt01 != null) {
+                try {
+                    cstmt01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstRtn;
+    }
 }

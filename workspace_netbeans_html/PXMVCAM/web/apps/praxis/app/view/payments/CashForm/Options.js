@@ -15,12 +15,12 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Options', {
             cls: 'segmode',
             items: [
                 {
-                    text: 'Dashboard',
+                    text: 'Cash',
                     itemId: 'dashboard',
                     pressed: true
                 },
                 {
-                    text: 'Detail',
+                    text: 'Credit Card',
                     itemId: 'detail'
                 }
             ],
@@ -132,7 +132,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Options', {
 //                            tooltip: 'New'
 //                        },
 //                        {
-//                            xtype:'button',
+//                            xtype:'button',   
 //                            id: prototype.id+'-btnDisplay',
 //                            icon: 'resources/img/botones/FalseChart.png',
 //                            tooltip: 'Display Charts',
@@ -151,6 +151,15 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Options', {
                             id: prototype.id + '-btnClear',
                             iconCls: 'prx-icon-clear',
                             tooltip: 'Clear Options'
+                        },
+                        {
+                            xtype: 'button',
+                            id: prototype.id + '-btnUpdateGrid',
+                            icon: 'resources/img/botones/refresh.png',
+                            tooltip: 'Generate Summary Sales CC and CA',
+                            listeners: {
+                                click: 'updateSummarySales'
+                            }
                         },
 //                        {
 //                            xtype: 'button',
