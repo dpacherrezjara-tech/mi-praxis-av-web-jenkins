@@ -466,6 +466,42 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                 Ext.getCmp(prototype.id + '-dataEntry').unmask();
             }
         });
+        
+        
+        
+        // RA
+        Ext.Ajax.request({
+            url: prototype.url + '/searchTaxMerchants',
+            method: 'POST',
+            timeout: 60000000,
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+            params: {beanString: beanString},
+            success: function (response, opts) {
+                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+                var resIataTAX = Ext.JSON.decode(response.responseText);
+                console.log(resIataTAX, 'resIataTAXXXX');
+                if (resIataTAX.success) {
+                    var storeDataIatasMerchant = Ext.create('Ext.data.Store', {
+                        data: resIataTAX.data,
+                        autoLoad: true
+                    });
+                    Ext.getCmp(prototype.id + '-gridDataDetailTax').bindStore(storeDataIatasMerchant);
+                } else {
+                    global.Msg({msg: resIata.Mensaje});
+                }
+            },
+            failure: function (response, options) {
+                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+                console.error('Request failed:', response.statusText);
+                // Maneja el error de acuerdo a tus necesidades
+            }
+        });
+        
+        
+        
+        
+        
+        
     },
     onViewMerchClick: function (grid, rowIndex, colIndex, item, e, record) {
         var rec = grid.getStore().getAt(rowIndex);
@@ -864,8 +900,30 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         if (e.getKey() === e.ENTER) {
 //            this.btnSearch_click();
         }
-    }
+    },
 // </editor-fold>
 
-
+    
+    onViewMerchTaxClick: function(grid, td, rowIndex, cellIndex, e, record, tr, eOpts){
+        const me = this;
+        global.cleanPXobj(record.data);
+        const dataEntry = Ext.create('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryTax', {
+            id: prototype.id + '-MaintenanceDataEntry-1',
+            searchParams: global.maintenanceObj(record.data),
+            option:'U',
+        });
+        dataEntry.show();
+    },
+    winDataEntryTax: function (action, rec) {
+        action = action === null || action === undefined ? 'U' : action;
+        rec = rec === null || rec === undefined ? {} : rec;
+        console.log('llega antes del create',rec)
+        Ext.create('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryTax', {
+            id: prototype.id + '-dataEntryTax',
+            params: {
+                action: action,
+                rec: rec
+            }
+        }).show();
+    },
 });

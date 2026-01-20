@@ -27,6 +27,7 @@ import net.miatech.praxis.logic.payments.MerchantNumberLogic;
 import net.miatech.praxis.logic.payments.StatementReconciliationsLogic;
 import net.miatech.praxis.payment.A4202;
 import net.miatech.praxis.payment.MPF101;
+import net.miatech.praxis.payment.MPF154;
 import net.miatech.praxis.payment.filter.A2354Filter;
 import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
@@ -908,5 +909,38 @@ public class MerchantNumberController extends BaseController {
             map.put("Mensaje", ex.getMessage());
         }
         return new Gson().toJson(map);
+    }
+    
+//    F
+    @RequestMapping(value = "searchTaxMerchants")
+    public @ResponseBody
+    String searchTaxMerchants(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- MerchantNumber : searchTaxMerchants-------------");
+
+        map.put("success", true);
+        List<MPF154> lst = this.getListTaxMerchants(request, false);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<MPF154> getListTaxMerchants(HttpServletRequest request, Boolean bExcel) {
+
+        List<MPF154> lst = new ArrayList<>(0);
+        A2354Filter filter = new A2354Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new MerchantNumberLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2354Filter.class);
+
+            lst = logic.loadMPS527(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
     }
 }
