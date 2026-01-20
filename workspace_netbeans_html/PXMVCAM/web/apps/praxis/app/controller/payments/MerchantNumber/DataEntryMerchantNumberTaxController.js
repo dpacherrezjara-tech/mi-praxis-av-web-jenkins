@@ -93,8 +93,9 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
             global.Msg({msg: 'Error on load information'});
         } finally {
             me.view.setLoading(false);
-            me.view.reloadGrid();
+//            me.view.reloadGrid();
             me.view.close();
+            Ext.getCmp(prototype.id + '-dataEntry').close();
         }
     },
     formatParams: function (option) {
