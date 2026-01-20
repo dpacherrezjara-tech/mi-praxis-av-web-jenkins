@@ -587,7 +587,23 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                     readOnly: true,
                                                     width: 90
                                                 },
-                                                {xtype: 'tbspacer', width: 490},
+                                                {xtype: 'tbspacer', width: 50},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Comment',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    width: 80
+                                                },
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtCERROR',
+                                                    fieldStyle: 'text-align:left',
+                                                    enforceMaxLength: true,
+                                                    readOnly: true,
+                                                    width: 300
+                                                },
+                                                {xtype: 'tbspacer', width: 50},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Diff',

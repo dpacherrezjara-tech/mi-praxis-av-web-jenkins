@@ -4007,7 +4007,7 @@ public class StatementReconciliationsDAO {
         Connection cnx2 = null;
         Connection cnx3 = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05115CONCILIMPF102(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS470(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();

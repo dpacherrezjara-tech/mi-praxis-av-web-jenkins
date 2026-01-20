@@ -118,6 +118,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.setValue('de-txtSCURRENCYL', this.beanResult.SCURRENCY);
         this.setValue('de-txtACCNUMBERL', this.beanResult.ACCNUMBERL);
         this.setValue('de-txtACCNUMBER', this.beanResult.ACCNUMBER);
+        this.setValue('de-txtCERROR', this.beanResult.CERROR + " - " + this.beanResult.CERROR_DESC);
         this.setValue('de-txtDIFF', Ext.util.Format.number(this.beanResult.DIFF, '0,000.00'));
         this.setValue('txtUSCR', this.beanResult.USCR);
         this.setValue('txtFECR', this.beanResult.FECR);
@@ -922,7 +923,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         var win = Ext.create('Ext.window.Window', {
             title: 'Conciliation',
             modal: true,
-            width: 600,
+            width: 400,
             bodyPadding: 18,
             resizable: false,
             closable: true,
@@ -935,7 +936,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 labelAlign: 'right',
                 labelWidth: 90,
                 margin: '10 0 10 0',
-                style: 'background-color:white; border-radius:6px;'
+                style: 'background-color:F9FAFB; border-radius:6px;'
             },
             items: [
                 {
