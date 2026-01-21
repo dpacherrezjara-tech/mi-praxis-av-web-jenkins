@@ -53,7 +53,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.TemplateReconc
                                     border: true,
                                     autoScroll: true,
                                     defaults: {
-                                        width: 1840,
+                                        width: 1900,
                                         align: 'center'
                                     },
                                     items: [

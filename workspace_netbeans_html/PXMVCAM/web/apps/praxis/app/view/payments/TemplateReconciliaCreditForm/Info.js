@@ -36,7 +36,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.Info', {
                         {
                             xtype: 'panel',
                             border: false,
-                            width: 1800,
+                            width: 1850,
                             id: prototype.id + '-panelGridData',
                             bodyStyle: 'background-color: #F4F7FD;',
                             padding: '1',
@@ -54,7 +54,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.Info', {
                                             xtype: 'grid',
                                             id: prototype.id + '-gridBandoc',
                                             height: 595,
-                                            width: 615,
+                                            width: 680,
                                             columnLines: true,
                                             margin: '0 20 20 20',
                                             viewConfig: {
@@ -102,6 +102,25 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.Info', {
                                                                 align: 'center',
                                                                 menuDisabled: true,
                                                                 style: 'background: #6C87A8 ;border-color:white',
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #6C87A8;color:white";
+                                                                    return '';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Doc',
+                                                                width: 55,
+                                                                dataIndex: 'TDOC',
+                                                                align: 'center',
+                                                                menuDisabled: true,
+                                                                style: 'background: #6C87A8 ;border-color:white',
+                                                                renderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #6C87A8;color:white";
+
+                                                                    return value === 'D' || value === 'd' ? 'Debits' :
+                                                                            value === 'S' || value === 's' ? 'Sale' :
+                                                                            'No identificado';
+                                                                },
                                                                 summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                     metaData.style = "text-align:right;background: #6C87A8;color:white";
                                                                     return '';
@@ -368,7 +387,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.Info', {
                                                                     },
                                                                     {
                                                                         text: 'Card Nu',
-                                                                        width: 80,
+                                                                        width: 70,
                                                                         menuDisabled: true,
                                                                         dataIndex: 'SCARDN',
                                                                         align: 'center',

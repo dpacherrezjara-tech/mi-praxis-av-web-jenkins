@@ -106,6 +106,7 @@ public class TemplateReconciliaCreditDAO {
                     record = new MPF102();
                     record.RN = rst.getLong("RN");
                     record.CCUST = rst.getString("CCUST");
+                    record.TDOC = rst.getString("TDOC");
                     record.BANDOC = rst.getString("BANDOC");
                     record.DATECI = rst.getString("DATECI");
                     record.TRANCI = rst.getString("TRANCI");
