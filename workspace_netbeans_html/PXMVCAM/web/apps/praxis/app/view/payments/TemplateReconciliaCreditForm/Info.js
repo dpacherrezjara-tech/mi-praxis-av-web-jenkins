@@ -36,7 +36,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.Info', {
                         {
                             xtype: 'panel',
                             border: false,
-                            width: 1700,
+                            width: 1800,
                             id: prototype.id + '-panelGridData',
                             bodyStyle: 'background-color: #F4F7FD;',
                             padding: '1',
@@ -51,87 +51,280 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.Info', {
                                     layout: {type: 'hbox', align: 'start'},
                                     items: [
                                         {
-                                            xtype: 'container',
-                                            layout: {type: 'vbox', align: 'stretch'},
-                                            items: [
-                                                {
-                                                    xtype: 'grid',
-                                                    id: prototype.id + '-gridBandoc',
-                                                    height: 150,
-                                                    width: 772,
-                                                    columnLines: true,
-                                                    margin: '0 0 20 0',
-                                                    viewConfig: {
-                                                        enableTextSelection: true
-                                                    },
-                                                    features: [{
-                                                            dock: 'bottom',
-                                                            ftype: 'summary'
-                                                        }
-                                                    ],
-                                                    bbar: {
-                                                        xtype: 'pagingtoolbar',
-                                                        store: null,
-                                                        displayInfo: true,
-                                                        displayMsg: 'Page {0} - {1} of {2}',
-                                                        emptyMsg: 'No records found'
-                                                    },
-                                                    columns: {
-                                                        items: [
+                                            xtype: 'grid',
+                                            id: prototype.id + '-gridBandoc',
+                                            height: 595,
+                                            width: 615,
+                                            columnLines: true,
+                                            margin: '0 20 20 20',
+                                            viewConfig: {
+                                                enableTextSelection: true
+                                            },
+                                            features: [{
+                                                    dock: 'bottom',
+                                                    ftype: 'summary'
+                                                }
+                                            ],
+                                            bbar: {
+                                                xtype: 'pagingtoolbar',
+                                                store: null,
+                                                displayInfo: true,
+                                                displayMsg: 'Page {0} - {1} of {2}',
+                                                emptyMsg: 'No records found'
+                                            },
+                                            columns: {
+                                                items: [
+                                                    {
+                                                        text: 'Statement',
+                                                        menuDisabled: true,
+                                                        style: 'background: #6C87A8;',
+                                                        columns: [
                                                             {
-                                                                text: 'Statement',
+                                                                xtype: 'checkcolumn',
+                                                                text: 'Select',
+                                                                width: 60,
+                                                                dataIndex: 'checkActive',
+                                                                align: 'center',
+                                                                style: 'background: #6C87A8 ;border-color:white',
                                                                 menuDisabled: true,
-                                                                style: 'background: #6C87A8;',
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #6C87A8;color:white";
+                                                                    return '';
+                                                                },
+                                                                listeners: {
+                                                                    checkchange: 'updateGridBandocWMH'
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Bandoc',
+                                                                width: 90,
+                                                                dataIndex: 'BANDOC',
+                                                                align: 'center',
+                                                                menuDisabled: true,
+                                                                style: 'background: #6C87A8 ;border-color:white',
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #6C87A8;color:white";
+                                                                    return '';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Status',
+                                                                width: 120,
+                                                                dataIndex: 'STVAL',
+                                                                align: 'center',
+                                                                hidden: true,
+                                                                menuDisabled: true,
+                                                                style: 'background: #6C87A8 ;border-color:white',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    if (value === "3") {
+                                                                        metaData.style = 'background:#EF5350; color:white;';
+                                                                        return '<span style="font-weight:bold;">Pending</span>';
+                                                                    } else if (value === "1") {
+                                                                        metaData.style = 'background:#4CAF50; color:white;';
+                                                                        return '<span style="font-weight:bold;">Match</span>';
+                                                                    } else if (value === "5") {
+                                                                        metaData.style = 'background:#4CAF50; color:white;';
+                                                                        return '<span style="font-weight:bold;">Match Manual</span>';
+                                                                    } else {
+                                                                        metaData.style = 'background:#B0B0B0; color:#2B2B2B;';
+                                                                        return '<span style="font-weight:bold;">Unknown</span>';
+                                                                    }
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #6C87A8;color:white";
+                                                                    return '';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Country',
+                                                                width: 90,
+                                                                dataIndex: 'SCOUNTRY',
+                                                                menuDisabled: true,
+                                                                hidden: true,
+                                                                align: 'center',
+                                                                style: 'background: #6C87A8 ;border-color:white',
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #6C87A8;color:white";
+                                                                    return '';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Val Date',
+                                                                width: 80,
+                                                                dataIndex: 'VALDATE',
+                                                                menuDisabled: true,
+                                                                align: 'center',
+                                                                style: 'background: #6C87A8 ;border-color:white',
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #6C87A8;color:white";
+                                                                    return '';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Date',
+                                                                width: 80,
+                                                                menuDisabled: true,
+                                                                dataIndex: 'ADATE',
+                                                                align: 'center',
+                                                                style: 'background: #6C87A8 ;border-color:white',
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #6C87A8;color:white";
+                                                                    return '';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Account',
+                                                                menuDisabled: true,
+                                                                width: 70,
+                                                                dataIndex: 'ACCOUNT',
+                                                                align: 'center',
+                                                                style: 'background: #6C87A8 ;border-color:white',
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #6C87A8;color:white";
+                                                                    return '';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Society',
+                                                                width: 70,
+                                                                menuDisabled: true,
+                                                                dataIndex: 'SOCIETY',
+                                                                align: 'center',
+                                                                style: 'background: #6C87A8 ;border-color:white',
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #6C87A8;color:white";
+                                                                    return '';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Currency',
+                                                                width: 70,
+                                                                menuDisabled: true,
+                                                                dataIndex: 'SCURRENCY',
+                                                                align: 'center',
+                                                                style: 'background: #6C87A8 ;border-color:white',
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #6C87A8;color:white";
+                                                                    return '';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Neto',
+                                                                menuDisabled: true,
+                                                                width: 90,
+                                                                dataIndex: 'NETO',
+                                                                align: 'center',
+                                                                style: 'background: #6C87A8 ;border-color:white',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var tam = Ext.getCmp(prototype.id + '-gridBandoc').getStore().getData().items.length;
+                                                                    var data = Ext.getCmp(prototype.id + '-gridBandoc').getStore().getData().items[tam - 1].data;
+                                                                    metaData.style = "text-align:right;background: #6C87A8;color:white";
+                                                                    value = Ext.util.Format.number(data.TOTAL_NETO, '0,000.00');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            defaults: {
+                                                sortable: true,
+                                                menuDisabled: false,
+                                                align: 'center'
+                                            }
+                                        },
+                                        {
+                                            xtype: 'grid',
+                                            id: prototype.id + '-gridDataVentas',
+                                            width: 860,
+                                            hidden: true,
+                                            height: 595,
+                                            margin: '0 20 20 0',
+                                            columnLines: true,
+                                            features: [{
+                                                    dock: 'bottom',
+                                                    ftype: 'summary'
+                                                }
+                                            ],
+                                            bbar: {
+                                                xtype: 'pagingtoolbar',
+                                                store: null,
+                                                displayInfo: true,
+                                                displayMsg: 'Page {0} - {1} of {2}',
+                                                emptyMsg: 'No records found'
+                                            },
+                                            columns: {
+                                                items: [
+                                                    {
+                                                        text: 'Sales',
+                                                        style: 'background: #6C87A8;border-color:white',
+                                                        columns: [
+                                                            {
+                                                                xtype: 'checkcolumn',
+                                                                text: 'Sel',
+                                                                width: 50,
+                                                                dataIndex: 'checkActive',
+                                                                align: 'center',
+                                                                style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                                listeners: {
+                                                                    checkchange: 'updateGridSaleWMH'
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #6C87A8;color:white";
+                                                                    return '';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Rn',
+                                                                width: 40,
+                                                                menuDisabled: true,
+                                                                dataIndex: 'RN',
+                                                                align: 'center',
+                                                                style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                    return value;
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #6C87A8;color:white";
+                                                                    return '';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Details',
+                                                                style: 'background: #6C87A8;border-color:white',
                                                                 columns: [
                                                                     {
-                                                                        xtype: 'checkcolumn',
-                                                                        text: 'Select',
-                                                                        width: 60,
-                                                                        dataIndex: 'checkActive',
-                                                                        align: 'center',
-                                                                        style: 'background: #6C87A8 ;border-color:white',
+                                                                        text: 'Ticket',
+                                                                        width: 110,
                                                                         menuDisabled: true,
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                            return '';
-                                                                        },
-                                                                        listeners: {
-                                                                            checkchange: 'updateGridBandocWMH'
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'Bandoc',
-                                                                        width: 90,
-                                                                        dataIndex: 'BANDOC',
+                                                                        dataIndex: 'TKT',
                                                                         align: 'center',
-                                                                        menuDisabled: true,
-                                                                        style: 'background: #6C87A8 ;border-color:white',
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                            return '';
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'Status',
-                                                                        width: 120,
-                                                                        dataIndex: 'STVAL',
-                                                                        align: 'center',
-                                                                        menuDisabled: true,
-                                                                        style: 'background: #6C87A8 ;border-color:white',
+                                                                        style: 'padding:2px; background: #6C87A8;border-color:white',
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            if (value === "3") {
-                                                                                metaData.style = 'background:#EF5350; color:white;';
-                                                                                return '<span style="font-weight:bold;">Pending</span>';
-                                                                            } else if (value === "1") {
-                                                                                metaData.style = 'background:#4CAF50; color:white;';
-                                                                                return '<span style="font-weight:bold;">Match</span>';
-                                                                            } else if (value === "5") {
-                                                                                metaData.style = 'background:#4CAF50; color:white;';
-                                                                                return '<span style="font-weight:bold;">Match Manual</span>';
-                                                                            } else {
-                                                                                metaData.style = 'background:#B0B0B0; color:#2B2B2B;';
-                                                                                return '<span style="font-weight:bold;">Unknown</span>';
-                                                                            }
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            return value;
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            metaData.style = "text-align:right;background: #6C87A8;color:white";
+                                                                            return '';
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Agent',
+                                                                        width: 80,
+                                                                        menuDisabled: true,
+                                                                        dataIndex: 'SAGENT',
+                                                                        align: 'center',
+                                                                        style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            return value;
                                                                         },
                                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                             metaData.style = "text-align:right;background: #6C87A8;color:white";
@@ -140,145 +333,90 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.Info', {
                                                                     },
                                                                     {
                                                                         text: 'Country',
-                                                                        width: 90,
+                                                                        width: 65,
+                                                                        menuDisabled: true,
                                                                         dataIndex: 'SCOUNTRY',
-                                                                        menuDisabled: true,
                                                                         align: 'center',
-                                                                        style: 'background: #6C87A8 ;border-color:white',
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                            return '';
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'Val Date',
-                                                                        width: 95,
-                                                                        dataIndex: 'VALDATE',
-                                                                        menuDisabled: true,
-                                                                        align: 'center',
-                                                                        style: 'background: #6C87A8 ;border-color:white',
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                            return '';
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'Date',
-                                                                        width: 95,
-                                                                        menuDisabled: true,
-                                                                        dataIndex: 'ADATE',
-                                                                        align: 'center',
-                                                                        style: 'background: #6C87A8 ;border-color:white',
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                            return '';
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'Account',
-                                                                        menuDisabled: true,
-                                                                        width: 110,
-                                                                        dataIndex: 'ACCOUNT',
-                                                                        align: 'center',
-                                                                        style: 'background: #6C87A8 ;border-color:white',
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                            return '';
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'Society',
-                                                                        width: 110,
-                                                                        menuDisabled: true,
-                                                                        dataIndex: 'SOCIETY',
-                                                                        align: 'center',
-                                                                        style: 'background: #6C87A8 ;border-color:white',
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                            return '';
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'Currency',
-                                                                        width: 110,
-                                                                        menuDisabled: true,
-                                                                        dataIndex: 'SCURRENCY',
-                                                                        align: 'center',
-                                                                        style: 'background: #6C87A8 ;border-color:white',
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                            return '';
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'Neto',
-                                                                        menuDisabled: true,
-                                                                        width: 110,
-                                                                        dataIndex: 'NETO',
-                                                                        align: 'center',
-                                                                        style: 'background: #6C87A8 ;border-color:white',
+                                                                        style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                                        summaryType: 'sum',
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:right;";
-                                                                            value = Ext.util.Format.number(value, '0,000.00');
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            return value;
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            metaData.style = "text-align:right;background: #6C87A8;color:white";
+                                                                            return '';
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Author',
+                                                                        width: 70,
+                                                                        menuDisabled: true,
+                                                                        dataIndex: 'SAUTHOC',
+                                                                        align: 'center',
+                                                                        style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                                        summaryType: 'sum',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            //                                                value = Ext.util.Format.number(value, '0,000.00');
                                                                             return '<b>' + value + '</b>';
                                                                         },
                                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            var tam = Ext.getCmp(prototype.id + '-gridBandoc').getStore().getData().items.length;
-                                                                            var data = Ext.getCmp(prototype.id + '-gridBandoc').getStore().getData().items[tam - 1].data;
                                                                             metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                            value = Ext.util.Format.number(data.TOTAL_NETO, '0,000.00');
-                                                                            return '<b>' + value + '</b>';
+                                                                            return '';
                                                                         }
-                                                                    }
+                                                                    },
+                                                                    {
+                                                                        text: 'Card Nu',
+                                                                        width: 80,
+                                                                        menuDisabled: true,
+                                                                        dataIndex: 'SCARDN',
+                                                                        align: 'center',
+                                                                        style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                                        summaryType: 'sum',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            return value;
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            metaData.style = "text-align:right;background: #6C87A8;color:white";
+                                                                            return '';
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Sale Date',
+                                                                        width: 80,
+                                                                        menuDisabled: true,
+                                                                        dataIndex: 'SDATE',
+                                                                        align: 'center',
+                                                                        style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                                        summaryType: 'sum',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            return value;
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            metaData.style = "text-align:right;background: #6C87A8;color:white";
+                                                                            return '';
+                                                                        }
+                                                                    },
                                                                 ]
-                                                            }
-                                                        ]
-                                                    },
-                                                    defaults: {
-                                                        sortable: true,
-                                                        menuDisabled: false,
-                                                        align: 'center'
-                                                    }
-                                                },
-                                                {
-                                                    xtype: 'grid',
-                                                    id: prototype.id + '-gridCabecera',
-                                                    height: 150,
-                                                    width: 992,
-                                                    hidden: false,
-                                                    columnLines: true,
-                                                    viewConfig: {
-                                                        enableTextSelection: true
-                                                    },
-                                                    features: [{
-                                                            dock: 'bottom',
-                                                            ftype: 'summary'
-                                                        }
-                                                    ],
-                                                    bbar: {
-                                                        xtype: 'pagingtoolbar',
-                                                        store: null,
-                                                        displayInfo: true,
-                                                        displayMsg: 'Page {0} - {1} of {2}',
-                                                        emptyMsg: 'No records found'
-                                                    },
-                                                    columns: {
-                                                        items: [
+                                                            },
                                                             {
-                                                                text: 'Header',
-                                                                menuDisabled: true,
-                                                                style: 'background: #6C87A8;',
+                                                                text: 'Local',
+                                                                style: 'background: #6C87A8;border-color:white',
                                                                 columns: [
                                                                     {
-                                                                        xtype: 'checkcolumn',
-                                                                        text: 'Select',
-                                                                        width: 60,
-                                                                        dataIndex: 'checkActive',
-                                                                        align: 'center',
-                                                                        style: 'background: #6C87A8 ;border-color:white',
+                                                                        text: 'Currency',
+                                                                        width: 70,
                                                                         menuDisabled: true,
-                                                                        listeners: {
-                                                                            checkchange: 'updateTotalsHeaderWMH'
+                                                                        dataIndex: 'SCURREVEN',
+                                                                        align: 'center',
+                                                                        style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                                        summaryType: 'sum',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            return value;
                                                                         },
                                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                             metaData.style = "text-align:right;background: #6C87A8;color:white";
@@ -286,165 +424,285 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.Info', {
                                                                         }
                                                                     },
                                                                     {
-                                                                        text: 'Fliquidaci',
-                                                                        width: 90,
-                                                                        dataIndex: 'FLIQUIDACI',
-                                                                        align: 'center',
+                                                                        text: 'Amount',
+                                                                        width: 70,
                                                                         menuDisabled: true,
-                                                                        style: 'background: #6C87A8 ;border-color:white',
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                            return '';
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'Merchand',
-                                                                        width: 90,
-                                                                        dataIndex: 'MERCHAND',
-                                                                        menuDisabled: true,
+                                                                        dataIndex: 'SVFOP',
                                                                         align: 'center',
-                                                                        style: ' background: #6C87A8 ;border-color:white',
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                            return '';
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'Liquidacio',
-                                                                        width: 90,
-                                                                        menuDisabled: true,
-                                                                        dataIndex: 'LIQUIDACIO',
-                                                                        align: 'center',
-                                                                        style: ' background: #6C87A8 ;border-color:white',
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                            return '';
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'Moneda',
-                                                                        width: 110,
-                                                                        menuDisabled: true,
-                                                                        dataIndex: 'MONEDA',
-                                                                        align: 'center',
-                                                                        style: 'background: #6C87A8 ;border-color:white',
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                            return '';
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'Total',
-                                                                        menuDisabled: true,
-                                                                        width: 110,
-                                                                        dataIndex: 'TOTAL',
-                                                                        align: 'center',
-                                                                        style: 'background: #6C87A8 ;border-color:white',
+                                                                        style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                                        summaryType: 'sum',
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:right;";
                                                                             value = Ext.util.Format.number(value, '0,000.00');
                                                                             return '<b>' + value + '</b>';
                                                                         },
                                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            var tam = Ext.getCmp(prototype.id + '-gridCabecera').getStore().getData().items.length;
-                                                                            var data = Ext.getCmp(prototype.id + '-gridCabecera').getStore().getData().items[tam - 1].data;
+                                                                            var tam = Ext.getCmp(prototype.id + '-gridDataVentas').getStore().getData().items.length;
+                                                                            var data = Ext.getCmp(prototype.id + '-gridDataVentas').getStore().getData().items[tam - 1].data;
                                                                             metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                            value = Ext.util.Format.number(data.SUM_TOTAL, '0,000.00');
+                                                                            value = Ext.util.Format.number(data.TOTAL_SVFOP, '0,000.00');
                                                                             return '<b>' + value + '</b>';
                                                                         }
                                                                     },
+                                                                ]
+                                                            },
+                                                            {
+                                                                text: 'Converted',
+                                                                style: 'background: #6C87A8;border-color:white',
+                                                                columns: [
                                                                     {
-                                                                        text: 'Comision',
+                                                                        text: 'Currency',
+                                                                        width: 70,
                                                                         menuDisabled: true,
-                                                                        width: 110,
-                                                                        dataIndex: 'COMISION',
+                                                                        dataIndex: 'SCURREVENCONVERT',
                                                                         align: 'center',
-                                                                        style: 'background: #6C87A8 ;border-color:white',
+                                                                        style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                                        summaryType: 'sum',
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:right;";
-                                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                                            return '<b>' + value + '</b>';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            return value;
                                                                         },
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            var tam = Ext.getCmp(prototype.id + '-gridCabecera').getStore().getData().items.length;
-                                                                            var data = Ext.getCmp(prototype.id + '-gridCabecera').getStore().getData().items[tam - 1].data;
-                                                                            metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                            value = Ext.util.Format.number(data.SUM_COMISION, '0,000.00');
-                                                                            return '<b>' + value + '</b>';
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'Neto',
-                                                                        menuDisabled: true,
-                                                                        width: 110,
-                                                                        dataIndex: 'NETO',
-                                                                        align: 'center',
-                                                                        style: 'background: #6C87A8 ;border-color:white',
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:right;";
-                                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                                            return '<b>' + value + '</b>';
-                                                                        },
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            var tam = Ext.getCmp(prototype.id + '-gridCabecera').getStore().getData().items.length;
-                                                                            var data = Ext.getCmp(prototype.id + '-gridCabecera').getStore().getData().items[tam - 1].data;
-                                                                            metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                            value = Ext.util.Format.number(data.SUM_NETO, '0,000.00');
-                                                                            return '<b>' + value + '</b>';
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'Moneda Pago',
-                                                                        width: 110,
-                                                                        menuDisabled: true,
-                                                                        dataIndex: 'MONEDAPAGO',
-                                                                        align: 'center',
-                                                                        style: 'background: #6C87A8 ;border-color:white',
                                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                             metaData.style = "text-align:right;background: #6C87A8;color:white";
                                                                             return '';
                                                                         }
                                                                     },
                                                                     {
-                                                                        text: 'Importe Pag',
+                                                                        text: 'Amount',
+                                                                        width: 70,
                                                                         menuDisabled: true,
-                                                                        width: 110,
-                                                                        dataIndex: 'IMPORTEPAG',
+                                                                        dataIndex: 'SVFOPCON',
                                                                         align: 'center',
-                                                                        style: 'background: #6C87A8 ;border-color:white',
+                                                                        style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                                        summaryType: 'sum',
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:right;";
                                                                             value = Ext.util.Format.number(value, '0,000.00');
                                                                             return '<b>' + value + '</b>';
                                                                         },
                                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            var tam = Ext.getCmp(prototype.id + '-gridCabecera').getStore().getData().items.length;
-                                                                            var data = Ext.getCmp(prototype.id + '-gridCabecera').getStore().getData().items[tam - 1].data;
+                                                                            var tam = Ext.getCmp(prototype.id + '-gridDataVentas').getStore().getData().items.length;
+                                                                            var data = Ext.getCmp(prototype.id + '-gridDataVentas').getStore().getData().items[tam - 1].data;
                                                                             metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                            value = Ext.util.Format.number(data.SUM_IMPORTEPAG, '0,000.00');
+                                                                            value = Ext.util.Format.number(data.TOTAL_SVFOP_CONVERTED, '0,000.00');
                                                                             return '<b>' + value + '</b>';
                                                                         }
-                                                                    }
+                                                                    },
                                                                 ]
                                                             }
                                                         ]
-                                                    },
-                                                    defaults: {
-                                                        sortable: true,
-                                                        menuDisabled: false,
-                                                        align: 'center'
                                                     }
+                                                ],
+                                                defaults: {
+                                                    sortable: true,
+                                                    menuDisabled: false,
+                                                    align: 'center'
                                                 }
-                                            ]
+                                            }
+                                        },
+                                        {
+                                            xtype: 'grid',
+                                            id: prototype.id + '-gridCabecera',
+                                            width: 860,
+                                            height: 595,
+                                            columnLines: true,
+                                            margin: '0 20 20 0',
+                                            viewConfig: {
+                                                enableTextSelection: true
+                                            },
+                                            features: [{
+                                                    dock: 'bottom',
+                                                    ftype: 'summary'
+                                                }
+                                            ],
+                                            bbar: {
+                                                xtype: 'pagingtoolbar',
+                                                store: null,
+                                                displayInfo: true,
+                                                displayMsg: 'Page {0} - {1} of {2}',
+                                                emptyMsg: 'No records found'
+                                            },
+                                            columns: {
+                                                items: [
+                                                    {
+                                                        text: 'Header',
+                                                        menuDisabled: true,
+                                                        style: 'background: #6C87A8;',
+                                                        columns: [
+                                                            {
+                                                                xtype: 'checkcolumn',
+                                                                text: 'Select',
+                                                                width: 60,
+                                                                dataIndex: 'checkActive',
+                                                                align: 'center',
+                                                                style: 'background: #6C87A8 ;border-color:white',
+                                                                menuDisabled: true,
+                                                                listeners: {
+                                                                    checkchange: 'updateTotalsHeaderWMH'
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #6C87A8;color:white";
+                                                                    return '';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Fliquidaci',
+                                                                width: 90,
+                                                                dataIndex: 'FLIQUIDACI',
+                                                                align: 'center',
+                                                                menuDisabled: true,
+                                                                style: 'background: #6C87A8 ;border-color:white',
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #6C87A8;color:white";
+                                                                    return '';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Merchand',
+                                                                width: 90,
+                                                                dataIndex: 'MERCHAND',
+                                                                menuDisabled: true,
+                                                                align: 'center',
+                                                                style: ' background: #6C87A8 ;border-color:white',
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #6C87A8;color:white";
+                                                                    return '';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Liquidacio',
+                                                                width: 90,
+                                                                menuDisabled: true,
+                                                                dataIndex: 'LIQUIDACIO',
+                                                                align: 'center',
+                                                                style: ' background: #6C87A8 ;border-color:white',
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #6C87A8;color:white";
+                                                                    return '';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Moneda',
+                                                                width: 110,
+                                                                menuDisabled: true,
+                                                                dataIndex: 'MONEDA',
+                                                                align: 'center',
+                                                                style: 'background: #6C87A8 ;border-color:white',
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #6C87A8;color:white";
+                                                                    return '';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Total',
+                                                                menuDisabled: true,
+                                                                width: 110,
+                                                                dataIndex: 'TOTAL',
+                                                                align: 'center',
+                                                                style: 'background: #6C87A8 ;border-color:white',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var tam = Ext.getCmp(prototype.id + '-gridCabecera').getStore().getData().items.length;
+                                                                    var data = Ext.getCmp(prototype.id + '-gridCabecera').getStore().getData().items[tam - 1].data;
+                                                                    metaData.style = "text-align:right;background: #6C87A8;color:white";
+                                                                    value = Ext.util.Format.number(data.SUM_TOTAL, '0,000.00');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Comision',
+                                                                menuDisabled: true,
+                                                                width: 110,
+                                                                dataIndex: 'COMISION',
+                                                                align: 'center',
+                                                                style: 'background: #6C87A8 ;border-color:white',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var tam = Ext.getCmp(prototype.id + '-gridCabecera').getStore().getData().items.length;
+                                                                    var data = Ext.getCmp(prototype.id + '-gridCabecera').getStore().getData().items[tam - 1].data;
+                                                                    metaData.style = "text-align:right;background: #6C87A8;color:white";
+                                                                    value = Ext.util.Format.number(data.SUM_COMISION, '0,000.00');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Neto',
+                                                                menuDisabled: true,
+                                                                width: 110,
+                                                                dataIndex: 'NETO',
+                                                                align: 'center',
+                                                                style: 'background: #6C87A8 ;border-color:white',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var tam = Ext.getCmp(prototype.id + '-gridCabecera').getStore().getData().items.length;
+                                                                    var data = Ext.getCmp(prototype.id + '-gridCabecera').getStore().getData().items[tam - 1].data;
+                                                                    metaData.style = "text-align:right;background: #6C87A8;color:white";
+                                                                    value = Ext.util.Format.number(data.SUM_NETO, '0,000.00');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Moneda Pago',
+                                                                width: 110,
+                                                                menuDisabled: true,
+                                                                dataIndex: 'MONEDAPAGO',
+                                                                align: 'center',
+                                                                style: 'background: #6C87A8 ;border-color:white',
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    metaData.style = "text-align:right;background: #6C87A8;color:white";
+                                                                    return '';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Importe Pag',
+                                                                menuDisabled: true,
+                                                                width: 110,
+                                                                dataIndex: 'IMPORTEPAG',
+                                                                align: 'center',
+                                                                style: 'background: #6C87A8 ;border-color:white',
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                    return '<b>' + value + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var tam = Ext.getCmp(prototype.id + '-gridCabecera').getStore().getData().items.length;
+                                                                    var data = Ext.getCmp(prototype.id + '-gridCabecera').getStore().getData().items[tam - 1].data;
+                                                                    metaData.style = "text-align:right;background: #6C87A8;color:white";
+                                                                    value = Ext.util.Format.number(data.SUM_IMPORTEPAG, '0,000.00');
+                                                                    return '<b>' + value + '</b>';
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            defaults: {
+                                                sortable: true,
+                                                menuDisabled: false,
+                                                align: 'center'
+                                            }
                                         },
                                         {
                                             xtype: 'panel',
                                             width: 250,
-                                            height: 280,
+                                            height: 600,
                                             border: false,
-                                            margin: '4 8 0 30',
+                                            margin: '4 8 0 0',
                                             layout: {
-                                                type: 'hbox',
+                                                type: 'vbox',
                                                 align: 'start'
                                             },
                                             id: 'panelResumenTotalesSales',
@@ -589,29 +847,14 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.Info', {
                                                             ]
                                                         }
                                                     ]
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            xtype: 'panel',
-                                            width: 400,
-                                            height: 250,
-                                            border: false,
-                                            margin: '4 8 0 0',
-                                            layout: {
-                                                type: 'hbox',
-                                                align: 'start'
-                                            },
-                                            id: 'panelResumenTotalesDiff',
-                                            bodyPadding: 5,
-                                            bodyStyle: 'background-color: #F4F7FD;',
-                                            items: [
+                                                },
                                                 {
                                                     xtype: 'container',
                                                     layout: {
                                                         type: 'vbox',
                                                         align: 'stretch'
                                                     },
+                                                    margin: '10 0 0 0',
                                                     style: 'background:#E6ECF5; border:1px solid #99A9C4; padding:8px; border-radius:4px;',
                                                     width: 235,
                                                     defaults: {
@@ -709,175 +952,238 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.Info', {
                                 },
                                 {
                                     xtype: 'container',
-                                    id: prototype.id + '-panelDescuento',
                                     layout: {type: 'hbox', align: 'start'},
                                     items: [
                                         {
-                                            xtype: 'grid',
-                                            id: prototype.id + '-gridDataSettlement',
-                                            width: 992,
-                                            height: 590,
-                                            margin: '20px 5px 0 0',
-                                            columnLines: true,
-                                            features: [{
-                                                    dock: 'bottom',
-                                                    ftype: 'summary'
-                                                }
-                                            ],
-                                            bbar: {
-                                                xtype: 'pagingtoolbar',
-                                                store: null,
-                                                displayInfo: true,
-                                                displayMsg: 'Page {0} - {1} of {2}',
-                                                emptyMsg: 'No records found'
-                                            },
-                                            columns: {
-                                                items: [
-                                                    {
-                                                        text: 'Settlements',
-                                                        menuDisabled: true,
-                                                        style: 'background: #6C87A8;',
-                                                        columns: [
+                                            xtype: 'container',
+                                            id: prototype.id + '-panelDescuento',
+                                            layout: {type: 'hbox', align: 'start'},
+                                            items: [
+                                                {
+                                                    xtype: 'grid',
+                                                    id: prototype.id + '-gridDataSettlement',
+                                                    width: 990,
+                                                    height: 590,
+                                                    margin: '20px 5px 0 20',
+                                                    columnLines: true,
+                                                    features: [{
+                                                            dock: 'bottom',
+                                                            ftype: 'summary'
+                                                        }
+                                                    ],
+                                                    bbar: {
+                                                        xtype: 'pagingtoolbar',
+                                                        store: null,
+                                                        displayInfo: true,
+                                                        displayMsg: 'Page {0} - {1} of {2}',
+                                                        emptyMsg: 'No records found'
+                                                    },
+                                                    columns: {
+                                                        items: [
                                                             {
-                                                                xtype: 'checkcolumn',
-                                                                text: 'Sel',
-                                                                width: 45,
-                                                                dataIndex: 'checkActive',
-                                                                align: 'center',
-                                                                style: 'background: #6C87A8  ;border-color:white',
-                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                    metaData.style = "text-align:right;background: #6C87A8  ;color:white";
-                                                                    return '';
-                                                                },
-                                                                listeners: {
-                                                                    checkchange: 'updateTotalsOnCheckWMH'
-                                                                }
-                                                            },
-                                                            {
-                                                                text: 'Rn',
-                                                                width: 45,
+                                                                text: 'Settlements',
                                                                 menuDisabled: true,
-                                                                dataIndex: 'RN',
-                                                                align: 'center',
-                                                                style: 'background: #6C87A8  ;border-color:white',
-                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                    metaData.style = "text-align:right;background: #6C87A8  ;color:white";
-                                                                    return '';
-                                                                }
-                                                            },
-                                                            {
-                                                                text: 'Amounts A',
-                                                                menuDisabled: true,
-                                                                style: 'background: #6C87A8  ;border-color:white',
+                                                                style: 'background: #6C87A8;',
                                                                 columns: [
                                                                     {
-                                                                        text: 'Curr',
-                                                                        width: 50,
-                                                                        dataIndex: 'SCURRENCY',
-                                                                        menuDisabled: true,
+                                                                        xtype: 'checkcolumn',
+                                                                        text: 'Sel',
+                                                                        width: 45,
+                                                                        dataIndex: 'checkActive',
                                                                         align: 'center',
                                                                         style: 'background: #6C87A8  ;border-color:white',
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                            return value;
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            metaData.style = "text-align:right;background: #6C87A8  ;color:white";
+                                                                            return '';
                                                                         },
+                                                                        listeners: {
+                                                                            checkchange: 'updateTotalsOnCheckWMH'
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Rn',
+                                                                        width: 45,
+                                                                        menuDisabled: true,
+                                                                        dataIndex: 'RN',
+                                                                        align: 'center',
+                                                                        style: 'background: #6C87A8  ;border-color:white',
                                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                             metaData.style = "text-align:right;background: #6C87A8  ;color:white";
                                                                             return '';
                                                                         }
                                                                     },
                                                                     {
-                                                                        text: 'Total',
-                                                                        width: 80,
-                                                                        dataIndex: 'TOTAL',
+                                                                        text: 'Amounts A',
                                                                         menuDisabled: true,
-                                                                        align: 'center',
                                                                         style: 'background: #6C87A8  ;border-color:white',
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:right;";
-                                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                                            return '<b>' + value + '</b>';
-                                                                        },
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            var tam = Ext.getCmp(prototype.id + '-gridDataSettlement').getStore().getData().items.length;
-                                                                            var data = Ext.getCmp(prototype.id + '-gridDataSettlement').getStore().getData().items[tam - 1].data;
-                                                                            metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                            value = Ext.util.Format.number(data.TOTAL_LIQ, '0,000.00');
-                                                                            return '<b>' + value + '</b>';
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'Comision',
-                                                                        width: 85,
-                                                                        dataIndex: 'COMISION',
-                                                                        menuDisabled: true,
-                                                                        align: 'center',
-                                                                        style: 'background: #6C87A8  ;border-color:white',
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:right;";
-                                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                                            return '<b>' + value + '</b>';
-                                                                        },
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            var tam = Ext.getCmp(prototype.id + '-gridDataSettlement').getStore().getData().items.length;
-                                                                            var data = Ext.getCmp(prototype.id + '-gridDataSettlement').getStore().getData().items[tam - 1].data;
-                                                                            metaData.style = "text-align:right;background: #6C87A8  ;color:white";
-                                                                            value = Ext.util.Format.number(data.TOTAL_COMISION, '0,000.00');
-                                                                            return '<b>' + value + '</b>';
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'Comistota',
-                                                                        width: 84,
-                                                                        menuDisabled: true,
-                                                                        dataIndex: 'COMISTOTA',
-                                                                        align: 'center',
-                                                                        style: 'background: #6C87A8  ;border-color:white',
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:right;";
-                                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                                            return '<b>' + value + '</b>';
-                                                                        },
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            var tam = Ext.getCmp(prototype.id + '-gridDataSettlement').getStore().getData().items.length;
-                                                                            var data = Ext.getCmp(prototype.id + '-gridDataSettlement').getStore().getData().items[tam - 1].data;
-                                                                            metaData.style = "text-align:right;background: #6C87A8  ;color:white";
-                                                                            value = Ext.util.Format.number(data.TOTAL_COMISTOTA, '0,000.00');
-                                                                            return '<b>' + value + '</b>';
+                                                                        columns: [
+                                                                            {
+                                                                                text: 'Curr',
+                                                                                width: 50,
+                                                                                dataIndex: 'SCURRENCY',
+                                                                                menuDisabled: true,
+                                                                                align: 'center',
+                                                                                style: 'background: #6C87A8  ;border-color:white',
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                                    return value;
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    metaData.style = "text-align:right;background: #6C87A8  ;color:white";
+                                                                                    return '';
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                text: 'Total',
+                                                                                width: 80,
+                                                                                dataIndex: 'TOTAL',
+                                                                                menuDisabled: true,
+                                                                                align: 'center',
+                                                                                style: 'background: #6C87A8  ;border-color:white',
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;";
+                                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                                    return '<b>' + value + '</b>';
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    var tam = Ext.getCmp(prototype.id + '-gridDataSettlement').getStore().getData().items.length;
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataSettlement').getStore().getData().items[tam - 1].data;
+                                                                                    metaData.style = "text-align:right;background: #6C87A8;color:white";
+                                                                                    value = Ext.util.Format.number(data.TOTAL_LIQ, '0,000.00');
+                                                                                    return '<b>' + value + '</b>';
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                text: 'Comision',
+                                                                                width: 85,
+                                                                                dataIndex: 'COMISION',
+                                                                                menuDisabled: true,
+                                                                                align: 'center',
+                                                                                style: 'background: #6C87A8  ;border-color:white',
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;";
+                                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                                    return '<b>' + value + '</b>';
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    var tam = Ext.getCmp(prototype.id + '-gridDataSettlement').getStore().getData().items.length;
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataSettlement').getStore().getData().items[tam - 1].data;
+                                                                                    metaData.style = "text-align:right;background: #6C87A8  ;color:white";
+                                                                                    value = Ext.util.Format.number(data.TOTAL_COMISION, '0,000.00');
+                                                                                    return '<b>' + value + '</b>';
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                text: 'Comistota',
+                                                                                width: 84,
+                                                                                menuDisabled: true,
+                                                                                dataIndex: 'COMISTOTA',
+                                                                                align: 'center',
+                                                                                style: 'background: #6C87A8  ;border-color:white',
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;";
+                                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                                    return '<b>' + value + '</b>';
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    var tam = Ext.getCmp(prototype.id + '-gridDataSettlement').getStore().getData().items.length;
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataSettlement').getStore().getData().items[tam - 1].data;
+                                                                                    metaData.style = "text-align:right;background: #6C87A8  ;color:white";
+                                                                                    value = Ext.util.Format.number(data.TOTAL_COMISTOTA, '0,000.00');
+                                                                                    return '<b>' + value + '</b>';
 
-                                                                        }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                text: 'Neto',
+                                                                                width: 90,
+                                                                                dataIndex: 'NETO',
+                                                                                menuDisabled: true,
+                                                                                align: 'center',
+                                                                                style: 'background: #6C87A8  ;border-color:white',
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;";
+                                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                                    return '<b>' + value + '</b>';
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    var tam = Ext.getCmp(prototype.id + '-gridDataSettlement').getStore().getData().items.length;
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataSettlement').getStore().getData().items[tam - 1].data;
+                                                                                    metaData.style = "text-align:right;background: #6C87A8  ;color:white";
+                                                                                    value = Ext.util.Format.number(data.TOTAL_NETO, '0,000.00');
+                                                                                    return '<b>' + value + '</b>';
+                                                                                }
+                                                                            }
+                                                                        ]
                                                                     },
                                                                     {
-                                                                        text: 'Neto',
-                                                                        width: 90,
-                                                                        dataIndex: 'NETO',
+                                                                        text: 'Amounts B',
                                                                         menuDisabled: true,
+                                                                        style: 'background: #6C87A8  ;border-color:white',
+                                                                        columns: [
+                                                                            {
+                                                                                text: 'Curr',
+                                                                                width: 50,
+                                                                                dataIndex: 'MONEDAPAGO',
+                                                                                menuDisabled: true,
+                                                                                align: 'center',
+                                                                                style: 'background: #6C87A8  ;border-color:white',
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                                    return value;
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    metaData.style = "text-align:right;background: #6C87A8  ;color:white";
+                                                                                    return '';
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                text: 'Im. Pag',
+                                                                                width: 70,
+                                                                                dataIndex: 'IMPORTEPAG',
+                                                                                menuDisabled: true,
+                                                                                align: 'center',
+                                                                                style: 'background: #6C87A8  ;border-color:white',
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;";
+                                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                                    return '<b>' + value + '</b>';
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    var tam = Ext.getCmp(prototype.id + '-gridDataSettlement').getStore().getData().items.length;
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataSettlement').getStore().getData().items[tam - 1].data;
+                                                                                    metaData.style = "text-align:right;background: #6C87A8  ;color:white";
+                                                                                    value = Ext.util.Format.number(data.TOTAL_IMPORTEPAG, '0,000.00');
+                                                                                    return '<b>' + value + '</b>';
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    {
+                                                                        text: 'Status',
+                                                                        width: 65,
+                                                                        menuDisabled: true,
+                                                                        dataIndex: 'STVAL',
                                                                         align: 'center',
                                                                         style: 'background: #6C87A8  ;border-color:white',
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:right;";
-                                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                                            return '<b>' + value + '</b>';
+                                                                            if (value === "3") {
+                                                                                metaData.style = 'background: #EF5350; color: white;'; // Rojo coral
+                                                                                return '<span style="font-weight: bold;">Pending</span>';
+                                                                            } else {
+                                                                                metaData.style = 'background: #4CAF50; color: white;'; // Verde para "Ok"
+                                                                                return '<span style="font-weight: bold;">Match</span>';
+                                                                            }
                                                                         },
                                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            var tam = Ext.getCmp(prototype.id + '-gridDataSettlement').getStore().getData().items.length;
-                                                                            var data = Ext.getCmp(prototype.id + '-gridDataSettlement').getStore().getData().items[tam - 1].data;
                                                                             metaData.style = "text-align:right;background: #6C87A8  ;color:white";
-                                                                            value = Ext.util.Format.number(data.TOTAL_NETO, '0,000.00');
-                                                                            return '<b>' + value + '</b>';
+                                                                            return '';
                                                                         }
-                                                                    }
-                                                                ]
-                                                            },
-                                                            {
-                                                                text: 'Amounts B',
-                                                                menuDisabled: true,
-                                                                style: 'background: #6C87A8  ;border-color:white',
-                                                                columns: [
+                                                                    },
                                                                     {
-                                                                        text: 'Curr',
-                                                                        width: 50,
-                                                                        dataIndex: 'MONEDAPAGO',
+                                                                        text: 'Liquidation <br> Date',
+                                                                        width: 89,
+                                                                        dataIndex: 'ADATE',
                                                                         menuDisabled: true,
                                                                         align: 'center',
                                                                         style: 'background: #6C87A8  ;border-color:white',
@@ -891,238 +1197,223 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.Info', {
                                                                         }
                                                                     },
                                                                     {
-                                                                        text: 'Im. Pag',
-                                                                        width: 70,
-                                                                        dataIndex: 'IMPORTEPAG',
+                                                                        text: 'Liquidation',
+                                                                        width: 110,
+                                                                        dataIndex: 'LIQUIDACIO',
                                                                         menuDisabled: true,
                                                                         align: 'center',
                                                                         style: 'background: #6C87A8  ;border-color:white',
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:right;";
-                                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                                            return '<b>' + value + '</b>';
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            return value;
                                                                         },
                                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            var tam = Ext.getCmp(prototype.id + '-gridDataSettlement').getStore().getData().items.length;
-                                                                            var data = Ext.getCmp(prototype.id + '-gridDataSettlement').getStore().getData().items[tam - 1].data;
                                                                             metaData.style = "text-align:right;background: #6C87A8  ;color:white";
-                                                                            value = Ext.util.Format.number(data.TOTAL_IMPORTEPAG, '0,000.00');
-                                                                            return '<b>' + value + '</b>';
+                                                                            return '';
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Merchand',
+                                                                        width: 80,
+                                                                        dataIndex: 'MERCHAND',
+                                                                        menuDisabled: true,
+                                                                        align: 'center',
+                                                                        style: 'background: #6C87A8  ;border-color:white',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            return value;
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            metaData.style = "text-align:right;background: #6C87A8  ;color:white";
+                                                                            return '';
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Cod',
+                                                                        width: 45,
+                                                                        dataIndex: 'CODPRO',
+                                                                        menuDisabled: true,
+                                                                        align: 'center',
+                                                                        style: 'background: #6C87A8  ;border-color:white',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                            return value;
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            metaData.style = "text-align:right;background: #6C87A8  ;color:white";
+                                                                            return '';
                                                                         }
                                                                     }
                                                                 ]
-                                                            },
-                                                            {
-                                                                text: 'Status',
-                                                                width: 65,
-                                                                menuDisabled: true,
-                                                                dataIndex: 'STVAL',
-                                                                align: 'center',
-                                                                style: 'background: #6C87A8  ;border-color:white',
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    if (value === "3") {
-                                                                        metaData.style = 'background: #EF5350; color: white;'; // Rojo coral
-                                                                        return '<span style="font-weight: bold;">Pending</span>';
-                                                                    } else {
-                                                                        metaData.style = 'background: #4CAF50; color: white;'; // Verde para "Ok"
-                                                                        return '<span style="font-weight: bold;">Match</span>';
-                                                                    }
-                                                                },
-                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                    metaData.style = "text-align:right;background: #6C87A8  ;color:white";
-                                                                    return '';
-                                                                }
-                                                            },
-                                                            {
-                                                                text: 'Liquidation <br> Date',
-                                                                width: 89,
-                                                                dataIndex: 'ADATE',
-                                                                menuDisabled: true,
-                                                                align: 'center',
-                                                                style: 'background: #6C87A8  ;border-color:white',
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return value;
-                                                                },
-                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                    metaData.style = "text-align:right;background: #6C87A8  ;color:white";
-                                                                    return '';
-                                                                }
-                                                            },
-                                                            {
-                                                                text: 'Liquidation',
-                                                                width: 110,
-                                                                dataIndex: 'LIQUIDACIO',
-                                                                menuDisabled: true,
-                                                                align: 'center',
-                                                                style: 'background: #6C87A8  ;border-color:white',
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return value;
-                                                                },
-                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                    metaData.style = "text-align:right;background: #6C87A8  ;color:white";
-                                                                    return '';
-                                                                }
-                                                            },
-                                                            {
-                                                                text: 'Merchand',
-                                                                width: 80,
-                                                                dataIndex: 'MERCHAND',
-                                                                menuDisabled: true,
-                                                                align: 'center',
-                                                                style: 'background: #6C87A8  ;border-color:white',
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return value;
-                                                                },
-                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                    metaData.style = "text-align:right;background: #6C87A8  ;color:white";
-                                                                    return '';
-                                                                }
-                                                            },
-                                                            {
-                                                                text: 'Cod',
-                                                                width: 45,
-                                                                dataIndex: 'CODPRO',
-                                                                menuDisabled: true,
-                                                                align: 'center',
-                                                                style: 'background: #6C87A8  ;border-color:white',
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return value;
-                                                                },
-                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                    metaData.style = "text-align:right;background: #6C87A8  ;color:white";
-                                                                    return '';
-                                                                }
                                                             }
-                                                        ]
+                                                        ],
+                                                        defaults: {
+                                                            sortable: true,
+                                                            menuDisabled: false,
+                                                            align: 'center'
+                                                        }
                                                     }
-                                                ],
-                                                defaults: {
-                                                    sortable: true,
-                                                    menuDisabled: false,
-                                                    align: 'center'
-                                                }
-                                            }
-                                        },
-                                        {
-                                            xtype: 'grid',
-                                            id: prototype.id + '-gridDataDescuentos',
-                                            width: 673,
-                                            height: 590,
-                                            margin: '20px 5px 0 0',
-                                            columnLines: true,
-                                            features: [{
-                                                    dock: 'bottom',
-                                                    ftype: 'summary'
-                                                }],
-                                            bbar: {
-                                                xtype: 'pagingtoolbar',
-                                                store: null,
-                                                displayInfo: true,
-                                                displayMsg: 'Page {0} - {1} of {2}',
-                                                emptyMsg: 'No records found'
-                                            },
-                                            columns: {
-                                                items: [
-                                                    {
-                                                        text: 'Discounts',
-                                                        menuDisabled: true,
-                                                        style: 'background: #6C87A8  ;border-color:white',
-                                                        columns: [
+                                                },
+                                                {
+                                                    xtype: 'grid',
+                                                    id: prototype.id + '-gridDataDescuentos',
+                                                    width: 673,
+                                                    height: 590,
+                                                    margin: '20px 5px 0 0',
+                                                    columnLines: true,
+                                                    features: [{
+                                                            dock: 'bottom',
+                                                            ftype: 'summary'
+                                                        }],
+                                                    bbar: {
+                                                        xtype: 'pagingtoolbar',
+                                                        store: null,
+                                                        displayInfo: true,
+                                                        displayMsg: 'Page {0} - {1} of {2}',
+                                                        emptyMsg: 'No records found'
+                                                    },
+                                                    columns: {
+                                                        items: [
                                                             {
-                                                                xtype: 'checkcolumn',
-                                                                text: 'Sel',
-                                                                width: 45,
-                                                                dataIndex: 'checkActive',
-                                                                align: 'center',
-                                                                menuDisabled: true,
-                                                                style: 'background: #6C87A8  ;border-color:white',
-                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                    metaData.style = "text-align:right;background: #6C87A8  ;color:white";
-                                                                    return '';
-                                                                },
-                                                                listeners: {
-                                                                    checkchange: 'updateGridDiscountWMH'
-                                                                }
-                                                            },
-                                                            {
-                                                                text: 'Rn', // Título de la columna
-                                                                width: 45, // Ancho de la columna
-                                                                menuDisabled: true,
-                                                                dataIndex: 'RN',
-                                                                align: 'center',
-                                                                style: 'background: #6C87A8  ;border-color:white',
-                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                    metaData.style = "text-align:right;background: #6C87A8  ;color:white";
-                                                                    return '';
-                                                                },
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    if (record.data.blockChange) {
-                                                                        metaData.style = 'background:#eeeeee ;'
-                                                                    }
-                                                                    return value
-                                                                },
-                                                            },
-                                                            {
-                                                                text: 'Amounts A',
+                                                                text: 'Discounts',
                                                                 menuDisabled: true,
                                                                 style: 'background: #6C87A8  ;border-color:white',
                                                                 columns: [
                                                                     {
-                                                                        text: 'Curr',
-                                                                        width: 50,
-                                                                        dataIndex: 'MONEDA',
-                                                                        menuDisabled: true,
+                                                                        xtype: 'checkcolumn',
+                                                                        text: 'Sel',
+                                                                        width: 45,
+                                                                        dataIndex: 'checkActive',
                                                                         align: 'center',
+                                                                        menuDisabled: true,
                                                                         style: 'background: #6C87A8  ;border-color:white',
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                            return value;
-                                                                        },
                                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                             metaData.style = "text-align:right;background: #6C87A8  ;color:white";
                                                                             return '';
+                                                                        },
+                                                                        listeners: {
+                                                                            checkchange: 'updateGridDiscountWMH'
                                                                         }
                                                                     },
                                                                     {
-                                                                        text: 'Import',
-                                                                        width: 60,
+                                                                        text: 'Rn', // Título de la columna
+                                                                        width: 45, // Ancho de la columna
                                                                         menuDisabled: true,
-                                                                        dataIndex: 'IMPORTECeba',
+                                                                        dataIndex: 'RN',
                                                                         align: 'center',
                                                                         style: 'background: #6C87A8  ;border-color:white',
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            metaData.style = "text-align:right;background: #6C87A8  ;color:white";
+                                                                            return '';
+                                                                        },
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             if (record.data.blockChange) {
-                                                                                metaData.style = 'text-align:right;background:#eeeeee ;';
-                                                                            } else {
-                                                                                metaData.style = "text-align:right;";
+                                                                                metaData.style = 'background:#eeeeee ;'
                                                                             }
-                                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                                            return '<b>' + value + '</b>';
+                                                                            return value
                                                                         },
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            var tam = Ext.getCmp(prototype.id + '-gridDataDescuentos').getStore().getData().items.length;
-                                                                            var data = Ext.getCmp(prototype.id + '-gridDataDescuentos').getStore().getData().items[tam - 1].data;
-                                                                            metaData.style = "text-align:right;background: #6C87A8  ;color:white";
-                                                                            value = Ext.util.Format.number(data.TOTAL_IMPORTE, '0,000.00');
-                                                                            return '<b>' + value + '</b>';
-                                                                        }
-                                                                    }
-                                                                ]
-                                                            },
-                                                            {
-                                                                text: 'Amounts B',
-                                                                menuDisabled: true,
-                                                                style: 'background: #6C87A8  ;border-color:white',
-                                                                columns: [
+                                                                    },
                                                                     {
-                                                                        text: 'Cur',
-                                                                        width: 50,
+                                                                        text: 'Amounts A',
                                                                         menuDisabled: true,
-                                                                        dataIndex: 'MONEDAPAGO',
+                                                                        style: 'background: #6C87A8  ;border-color:white',
+                                                                        columns: [
+                                                                            {
+                                                                                text: 'Curr',
+                                                                                width: 50,
+                                                                                dataIndex: 'MONEDA',
+                                                                                menuDisabled: true,
+                                                                                align: 'center',
+                                                                                style: 'background: #6C87A8  ;border-color:white',
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                                                    return value;
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    metaData.style = "text-align:right;background: #6C87A8  ;color:white";
+                                                                                    return '';
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                text: 'Import',
+                                                                                width: 60,
+                                                                                menuDisabled: true,
+                                                                                dataIndex: 'IMPORTECeba',
+                                                                                align: 'center',
+                                                                                style: 'background: #6C87A8  ;border-color:white',
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    if (record.data.blockChange) {
+                                                                                        metaData.style = 'text-align:right;background:#eeeeee ;';
+                                                                                    } else {
+                                                                                        metaData.style = "text-align:right;";
+                                                                                    }
+                                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                                    return '<b>' + value + '</b>';
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    var tam = Ext.getCmp(prototype.id + '-gridDataDescuentos').getStore().getData().items.length;
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataDescuentos').getStore().getData().items[tam - 1].data;
+                                                                                    metaData.style = "text-align:right;background: #6C87A8  ;color:white";
+                                                                                    value = Ext.util.Format.number(data.TOTAL_IMPORTE, '0,000.00');
+                                                                                    return '<b>' + value + '</b>';
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    {
+                                                                        text: 'Amounts B',
+                                                                        menuDisabled: true,
+                                                                        style: 'background: #6C87A8  ;border-color:white',
+                                                                        columns: [
+                                                                            {
+                                                                                text: 'Cur',
+                                                                                width: 50,
+                                                                                menuDisabled: true,
+                                                                                dataIndex: 'MONEDAPAGO',
+                                                                                align: 'center',
+                                                                                style: 'background: #6C87A8  ;border-color:white',
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    if (record.data.blockChange) {
+                                                                                        metaData.style = 'background:#eeeeee ;';
+                                                                                    }
+                                                                                    return value;
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    metaData.style = "text-align:right;background: #6C87A8  ;color:white";
+                                                                                    return '';
+                                                                                },
+                                                                            },
+                                                                            {
+                                                                                text: 'Im. Pag',
+                                                                                width: 60,
+                                                                                menuDisabled: true,
+                                                                                dataIndex: 'IMPORTEPAG',
+                                                                                align: 'center',
+                                                                                style: 'background: #6C87A8  ;border-color:white',
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    if (record.data.blockChange) {
+                                                                                        metaData.style = 'text-align:right;background:#eeeeee ;';
+                                                                                    } else {
+                                                                                        metaData.style = "text-align:right;";
+                                                                                    }
+                                                                                    value = Ext.util.Format.number(value, '0,000.00');
+                                                                                    return '<b>' + value + '</b>';
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    var tam = Ext.getCmp(prototype.id + '-gridDataDescuentos').getStore().getData().items.length;
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataDescuentos').getStore().getData().items[tam - 1].data;
+                                                                                    metaData.style = "text-align:right;background: #6C87A8  ;color:white";
+                                                                                    value = Ext.util.Format.number(data.TOTAL_IMPORTEPAG, '0,000.00');
+                                                                                    return '<b>' + value + '</b>';
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    {
+                                                                        text: 'Liquidation <br> Date',
+                                                                        width: 80,
+                                                                        dataIndex: 'FLIQUIDACI',
+                                                                        menuDisabled: true,
                                                                         align: 'center',
                                                                         style: 'background: #6C87A8  ;border-color:white',
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
@@ -1134,401 +1425,90 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.Info', {
                                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                                             metaData.style = "text-align:right;background: #6C87A8  ;color:white";
                                                                             return '';
-                                                                        },
+                                                                        }
                                                                     },
                                                                     {
-                                                                        text: 'Im. Pag',
-                                                                        width: 60,
+                                                                        text: 'Liquidation',
+                                                                        width: 110,
+                                                                        dataIndex: 'LIQUIDACIO',
                                                                         menuDisabled: true,
-                                                                        dataIndex: 'IMPORTEPAG',
                                                                         align: 'center',
                                                                         style: 'background: #6C87A8  ;border-color:white',
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             if (record.data.blockChange) {
-                                                                                metaData.style = 'text-align:right;background:#eeeeee ;';
-                                                                            } else {
-                                                                                metaData.style = "text-align:right;";
+                                                                                metaData.style = 'background:#eeeeee ;'
                                                                             }
-                                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                                            return '<b>' + value + '</b>';
+                                                                            return value
                                                                         },
                                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            var tam = Ext.getCmp(prototype.id + '-gridDataDescuentos').getStore().getData().items.length;
-                                                                            var data = Ext.getCmp(prototype.id + '-gridDataDescuentos').getStore().getData().items[tam - 1].data;
                                                                             metaData.style = "text-align:right;background: #6C87A8  ;color:white";
-                                                                            value = Ext.util.Format.number(data.TOTAL_IMPORTEPAG, '0,000.00');
-                                                                            return '<b>' + value + '</b>';
+                                                                            return '';
                                                                         }
-                                                                    }
-                                                                ]
-                                                            },
-                                                            {
-                                                                text: 'Liquidation <br> Date',
-                                                                width: 80,
-                                                                dataIndex: 'FLIQUIDACI',
-                                                                menuDisabled: true,
-                                                                align: 'center',
-                                                                style: 'background: #6C87A8  ;border-color:white',
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    if (record.data.blockChange) {
-                                                                        metaData.style = 'background:#eeeeee ;';
-                                                                    }
-                                                                    return value;
-                                                                },
-                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                    metaData.style = "text-align:right;background: #6C87A8  ;color:white";
-                                                                    return '';
-                                                                }
-                                                            },
-                                                            {
-                                                                text: 'Liquidation',
-                                                                width: 110,
-                                                                dataIndex: 'LIQUIDACIO',
-                                                                menuDisabled: true,
-                                                                align: 'center',
-                                                                style: 'background: #6C87A8  ;border-color:white',
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    if (record.data.blockChange) {
-                                                                        metaData.style = 'background:#eeeeee ;'
-                                                                    }
-                                                                    return value
-                                                                },
-                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                    metaData.style = "text-align:right;background: #6C87A8  ;color:white";
-                                                                    return '';
-                                                                }
-                                                            },
-                                                            {
-                                                                text: 'Merchand',
-                                                                width: 80,
-                                                                dataIndex: 'MERCHAND',
-                                                                menuDisabled: true,
-                                                                align: 'center',
-                                                                style: 'background: #6C87A8  ;border-color:white',
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    if (record.data.blockChange) {
-                                                                        metaData.style = 'background:#eeeeee ;'
-                                                                    }
-                                                                    return value
-                                                                },
-                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                    metaData.style = "text-align:right;background: #6C87A8  ;color:white";
-                                                                    return '';
-                                                                }
-                                                            },
-                                                            {
-                                                                text: 'Cod',
-                                                                width: 45,
-                                                                dataIndex: 'CODPRO',
-                                                                menuDisabled: true,
-                                                                align: 'center',
-                                                                style: 'background: #6C87A8  ;border-color:white',
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    if (record.data.blockChange) {
-                                                                        metaData.style = 'background:#eeeeee ;';
-                                                                    }
-                                                                    return value;
-                                                                },
-                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                    metaData.style = "text-align:right;background: #6C87A8  ;color:white";
-                                                                    return '';
-                                                                }
-                                                            },
-                                                            {
-                                                                sortable: false,
-                                                                xtype: 'actioncolumn',
-                                                                disabled: true,
-                                                                width: 45,
-                                                                text: '<span style="color:white;font-weight:bold;">Edit</span>',
-                                                                style: 'background:#6C87A8; border-color:white',
-                                                                align: 'center',
-                                                                items: [
+                                                                    },
                                                                     {
-                                                                        iconCls: 'prx-icon-edit',
-                                                                        tooltip: 'Edit',
+                                                                        text: 'Merchand',
+                                                                        width: 80,
+                                                                        dataIndex: 'MERCHAND',
+                                                                        menuDisabled: true,
+                                                                        align: 'center',
+                                                                        style: 'background: #6C87A8  ;border-color:white',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            if (record.data.blockChange) {
+                                                                                metaData.style = 'background:#eeeeee ;'
+                                                                            }
+                                                                            return value
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            metaData.style = "text-align:right;background: #6C87A8  ;color:white";
+                                                                            return '';
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Cod',
+                                                                        width: 45,
+                                                                        dataIndex: 'CODPRO',
+                                                                        menuDisabled: true,
+                                                                        align: 'center',
+                                                                        style: 'background: #6C87A8  ;border-color:white',
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            if (record.data.blockChange) {
+                                                                                metaData.style = 'background:#eeeeee ;';
+                                                                            }
+                                                                            return value;
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            metaData.style = "text-align:right;background: #6C87A8  ;color:white";
+                                                                            return '';
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        sortable: false,
+                                                                        xtype: 'actioncolumn',
                                                                         disabled: true,
-                                                                        handler: 'onEditClick'
+                                                                        width: 45,
+                                                                        text: '<span style="color:white;font-weight:bold;">Edit</span>',
+                                                                        style: 'background:#6C87A8; border-color:white',
+                                                                        align: 'center',
+                                                                        items: [
+                                                                            {
+                                                                                iconCls: 'prx-icon-edit',
+                                                                                tooltip: 'Edit',
+                                                                                disabled: true,
+                                                                                handler: 'onEditClick'
+                                                                            }
+                                                                        ],
+                                                                        summaryRenderer: function (v, s, d, meta) {
+                                                                            meta.style = "background:#6C87A8;color:white";
+                                                                            return "";
+                                                                        }
                                                                     }
-                                                                ],
-                                                                summaryRenderer: function (v, s, d, meta) {
-                                                                    meta.style = "background:#6C87A8;color:white";
-                                                                    return "";
-                                                                }
-                                                            }
-                                                        ]
-                                                    }
-                                                ]
-                                            }
-                                        }
-                                    ]
-                                },
-                                {
-                                    xtype: 'container',
-                                    hidden: true,
-                                    id: prototype.id + '-panelTickets',
-                                    layout: {type: 'hbox', align: 'start'},
-                                    items: [
-                                        {
-                                            xtype: 'grid',
-                                            id: prototype.id + '-gridDataVentas',
-                                            width: 992,
-                                            height: 590,
-                                            margin: '20px 5px 0 0',
-                                            columnLines: true,
-                                            features: [{
-                                                    dock: 'bottom',
-                                                    ftype: 'summary'
-                                                }
-                                            ],
-                                            bbar: {
-                                                xtype: 'pagingtoolbar',
-                                                store: null,
-                                                displayInfo: true,
-                                                displayMsg: 'Page {0} - {1} of {2}',
-                                                emptyMsg: 'No records found'
-                                            },
-                                            columns: {
-                                                items: [
-                                                    {
-                                                        text: 'Sales',
-                                                        style: 'background: #6C87A8;border-color:white',
-                                                        columns: [
-                                                            {
-                                                                xtype: 'checkcolumn',
-                                                                text: 'Sel',
-                                                                width: 50,
-                                                                dataIndex: 'checkActive',
-                                                                align: 'center',
-                                                                style: 'padding:2px; background: #6C87A8;border-color:white',
-                                                                listeners: {
-                                                                    checkchange: 'updateGridSaleWMH'
-                                                                },
-                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                    metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                    return '';
-                                                                }
-                                                            },
-                                                            {
-                                                                text: 'Rn',
-                                                                width: 45,
-                                                                menuDisabled: true,
-                                                                dataIndex: 'RN',
-                                                                align: 'center',
-                                                                style: 'padding:2px; background: #6C87A8;border-color:white',
-                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                    return value;
-                                                                },
-                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                    metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                    return '';
-                                                                }
-                                                            },
-                                                            {
-                                                                text: 'Details',
-                                                                style: 'background: #6C87A8;border-color:white',
-                                                                columns: [
-                                                                    {
-                                                                        text: 'Ticket',
-                                                                        width: 120,
-                                                                        menuDisabled: true,
-                                                                        dataIndex: 'TKT',
-                                                                        align: 'center',
-                                                                        style: 'padding:2px; background: #6C87A8;border-color:white',
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                            return value;
-                                                                        },
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                            return '';
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'Agent',
-                                                                        width: 80,
-                                                                        menuDisabled: true,
-                                                                        dataIndex: 'SAGENT',
-                                                                        align: 'center',
-                                                                        style: 'padding:2px; background: #6C87A8;border-color:white',
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                            return value;
-                                                                        },
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                            return '';
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'Country',
-                                                                        width: 75,
-                                                                        menuDisabled: true,
-                                                                        dataIndex: 'SCOUNTRY',
-                                                                        align: 'center',
-                                                                        style: 'padding:2px; background: #6C87A8;border-color:white',
-                                                                        summaryType: 'sum',
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                            return value;
-                                                                        },
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                            return '';
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'Authorization',
-                                                                        width: 100,
-                                                                        menuDisabled: true,
-                                                                        dataIndex: 'SAUTHOC',
-                                                                        align: 'center',
-                                                                        style: 'padding:2px; background: #6C87A8;border-color:white',
-                                                                        summaryType: 'sum',
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:center;";
-                                                                            //                                                value = Ext.util.Format.number(value, '0,000.00');
-                                                                            return '<b>' + value + '</b>';
-                                                                        },
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                            return '';
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'Card Number',
-                                                                        width: 140,
-                                                                        menuDisabled: true,
-                                                                        dataIndex: 'SCARDN',
-                                                                        align: 'center',
-                                                                        style: 'padding:2px; background: #6C87A8;border-color:white',
-                                                                        summaryType: 'sum',
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                            return value;
-                                                                        },
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                            return '';
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'Sale Date',
-                                                                        width: 80,
-                                                                        menuDisabled: true,
-                                                                        dataIndex: 'SDATE',
-                                                                        align: 'center',
-                                                                        style: 'padding:2px; background: #6C87A8;border-color:white',
-                                                                        summaryType: 'sum',
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                            return value;
-                                                                        },
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                            return '';
-                                                                        }
-                                                                    },
-                                                                ]
-                                                            },
-                                                            {
-                                                                text: 'Local',
-                                                                style: 'background: #6C87A8;border-color:white',
-                                                                columns: [
-                                                                    {
-                                                                        text: 'Currency',
-                                                                        width: 70,
-                                                                        menuDisabled: true,
-                                                                        dataIndex: 'SCURREVEN',
-                                                                        align: 'center',
-                                                                        style: 'padding:2px; background: #6C87A8;border-color:white',
-                                                                        summaryType: 'sum',
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                            return value;
-                                                                        },
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                            return '';
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'Amount',
-                                                                        width: 80,
-                                                                        menuDisabled: true,
-                                                                        dataIndex: 'SVFOP',
-                                                                        align: 'center',
-                                                                        style: 'padding:2px; background: #6C87A8;border-color:white',
-                                                                        summaryType: 'sum',
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:right;";
-                                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                                            return '<b>' + value + '</b>';
-                                                                        },
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            var tam = Ext.getCmp(prototype.id + '-gridDataVentas').getStore().getData().items.length;
-                                                                            var data = Ext.getCmp(prototype.id + '-gridDataVentas').getStore().getData().items[tam - 1].data;
-                                                                            metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                            value = Ext.util.Format.number(data.TOTAL_SVFOP, '0,000.00');
-                                                                            return '<b>' + value + '</b>';
-                                                                        }
-                                                                    },
-                                                                ]
-                                                            },
-                                                            {
-                                                                text: 'Converted',
-                                                                style: 'background: #6C87A8;border-color:white',
-                                                                columns: [
-                                                                    {
-                                                                        text: 'Currency',
-                                                                        width: 70,
-                                                                        menuDisabled: true,
-                                                                        dataIndex: 'SCURREVENCONVERT',
-                                                                        align: 'center',
-                                                                        style: 'padding:2px; background: #6C87A8;border-color:white',
-                                                                        summaryType: 'sum',
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                                            return value;
-                                                                        },
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                            return '';
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        text: 'Amount',
-                                                                        width: 80,
-                                                                        menuDisabled: true,
-                                                                        dataIndex: 'SVFOPCON',
-                                                                        align: 'center',
-                                                                        style: 'padding:2px; background: #6C87A8;border-color:white',
-                                                                        summaryType: 'sum',
-                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                            metaData.style = "text-align:right;";
-                                                                            value = Ext.util.Format.number(value, '0,000.00');
-                                                                            return '<b>' + value + '</b>';
-                                                                        },
-                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                                            var tam = Ext.getCmp(prototype.id + '-gridDataVentas').getStore().getData().items.length;
-                                                                            var data = Ext.getCmp(prototype.id + '-gridDataVentas').getStore().getData().items[tam - 1].data;
-                                                                            metaData.style = "text-align:right;background: #6C87A8;color:white";
-                                                                            value = Ext.util.Format.number(data.TOTAL_SVFOP_CONVERTED, '0,000.00');
-                                                                            return '<b>' + value + '</b>';
-                                                                        }
-                                                                    },
                                                                 ]
                                                             }
                                                         ]
                                                     }
-                                                ],
-                                                defaults: {
-                                                    sortable: true,
-                                                    menuDisabled: false,
-                                                    align: 'center'
                                                 }
-                                            }
-                                        }
+                                            ]
+                                        },
                                     ]
                                 }
                             ]

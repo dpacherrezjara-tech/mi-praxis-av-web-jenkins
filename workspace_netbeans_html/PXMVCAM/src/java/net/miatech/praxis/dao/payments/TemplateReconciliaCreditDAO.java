@@ -92,7 +92,11 @@ public class TemplateReconciliaCreditDAO {
             rst = cstmt.getResultSet();
 
             if (rst.next()) {
-                TOTAL_NETO = rst.getDouble("SUM_NETO");
+                if ("BM".equals(filter.IN_CODPRO) || "AB".equals(filter.IN_CODPRO)) {
+                    TOTAL_NETO = 0;
+                } else {
+                    TOTAL_NETO = rst.getDouble("SUM_NETO");
+                }
             }
 
             if (cstmt.getMoreResults()) {
@@ -115,7 +119,13 @@ public class TemplateReconciliaCreditDAO {
                     record.STVAL = rst.getString("STVAL");
                     record.SCOUNTRY = rst.getString("SCOUNTRY");
                     record.USUP = rst.getString("USUP");
-                    record.checkActive = true;
+
+                    // CORRECCIÓN: checkActive = false si IN_CODPRO es "BM" o "AB"
+                    if ("BM".equals(filter.IN_CODPRO) || "AB".equals(filter.IN_CODPRO)) {
+                        record.checkActive = false;
+                    } else {
+                        record.checkActive = true;
+                    }
 
                     record.page.PAGNUM = filter.page.PAGNUM;
                     record.page.PAGROW = filter.page.PAGROW;

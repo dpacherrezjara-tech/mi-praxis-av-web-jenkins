@@ -1359,16 +1359,20 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
                         return;
                     }
 
+                    let valueProccesor = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
+                    const esVenta = ["VN", "BM", "AB"].includes(valueProccesor);
+
                     me.allBandocRecords = records.map(r => r.data);
 
                     me.allBandocRecords.forEach(r => {
-                        me.checkStateWMHBandoc.set(r.RN, true);
+                        if (valueProccesor !== "BM" && valueProccesor !== "AB") {
+                            me.checkStateWMHBandoc.set(r.RN, true);
+                        } else {
+                            me.checkStateWMHBandoc.set(r.RN, false);
+                        }
                     });
 
                     me.createLocalBandocStore();
-
-                    let valueProccesor = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
-                    const esVenta = ["VN", "BM", "AB"].includes(valueProccesor);
 
                     if (esVenta) {
                         me.updateGridTotalSalesWMH();
@@ -1393,7 +1397,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
         me.localBandocStore = Ext.create('Ext.data.Store', {
             fields: Object.keys(me.allBandocRecords[0]),
             data: me.allBandocRecords,
-            pageSize: 2,
+            pageSize: 20,
             proxy: {
                 type: 'memory',
                 enablePaging: true,
@@ -2149,8 +2153,8 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
         let getDateTo = Ext.Date.format(Ext.getCmp(prototype.id + '-txtToSale').getValue(), 'Ymd');
 
         me.beanSale.IN_CCUST = getCustomer;
-        me.beanSale.IN_FECHA_FROM = getDateFrom;
-        me.beanSale.IN_FECHA_TO = getDateTo;
+        me.beanSale.IN_DATEFROM = getDateFrom;
+        me.beanSale.IN_DATETO = getDateTo;
         me.beanSale.IN_PROCESSOR = getProcess;
 
         let searchParamsSale = {
@@ -2789,18 +2793,22 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
         this.cleanGridsWMH();
         if (getProcess === "VN" || getProcess === "BM" || getProcess === "AB") {
             Ext.getCmp(prototype.id + '-panelDescuento').setVisible(false);
-            Ext.getCmp(prototype.id + '-panelTickets').setVisible(true);
+            Ext.getCmp(prototype.id + '-gridDataVentas').setVisible(true);
+            Ext.getCmp(prototype.id + '-gridCabecera').setVisible(false);
             Ext.getCmp(prototype.id + '-saleFilters').setVisible(true);
             Ext.getCmp(prototype.id + '-setlementFilters').setVisible(false);
             Ext.getCmp(prototype.id + '-discountFilters').setVisible(false);
             Ext.getCmp(prototype.id + '-headerFilters').setVisible(false);
+            Ext.getCmp(prototype.id + '-height').setHeight(650);
         } else {
             Ext.getCmp(prototype.id + '-panelDescuento').setVisible(true);
-            Ext.getCmp(prototype.id + '-panelTickets').setVisible(false);
+            Ext.getCmp(prototype.id + '-gridDataVentas').setVisible(false);
+            Ext.getCmp(prototype.id + '-gridCabecera').setVisible(true);
             Ext.getCmp(prototype.id + '-saleFilters').setVisible(false);
             Ext.getCmp(prototype.id + '-setlementFilters').setVisible(true);
             Ext.getCmp(prototype.id + '-discountFilters').setVisible(true);
             Ext.getCmp(prototype.id + '-headerFilters').setVisible(true);
+            Ext.getCmp(prototype.id + '-height').setHeight(1300);
         }
     },
     // </editor-fold>
@@ -2850,7 +2858,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
         let getCustomer = Ext.getCmp(prototype.id + '-typeClient').getValue();
         let checkBox = Ext.getCmp(prototype.id + '-chkMarkForced');
         let getForce = checkBox ? "" : "Y";
-        console.log(getForce,'getForce')
+        console.log(getForce, 'getForce')
         const esVenta = ["VN", "BM", "AB"].includes(getProcess);
 
         let hayCheckBandoc = me.allBandocRecords.some(r => me.checkStateWMHBandoc.get(r.RN) === true);
@@ -2985,14 +2993,14 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
         me.beanConciliation.IN_HOCR = formattedTime;
         me.beanConciliation.IN_CODUNI = uniqueCode;
         me.beanConciliation.IN_FORCE = getForce;
-        
+
         console.log(cleanDiscounts);
         console.log(cleanBandoc);
         console.log(cleanSettlements);
         console.log(cleanSale);
         console.log(cleanHeader);
         console.log(me.beanConciliation);
-        
+
         let searchParamsConciliation = {
             beanString: JSON.stringify(me.beanConciliation),
             beanDiscounts: JSON.stringify(cleanDiscounts),
@@ -3006,23 +3014,23 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
             console.log(response);
             if (response.success) {
                 Ext.Msg.alert('Éxito', response.result);
-                
+
                 Ext.Msg.show({
-                        title: '✅ Éxito',
-                        msg: response.result,
-                        buttons: Ext.MessageBox.OK,
-                        icon: Ext.MessageBox.INFO,
-                        modal: true,
-                        closable: true,
-                        autoClose: false,
-                        scope: me,
-                        fn: function (btn) {
-                            if (btn === 'ok') {
-                                me.fetchBandocWMH();
-                            }
+                    title: '✅ Éxito',
+                    msg: response.result,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.INFO,
+                    modal: true,
+                    closable: true,
+                    autoClose: false,
+                    scope: me,
+                    fn: function (btn) {
+                        if (btn === 'ok') {
+                            me.fetchBandocWMH();
                         }
-                    });
-                
+                    }
+                });
+
             } else {
                 Ext.Msg.alert('Error', response.result || 'Error desconocido');
             }
