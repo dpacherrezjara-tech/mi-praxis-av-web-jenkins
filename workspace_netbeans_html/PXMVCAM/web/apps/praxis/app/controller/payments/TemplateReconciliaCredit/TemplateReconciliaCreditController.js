@@ -3128,8 +3128,9 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
 
         let getProcess = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
         let getCustomer = Ext.getCmp(prototype.id + '-typeClient').getValue();
-        let checkBox = Ext.getCmp(prototype.id + '-chkMarkForced');
-        let getForce = checkBox ? "" : "Y";
+        let checkBox = Ext.getCmp(prototype.id + '-chkMarkForced').getValue();;
+        console.log(checkBox,'checkBox')
+        let getForce = checkBox ? "Y" : "";
         console.log(getForce, 'getForce')
         const esVenta = ["VN", "BM", "AB"].includes(getProcess);
 
