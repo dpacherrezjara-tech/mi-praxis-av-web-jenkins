@@ -45,6 +45,12 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
             '#ReportsForm-btnExcel': {
                 click: this.btnExcel_click
             },
+            
+            '#ReportsForm-btnCALLSTORE': {
+                click: this.btnCALLSTORE_click
+            },
+            
+            
             '#ReportsForm-btnFilter': {
                 click: this.btnFilter_click
             },
@@ -1432,6 +1438,56 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                         });
         }
     },
+    
+    
+    
+    /// REVERSA
+    
+    
+    btnCallStore_click: function () {
+
+        Ext.Msg.confirm(
+                'Confirmación',
+                '¿Desea ejecutar el proceso MPS479?',
+                function (btn) {
+
+                    if (btn !== 'yes') {
+                        return;
+                    }
+
+                    Ext.Ajax.request({
+                        url: prototype.url + '/callStoreMPS479',
+                        method: 'POST',
+
+                        success: function (response) {
+                            var data = Ext.decode(response.responseText);
+
+                            Ext.Msg.alert(
+                                data.success ? 'Éxito' : 'Error',
+                                data.message
+                            );
+                         },
+
+                        failure: function () {
+                            Ext.Msg.alert(
+                                    'Error',
+                                    'No se pudo conectar con el servidor.'
+                                    );
+                        }
+                    });
+                }
+        );
+    },
+
+
+
+
+
+    
+    
+    
+    
+    /////
     btnFilter_click: function (obj) {
 //        var option = Ext.getCmp(prototype.id + '-contFilter');
 //        if (option.isVisible(option)) {
