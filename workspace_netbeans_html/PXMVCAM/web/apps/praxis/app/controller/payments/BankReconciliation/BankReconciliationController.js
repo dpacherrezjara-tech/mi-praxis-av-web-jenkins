@@ -5053,44 +5053,139 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliation
             global.getFile(url);
         },
         
-        // Añade esta función a tu controlador, por ejemplo, junto a MaintenanceMPF199Generic
+
+
+
+    // Creación de la Ventana "Data Entry" Innovadora
     conciliacionFase2: function () {
-        var me = this;
-        var mainView = me.getView(); 
-        mainView.mask('Iniciando Conciliación y Sumarios Por favor, espere...');
+    var me = this;
+    var mainView = me.getView();
+    var cssStyles = 
+        ".conciliacion-card { transition: all 0.3s ease !important; opacity: 0.9; }" +
+        ".conciliacion-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.2) !important; opacity: 1; background-color: #fafafa !important; }" +
+        ".conciliacion-card:active { transform: translateY(1px); }";
+    
+    Ext.util.CSS.createStyleSheet(cssStyles, 'estilos-conciliacion');
 
-        Ext.Ajax.request({
-            url: prototype.url + '/conciliacionFaseDos',
-            method: 'POST',
-            timeout: 1200000, 
-
-            success: function (response) {
-                mainView.unmask();
-
-                var res = Ext.JSON.decode(response.responseText, true);
-
-                if (res && res.success) {
-                    global.Msg({
-                        msg: res.Mensaje || 'Conciliación Fase 2 completada con éxito.',
-                        icon: Ext.MessageBox.INFO
-                    });
-                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
-
-                } else {
-                    global.Msg({
-                        title: 'Error de Conciliación',
-                        msg: res ? res.Mensaje : 'Error desconocido al procesar la solicitud.',
-                        icon: Ext.MessageBox.ERROR
-                    });
-                }
+    var getCardStyle = function (color, iconCls, titulo, desc) {
+        return {
+            xtype: 'container',
+            flex: 1,
+            margin: '0 10 0 10',
+            cls: 'conciliacion-card', 
+            style: {
+                'background-color': '#fff',
+                'border-radius': '8px',
+                'box-shadow': '0 4px 6px rgba(0,0,0,0.1)',
+                'cursor': 'pointer',
+                'border-top': '5px solid ' + color,
+                'padding': '20px',
+                'text-align': 'center'
             },
+            items: [
+                {
+                    xtype: 'component',
+                    autoEl: { tag: 'div', cls: iconCls },
+                    style: { 'font-size': '40px', 'color': color, 'margin-bottom': '10px' }
+                },
+                {
+                    xtype: 'component',
+                    html: '<h3 style="margin:0; color:#333; font-weight:bold;">' + titulo + '</h3>',
+                },
+                {
+                    xtype: 'component',
+                    html: '<p style="color:#777; font-size:12px; margin-top:5px;">' + desc + '</p>'
+                }
+            ]
+        };
+    };
 
-            failure: function (response) {
-                mainView.unmask();
-                global.Msg({
-                    title: 'Error de Conexión',
-                    msg: 'No se pudo conectar con el servidor o la operación agotó el tiempo de espera. Inténtelo más tarde.',
-                    icon: Ext.MessageBox.ERROR
+    // 3. CREAR LA VENTANA (Igual que antes)
+    var win = Ext.create('Ext.window.Window', {
+        title: '<span style="font-weight:bold;">🚀 Selector de Conciliación</span>',
+        modal: true,
+        width: 650,
+        height: 350,
+        layout: { type: 'vbox', align: 'stretch' },
+        bodyStyle: 'background-color: #f0f2f5; padding: 20px;',
+        resizable: false,
+        items: [
+            {
+                xtype: 'component',
+                html: '<div style="text-align:center; margin-bottom:20px; color:#555; font-size:14px;">Seleccione el tipo de proceso que desea ejecutar:</div>'
+            },
+            {
+                xtype: 'container',
+                layout: 'hbox',
+                flex: 1,
+                items: [
+                    Ext.apply(getCardStyle('#3498db', 'fa fa-plane', 'BSP', 'Billing Settlement Plan'), {
+                        listeners: { el: { click: function () { me.ejecutarConciliacion('BSP', win); } } }
+                    }),
+                    Ext.apply(getCardStyle('#2ecc71', 'fa fa-globe', 'ARC', 'Airline Reporting Corp'), {
+                        listeners: { el: { click: function () { me.ejecutarConciliacion('ARC', win); } } }
+                    }),
+                    Ext.apply(getCardStyle('#9b59b6', 'fa fa-exchange', 'ICCS', 'IATA Currency Clearance'), {
+                        listeners: { el: { click: function () { me.ejecutarConciliacion('ICCS', win); } } }
+                    })
+                ]
+            }
+        ],
+        bbar: ['->', { text: 'Cancelar', handler: function () { win.close(); } }]
+    });
+
+    win.show();
+},
+
+    ejecutarConciliacion: function (tipoProceso, ventanaPadre) {
+        var me = this;
+        var mainView = me.getView();
+        if (ventanaPadre) { ventanaPadre.close(); }
+        Ext.MessageBox.confirm('Confirmar Ejecución', 
+            '¿Está seguro que desea iniciar la conciliación <b>' + tipoProceso + '</b>?', 
+            function (btn) {
+            if (btn === 'yes') {
+                mainView.mask('Procesando Conciliación ' + tipoProceso + '... <br>Por favor, espere.');
+
+                Ext.Ajax.request({
+                    url: prototype.url + '/conciliacionFaseDos',
+                    method: 'POST',
+                    timeout: 1200000,
+                    params: {
+                    // Empaquetamos tu objeto en un String, igual que hace tu otro sistema con 'beanString'
+                    beanString: Ext.JSON.encode({
+                            tipo: tipoProceso  // Ejemplo: { "tipo": "BSP" }
+                        })
+                    },
+                    success: function (response) {
+                        mainView.unmask();
+                        var res = Ext.JSON.decode(response.responseText, true);
+
+                        if (res && res.success) {
+                            global.Msg({
+                                msg: res.Mensaje || 'Conciliación ' + tipoProceso + ' completada con éxito.',
+                                icon: Ext.MessageBox.INFO
+                            });
+                            // Recargar Grid si es necesario
+                            if(Ext.getCmp(prototype.id + '-btnSearch')){
+                                 Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+                            }
+                        } else {
+                            global.Msg({
+                                title: 'Error de Conciliación',
+                                msg: res ? res.Mensaje : 'Error desconocido.',
+                                icon: Ext.MessageBox.ERROR
+                            });
+                        }
+                    },
+                    failure: function () {
+                        mainView.unmask();
+                        global.Msg({
+                            title: 'Error',
+                            msg: 'Error de conexión con el servidor.',
+                            icon: Ext.MessageBox.ERROR
+                        });
+                    }
                 });
             }
         });

@@ -26,6 +26,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -5891,36 +5892,41 @@ public class BankReconciliationController extends BaseController {
         }
         return gson.toJson(map);
     }
-    @RequestMapping(value = "conciliacionFaseDos")
-    public @ResponseBody
-    String conciliacionFaseDos(ModelMap map, HttpServletRequest request) {
+    
+@RequestMapping(value = "conciliacionFaseDos")
+public @ResponseBody String conciliacionFaseDos(ModelMap map, HttpServletRequest request) {
 
-        System.out.println("-------------- BANKRECONCILIATION : conciliacionFaseDos-------------");
-
-        String msj = "";
+    System.out.println("-------------- BANKRECONCILIATION : conciliacionFaseDos (FINAL) -------------");
+    
+    A2290Filter filter = new A2290Filter();
         Gson gson = new Gson();
+        String msj = "";
+        String beanString = "";
 
-        try {
-
-            logic = new BankReconciliationLogic();
+    try {
+        logic = new BankReconciliationLogic();
             logic.setSession(this.serverSession.getServerSession());
+            
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            String tipoConciliacion = filter.tipo;
+                   
+        // 3. TU LÓGICA
+        logic = new BankReconciliationLogic();
+        logic.setSession(this.serverSession.getServerSession());
+        msj = logic.processFaseDosConciliation(tipoConciliacion);
 
-            msj = logic.processFaseDosConciliation(); 
+        map.put("success", true);
+        map.put("Mensaje", msj);
 
-            // 2. Respuesta de éxito
-            map.put("success", true);
-            map.put("Mensaje", msj);
-
-        } catch (NumberFormatException | SQLException ex) {
-            map.put("success", false);
-            map.put("Mensaje", ex.getMessage()); 
-        } catch (Exception ex) {
-            map.put("success", false);
-            map.put("Mensaje", ex.getMessage());
-        }
-
-        return gson.toJson(map);
+    } catch (Exception ex) {
+        ex.printStackTrace();
+        map.put("success", false);
+        map.put("Mensaje", ex.getMessage());
     }
+
+    return gson.toJson(map);
+}
     
     
     
