@@ -35,7 +35,40 @@ Ext.define('Ext.Praxis.controller.payments.AccountsCatalog.MaintenanceDataEntryC
         }
         Ext.getCmp(prototype.idDE + '-mainForm').getForm().isValid();
     },
+    validateDates: function () {
+        const form = Ext.getCmp(prototype.idDE + '-mainForm').getForm();
+        const values = form.getValues();
+
+        if (values.FINICI && values.FVENCE) {
+            const initialDate = Ext.Date.parse(values.FINICI, 'Ymd');
+            const expirationDate = Ext.Date.parse(values.FVENCE, 'Ymd');
+
+            if (initialDate > expirationDate) {
+                Ext.Msg.alert(
+                    '.:PRAXIS:.',
+                    'The Initial Date cannot be greater than the Expiration Date.'
+                );
+                return false;
+            }
+        }
+        return true;
+    },
     onSaveRecord: function (btn) {
+        
+         const form = Ext.getCmp(prototype.idDE + '-mainForm').getForm();
+
+            if (!form.isValid()) {
+                Ext.Msg.alert(
+                    '.:PRAXIS:.',
+                    'It is not possible to create the record due to missing mandatory information.'
+                );
+                return;
+            }
+            
+            if (!this.validateDates()) {
+                return;
+            }
+            
         Ext.Msg.show(
                 {
                     title: '.:PRAXIS:.',
@@ -50,26 +83,40 @@ Ext.define('Ext.Praxis.controller.payments.AccountsCatalog.MaintenanceDataEntryC
                             this.maintenance(this.view.option);
                         }
                     }
-                });
+                }); 
     },
     maintenance: async function (option) {
         const me = this;
         me.view.setLoading(true);
+
         try {
-            const res = await global.callStorePost('PRAXISMP','SPNAC002',me.formatParams(option));
-            if (res.status === 201) {
-                me.notifier.success('Updated Succesfully');
-            } else {
-                me.notifier.alert('Error on Update');
-            }
-        } catch (e) {
-            global.Msg({msg: 'Error on load'});
-        } finally {
-            me.view.setLoading(false);
+            await global.callStorePostWithError(
+                'PRAXISMP',
+                'SPNAC002',
+                me.formatParams(option)
+            );
+
+            me.notifier.success('Updated Successfully');
             me.view.reloadGrid();
             me.view.close();
+
+        } catch (e) {
+            console.error('Error on maintenance', e);
+
+            const backendMsg = e.response?.data;
+            let msg = 'Error on load';
+
+            if (typeof backendMsg === 'string' && backendMsg.includes('Duplicate')) {
+                msg = 'A record with the same combination of data already exists.';
+            }
+
+            global.Msg({ msg });
+
+        } finally {
+            me.view.setLoading(false);
         }
     },
+
     formatParams: function (option) {
         const form = Ext.getCmp(prototype.idDE + '-mainForm').getForm();
         let params = global.maintenanceObj(form.getValues());
