@@ -900,6 +900,11 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                                     text: 'COMISION',
                                     value: 'ARC',
                                     width: 100
+                                }, 
+                                {
+                                    text: 'CARTERA',
+                                    value: 'CARTERA',
+                                    width: 100
                                 }
                             ],
                             listeners: {

@@ -8684,6 +8684,120 @@ public class BankReconciliationDAO {
         
         
     }
+     
+     ///loadLISTAR_CARTERAMPF199
+     
+    
+     public List<A2290Filter> loadLISTAR_CARTERAMPF199(A2290Filter filter)throws SQLException, Exception {
+        
+        
+        
+        List<A2290Filter> listaData = new ArrayList<>();
+        A2290Filter bean;
+        
+        
+        String SQL = "{CALL PRAXISMP.MPS477()}";
+        
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        Connection cnx = null;
+        
+        
+        
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQL);
+
+            // para la paginacion
+//            cstmt.registerOutParameter(8, Types.INTEGER);
+//            cstmt.registerOutParameter(9, Types.INTEGER);
+//            cstmt.registerOutParameter(10, Types.INTEGER);
+//            cstmt.registerOutParameter(11, Types.INTEGER);
+
+            // los de entrada
+    
+//            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+//            cstmt.setString(2, filter.IN_SDATE);
+//            cstmt.setString(3, filter.IN_SAGENT);
+//            cstmt.setString(4, filter.IN_ADATE);
+//            cstmt.setString(5, filter.IN_STATUS);
+//            cstmt.setString(6, filter.IN_COUNTRY);
+//            cstmt.setString(7, filter.IN_SOURCE);
+//            cstmt.setInt(8, filter.page.PAGNUM);
+//            cstmt.setInt(9, filter.page.PAGROW);
+//            cstmt.setInt(10, filter.page.TOTPAG);
+//            cstmt.setInt(11, filter.page.TOTROW);
+
+            cstmt.execute();
+
+            // se actualiza paginacion
+//            filter.page.PAGNUM = cstmt.getInt(8);
+//            filter.page.PAGROW = cstmt.getInt(9);
+//            filter.page.TOTPAG = cstmt.getInt(10);
+//            filter.page.TOTROW = cstmt.getInt(11);
+
+            rst = cstmt.getResultSet();
+
+            while (rst != null && rst.next()) {
+                bean = new A2290Filter();
+
+                            // === MAPEO EXACTO DEL SP ===
+            bean.O_INVOICE   = rst.getString("INVOICE");
+            bean.O_ADATE     = rst.getString("ADATE");
+            bean.O_CONCEPT   = rst.getString("CONCEPT");
+            bean.O_STVAL     = rst.getString("STVAL");
+            bean.O_SCOUNTRY  = rst.getString("SCOUNTRY");
+            bean.O_SCURRENCY = rst.getString("SCURRENCY");
+            bean.O_NETO      = rst.getDouble("NETO");
+            bean.O_ABALANCE  = rst.getDouble("ABALANCE");
+            bean.O_APAYMENT  = rst.getDouble("APAYMENT");
+
+            listaData.add(bean);
+                
+                
+                
+                
+//                bean.O_USCR = rst.getString("USCR");
+//                bean.O_FECR = rst.getString("FECR");
+//                bean.O_HOCR = rst.getString("HOCR");
+//                bean.O_USUP = rst.getString("USUP");
+//                bean.O_FEUP = rst.getString("FEUP");
+//                bean.O_HOUP = rst.getString("HOUP");
+//
+//                // Copiar paginación en cada bean si es necesario
+//                bean.page.PAGNUM = filter.page.PAGNUM;
+//                bean.page.PAGROW = filter.page.PAGROW;
+//                bean.page.TOTPAG = filter.page.TOTPAG;
+//                bean.page.TOTROW = filter.page.TOTROW;
+
+//                listaData.add(bean);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (rst != null) try {
+                rst.close();
+            } catch (SQLException ignored) {
+            }
+            if (cstmt != null) try {
+                cstmt.close();
+            } catch (SQLException ignored) {
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+            pasarGarbageCollector();
+        }
+
+        return listaData;
+        
+
+    }
+     
+     
+     ///////////////////////////////////////////////////
     
      /////UPDATE DATAENTRY MPF199
      
