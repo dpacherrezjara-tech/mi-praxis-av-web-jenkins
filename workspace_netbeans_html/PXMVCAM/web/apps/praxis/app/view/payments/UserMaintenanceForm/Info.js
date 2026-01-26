@@ -68,7 +68,7 @@ Ext.define('Ext.Praxis.view.payments.UserMaintenanceForm.Info', {
                                                                     ? document.getElementById('menuUser').innerText.trim().toUpperCase()
                                                                     : '';
 
-                                                            return (username === 'ANNETEA' || username === 'ANNETEA')
+                                                            return (username === 'ANNETEA' || username === 'STHEFANNY')
                                                                     ? record.get('A4717PASS')
                                                                     : record.get('A4717PSCO');
                                                         }
