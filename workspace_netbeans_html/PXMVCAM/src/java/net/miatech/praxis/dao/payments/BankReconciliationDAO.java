@@ -8696,7 +8696,7 @@ public class BankReconciliationDAO {
         A2290Filter bean;
         
         
-        String SQL = "{CALL PRAXISMP.MPS477()}";
+        String SQL = "{CALL PRAXISMP.MPS477(?, ?, ?)}";
         
         CallableStatement cstmt = null;
         ResultSet rst = null;
@@ -8716,9 +8716,9 @@ public class BankReconciliationDAO {
 
             // los de entrada
     
-//            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-//            cstmt.setString(2, filter.IN_SDATE);
-//            cstmt.setString(3, filter.IN_SAGENT);
+            cstmt.setString(1, filter.IN_STATUS);
+            cstmt.setString(2, filter.IN_ADATE_FROM);
+            cstmt.setString(3, filter.IN_ADATE_TO);
 //            cstmt.setString(4, filter.IN_ADATE);
 //            cstmt.setString(5, filter.IN_STATUS);
 //            cstmt.setString(6, filter.IN_COUNTRY);

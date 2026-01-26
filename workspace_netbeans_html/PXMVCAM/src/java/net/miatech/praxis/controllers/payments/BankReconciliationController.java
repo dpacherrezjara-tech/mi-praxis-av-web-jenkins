@@ -5765,7 +5765,7 @@ public class BankReconciliationController extends BaseController {
     @RequestMapping(value = "searchListCartera")
     public @ResponseBody
     String searchListCartera(ModelMap map, HttpServletRequest request) {
-        System.out.println("-------------- bankreconci :searchListCartera-------------");
+        System.out.println("-------------- banckreconci :searchListCartera-------------");
         map.put("success", true);
         List<A2290Filter> lst = this.getListCarteraMPF199(request, false);
         System.out.println("Total : " + lst.size());
@@ -5783,24 +5783,16 @@ public class BankReconciliationController extends BaseController {
         try {
             logic = new BankReconciliationLogic();
             logic.setSession(this.serverSession.getServerSession());
+            
+ 
+            filter.IN_STATUS      = request.getParameter("IN_STATUS") != null ? request.getParameter("IN_STATUS") : "";
+            filter.IN_ADATE_FROM  = request.getParameter("IN_ADATE_FROM") != null ? request.getParameter("IN_ADATE_FROM") : "";
+            filter.IN_ADATE_TO    = request.getParameter("IN_ADATE_TO") != null ? request.getParameter("IN_ADATE_TO") : "";
 
-//            beanString = request.getParameter("beanString");
-//            filter = gson.fromJson(beanString, A2290Filter.class);
-//            filter.page.TOTROW = -1;
-//            filter.page.START = 0;
-//            filter.page.LIMIT = 0;
-//
-//            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
-//            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
-//
-//                if (!bExcel) {
-//                    filter.page.PAGROW = 20;
-//                    start = (start != 0 ? start : 0);
-//                    filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
-//                } else {
-//                    filter.page.PAGROW = -1;
-//                    filter.page.PAGNUM = 1;
-//                }
+            System.out.println("STATUS = " + filter.IN_STATUS);
+            System.out.println("FROM   = " + filter.IN_ADATE_FROM);
+            System.out.println("TO     = " + filter.IN_ADATE_TO);
+
 
                 lst = logic.loadLISTAR_CARTERAMPF199(filter);
             } catch (Exception e) {
@@ -5809,21 +5801,11 @@ public class BankReconciliationController extends BaseController {
             return lst;
         }
     
-    
-    
-    
-    
-    
-    
+
     
     /////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////
-    
-    
-    
-    
-    
-    
+
     
     
     ////UPDATE DATAENTRYMPF199

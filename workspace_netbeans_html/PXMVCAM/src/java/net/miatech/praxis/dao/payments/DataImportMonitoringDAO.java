@@ -76,6 +76,7 @@ public class DataImportMonitoringDAO {
                 bean.PROCFIN = rst.getString("PROCFIN");
                 bean.CPROGRAM = rst.getString("CPROGRAM");
                 bean.FUENTE = rst.getString("PROCFUENTE");
+                bean.ORDEN = rst.getString("ORDEN");
 
                 listaData.add(bean);
             }

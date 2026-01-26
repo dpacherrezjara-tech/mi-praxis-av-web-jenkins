@@ -6862,12 +6862,12 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                             viewConfig: {
                                                 getRowClass: function (record) {
 
-                                                    // 🟨 CABECERA
+                                                    // CABECERA
                                                     if (record.get('_isHeader')) {
                                                         return 'row-header-invoice';
                                                     }
 
-                                                    // 🔵 DETALLE
+                                                    // DETALLE
                                                     return 'row-detail-invoice';
                                                 }
                                             },

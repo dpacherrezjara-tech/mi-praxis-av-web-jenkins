@@ -726,6 +726,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             editable: true,
                             multiSelect: true,
                             forceSelection: true,
+                            
 
                         },
                         {xtype: 'tbspacer', width: 20},

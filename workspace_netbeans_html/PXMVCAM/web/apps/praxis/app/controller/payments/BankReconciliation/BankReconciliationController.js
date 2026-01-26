@@ -765,11 +765,41 @@ Ext.util.CSS.createStyleSheet(`
                         Ext.getCmp(prototype.id + '-gridDetByPNR').bindStore(storeGridDatas);
                         Ext.getCmp(prototype.id + '-paggin11').bindStore(storeGridDatas);
                 },
+                
+                
+                
+                
+                
                 btnSearch_click: function (obj, e) {
 
+                // ===============================
+                // BUSQUEDA CARTERA MPF199
+                // ===============================
+                var card = Ext.getCmp(prototype.id + '-cardContainer').getLayout().getActiveItem();
+                        if (card && card.getId() === prototype.id + '-gridDataMPF199CARTERA') {
 
+                var statusValue = Ext.getCmp(prototype.id + '-cmbStatus').getValue();
+                        if (Ext.isArray(statusValue)) {
+                statusValue = statusValue.length > 0 ? statusValue.join(',') : '';
+                }
 
+                var fy = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() || '';
+                        var fm = Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue() || '';
+                        var ty = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() || '';
+                        var tm = Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue() || '';
+                        me.filtroCartera = {
+                        IN_STATUS: statusValue,
+                                IN_ADATE_FROM: (fy && fm) ? fy + fm : '',
+                                IN_ADATE_TO: (ty && tm) ? ty + tm : ''
+                        };
+                        console.log("FILTRO CARTERA", me.filtroCartera);
+                        this.setGridDataCartera();
+                        return; 
+                        }
 
+                // ===============================
+                
+                
                 console.log('btnSearch_click');
                         console.log(me.panelActual);
                         var cmp = Ext.getCmp(prototype.id + '-btnToggleSwitchFT');
@@ -798,8 +828,6 @@ Ext.util.CSS.createStyleSheet(`
                         me.obJPADJ.beanString = JSON.stringify(me.obJPADJ);
                         this.setGridDataMPF199();
                 }
-
-
                 else{
 
 
@@ -999,7 +1027,6 @@ Ext.util.CSS.createStyleSheet(`
                         console.log("Toggle:", isChecked ? "ON" : "OFF");
                         this.setFormatParameter();
                         if (isChecked) {
-//                            this.setGridDataMainCASH(obj, e);
                 this.setGridDataMainCash_Sumary(obj, e);
                 } else {
 
@@ -1010,7 +1037,13 @@ Ext.util.CSS.createStyleSheet(`
 
                 }
                 }
+                
+                
+                
+                
                 },
+                
+                
                 cmbTranType_changeHandler: function () {
                 var selectedValue = Ext.getCmp(prototype.id + '-rbgType').getValue().rbgType;
                         switch (selectedValue) {
@@ -4311,10 +4344,12 @@ Ext.util.CSS.createStyleSheet(`
                 // 3. Mostrar Grilla FACTURACION DETALLE
                 cardContainer.getLayout().setActiveItem(2);
                         win.lblUser_toolTip("Estructura: Cartera factura (detalle y facturas)");
-                        // 2. Cargar Data ARC (Nueva función)
+                        
                         me.setGridDataCartera();
                 }
                 },
+                
+                
                 onGridMPF199: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
 
                 me.drillDown.push(me.panelActual);
@@ -4419,6 +4454,9 @@ Ext.util.CSS.createStyleSheet(`
                         Ext.getCmp(prototype.id + '-pagginMPF199').bindStore(storeGridDatas);
                 }
                 },
+                
+                
+                
                 setGridDataCOMISI: function(data) {
                 win.lblUser_toolTip("Estructura: MPF223");
                         me.setWidthPie();
@@ -4477,17 +4515,20 @@ Ext.util.CSS.createStyleSheet(`
                 setGridDataCartera: function () {
 
                 var me = this;
-                        win.lblUser_toolTip("Estructura: Cartera Facturas");
-                        var msj = me.validateFields();
-                        if (msj !== '') {
-                global.Msg({ msg: msj });
-                        return;
-                }
+                    Ext.getCmp(prototype.id + '-cardContainer')
+                .getLayout()
+                .setActiveItem(2);
+//                        var msj = me.validateFields();
+//                        if (msj !== '') {
+//                global.Msg({ msg: msj });
+//                        return;
+//                }
 
                 var remoteStore = Ext.create('Ext.Praxis.store.interline.GridData', {
                 pageSize: 0,
                         proxy: {
-                        url: prototype.url + '/searchListCartera'
+                        url: prototype.url + '/searchListCartera',
+//                         extraParams: me.filtroCartera  
                         }
                 });
                         var localStore = Ext.create('Ext.data.Store', {
@@ -4497,7 +4538,9 @@ Ext.util.CSS.createStyleSheet(`
                         var grid = Ext.getCmp(prototype.id + '-gridDataMPF199CARTERA');
                         grid.bindStore(localStore);
                         remoteStore.load({
-                        callback: function (records, op, success) {
+                             params: me.filtroCartera,   
+                            
+                             callback: function (records, op, success) {
 
                         if (!success || !records || records.length === 0) {
                         global.Msg({ msg: 'Data not found.' });
@@ -4510,20 +4553,20 @@ Ext.util.CSS.createStyleSheet(`
                                 Ext.Array.each(records, function (rec) {
 
                                 var invoice = rec.get('O_INVOICE');
-                                        var status = rec.get('O_STVAL'); // 3 = Pending
+                                var status = rec.get('O_STVAL'); // 3 = Pending
 
-                                        // CABECERA
-                                        if (invoice !== currentInvoice) {
+                                // CABECERA
+                                if (invoice !== currentInvoice) {
 
                                 header = {
                                 O_INVOICE: invoice,
                                         O_ADATE: rec.get('O_ADATE'),
                                         O_CONCEPT: 'INVOICE',
-                                        O_STVAL: '0', // Match por defecto
+                                        O_STVAL: '0', // Match 
                                         O_SCOUNTRY: rec.get('O_SCOUNTRY'),
                                         O_SCURRENCY: rec.get('O_SCURRENCY'),
                                         O_NETO: rec.get('O_NETO'),
-                                        O_APAYMENT: rec.get('O_NETO'),
+                                        O_APAYMENT: '0',
                                         O_ABALANCE: rec.get('O_NETO'),
                                         _isHeader: true
                                 };
@@ -4542,16 +4585,14 @@ Ext.util.CSS.createStyleSheet(`
                                 }));
                                 });
                                 localStore.loadData(newData);
-                        }
-                        });
-                        },
+                                
+                                }
+                            });
+                       },
      
 
 
-
-
-
-                //////////////////////////7
+ //////////////////////////7
                 //////////////////////////7
 
                 onGridDayCash: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
