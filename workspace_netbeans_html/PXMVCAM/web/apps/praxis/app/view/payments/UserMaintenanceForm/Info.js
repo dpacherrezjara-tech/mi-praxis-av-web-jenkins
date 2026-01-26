@@ -61,7 +61,18 @@ Ext.define('Ext.Praxis.view.payments.UserMaintenanceForm.Info', {
                                         items:
                                                 [
                                                     {text: 'User', dataIndex: 'A4717USER', width: 200},
-                                                   // {text: 'Pass', dataIndex: 'A4717PASS', width: 100},
+                                                    {text: 'Pass',
+                                                        width: 100,
+                                                        renderer: function (value, meta, record) {
+                                                            var username = document.getElementById('menuUser')
+                                                                    ? document.getElementById('menuUser').innerText.trim().toUpperCase()
+                                                                    : '';
+
+                                                            return (username === 'ANNETEA' || username === 'ANNETEA')
+                                                                    ? record.get('A4717PASS')
+                                                                    : record.get('A4717PSCO');
+                                                        }
+                                                    },
                                                     {text: 'Processor </br> type', dataIndex: 'A4717TYPEDES', width: 200},
                                                     {text: 'Status', dataIndex: 'A4717ESTAT', width: 60, sortable: false, align: 'right', renderer: 'onRendererColumnStatus'},
                                                     {text: 'User Created',
