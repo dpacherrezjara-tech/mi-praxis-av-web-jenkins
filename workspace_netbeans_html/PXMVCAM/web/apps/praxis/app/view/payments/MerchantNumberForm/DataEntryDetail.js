@@ -928,6 +928,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetail', {
                                         xtype: 'label',
                                         text: 'Prof. Cent',
                                         style: 'font-weight:bold;',
+                                        hidden: true,
                                         width: 115
                                     },
                                     {xtype: 'tbspacer', width: 5},
@@ -938,6 +939,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetail', {
                                         enforceMaxLength: true,
                                         editable: false,
                                         enabled: false,
+                                            hidden: true,
                                         maxLength: 8,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
@@ -968,6 +970,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetail', {
                                         xtype: 'label',
                                         text: 'ID B. Cen.',
                                         style: 'font-weight:bold;',
+                                        hidden: true,
                                         width: 87
                                     },
                                     {xtype: 'tbspacer', width: 5},
@@ -979,6 +982,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetail', {
                                         editable: false,
                                         enabled: false,
                                         maxLength: 8,
+                                        hidden: true,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
                                         width: 152
@@ -1212,6 +1216,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetail', {
                                         xtype: 'label',
                                         text: 'Prof. Cent.',
                                         style: 'font-weight:bold;',
+                                        hidden:true,
                                         width: 120
                                     },
                                     {xtype: 'tbspacer', width: 10},
@@ -1222,6 +1227,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetail', {
                                         enforceMaxLength: true,
                                         editable: false,
                                         enabled: false,
+                                        hidden: true,
                                         maxLength: 8,
                                         maskRe: /[a-zA-Z0-9]/,
                                         readOnly: false,
@@ -1232,6 +1238,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetail', {
                                         xtype: 'label',
                                         text: 'Cost. Cent.',
                                         style: 'font-weight:bold;',
+                                        hidden: true,
                                         width: 80
                                     },
                                     {xtype: 'tbspacer', width: 10},
@@ -1240,6 +1247,7 @@ Ext.define('Ext.Praxis.view.payments.MerchantNumberForm.DataEntryDetail', {
                                         id: prototype.id + '-COSTCEN_D',
                                         fieldStyle: 'text-align:center',
                                         enforceMaxLength: true,
+                                        hidden: true,
                                         editable: false,
                                         enabled: false,
                                         maxLength: 10,
