@@ -149,7 +149,8 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                 Ext.getCmp(prototype.id + '-ACCNUMOLD_D').setEditable(true);
                 Ext.getCmp(prototype.id + '-DDISCON_D').setEditable(true);
                 Ext.getCmp(prototype.id + '-IDFISCAL_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-BENCEN_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-BENCEN_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-BENCEN_D').hide();
                 Ext.getCmp(prototype.id + '-DEUSAP_D').setEditable(true);
                 Ext.getCmp(prototype.id + '-SAGENT_D').setEditable(true);
                 Ext.getCmp(prototype.id + '-CANAL_D').setEditable(true);
@@ -157,9 +158,11 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
                 Ext.getCmp(prototype.id + '-SCOUNTRY_D').setEditable(true);
                 Ext.getCmp(prototype.id + '-SOCIETY_D').setEditable(true);
                 Ext.getCmp(prototype.id + '-SCURRENCY_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-SBENCEN_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-COSTCEN_D').setEditable(true);
-                Ext.getCmp(prototype.id + '-IDFBENEF_D').setEditable(true);
+                Ext.getCmp(prototype.id + '-SBENCEN_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-SBENCEN_D').hide();
+                Ext.getCmp(prototype.id + '-COSTCEN_D').setEditable(false);
+                Ext.getCmp(prototype.id + '-COSTCEN_D').hide();
+                Ext.getCmp(prototype.id + '-IDFBENEF_D').setEditable(false);
 //                Ext.getCmp(prototype.id + '-bankSection').hide();
 //                Ext.getCmp(prototype.id + '-iataSection').hide();
 //                Ext.getCmp(prototype.id + '-bSection_1').hide();

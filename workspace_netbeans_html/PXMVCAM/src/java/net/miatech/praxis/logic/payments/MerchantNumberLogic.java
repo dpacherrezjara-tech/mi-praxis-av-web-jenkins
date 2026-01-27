@@ -11,6 +11,7 @@ import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.praxis.A003;
 import net.miatech.praxis.dao.payments.MerchantNumberDAO;
 import net.miatech.praxis.payment.A4202;
+import net.miatech.praxis.payment.MPF154;
 import net.miatech.praxis.payment.filter.A2280Filter;
 import net.miatech.praxis.payment.filter.A2354Filter;
 
@@ -106,5 +107,7 @@ public class MerchantNumberLogic {
         return MerchantNumberDAO.load_MPS265(filterNew);
     }
     
-    
+    public List<MPF154> loadMPS527(A2354Filter filter) throws Exception {
+        return MerchantNumberDAO.loadMPS527(filter);
+    }
 }
