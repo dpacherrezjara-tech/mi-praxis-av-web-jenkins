@@ -111,7 +111,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
     xpanel_afterrender: function (obj, e) {
 
 
-        
+
         var cmpToggle = Ext.getCmp(prototype.id + '-btnToggleSwitchCASH');
         var chkEl = cmpToggle.getEl().down('#chkCash');
 
@@ -121,7 +121,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             });
         }
 
-        
+
         $('#StatementReconciliationsForm-btnToggleSwitchFT').change(function () {
             me.procesador();
         });
@@ -293,15 +293,16 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         me.bean.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
         me.bean.IN_BANK = Ext.getCmp(prototype.id + '-cmbBank').getValue();
         me.bean.IN_COREP = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
-        
-        var fecFrom = Ext.getCmp(prototype.id + '-FEC_FROM').getValue();
-        var fecTo   = Ext.getCmp(prototype.id + '-FEC_TO').getValue();
 
-        me.bean.IN_FECHA_FROM = fecFrom ? Ext.Date.format(fecFrom, 'Ym') : '';
-        me.bean.IN_FECHA_TO   = fecTo   ? Ext.Date.format(fecTo, 'Ym') : '';
+        var fecFrom = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue()
+                + Ext.getCmp(prototype.id + '-cmbDateDay').getValue();
 
+        var fecTo = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue()
+                + Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
 
-        
+        me.bean.IN_FECHA_FROM = fecFrom;
+        me.bean.IN_FECHA_TO = fecTo;
+
 
         let proces = Ext.getCmp(prototype.id + '-TEST');
         if (!proces.isVisible()) {
@@ -388,7 +389,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
 
 
-       
+
         if (me.panelActual === '-panelGridDataCashDetail') {
 
 
@@ -401,7 +402,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             me.objDetail.beanString = JSON.stringify(me.objDetail);
 
 
-            
+
 
 
             this.setGridDataDetalleCash();
@@ -416,10 +417,19 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                 this.btnSearch_BANDOC();
                 this.mostrarCamposCredit();
             } else if (Ext.getCmp(prototype.id + '-btnToggleSwitchCASH').getEl().down("#chkCash").dom.checked) {
-                console.log("Probando")
-                this.setGridDataCash();
-                this.ocultarCamposCredit();
+                console.log("Probando");
 
+                // Obtener cuentas seleccionadas
+                var selectedAccounts = me.getSelectedAccountCodes();
+                console.log('Cuentas seleccionadas:', selectedAccounts);
+
+                if (me.panelActual === '-boxDetLiquiCash') {
+                    // Siempre llamar a setGridDataDetLiquidaCash, pasa las cuentas seleccionadas
+                    this.setGridDataDetLiquidaCash(selectedAccounts);
+                } else {
+                    this.setGridDataCash();
+                    this.ocultarCamposCredit();
+                }
             } else {
                 this.setGridData();
                 this.mostrarCamposCredit();
@@ -1084,7 +1094,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         }
     },
 
-    onGridDetLiquidaCash: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
+    onGridDetLiquidaCashBKP: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
         me.drillDown.push(me.panelActual);
         me.panelActual = '-boxDetLiquiCash';
         console.log(rowData.data, "Esto es mi detalle");
@@ -1112,27 +1122,19 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                 cant = rowData.data.lngQTPEND;
                 break;
         }
+
+
+        var selectedAccounts = me.getSelectedAccountCodes();
+
         this.beanLiquiCash.IN_STVAL = rowData.data.IN_STVAL;
         this.beanLiquiCash.IN_ADATE = rowData.data.SDATE;
         this.beanLiquiCash.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
-        ;
+        this.beanLiquiCash.IN_ACCOUNTS = selectedAccounts;
         me.paramsDetail.beanString = JSON.stringify(this.beanLiquiCash);
+        console.log(this.beanLiquiCash, 'this.AAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
         this.setGridDataDetLiquidaCash();
     },
-
-    onGridDetSalesDirect: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
-        me.drillDown.push(me.panelActual);
-        me.panelActual = '-boxDetSalesDirect';
-
-        global.selectedChild(me.childs, prototype.id + me.panelActual);
-        console.log(me.panelActual, "llego aqui 1");
-        this.beanLiquiCash.IN_STVAL = "1";
-        this.beanLiquiCash.IN_ADATE = rowData.data.SDATE;
-        me.paramsDetail.beanString = JSON.stringify(this.beanLiquiCash);
-        this.setGridDataSalesDirect();
-    },
-
-    setGridDataDetLiquidaCash: function () {
+    setGridDataDetLiquidaCashBKP: function () {
         win.lblUser_toolTip("Estructura: MPF102");
         me.setWidthPie();
         this.setFormatParameter();
@@ -1148,7 +1150,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                     beforeload: function (obj) {
                         obj.proxy.extraParams = me.paramsDetail;
                     },
-                    load: function (obj) {
+                    load: function (obj, records, successful, operation) {
+                        console.log(obj, 'obAAAAAAAAAAAAAAj')
                         var pag = Ext.getCmp(prototype.id + '-paggin20');
                         var pagData = pag.getPageData();
                         Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
@@ -1162,6 +1165,15 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                         } else {
                             var data = obj.data.items[0].data;
                             win.setText('lblTittleCash', data.strTitulo);
+
+                            var response = operation.getResponse();
+                            var responseData = Ext.decode(response.responseText);
+
+                            if (responseData.cuentas && Ext.isArray(responseData.cuentas)) {
+                                me.loadAccountsCombo(responseData.cuentas, true);
+                            }
+
+
                         }
                     }
                 }
@@ -1172,6 +1184,22 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         }
     },
 
+    
+    
+    
+    onGridDetSalesDirect: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
+        me.drillDown.push(me.panelActual);
+        me.panelActual = '-boxDetSalesDirect';
+
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        console.log(me.panelActual, "llego aqui 1");
+        this.beanLiquiCash.IN_STVAL = "1";
+        this.beanLiquiCash.IN_ADATE = rowData.data.SDATE;
+        me.paramsDetail.beanString = JSON.stringify(this.beanLiquiCash);
+        this.setGridDataSalesDirect();
+    },
+
+    
     ///toggle tap
 
 
@@ -1203,7 +1231,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             this.setFormatParameter();   // prepara parámetros para cash
             this.setGridDataCash();      // carga data cash inmediatamente
             this.ocultarCamposCredit();  //  oculta campos de crédito
-            
+
         } else {
             console.log("TOGGLE → CREDIT CARD");
 
@@ -1288,7 +1316,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         me.objDetail.IN_ADATE_FROM = '';
         me.objDetail.IN_ADATE_TO = '';
 
-        
+
 
         me.objDetail.beanString = JSON.stringify(me.objDetail);
 
@@ -2041,6 +2069,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         });
     },
     btnBack_click: function (obj, e) {
+        me.clearAccountsCombo();
         if (me.drillDown.length > 0) {
             me.panelActual = me.drillDown.pop();
             global.selectedChild(me.childs, prototype.id + me.panelActual);
@@ -2181,7 +2210,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         });
     },
 
-    onLoadClick_conciliaEC: function ( valorExt,file,form,tolerancia ) {
+    onLoadClick_conciliaEC: function (valorExt, file, form, tolerancia) {
 
 //        var valorExt = Ext.getCmp(prototype.id + '-cmbExt').getValue();
 
@@ -2197,19 +2226,19 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                     icon: Ext.MessageBox.WARNING,
                     fn: function (btn) {
                         if (btn === 'ok') {
-                            me.onFileLoadToTemp(file,form);
+                            me.onFileLoadToTemp(file, form);
                         }
                     }
                 });
             }
         } else if (valorExt === 'C') {
             var msjPregunta = '', msjError = '';
-            if(tolerancia ){
-               msjPregunta = 'Are you sure you can reconcile with tolerance?';
-            }else{
+            if (tolerancia) {
+                msjPregunta = 'Are you sure you can reconcile with tolerance?';
+            } else {
                 msjPregunta = 'Are you sure you can reconcile differences??';
             }
-            
+
 
             if (msjError === '') {
                 Ext.MessageBox.show({
@@ -2219,7 +2248,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                     icon: Ext.MessageBox.WARNING,
                     fn: function (btn) {
                         if (btn === 'ok') {
-                            me.onFileLoadColombia(file,form,tolerancia);
+                            me.onFileLoadColombia(file, form, tolerancia);
                         }
                     }
                 });
@@ -2347,9 +2376,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         let beanValidation = {}
 
         beanValidation.IN_ACCNUMBER = '***********';
-        if(tolerancia){
+        if (tolerancia) {
             tolerancia = 'Y'
-        }else{
+        } else {
             tolerancia = 'N'
         }
 //        var fileField = Ext.getCmp(prototype.id + '-file');
@@ -2373,7 +2402,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             waitMsg: 'Uploading your sure to upload the file...',
 //            method: 'POST',
 //            rawData: formData,
-            params: {fileName: file, beanString: beanString, tolerancia: tolerancia },
+            params: {fileName: file, beanString: beanString, tolerancia: tolerancia},
 //            // Configurar el tipo de contenido adecuado y el encabezado
 //            headers: {
 //                'Content-Type': null // Dejar que el navegador establezca el tipo de contenido
@@ -2391,7 +2420,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         });
 
     },
-    
+
     onLoadConciliation: function (obj, e) {
         var win = Ext.create('Ext.window.Window', {
             title: 'Upload file',
@@ -2420,7 +2449,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                     store: new Ext.data.SimpleStore({
                         fields: ['value', 'description'],
                         data: [
-                            ["C", "Col"],["E", "Ext"]
+                            ["C", "Col"], ["E", "Ext"]
                         ]
                     }),
                     queryMode: 'local',
@@ -2446,7 +2475,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
                             if (newValue === 'E') {
                                 chkTolerance.hide();
-                                lblTolerance.hide(); 
+                                lblTolerance.hide();
                             } else {
                                 chkTolerance.show();
                                 lblTolerance.show();
@@ -2454,7 +2483,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                         }
                     }
                 },
-                {xtype: 'tbspacer', width: 20, height:20},
+                {xtype: 'tbspacer', width: 20, height: 20},
                 {
                     xtype: 'form',
                     id: prototype.id + '-formLIQvsEC',
@@ -2463,26 +2492,26 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 //                    bodyStyle: 'background-color: #E3EAF9;',
                     items: [{
 
-                        xtype: 'filefield',
+                            xtype: 'filefield',
 //                        id: prototype.id + '-file',
-                        itemId: 'file',
-                        name: 'excelfile',
-                        allowBlank: true,
-                        accept: '.xlsx, .xls',
-                        labelWidth: 85,
-                        width: 300,
-                        buttonAlign: 'left',
-                        buttonText: 'Select excel...',
-                        regex: /(.)+((\.xlsx)|(\.xls)|(\.csv)(\w)?)$/i,
-                        regexText: 'Only XLS and XLSX formats are accepted',
-                        buttonConfig: {
-                            text: '<strong>Select</strong>',
-                            width: 60,
-                            style: 'margin-right: 10px;' // Agregamos un margen derecho al botón
-                        }
-                    }]
+                            itemId: 'file',
+                            name: 'excelfile',
+                            allowBlank: true,
+                            accept: '.xlsx, .xls',
+                            labelWidth: 85,
+                            width: 300,
+                            buttonAlign: 'left',
+                            buttonText: 'Select excel...',
+                            regex: /(.)+((\.xlsx)|(\.xls)|(\.csv)(\w)?)$/i,
+                            regexText: 'Only XLS and XLSX formats are accepted',
+                            buttonConfig: {
+                                text: '<strong>Select</strong>',
+                                width: 60,
+                                style: 'margin-right: 10px;' // Agregamos un margen derecho al botón
+                            }
+                        }]
                 },
-                {xtype: 'tbspacer', width: 20, height:20},
+                {xtype: 'tbspacer', width: 20, height: 20},
                 {
                     xtype: 'label',
                     text: 'Tolerance',
@@ -2493,11 +2522,11 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                     hidden: false,
                     margin: '12 0 0 0'
                 },
-                {xtype: 'tbspacer', width: 10, height:20},
+                {xtype: 'tbspacer', width: 10, height: 20},
                 {
                     xtype: 'checkbox',
                     itemId: 'chkTolerance',
-                    inputValue: 'Tolerance', 
+                    inputValue: 'Tolerance',
                     name: 'chkTolerance',
                     value: true,
                     boxLabelAlign: 'before',
@@ -2535,13 +2564,13 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                     `,
                     handler: function () {
                         var tipo = win.down('#cmbTipo').getValue(),
-                            file = win.down('#file').getValue(),
+                                file = win.down('#file').getValue(),
 //                            form = win.down('#formLIQvsEC').getForm(),
-                            form = Ext.getCmp(prototype.id + '-formLIQvsEC').getForm(),
-                            tolerancia = win.down('#chkTolerance').getValue();
+                                form = Ext.getCmp(prototype.id + '-formLIQvsEC').getForm(),
+                                tolerancia = win.down('#chkTolerance').getValue();
 
 
-                        if ( !tipo || !file || !form  ) {
+                        if (!tipo || !file || !form) {
                             Ext.Msg.alert('Error', 'Please select tipo  and file.');
                             return;
                         }
@@ -2549,7 +2578,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 //                        var fecha = year + month + day;
 //                        Ext.Msg.alert('Selected', 'Generating report for: ' + fecha + ' - Sequence ' + seq);
 
-                        this.onLoadClick_conciliaEC(tipo,file,form,tolerancia)
+                        this.onLoadClick_conciliaEC(tipo, file, form, tolerancia)
 //                        win.close();
                     },
                     scope: this
@@ -2559,8 +2588,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
         win.show();
     },
-    
-    
+
     btnFilter_click: function (obj) {
 
         var option = Ext.getCmp(prototype.id + '-contentFilter');
@@ -2736,12 +2764,12 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             '-btn_Concilia_LIQvsEC',
             '-pendingBuss',
             '-labelpendingBuss',
-            '-cmbDateFromYear',
-            '-cmbDateFromMonth',
-            '-cmbDateDay',
-            '-cmbDateToYear',
-            '-cmbDateToMonth',
-            '-cmbDateToDay'
+//            '-cmbDateFromYear',',
+//            '-cmbDateDay',
+//            '-cmbDateToYear',
+//            '-cmbDateToMonth',
+//            '-cmbDateToDay'
+//            '-cmbDateFromMonth
 
 
 
@@ -2756,9 +2784,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         });
 
         // 1️⃣ PRIMERO mostrar el contenedor de Fechas
-        var fc = Ext.getCmp(prototype.id + '-fcDateRange');
-        if (fc)
-            fc.setVisible(true);
+//        var fc = Ext.getCmp(prototype.id + '-fcDateRange');
+//        if (fc)
+//            fc.setVisible(true);
 
         // 2️⃣ Luego mostrar los radios (evita colapso visual)
         var cashCmp = Ext.getCmp(prototype.id + '-rbgTypeCASH');
@@ -2769,11 +2797,13 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
 
         var cntDocSap = Ext.getCmp(prototype.id + '-cntDocSap');
+//        var typeSocietyCas22h = Ext.getCmp(prototype.id + '-typeSocietyCas22h');
         if (cntDocSap) {
             cntDocSap.setVisible(true);
+//            typeSocietyCas22h.setVisible(true);
             cntDocSap.setMargin('10 0 -10 -30'); // lo alineas  en modo CASH
         }
-        
+
 
     },
 
@@ -2820,15 +2850,18 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
 
 
-        var fc = Ext.getCmp(prototype.id + '-fcDateRange');
-        if (fc) {
-            fc.setVisible(false);
-        }
+//        var fc = Ext.getCmp(prototype.id + '-fcDateRange');
+//        if (fc) {
+//            fc.setVisible(false);
+//        }
 
         var cntDocSap = Ext.getCmp(prototype.id + '-cntDocSap');
         if (cntDocSap) {
             cntDocSap.setMargin('0 0 -20 0'); // regresa a su lugar original
         }
+
+//        var typeSocietyCas22h = Ext.getCmp(prototype.id + '-typeSocietyCas22h');
+//        typeSocietyCas22h.setVisible(false);
 
     },
 
@@ -2880,6 +2913,271 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
     getDoubleColor3: function (value, metaData, record, rowIndex, colIndex, store, view) {
         metaData.style = 'text-align:right;background:#FCF5F2';
         return Ext.util.Format.number(value, '0,000.00');
+    },
+    onGridDetLiquidaCash: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
+        me.drillDown.push(me.panelActual);
+        me.panelActual = '-boxDetLiquiCash';
+        console.log(rowData.data, "Esto es mi detalle");
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        var cant = 0;
+
+        switch (columnNum) {
+            case 0:
+                console.log('ENTRA A FECHA');
+                rowData.data.IN_STVAL = "";
+                cant = rowData.data.lngQTMATCH;
+                break;
+            case 1:
+                console.log('ENTRA A MATCH');
+                rowData.data.IN_STVAL = "1";
+                cant = rowData.data.lngQTMANUAL;
+                break;
+            case 3:
+                console.log('ENTRA AL MANUAL');
+                rowData.data.IN_STVAL = "5";
+                cant = rowData.data.lngQMANUAL;
+                break;
+            case 4:
+                console.log('ENTRA AL MANUAL');
+                rowData.data.IN_STVAL = "3";
+                cant = rowData.data.lngQTPEND;
+                break;
+        }
+
+        // Obtener cuentas seleccionadas
+        var selectedAccounts = me.getSelectedAccountCodes();
+
+        // Configurar bean
+        this.beanLiquiCash.IN_STVAL = rowData.data.IN_STVAL;
+        this.beanLiquiCash.IN_ADATE = rowData.data.SDATE;
+        this.beanLiquiCash.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
+
+        // Llamar función actualizada pasando las cuentas
+        this.setGridDataDetLiquidaCash(selectedAccounts);
+    },
+    setGridDataDetLiquidaCash: function (selectedAccounts) {
+        win.lblUser_toolTip("Estructura: MPF102");
+        me.setWidthPie();
+        this.setFormatParameter();
+        var msj = this.validateFields();
+
+        if (msj !== '') {
+            global.Msg({msg: msj});
+        } else {
+            // Obtener cuentas seleccionadas si no se pasan como parámetro
+            if (!selectedAccounts && me.getSelectedAccountCodes) {
+                selectedAccounts = me.getSelectedAccountCodes();
+            }
+
+            // Actualizar bean con cuentas seleccionadas
+            if (selectedAccounts && selectedAccounts.length > 0) {
+                var accountsString = selectedAccounts.map(function (account) {
+                    return "'" + account + "'";
+                }).join(',');
+                this.beanLiquiCash.IN_ACCOUNTS = accountsString;
+            } else {
+                // Si no hay cuentas seleccionadas, enviar array vacío o eliminar propiedad
+                this.beanLiquiCash.IN_ACCOUNTS = "";
+            }
+
+            // Actualizar parámetros con el bean actualizado
+            me.paramsDetail.beanString = JSON.stringify(this.beanLiquiCash);
+
+            console.log('Parámetros enviados:', me.paramsDetail.beanString);
+
+            var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchDetLiquidCash'
+                },
+                listeners: {
+                    beforeload: function (obj) {
+                        obj.proxy.extraParams = me.paramsDetail;
+                    },
+                    load: function (obj, records, successful, operation) {
+                        console.log(obj, 'obAAAAAAAAAAAAAAj');
+                        var pag = Ext.getCmp(prototype.id + '-paggin20');
+                        var pagData = pag.getPageData();
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                        console.log(obj.data, "Esto es lo que recibo");
+
+                        if (obj.data.length === 0) {
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        } else {
+                            var data = obj.data.items[0].data;
+                            win.setText('lblTittleCash', data.strTitulo);
+
+                            var response = operation.getResponse();
+                            var responseData = Ext.decode(response.responseText);
+
+                            if (responseData.cuentas && Ext.isArray(responseData.cuentas)) {
+                                me.loadAccountsCombo(responseData.cuentas, true);
+                            }
+                        }
+                    }
+                }
+            });
+
+            global.clear();
+            Ext.getCmp(prototype.id + '-gridDetLiquiCash').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-paggin20').bindStore(storeGridDatas);
+        }
+    },
+    getSelectedAccountCodes: function () {
+        var combo = Ext.getCmp(prototype.id + '-typeSocietyCas22h');
+
+        if (!combo || !combo.store) {
+            return [];
+        }
+
+        var selectedCodes = [];
+
+        combo.store.each(function (record) {
+            if (record.get('checked')) {
+                selectedCodes.push(record.get('code'));
+            }
+        });
+
+        return selectedCodes;
+    },
+    loadAccountsCombo: function (cuentasArray, preserveSelections) {
+        var combo = Ext.getCmp(prototype.id + '-typeSocietyCas22h');
+
+        if (!combo) {
+            console.error('Combo no encontrado:', prototype.id + '-typeSocietyCas22h');
+            return;
+        }
+
+        // Guardar las selecciones actuales ANTES de limpiar
+        var previousSelections = [];
+        if (preserveSelections && combo.store) {
+            combo.store.each(function (record) {
+                if (record.get('checked')) {
+                    previousSelections.push(record.get('code'));
+                }
+            });
+            console.log('Selecciones anteriores a preservar:', previousSelections);
+        }
+
+        var storeData = [];
+
+        Ext.each(cuentasArray, function (cuenta) {
+            if (cuenta && cuenta.trim() !== '') {
+                var cuentaCode = cuenta.trim();
+                var wasSelected = false;
+
+                // Verificar si esta cuenta estaba seleccionada anteriormente
+                if (preserveSelections && previousSelections.indexOf(cuentaCode) !== -1) {
+                    wasSelected = true;
+                    console.log('Preservando selección para cuenta:', cuentaCode);
+                }
+
+                storeData.push({
+                    code: cuentaCode,
+                    name: cuentaCode,
+                    checked: wasSelected
+                });
+            }
+        });
+
+        storeData.sort(function (a, b) {
+            return a.code.localeCompare(b.code);
+        });
+
+        // Cargar nuevos datos preservando selecciones
+        combo.store.loadData(storeData);
+
+        // Sincronizar el valor del combo con las selecciones preservadas
+        if (preserveSelections && previousSelections.length > 0) {
+            // Filtrar solo las cuentas que existen en los nuevos datos
+            var validSelections = previousSelections.filter(function (code) {
+                return storeData.some(function (item) {
+                    return item.code === code;
+                });
+            });
+
+            if (validSelections.length > 0) {
+                combo.setValue(validSelections);
+                console.log('Selecciones restauradas:', validSelections);
+            }
+        }
+
+        // 🔥🔥🔥 CLAVE: Forzar la actualización del picker 🔥🔥🔥
+        if (combo.isExpanded) {
+            // Si el combo está abierto, cerrarlo y abrirlo para forzar re-render
+            combo.collapse();
+
+            // Usar timeout para asegurar que se cierra antes de abrir
+            Ext.defer(function () {
+                if (combo.isVisible()) {
+                    combo.expand();
+                }
+            }, 100);
+        } else {
+            // Si no está abierto, actualizar el picker directamente
+            var picker = combo.getPicker();
+            if (picker) {
+                picker.refresh();
+            }
+        }
+
+        combo.setHidden(false);
+        combo.setEmptyText('Select accounts (' + storeData.length + ' available)');
+
+        console.log('Cuentas cargadas en combo:', storeData.length, storeData);
+
+        // Verificar datos en consola
+        combo.store.each(function (record, index) {
+            console.log('Record', index, ':',
+                    'code:', record.get('code'),
+                    'checked:', record.get('checked'));
+        });
+
+        // Retornar número de selecciones preservadas
+        return previousSelections.length;
+    },
+    clearAccountsCombo: function () {
+        var combo = Ext.getCmp(prototype.id + '-typeSocietyCas22h');
+
+        if (!combo) {
+            console.error('Combo no encontrado:', prototype.id + '-typeSocietyCas22h');
+            return;
+        }
+
+        if (combo.store) {
+            combo.store.removeAll();
+        }
+
+        combo.setValue(null);
+        combo.clearValue();
+
+        combo.setEmptyText('No accounts available');
+
+        combo.setHidden(true);
+
+        console.log('Combo de cuentas vaciado');
+    },
+    onCustomerSelect: function (combo, records) {
+        console.log('Registros seleccionados:', records);
+        console.log('combo', combo);
+        // Obtener valores seleccionados
+        const selectedValues = combo.getValue() || [];
+        const selectedArray = typeof selectedValues === 'string' ?
+                selectedValues.split(',') :
+                selectedValues;
+
+        console.log('Valores seleccionados:', selectedArray);
+
+        // Actualizar campo 'checked' en el store
+        const store = combo.getStore();
+        store.each(function (record) {
+            const code = record.get('code');
+            const isSelected = selectedArray.includes(code);
+            record.set('checked', isSelected);
+        });
     }
 
 }
