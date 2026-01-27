@@ -36,7 +36,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     fieldStyle: 'text-align: left;',
                     hidden: false
                 },
-                {xtype: 'tbspacer', width: 15, height:20},
+                {xtype: 'tbspacer', width: 15, height: 20},
                 {
                     xtype: 'combo',
                     id: prototype.id + '-cmbDateFromYear',
@@ -148,7 +148,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                         expand: 'eventSelectToDay'
                     }
                 },
-                {xtype: 'tbspacer', width: 15, height:20},
+                {xtype: 'tbspacer', width: 15, height: 20},
                 {
                     xtype: 'combo',
                     id: prototype.id + '-cmbCountry',
@@ -170,7 +170,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     triggerAction: 'all',
                     labelAlign: 'left',
                 },
-                {xtype: 'tbspacer', width: 15, height:20},
+                {xtype: 'tbspacer', width: 15, height: 20},
                 {
                     xtype: 'combo',
                     fieldLabel: 'Processor',
@@ -193,8 +193,8 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     enableKeyEvents: true,
                     triggerAction: 'all',
                 },
-                
-                {xtype: 'tbspacer', width: 15, height:20},
+
+                {xtype: 'tbspacer', width: 15, height: 20},
                 {
                     fieldLabel: 'Status',
                     labelAlign: 'left',
@@ -222,7 +222,44 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     enableKeyEvents: true,
                     triggerAction: 'all'
                 },
-                {xtype: 'tbspacer', width: 15, height:20},
+                {xtype: 'tbspacer', width: 15, height: 20},
+                {
+                    xtype: 'combo',
+                    fieldLabel: 'Accounts',
+                    width: 260,
+                    labelWidth: 70,
+                    id: prototype.id + '-typeSocietyCas22h',
+                    queryMode: 'local',
+                    editable: false,
+                    hidden: true,
+                    multiSelect: true,
+                    forceSelection: false,
+                    triggerAction: 'all',
+                    valueField: 'code',
+                    displayField: 'name',
+                    emptyText: 'Select customers',
+                    listConfig: {
+                        maxHeight: 200,
+                        cls: 'excel-filter-list'
+                    },
+                    store: Ext.create('Ext.data.Store', {
+                        fields: ['code', 'name', 'checked'],
+                        data: []
+                    }),
+                    tpl: new Ext.XTemplate(
+                            '<ul class="x-list-plain">',
+                            '<tpl for=".">',
+                            '<li class="x-boundlist-item" style="cursor: pointer; padding: 5px;">',
+                            '<input type="checkbox" class="customer-checkbox" data-code="{code}" {[values.checked ? "checked=\\"checked\\"" : ""]} /> ',
+                            '{name}',
+                            '</li>',
+                            '</tpl>',
+                            '</ul>'
+                            ),
+                    listeners: {
+                        select: 'onCustomerSelect'
+                    }
+                },
                 {
                     fieldLabel: 'Source',
                     labelAlign: 'left',
@@ -259,7 +296,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                 },
                 {
                     xtype: 'component',
-                        id: prototype.id + '-btnToggleSwitchFT',
+                    id: prototype.id + '-btnToggleSwitchFT',
                     margin: '3 0 0 3',
                     html: '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">\n\
 <meta name="viewport" content="width=device-width, initial-scale=1.0">\n\
@@ -279,7 +316,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     id: prototype.id + '-EXT',
                     width: 60
                 },
-                
+
                 {
                     xtype: 'label',
                     text: ' ',
@@ -349,7 +386,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                         ]
                     }
                 },
-                {xtype: 'tbspacer', width: 15, height:20},
+                {xtype: 'tbspacer', width: 15, height: 20},
                 {
                     xtype: 'combo',
                     fieldLabel: 'Code Bank',
@@ -363,43 +400,40 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     width: 245,
                     labelWidth: 66,
                 },
-                {xtype: 'tbspacer', width: 15, height:20},
-                
+                {xtype: 'tbspacer', width: 15, height: 20},
+
                 // arregalmos docsapbank
-              {
-                xtype: 'container',
-                id: prototype.id + '-cntDocSap',
-                
+                {
+                    xtype: 'container',
+                    id: prototype.id + '-cntDocSap',
+//                    margin: '0 0 0 0', // normal para CreditCard
+                    items: [
+                        {
+                            fieldLabel: 'Doc Sap Bank',
+                            labelAlign: 'left',
+                            xtype: 'textfield',
+                            id: prototype.id + '-txtBANDOC',
+                            width: 170,
+                            labelWidth: 84,
+                            enableKeyEvents: true,
+                            listeners: {
+                                keypress: 'eventKey_BANDOC'
+                            }
+                        },
+                    ]
+                },
 
-                margin: '0 0 0 0', // normal para CreditCard
-                items: [
-                    {
-                        fieldLabel: 'Doc Sap Bank',
-                        labelAlign: 'left',
-                        xtype: 'textfield',
-                        id: prototype.id + '-txtBANDOC',
-                        width: 170,
-                        labelWidth: 84,
-                        enableKeyEvents: true,
-                        listeners: {
-                            keypress: 'eventKey_BANDOC'
-                        }
-                    }
-                ]
-            },
+                {xtype: 'tbspacer', width: 15, height: 20},
 
-                {xtype: 'tbspacer', width: 15, height:20},
-                
-                
                 //
                 //timepicker
-                
-                          
-                 {
+
+
+                {
                     xtype: 'fieldcontainer',
-                    id: prototype.id + '-fcDateRange', 
+                    id: prototype.id + '-fcDateRange',
                     fieldLabel: 'Time Picker',
-                        hidden: true,
+                    hidden: true,
                     layout: 'table',
                     margin: '9 0 0 0',
 
@@ -411,7 +445,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                         allowBlank: true,
                         margin: '0 5 0 0', // espacio entre campos
                         width: 160,
-                         listeners: {
+                        listeners: {
                             change: function (field) {
                                 const form = field.up('form');
                                 const desde = form.down('[name=FEC_DESDE]').getValue();
@@ -430,7 +464,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                             emptyText: 'From'
                         },
                         {
-                            
+
                             id: prototype.id + '-FEC_TO',
                             name: 'FEC_HASTA',
                             emptyText: 'To'
@@ -438,12 +472,10 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     ]
                 },
 
-                       
-                
                 //
-                
-                
-                
+
+
+
 //                {
 //                    xtype: 'combo',
 //                    hidden: true,
@@ -504,7 +536,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
 //                        click: 'onLoadClick_conciliaEC'
 //                    }
 //                },
-                {xtype: 'tbspacer', width: 15, height:20},
+                {xtype: 'tbspacer', width: 15, height: 20},
                 {
                     xtype: 'label',
                     text: 'Pending Buss',
@@ -518,21 +550,21 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                 {
                     xtype: 'checkbox',
                     id: prototype.id + '-pendingBuss',
-                    inputValue: 'Refund', 
+                    inputValue: 'Refund',
                     name: 'chkPendingBuss',
                     boxLabelAlign: 'before',
                     listeners: {
                         change: 'pendingBuss_changeHandler'
                     }
                 },
-                {xtype: 'tbspacer', width: 15, height:20},
+                {xtype: 'tbspacer', width: 15, height: 20},
                 {
                     fieldLabel: 'Business',
                     hidden: true,
                     labelAlign: 'left',
                     width: 150,
                     labelWidth: 50,
-                    xtype: 'combo', 
+                    xtype: 'combo',
                     id: prototype.id + '-cmbNEGOC',
                     queryMode: 'local',
                     allowBlank: false,
@@ -588,7 +620,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     width: 251,
                     labelAlign: 'left'
                 },
-                {xtype: 'tbspacer', width: 513, height:20},
+                {xtype: 'tbspacer', width: 513, height: 20},
                 {
                     xtype: 'label',
                     text: 'CreditCard',
@@ -603,10 +635,10 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     html: '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Modo Alternancia</title><style>.toggle-container{display:inline-block;position:relative;width:30px;height:16px;}.toggle-input{opacity:0;width:0;height:0;}.toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#72e34f;transition:.4s;border-radius:16px;}.toggle-slider::before{position:absolute;content:"";height:12px;width:12px;border-radius:50%;left:2px;bottom:2px;background-color:white;transition:.4s;}.toggle-input:checked+.toggle-slider{background-color:#4c7daf;}.toggle-input:checked+.toggle-slider::before{transform:translateX(16px);}</style></head><body><label class="toggle-container"><input type="checkbox" id="chkCash" class="toggle-input"><span class="toggle-slider"></span></label></body></html>',
                     tooltip: 'Export to Report',
                     listeners: {
-                        
+
 //                        click: 'onGridDetLiquidaCash'
                     }
-                  
+
                 },
                 {
                     xtype: 'label',
@@ -615,59 +647,43 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     id: prototype.id + '-CASH',
                     width: 60
                 },
-                
-                
-                
-                
-                
-                
-
-                
-                
             ]
         },
-        
-        
-        
-        //new radiogroup
-        
-        {
-    xtype: 'container',
-    layout: 'hbox',
-    width: '100%',
-    margin: '10 0 0 40',
-    items: [
-        {
-            xtype: 'radiogroup',
-            id: prototype.id + '-rbgTypeCASH',
-            minHeight: 32,
-                hidden: true,
-            width: '100%',     // 
-            items: [
-                { boxLabel: '<b style="color:#148D28;">Normal</b>', inputValue: 'Normal', name: 'rbgTypeCASH', checked: true },
-                { xtype: 'tbspacer', width: 20 },
-                { boxLabel: '<b style="color:#148D28;">Detalle</b>', inputValue: 'Detalle', name: 'rbgTypeCASH' }
-            ],
-            listeners: {
-                change: 'cmbTranType_changeHandler'
-            }
-        }
-    ]
-},
 
-        
-        
-        
-        
-        
-        ///
-        
-        
-        
-        
-        
-        
+        //new radiogroup
+
+        {
+            xtype: 'container',
+            layout: 'hbox',
+            width: '100%',
+            margin: '10 0 0 40',
+            items: [
                 {
+                    xtype: 'radiogroup',
+                    id: prototype.id + '-rbgTypeCASH',
+                    minHeight: 32,
+                    hidden: true,
+                    width: '100%', // 
+                    items: [
+                        {boxLabel: '<b style="color:#148D28;">Normal</b>', inputValue: 'Normal', name: 'rbgTypeCASH', checked: true},
+                        {xtype: 'tbspacer', width: 20},
+                        {boxLabel: '<b style="color:#148D28;">Detalle</b>', inputValue: 'Detalle', name: 'rbgTypeCASH'}
+                    ],
+                    listeners: {
+                        change: 'cmbTranType_changeHandler'
+                    }
+                }
+            ]
+        },
+
+        ///
+
+
+
+
+
+
+        {
             xtype: 'form',
             border: false,
             id: prototype.id + '-filterMain_3',
@@ -697,8 +713,39 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                         change: 'searchTRANSA_clickHandler'
                     }
                 },
-               
             ]
         }
     ]
 });
+
+Ext.util.CSS.createStyleSheet(`
+    /* Contenedor del listado */
+    .excel-filter-list .x-boundlist-item {
+        padding: 6px 10px;
+        cursor: pointer;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+    }
+
+    /* Hover estilo Excel */
+    .excel-filter-list .x-boundlist-item:hover {
+        background-color: #EAF2FF;
+    }
+
+    /* Checkbox */
+    .excel-filter-list input[type=checkbox] {
+        margin-right: 8px;
+        cursor: pointer;
+    }
+
+    /* Item seleccionado */
+    .excel-filter-list .x-boundlist-selected {
+        background-color: #D6E6FF !important;
+    }
+
+    /* Texto */
+    .excel-filter-list .x-boundlist-item span {
+        white-space: nowrap;
+    }
+`, 'excel-filter-style');
