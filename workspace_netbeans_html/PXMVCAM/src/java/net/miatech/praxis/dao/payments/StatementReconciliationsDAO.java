@@ -1523,6 +1523,7 @@ public class StatementReconciliationsDAO {
                     beanTkt.CODPRO = rst.getString("CODPRO");
                     beanTkt.CCUSTPRO = rst.getString("CCUSTPRO");
                     beanTkt.FREGLA = rst.getString("FREGLA");
+                    beanTkt.ACCOUNT = rst.getString("ACCOUNT");
 
 //                    if (tinput == null || tinput.trim().isEmpty()) {
 //                        String cfuente = rst.getString("CFUENTE");

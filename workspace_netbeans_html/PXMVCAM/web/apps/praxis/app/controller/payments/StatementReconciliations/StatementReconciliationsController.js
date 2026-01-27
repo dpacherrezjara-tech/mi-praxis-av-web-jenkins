@@ -294,13 +294,14 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         me.bean.IN_BANK = Ext.getCmp(prototype.id + '-cmbBank').getValue();
         me.bean.IN_COREP = Ext.getCmp(prototype.id + '-cmbCOREP').getValue();
         
-        var fecFrom = Ext.getCmp(prototype.id + '-FEC_FROM').getValue();
-        var fecTo   = Ext.getCmp(prototype.id + '-FEC_TO').getValue();
+        var fecFrom =  Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() +  Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue()
+        +  Ext.getCmp(prototype.id + '-cmbDateDay').getValue();
+                
+        var fecTo   = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() +  Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue()
+        +  Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
 
-        me.bean.IN_FECHA_FROM = fecFrom ? Ext.Date.format(fecFrom, 'Ym') : '';
-        me.bean.IN_FECHA_TO   = fecTo   ? Ext.Date.format(fecTo, 'Ym') : '';
-
-
+        me.bean.IN_FECHA_FROM = fecFrom;
+        me.bean.IN_FECHA_TO   = fecTo;
         
 
         let proces = Ext.getCmp(prototype.id + '-TEST');
@@ -2736,12 +2737,12 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             '-btn_Concilia_LIQvsEC',
             '-pendingBuss',
             '-labelpendingBuss',
-            '-cmbDateFromYear',
-            '-cmbDateFromMonth',
-            '-cmbDateDay',
-            '-cmbDateToYear',
-            '-cmbDateToMonth',
-            '-cmbDateToDay'
+//            '-cmbDateFromYear',',
+//            '-cmbDateDay',
+//            '-cmbDateToYear',
+//            '-cmbDateToMonth',
+//            '-cmbDateToDay'
+//            '-cmbDateFromMonth
 
 
 
@@ -2756,9 +2757,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         });
 
         // 1️⃣ PRIMERO mostrar el contenedor de Fechas
-        var fc = Ext.getCmp(prototype.id + '-fcDateRange');
-        if (fc)
-            fc.setVisible(true);
+//        var fc = Ext.getCmp(prototype.id + '-fcDateRange');
+//        if (fc)
+//            fc.setVisible(true);
 
         // 2️⃣ Luego mostrar los radios (evita colapso visual)
         var cashCmp = Ext.getCmp(prototype.id + '-rbgTypeCASH');
@@ -2820,10 +2821,10 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
 
 
-        var fc = Ext.getCmp(prototype.id + '-fcDateRange');
-        if (fc) {
-            fc.setVisible(false);
-        }
+//        var fc = Ext.getCmp(prototype.id + '-fcDateRange');
+//        if (fc) {
+//            fc.setVisible(false);
+//        }
 
         var cntDocSap = Ext.getCmp(prototype.id + '-cntDocSap');
         if (cntDocSap) {
