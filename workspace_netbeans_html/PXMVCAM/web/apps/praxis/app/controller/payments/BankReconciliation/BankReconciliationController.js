@@ -4514,21 +4514,20 @@ Ext.util.CSS.createStyleSheet(`
 
                 setGridDataCartera: function () {
 
-                var me = this;
-                    Ext.getCmp(prototype.id + '-cardContainer')
+                var me = this;      
+                var lbl = Ext.getCmp(prototype.id + '-labelMPF199');
+                if (lbl) {
+                lbl.setVisible(false);
+                        }
+
+                Ext.getCmp(prototype.id + '-cardContainer')
                 .getLayout()
                 .setActiveItem(2);
-//                        var msj = me.validateFields();
-//                        if (msj !== '') {
-//                global.Msg({ msg: msj });
-//                        return;
-//                }
 
                 var remoteStore = Ext.create('Ext.Praxis.store.interline.GridData', {
                 pageSize: 0,
                         proxy: {
                         url: prototype.url + '/searchListCartera',
-//                         extraParams: me.filtroCartera  
                         }
                 });
                         var localStore = Ext.create('Ext.data.Store', {
@@ -4538,8 +4537,8 @@ Ext.util.CSS.createStyleSheet(`
                         var grid = Ext.getCmp(prototype.id + '-gridDataMPF199CARTERA');
                         grid.bindStore(localStore);
                         remoteStore.load({
-                             params: me.filtroCartera,   
                             
+                             params: me.filtroCartera,                            
                              callback: function (records, op, success) {
 
                         if (!success || !records || records.length === 0) {
@@ -4574,7 +4573,7 @@ Ext.util.CSS.createStyleSheet(`
                                         currentInvoice = invoice;
                                 }
 
-                                //  Si hay Pending → cabecera Pending
+                                //  Si hay Pending -cabecera Pending
                                 if (status === '3' || status === 3) {
                                 header.O_STVAL = '3';
                                 }
@@ -4723,6 +4722,8 @@ Ext.util.CSS.createStyleSheet(`
                         me.paramsDetail.beanString = JSON.stringify(this.beanDetDay);
                         this.setGridDataDetalleCash();
                 },
+                
+                
                 setGridDataDetalleCash: function (data) {
                 console.log("Prueba");
                         me.panelActual = '-panelGridDataDetalleCash';
