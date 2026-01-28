@@ -7,7 +7,6 @@ package net.miatech.praxis.dao.payments;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -302,7 +301,7 @@ public class ManualConciliationDAO {
         return objRtn;
     }
 
-    public String loadPX269SQP00834GRILL(List<A2290Filter> filters, UserView user,String beanIntercompany) throws SQLException, Exception {
+    public String loadPX269SQP00834GRILL(List<A2290Filter> filters, UserView user, String beanIntercompany) throws SQLException, Exception {
 
         //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
         String strMsj = "";
@@ -367,11 +366,11 @@ public class ManualConciliationDAO {
         return strMsj;
     }
 
-    public String loadPX269SQP00834ALL(A2290Filter filter, UserView user,String beanIntercompany) throws SQLException, Exception {
+    public String loadPX269SQP00834ALL(A2290Filter filter, UserView user, String beanIntercompany) throws SQLException, Exception {
 
         //REALIZA UN SELECT 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
-        lstTkts = this.loadPX269SQP00834SELECT(filter,beanIntercompany);
+        lstTkts = this.loadPX269SQP00834SELECT(filter, beanIntercompany);
 
         //REALIZA UN INSERT 
         String proces = this.loadPX269SQP00834INSERT(lstTkts);
@@ -1254,7 +1253,7 @@ public class ManualConciliationDAO {
         ResultSet rst = null;
         ResultSet rst2 = null;
 
-            String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF101_F2_V2(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS540(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1504,7 +1503,6 @@ public class ManualConciliationDAO {
                         beanTkt.SCARCOD_101 = rst.getString("SCARCOD_101");
                         beanTkt.SCARDN_101 = rst.getString("SCARDN_101");
                         beanTkt.SAUTHOC_101 = rst.getString("SAUTHOC_101");
-                        
 
                         beanTkt.page.PAGNUM = filter.page.PAGNUM;
                         beanTkt.page.PAGROW = filter.page.PAGROW;
