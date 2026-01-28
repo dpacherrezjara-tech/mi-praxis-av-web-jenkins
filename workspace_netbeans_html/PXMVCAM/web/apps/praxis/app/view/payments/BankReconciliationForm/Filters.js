@@ -24,7 +24,6 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                     layout: 'hbox',
                     bodyStyle: 'background: transparent;"',
                     items: [
-                        {xtype: 'tbspacer', width: 30},
                         {
                             fieldLabel: 'Search By',
                             hidden: false,
@@ -32,7 +31,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             fieldStyle: 'text-align: center;',
                             width: 170,
                             labelWidth: 60,
-                            xtype: 'combo', 
+                            xtype: 'combo',
                             id: prototype.id + '-cmbFecFiltro',
                             queryMode: 'local',
                             allowBlank: false,
@@ -152,7 +151,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             listConfig: {minWidth: 60},
                             maxLength: 3,
                             enforceMaxLength: true,
-                             margin: '10 0 0 0',
+                            margin: '10 0 0 0',
                         },
                         {
                             xtype: 'combo',
@@ -184,7 +183,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             fieldStyle: 'text-align: center;',
                             width: 200,
                             labelWidth: 45,
-                            xtype: 'combo', 
+                            xtype: 'combo',
                             id: prototype.id + '-cmbCountry',
                             queryMode: 'local',
                             allowBlank: false,
@@ -283,23 +282,22 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                                 keypress: 'eventKey'
                             }
                         },
-                         {
+                        {
                             xtype: 'fieldcontainer',
                             fieldLabel: 'Payment Date',
                             id: prototype.id + '-datePayment',
                             labelWidth: 90,
                             margin: '10 10 0 0',
-                            
-                            
+
 //                                            labelStyle: 'font-weight: bold;',
                             defaults: {
                                 xtype: 'datefield',
-                                format: 'd/m/Y', 
-                                submitFormat: 'Ymd', 
+                                format: 'd/m/Y',
+                                submitFormat: 'Ymd',
                                 editable: false,
                                 allowBlank: true,
                                 hidden: true,
-                                
+
                                 width: 140,
                                 fieldStyle: 'text-align:center'
                             },
@@ -317,9 +315,9 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                                     fieldStyle: 'text-align:center',
                                     triggers: {
                                         clear: {
-                                            cls: 'x-form-clear-trigger', 
+                                            cls: 'x-form-clear-trigger',
                                             handler: function (field) {
-                                                field.reset(); 
+                                                field.reset();
                                             }
                                         }
                                     }
@@ -334,7 +332,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             fieldStyle: 'text-align: center;',
                             width: 150,
                             labelWidth: 50,
-                            xtype: 'combo', 
+                            xtype: 'combo',
                             id: prototype.id + '-cmbNEGOC',
                             queryMode: 'local',
                             editable: true,
@@ -711,8 +709,8 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                             store: new Ext.data.SimpleStore({
                                 fields: ['value', 'description'],
                                 data: [
-                                    ["1", "Match"], 
-                                    ["3", "Settlement Without Sales"], 
+                                    ["1", "Match"],
+                                    ["3", "Settlement Without Sales"],
                                     ["5", "Match Manual"]
                                 ]
                             }),
@@ -729,14 +727,14 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
 
                         },
                         {xtype: 'tbspacer', width: 20},
-                        
+
                         //////   datepicker
 
-                      
-                       
 
 
-                                        
+
+
+
                         ////
                         {
                             xtype: 'label',
@@ -829,61 +827,59 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
 
                         },
                         {xtype: 'tbspacer', width: 10},
-                        
-                        
-             {
-                    xtype: 'combo',
-                    id: prototype.id + '-cmbFuente',
-                    width: 160,
-                    fieldLabel: 'Source',
-                    queryMode: 'local',
-                    labelWidth: 50,
-                    triggerAction: 'all',
-                    valueField: 'value',
-                    displayField: 'text',
-                    editable: false, 
-                    forceSelection: true,
-                    value: 'BSP',  
-                    
-                    store: {
-                        fields: ['value', 'text'],
-                        data: [
-                            {value: '', text: 'ALL'},
-                            {value: 'B', text: 'BSP'},
-                            {value: 'I', text: 'ICCS'},
-                            {value: 'A', text: 'ARC'}
-                        ]
-                    }
-                },
-                {xtype: 'tbspacer', width: 20},
+
+                        {
+                            xtype: 'combo',
+                            id: prototype.id + '-cmbFuente',
+                            width: 160,
+                            fieldLabel: 'Source',
+                            queryMode: 'local',
+                            labelWidth: 50,
+                            triggerAction: 'all',
+                            valueField: 'value',
+                            displayField: 'text',
+                            editable: false,
+                            forceSelection: true,
+                            value: 'BSP',
+
+                            store: {
+                                fields: ['value', 'text'],
+                                data: [
+                                    {value: '', text: 'ALL'},
+                                    {value: 'B', text: 'BSP'},
+                                    {value: 'I', text: 'ICCS'},
+                                    {value: 'A', text: 'ARC'}
+                                ]
+                            }
+                        },
+                        {xtype: 'tbspacer', width: 20},
                         {
                             xtype: 'button',
                             hidden: true,
                             text: 'Conciliacion FASES',
                             id: prototype.id + '-btnFase2',
-                            iconCls: 'prx-icon-update', 
+                            iconCls: 'prx-icon-update',
                             style: {
-                                'background-color': '#3498db', 
+                                'background-color': '#3498db',
                                 'color': 'white',
                                 'font-weight': 'bold'
                             },
 
                             listeners: {
-                                click: 'conciliacionFase2' 
+                                click: 'conciliacionFase2'
                             }
                         },
                         {xtype: 'tbspacer', width: 20},
-                        
-                        
+
                         {
                             xtype: 'segmentedbutton',
                             itemId: 'btnModeSelector',
-                            id: prototype.id + '-segViewMode', 
+                            id: prototype.id + '-segViewMode',
                             allowDepress: false,
                             hidden: true,
                             defaults: {
-                                cls: 'btn-blanco-normal',      
-                                pressedCls: 'btn-azul-pressed', 
+                                cls: 'btn-blanco-normal',
+                                pressedCls: 'btn-azul-pressed',
                                 style: {
                                     'border-radius': '4px',
                                     'margin-right': '2px'
@@ -900,13 +896,18 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                                     text: 'COMISION',
                                     value: 'ARC',
                                     width: 100
+                                },
+                                {
+                                    text: 'CARTERA',
+                                    value: 'CARTERA',
+                                    width: 100
                                 }
                             ],
                             listeners: {
                                 toggle: 'onModeChange'
                             }
                         },
-                        
+
                         {xtype: 'tbspacer', width: 10},
                         {
                             xtype: 'label',
@@ -1018,9 +1019,9 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                                 change: 'btnSearch_click'
                             }
                         }
-                        
 
-                        
+
+
 //                        {
 //                            xtype: 'combo',
 //                            id: prototype.id + '-cmbAGENCY',
@@ -1045,3 +1046,34 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
 
 
 
+Ext.util.CSS.createStyleSheet(`
+    /* Contenedor del listado */
+    .excel-filter-list .x-boundlist-item {
+        padding: 6px 10px;
+        cursor: pointer;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+    }
+
+    /* Hover estilo Excel */
+    .excel-filter-list .x-boundlist-item:hover {
+        background-color: #EAF2FF;
+    }
+
+    /* Checkbox */
+    .excel-filter-list input[type=checkbox] {
+        margin-right: 8px;
+        cursor: pointer;
+    }
+
+    /* Item seleccionado */
+    .excel-filter-list .x-boundlist-selected {
+        background-color: #D6E6FF !important;
+    }
+
+    /* Texto */
+    .excel-filter-list .x-boundlist-item span {
+        white-space: nowrap;
+    }
+`, 'excel-filter-style');
