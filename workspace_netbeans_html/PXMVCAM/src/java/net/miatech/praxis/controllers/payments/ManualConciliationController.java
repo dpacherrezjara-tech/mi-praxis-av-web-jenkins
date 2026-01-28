@@ -325,7 +325,7 @@ public class ManualConciliationController extends BaseController {
             UserView user = this.serverSession.getServerSession().getUserView();
             logic = new ManualConciliationLogic();
             logic.setSession(this.serverSession.getServerSession());
-            msj = logic.loadPX269SQP00834ALL(filter, user,beanIntercompany);
+            msj = logic.loadPX269SQP00834ALL(filter, user, beanIntercompany);
 
             map.put("success", true);
             map.put("Mensaje", msj);
@@ -604,6 +604,8 @@ public class ManualConciliationController extends BaseController {
             Cell CH1_19 = row1.createCell(19);
             Cell CH1_20 = row1.createCell(20);
             Cell CH1_21 = row1.createCell(21);
+            Cell CH1_22 = row1.createCell(22);
+            Cell CH1_23 = row1.createCell(23);
 
             CH1_0.setCellValue("Key Concil");
             CH1_1.setCellValue("Ticket");
@@ -627,6 +629,8 @@ public class ManualConciliationController extends BaseController {
             CH1_19.setCellValue("Acc. Number");
             CH1_20.setCellValue("Terminal");
             CH1_21.setCellValue("Secuence");
+            CH1_22.setCellValue("Bandoc");
+            CH1_23.setCellValue("STCON");
 
             CH1_0.setCellStyle(headerStyle);
             CH1_1.setCellStyle(headerStyle);
@@ -650,6 +654,8 @@ public class ManualConciliationController extends BaseController {
             CH1_19.setCellStyle(headerStyle);
             CH1_20.setCellStyle(headerStyle);
             CH1_21.setCellStyle(headerStyle);
+            CH1_22.setCellStyle(headerStyle);
+            CH1_23.setCellStyle(headerStyle);
 
             ++vj;
             //============================================ 
@@ -711,7 +717,9 @@ public class ManualConciliationController extends BaseController {
                     createStyledCellString(headerRow, 19, data.ACCNUMBER + "", currentBoldStyle, workbook);
                     createStyledCell(headerRow, 20, data.TERMI, currentBoldStyle, workbook);
                     createStyledCell(headerRow, 21, data.SEQNUM, currentBoldStyle, workbook);
-           
+                    createStyledCell(headerRow, 22, data.BANDOC_101, currentStyle, workbook);
+                    createStyledCell(headerRow, 23, data.STCON_101, currentStyle, workbook);
+
                     lastKey = data.UNIKEY;
                 }
 
@@ -740,6 +748,8 @@ public class ManualConciliationController extends BaseController {
                 createStyledCell(detailRow, 19, "", currentStyle, workbook);
                 createStyledCell(detailRow, 20, "", currentStyle, workbook);
                 createStyledCell(detailRow, 21, "", currentStyle, workbook);
+                createStyledCell(detailRow, 22, "", currentStyle, workbook);
+                createStyledCell(detailRow, 23, "", currentStyle, workbook);
             }
 
             sheet.autoSizeColumn(0, true);
@@ -764,11 +774,13 @@ public class ManualConciliationController extends BaseController {
             sheet.autoSizeColumn(19, true);
             sheet.autoSizeColumn(20, true);
             sheet.autoSizeColumn(21, true);
-   
+            sheet.autoSizeColumn(22, true);
+            sheet.autoSizeColumn(23, true);
+
             //============================================
             response.setContentType("application/vnd.openxml");
             response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
-            
+
             FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
             workbook.write(response.getOutputStream());
             fos.close();
@@ -777,7 +789,7 @@ public class ManualConciliationController extends BaseController {
             throw new SpringException(e);
         }
     }
-    
+
     public void createStyledCell(Row row, int column, String value, CellStyle baseStyle, Workbook workbook) {
         Cell cell = row.createCell(column);
 
@@ -795,16 +807,16 @@ public class ManualConciliationController extends BaseController {
             cell.setCellValue(value);
         }
     }
-    
+
     public void createStyledCellString(Row row, int column, String value, CellStyle baseStyle, Workbook workbook) {
         Cell cell = row.createCell(column);
- 
+
         CellStyle newStyle = workbook.createCellStyle();
         newStyle.cloneStyleFrom(baseStyle);
-  
+
         cell.setCellStyle(newStyle);
-        cell.setCellValue(value); 
-         
+        cell.setCellValue(value);
+
     }
 
 }

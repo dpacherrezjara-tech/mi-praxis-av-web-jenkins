@@ -1357,6 +1357,8 @@ public class ManualConciliationDAO {
                         beanTkt.SCARCOD_101 = rst.getString("SCARCOD_101");
                         beanTkt.SCARDN_101 = rst.getString("SCARDN_101");
                         beanTkt.SAUTHOC_101 = rst.getString("SAUTHOC_101");
+                        beanTkt.BANDOC_101 = rst.getString("BANDOC_101");
+                        beanTkt.STCON_101 = rst.getString("STCON_101");
                         beanTkt.TOT_QTYTKT = lngQTYTKT;
 
                         beanTkt.page.PAGNUM = filter.page.PAGNUM;
@@ -1415,7 +1417,7 @@ public class ManualConciliationDAO {
         ResultSet rst = null;
         ResultSet rst2 = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF101_F2_EX_V1(?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS541(?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1440,7 +1442,7 @@ public class ManualConciliationDAO {
 
             while (rst.next()) {
 
-                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100_F2_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+                String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQPMPF100_F2_V2(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
                 Connection cnx2 = null;
                 try {
@@ -1503,6 +1505,8 @@ public class ManualConciliationDAO {
                         beanTkt.SCARCOD_101 = rst.getString("SCARCOD_101");
                         beanTkt.SCARDN_101 = rst.getString("SCARDN_101");
                         beanTkt.SAUTHOC_101 = rst.getString("SAUTHOC_101");
+                        beanTkt.BANDOC_101 = rst.getString("BANDOC_101");
+                        beanTkt.STCON_101 = rst.getString("STCON_101");
 
                         beanTkt.page.PAGNUM = filter.page.PAGNUM;
                         beanTkt.page.PAGROW = filter.page.PAGROW;
