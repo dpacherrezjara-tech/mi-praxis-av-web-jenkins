@@ -481,15 +481,40 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
     onGridDataDetailSource: function (column, e, rowIndex, colIndex, rowData) {
         let esPadre = rowData.record.childNodes.length ? true : false;
         let rowPadre = rowData.record.data;
+        let fechaSeleccionada = rowPadre.strFormatDate;
         let fecha = this.getPeriodoYYYYMM(rowPadre.strFormatDate);
+        let customerText = "";
         me.bean = {};
 
         if (esPadre) {
             me.bean.IN_SOCIETY = "";
+            customerText = "AV GROUP";
         } else {
             me.bean.IN_SOCIETY = rowPadre.CCUST;
+            const strCCUST = {
+                '133': 'LACSA',
+                '134': 'AVIANCA',
+                '202': 'TACA',
+                '547': 'AEROGAL'
+            };
+            customerText = strCCUST[rowPadre.CCUST] || 'AV GROUP';
         }
 
+        // Formato mejorado con CSS
+        let headerText = `
+        <div style="text-align: center; width: 100%;">
+            <span style="color:black;font-weight:bold;">
+                Tickets - ${fechaSeleccionada}
+                <span style="color:black; margin: 0 10px;">-</span>
+                <span style="color:#2c3e50;font-weight:bold;">${customerText}</span>
+            </span>
+        </div>
+    `;
+
+        // Actualizar el header
+        Ext.getCmp(prototype.id + '-columnName01').setText(headerText);
+
+        // Resto del código...
         me.bean.IN_FECHA_FROM = fecha;
         me.bean.IN_FECHA_TO = fecha;
         me.bean.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountryCash').getValue();
@@ -1017,13 +1042,38 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         let esPadre = rowData.record.childNodes.length ? true : false;
         let rowPadre = rowData.record.data;
         let fecha = this.getPeriodoYYYYMM(rowPadre.strFormatDate);
+        let fechaSeleccionada = rowPadre.strFormatDate;
+        let customerText = "";
         me.bean = {};
 
         if (esPadre) {
             me.bean.IN_SOCIETY = "";
+            customerText = "AV GROUP";
         } else {
             me.bean.IN_SOCIETY = rowPadre.CCUST;
+            const strCCUST = {
+                '133': 'LACSA',
+                '134': 'AVIANCA',
+                '202': 'TACA',
+                '547': 'AEROGAL'
+            };
+            customerText = strCCUST[rowPadre.CCUST] || 'AV GROUP';
+
         }
+
+        let headerText = `
+        <div style="text-align: center; width: 100%;">
+            <span style="color:black;font-weight:bold;">
+                Tickets - ${fechaSeleccionada}
+                <span style="color:black; margin: 0 10px;">-</span>
+                <span style="color:#2c3e50;font-weight:bold;">${customerText}</span>
+            </span>
+        </div>
+    `;
+
+        // Actualizar el header
+        Ext.getCmp(prototype.id + '-columnName02').setText(headerText);
+
 
         me.bean.IN_FECHA_FROM = fecha;
         me.bean.IN_FECHA_TO = fecha;
@@ -1209,7 +1259,7 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         console.log(me.panelActual, 'me.panelActual');
         var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
             proxy: {
-                url: prototype.url + '/searchDataDetailPrincipal'
+                url: prototype.url + '/searchDataDetailPrincipalCredit'
             }, listeners: {
                 beforeload: function (obj) {
                     obj.proxy.extraParams = me.paramsDetailSource;
@@ -1258,7 +1308,7 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         var amountValue = Ext.getCmp(prototype.id + '-txtAMOUNTCredit').getValue();
 
         if (amountValue === '' || amountValue === null || amountValue === undefined) {
-            me.beanSecundary.IN_AMOUNT = 0; 
+            me.beanSecundary.IN_AMOUNT = 0;
         } else {
             me.beanSecundary.IN_AMOUNT = parseFloat(amountValue) || 0;
         }

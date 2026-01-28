@@ -20,6 +20,7 @@ public class A2290Filter extends A2290 {
 
     //Campos clave originales =======
     public String origSDATE = "";
+    public String tipo = "";
     public String IN_CCUST = "";
     public String origSCOUNTRY = "";
     public String origTDOC = "";
@@ -131,6 +132,7 @@ public class A2290Filter extends A2290 {
     public String IN_SPNR = "";
     public String IN_BSTVAL = "";
     public String IN_COUNTRY = "";
+    public String IN_ACCOUNTS = "";
     public String IN_TINPUT = "";
     public String IN_COREP = "";
     public String IN_PGRM = "";
@@ -1115,6 +1117,8 @@ public class A2290Filter extends A2290 {
     public String O_SCONSOL ="";
     public String O_SCURRENCY ="";
     public double O_NETO =0;
+    public double O_ABALANCE =0;
+    public double O_APAYMENT =0;
     public double IMPORTEN =0;
     public double O_PAYAMOU =0;
     public String O_STRDATE ="";

@@ -7,6 +7,7 @@ package net.miatech.praxis.logic.payments;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import net.miatech.beans.A1691Filter;
 import net.miatech.beans.spring.UserView;
 import net.miatech.beans.spring.implement.IServerSession;
@@ -68,7 +69,8 @@ public class StatementReconciliationsLogic {
     public List<A2290Filter> loadPX287SQP00841(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00841(filter);
     }
-    public List<A2290Filter> loadPX002CASH(A2290Filter filter) throws SQLException, Exception {
+    
+    public Map<String, Object> loadPX002CASH(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX002CASH(filter);
     }
     

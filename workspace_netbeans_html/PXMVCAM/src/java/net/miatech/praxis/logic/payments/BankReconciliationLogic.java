@@ -318,6 +318,16 @@ public class BankReconciliationLogic {
         return bankReconciliationDAO.loadLISTAR_MPF223(filter);
     }
     
+   
+            
+     /// CARTERA LIST       
+            
+     public List<A2290Filter> loadLISTAR_CARTERAMPF199(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadLISTAR_CARTERAMPF199(filter);
+    }
+            
+    
+    
     
      public String MPF199Update(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.MPF199Update(filter);
@@ -334,8 +344,9 @@ public class BankReconciliationLogic {
     public String MPF199UpdateIndia(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.MPF199UpdateIndia(filter);
     }
-    public String processFaseDosConciliation() throws SQLException, Exception {
-        return bankReconciliationDAO.processFaseDosConciliation();
+    // Agregamos el parámetro String tipo
+    public String processFaseDosConciliation(String tipo) throws SQLException, Exception {
+        return bankReconciliationDAO.processFaseDosConciliation(tipo);
     }
      
      
