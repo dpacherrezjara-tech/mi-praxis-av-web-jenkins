@@ -49,7 +49,7 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Info', {
                         {
                             xtype: 'grid',
                             id: prototype.id + '-gridDataImport',
-                            width: 1220,
+                            width: 1170,
                             height: 500,
                             columnLines: true,
                             cls: 'modern-grid',
@@ -69,7 +69,7 @@ Ext.define('Ext.Praxis.view.payments.DataImportMonitoringForm.Info', {
                             columns: [
 
                                 //                                {text: 'ID', dataIndex: 'PROCID', width: 70, align: 'center'},
-                                {text: '#', dataIndex: 'ORDEN', width:50, align: 'center'},
+
                                 {text: 'Source', dataIndex: 'FUENTE', width:60, align: 'center'},
                                 {text: 'Description', dataIndex: 'PROCDESC', width: 220, align: 'left'},
                                 

@@ -362,7 +362,7 @@
                                         },
                                         items: [
                                             {
-                                                text: 'Payment 2',
+                                                text: 'Payment',
                                                 id: prototype.id + '-htDate',
                                                 columns: [
                                                     {
@@ -1231,7 +1231,7 @@
                                         },
                                         items: [
                                             {
-                                                text: 'Payment 3',
+                                                text: 'Payment',
                                                 defaults: {
                                                     menuDisabled: true,
                                                     sortable: false,
@@ -1571,7 +1571,7 @@
                                 bodyStyle: 'background-color: #E3EAEF;',
                                 border: false,
                                 height: 'auto',
-                                width: 1280,
+                                width: 1180,
                                 margin: '10 0 0 0',
                                 layout: {
                                     type: 'vbox',
@@ -1589,7 +1589,7 @@
                                     {
                                         xtype: 'grid',
                                         id: prototype.id + '-gridCashDetail',
-                                        width: 1360,
+                                        width: 1160,
                                         columnLines: true,
                                         features: [{ ftype: 'summary' }],
                                         columns: {
@@ -1746,7 +1746,7 @@
                                 bodyStyle: 'background-color: #E3EAEF;',
                                 border: false,
                                 height: 'auto',
-                                width: 1180,
+                                width: 1080,
                                 margin: '10 0 0 0',
                                 layout: {
                                     type: 'vbox',
@@ -1764,7 +1764,7 @@
                                     {
                                         xtype: 'grid',
                                         id: prototype.id + '-gridDetLiquiCash',
-                                        width: 1160,
+                                        width: 1060,
                                         columnLines: true,
                                         features: [{ ftype: 'summary' }],
                                         columns: {
@@ -1809,16 +1809,6 @@
                                                 {
                                                     text: 'Doc SAP BANK',
                                                     dataIndex: 'BANDOC',
-                                                    width: 100,
-                                                    renderer: function (value, metaData) {
-                                                        metaData.style = "text-align:center;";
-                                                        metaData.tdCls = "x-grid-cell x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
-                                                        return value;
-                                                    }
-                                                },
-                                                {
-                                                    text: 'Account',
-                                                    dataIndex: 'ACCOUNT',
                                                     width: 100,
                                                     renderer: function (value, metaData) {
                                                         metaData.style = "text-align:center;";
@@ -3874,7 +3864,7 @@
                                         },
                                         items: [
                                             {
-                                                text: 'Payment 4',
+                                                text: 'Payment',
                                                 id: prototype.id + '-htDate',
                                                 defaults: {
                                                     menuDisabled: true,

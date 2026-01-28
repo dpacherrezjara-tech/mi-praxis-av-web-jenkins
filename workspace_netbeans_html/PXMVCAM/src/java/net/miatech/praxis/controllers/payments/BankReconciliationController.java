@@ -26,7 +26,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -5755,58 +5754,7 @@ public class BankReconciliationController extends BaseController {
         }
     
     
-    /////////////////////////////////////////////////////////
-    //////////     LISTA CARTERA  DETALLE FACTURAS    ///////////////////
-    //////////////////////////////////////////////////
-    
-    
-    
-    
-    @RequestMapping(value = "searchListCartera")
-    public @ResponseBody
-    String searchListCartera(ModelMap map, HttpServletRequest request) {
-        System.out.println("-------------- banckreconci :searchListCartera-------------");
-        map.put("success", true);
-        List<A2290Filter> lst = this.getListCarteraMPF199(request, false);
-        System.out.println("Total : " + lst.size());
-        map.put("data", lst);
-        return new Gson().toJson(map);
-    }
-    
-    public List<A2290Filter> getListCarteraMPF199(HttpServletRequest request, Boolean bExcel) {
-
-        List<A2290Filter> lst = new ArrayList<>(0);
-        A2290Filter filter = new A2290Filter();
-        Gson gson = new Gson();
-//        String beanString = "";
-
-        try {
-            logic = new BankReconciliationLogic();
-            logic.setSession(this.serverSession.getServerSession());
-            
- 
-            filter.IN_STATUS      = request.getParameter("IN_STATUS") != null ? request.getParameter("IN_STATUS") : "";
-            filter.IN_ADATE_FROM  = request.getParameter("IN_ADATE_FROM") != null ? request.getParameter("IN_ADATE_FROM") : "";
-            filter.IN_ADATE_TO    = request.getParameter("IN_ADATE_TO") != null ? request.getParameter("IN_ADATE_TO") : "";
-
-            System.out.println("STATUS = " + filter.IN_STATUS);
-            System.out.println("FROM   = " + filter.IN_ADATE_FROM);
-            System.out.println("TO     = " + filter.IN_ADATE_TO);
-
-
-                lst = logic.loadLISTAR_CARTERAMPF199(filter);
-            } catch (Exception e) {
-                throw new SpringException(e);
-            }
-            return lst;
-        }
-    
-
-    
-    /////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////
-
-    
+    ///
     
     ////UPDATE DATAENTRYMPF199
     
@@ -5943,41 +5891,36 @@ public class BankReconciliationController extends BaseController {
         }
         return gson.toJson(map);
     }
-    
-@RequestMapping(value = "conciliacionFaseDos")
-public @ResponseBody String conciliacionFaseDos(ModelMap map, HttpServletRequest request) {
+    @RequestMapping(value = "conciliacionFaseDos")
+    public @ResponseBody
+    String conciliacionFaseDos(ModelMap map, HttpServletRequest request) {
 
-    System.out.println("-------------- BANKRECONCILIATION : conciliacionFaseDos (FINAL) -------------");
-    
-    A2290Filter filter = new A2290Filter();
-        Gson gson = new Gson();
+        System.out.println("-------------- BANKRECONCILIATION : conciliacionFaseDos-------------");
+
         String msj = "";
-        String beanString = "";
+        Gson gson = new Gson();
 
-    try {
-        logic = new BankReconciliationLogic();
+        try {
+
+            logic = new BankReconciliationLogic();
             logic.setSession(this.serverSession.getServerSession());
-            
-            beanString = request.getParameter("beanString");
-            filter = gson.fromJson(beanString, A2290Filter.class);
-            String tipoConciliacion = filter.tipo;
-                   
-        // 3. TU LÓGICA
-        logic = new BankReconciliationLogic();
-        logic.setSession(this.serverSession.getServerSession());
-        msj = logic.processFaseDosConciliation(tipoConciliacion);
 
-        map.put("success", true);
-        map.put("Mensaje", msj);
+            msj = logic.processFaseDosConciliation(); 
 
-    } catch (Exception ex) {
-        ex.printStackTrace();
-        map.put("success", false);
-        map.put("Mensaje", ex.getMessage());
+            // 2. Respuesta de éxito
+            map.put("success", true);
+            map.put("Mensaje", msj);
+
+        } catch (NumberFormatException | SQLException ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage()); 
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+
+        return gson.toJson(map);
     }
-
-    return gson.toJson(map);
-}
     
     
     

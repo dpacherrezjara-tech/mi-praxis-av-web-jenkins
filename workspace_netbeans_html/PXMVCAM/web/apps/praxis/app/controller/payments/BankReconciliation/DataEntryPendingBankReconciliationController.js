@@ -249,11 +249,15 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryPendingBa
         var exceptionName;
         var beanTemp = {};
 
-
+        // --- NUEVA VALIDACIÓN PARA INDIA (Código 2) ---
         if (exceptionCode === '2') {
             var montoManual = this.getCleanNumberValue("txtRecaudacionINR");
-            var montoGrid = this.totalGridTemp || 0; 
+            var montoGrid = this.totalGridTemp || 0; // Recuperamos lo que guardó la lupa
+
+            // Calculamos diferencia absoluta para evitar problemas de decimales
             var diferencia = Math.abs(montoManual - montoGrid);
+
+            // Si hay diferencia (mayor a 1 centavo) o el monto es 0
             if (diferencia > 0.01 || montoManual === 0) {
                 Ext.Msg.alert('Descuadre', 
                     'No se puede guardar. El monto reportado (' + Ext.util.Format.usMoney(montoManual) + 
@@ -284,6 +288,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryPendingBa
                 break;
         }
 
+        // ... (Resto del código original de confirmación y envío) ...
         beanTemp.option = 'I'; 
 
         Ext.Msg.show({

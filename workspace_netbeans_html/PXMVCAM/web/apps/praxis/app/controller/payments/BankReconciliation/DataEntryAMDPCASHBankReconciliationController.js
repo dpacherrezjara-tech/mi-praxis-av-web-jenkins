@@ -1165,136 +1165,120 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
     },
 
     addCash_keyDownHandler: function () {
-    var me = this;
-    var fecha_a_validar = "";
+        var me = this;
+        var fecha_a_validar = "";
+        this.bean_scan.TICKET = Ext.getCmp(prototype.id + '-input-txtTKTScanCash').getValue();
+        let fechaFrom = Ext.getCmp(prototype.id + '-txtFromDateCash').getValue() || fecha_a_validar;
+        let fechato = Ext.getCmp(prototype.id + '-txtToDateCash').getValue() || fecha_a_validar;
+        let fechaClos = Ext.getCmp(prototype.id + '-txtMclos').getValue() || fecha_a_validar;
 
-    // Obtener valores del formulario
-    this.bean_scan.TICKET = Ext.getCmp(prototype.id + '-input-txtTKTScanCash').getValue();
-    let fechaFrom = Ext.getCmp(prototype.id + '-txtFromDateCash').getValue() || fecha_a_validar;
-    let fechato = Ext.getCmp(prototype.id + '-txtToDateCash').getValue() || fecha_a_validar;
-    let fechaClos = Ext.getCmp(prototype.id + '-txtMclos').getValue() || fecha_a_validar;
 
-    // --- Validación y Formateo de Fechas ---
-    if (fechaFrom || fechato || fechaClos) {
-        let fechaBaseFrom = Ext.isDate(fechaFrom) ? fechaFrom : Ext.Date.parse(fechaFrom, 'Y-m-d');
-        let fechaBaseTo = Ext.isDate(fechato) ? fechato : Ext.Date.parse(fechato, 'Y-m-d');
-        let fechaBaseClos = Ext.isDate(fechaClos) ? fechaClos : Ext.Date.parse(fechaClos, 'Y-m-d');
+        // --- Fechas ---
+        if (fechaFrom || fechato || fechaClos) {
+            let fechaBaseFrom = Ext.isDate(fechaFrom) ? fechaFrom : Ext.Date.parse(fechaFrom, 'Y-m-d');
+            let fechaBaseTo = Ext.isDate(fechato) ? fechato : Ext.Date.parse(fechato, 'Y-m-d');
+            let fechaBaseClos = Ext.isDate(fechaClos) ? fechaClos : Ext.Date.parse(fechaClos, 'Y-m-d');
 
-        if (fechaBaseFrom || fechaBaseTo || fechaClos) {
-            this.bean_scan.SDATE = Ext.Date.format(fechaBaseFrom, 'Ymd');
-            this.bean_scan.SDATE_MIN = Ext.Date.format(fechaBaseFrom, 'Ymd');
-            this.bean_scan.SDATE_MAX = Ext.Date.format(fechaBaseTo, 'Ymd');
-            this.bean_scan.MCLOS = Ext.Date.format(fechaBaseClos, 'Ymd');
-        } else {
-            console.warn('La fecha ingresada no es válida.');
-        }
-    }
-
-    // --- Otros filtros ---
-    this.bean_scan.SAGENT = Ext.getCmp(prototype.id + '-txtScanSAGENT').getValue();
-    this.bean_scan.SCONSOL = Ext.getCmp(prototype.id + '-txtScanSconsol').getValue();
-    this.bean_scan.SCURRENCY = Ext.getCmp(prototype.id + '-txtScanScurrency').getValue();
-    this.bean_scan.SCOUNTRY = Ext.getCmp(prototype.id + '-txtScanScountry').getValue();
-    this.bean_scan.CCUST = Ext.getCmp(prototype.id + '-cmbCLIENT').getValue();
-    this.bean_scan.SPAYMENT = Ext.getCmp(prototype.id + '-cmbTypePayment').getValue();
-
-    // Validación mínima de campos
-    if (!this.bean_scan.TICKET && !this.bean_scan.SDATE && !this.bean_scan.SAGENT && !this.bean_scan.SCONSOL) {
-        global.Msg({ msg: 'Fields to Scan must be filled out' });
-        return;
-    }
-
-    let gridConciliacion = Ext.getCmp(prototype.id + '-gridDataInfoScanConciliacion');
-    
-    // --- ELIMINADO: El cálculo de existingKeys aquí era innecesario porque no se pasaba al Ajax ---
-
-    // --- Parámetros AJAX ---
-    // NOTA: Si el WAF sigue bloqueando, verifica que 'this.bean_scan' no tenga caracteres especiales
-    var paramScan = { beanString: JSON.stringify(this.bean_scan) };
-
-    Ext.Ajax.request({
-        url: prototype.url + '/searchBeanAMDP_SCANCASH',
-        method: 'POST',
-        timeout: 60000000,
-        params: paramScan,
-        beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').mask('Loading...'),
-        
-        success: function (response, opts) {
-            Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
-            
-            // INTENTO DE DECODIFICACIÓN SEGURO
-            var res;
-            try {
-                res = Ext.JSON.decode(response.responseText);
-            } catch (e) {
-                console.error("Error al decodificar JSON. Posible bloqueo de WAF:", response.responseText);
-                global.Msg({ msg: 'Error de comunicación con el servidor (Posible bloqueo de seguridad).' });
-                return;
-            }
-
-            if (res.success) {
-                console.log("✅ Respuesta AJAX recibida");
-
-                let store = gridConciliacion.getStore();
-                let existingKeys = {};
-
-                // 1. Mapa de claves existentes para evitar duplicados visuales
-                store.each(function (record) {
-                    let key = record.get('CCUST') + '#' + record.get('TKT') + '#' + record.get('TDOC') + '#' + 
-                              record.get('SCARDNCOR') + '#' + record.get('SAUTHOC') + '#' + 
-                              record.get('SEQ') + '#' + record.get('CORRL');
-                    existingKeys[key] = true;
-                });
-
-                let recordsToAdd = []; // Array temporal para optimizar inserción
-                let nuevos = 0;
-                let duplicados = 0;
-
-                Ext.Array.each(res.data, function (newRecord) {
-                    let key = newRecord.CCUST + '#' + newRecord.TKT + '#' + newRecord.TDOC + '#' + 
-                              newRecord.SCARDNCOR + '#' + newRecord.SAUTHOC + '#' + 
-                              newRecord.SEQ + '#' + newRecord.CORRL;
-
-                    if (!existingKeys[key]) {
-                        newRecord.id = key || Ext.id(null, 'rec-');
-                        recordsToAdd.push(newRecord); // Agregamos al array, no al store directamente
-                        existingKeys[key] = true;     // Marcamos como existente para no repetir en este mismo lote
-                        nuevos++;
-                    } else {
-                        duplicados++;
-                    }
-                });
-
-                // 2. Inserción masiva (Mucho más rápido)
-                if (recordsToAdd.length > 0) {
-                    store.add(recordsToAdd);
-                }
-
-                console.log(`🟢 ${nuevos} registros nuevos agregados, ${duplicados} duplicados ignorados.`);
-
-                // Manejo de la UI
-                Ext.getCmp(prototype.id + '-panelDataInfoScanAgent').show();
-                Ext.getCmp(prototype.id + '-containerPaginationToolbar').hide();
-                Ext.getCmp(prototype.id + '-containerPageSummary').hide();
-                Ext.getCmp(prototype.id + '-gridDataInfoScanAgent').hide();
-                gridConciliacion.show();
-
-                if (typeof meDe !== 'undefined' && meDe.calcularMontos) {
-                    meDe.calcularMontos();
-                }
-
+            if (fechaBaseFrom || fechaBaseTo || fechaClos) {
+                this.bean_scan.SDATE = Ext.Date.format(fechaBaseFrom, 'Ymd');
+                this.bean_scan.SDATE_MIN = Ext.Date.format(fechaBaseFrom, 'Ymd');
+                this.bean_scan.SDATE_MAX = Ext.Date.format(fechaBaseTo, 'Ymd');
+                this.bean_scan.MCLOS = Ext.Date.format(fechaBaseClos, 'Ymd');
             } else {
-                global.Msg({ msg: res.Mensaje || 'Error desconocido del servidor' });
+                console.warn('La fecha ingresada no es válida.');
             }
-        },
-
-        failure: function (response, opts) {
-            Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
-            console.log('Fallo en el servidor: ' + response.status);
-            global.Msg({ msg: 'Error de conexión: ' + response.status });
         }
-    });
-},
+
+        // --- Otros filtros ---
+        this.bean_scan.SAGENT = Ext.getCmp(prototype.id + '-txtScanSAGENT').getValue();
+        this.bean_scan.SCONSOL = Ext.getCmp(prototype.id + '-txtScanSconsol').getValue();
+        this.bean_scan.SCURRENCY = Ext.getCmp(prototype.id + '-txtScanScurrency').getValue();
+        this.bean_scan.SCOUNTRY = Ext.getCmp(prototype.id + '-txtScanScountry').getValue();
+        this.bean_scan.CCUST = Ext.getCmp(prototype.id + '-cmbCLIENT').getValue();
+        this.bean_scan.SPAYMENT = Ext.getCmp(prototype.id + '-cmbTypePayment').getValue();
+
+        if (!this.bean_scan.TICKET && !this.bean_scan.SDATE && !this.bean_scan.SAGENT && !this.bean_scan.SCONSOL) {
+            global.Msg({msg: 'Fields to Scan must be filled out'});
+            return;
+        }
+
+        let gridConciliacion = Ext.getCmp(prototype.id + '-gridDataInfoScanConciliacion');
+        let store = gridConciliacion.getStore();
+
+        // --- Construir mapa de registros actuales ---
+        let existingKeys = {};
+        store.each(function (rec) {
+            let key = `${rec.get('CCUST')}#${rec.get('TKT')}#${rec.get('TDOC')}#${rec.get('SCARDNCOR')}#${rec.get('SAUTHOC')}#${rec.get('SEQ')}#${rec.get('CORRL')}`;
+            existingKeys[key] = true;
+        });
+
+        // --- Parámetros AJAX ---
+        var paramScan = {beanString: JSON.stringify(this.bean_scan)};
+        Ext.Ajax.request({
+            url: prototype.url + '/searchBeanAMDP_SCANCASH',
+            method: 'POST',
+            timeout: 60000000,
+            params: paramScan,
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').mask('Loading...'),
+            success: function (response, opts) {
+                Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
+                var res = Ext.JSON.decode(response.responseText);
+
+                if (res.success) {
+                    console.log("✅ Respuesta AJAX:", res);
+
+                    let gridCmp = Ext.getCmp(prototype.id + '-gridDataInfoScanConciliacion');
+                    let store = gridCmp.getStore();
+
+                    // 🔹 Convertimos los datos existentes a un mapa por clave compuesta
+                    let existingKeys = {};
+                    store.each(function (record) {
+                        let key = record.get('CCUST') + '#' + record.get('TKT') + '#' + record.get('TDOC') + '#' + record.get('SCARDNCOR') + '#' + record.get('SAUTHOC') + '#' + record.get('SEQ') + '#' + record.get('CORRL');
+                        console.log(key, "Clave compuesta");
+                        console.log("Entro a este For");
+                        existingKeys[key] = true;
+                    });
+
+                    let nuevos = 0;
+                    let duplicados = 0;
+
+                    Ext.Array.each(res.data, function (newRecord, index) {
+//                        let key = newRecord.TKT + '#' + newRecord.SVFOPNETR + '#' + newRecord.SCURRENCY;
+                        let key = newRecord.CCUST + '#' + newRecord.TKT + '#' + newRecord.TDOC + '#' + newRecord.SCARDNCOR + '#' + newRecord.SAUTHOC + '#' + newRecord.SEQ + '#' + newRecord.CORRL;
+
+                        if (!existingKeys[key]) {
+                            newRecord.id = key || Ext.id(null, 'rec-');
+                            store.add(newRecord);
+                            existingKeys[key] = true;
+                            nuevos++;
+                        } else {
+                            duplicados++;
+                        }
+                    });
+
+                    console.log(`🟢 ${nuevos} registros nuevos agregados, ${duplicados} duplicados ignorados.`);
+
+
+                    Ext.getCmp(prototype.id + '-panelDataInfoScanAgent').show();
+                    Ext.getCmp(prototype.id + '-containerPaginationToolbar').hide();
+                    Ext.getCmp(prototype.id + '-containerPageSummary').hide();
+                    Ext.getCmp(prototype.id + '-gridDataInfoScanAgent').hide();
+                    gridConciliacion.show();
+
+                    meDe.calcularMontos();
+
+                } else {
+                    global.Msg({msg: res.Mensaje});
+                }
+            },
+
+            failure: function (response, opts) {
+                Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
+                console.log('server-side failure with status code ' + response.status);
+            }
+        });
+    },
+
     onConciliationCash: function (element) {
         var me = this;
 //        var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');

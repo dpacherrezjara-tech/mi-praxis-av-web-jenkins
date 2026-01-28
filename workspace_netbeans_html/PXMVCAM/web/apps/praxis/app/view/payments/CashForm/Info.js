@@ -96,7 +96,6 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                                 }
                                             },
                                             {
-                                                
                                                 text: '<span style="color:black;font-weight:bold;">Tickets</span>', menuDisabled: true, style: 'background:#c9daf5;color:black !important',
                                                 columns: [
                                                     {
@@ -341,7 +340,6 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                                     return  value;
                                                 }},
                                             {
-                                                 id: prototype.id + '-columnName01',
                                                 text: '<span style="color:black;font-weight:bold;">Tickets</span>', menuDisabled: true, style: 'background:#c9daf5;color:black !important',
                                                 columns: [
                                                     {
@@ -1091,7 +1089,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                                                     return value;
                                                                 },
                                                                 listeners: {
-                                                                    click: 'onGridDataDetailPrincipalCredit',
+                                                                    click: 'onGridDataDetailPrincipal',
                                                                     args: ['C']
                                                                 }
                                                             },
@@ -1251,7 +1249,6 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                                     return  value;
                                                 }},
                                             {
-                                                id: prototype.id + '-columnName02',
                                                 text: '<span style="color:black;font-weight:bold;">Tickets</span>', menuDisabled: true, style: 'background:#c9daf5;color:black !important',
                                                 columns: [
                                                     {
