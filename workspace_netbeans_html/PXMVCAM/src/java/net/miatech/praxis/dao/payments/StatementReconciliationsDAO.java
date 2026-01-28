@@ -14,6 +14,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import net.miatech.beans.A1691Filter;
 import net.miatech.beans.spring.UserView;
 import net.miatech.beans.spring.implement.IServerSession;
@@ -1438,9 +1439,10 @@ public class StatementReconciliationsDAO {
         return lstTkts;
     }
     
-    public List<A2290Filter> loadPX002CASH(A2290Filter filter) throws SQLException, Exception {
+    public Map<String, Object> loadPX002CASH(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
+        List<String> cuentasLista = new ArrayList<>(); // Cambiado a List<String> para las cuentas
         A2290Filter beanTkt;
         double totNETOEECC = 0, totNETOSETLEMENT = 0;
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
@@ -1454,48 +1456,49 @@ public class StatementReconciliationsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL PRAXISMP.MPS393 (?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.MPS393 (?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(6, Types.INTEGER);
             cstmt.registerOutParameter(7, Types.INTEGER);
             cstmt.registerOutParameter(8, Types.INTEGER);
             cstmt.registerOutParameter(9, Types.INTEGER);
+            cstmt.registerOutParameter(10, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_ADATE);
             cstmt.setString(3, filter.IN_SCURRENCY);
             cstmt.setString(4, filter.IN_STVAL);
             cstmt.setString(5, filter.IN_COUNTRY.trim());
+            cstmt.setString(6, filter.IN_ACCOUNTS.trim());
 
-            cstmt.setInt(6, filter.page.PAGNUM);
-            cstmt.setInt(7, filter.page.PAGROW);
-            cstmt.setInt(8, filter.page.TOTPAG);
-            cstmt.setInt(9, filter.page.TOTROW);
+            cstmt.setInt(7, filter.page.PAGNUM);
+            cstmt.setInt(8, filter.page.PAGROW);
+            cstmt.setInt(9, filter.page.TOTPAG);
+            cstmt.setInt(10, filter.page.TOTROW);
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(6);
-            filter.page.PAGROW = cstmt.getInt(7);
-            filter.page.TOTPAG = cstmt.getInt(8);
-            filter.page.TOTROW = cstmt.getInt(9);
+            filter.page.PAGNUM = cstmt.getInt(7);
+            filter.page.PAGROW = cstmt.getInt(8);
+            filter.page.TOTPAG = cstmt.getInt(9);
+            filter.page.TOTROW = cstmt.getInt(10);
 
+            // Primera lista: Totales
             rst = cstmt.getResultSet();
-
             while (rst.next()) {
                 totNETOEECC = rst.getDouble("NETO");
                 totNETOSETLEMENT = rst.getDouble("NETOC");
             }
             rst.close();
 
+            // Segunda lista: Detalles
             if (cstmt.getMoreResults()) {
                 rst = cstmt.getResultSet();
 
                 while (rst.next()) {
-
                     beanTkt = new A2290Filter();
                     beanTkt.IN_TDOC = filter.IN_TDOC.trim();
                     beanTkt.IN_DATE = filter.IN_DATE.trim();
@@ -1515,28 +1518,16 @@ public class StatementReconciliationsDAO {
                     beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
                     beanTkt.TDOC = rst.getString("TDOC").trim();
                     beanTkt.ADATE = rst.getString("ADATE").trim();
-                    beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();  
-                    beanTkt.MERCHAND = rst.getString("MERCHAND").trim();  
-                    beanTkt.BANDOC = rst.getString("BANDOC").trim();  
+                    beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
+                    beanTkt.MERCHAND = rst.getString("MERCHAND").trim();
+                    beanTkt.BANDOC = rst.getString("BANDOC").trim();
                     beanTkt.NETO = rst.getDouble("NETO");
                     beanTkt.NETOC = rst.getDouble("NETOC");
                     beanTkt.CODPRO = rst.getString("CODPRO");
                     beanTkt.CCUSTPRO = rst.getString("CCUSTPRO");
                     beanTkt.FREGLA = rst.getString("FREGLA");
+                    beanTkt.ACCOUNT = rst.getString("ACCOUNT");
 
-//                    if (tinput == null || tinput.trim().isEmpty()) {
-//                        String cfuente = rst.getString("CFUENTE");
-//                        String Adjust = "1";
-//                        tinput = (cfuente != null && !cfuente.isEmpty()) ? cfuente.substring(0, 1) : "";
-//                        beanTkt.TINPUT = "A";
-//                        beanTkt.ADJUST = Adjust;
-//                        
-//                    } else {
-//                        tinput = tinput.substring(0, 1);
-//                        beanTkt.TINPUT = tinput;
-//                        
-//                    }
-                    
                     beanTkt.QTYTRAN1 = rst.getLong("QTYTRAN1");
                     beanTkt.totNETOEECC = totNETOEECC;
                     beanTkt.totNETOSETLEMENT = totNETOSETLEMENT;
@@ -1553,9 +1544,24 @@ public class StatementReconciliationsDAO {
                 rst.close();
             }
 
+            // Tercera lista: Cuentas distintas (ACCOUNT)
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+
+                while (rst.next()) {
+                    String cuenta = rst.getString("ACCOUNT");
+                    if (cuenta != null && !cuenta.trim().isEmpty()) {
+                        cuentasLista.add(cuenta.trim());
+                    }
+                }
+                rst.close();
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             e.getMessage();
+            logError.error("Exception -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+            throw e;
         } finally {
             if (rst != null) {
                 try {
@@ -1571,11 +1577,18 @@ public class StatementReconciliationsDAO {
                     logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
                 }
             }
-            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
             pasarGarbageCollector();
         }
 
-        return lstTkts;
+        // Devolver ambas listas en un Map
+        Map<String, Object> result = new HashMap<>();
+        result.put("detalles", lstTkts);
+        result.put("cuentas", cuentasLista); // Cambiado el nombre a "cuentas" para mayor claridad
+
+        return result;
     }
     
     

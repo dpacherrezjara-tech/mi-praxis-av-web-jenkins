@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
@@ -624,17 +625,21 @@ public class StatementReconciliationsController extends BaseController {
         }
         return lst;
     }
-    
-    
+
     @RequestMapping(value = "searchDetLiquidCash")
     public @ResponseBody
     String searchDetLiquidCash(ModelMap map, HttpServletRequest request) {
         System.out.println("-------------- StatementReconciliations : searchDetLiquid+Cash-------------");
         try {
             Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
-            List<A2290Filter> lst = this.getListDetLiquidCash(request, false);
+
+            Map<String, Object> result = this.getListDetLiquidCash(request, false);
+            List<A2290Filter> lst = (List<A2290Filter>) result.get("detalles");
+            List<String> cuentasLista = (List<String>) result.get("cuentas");
+
             map.put("success", true);
             map.put("data", lst);
+            map.put("cuentas", cuentasLista); // Cambiado aquí
             map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
         } catch (SQLException e) {
             map.put("success", false);
@@ -646,11 +651,12 @@ public class StatementReconciliationsController extends BaseController {
         return new Gson().toJson(map);
     }
 
-    public List<A2290Filter> getListDetLiquidCash(HttpServletRequest request, Boolean bExcel) {
+    public Map<String, Object> getListDetLiquidCash(HttpServletRequest request, Boolean bExcel) {
 
         List<A2290Filter> lst = new ArrayList<>(0);
         A2290Filter filter;
         Gson gson = new Gson();
+        Map<String, Object> result = new HashMap<>();
         String beanString;
 
         try {
@@ -675,18 +681,15 @@ public class StatementReconciliationsController extends BaseController {
                 filter.page.PAGNUM = 1;
             }
 
-            lst = logic.loadPX002CASH(filter);
+            result = logic.loadPX002CASH(filter);
         } catch (Exception e) {
             throw new SpringException(e);
         }
-        return lst;
+        return result;
     }
-    
-    
+
     /// detalle cash
-    
-    
-     @RequestMapping(value = "searchCashDetail")
+    @RequestMapping(value = "searchCashDetail")
     public @ResponseBody
     String searchCashDetail(ModelMap map, HttpServletRequest request) {
         System.out.println("-------------- StatementReconciliations : searchCashDetail-------------");
@@ -741,9 +744,7 @@ public class StatementReconciliationsController extends BaseController {
         }
         return lst;
     }
-    
-    
-    
+
     ///////
     @RequestMapping(value = "searchDetSalesDirect")
     public @ResponseBody
@@ -3692,6 +3693,7 @@ public class StatementReconciliationsController extends BaseController {
         return new Gson().toJson(map);
 
     }
+
     @RequestMapping(value = "/searchBeanCash")
     public @ResponseBody
     String searchBeanCash(ModelMap map, HttpServletRequest request) {
@@ -3724,6 +3726,7 @@ public class StatementReconciliationsController extends BaseController {
         return new Gson().toJson(map);
 
     }
+
     @RequestMapping(value = "/searchBeanSalesDirectExtracto")
     public @ResponseBody
     String searchBeanSalesDirectExtracto(ModelMap map, HttpServletRequest request) {
@@ -3756,8 +3759,6 @@ public class StatementReconciliationsController extends BaseController {
         return new Gson().toJson(map);
 
     }
-    
-    
 
     @RequestMapping(value = "/searchBeanMPF060")
     public @ResponseBody
@@ -3945,6 +3946,7 @@ public class StatementReconciliationsController extends BaseController {
         return new Gson().toJson(map);
 
     }
+
     @RequestMapping(value = "/searchBean_LiquiCash")
     public @ResponseBody
     String searchBean_LiquiCash(ModelMap map, HttpServletRequest request) {
@@ -3979,6 +3981,7 @@ public class StatementReconciliationsController extends BaseController {
         return new Gson().toJson(map);
 
     }
+
     @RequestMapping(value = "/searchBean_SalesDirect")
     public @ResponseBody
     String searchBean_SalesDirect(ModelMap map, HttpServletRequest request) {
@@ -4382,7 +4385,7 @@ public class StatementReconciliationsController extends BaseController {
         byte[] bytes = null;
         String message = "";
         String filename = "";
-        String tolerancia = "" ;
+        String tolerancia = "";
 
         try {
 
@@ -4390,7 +4393,7 @@ public class StatementReconciliationsController extends BaseController {
             filename = request.getParameter("filename");
             tolerancia = request.getParameter("tolerancia");
 
-            message = uploadFileConciliaECColombia(dataFile,tolerancia );
+            message = uploadFileConciliaECColombia(dataFile, tolerancia);
 
             map.put("success", true);
             map.put("msjResult", message);
@@ -4401,7 +4404,7 @@ public class StatementReconciliationsController extends BaseController {
         return new Gson().toJson(map);
     }
 
-    private String uploadFileConciliaECColombia(byte[] bytes, String tolerancia ) throws Exception {
+    private String uploadFileConciliaECColombia(byte[] bytes, String tolerancia) throws Exception {
 
         Functions.msjConsola("PRAXISMP", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
@@ -4478,30 +4481,29 @@ public class StatementReconciliationsController extends BaseController {
                 String merchand = buildInClause("MERCHAND", uniqueMERCHAND);
                 String sagent = buildInClause("SAGENT", uniqueSAGENT);
                 String red = buildInClause("RED", uniqueRED);
-                
+
                 String QUERY = codebank + " AND " + adate + " AND " + sdate + " AND " + merchand + " AND " + sagent + " AND " + red;
                 System.out.println(QUERY);
                 String primerADATE = uniqueADATE.iterator().next();
                 listaDataEECC = logic.CONFIEC(BANDOC);
                 String TDOC = listaDataEECC.get(0).TDOC;
                 listaDataLIQUI = logic.CONFILIQ(QUERY, TDOC);
-                listaDataLIQUI_SEQ = logic.CONFILIQ_SEQ(QUERY,TDOC);
+                listaDataLIQUI_SEQ = logic.CONFILIQ_SEQ(QUERY, TDOC);
                 objMPF101 = logic.GET_TOLERANCIA(primerADATE);
-                
 
-                if (!listaDataEECC.isEmpty() && (!listaDataLIQUI.isEmpty() || !listaDataLIQUI_SEQ.isEmpty() ) ) {
-                    double netoEECC  = Double.parseDouble(listaDataEECC.get(0).NETOS);
+                if (!listaDataEECC.isEmpty() && (!listaDataLIQUI.isEmpty() || !listaDataLIQUI_SEQ.isEmpty())) {
+                    double netoEECC = Double.parseDouble(listaDataEECC.get(0).NETOS);
                     double netoLIQUI = !listaDataLIQUI.isEmpty() ? Double.parseDouble(listaDataLIQUI.get(0).NETOS) : 0;
-                    double netoLIQUI_SEQ = !listaDataLIQUI_SEQ.isEmpty() ? Double.parseDouble(listaDataLIQUI_SEQ.get(0).NETOS): 0;
-                    if (tolerancia.equals("Y")){
+                    double netoLIQUI_SEQ = !listaDataLIQUI_SEQ.isEmpty() ? Double.parseDouble(listaDataLIQUI_SEQ.get(0).NETOS) : 0;
+                    if (tolerancia.equals("Y")) {
                         isTolerancia = Math.abs(netoEECC - netoLIQUI) <= objMPF101.SVFOPD;
                         isTolerancia_seq = Math.abs(netoEECC - netoLIQUI_SEQ) <= objMPF101.SVFOPD;
-                    }else{
+                    } else {
                         isTolerancia = true;
                         isTolerancia_seq = true;
                     }
                     for (int a = 0; a < listaDataEECC.size(); a++) {
-                        if (  isTolerancia && COUNT == listaDataLIQUI.get(0).QTY) {
+                        if (isTolerancia && COUNT == listaDataLIQUI.get(0).QTY) {
                             //LOS MONTOS CONCILIAN, SE PROCEDE CON LA CONCILIACION 
                             String ban = listaDataEECC.get(a).BANDOC;
                             String dateci = listaDataEECC.get(a).DATECI;
@@ -4512,7 +4514,7 @@ public class StatementReconciliationsController extends BaseController {
                             String prda = listaDataEECC.get(a).PRDA;
 
                             boolean conci1 = logic.CONCILIA1(QUERY, ban, dateci, tranci, qty, netos);
-                            boolean conci2 = logic.CONCILIA2(QUERY, ban, dateci, tranci, valdate, prda,TDOC);
+                            boolean conci2 = logic.CONCILIA2(QUERY, ban, dateci, tranci, valdate, prda, TDOC);
 
                             if (conci1 && conci2) {
                                 message = "Bandoc: " + BANDOC.trim() + " whith amount: " + listaDataLIQUI.get(0).NETOS + " has concilied with " + listaDataLIQUI.get(0).QTY + " settlements.";
@@ -4520,7 +4522,7 @@ public class StatementReconciliationsController extends BaseController {
                                 message = "Error in conciliation";
                             }
 
-                        } else if ( isTolerancia_seq && COUNT == listaDataLIQUI_SEQ.get(0).QTY) {
+                        } else if (isTolerancia_seq && COUNT == listaDataLIQUI_SEQ.get(0).QTY) {
 
                             //LOS MONTOS CONCILIAN, SE PROCEDE CON LA CONCILIACION 
                             String ban = listaDataEECC.get(a).BANDOC;
@@ -4532,7 +4534,7 @@ public class StatementReconciliationsController extends BaseController {
                             String prda = listaDataEECC.get(a).PRDA;
 
                             boolean conci1 = logic.CONCILIA1(QUERY, ban, dateci, tranci, qty, netos);
-                            boolean conci2 = logic.CONCILIA2_SEQ(QUERY, ban, dateci, tranci, valdate, prda,TDOC);
+                            boolean conci2 = logic.CONCILIA2_SEQ(QUERY, ban, dateci, tranci, valdate, prda, TDOC);
 
                             if (conci1 && conci2) {
                                 message = "Bandoc: " + BANDOC.trim() + " whith amount: " + listaDataLIQUI_SEQ.get(0).NETOS + " has concilied with " + listaDataLIQUI_SEQ.get(0).QTY + " settlements.";
@@ -4579,10 +4581,9 @@ public class StatementReconciliationsController extends BaseController {
 
         return clause.toString();
     }
-    
+
     // CASH
-    
-        @RequestMapping(value = "searchCash")
+    @RequestMapping(value = "searchCash")
     public @ResponseBody
     String searchCash(ModelMap map, HttpServletRequest request) {
         System.out.println("-------------- StatementReconciliations : SearchCash-------------");
@@ -4629,8 +4630,10 @@ public class StatementReconciliationsController extends BaseController {
         }
         return lst;
     }
+
     @RequestMapping(value = "getCSV")
-    public @ResponseBody void getCSV(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public @ResponseBody
+    void getCSV(HttpServletRequest request, HttpServletResponse response) throws Exception {
         System.out.println("Report : getCSV");
         String rutaFolder = "";
         String country = request.getParameter("country");
@@ -4656,20 +4659,20 @@ public class StatementReconciliationsController extends BaseController {
         } else if ("PRO".equals(ruta)) {
             rutaCarpeta = "prod";
         } else {
-            rutaCarpeta = ""; 
+            rutaCarpeta = "";
         }
 
         System.out.println("esta es mi ruta" + ruta);
-        if(input.equals("B")){
-            rutaFolder = "\\\\10.0.0.87\\av\\Efectivo\\"+rutaCarpeta+"\\process\\BSP\\"+country+"\\2025";
-        }else if(input.equals("I")){
-            rutaFolder = "\\\\10.0.0.87\\av\\Efectivo\\"+rutaCarpeta+"\\process\\ICCS\\2025\\"+ccustR;
-        }else if(input.equals("A")){
-            rutaFolder = "\\\\10.0.0.87\\av\\Efectivo\\"+rutaCarpeta+"\\process\\ARC\\"+country+"\\2025";
-        }else{
+        if (input.equals("B")) {
+            rutaFolder = "\\\\10.0.0.87\\av\\Efectivo\\" + rutaCarpeta + "\\process\\BSP\\" + country + "\\2025";
+        } else if (input.equals("I")) {
+            rutaFolder = "\\\\10.0.0.87\\av\\Efectivo\\" + rutaCarpeta + "\\process\\ICCS\\2025\\" + ccustR;
+        } else if (input.equals("A")) {
+            rutaFolder = "\\\\10.0.0.87\\av\\Efectivo\\" + rutaCarpeta + "\\process\\ARC\\" + country + "\\2025";
+        } else {
             rutaFolder = "";
         }
-        
+
         // Carpeta base donde buscar los archivos CSV
 //        Path folderPath = Paths.get("\\\\10.0.0.87\\av\\Efectivo\\"+rutaCarpeta+"\\process\\BSP\\"+country+"\\2025");
         Path folderPath = Paths.get(rutaFolder);
@@ -4681,18 +4684,18 @@ public class StatementReconciliationsController extends BaseController {
             Path matchedFile = null;
             for (Path path : stream) {
                 String fileName = path.getFileName().toString();
-                if(input.equals("B")){
+                if (input.equals("B")) {
                     if (fileName.startsWith(country) && fileName.contains(date)) {
                         matchedFile = path;
                         break;
                     }
-                }else if(input.equals("I")){
+                } else if (input.equals("I")) {
                     if (fileName.contains(cycle)) {
                         matchedFile = path;
                         break;
                     }
                 }
-                
+
             }
 
             if (matchedFile == null) {
@@ -4707,8 +4710,7 @@ public class StatementReconciliationsController extends BaseController {
             response.setContentType("text/csv");
             response.setHeader("Content-Disposition", "attachment; filename=\"" + matchedFile.getFileName().toString() + "\"");
 
-            try (FileInputStream fis = new FileInputStream(matchedFile.toFile());
-                 OutputStream out = response.getOutputStream()) {
+            try (FileInputStream fis = new FileInputStream(matchedFile.toFile()); OutputStream out = response.getOutputStream()) {
 
                 byte[] buffer = new byte[4096];
                 int bytesRead;
@@ -4725,11 +4727,11 @@ public class StatementReconciliationsController extends BaseController {
             response.getWriter().write("Error al buscar o descargar el archivo CSV");
         }
     }
-    
+
     // EXCEL DE CASH 
-    
     @RequestMapping(value = "getXLSXDetCashMain")
-    public @ResponseBody void getXLSXDetCashMain(HttpServletRequest request, HttpServletResponse response) {
+    public @ResponseBody
+    void getXLSXDetCashMain(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("Report : getXLSXDetCashMain");
         String fileNameDownload = String.format("Control_Estados_de_Cuenta_%s.xlsx", Functions.getFechaActual());
 
@@ -4903,8 +4905,10 @@ public class StatementReconciliationsController extends BaseController {
             throw new SpringException(e);
         }
     }
+
     @RequestMapping(value = "getXLSXDetCashMainExtract")
-    public @ResponseBody void getXLSXDetCashMainExtract(HttpServletRequest request, HttpServletResponse response) {
+    public @ResponseBody
+    void getXLSXDetCashMainExtract(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("Report : getXLSXDetCashMainExtract");
 
         String fileNameDownload = String.format("Detalle_Cash_Main_%s.xlsx", Functions.getFechaActual());
@@ -4916,23 +4920,47 @@ public class StatementReconciliationsController extends BaseController {
             Sheet sheet = workbook.createSheet("Detalle Cash Main");
 
             // --- Obtener datos ---
-            List<A2290Filter> listaData = this.getListDetLiquidCash(request, true);
-            System.out.println("Tamaño de lista devuelta : " + listaData.size());
+            Map<String, Object> resultData = this.getListDetLiquidCash(request, true);
+
+            // 🔴🔴🔴 CORRECCIÓN: Extraer la lista de detalles del Map 🔴🔴🔴
+            List<A2290Filter> listaData = (List<A2290Filter>) resultData.get("detalles");
+
+            System.out.println("Tamaño de lista devuelta : " + (listaData != null ? listaData.size() : 0));
+
+            // --- Validar que hay datos ---
+            if (listaData == null || listaData.isEmpty()) {
+                System.out.println("No hay datos para exportar");
+
+                // Crear mensaje de error en el Excel
+                Row row = sheet.createRow(0);
+                Cell cell = row.createCell(0);
+                cell.setCellValue("No hay datos para exportar");
+
+                // Escribir y enviar respuesta
+                FileOutputStream fos = new FileOutputStream(file);
+                workbook.write(fos);
+                fos.close();
+
+                response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+
+                Files.copy(file.toPath(), response.getOutputStream());
+                response.getOutputStream().flush();
+
+                workbook.close();
+                file.delete();
+                return;
+            }
 
             // --- Estilos ---
             CellStyle headerStyle = workbook.createCellStyle();
             Font headerFont = workbook.createFont();
-            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD); // En POI 3.x se usa setBoldweight
+            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
             headerStyle.setFont(headerFont);
-
-            // Alineación centrada (versión antigua usa short)
             headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
             headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-
-            // Fondo gris y bordes
             headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
             headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
-
             headerStyle.setBorderBottom(CellStyle.BORDER_THIN);
             headerStyle.setBorderTop(CellStyle.BORDER_THIN);
             headerStyle.setBorderLeft(CellStyle.BORDER_THIN);
@@ -4953,8 +4981,8 @@ public class StatementReconciliationsController extends BaseController {
 
             // --- Crear cabeceras ---
             String[] headers = {
-                "Country", "Doc. Type", "Status", "Merchant", 
-                "Doc SAP BANK", "Abono Date", "Currency", 
+                "Country", "Doc. Type", "Status", "Merchant",
+                "Doc SAP BANK", "Account","Abono Date", "Currency",
                 "Neto EECC", "Neto Settlement", "Source"
             };
 
@@ -4971,44 +4999,64 @@ public class StatementReconciliationsController extends BaseController {
                 Row excelRow = sheet.createRow(rowNum++);
                 int col = 0;
 
-                excelRow.createCell(col++).setCellValue(row.DESC_SCOUNTRY);
+                // Country
+                excelRow.createCell(col++).setCellValue(row.DESC_SCOUNTRY != null ? row.DESC_SCOUNTRY : "");
+
+                // Doc Type
                 String docType = "";
                 if ("S".equals(row.TDOC)) {
                     docType = "Sales";
-                }  else {
+                } else {
                     docType = row.TDOC != null ? row.TDOC : "";
                 }
                 excelRow.createCell(col++).setCellValue(docType);
-                String Stval = "";
-                if ("1".equals(row.STVAL)) {
-                    Stval = "Match";
-                }  else if ("3".equals(row.STVAL)) {
-                    Stval = "Pending";
-                } else if ("4".equals(row.STVAL)) {
-                    Stval = "Match Manual";
-                } else {
-                    docType = row.STVAL != null ? row.STVAL : "";
-                }
-                excelRow.createCell(col++).setCellValue(Stval);
-                excelRow.createCell(col++).setCellValue(row.MERCHAND);
-                excelRow.createCell(col++).setCellValue(row.BANDOC);
-                excelRow.createCell(col++).setCellValue(row.ADATE);
-                excelRow.createCell(col++).setCellValue(row.SCURRENCY);
 
+                // Status
+                String stval = "";
+                if ("1".equals(row.STVAL)) {
+                    stval = "Match";
+                } else if ("3".equals(row.STVAL)) {
+                    stval = "Pending";
+                } else if ("5".equals(row.STVAL)) {  // 🔴 CORRECCIÓN: era "4", debe ser "5"
+                    stval = "Match Manual";
+                } else {
+                    stval = row.STVAL != null ? row.STVAL : "";
+                }
+                excelRow.createCell(col++).setCellValue(stval);
+
+                // Merchant
+                excelRow.createCell(col++).setCellValue(row.MERCHAND != null ? row.MERCHAND : "");
+
+                // Doc SAP BANK
+                excelRow.createCell(col++).setCellValue(row.BANDOC != null ? row.BANDOC : "");
+                
+                // ACCOUNT
+                excelRow.createCell(col++).setCellValue(row.ACCOUNT != null ? row.ACCOUNT : "");
+
+                // Abono Date
+                excelRow.createCell(col++).setCellValue(row.ADATE != null ? row.ADATE : "");
+
+                // Currency
+                excelRow.createCell(col++).setCellValue(row.SCURRENCY != null ? row.SCURRENCY : "");
+
+                // Neto EECC
                 Cell cellNetoEECC = excelRow.createCell(col++);
                 cellNetoEECC.setCellValue(row.NETO);
                 cellNetoEECC.setCellStyle(numberStyle);
 
+                // Neto Settlement
                 Cell cellNetoSettlement = excelRow.createCell(col++);
                 cellNetoSettlement.setCellValue(row.NETOC);
                 cellNetoSettlement.setCellStyle(numberStyle);
 
-                excelRow.createCell(col++).setCellValue(row.TINPUT);
+                // Source
+                excelRow.createCell(col++).setCellValue(row.TINPUT != null ? row.TINPUT : "");
 
-                // Aplicar estilo general
+                // Aplicar estilo general a las celdas de texto
                 for (int j = 0; j < headers.length; j++) {
-                    if (j < 7 || j == 9) {
-                        excelRow.getCell(j).setCellStyle(dataStyle);
+                    Cell cell = excelRow.getCell(j);
+                    if (cell != null && (j < 8 || j == 10)) { // Columnas 0-6 y 9 son texto
+                        cell.setCellStyle(dataStyle);
                     }
                 }
             }
@@ -5037,7 +5085,5 @@ public class StatementReconciliationsController extends BaseController {
             throw new SpringException(e);
         }
     }
-
-
 
 }
