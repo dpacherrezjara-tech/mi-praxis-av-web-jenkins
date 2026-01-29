@@ -52,7 +52,7 @@ public class StatementReconciliationsDAO {
 
     public void setSession(IServerSession ss) {
         session = ss;
-    }
+    }    
 
     public List<A2290Filter> loadPX287SQP00838(A2290Filter filter) throws SQLException, Exception {
 
