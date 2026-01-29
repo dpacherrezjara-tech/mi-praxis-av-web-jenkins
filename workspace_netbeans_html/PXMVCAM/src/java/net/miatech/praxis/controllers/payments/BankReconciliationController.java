@@ -5943,44 +5943,44 @@ public class BankReconciliationController extends BaseController {
         }
         return gson.toJson(map);
     }
-//    
-//@RequestMapping(value = "conciliacionFaseDos")
-//public @ResponseBody String conciliacionFaseDos(ModelMap map, HttpServletRequest request) {
-//
-//    System.out.println("-------------- BANKRECONCILIATION : conciliacionFaseDos (FINAL) -------------");
-//    
-//    A2290Filter filter = new A2290Filter();
-//        Gson gson = new Gson();
-//        String msj = "";
-//        String beanString = "";
-//
-//    try {
-//        logic = new BankReconciliationLogic();
-//            logic.setSession(this.serverSession.getServerSession());
-//            
-//            beanString = request.getParameter("beanString");
-//            filter = gson.fromJson(beanString, A2290Filter.class);
-//            String tipoConciliacion = filter.tipo;
-//                   
-//        // 3. TU LÓGICA
-//        logic = new BankReconciliationLogic();
-//        logic.setSession(this.serverSession.getServerSession());
-//        msj = logic.processFaseDosConciliation(tipoConciliacion);
-//
-//        map.put("success", true);
-//        map.put("Mensaje", msj);
-//
-//    } catch (Exception ex) {
-//        ex.printStackTrace();
-//        map.put("success", false);
-//        map.put("Mensaje", ex.getMessage());
-//    }
-//
-//    return gson.toJson(map);
-//}
-//    
-//    
-//    
+    
+@RequestMapping(value = "conciliacionFaseDos")
+public @ResponseBody String conciliacionFaseDos(ModelMap map, HttpServletRequest request) {
+
+    System.out.println("-------------- BANKRECONCILIATION : conciliacionFaseDos (FINAL) -------------");
+    
+    A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String msj = "";
+        String beanString = "";
+
+    try {
+        logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            String tipoConciliacion = filter.tipo;
+                   
+        // 3. TU LÓGICA
+        logic = new BankReconciliationLogic();
+        logic.setSession(this.serverSession.getServerSession());
+        msj = logic.processFaseDosConciliation(tipoConciliacion);
+
+        map.put("success", true);
+        map.put("Mensaje", msj);
+
+    } catch (Exception ex) {
+        ex.printStackTrace();
+        map.put("success", false);
+        map.put("Mensaje", ex.getMessage());
+    }
+
+    return gson.toJson(map);
+}
+    
+    
+    
     
     
     

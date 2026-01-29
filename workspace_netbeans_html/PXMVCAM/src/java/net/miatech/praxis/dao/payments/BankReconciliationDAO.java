@@ -9058,57 +9058,57 @@ public class BankReconciliationDAO {
 
         return message;
     }
-//    
-//    public String processFaseDosConciliation(String tipo) throws SQLException, Exception {
-//
-//        String message = "Proceso de Conciliación " + tipo + " ejecutado exitosamente.";
-//        Connection cnx = null;
-//        String ccust = session.getUserView().getCustomerInfo().CCUST.trim();
-//
-//        try {
-//            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-//
-//            System.out.println("DAO: Ejecutando SPs para: " + tipo);
-//            switch (tipo) {
-//                case "BSP":
-//                    // Lógica Original BSP
-//                    executeConciliationSP(cnx, "MPS316");
-//                    executeConciliationSP(cnx, "MPS319");
-//                    executeConciliationSP(cnx, "MPS313");
-//                    break;
-//
-//                case "ARC":
-//                    // Lógica Nueva ARC
-//                    executeConciliationSP(cnx, "MPS317");
-//                    executeConciliationSP(cnx, "MPS327");
-//                    break;
-//
-//                case "ICCS":
-//                    // Lógica Nueva ICCS
-//                    executeConciliationSP(cnx, "MPS315");
-//                    executeConciliationSP(cnx, "MPS318");
-//                    break;
-//
-//                default:
-//                    throw new Exception("Tipo de conciliación no válido: " + tipo);
-//            }
-//            executeSummarySP(cnx, "MPS322", ccust);
-//            executeSummarySP(cnx, "MPS343", ccust);
-//
-//        } catch (SQLException e) {
-//            logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
-//            throw new SQLException("Error SQL en Conciliador (" + tipo + "): " + e.getMessage());
-//        } catch (Exception e) {
-//            logError.error("Exception -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
-//            throw e; 
-//        } finally {
-//            if (cnx != null) {
-//                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
-//            }
-//        }
-//
-//        return message;
-//    }
+    
+    public String processFaseDosConciliation(String tipo) throws SQLException, Exception {
+
+        String message = "Proceso de Conciliación " + tipo + " ejecutado exitosamente.";
+        Connection cnx = null;
+        String ccust = session.getUserView().getCustomerInfo().CCUST.trim();
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+
+            System.out.println("DAO: Ejecutando SPs para: " + tipo);
+            switch (tipo) {
+                case "BSP":
+                    // Lógica Original BSP
+                    executeConciliationSP(cnx, "MPS316");
+                    executeConciliationSP(cnx, "MPS319");
+                    executeConciliationSP(cnx, "MPS313");
+                    break;
+
+                case "ARC":
+                    // Lógica Nueva ARC
+                    executeConciliationSP(cnx, "MPS317");
+                    executeConciliationSP(cnx, "MPS327");
+                    break;
+
+                case "ICCS":
+                    // Lógica Nueva ICCS
+                    executeConciliationSP(cnx, "MPS315");
+                    executeConciliationSP(cnx, "MPS318");
+                    break;
+
+                default:
+                    throw new Exception("Tipo de conciliación no válido: " + tipo);
+            }
+            executeSummarySP(cnx, "MPS322", ccust);
+            executeSummarySP(cnx, "MPS343", ccust);
+
+        } catch (SQLException e) {
+            logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+            throw new SQLException("Error SQL en Conciliador (" + tipo + "): " + e.getMessage());
+        } catch (Exception e) {
+            logError.error("Exception -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+            throw e; 
+        } finally {
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+        }
+
+        return message;
+    }
 
     private void executeConciliationSP(Connection cnx, String spName) throws SQLException, Exception {
         CallableStatement cstmt = null;

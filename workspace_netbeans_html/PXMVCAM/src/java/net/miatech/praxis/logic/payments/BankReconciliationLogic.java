@@ -345,9 +345,9 @@ public class BankReconciliationLogic {
     public String MPF199UpdateIndia(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.MPF199UpdateIndia(filter);
     }
-//    public String processFaseDosConciliation() throws SQLException, Exception {
-//        return bankReconciliationDAO.processFaseDosConciliation();
-//    }
+    public String processFaseDosConciliation(String tipo) throws SQLException, Exception {
+        return bankReconciliationDAO.processFaseDosConciliation(tipo);
+    }
      
      
      
