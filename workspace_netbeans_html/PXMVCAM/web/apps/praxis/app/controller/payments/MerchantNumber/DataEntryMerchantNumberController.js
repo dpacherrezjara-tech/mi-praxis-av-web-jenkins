@@ -507,14 +507,13 @@ Ext.define('Ext.Praxis.controller.payments.MerchantNumber.DataEntryMerchantNumbe
         var rec = grid.getStore().getAt(rowIndex);
         rec.colIndex = colIndex;
         
+        meDE.beanDelete = {};
         meDE.beanDelete.CMERCHAN = rec.data.CMERCHAN;
         meDE.beanDelete.SUCMERCH = rec.data.SUCMERCH;
         meDE.beanDelete.CODEBANK = rec.data.CODEBANK;
         meDE.beanDelete.ACCNUMB = rec.data.ACCNUMB;
         meDE.beanDelete.SAGENT = rec.data.SAGENT;
         
-        console.log(rec, 'INFO REC')
-        console.log(meDE.beanDelete, 'meDELETE')
         
         if (colIndex == "11") {
             Ext.Msg.show({

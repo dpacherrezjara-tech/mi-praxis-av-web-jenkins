@@ -69,7 +69,6 @@ public class StatementReconciliationsLogic {
     public List<A2290Filter> loadPX287SQP00841(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00841(filter);
     }
-    
     public Map<String, Object> loadPX002CASH(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX002CASH(filter);
     }

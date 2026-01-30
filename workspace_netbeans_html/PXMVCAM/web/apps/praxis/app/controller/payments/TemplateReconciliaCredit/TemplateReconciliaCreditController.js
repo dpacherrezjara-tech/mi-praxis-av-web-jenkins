@@ -98,6 +98,9 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
             '#TemplateReconciliaCreditForm-chkMarkSales': {
                 click: this.markAllGridSale
             },
+            '#TemplateReconciliaCreditForm-chkMarkBandocWMH': {
+                click: this.markAllGridBandocWMH
+            },
             '#TemplateReconciliaCreditForm-btnSearchSettlement': {
                 click: this.searchSettlementsWMH
             },
@@ -1359,16 +1362,20 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
                         return;
                     }
 
+                    let valueProccesor = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
+                    const esVenta = ["VN", "BM", "AB"].includes(valueProccesor);
+
                     me.allBandocRecords = records.map(r => r.data);
 
                     me.allBandocRecords.forEach(r => {
-                        me.checkStateWMHBandoc.set(r.RN, true);
+                        if (valueProccesor !== "BM" && valueProccesor !== "AB") {
+                            me.checkStateWMHBandoc.set(r.RN, true);
+                        } else {
+                            me.checkStateWMHBandoc.set(r.RN, false);
+                        }
                     });
 
                     me.createLocalBandocStore();
-
-                    let valueProccesor = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
-                    const esVenta = ["VN", "BM", "AB"].includes(valueProccesor);
 
                     if (esVenta) {
                         me.updateGridTotalSalesWMH();
@@ -1381,7 +1388,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
 
         store.load();
     },
-    createLocalBandocStore: function () {
+    createLocalBandocStoreBKP: function () {
         let me = this;
         let grid = Ext.getCmp(prototype.id + '-gridBandoc');
 
@@ -1393,7 +1400,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
         me.localBandocStore = Ext.create('Ext.data.Store', {
             fields: Object.keys(me.allBandocRecords[0]),
             data: me.allBandocRecords,
-            pageSize: 2,
+            pageSize: 20,
             proxy: {
                 type: 'memory',
                 enablePaging: true,
@@ -1410,6 +1417,63 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
 
         pager.bindStore(me.localBandocStore);
         me.localBandocStore.loadPage(1);
+        grid.getView().refresh();
+    },
+    createLocalBandocStore: function () {
+        let me = this;
+        let grid = Ext.getCmp(prototype.id + '-gridBandoc');
+
+        if (!me.allBandocRecords?.length) {
+            global.Msg({msg: 'No hay extractos para mostrar.'});
+            return;
+        }
+
+        // Obtener el procesador seleccionado
+        let getProcess = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
+        const esVenta = ["VN", "BM", "AB"].includes(getProcess);
+
+        // Configurar pageSize según el tipo de procesador
+        const pageSize = esVenta ? me.allBandocRecords.length : 20;
+
+        me.localBandocStore = Ext.create('Ext.data.Store', {
+            fields: Object.keys(me.allBandocRecords[0]),
+            data: me.allBandocRecords,
+            pageSize: pageSize,
+            proxy: {
+                type: 'memory',
+                enablePaging: !esVenta, // Solo habilitar paginación si NO es venta
+                reader: {type: 'json'}
+            }
+        });
+
+        grid.setStore(me.localBandocStore);
+
+        let pager = grid.getDockedItems('pagingtoolbar')[0];
+
+        if (pager) {
+            if (esVenta) {
+                // Ocultar pager para ventas
+                pager.hide();
+                // Remover eventos del pager
+                pager.un('change', me.syncTotalsToVisiblePageBandoc, me);
+            } else {
+                // Mostrar pager para otros casos
+                pager.show();
+                // Configurar eventos del pager
+                pager.un('change', me.syncTotalsToVisiblePageBandoc, me);
+                pager.on('change', me.syncTotalsToVisiblePageBandoc, me);
+            }
+
+            pager.bindStore(me.localBandocStore);
+        }
+
+        // Cargar datos según el tipo de procesador
+        if (esVenta) {
+            me.localBandocStore.load(); // Cargar todos los registros sin paginación
+        } else {
+            me.localBandocStore.loadPage(1); // Cargar primera página con paginación
+        }
+
         grid.getView().refresh();
     },
     syncTotalsToVisiblePageBandoc: function () {
@@ -1430,6 +1494,45 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
 
         grid.getView().refresh();
     },
+    updateGridBandocWMHBKP: function (column, rowIndex, checked, record) {
+        let me = this;
+        let grid = Ext.getCmp(prototype.id + '-gridBandoc');
+        let store = grid.getStore();
+
+        if (!store || store.getCount() === 0)
+            return;
+        if (!me.allBandocRecords || me.allBandocRecords.length === 0)
+            return;
+
+        let rnActual = record.get('RN');
+        me.checkStateWMHBandoc.set(rnActual, checked);
+
+        let netoTotal = 0;
+        me.allBandocRecords.forEach(r => {
+            console.log('RN:', r.RN, 'NETO:', r.NETO);
+            if (me.checkStateWMHBandoc.get(r.RN) === true) {
+                netoTotal += r.NETO || 0;
+            }
+        });
+
+        let lastGlobal = me.allBandocRecords[me.allBandocRecords.length - 1];
+        lastGlobal.TOTAL_NETO = netoTotal;
+
+        let lastVisible = store.getAt(store.getCount() - 1);
+        lastVisible.set('TOTAL_NETO', netoTotal);
+        lastVisible.commit();
+
+        grid.getView().refresh();
+
+        let valueProccesor = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
+        const esVenta = ["VN", "BM", "AB"].includes(valueProccesor);
+
+        if (esVenta) {
+            me.updateGridTotalSalesWMH();
+        } else {
+            me.updateGridTotalWMH();
+        }
+    },
     updateGridBandocWMH: function (column, rowIndex, checked, record) {
         let me = this;
         let grid = Ext.getCmp(prototype.id + '-gridBandoc');
@@ -1442,6 +1545,65 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
 
         let rnActual = record.get('RN');
         me.checkStateWMHBandoc.set(rnActual, checked);
+
+        let netoTotal = 0;
+        me.allBandocRecords.forEach(r => {
+            console.log('RN:', r.RN, 'NETO:', r.NETO);
+            if (me.checkStateWMHBandoc.get(r.RN) === true) {
+                netoTotal += r.NETO || 0;
+            }
+        });
+
+        let lastGlobal = me.allBandocRecords[me.allBandocRecords.length - 1];
+        lastGlobal.TOTAL_NETO = netoTotal;
+
+        let lastVisible = store.getAt(store.getCount() - 1);
+        lastVisible.set('TOTAL_NETO', netoTotal);
+        lastVisible.commit();
+
+        let valueProccesor = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
+        const esVenta = ["VN", "BM", "AB"].includes(valueProccesor);
+
+        // SOLUCIÓN: Aplicar refreshNode solo para ventas
+        if (esVenta) {
+            let view = grid.getView();
+            // Refrescar solo el nodo específico para evitar problemas visuales
+            if (view && view.refreshNode) {
+                try {
+                    view.refreshNode(rowIndex);
+                } catch (e) {
+                    // Fallback a refresh completo si hay error
+                    view.refresh();
+                }
+            } else {
+                view.refresh();
+            }
+
+            me.updateGridTotalSalesWMH();
+        } else {
+            // Para otros casos, usar refresh normal como estaba
+            grid.getView().refresh();
+            me.updateGridTotalWMH();
+        }
+    },
+    markAllGridBandocWMH: function (checkbox, newValue) {
+        let me = this;
+        let grid = Ext.getCmp(prototype.id + '-gridBandoc');
+        let store = grid.getStore();
+
+        if (!me.allBandocRecords || me.allBandocRecords.length === 0) {
+            return;
+        }
+
+        me.allBandocRecords.forEach(r => {
+            me.checkStateWMHBandoc.set(r.RN, newValue);
+        });
+
+        store.each(record => {
+            let rn = record.get('RN');
+            record.set('checkActive', newValue);
+            record.commit();
+        });
 
         let netoTotal = 0;
         me.allBandocRecords.forEach(r => {
@@ -2149,8 +2311,8 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
         let getDateTo = Ext.Date.format(Ext.getCmp(prototype.id + '-txtToSale').getValue(), 'Ymd');
 
         me.beanSale.IN_CCUST = getCustomer;
-        me.beanSale.IN_FECHA_FROM = getDateFrom;
-        me.beanSale.IN_FECHA_TO = getDateTo;
+        me.beanSale.IN_DATEFROM = getDateFrom;
+        me.beanSale.IN_DATETO = getDateTo;
         me.beanSale.IN_PROCESSOR = getProcess;
 
         let searchParamsSale = {
@@ -2202,7 +2364,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
 
         store.load();
     },
-    createLocalSaleStore: function () {
+    createLocalSaleStoreBKP: function () {
         let me = this;
 
         me.localSaleStore = Ext.create('Ext.data.Store', {
@@ -2225,6 +2387,58 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
         pager.on('change', me.syncTotalsToVisiblePage, me);
 
         me.localSaleStore.loadPage(1);
+        grid.getView().refresh();
+    },
+    createLocalSaleStore: function () {
+        let me = this;
+
+        // Obtener el procesador seleccionado
+        let getProcess = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
+        const esVenta = ["VN", "BM", "AB"].includes(getProcess);
+
+        // Configurar pageSize según el tipo de procesador
+        const pageSize = esVenta ? me.allSaleRecords.length : 20;
+
+        me.localSaleStore = Ext.create('Ext.data.Store', {
+            fields: Object.keys(me.allSaleRecords[0]),
+            data: me.allSaleRecords,
+            pageSize: pageSize,
+            proxy: {
+                type: 'memory',
+                enablePaging: !esVenta, // Solo habilitar paginación si NO es venta
+                reader: {type: 'json'}
+            }
+        });
+
+        let grid = Ext.getCmp(prototype.id + '-gridDataVentas');
+        grid.setStore(me.localSaleStore);
+
+        let pager = grid.getDockedItems('pagingtoolbar')[0];
+
+        if (pager) {
+            if (esVenta) {
+                // Ocultar pager para ventas
+                pager.hide();
+                // Remover eventos del pager
+                pager.un('change', me.syncTotalsToVisiblePage, me);
+            } else {
+                // Mostrar pager para otros casos
+                pager.show();
+                // Configurar eventos del pager
+                pager.un('change', me.syncTotalsToVisiblePage, me);
+                pager.on('change', me.syncTotalsToVisiblePage, me);
+            }
+
+            pager.bindStore(me.localSaleStore);
+        }
+
+        // Cargar datos según el tipo de procesador
+        if (esVenta) {
+            me.localSaleStore.load(); // Cargar todos los registros sin paginación
+        } else {
+            me.localSaleStore.loadPage(1); // Cargar primera página con paginación
+        }
+
         grid.getView().refresh();
     },
     syncTotalsToVisiblePage: function () {
@@ -2251,6 +2465,42 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
         lastVisible.set('TOTAL_SVFOP_CONVERTED', lastGlobal.TOTAL_SVFOP_CONVERTED || 0);
         lastVisible.commit();
         grid.getView().refresh();
+    },
+    updateGridSaleWMHBKP: function (column, rowIndex, checked, record) {
+        let me = this;
+        let grid = Ext.getCmp(prototype.id + '-gridDataVentas');
+        let store = grid.getStore();
+
+        if (!store || store.getCount() === 0)
+            return;
+        if (!me.allSaleRecords || me.allSaleRecords.length === 0)
+            return;
+
+        let rnActual = record.get('RN');
+        me.checkStateWMHSale.set(rnActual, checked);
+
+        let totalLocal = 0;
+        let totalConverted = 0;
+
+        me.allSaleRecords.forEach(r => {
+            let rn = r.RN;
+            if (me.checkStateWMHSale.get(rn) === true) {
+                totalLocal += r.SVFOP || 0;
+                totalConverted += r.SVFOPCON || 0;
+            }
+        });
+
+        let lastGlobal = me.allSaleRecords[me.allSaleRecords.length - 1];
+        lastGlobal.TOTAL_SVFOP = totalLocal;
+        lastGlobal.TOTAL_SVFOP_CONVERTED = totalConverted;
+
+        let lastVisible = store.getAt(store.getCount() - 1);
+        lastVisible.set('TOTAL_SVFOP', totalLocal);
+        lastVisible.set('TOTAL_SVFOP_CONVERTED', totalConverted);
+        lastVisible.commit();
+
+        grid.getView().refresh();
+        me.updateGridTotalSalesWMH();
     },
     updateGridSaleWMH: function (column, rowIndex, checked, record) {
         let me = this;
@@ -2285,7 +2535,30 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
         lastVisible.set('TOTAL_SVFOP_CONVERTED', totalConverted);
         lastVisible.commit();
 
-        grid.getView().refresh();
+        // Obtener el tipo de procesador
+        let getProcess = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
+        const esVenta = ["VN", "BM", "AB"].includes(getProcess);
+
+        // Aplicar refreshNode solo para ventas
+        if (esVenta) {
+            let view = grid.getView();
+            // Refrescar solo el nodo específico para evitar problemas visuales
+            if (view && view.refreshNode) {
+                try {
+                    view.refreshNode(rowIndex);
+                } catch (e) {
+                    // Fallback a refresh completo si hay error
+                    console.warn('Error en refreshNode, usando refresh completo:', e);
+                    view.refresh();
+                }
+            } else {
+                view.refresh();
+            }
+        } else {
+            // Para otros casos, usar refresh normal
+            grid.getView().refresh();
+        }
+
         me.updateGridTotalSalesWMH();
     },
     markAllGridSale: function (checkbox, newValue) {
@@ -2789,18 +3062,25 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
         this.cleanGridsWMH();
         if (getProcess === "VN" || getProcess === "BM" || getProcess === "AB") {
             Ext.getCmp(prototype.id + '-panelDescuento').setVisible(false);
-            Ext.getCmp(prototype.id + '-panelTickets').setVisible(true);
+            Ext.getCmp(prototype.id + '-gridDataVentas').setVisible(true);
+            Ext.getCmp(prototype.id + '-gridCabecera').setVisible(false);
             Ext.getCmp(prototype.id + '-saleFilters').setVisible(true);
             Ext.getCmp(prototype.id + '-setlementFilters').setVisible(false);
             Ext.getCmp(prototype.id + '-discountFilters').setVisible(false);
             Ext.getCmp(prototype.id + '-headerFilters').setVisible(false);
+            Ext.getCmp(prototype.id + '-chkMarkBandocWMH').setDisabled(false);
+            Ext.getCmp(prototype.id + '-height').setHeight(650);
         } else {
             Ext.getCmp(prototype.id + '-panelDescuento').setVisible(true);
-            Ext.getCmp(prototype.id + '-panelTickets').setVisible(false);
+            Ext.getCmp(prototype.id + '-gridDataVentas').setVisible(false);
+            Ext.getCmp(prototype.id + '-gridCabecera').setVisible(true);
             Ext.getCmp(prototype.id + '-saleFilters').setVisible(false);
             Ext.getCmp(prototype.id + '-setlementFilters').setVisible(true);
             Ext.getCmp(prototype.id + '-discountFilters').setVisible(true);
             Ext.getCmp(prototype.id + '-headerFilters').setVisible(true);
+            Ext.getCmp(prototype.id + '-chkMarkBandocWMH').setDisabled(true);
+            Ext.getCmp(prototype.id + '-chkMarkBandocWMH').setValue(false);
+            Ext.getCmp(prototype.id + '-height').setHeight(1300);
         }
     },
     // </editor-fold>
@@ -2848,9 +3128,10 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
 
         let getProcess = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
         let getCustomer = Ext.getCmp(prototype.id + '-typeClient').getValue();
-        let checkBox = Ext.getCmp(prototype.id + '-chkMarkForced');
-        let getForce = checkBox ? "" : "Y";
-        console.log(getForce,'getForce')
+        let checkBox = Ext.getCmp(prototype.id + '-chkMarkForced').getValue();;
+        console.log(checkBox,'checkBox')
+        let getForce = checkBox ? "Y" : "";
+        console.log(getForce, 'getForce')
         const esVenta = ["VN", "BM", "AB"].includes(getProcess);
 
         let hayCheckBandoc = me.allBandocRecords.some(r => me.checkStateWMHBandoc.get(r.RN) === true);
@@ -2985,14 +3266,14 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
         me.beanConciliation.IN_HOCR = formattedTime;
         me.beanConciliation.IN_CODUNI = uniqueCode;
         me.beanConciliation.IN_FORCE = getForce;
-        
+
         console.log(cleanDiscounts);
         console.log(cleanBandoc);
         console.log(cleanSettlements);
         console.log(cleanSale);
         console.log(cleanHeader);
         console.log(me.beanConciliation);
-        
+
         let searchParamsConciliation = {
             beanString: JSON.stringify(me.beanConciliation),
             beanDiscounts: JSON.stringify(cleanDiscounts),
@@ -3006,23 +3287,23 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
             console.log(response);
             if (response.success) {
                 Ext.Msg.alert('Éxito', response.result);
-                
+
                 Ext.Msg.show({
-                        title: '✅ Éxito',
-                        msg: response.result,
-                        buttons: Ext.MessageBox.OK,
-                        icon: Ext.MessageBox.INFO,
-                        modal: true,
-                        closable: true,
-                        autoClose: false,
-                        scope: me,
-                        fn: function (btn) {
-                            if (btn === 'ok') {
-                                me.fetchBandocWMH();
-                            }
+                    title: '✅ Éxito',
+                    msg: response.result,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.INFO,
+                    modal: true,
+                    closable: true,
+                    autoClose: false,
+                    scope: me,
+                    fn: function (btn) {
+                        if (btn === 'ok') {
+                            me.fetchBandocWMH();
                         }
-                    });
-                
+                    }
+                });
+
             } else {
                 Ext.Msg.alert('Error', response.result || 'Error desconocido');
             }

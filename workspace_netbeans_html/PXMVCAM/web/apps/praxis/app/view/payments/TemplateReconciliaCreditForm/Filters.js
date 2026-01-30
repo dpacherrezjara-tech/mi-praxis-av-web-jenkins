@@ -134,7 +134,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.Filters', {
                                 {
                                     xtype: 'fieldset',
                                     title: '<span style="color:#1a4d8f;font-weight:bold;">STATEMENT FILTERS</span>',
-                                    width: 340,
+                                    width: 420,
                                     style: 'border: 1px solid #1a4d8f; padding: 8px; margin: 5px;',
                                     layout: 'hbox',
                                     items: [
@@ -168,6 +168,18 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.Filters', {
                                             enableKeyEvents: true,
                                             margin: '0 10px 0 0',
                                             listeners: {keypress: 'searchBandocWMH'}
+                                        },
+                                        {
+                                            xtype: 'checkboxfield',
+                                            id: prototype.id + '-chkMarkBandocWMH',
+                                            cls: 'segcheck',
+                                            fieldLabel: '<span>Mark All</span>',
+                                            labelAlign: 'left',
+                                            labelWidth: 50,
+                                            disabled: true,
+                                            checked: false,
+                                            listeners: {change: 'markAllGridBandocWMH'},
+                                            margin: '0 10px 0 0'
                                         },
                                         {
                                             xtype: 'button',

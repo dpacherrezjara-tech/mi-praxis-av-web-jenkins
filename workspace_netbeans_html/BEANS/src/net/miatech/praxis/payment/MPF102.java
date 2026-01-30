@@ -15,6 +15,7 @@ public class MPF102 {
     public Pagination page = new Pagination();
     
     public String CCUST = "";
+    public String TDOC = "";
     public String BANDOC = "";
     public String TFILE = "";
     public String CODUNI = "";
