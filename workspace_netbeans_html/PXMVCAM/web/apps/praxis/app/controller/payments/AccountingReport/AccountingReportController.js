@@ -26,13 +26,36 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.AccountingReportCont
         const me = this;
         me.view.mask('Loading...');
         try {
-            const res = await me.miscRequest.get('/loadPhase2Filter');
-            const data = res.data;
-            me.procesadores = data.response;
+            //const res = await me.miscRequest.get('/loadPhase2Filter');
+            const res = await global.callStoreGet('PRAXISMP', 'MPS503', {});
+
+            me.procesadores = res.lstRs.at(0);
+            me.paises = res.lstRs.at(2);
+            me.monedas = res.lstRs.at(3);
+
             const cmbCODPRO = Ext.getCmp(prototype.id + '-cmbCODPRO');
-            global.setComboStore(cmbCODPRO,me.procesadores,'CODE','NAME','');
+            global.setComboStore(cmbCODPRO, me.procesadores, 'CODE', 'NAME', '');
             const cmbCODPRO2 = Ext.getCmp(prototype.id + '-cmbCODPRO2');
-            global.setComboStore(cmbCODPRO2,me.procesadores,'CODE','NAME','');
+            global.setComboStore(cmbCODPRO2, me.procesadores, 'CODE', 'NAME', '');
+            const cmbCODPROadj = Ext.getCmp(prototype.id + '-cmbProcAdj');
+            global.setComboStore(cmbCODPROadj, me.procesadores, 'CODE', 'NAME', '');
+
+            const cmbPaisAdj = Ext.getCmp(prototype.id + '-cmbPaisAdj');
+            global.setComboStore(cmbPaisAdj, me.paises, 'CODE', 'NAME', '');
+            const cmbCurrAdj = Ext.getCmp(prototype.id + '-cmbCurrAdj');
+            global.setComboStore(cmbCurrAdj, me.monedas, 'CODE', 'NAME', '');
+
+            const cmbPaisAdm = Ext.getCmp(prototype.id + '-cmbPaisAdm');
+            global.setComboStore(cmbPaisAdm, me.paises, 'CODE', 'NAME', '');
+            const cmbCurrAdm = Ext.getCmp(prototype.id + '-cmbCurrAdm');
+            global.setComboStore(cmbCurrAdm, me.monedas, 'CODE', 'NAME', '');
+            
+            const cmbCODPROrev = Ext.getCmp(prototype.id + '-cmbProcReve');
+            global.setComboStore(cmbCODPROrev, me.procesadores, 'CODE', 'NAME', '');
+            const cmbPaisRev = Ext.getCmp(prototype.id + '-cmbPaisReve');
+            global.setComboStore(cmbPaisRev, me.paises, 'CODE', 'NAME', '');
+            const cmbCurrRev = Ext.getCmp(prototype.id + '-cmbCurrReve');
+            global.setComboStore(cmbCurrRev, me.monedas, 'CODE', 'NAME', '');
         } catch (e) {
             console.error(e);
             me.notifier.alert('Filters not loaded');
@@ -41,20 +64,32 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.AccountingReportCont
             me.loadBandocs();
         }
     },
-    onChangeReport:function(cmb){
+    onChangeReport: function (cmb) {
         const summFilter = Ext.getCmp(prototype.id + '-fsummary');
         const detFilter = Ext.getCmp(prototype.id + '-fdetail');
-        if(cmb.value === 'S'){
-            summFilter.show();
-            detFilter.hide();
-            this.loadSummary();
-        }else{
-            summFilter.hide();
+        const admFilter = Ext.getCmp(prototype.id + '-fadm');
+        const adjuFilter = Ext.getCmp(prototype.id + '-fadju');
+        const reveFilter = Ext.getCmp(prototype.id + '-frever');
+
+        detFilter.hide();
+        admFilter.hide();
+        adjuFilter.hide();
+        reveFilter.hide();
+        if (cmb.value === 'S') {
+            admFilter.show();
+            this.loadAdms();
+        } else if (cmb.value === 'A') {
+            adjuFilter.show();
+            this.loadAdjus();
+        } else if (cmb.value === 'R') {
+            reveFilter.show();
+            this.loadReverse();
+        } else {
             detFilter.show();
             this.loadBandocs();
         }
     },
-    loadSummary:function(){
+    loadSummary: function () {
         const me = this;
         let params = me.formatSummaryParams();
         const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
@@ -76,12 +111,39 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.AccountingReportCont
         });
         mainPanel.add(panelDetail);
     },
+    loadAdms: async function () {
+        const me = this;
+        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
+        mainPanel.removeAll();
+        const panelDetail = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.AdmsGrid', {
+            id: prototype.id + '-AdmsGrid-1'
+        });
+        mainPanel.add(panelDetail);
+    },
+    loadAdjus: async function () {
+        const me = this;
+        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
+        mainPanel.removeAll();
+        const panelDetail = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.AdjusGrid', {
+            id: prototype.id + '-AdjusGrid-1'
+        });
+        mainPanel.add(panelDetail);
+    },
+    loadReverse: async function () {
+        const me = this;
+        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
+        mainPanel.removeAll();
+        const panelDetail = Ext.create('Ext.Praxis.view.payments.AccountingReportForm.Grids.ReverseGrid', {
+            id: prototype.id + '-ReverseGrid-1'
+        });
+        mainPanel.add(panelDetail);
+    },
     formatParams: function () {
         const formFilters = Ext.getCmp(prototype.id + '-formFilters').getForm();
         console.log('Search Params: ', formFilters.getValues());
         return formFilters.getValues();
     },
-    formatSummaryParams:function(){
+    formatSummaryParams: function () {
         const formFilters = Ext.getCmp(prototype.id + '-formFilters-2').getForm();
         let params = formFilters.getValues();
         params.IN_TIPO = 'M';
@@ -91,9 +153,13 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.AccountingReportCont
     //<editor-fold defaultstate="collapsed" desc="Handlers">
     onClickSearchBtn: function () {
         const cmbType = Ext.getCmp(prototype.id + '-cmbType').value;
-        if(cmbType === 'S'){
-            this.loadSummary();
-        }else{
+        if (cmbType === 'S') {
+            this.loadAdms();
+        } else if (cmbType === 'A') {
+            this.loadAdjus();
+        } else if (cmbType === 'R') {
+            this.loadReverse();
+        } else {
             this.loadBandocs();
         }
     },
