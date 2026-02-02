@@ -1,6 +1,6 @@
-Ext.define('Ext.Praxis.controller.payments.AccountingReport.AdjuDetailDataEntryController', {
+Ext.define('Ext.Praxis.controller.payments.AccountingReport.ReveDetailDataEntryController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.AdjuDetailDataEntryController',
+    alias: 'controller.ReveDetailDataEntryController',
     init: function (view) {
 
     },
@@ -9,15 +9,16 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.AdjuDetailDataEntryC
     },
     loadData: async function () {
         const me = this;
-        const mainForm = Ext.getCmp(prototype.idAdju + '-mainInfo').getForm();
-        const gridSettl = Ext.getCmp(prototype.idAdju + '-gridSettl');
-        const gridSale = Ext.getCmp(prototype.idAdju + '-gridSale');
-        const totalsSettl = Ext.getCmp(prototype.idAdju + '-totalsSettl').getForm();
-        const totalsInvoi = Ext.getCmp(prototype.idAdju + '-totalsInvoi').getForm();
+        const mainForm = Ext.getCmp(prototype.idAdju2 + '-mainInfo').getForm();
+        const gridSettl = Ext.getCmp(prototype.idAdju2 + '-gridSettl');
+        const gridSale = Ext.getCmp(prototype.idAdju2 + '-gridSale');
+        const totalsSettl = Ext.getCmp(prototype.idAdju2 + '-totalsSettl').getForm();
+        const totalsInvoi = Ext.getCmp(prototype.idAdju2 + '-totalsInvoi').getForm();
 
         let obj = me.view.obj;
 
         let searchParams = {
+            'IN_NREV': obj.NREV,
             'IN_DATEC': obj.DATEC,
             'IN_TRANC': obj.TRANC,
             'IN_CODPRO': obj.CODPRO
@@ -29,7 +30,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingReport.AdjuDetailDataEntryC
             mainForm.setValues(obj);
             me.view.setLoading(true);
 
-            const res = await global.callStoreGet('PRAXISMP', 'MPS504', searchParams);
+            const res = await global.callStoreGet('PRAXISMP', 'MPS505', searchParams);
             
             const invoices = res.lstRs.at(0);
 

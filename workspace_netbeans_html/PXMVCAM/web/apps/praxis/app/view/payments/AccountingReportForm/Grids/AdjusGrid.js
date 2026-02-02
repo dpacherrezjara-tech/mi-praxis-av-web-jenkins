@@ -45,6 +45,18 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.AdjusGrid', {
                 ]
             },
             {text: 'Client', dataIndex: 'CCUST', width: 60},
+            {text: 'Trans.<br>Date', dataIndex: 'DATEC', width: 120,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                    metaData.style = "background-color:#bbe3ac;font-weight:bold;";
+                    return value;
+                }
+            },
+            {text: 'Trans.<br>Nbr.', dataIndex: 'TRANC', width: 120,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                    metaData.style = "background-color:#bbe3ac;font-weight:bold;";
+                    return value;
+                }
+            },
             {text: 'Processor', dataIndex: 'DESC_PRO', width: 150,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     metaData.style = "background-color:#bbe3ac;font-weight:bold;";
@@ -109,41 +121,6 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.AdjusGrid', {
             {text: 'Amount', dataIndex: 'SVFOP', width: 130,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     metaData.style = "background-color:#dcdf3a;text-align:right;";
-                    value = Ext.util.Format.number(value, '0,000.00');
-                    return value;
-                }
-            },
-            {text: 'Comm.', dataIndex: 'COMISION', width: 130,
-                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                    metaData.style = "text-align:right;";
-                    value = Ext.util.Format.number(value, '0,000.00');
-                    return value;
-                }
-            },
-            {text: 'Comm.<br>Total', dataIndex: 'COMISTOTA', width: 130,
-                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                    metaData.style = "text-align:right;";
-                    value = Ext.util.Format.number(value, '0,000.00');
-                    return value;
-                }
-            },
-            {text: 'Rte. Fue.', dataIndex: 'RTEFUE', width: 130,
-                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                    metaData.style = "text-align:right;";
-                    value = Ext.util.Format.number(value, '0,000.00');
-                    return value;
-                }
-            },
-            {text: 'Rte. IVA', dataIndex: 'RTEIVA', width: 130,
-                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                    metaData.style = "text-align:right;";
-                    value = Ext.util.Format.number(value, '0,000.00');
-                    return value;
-                }
-            },
-            {text: 'Rte. ICA', dataIndex: 'RTEICA', width: 130,
-                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                    metaData.style = "text-align:right;";
                     value = Ext.util.Format.number(value, '0,000.00');
                     return value;
                 }

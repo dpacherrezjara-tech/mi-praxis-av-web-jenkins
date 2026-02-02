@@ -30,23 +30,49 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.Grids.AdmsGrid', {
                 width: 40 // Ancho de la columna de número de fila (ajusta según tus necesidades)
             },
             {text: 'Client', dataIndex: 'CCUST', width: 60},
-            {text: 'Ticket Nbr', dataIndex: 'TICKET', width: 150},
+            {text: 'Ticket Nbr', dataIndex: 'TICKET', width: 150,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                    metaData.style = "background-color:#E8BAE5;font-weight:bold;";
+                    return value;
+                }
+            },
             {text: 'Seq', dataIndex: 'SEQ', width: 60},
             {text: 'Invoice', dataIndex: 'INVOICE', width: 150},
-            {text: 'Reject<br>Code', dataIndex: 'CREJEC', width: 70},
-            {text: 'Error<br>Code', dataIndex: 'CERROR', width: 70},
-            {text: 'ADM Number', dataIndex: 'ADMNUM', width: 120},
+            {text: 'Reject<br>Code', dataIndex: 'CREJEC', width: 70,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                    metaData.style = "color:#FC9117;font-weight:bold;";
+                    return value;
+                }
+            },
+            {text: 'Error<br>Code', dataIndex: 'CERROR', width: 70,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                    metaData.style = "color:#FC1717;font-weight:bold;";
+                    return value;
+                }
+            },
+            {text: 'ADM Number', dataIndex: 'ADMNUM', width: 120,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                    metaData.style = "background-color:#bbe3ac;font-weight:bold;";
+                    return value;
+                }
+            },
             {text: 'Sale<br>Date', dataIndex: 'SDATE', width: 100},
             {text: 'Agent', dataIndex: 'SAGENT', width: 100},
             {text: 'Consolidator', dataIndex: 'SCONSOL', width: 100},
+            {text: 'Country', dataIndex: 'SCOUNTRY', width: 100},
             {text: 'PNR', dataIndex: 'SPNR', width: 100},
             {text: 'Card<br>Code', dataIndex: 'SCARCOD', width: 80},
             {text: 'Card Number', dataIndex: 'SCARDN', width: 200},
             {text: 'Auth Code', dataIndex: 'SAUTHOC', width: 100},
-            {text: 'Curr.', dataIndex: 'SCURRENCY', width: 80},
+            {text: 'Curr.', dataIndex: 'SCURRENCY', width: 80,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                    metaData.style = "background-color:#dcdf3a;text-align:center;";
+                    return value;
+                }
+            },
             {text: 'Amount', dataIndex: 'SVFOP', width: 130,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                    metaData.style = "text-align:right;";
+                    metaData.style = "background-color:#dcdf3a;text-align:right;";
                     value = Ext.util.Format.number(value, '0,000.00');
                     return value;
                 }

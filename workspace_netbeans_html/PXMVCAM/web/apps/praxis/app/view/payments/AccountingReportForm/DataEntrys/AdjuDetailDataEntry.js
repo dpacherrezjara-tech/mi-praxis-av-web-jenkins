@@ -58,7 +58,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.AdjuDetailD
                 }
             },
             items: [
-                //<editor-fold defaultstate="collapsed" desc="SAP">
+                //<editor-fold defaultstate="collapsed" desc="Information">
                 {
                     title: '<span style="font-weight: bold; text-decoration-line: underline;font-size:13px;">Main Settlement Information</span>',
                     items: [
@@ -70,6 +70,56 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.AdjuDetailD
                                     labelWidth: 70,
                                     width: 170
                                 },
+                                {
+                                    fieldLabel: 'Processor',
+                                    name: 'DESC_PRO',
+                                    labelWidth: 70,
+                                    width: 210
+                                },
+                                {
+                                    fieldLabel: 'Trans. Date',
+                                    name: 'DATEC',
+                                    labelWidth: 80,
+                                    width: 210
+                                },
+                                {
+                                    fieldLabel: 'Trans. Nbr.',
+                                    name: 'TRANC',
+                                    labelWidth: 80,
+                                    width: 210
+                                }
+                            ]
+                        },
+                        {
+                            items: [
+                                {
+                                    fieldLabel: 'Merchant',
+                                    name: 'MERCHNC',
+                                    labelWidth: 70,
+                                    width: 190
+                                },
+                                {
+                                    fieldLabel: 'Agent',
+                                    name: 'SAGENT',
+                                    labelWidth: 50,
+                                    width: 150
+                                },
+                                {
+                                    fieldLabel: 'Country',
+                                    name: 'SCOUNTRY',
+                                    labelWidth: 55,
+                                    width: 105
+                                },
+                                {
+                                    fieldLabel: 'Terminal',
+                                    name: 'TERMI',
+                                    labelWidth: 70,
+                                    width: 170
+                                }
+                            ]
+                        },
+                        {
+                            items: [
                                 {
                                     fieldLabel: 'Doc. Type',
                                     name: 'TDOC',
@@ -88,22 +138,6 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.AdjuDetailD
                                     value: 'None'
                                 },
                                 {
-                                    fieldLabel: 'Processor',
-                                    name: 'DESC_PRO',
-                                    labelWidth: 70,
-                                    width: 210
-                                },
-                                {
-                                    fieldLabel: 'Country',
-                                    name: 'SCOUNTRY',
-                                    labelWidth: 70,
-                                    width: 120
-                                }
-                            ]
-                        },
-                        {
-                            items: [
-                                {
                                     fieldLabel: 'Bank Doc.',
                                     name: 'BANDOC',
                                     labelWidth: 70,
@@ -116,79 +150,16 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.AdjuDetailD
                                     width: 190
                                 },
                                 {
-                                    fieldLabel: 'Merchant',
-                                    name: 'MERCHNC',
-                                    labelWidth: 70,
-                                    width: 190
-                                },
-                                {
-                                    fieldLabel: 'Terminal',
-                                    name: 'TERMI',
-                                    labelWidth: 70,
-                                    width: 180
-                                }
-                            ]
-                        },
-                        {
-                            items: [
-                                
-                                {
-                                    fieldLabel: 'Agent',
-                                    name: 'SAGENT',
-                                    labelWidth: 70,
-                                    width: 170
-                                },
-                                {
-                                    fieldLabel: 'PNR',
-                                    name: 'SPNR',
-                                    labelWidth: 50,
-                                    width: 150
-                                },
-                                {
-                                    fieldLabel: 'Sale Date',
-                                    name: 'SDATE',
-                                    labelWidth: 70,
-                                    width: 170
-                                },
-                                {
                                     fieldLabel: 'Card Number',
                                     name: 'SCARDN',
                                     labelWidth: 90,
                                     width: 250
                                 },
                                 {
-                                    fieldLabel: 'Auth Code',
+                                    fieldLabel: 'Auth code',
                                     name: 'SAUTHOC',
                                     labelWidth: 70,
-                                    width: 170
-                                }
-                            ]
-                        },
-                        {
-                            items: [
-                                {
-                                    fieldLabel: 'Curr.',
-                                    name: 'SCURRENCY',
-                                    labelWidth: 70,
-                                    width: 120
-                                },
-                                {
-                                    fieldLabel: 'Amount',
-                                    name: 'SVFOP',
-                                    labelWidth: 60,
                                     width: 160
-                                },
-                                {
-                                    fieldLabel: 'Curr. Rev.',
-                                    name: 'MONEDAPAGO',
-                                    labelWidth: 90,
-                                    width: 150
-                                },
-                                {
-                                    fieldLabel: 'Amount Rev',
-                                    name: 'IMPORTEPAG',
-                                    labelWidth: 80,
-                                    width: 180
                                 }
                             ]
                         },
@@ -211,7 +182,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.AdjuDetailD
                                     name: 'HEADER',
                                     labelWidth: 70,
                                     width: 250
-                                }
+                                },
                             ]
                         }
                     ]
@@ -231,10 +202,14 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.AdjuDetailD
                             xtype: 'grid',
                             border: false,
                             title: 'Settlements',
-                            width:'100%',
+                            width: '100%',
                             maxHeight: 300,
-                            hidden: true,
                             id: prototype.idAdju + '-gridSettl',
+                            viewConfig: {
+                                stripeRows: true,
+                                enableTextSelection: true,
+                                markDirty: false
+                            },
                             columns: {
                                 defaults: {
                                     align: 'center',
@@ -269,12 +244,51 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.AdjuDetailD
                             }
                         },
                         {
+                            xtype: 'form',
+                            layout: {
+                                type: 'hbox',
+                                pack: 'end'
+                            },
+                            width: '100%',
+                            id: prototype.idAdju + '-totalsSettl',
+                            defaults: {
+                                xtype: 'textfield',
+                                width: 210,
+                                labelWidth: 100,
+                                margin: '3 0',
+                                readOnly: true,
+                                labelStyle: 'text-align:right;font-weight: bolder;',
+                                fieldStyle: 'text-align:right;border-style:solid;border-color:#6CB6E7;border-width:1px;background:#B8D9C7;font-weight: bolder;'
+                            },
+                            items: [
+                                {
+                                    fieldLabel: 'Qty',
+                                    name: 'totalRecords',
+                                    fieldStyle: 'text-align:center;border-style:solid;border-color:#6CB6E7;border-width:1px;background:#E8BAE5;font-weight: bolder;'
+                                },
+                                {
+                                    fieldLabel: 'Total',
+                                    name: 'totalLoc'
+                                },
+                                {
+                                    fieldLabel: 'Total Rev.',
+                                    name: 'totalRev'
+                                }
+                            ]
+                        },
+                        {
                             xtype: 'grid',
                             border: false,
                             title: 'Invoices',
-                            width:'100%',
+                            width: '100%',
                             maxHeight: 300,
                             id: prototype.idAdju + '-gridSale',
+                            viewConfig: {
+                                stripeRows: true,
+                                enableTextSelection: true,
+                                markDirty: false
+                            },
+                            emptyText: 'No Invoices', // Mensaje cuando no hay registros
                             columns: {
                                 defaults: {
                                     align: 'center',
@@ -307,11 +321,40 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.DataEntrys.AdjuDetailD
 
                                 ]
                             }
+                        },
+                        {
+                            xtype: 'form',
+                            layout: {
+                                type: 'hbox',
+                                pack: 'end'
+                            },
+                            width: '100%',
+                            id: prototype.idAdju + '-totalsInvoi',
+                            defaults: {
+                                xtype: 'textfield',
+                                width: 210,
+                                labelWidth: 100,
+                                margin: '3 0',
+                                readOnly: true,
+                                labelStyle: 'text-align:right;font-weight: bolder;',
+                                fieldStyle: 'text-align:right;border-style:solid;border-color:#6CB6E7;border-width:1px;background:#B8D9C7;font-weight: bolder;'
+                            },
+                            items: [
+                                {
+                                    fieldLabel: 'Qty',
+                                    name: 'totalRecords',
+                                    fieldStyle: 'text-align:center;border-style:solid;border-color:#6CB6E7;border-width:1px;background:#E8BAE5;font-weight: bolder;'
+                                },
+                                {
+                                    fieldLabel: 'Total',
+                                    name: 'totalAmount'
+                                }
+                            ]
                         }
                     ]
                 }
             ]
-        },
+        }
     ],
     dockedItems: [
         {
