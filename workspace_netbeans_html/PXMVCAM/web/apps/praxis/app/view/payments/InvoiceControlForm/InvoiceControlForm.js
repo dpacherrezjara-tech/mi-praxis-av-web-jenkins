@@ -37,7 +37,7 @@ Ext.define('Ext.Praxis.view.payments.InvoiceControlForm.InvoiceControlForm', {
                         {
                             xtype: 'panel',
                             region: 'center',
-                            width: 1000,
+                            width: 1200,
                             layout: 'border',
                             items: [
                                 {
