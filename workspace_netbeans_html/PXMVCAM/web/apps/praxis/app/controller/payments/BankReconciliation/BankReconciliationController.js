@@ -49,7 +49,7 @@ Ext.util.CSS.createStyleSheet(`
 
 /* CABECERA FACTURA */
 .row-header-invoice .x-grid-cell {
-    background-color: #FFC18A  !important;   /* naranja existente */
+    background-color: #FFC18A  !important;   /* naranja  */
     color: #4A2A00 !important;
     font-weight: 700 !important;            /* SOLO negrita */
     border-bottom: 3px solid #E6762E !important;
@@ -65,7 +65,6 @@ Ext.util.CSS.createStyleSheet(`
 .row-header-invoice .x-grid-cell {
     box-shadow: inset 0 -2px 0 rgba(0,0,0,0.12);
 }
-
 
 
 
@@ -220,6 +219,24 @@ Ext.util.CSS.createStyleSheet(`
                 me.procesador();
                 });
                         $('#BankReconciliationForm-btnToggleSwitchFT').change(function () {
+                            
+                            
+                var cardContainer = Ext.getCmp(prototype.id + '-cardContainer');
+                        if (cardContainer) {
+                cardContainer.getLayout().setActiveItem(0);
+                }
+
+                var seg = Ext.getCmp(prototype.id + '-segViewMode');
+                        if (seg) {
+                seg.setValue('BSP'); // AJUSTES queda activo
+                }
+
+                var txtInvoice = Ext.getCmp(prototype.id + '-txtInvoiceFilter');
+                        if (txtInvoice) {
+                txtInvoice.reset();
+                        txtInvoice.hide();
+                }
+                
                 me.btnSearch_click();
                         let cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro');
                         let txtCard1 = Ext.getCmp(prototype.id + '-txtCard1');
@@ -253,6 +270,7 @@ Ext.util.CSS.createStyleSheet(`
                         Ext.getCmp(prototype.id + '-btnFase2').hide();
                         Ext.getCmp(prototype.id + '-btnAdd').hide();
                         Ext.getCmp(prototype.id + '-cmbFuente').hide();
+                        Ext.getCmp(prototype.id + '-segViewMode').hide();
                 } else {
                 Ext.getCmp(prototype.id + '-cmbFecFiltro').hide();
                         Ext.getCmp(prototype.id + '-txtCard1').hide();
@@ -775,31 +793,37 @@ Ext.util.CSS.createStyleSheet(`
                 // ===============================
                 // BUSQUEDA CARTERA MPF199
                 // ===============================
-                var card = Ext.getCmp(prototype.id + '-cardContainer').getLayout().getActiveItem();
-                        if (card && card.getId() === prototype.id + '-gridDataMPF199CARTERA') {
+                var cardContainer = Ext.getCmp(prototype.id + '-cardContainer');
+                        var activeItem = cardContainer.getLayout().getActiveItem();
+                        if (activeItem === cardContainer.items.getAt(2)) {  // 2 = CARTE RA
 
                 var statusValue = Ext.getCmp(prototype.id + '-cmbStatus').getValue();
                         if (Ext.isArray(statusValue)) {
                 statusValue = statusValue.length > 0 ? statusValue.join(',') : '';
                 }
+                var fuente = Ext.getCmp(prototype.id + '-cmbFuente').getValue();
+                
 
                 var fy = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() || '';
                         var fm = Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue() || '';
                         var ty = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() || '';
                         var tm = Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue() || '';
+                        var invoice = Ext.getCmp(prototype.id + '-txtInvoiceFilter').getValue() || '';
                         me.filtroCartera = {
-                        IN_STATUS: statusValue,
+                                IN_STATUS: statusValue,
                                 IN_ADATE_FROM: (fy && fm) ? fy + fm : '',
-                                IN_ADATE_TO: (ty && tm) ? ty + tm : ''
+                                IN_ADATE_TO: (ty && tm) ? ty + tm : '',
+                                IN_INVOICE: invoice,
+                                IN_FUENTE: fuente
                         };
                         console.log("FILTRO CARTERA", me.filtroCartera);
                         this.setGridDataCartera();
-                        return; 
-                        }
+                        return;
+                }
 
                 // ===============================
-                
-                
+
+
                 console.log('btnSearch_click');
                         console.log(me.panelActual);
                         var cmp = Ext.getCmp(prototype.id + '-btnToggleSwitchFT');
@@ -807,6 +831,7 @@ Ext.util.CSS.createStyleSheet(`
                         var isChecked = checkbox.checked;
                         console.log(isChecked);
                         if (me.panelActual === '-panelGridDataMPF199' && isChecked) {
+
 
 
 //             me.obJPADJ.IN_SAGENT = Ext.getCmp(prototype.id + '-txtAGENCY').getValue()|| '';
@@ -2772,6 +2797,8 @@ Ext.util.CSS.createStyleSheet(`
                 if (me.drillDown.length > 0) {
                 me.panelActual = me.drillDown.pop();
                         global.selectedChild(me.childs, prototype.id + me.panelActual);
+                        Ext.getCmp(prototype.id + '-txtInvoiceFilter').hide();
+                        
                         if (me.panelActual !== '-panelGridData') {
                 me.setWidthPie();
                 }
@@ -3109,6 +3136,7 @@ Ext.util.CSS.createStyleSheet(`
                         Ext.getCmp(prototype.id + '-txtBANDOC').setValue('');
                         Ext.getCmp(prototype.id + '-cmbFuente').setValue('');
                         Ext.getCmp(prototype.id + '-txtDATEPICKER').setValue('');
+                        Ext.getCmp(prototype.id + '-txtInvoiceFilter').setValue('');
                 },
                 btnExcel_click: function (obj, e) {
 
@@ -4323,29 +4351,40 @@ Ext.util.CSS.createStyleSheet(`
                 ///////////////////////////////////////////////////
 
                 onModeChange: function(segmentedBtn, button, isPressed) {
+
                 if (!isPressed) return; // Solo actuamos cuando el botón se presiona (true)
 
                         var me = this;
                         var mode = button.value; // 'BSP' o 'ARC'
                         var cardContainer = Ext.getCmp(prototype.id + '-cardContainer');
+                        var txtInvoice = Ext.getCmp(prototype.id + '-txtInvoiceFilter');
                         if (mode === 'BSP') {
                 // 1. Mostrar Grilla BSP
                 cardContainer.getLayout().setActiveItem(0);
                         win.lblUser_toolTip("Estructura: BSP Files (Ajustes)");
-                        // 2. Cargar Data BSP (Llama a tu función original)
-                        me.setGridDataMPF199();
+                        if (txtInvoice) {txtInvoice.setVisible(false);
+                        txtInvoice.reset();
+                }
+                // 2. Cargar Data BSP (Llama a tu función original)
+                me.setGridDataMPF199();
                 } else if (mode === 'ARC') {
                 // 1. Mostrar Grilla ARC
                 cardContainer.getLayout().setActiveItem(1);
                         win.lblUser_toolTip("Estructura: ARC Files (Comisiones)");
-                        // 2. Cargar Data ARC (Nueva función)
-                        me.setGridDataCOMISI();
+                        if (txtInvoice) {txtInvoice.setVisible(false);
+                        txtInvoice.reset();
+                }
+                // 2. Cargar Data ARC (Nueva función)
+                me.setGridDataCOMISI();
                 } else if (mode === 'CARTERA') {
                 // 3. Mostrar Grilla FACTURACION DETALLE
                 cardContainer.getLayout().setActiveItem(2);
                         win.lblUser_toolTip("Estructura: Cartera factura (detalle y facturas)");
-                        
-                        me.setGridDataCartera();
+                        if (txtInvoice) {txtInvoice.setVisible(true);
+                        txtInvoice.reset();
+                }
+
+                me.setGridDataCartera();
                 }
                 },
                 
@@ -4512,24 +4551,22 @@ Ext.util.CSS.createStyleSheet(`
                 //AGREGAMOS CONSULTA FACTURA Y DETALLE
                 //////////////////////////
 
+
+                
                 setGridDataCartera: function () {
 
-                var me = this;      
-                var lbl = Ext.getCmp(prototype.id + '-labelMPF199');
-                if (lbl) {
-                lbl.setVisible(false);
-                        }
-
-                Ext.getCmp(prototype.id + '-cardContainer')
-                .getLayout()
-                .setActiveItem(2);
-
-                var remoteStore = Ext.create('Ext.Praxis.store.interline.GridData', {
-                pageSize: 0,
-                        proxy: {
-                        url: prototype.url + '/searchListCartera',
-                        }
-                });
+                var me = this;
+                        var lbl = Ext.getCmp(prototype.id + '-labelMPF199');
+                        if (lbl) lbl.setVisible(false);
+                        Ext.getCmp(prototype.id + '-cardContainer')
+                        .getLayout()
+                        .setActiveItem(2);
+                        var remoteStore = Ext.create('Ext.Praxis.store.interline.GridData', {
+                        pageSize: 0,
+                                proxy: {
+                                url: prototype.url + '/searchListCartera',
+                                }
+                        });
                         var localStore = Ext.create('Ext.data.Store', {
                         model: remoteStore.getModel(),
                                 data: []
@@ -4537,58 +4574,59 @@ Ext.util.CSS.createStyleSheet(`
                         var grid = Ext.getCmp(prototype.id + '-gridDataMPF199CARTERA');
                         grid.bindStore(localStore);
                         remoteStore.load({
-                            
-                             params: me.filtroCartera,                            
-                             callback: function (records, op, success) {
 
-                        if (!success || !records || records.length === 0) {
-                        global.Msg({ msg: 'Data not found.' });
-                                return;
-                        }
+                        params: me.filtroCartera,
+                                callback: function (records, op, success) {
 
-                        var newData = [];
-                                var currentInvoice = null;
-                                var header = null;
-                                Ext.Array.each(records, function (rec) {
-
-                                var invoice = rec.get('O_INVOICE');
-                                var status = rec.get('O_STVAL'); // 3 = Pending
-
-                                // CABECERA
-                                if (invoice !== currentInvoice) {
-
-                                header = {
-                                O_INVOICE: invoice,
-                                        O_ADATE: rec.get('O_ADATE'),
-                                        O_CONCEPT: 'INVOICE',
-                                        O_STVAL: '0', // Match 
-                                        O_SCOUNTRY: rec.get('O_SCOUNTRY'),
-                                        O_SCURRENCY: rec.get('O_SCURRENCY'),
-                                        O_NETO: rec.get('O_NETO'),
-                                        O_APAYMENT: '0',
-                                        O_ABALANCE: rec.get('O_NETO'),
-                                        _isHeader: true
-                                };
-                                        newData.push(header);
-                                        currentInvoice = invoice;
+                                if (!success || !records || records.length === 0) {
+                                global.Msg({ msg: 'Data not found.' });
+                                        return;
                                 }
 
-                                //  Si hay Pending -cabecera Pending
-                                if (status === '3' || status === 3) {
-                                header.O_STVAL = '3';
-                                }
+                                var newData = [];
+                                        var currentInvoice = null;
+                                        var header = null;
+                                        Ext.Array.each(records, function (rec) {
 
-                                // DETALLE
-                                newData.push(Ext.apply({}, rec.getData(), {
-                                _isHeader: false
-                                }));
-                                });
-                                localStore.loadData(newData);
-                                
+                                        var invoice = rec.get('O_INVOICE');
+                                                var status = rec.get('O_STVAL'); // 3 = Pending
+
+                                                // CABECERA
+                                                if (invoice !== currentInvoice) {
+
+                                        header = {
+                                        O_INVOICE: invoice,
+                                                O_TINPUT:rec.get('O_TINPUT'),
+                                                O_ADATE: rec.get('O_ADATE'),
+                                                O_CONCEPT: 'INVOICE',
+                                                O_STVAL: '0', // Match 
+                                                O_SCOUNTRY: rec.get('O_SCOUNTRY'),
+                                                O_SCURRENCY: rec.get('O_SCURRENCY'),
+                                                O_BANDOC: rec.get('O_BANDOC'),
+                                                O_NETO: rec.get('O_NETO'),
+                                                O_APAYMENT: '0',
+                                                O_ABALANCE: rec.get('O_NETO'),
+                                                _isHeader: true
+                                        };
+                                                newData.push(header);
+                                                currentInvoice = invoice;
+                                        }
+
+                                        //  Si hay Pending -cabecera Pending
+                                        if (status === '3' || status === 3) {
+                                        header.O_STVAL = '3';
+                                        }
+
+                                        // DETALLE
+                                        newData.push(Ext.apply({}, rec.getData(), {
+                                        _isHeader: false
+                                        }));
+                                        });
+                                        localStore.loadData(newData);
                                 }
-                            });
-                       },
-     
+                        });
+                },
+
 
 
  //////////////////////////7

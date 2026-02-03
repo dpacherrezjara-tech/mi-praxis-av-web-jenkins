@@ -79,6 +79,7 @@ public class A2290Filter extends A2290 {
     public String IN_FROMSDATE = "";
     public String IN_TOSDATE = "";
     public String IN_INVOICE = "";
+    public String IN_FUENTE = "";
     public String INVOICE = "";
     public String ACCNUMA = "";
     public String COSTCEN = "";
@@ -1140,6 +1141,7 @@ public class A2290Filter extends A2290 {
     public String O_CBATCH = "";
     public String O_SEQ = "";
     public String O_BANDOC = "";
+    public String O_CFUENTE = "";
     public String O_DATEA = "";
     public String O_TRANA = "";
     public String O_INVOICE = "";
