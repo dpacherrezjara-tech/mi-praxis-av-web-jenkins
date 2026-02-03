@@ -6884,7 +6884,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                     {
                                                         text: 'Invoice',
                                                         dataIndex: 'O_INVOICE',
-                                                        width: 335,
+                                                        width: 255,
                                                         renderer: function (value, metaData, record) {
 
                                                             metaData.style = "text-align:center;";
@@ -6920,7 +6920,34 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                     {
                                                         text: 'Value<br>Date',
                                                         dataIndex: 'O_ADATE',
-                                                        width: 160,
+                                                        width: 130,
+                                                        renderer: function (value) {
+                                                            if (!value || value.length !== 8) {
+                                                                return value;
+                                                            }
+                                                            return value.substring(0, 4) + '-' +
+                                                                    value.substring(4, 6) + '-' +
+                                                                    value.substring(6, 8);
+                                                        }
+                                                    },
+                                                    
+                                                     {
+                                                        text: 'Start<br>Date',
+                                                        dataIndex: 'O_STRDATE',
+                                                        width: 130,
+                                                        renderer: function (value) {
+                                                            if (!value || value.length !== 8) {
+                                                                return value;
+                                                            }
+                                                            return value.substring(0, 4) + '-' +
+                                                                    value.substring(4, 6) + '-' +
+                                                                    value.substring(6, 8);
+                                                        }
+                                                    },
+                                                     {
+                                                        text: 'End<br>Date',
+                                                        dataIndex: 'O_ENDDATE',
+                                                        width: 130,
                                                         renderer: function (value) {
                                                             if (!value || value.length !== 8) {
                                                                 return value;
@@ -6990,7 +7017,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         text: 'Neto',
                                                         dataIndex: 'O_NETO',
                                                         xtype: 'numbercolumn',
-                                                        width: 162,
+                                                        width: 112,
                                                         align: 'right',
                                                         renderer: function (value, metaData, record) {
                                                             if (!record.get('_isHeader')) {
@@ -7005,7 +7032,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         text: 'Applied<br>Payment',
                                                         dataIndex: 'O_APAYMENT',
                                                         xtype: 'numbercolumn',
-                                                        width: 162,
+                                                        width: 112,
                                                         align: 'right',
                                                         renderer: function (value) {
                                                             return Ext.util.Format.number(value, '0,000.00');
@@ -7017,7 +7044,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         text: 'Balance',
                                                         dataIndex: 'O_ABALANCE',
                                                         xtype: 'numbercolumn',
-                                                        width: 162,
+                                                        width: 112,
                                                         align: 'right',
                                                         renderer: function (value, meta, rec) {
                                                             // Solo color del número

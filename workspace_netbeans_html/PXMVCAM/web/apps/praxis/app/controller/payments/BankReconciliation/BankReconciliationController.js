@@ -4597,7 +4597,9 @@ Ext.util.CSS.createStyleSheet(`
                                         header = {
                                         O_INVOICE: invoice,
                                                 O_TINPUT:rec.get('O_TINPUT'),
-                                                O_ADATE: rec.get('O_ADATE'),
+                                                O_ADATE: 'Settlement Date',
+                                                O_STRDATE: 'From Date',
+                                                O_ENDDATE: 'To Date',
                                                 O_CONCEPT: 'INVOICE',
                                                 O_STVAL: '0', // Match 
                                                 O_SCOUNTRY: rec.get('O_SCOUNTRY'),

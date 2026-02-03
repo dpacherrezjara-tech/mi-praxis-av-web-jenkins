@@ -8757,6 +8757,8 @@ public class BankReconciliationDAO {
             bean.O_BANDOC    = rst.getString("BANDOC");
             bean.O_CFUENTE    = rst.getString("CFUENTE");
             bean.O_TINPUT    = rst.getString("TINPUT");
+            bean.O_STRDATE    = rst.getString("STRDATE");
+            bean.O_ENDDATE    = rst.getString("ENDDATE");
 
             listaData.add(bean);
                 
