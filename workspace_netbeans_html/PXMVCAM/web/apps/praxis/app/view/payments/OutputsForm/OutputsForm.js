@@ -54,7 +54,7 @@ Ext.define('Ext.Praxis.view.payments.OutputsForm.OutputsForm', {
                                     border: true,
                                     autoScroll: true,
                                     defaults: {
-                                        width: 1400,
+                                        width: 1600,
                                         align: 'center'
                                     },
                                     items: [
@@ -71,13 +71,13 @@ Ext.define('Ext.Praxis.view.payments.OutputsForm.OutputsForm', {
                                         {
                                             xtype: 'panel',
                                             height: 600,
-                                            width: 1400,
+                                            width: 1600,
                                             layout: 'fit',
                                             items: [
                                                 {
                                                     xtype: 'panel',
                                                     id: prototype.id + '-centerC-panel01',
-                                                    width: 1400,
+                                                    width: 1600,
                                                     layout: 'border',
                                                     align: 'center',
                                                     border: true,

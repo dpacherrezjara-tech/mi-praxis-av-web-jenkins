@@ -19,7 +19,7 @@ Ext.define('Ext.Praxis.view.payments.OutputsForm.Info', {
             defaults: {
                 bodyStyle: 'background: transparent;',
                 border: false,
-                width: 1400,
+                width: 1500,
                 height: 700,
                 align: 'center'
             },
@@ -45,7 +45,7 @@ Ext.define('Ext.Praxis.view.payments.OutputsForm.Info', {
                             padding: '1',
                             border: false,
                             height: 550,
-                            width: 1200,
+                            width: 1400,
                             layout: {
                                 type: 'vbox',
                                 align: 'center'

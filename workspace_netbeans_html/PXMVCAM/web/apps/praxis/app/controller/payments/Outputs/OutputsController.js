@@ -158,9 +158,9 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
             '-btnToggleSwitch', // Toggle interior/exterior  
             '-EXT', // Label Exterior
             '-btnTxtLIQUI', // Botón Settlement TXT
-            '-btnTxtSALE', // Botón Sales TXT
+//            '-btnTxtSALE', // Botón Sales TXT
             '-txtLIQUI',
-            '-txtSALE'
+//            '-txtSALE'
         ];
 
         componentsCashCredit.forEach(componentId => {
@@ -286,6 +286,7 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
         me.bean.IN_PRDA = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue();
         me.bean.IN_DATE = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue();
         me.bean.IN_CCUST = Ext.getCmp(prototype.id + '-cmbClient').getValue();
+        me.bean.IN_CASH = me.getPaymentMode() ? 'N' : 'Y';
         let proces = Ext.getCmp(prototype.id + '-cmbCores');
         if (!proces.isVisible()) {
             //solo es colombia
