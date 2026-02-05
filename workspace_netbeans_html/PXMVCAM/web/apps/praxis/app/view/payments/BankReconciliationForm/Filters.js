@@ -909,6 +909,18 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                         },
 
                         {xtype: 'tbspacer', width: 10},
+                        
+                                                {
+                            xtype: 'textfield',
+                            fieldLabel: 'Invoice',
+                            labelWidth: 55,
+                            width: 200,
+                            hidden: true,
+                            id: prototype.id + '-txtInvoiceFilter'
+
+                        },
+
+
                         {
                             xtype: 'label',
 //                            style: 'font-weight:bold;color:#0B333C;',

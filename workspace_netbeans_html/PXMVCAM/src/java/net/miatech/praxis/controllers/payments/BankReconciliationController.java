@@ -5788,10 +5788,14 @@ public class BankReconciliationController extends BaseController {
             filter.IN_STATUS      = request.getParameter("IN_STATUS") != null ? request.getParameter("IN_STATUS") : "";
             filter.IN_ADATE_FROM  = request.getParameter("IN_ADATE_FROM") != null ? request.getParameter("IN_ADATE_FROM") : "";
             filter.IN_ADATE_TO    = request.getParameter("IN_ADATE_TO") != null ? request.getParameter("IN_ADATE_TO") : "";
+            filter.IN_INVOICE    = request.getParameter("IN_INVOICE");
+            filter.IN_FUENTE    = request.getParameter("IN_FUENTE");
 
             System.out.println("STATUS = " + filter.IN_STATUS);
             System.out.println("FROM   = " + filter.IN_ADATE_FROM);
             System.out.println("TO     = " + filter.IN_ADATE_TO);
+            System.out.println("INVOICE     = " + filter.IN_INVOICE);
+            System.out.println("INVOICE     = " + filter.IN_FUENTE);
 
 
                 lst = logic.loadLISTAR_CARTERAMPF199(filter);

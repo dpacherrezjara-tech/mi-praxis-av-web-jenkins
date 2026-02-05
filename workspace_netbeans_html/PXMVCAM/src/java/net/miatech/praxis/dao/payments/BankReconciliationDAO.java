@@ -8688,7 +8688,7 @@ public class BankReconciliationDAO {
      ///loadLISTAR_CARTERAMPF199
      
     
-     public List<A2290Filter> loadLISTAR_CARTERAMPF199(A2290Filter filter)throws SQLException, Exception {
+    public List<A2290Filter> loadLISTAR_CARTERAMPF199(A2290Filter filter)throws SQLException, Exception {
         
         
         
@@ -8696,7 +8696,7 @@ public class BankReconciliationDAO {
         A2290Filter bean;
         
         
-        String SQL = "{CALL PRAXISMP.MPS477(?, ?, ?)}";
+        String SQL = "{CALL PRAXISMP.MPS477(?, ?, ?, ?, ?, ?)}";
         
         CallableStatement cstmt = null;
         ResultSet rst = null;
@@ -8716,9 +8716,12 @@ public class BankReconciliationDAO {
 
             // los de entrada
     
-            cstmt.setString(1, filter.IN_STATUS);
-            cstmt.setString(2, filter.IN_ADATE_FROM);
-            cstmt.setString(3, filter.IN_ADATE_TO);
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.IN_STATUS);
+            cstmt.setString(3, filter.IN_ADATE_FROM);
+            cstmt.setString(4, filter.IN_ADATE_TO);
+            cstmt.setString(5, filter.IN_INVOICE);
+            cstmt.setString(6, filter.IN_FUENTE);
 //            cstmt.setString(4, filter.IN_ADATE);
 //            cstmt.setString(5, filter.IN_STATUS);
 //            cstmt.setString(6, filter.IN_COUNTRY);
@@ -8751,6 +8754,11 @@ public class BankReconciliationDAO {
             bean.O_NETO      = rst.getDouble("NETO");
             bean.O_ABALANCE  = rst.getDouble("ABALANCE");
             bean.O_APAYMENT  = rst.getDouble("APAYMENT");
+            bean.O_BANDOC    = rst.getString("BANDOC");
+            bean.O_CFUENTE    = rst.getString("CFUENTE");
+            bean.O_TINPUT    = rst.getString("TINPUT");
+            bean.O_STRDATE    = rst.getString("STRDATE");
+            bean.O_ENDDATE    = rst.getString("ENDDATE");
 
             listaData.add(bean);
                 
