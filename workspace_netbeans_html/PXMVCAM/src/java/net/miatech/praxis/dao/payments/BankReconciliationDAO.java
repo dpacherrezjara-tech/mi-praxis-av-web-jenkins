@@ -6116,7 +6116,7 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS396_V2(?,?,?,?,?,?, ?, ?, ?, ?, ?, ?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS396(?,?,?,?,?,?, ?, ?, ?, ?, ?, ?)}";
 
         Connection cnx = null;
         try {
