@@ -204,12 +204,30 @@ Ext.define('Ext.Praxis.view.payments.InvoiceControlForm.Filters', {
                         keypress: 'btnSearch_click'
                     }
                 },
-                
+                {
+                    xtype: 'textfield',
+                    id: prototype.id + '-txtSAGENT',
+                    fieldLabel: 'Agent',
+                    disabled: false,
+                    labelStyle: 'text-align: left; font-size: 12px;',
+                    fieldStyle: 'text-align: center; font-size: 12px;',
+                    labelWidth: 45,
+                    enforceMaxLength: true,
+                    hidden: false, 
+//                    maskRe: /[0-9A-Za-z]/, 
+                    maxLength: 200, 
+                    width: 150,
+                    enableKeyEvents: true,
+                    margin: '0 10 0 0',
+                    listeners: {
+                        keypress: 'onAgentKeypress'
+                    }
+                },
                 {
                     xtype: 'textfield',
                     id: prototype.id + '-txtINVOICE',
                     fieldLabel: 'Invoice',
-                    disabled: true,
+                    disabled: false,
                     labelStyle: 'text-align: left; font-size: 12px;',
                     fieldStyle: 'text-align: center; font-size: 12px;',
                     labelWidth: 45,
@@ -427,3 +445,70 @@ Ext.define('Ext.Praxis.view.payments.InvoiceControlForm.Filters', {
 
 
 
+Ext.util.CSS.createStyleSheet(`
+    #${prototype.id}-agentHistoryPopup {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    #${prototype.id}-agentHistoryPopup .x-window-header {
+        background: #1e40af;
+        color: white;
+        font-size: 15px;
+        font-weight: 600;
+        padding: 14px 20px;
+    }
+    
+    .agent-card {
+        background: white;
+        border-radius: 10px;
+        padding: 12px 15px;
+        margin-bottom: 10px;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .agent-card:hover {
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        transform: translateY(-2px);
+    }
+    
+    .agent-card-text {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 600;
+        font-size: 14px;
+        flex: 1;
+    }
+    
+    .agent-card-remove {
+        background: #fee2e2;
+        color: #dc2626;
+        border: none;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.2s;
+    }
+    
+    .agent-card-remove:hover {
+        background: #dc2626;
+        color: white;
+        transform: rotate(90deg);
+    }
+    
+    #${prototype.id}-agentHistoryPopup .x-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3);
+    }
+`, 'agent-popup-style-cards');
