@@ -33,7 +33,6 @@ public class A2290Filter extends A2290 {
     public double IMPORTECeba = 0;
     public double origSVFOP = 0;
     public double VFOP = 0;
-    public String tipo = "";
     public String IMPORTE = "";
     public String IN_CODPRO = "";
     public String IN_DATEFROM = "";
