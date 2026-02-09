@@ -890,8 +890,11 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
      
         me.beanCashAgent = {};
         me.beanCashAgent.IN_SAGENT = x.record.data.SAGENT;
+        me.beanCashAgent.IN_SCOUNTRY = x.record.data.SCOUNTRY;
         me.beanCashAgent.IN_DATEC = x.record.data.DATEC;
         me.beanCashAgent.IN_TRANC = x.record.data.TRANC;
+        me.beanCashAgent.IN_STRDATE = x.record.data.STRDATE;
+        me.beanCashAgent.IN_ENDDATE = x.record.data.ENDDATE;
         me.beanCashAgent.IN_SPAYMENT =
                 (x.record.data.TPERIOD === 'E') ? 'EP' : 'CA';
 
