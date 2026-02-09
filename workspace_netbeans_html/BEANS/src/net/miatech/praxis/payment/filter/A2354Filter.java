@@ -39,6 +39,7 @@ public String desSTATUS = "";
 public String IN_STATUS = "";
 public String IN_DEBITS = "";
 public String IN_COUNTRY = "";
+public String IN_AGENTS = "";
 public String IN_NOTFOUND = "";
 public String IN_COREP = "";
 public String CODE = "";
