@@ -4911,6 +4911,241 @@ public class StatementReconciliationsController extends BaseController {
     void getXLSXDetCashMainExtract(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("Report : getXLSXDetCashMainExtract");
 
+        // Generar nombre de archivo
+        String fileNameDownload = String.format("Detalle_Cash_Main_%s.xlsx", Functions.getFechaActual());
+
+        try {
+            // --- 1. Crear archivo temporal y workbook ---
+            File file = File.createTempFile("DetCashMain_", ".xlsx");
+            Workbook workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Detalle Cash Main");
+
+            // --- 2. Obtener datos ---
+            Map<String, Object> resultData = this.getListDetLiquidCash(request, true);
+
+            // Casting seguro de la lista
+            List<A2290Filter> listaData = (List<A2290Filter>) resultData.get("detalles");
+
+            System.out.println("Tamaño de lista devuelta : " + (listaData != null ? listaData.size() : 0));
+
+            // --- 3. Validar si hay datos ---
+            if (listaData == null || listaData.isEmpty()) {
+                System.out.println("No hay datos para exportar");
+
+                Row row = sheet.createRow(0);
+                Cell cell = row.createCell(0);
+                cell.setCellValue("No hay datos para exportar");
+
+                // Enviar respuesta vacía
+                FileOutputStream fos = new FileOutputStream(file);
+                workbook.write(fos);
+                fos.close();
+
+                response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+                Files.copy(file.toPath(), response.getOutputStream());
+                response.getOutputStream().flush();
+                workbook.close();
+                file.delete();
+                return;
+            }
+
+            // --- 4. Definir Estilos ---
+            // Estilo Cabecera
+            CellStyle headerStyle = workbook.createCellStyle();
+            Font headerFont = workbook.createFont();
+            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            headerStyle.setFont(headerFont);
+            headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+            headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            headerStyle.setBorderBottom(CellStyle.BORDER_THIN);
+            headerStyle.setBorderTop(CellStyle.BORDER_THIN);
+            headerStyle.setBorderLeft(CellStyle.BORDER_THIN);
+            headerStyle.setBorderRight(CellStyle.BORDER_THIN);
+
+            // Estilo Datos (Texto General)
+            CellStyle dataStyle = workbook.createCellStyle();
+            dataStyle.setBorderBottom(CellStyle.BORDER_THIN);
+            dataStyle.setBorderTop(CellStyle.BORDER_THIN);
+            dataStyle.setBorderLeft(CellStyle.BORDER_THIN);
+            dataStyle.setBorderRight(CellStyle.BORDER_THIN);
+
+            // Estilo Numérico (Moneda/Decimales)
+            CellStyle numberStyle = workbook.createCellStyle();
+            numberStyle.cloneStyleFrom(dataStyle);
+            DataFormat format = workbook.createDataFormat();
+            numberStyle.setDataFormat(format.getFormat("#,##0.00")); // Formato con 2 decimales y miles
+
+            // --- 5. Crear Cabeceras ---
+            String[] headers = {
+                "CCUST", "SOCIETY", "CIACOME", "Country", "Doc. Type", "Status",
+                "Doc SAP BANK", "Account", "Abono Date", "REFER", "CLAVE1", "CLAVE3", "TEXTO", "TEXTOLAR", "Currency",
+                "Neto EECC", "Neto Settlement", "Source"
+            };
+
+            Row headerRow = sheet.createRow(0);
+            for (int i = 0; i < headers.length; i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(headers[i]);
+                cell.setCellStyle(headerStyle);
+            }
+
+            // --- 6. Llenar Datos (Iteración optimizada) ---
+            int rowNum = 1;
+            for (A2290Filter row : listaData) {
+                Row excelRow = sheet.createRow(rowNum++);
+                int col = 0;
+                Cell c;
+
+                // --- COLUMNAS DE TEXTO (Usan dataStyle) ---
+                // CCUST
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.CCUST != null ? row.CCUST : "");
+                c.setCellStyle(dataStyle);
+
+                // SOCIETY
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.SOCIETY != null ? row.SOCIETY : "");
+                c.setCellStyle(dataStyle);
+
+                // CIACOME
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.CIACOME != null ? row.CIACOME : "");
+                c.setCellStyle(dataStyle);
+
+                // Country
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.DESC_SCOUNTRY != null ? row.DESC_SCOUNTRY : "");
+                c.setCellStyle(dataStyle);
+
+                // Doc Type (Calculado)
+                String docType = "S".equals(row.TDOC) ? "Sales" : (row.TDOC != null ? row.TDOC : "");
+                c = excelRow.createCell(col++);
+                c.setCellValue(docType);
+                c.setCellStyle(dataStyle);
+
+                // Status (Calculado)
+                String stval;
+                if ("1".equals(row.STVAL)) {
+                    stval = "Match";
+                } else if ("3".equals(row.STVAL)) {
+                    stval = "Pending";
+                } else if ("5".equals(row.STVAL)) {
+                    stval = "Match Manual";
+                } else {
+                    stval = row.STVAL != null ? row.STVAL : "";
+                }
+
+                c = excelRow.createCell(col++);
+                c.setCellValue(stval);
+                c.setCellStyle(dataStyle);
+
+                // Doc SAP BANK
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.BANDOC != null ? row.BANDOC : "");
+                c.setCellStyle(dataStyle);
+
+                // Account
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.ACCOUNT != null ? row.ACCOUNT : "");
+                c.setCellStyle(dataStyle);
+
+                // Abono Date
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.ADATE != null ? row.ADATE : "");
+                c.setCellStyle(dataStyle);
+
+                // REFER
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.REFER != null ? row.REFER : "");
+                c.setCellStyle(dataStyle);
+
+                // CLAVE1
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.CLAVE1 != null ? row.CLAVE1 : "");
+                c.setCellStyle(dataStyle);
+
+                // CLAVE3
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.CLAVE3 != null ? row.CLAVE3 : "");
+                c.setCellStyle(dataStyle);
+
+                // TEXTO
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.TEXTO != null ? row.TEXTO : "");
+                c.setCellStyle(dataStyle);
+
+                // TEXTOLAR
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.TEXTOLAR != null ? row.TEXTOLAR : "");
+                c.setCellStyle(dataStyle);
+
+                // Currency
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.SCURRENCY != null ? row.SCURRENCY : "");
+                c.setCellStyle(dataStyle);
+
+                // --- COLUMNAS NUMÉRICAS (Usan numberStyle) ---
+                // Neto EECC
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.NETO); // Asumiendo que es double/BigDecimal
+                c.setCellStyle(numberStyle); // APLICAR ESTILO NUMÉRICO AQUÍ
+
+                // Neto Settlement
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.NETOC); // Asumiendo que es double/BigDecimal
+                c.setCellStyle(numberStyle); // APLICAR ESTILO NUMÉRICO AQUÍ
+
+              // --- ÚLTIMA COLUMNA: Source ---
+                c = excelRow.createCell(col++);
+                
+                String sourceVal = row.CCUSTPRO != null ? row.CCUSTPRO.trim() : "";
+                
+                if ("00".equals(sourceVal)) {
+                    sourceVal = "BSP";
+                } else if ("01".equals(sourceVal)) {
+                    sourceVal = "ICCS";
+                } else if ("02".equals(sourceVal)) {
+                    sourceVal = "ARC";
+                }
+
+                c.setCellValue(sourceVal);
+                c.setCellStyle(dataStyle);
+
+            }
+
+            // --- 7. Autoajuste de columnas ---
+            for (int i = 0; i < headers.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            // --- 8. Escribir y enviar respuesta ---
+            FileOutputStream fos = new FileOutputStream(file);
+            workbook.write(fos);
+            fos.close();
+
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+
+            Files.copy(file.toPath(), response.getOutputStream());
+            response.getOutputStream().flush();
+
+            workbook.close();
+            file.delete();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SpringException(e);
+        }
+    }
+
+    @RequestMapping(value = "getXLSXDetCashMainExtractBK")
+    public @ResponseBody
+    void getXLSXDetCashMainExtractBK(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("Report : getXLSXDetCashMainExtract");
+
         String fileNameDownload = String.format("Detalle_Cash_Main_%s.xlsx", Functions.getFechaActual());
 
         try {
@@ -4981,8 +5216,8 @@ public class StatementReconciliationsController extends BaseController {
 
             // --- Crear cabeceras ---
             String[] headers = {
-                "Country", "Doc. Type", "Status", "Merchant",
-                "Doc SAP BANK", "Account","Abono Date", "Currency",
+                "CCUST", "SOCIETY", "CIACOME", "Country", "Doc. Type", "Status",
+                "Doc SAP BANK", "Account", "Abono Date", "REFER", "CLAVE1", "CLAVE3", "TEXTO", "TEXTOLAR", "Currency",
                 "Neto EECC", "Neto Settlement", "Source"
             };
 
@@ -4998,6 +5233,15 @@ public class StatementReconciliationsController extends BaseController {
             for (A2290Filter row : listaData) {
                 Row excelRow = sheet.createRow(rowNum++);
                 int col = 0;
+
+                // CCUST
+                excelRow.createCell(col++).setCellValue(row.CCUST != null ? row.CCUST : "");
+
+                // SOCIETY
+                excelRow.createCell(col++).setCellValue(row.SOCIETY != null ? row.SOCIETY : "");
+
+                // CIACOME
+                excelRow.createCell(col++).setCellValue(row.CIACOME != null ? row.CIACOME : "");
 
                 // Country
                 excelRow.createCell(col++).setCellValue(row.DESC_SCOUNTRY != null ? row.DESC_SCOUNTRY : "");
@@ -5017,24 +5261,36 @@ public class StatementReconciliationsController extends BaseController {
                     stval = "Match";
                 } else if ("3".equals(row.STVAL)) {
                     stval = "Pending";
-                } else if ("5".equals(row.STVAL)) {  // 🔴 CORRECCIÓN: era "4", debe ser "5"
+                } else if ("5".equals(row.STVAL)) {
                     stval = "Match Manual";
                 } else {
                     stval = row.STVAL != null ? row.STVAL : "";
                 }
                 excelRow.createCell(col++).setCellValue(stval);
 
-                // Merchant
-                excelRow.createCell(col++).setCellValue(row.MERCHAND != null ? row.MERCHAND : "");
-
                 // Doc SAP BANK
                 excelRow.createCell(col++).setCellValue(row.BANDOC != null ? row.BANDOC : "");
-                
+
                 // ACCOUNT
                 excelRow.createCell(col++).setCellValue(row.ACCOUNT != null ? row.ACCOUNT : "");
 
                 // Abono Date
                 excelRow.createCell(col++).setCellValue(row.ADATE != null ? row.ADATE : "");
+
+                // REFER
+                excelRow.createCell(col++).setCellValue(row.REFER != null ? row.REFER : "");
+
+                // CLAVE1
+                excelRow.createCell(col++).setCellValue(row.CLAVE1 != null ? row.CLAVE1 : "");
+
+                // CLAVE3
+                excelRow.createCell(col++).setCellValue(row.CLAVE3 != null ? row.CLAVE3 : "");
+
+                // TEXTO
+                excelRow.createCell(col++).setCellValue(row.TEXTO != null ? row.TEXTO : "");
+
+                // TEXTOLAR
+                excelRow.createCell(col++).setCellValue(row.TEXTOLAR != null ? row.TEXTOLAR : "");
 
                 // Currency
                 excelRow.createCell(col++).setCellValue(row.SCURRENCY != null ? row.SCURRENCY : "");
@@ -5055,7 +5311,7 @@ public class StatementReconciliationsController extends BaseController {
                 // Aplicar estilo general a las celdas de texto
                 for (int j = 0; j < headers.length; j++) {
                     Cell cell = excelRow.getCell(j);
-                    if (cell != null && (j < 8 || j == 10)) { // Columnas 0-6 y 9 son texto
+                    if (cell != null && (j < 17 || j == 19)) { // Columnas 0-6 y 9 son texto
                         cell.setCellStyle(dataStyle);
                     }
                 }

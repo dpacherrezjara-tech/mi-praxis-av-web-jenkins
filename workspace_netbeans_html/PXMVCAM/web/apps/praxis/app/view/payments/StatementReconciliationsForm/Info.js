@@ -18,7 +18,7 @@
             defaults: {
                 bodyStyle: 'background: transparent;',
                 border: false,
-                width: 1500,
+                width: 1800,
                 height: 'auto',
                 align: 'center'
             },
@@ -1746,7 +1746,7 @@
                                 bodyStyle: 'background-color: #E3EAEF;',
                                 border: false,
                                 height: 'auto',
-                                width: 1180,
+                                width: 1700,
                                 margin: '10 0 0 0',
                                 layout: {
                                     type: 'vbox',
@@ -1764,7 +1764,7 @@
                                     {
                                         xtype: 'grid',
                                         id: prototype.id + '-gridDetLiquiCash',
-                                        width: 1160,
+                                        width: 1700,
                                         columnLines: true,
                                         features: [{ ftype: 'summary' }],
                                         columns: {
@@ -1774,6 +1774,33 @@
                                                 align: 'center'
                                             },
                                             items: [
+                                                {
+                                                    text: 'CCUST',
+                                                    dataIndex: 'CCUST',
+                                                    width: 60,
+                                                    renderer: function (value, metaData) {
+                                                        metaData.style = "text-align:center;";
+                                                        return value;
+                                                    }
+                                                },
+                                                {
+                                                    text: 'SOCIETY',
+                                                    dataIndex: 'SOCIETY',
+                                                    width: 70,
+                                                    renderer: function (value, metaData) {
+                                                        metaData.style = "text-align:center;";
+                                                        return value;
+                                                    }
+                                                },
+                                                {
+                                                    text: 'CIACOME',
+                                                    dataIndex: 'CIACOME',
+                                                    width: 80,
+                                                    renderer: function (value, metaData) {
+                                                        metaData.style = "text-align:center;";
+                                                        return value;
+                                                    }
+                                                },
                                                 {
                                                     text: 'Country',
                                                     dataIndex: 'DESC_SCOUNTRY',
@@ -1786,7 +1813,7 @@
                                                 {
                                                     text: 'Doc. Type',
                                                     dataIndex: 'TDOC',
-                                                    width: 100,
+                                                    width: 80,
                                                     renderer: function (value, metaData, record) {
                                                         metaData.style = "text-align:center;";
                                                         metaData.tdAttr = 'data-qtip="' + record.data.TDOC + '"';
@@ -1799,7 +1826,7 @@
                                                 {
                                                     text: 'Status',
                                                     dataIndex: 'STVAL',
-                                                    width: 95,
+                                                    width: 80,
                                                     renderer: function (value, metaData) {
                                                         metaData.style = "text-align:center;";
                                                         metaData.tdCls = "x-grid-cell x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -1819,7 +1846,7 @@
                                                 {
                                                     text: 'Account',
                                                     dataIndex: 'ACCOUNT',
-                                                    width: 100,
+                                                    width: 70,
                                                     renderer: function (value, metaData) {
                                                         metaData.style = "text-align:center;";
                                                         metaData.tdCls = "x-grid-cell x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -1829,6 +1856,56 @@
                                                 {
                                                     text: 'Abono Date',
                                                     dataIndex: 'ADATE',
+                                                    width: 90,
+                                                    renderer: function (value, metaData) {
+                                                        metaData.style = "text-align:center;";
+                                                        metaData.tdCls = "x-grid-cell x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                        return value;
+                                                    }
+                                                },
+                                                {
+                                                    text: 'REFER',
+                                                    dataIndex: 'REFER',
+                                                    width: 100,
+                                                    renderer: function (value, metaData) {
+                                                        metaData.style = "text-align:center;";
+                                                        metaData.tdCls = "x-grid-cell x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                        return value;
+                                                    }
+                                                },
+                                                {
+                                                    text: 'CLAVE1',
+                                                    dataIndex: 'CLAVE1',
+                                                    width: 100,
+                                                    renderer: function (value, metaData) {
+                                                        metaData.style = "text-align:center;";
+                                                        metaData.tdCls = "x-grid-cell x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                        return value;
+                                                    }
+                                                },
+                                                {
+                                                    text: 'CLAVE3',
+                                                    dataIndex: 'CLAVE3',
+                                                    width: 100,
+                                                    renderer: function (value, metaData) {
+                                                        metaData.style = "text-align:center;";
+                                                        metaData.tdCls = "x-grid-cell x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                        return value;
+                                                    }
+                                                },
+                                                {
+                                                    text: 'TEXTO',
+                                                    dataIndex: 'TEXTO',
+                                                    width: 218,
+                                                    renderer: function (value, metaData) {
+                                                        metaData.style = "text-align:center;";
+                                                        metaData.tdCls = "x-grid-cell x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                        return value;
+                                                    }
+                                                },
+                                                {
+                                                    text: 'TEXTOLAR',
+                                                    dataIndex: 'TEXTOLAR',
                                                     width: 100,
                                                     renderer: function (value, metaData) {
                                                         metaData.style = "text-align:center;";
@@ -1839,7 +1916,7 @@
                                                 {
                                                     text: 'Currency',
                                                     dataIndex: 'SCURRENCY',
-                                                    width: 100,
+                                                    width: 60,
                                                     renderer: function (value, metaData) {
                                                         metaData.style = "text-align:center;";
                                                         metaData.tdCls = "x-grid-cell x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
@@ -1851,7 +1928,7 @@
                                                 {
                                                     text: 'Neto EECC',
                                                     dataIndex: 'NETO',
-                                                    width: 160,
+                                                    width: 100,
                                                     renderer: function (value, metaData) {
                                                         metaData.style = "text-align:right;";
                                                         return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
@@ -1863,9 +1940,9 @@
                                                         }
                                                 },
                                                 {
-                                                    text: 'Neto Settlement',
+                                                    text: 'Neto Settl.',
                                                     dataIndex: 'NETOC',
-                                                    width: 160,
+                                                    width: 90,
                                                     renderer: function (value, metaData) {
                                                         metaData.style = "text-align:right;";
                                                         return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
@@ -1878,8 +1955,8 @@
                                                 },
                                                 {
                                                     text: 'Source',
-                                                    dataIndex: 'CCUSTPRO',
-                                                    width: 100,
+                                                    dataIndex: 'CCUSTPRO',  
+                                                    width: 60,
                                                     renderer: function (value, metaData) {
                                                         metaData.style = "text-align:center;";
                                                         metaData.tdCls = "x-grid-cell x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
