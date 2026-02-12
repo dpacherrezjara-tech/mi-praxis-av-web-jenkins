@@ -1500,6 +1500,18 @@ public class StatementReconciliationsDAO {
 
                 while (rst.next()) {
                     beanTkt = new A2290Filter();
+                    
+                    
+                    
+                    beanTkt.CCUST =rst.getString("CCUST").trim();
+                    beanTkt.SOCIETY = rst.getString("SOCIETY").trim();
+                    beanTkt.CIACOME = rst.getString("CIACOME").trim();
+                    beanTkt.REFER = rst.getString("REFER").trim();
+                    beanTkt.CLAVE1 = rst.getString("CLAVE1").trim();
+                    beanTkt.CLAVE3 = rst.getString("CLAVE3").trim();
+                    beanTkt.TEXTO = rst.getString("TEXTO").trim();
+                    beanTkt.TEXTOLAR = rst.getString("TEXTOLAR").trim();
+                    
                     beanTkt.IN_TDOC = filter.IN_TDOC.trim();
                     beanTkt.IN_DATE = filter.IN_DATE.trim();
                     beanTkt.IN_CBANK = filter.IN_CBANK.trim();
