@@ -7595,6 +7595,26 @@ private static void setThinBorders_30(CellStyle s) {
     s.setBorderRight(CellStyle.BORDER_THIN);
 }
 
+    @RequestMapping(value = "reversaCashBSP")
+    public @ResponseBody String reversaCashBSP(HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<>();
+        Gson gson = new Gson();
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String beanString = request.getParameter("beanString");
+            A2290Filter filter = gson.fromJson(beanString, A2290Filter.class);
+
+            map = logic.reversaFaseDosMap(filter); 
+
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("message", "Excepción Controller: " + ex.getMessage());
+        }
+        return gson.toJson(map);
+    }
+
     
 
 

@@ -1601,11 +1601,83 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
             gridScan.bindStore(newStore);
 //        Ext.Msg.alert('Info', 'Mostrando todos los registros');
         }
+    },
+
+
+ btnReversa_click: function () {
+    var me = this;
+        var beanReversa = {
+        O_ADATE: me.bean.ADATE,
+        O_BANDOC: me.bean.BANDOC,
+        O_CBATCH: me.bean.CBATCH,
+        O_DATECI: me.bean.DATECI,
+        O_TRANCI: me.bean.TRANCI,
+        O_SCOUNTRY: me.bean.SCOUNTRY
+    };
+    
+    let tinput = me.bean.TINPUT
+    
+    if (tinput === 'B') {
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: '¿Está seguro de realizar la reversa de este registro?',
+            buttons: Ext.MessageBox.OKCANCEL,
+            icon: Ext.MessageBox.QUESTION,
+            fn: function (btn) {
+                if (btn === 'ok') {
+                    me.ejecutarReversa(beanReversa);
+                }
+            }
+        });
+    } else {
+        global.Msg({
+            msg: 'REVERSA NO HABILITADA PARA ESTA FUENTE',
+            icon: Ext.Msg.WARNING 
+        });
     }
+    
+    
+},
 
+    ejecutarReversa: function (params) {
+        var me = this;
 
+        Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').mask('Procesando Reversa...');
 
+        Ext.Ajax.request({
+            url: prototype.url + '/reversaCashBSP', 
+            method: 'POST',
+            timeout: 60000, 
+            params: {
+                beanString: JSON.stringify(params)
+            },
+            success: function (response) {
+                Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
+                var res = Ext.JSON.decode(response.responseText);
+                if (res.success) {
+                    global.Msg({
+                        msg: 'Reversa ejecutada correctamente.',
+                        icon: Ext.Msg.INFO
+                    });
+                    me.btnSearch_click(); 
 
+                } else {
+                    global.Msg({
+                        msg: res.message || res.Mensaje || 'Error interno en el proceso de reversa.',
+                        icon: Ext.Msg.ERROR
+                    });
+                }
+            },
+            failure: function (response) {
+                Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
+                console.error('Error de servidor:', response.status);
+                global.Msg({
+                    msg: 'Error de comunicación con el servidor (Status ' + response.status + ')',
+                    icon: Ext.Msg.ERROR
+                });
+            }
+        });
+    }
 
 
 });

@@ -1143,6 +1143,8 @@ public class A2290Filter extends A2290 {
     public String O_CBATCH = "";
     public String O_SEQ = "";
     public String O_BANDOC = "";
+    public String O_DATECI = "";
+    public String O_TRANCI = "";
     public String O_CFUENTE = "";
     public String O_DATEA = "";
     public String O_TRANA = "";
