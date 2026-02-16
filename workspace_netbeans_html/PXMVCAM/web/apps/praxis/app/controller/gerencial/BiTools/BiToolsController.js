@@ -104,7 +104,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
                 fn: function () {
                     Ext.create('Ext.Praxis.view.gerencial.BiToolsForm.DataEntryShortcut', {
                         id: prototype.id + '-dataEntryShortcut'
-                        
+
                     }).show();
                 }
             }
@@ -120,7 +120,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
             Ext.getCmp(prototype.id + '-cmbCountry').show();
             Ext.getCmp(prototype.id + '-cmbCOREP').hide();
         }
-        
+
 //        if (!cmbCountry.isVisible()) {
 //            Ext.getCmp(prototype.id + '-cmbCountry').show();
 //            Ext.getCmp(prototype.id + '-cmbCountry').show();
@@ -630,39 +630,39 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
             var rquery = selectedRecord.get('RQUERY'); // Obtener el valor de RQUERY
             var tquery = selectedRecord.get('TQUERY'); // Obtener el valor de RQUERY
             var ttable = selectedRecord.get('TTABLE'); // Obtener el valor de RQUERY
-            
+
             console.log('Table seleccionada:', ttable);
             console.log(Ext.getCmp(prototype.id + '-cmbTipoFecha').getValue().split(".")[1], 'nikaa')
             me.beanDetailTW.strFecFiltro = Ext.getCmp(prototype.id + '-cmbTipoFecha').getValue().split(".")[1];
             me.beanDetailTW.IN_FECHA = Ext.getCmp(prototype.id + '-cmbDateYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateMonth').getValue()
 //            me.beanDetailTW.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateMonth').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromDay').getValue();
 //            me.beanDetailTW.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateMonth').getValue() + Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
-            if( Ext.getCmp(prototype.id + '-cmbCountry').isVisible() ) {
+            if (Ext.getCmp(prototype.id + '-cmbCountry').isVisible()) {
                 me.beanDetailTW.SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
-            }else{
+            } else {
                 me.beanDetailTW.SCOUNTRY = "";
             }
-            if( Ext.getCmp(prototype.id + '-cmbCOREP').isVisible() ) {
+            if (Ext.getCmp(prototype.id + '-cmbCOREP').isVisible()) {
                 me.beanDetailTW.COREP = Ext.getCmp(prototype.id + '-cmbCOREP').getValue()
-            }else{
+            } else {
                 me.beanDetailTW.COREP = "";
             }
-            if ( Ext.getCmp(prototype.id + '-chkPNR').getValue() ){
+            if (Ext.getCmp(prototype.id + '-chkPNR').getValue()) {
                 me.beanDetailTW.SPNR = "Y";
-            }else{
+            } else {
                 me.beanDetailTW.SPNR = "";
             }
-            if ( Ext.getCmp(prototype.id + '-chkIntercompany').getValue() ){
+            if (Ext.getCmp(prototype.id + '-chkIntercompany').getValue()) {
                 me.beanDetailTW.INTERCOMPANY = "Y";
                 rquery = rquery.replace("A.CCUST = B.CCUST AND", "")
-                
-            }else{
+
+            } else {
                 me.beanDetailTW.INTERCOMPANY = "";
             }
             console.log('RQUERY seleccionado:', rquery);
             console.log('TQUERY seleccionado:', tquery);
-            
-            
+
+
             me.beanDetailTW.DIFFDAYS = parseInt(Ext.getCmp(prototype.id + '-cmbDiffDays').getValue(), 10)
             me.beanDetailTW.RQUERY = rquery;
             me.beanDetailTW.TQUERY = tquery;
@@ -718,7 +718,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
                         Ext.getCmp(prototype.id + '-lbl-currentPage_JS').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
                         Ext.getCmp(prototype.id + '-lbl-pageCount_JS').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
                         Ext.getCmp(prototype.id + '-lbl-total_JS').setText(Ext.util.Format.number(pagData.total, '0,000'));
-                        
+
                         let lstData = []
                         for (let value of obj.data.items) {
                             lstData.push(value.data)
@@ -754,17 +754,19 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
                                     SCARCOD: value.SCARCOD_101,
                                     SCARDN: value.SCARDN_101,
                                     SAUTHOC: value.SAUTHOC_101,
+                                    BANDOC: value.BANDOC_101,
+                                    STCON: value.STCON_101,
                                     SEQNUM: value.SEQNUM,
                                     COREP: value.COREP,
                                     expanded: false, children: []
                                 });
                                 let b = [];
-                                console.log(lstData,"Esto trae");
+                                console.log(lstData, "Esto trae");
                                 Ext.Object.each(lstData, function (index, value01) {
                                     if (value.UNIKEY === value01.UNIKEY) {
-                                        
+
                                         dataRoot.children[a.indexOf(value.UNIKEY)].children.push({
-                                            
+
                                             UNIKEY: value01.UNIKEY,
                                             TKT: value01.TKT,
                                             QTY: value01.QTY_100,
@@ -777,6 +779,8 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
                                             SCARCOD: value01.SCARCOD_100,
                                             SCARDN: value01.SCARDN_100,
                                             SAUTHOC: value01.SAUTHOC_100,
+//                                            BANDOC: value01.BANDOC_101,
+//                                            STCON: value01.STCON_101,
                                             SPNR: value01.SPNR_100,
                                             CFUENTE: value01.CFUENTE_100,
                                             leaf: true
@@ -785,8 +789,8 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
                                 });
                             }
                         });
-                        
-                        
+
+
                         console.log(dataRoot);
 
                         var storeTree = Ext.create('Ext.data.TreeStore', {
@@ -829,7 +833,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
             modal: true,
             fn: function (btn) {
                 if (btn === 'yes') {
-                    
+
                     this.executeOption();
                 }
             }
@@ -840,11 +844,11 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
         let miGrilla = Ext.getCmp(prototype.id + '-gridDataMain');
         let datos = {};
         let valueIntercompany = '';
-        if ( Ext.getCmp(prototype.id + '-chkIntercompany').getValue() ){
-                valueIntercompany = "Y";
-                
-            }else{
-                valueIntercompany = "";
+        if (Ext.getCmp(prototype.id + '-chkIntercompany').getValue()) {
+            valueIntercompany = "Y";
+
+        } else {
+            valueIntercompany = "";
         }
         if (miGrilla) {
 
@@ -896,9 +900,9 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
             var rquery = selectedRecord.get('RQUERY'); // Obtener el valor de RQUERY
             var tquery = selectedRecord.get('TQUERY'); // Obtener el valor de RQUERY
             var ttable = selectedRecord.get('TTABLE'); // Obtener el valor de RQUERY
-            
-            if ( Ext.getCmp(prototype.id + '-chkIntercompany').getValue() ){
-                rquery = rquery.replace("A.CCUST = B.CCUST AND", "");   
+
+            if (Ext.getCmp(prototype.id + '-chkIntercompany').getValue()) {
+                rquery = rquery.replace("A.CCUST = B.CCUST AND", "");
             }
 
         } else {
@@ -909,7 +913,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
         let listaDeDatos = [];
         var grid = Ext.getCmp(prototype.id + '-gridDataMain');
         var store = grid.getStore();
-        console.log(store,"este es mi STORE");
+        console.log(store, "este es mi STORE");
         var selectedRecords = store.getRange().filter(record => record.get('select'));
 
         if (selectedRecords.length === 0) {
@@ -943,7 +947,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
 
             listaDeDatos.push(registro);
         });
-        console.log(listaDeDatos,'listaDeDatos prueba de conci')
+        console.log(listaDeDatos, 'listaDeDatos prueba de conci')
         let datosEnJSON = Ext.JSON.encode(listaDeDatos);
         return datosEnJSON;
     },
@@ -967,11 +971,11 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
     },
     executeOptionAll: async function () {
         let valueIntercompany = '';
-        if ( Ext.getCmp(prototype.id + '-chkIntercompany').getValue() ){
-                valueIntercompany = "Y";
-                
-            }else{
-                valueIntercompany = "";
+        if (Ext.getCmp(prototype.id + '-chkIntercompany').getValue()) {
+            valueIntercompany = "Y";
+
+        } else {
+            valueIntercompany = "";
         }
 
         var gridCo = Ext.getCmp(prototype.id + '-gridDataColumns_JS');
@@ -982,8 +986,8 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
         if (selectedRecordCo) {
             var codrule = selectedRecordCo.get('CODRULE'); // Obtener el valor de RQUERY
             var rquery = selectedRecordCo.get('RQUERY'); // Obtener el valor de RQUERY
-            if ( Ext.getCmp(prototype.id + '-chkIntercompany').getValue() ){
-                rquery = rquery.replace("A.CCUST = B.CCUST AND", "");   
+            if (Ext.getCmp(prototype.id + '-chkIntercompany').getValue()) {
+                rquery = rquery.replace("A.CCUST = B.CCUST AND", "");
             }
             var tquery = selectedRecordCo.get('TQUERY'); // Obtener el valor de RQUERY
             var ttable = selectedRecordCo.get('TTABLE'); // Obtener el valor de RQUERY
@@ -1002,24 +1006,24 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
         });
         store.resumeEvents();
         grid.getView().refresh();
-        
-        
+
+
 
         me.beanDetailTW.IN_FECHA = Ext.getCmp(prototype.id + '-cmbDateYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateMonth').getValue();
         me.beanDetailTW.strFecFiltro = Ext.getCmp(prototype.id + '-cmbTipoFecha').getValue().split(".")[1];
-        if( Ext.getCmp(prototype.id + '-cmbCountry').isVisible() ){
+        if (Ext.getCmp(prototype.id + '-cmbCountry').isVisible()) {
             me.beanDetailTW.SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue()
-        }else{
+        } else {
             me.beanDetailTW.SCOUNTRY = "";
         }
-        if( Ext.getCmp(prototype.id + '-cmbCOREP').isVisible() ) {
+        if (Ext.getCmp(prototype.id + '-cmbCOREP').isVisible()) {
             me.beanDetailTW.COREP = Ext.getCmp(prototype.id + '-cmbCOREP').getValue()
-        }else{
+        } else {
             me.beanDetailTW.COREP = "";
         }
-         if ( Ext.getCmp(prototype.id + '-chkPNR').getValue() ){
+        if (Ext.getCmp(prototype.id + '-chkPNR').getValue()) {
             me.beanDetailTW.SPNR = "Y";
-        }else{
+        } else {
             me.beanDetailTW.SPNR = "";
         }
         me.beanDetailTW.DIFFDAYS = parseInt(Ext.getCmp(prototype.id + '-cmbDiffDays').getValue(), 10)
@@ -2161,8 +2165,8 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
 
         if (selectedRecord) {
             var rquery = selectedRecord.get('RQUERY'); // Obtener el valor de RQUERY
-            if ( Ext.getCmp(prototype.id + '-chkIntercompany').getValue() ){
-                rquery = rquery.replace("A.CCUST = B.CCUST AND", "");   
+            if (Ext.getCmp(prototype.id + '-chkIntercompany').getValue()) {
+                rquery = rquery.replace("A.CCUST = B.CCUST AND", "");
             }
             var tquery = selectedRecord.get('TQUERY'); // Obtener el valor de RQUERY
             var ttable = selectedRecord.get('TTABLE'); // Obtener el valor de RQUERY
@@ -2172,25 +2176,25 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
 
             bean.strFecFiltro = Ext.getCmp(prototype.id + '-cmbTipoFecha').getValue().split(".")[1];
             bean.IN_FECHA = Ext.getCmp(prototype.id + '-cmbDateYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateMonth').getValue();
-            if( Ext.getCmp(prototype.id + '-cmbCountry').isVisible() ) {
+            if (Ext.getCmp(prototype.id + '-cmbCountry').isVisible()) {
                 bean.SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
-            }else{
+            } else {
                 bean.SCOUNTRY = "";
             }
-            if( Ext.getCmp(prototype.id + '-cmbCOREP').isVisible() ) {
+            if (Ext.getCmp(prototype.id + '-cmbCOREP').isVisible()) {
                 bean.COREP = Ext.getCmp(prototype.id + '-cmbCOREP').getValue()
-            }else{
+            } else {
                 bean.COREP = "";
             }
-            
-            if ( Ext.getCmp(prototype.id + '-chkPNR').getValue() ){
+
+            if (Ext.getCmp(prototype.id + '-chkPNR').getValue()) {
                 bean.SPNR = "Y";
-            }else{
+            } else {
                 bean.SPNR = "";
             }
-            if ( Ext.getCmp(prototype.id + '-chkIntercompany').getValue() ){
+            if (Ext.getCmp(prototype.id + '-chkIntercompany').getValue()) {
                 bean.INTERCOMPANY = "Y";
-            }else{
+            } else {
                 bean.INTERCOMPANY = "";
             }
             bean.DIFFDAYS = parseInt(Ext.getCmp(prototype.id + '-cmbDiffDays').getValue(), 10)
@@ -2211,7 +2215,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
     },
     exportExcel: function () {
         this.setParameterTW();
-        console.log(me.gridActual,"Esto es mi grid actual");
+        console.log(me.gridActual, "Esto es mi grid actual");
         switch (me.gridActual) {
             case  '-gridData':
 //                        var grid = Ext.getCmp(prototype.id + '-gridData');

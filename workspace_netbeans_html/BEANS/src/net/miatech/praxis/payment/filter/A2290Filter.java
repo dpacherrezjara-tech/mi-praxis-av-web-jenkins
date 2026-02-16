@@ -972,6 +972,8 @@ public class A2290Filter extends A2290 {
     public String SAUTHOC_100 = "";
     public String SPNR_100 = "";
     public String SAUTHOC_101 = "";
+    public String BANDOC_101 = "";
+    public String STCON_101 = "";
     
     
     public long lngARC = 0; 
