@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import net.miatech.beans.spring.UserView;
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.libmiatec.A1248;
@@ -390,4 +391,8 @@ public class BankReconciliationLogic {
     public MPF100Filter AssignCashComment(MPF100Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.AssignCashComment(filter);
     }
+    
+    public Map<String, Object> reversaFaseDosMap(A2290Filter filter) throws Exception {
+    return bankReconciliationDAO.reversaFaseDos(filter); 
+}
 }

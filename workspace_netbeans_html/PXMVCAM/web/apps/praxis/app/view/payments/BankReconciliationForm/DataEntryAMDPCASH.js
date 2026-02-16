@@ -1246,6 +1246,18 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                 },
                                                 {xtype: 'tbspacer', width: 10},
                                                 {
+                                                    xtype: 'button',
+                                                    width: 30,
+//                                                    margin: '30 30 0 30',
+                                                    id: prototype.id + '-reversaCash',
+                                                    icon: 'resources/img/botones/refresh.png',
+                                                    tooltip: 'Reversa Cash',
+                                                    listeners: {
+                                                        click: 'btnReversa_click'
+                                                    }
+                                                },
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
                                                     xtype: 'panel',
                                                     layout: 'hbox',
                                                     border: false,
