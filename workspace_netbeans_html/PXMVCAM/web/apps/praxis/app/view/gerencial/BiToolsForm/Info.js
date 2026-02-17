@@ -1265,7 +1265,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Info', {
                     bodyStyle: 'background-color: #E3EAEF;',
                     border: false,
                     hidden: true,
-                    width: 1850,
+                    width: 1990,
                     layout: {
                         type: 'hbox',
                         align: 'center'
@@ -1285,7 +1285,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Info', {
                                     xtype: 'treepanel',
                                     id: prototype.id + '-gridDataMain',
                                     bodyStyle: 'background-color: #E3EAEF;',
-                                    width: 1850,
+                                    width: 1990,
                                     height: 545,
                                     columnLines: true,
                                     viewConfig: {
@@ -1505,6 +1505,20 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Info', {
                                             },
                                             {
                                                 text: 'TQUERY', dataIndex: 'TQUERY', width: 50, align: 'center', hidden: true,
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Bandoc', dataIndex: 'BANDOC', width: 80, align: 'center', 
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'STCON', dataIndex: 'STCON', width: 60, align: 'center', 
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
                                                     return value;

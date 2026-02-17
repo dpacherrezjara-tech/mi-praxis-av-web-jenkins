@@ -6586,7 +6586,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             } else if (value === 'S') {
                                                                 value = 'Short';
                                                             } else if (value === 'C') {
-                                                                value = 'Credit Note';
+                                                                value = 'Cargo';
                                                             } else if (value === 'D') {
                                                                 value = 'Debit Note';
                                                             } else {

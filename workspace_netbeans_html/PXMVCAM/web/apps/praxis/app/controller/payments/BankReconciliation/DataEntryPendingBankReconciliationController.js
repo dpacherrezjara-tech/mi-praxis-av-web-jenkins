@@ -157,8 +157,25 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryPendingBa
         this.setValue('txtREFEMPF199', this.bean.O_REFERENCE);
         this.setValue('txtCOMMENTSMPF199', this.bean.O_COMMENTS);
         this.setValue('cmbCOUNTRY', this.bean.O_SCOUNTRY);
+        this.setValue('txtINVOICEMPF199', this.bean.O_INVOICE);
         
-      
+        Ext.getCmp(prototype.id + '-txtSTATUSMPF199').setDisabled(true);
+        Ext.getCmp(prototype.id + '-txtCONCEPTMPF199').setDisabled(true);
+        Ext.getCmp(prototype.id + '-txtATYPEMPF199').setDisabled(true);
+        Ext.getCmp(prototype.id + '-txtAGENTMPF199').setDisabled(true);
+        Ext.getCmp(prototype.id + '-txtVALUEDATEMPF199').setDisabled(true);
+        Ext.getCmp(prototype.id + '-txtCONSOLMPF199').setDisabled(true);
+        Ext.getCmp(prototype.id + '-txtCURRENCYMPF199').setDisabled(true);
+        Ext.getCmp(prototype.id + '-txtNETOMPF199').setDisabled(true);
+        Ext.getCmp(prototype.id + '-txtIPAYMPF199').setDisabled(true);
+        Ext.getCmp(prototype.id + '-txtSTARTMPF199').setDisabled(true);
+        Ext.getCmp(prototype.id + '-txtENDMPF199').setDisabled(true);
+        Ext.getCmp(prototype.id + '-txtCOMMENTSMPF199').setDisabled(true);
+        Ext.getCmp(prototype.id + '-cmbCOUNTRY').setDisabled(true);
+        
+        
+        Ext.getCmp(prototype.id + '-panelComboException').hide();
+
         
         
         
@@ -179,14 +196,19 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryPendingBa
         
         
         beanTemp.O_CCUST = this.bean.O_CCUST;
+        beanTemp.O_TINPUT = this.bean.O_TINPUT;
+        beanTemp.O_CONCEPT = this.bean.O_CONCEPT;
+        beanTemp.O_TADJ = this.bean.O_TADJ;
         beanTemp.O_ADATE = this.bean.O_ADATE;
         beanTemp.O_SCOUNTRY = this.bean.O_SCOUNTRY;
-        beanTemp.O_SAGENT = this.getValue("txtAGENTMPF199");
+        beanTemp.O_SAGENT = this.bean.O_SAGENT;
         beanTemp.O_SCURRENCY = this.bean.O_SCURRENCY;
+        beanTemp.O_INVOICE = this.bean.O_INVOICE;
         beanTemp.O_CBATCH = this.bean.O_CBATCH;
         beanTemp.O_SEQ = this.bean.O_SEQ;
-        beanTemp.O_NSAGENT = this.bean.O_SAGENT;
         
+        beanTemp.REFERENCE = this.getValue("txtREFEMPF199");
+        beanTemp.INVOICE = this.getValue("txtINVOICEMPF199");
         
         
         
@@ -249,11 +271,15 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryPendingBa
         var exceptionName;
         var beanTemp = {};
 
-
+        // --- NUEVA VALIDACIÓN PARA INDIA (Código 2) ---
         if (exceptionCode === '2') {
             var montoManual = this.getCleanNumberValue("txtRecaudacionINR");
-            var montoGrid = this.totalGridTemp || 0; 
+            var montoGrid = this.totalGridTemp || 0; // Recuperamos lo que guardó la lupa
+
+            // Calculamos diferencia absoluta para evitar problemas de decimales
             var diferencia = Math.abs(montoManual - montoGrid);
+
+            // Si hay diferencia (mayor a 1 centavo) o el monto es 0
             if (diferencia > 0.01 || montoManual === 0) {
                 Ext.Msg.alert('Descuadre', 
                     'No se puede guardar. El monto reportado (' + Ext.util.Format.usMoney(montoManual) + 
@@ -284,6 +310,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryPendingBa
                 break;
         }
 
+        // ... (Resto del código original de confirmación y envío) ...
         beanTemp.option = 'I'; 
 
         Ext.Msg.show({

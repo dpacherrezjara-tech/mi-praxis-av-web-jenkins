@@ -8,7 +8,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryPending', {
     controller: 'DataEntryPendingBankReconciliationController',
     title: 'BankReconciliation - Data Entry Pending Form',
     header: true,
-    height: 400,
+    height: 440,
     width: 720,
     resizable: false,
     layout: 'fit',
@@ -48,6 +48,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryPending', {
                         {
                             xtype: 'panel', // Contenedor para el combo box (lo que estaba antes)
                             layout: 'hbox',
+                            id: prototype.id + '-panelComboException',
                             border: false,
                             items: [
                                 {
@@ -429,6 +430,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryPending', {
                                             style: 'font-weight:bold;color:#0B333C;',
                                             fieldStyle: 'text-align:center;',
                                             editable: true,
+                                            maxLength: 100,
                                             width: 240,
                                             enforceMaxLength: true
                                         },
@@ -451,7 +453,36 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryPending', {
                                             enforceMaxLength: true
                                         }
                                     ]
+                                },
+                                {
+                                    xtype: 'panel',
+                                    layout: 'hbox',
+                                    border: false,
+                                    margin: '10 2 2 8',
+                                    items: [
+                                        {xtype: 'tbspacer', width: 7},
+                                        {
+                                            xtype: 'label',
+                                            text: 'Invoice',
+                                            hidden: false,
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            width: 90
+                                        },
+                                        {xtype: 'tbspacer', width: 7},
+                                        {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-txtINVOICEMPF199',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:center;',
+                                            editable: true,
+                                            maxLength: 23, 
+                                            width: 240,
+                                            enforceMaxLength: true
+                                        },
+                                        {xtype: 'tbspacer', width: 7},
+                                    ]
                                 }
+                                
                             ] // Fin de items de pnlPENDINGFIELDS
                         }, 
                         // ========================================================
