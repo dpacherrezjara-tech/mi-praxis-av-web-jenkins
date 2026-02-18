@@ -1067,6 +1067,7 @@ public class A2290Filter extends A2290 {
     public String O_EXCEPTION_CODE;
 
     public List<DetalleConciliacion> listaDetalles = new ArrayList<>();
+    public String tipo;
     public static class DetalleConciliacion {
         public String SCOUNTRY;
         public String SCURRENCY;
