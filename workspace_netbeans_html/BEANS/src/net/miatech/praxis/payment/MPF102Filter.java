@@ -17,7 +17,12 @@ public class MPF102Filter {
     public String IN_DATEFROM = "";
     public String IN_DATETO = "";
     public String IN_BANDOC = "";
+    public String IN_REFER = "";
     public String IN_CODPRO = "";
+    public String IN_HEADER = "";
+    public String IN_PROVISION = "";
+    public String IN_CODEERROR = "";
+    public String IN_IDCONT = "";
     public String IN_FECR = "";
     public String IN_HOCR = "";
     public String IN_CODUNI = "";

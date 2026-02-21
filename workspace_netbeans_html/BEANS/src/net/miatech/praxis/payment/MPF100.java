@@ -21,7 +21,17 @@ public class MPF100 {
     public String TRNCU = "";
     public String NUMREF = "";
     public String TICKET = "";
+    public double PCT_MATCH = 0;
+    public double TOTAL_PCT_MATCH = 0;
+    public int TOTAL_QSTATEMENT = 0;
+    public int TOTAL_QMATCH = 0;
+    public int TOTAL_QMANUAL = 0;
+    public int TOTAL_QPEND = 0;
     
+    public int QSTATEMENT = 0;
+    public int QMATCH = 0;
+    public int QMANUAL = 0;
+    public int QPEND = 0;
     
     //Datos de la Venta
     public String SDATEL = "";
