@@ -18,6 +18,12 @@ public class A2290 {
     public String TKT = "";
     public String CORRL = "";
     
+    public int QSTATEMENT = 0;
+    public int QMATCH = 0;
+    public int QMANUAL = 0;
+    public int QPEND = 0;
+    public double PCT_MATCH = 0;
+    
     public String PLACA = "";
     public String AGENT = "";
     public String FUENTE = "";

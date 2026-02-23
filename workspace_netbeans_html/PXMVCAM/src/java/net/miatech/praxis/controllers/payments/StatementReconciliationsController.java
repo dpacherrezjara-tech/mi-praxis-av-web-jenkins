@@ -31,6 +31,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.miatech.beans.spring.UserView;
+import net.miatech.praxis.MPF108;
 import net.miatech.praxis.classes.ExportUtil;
 import net.miatech.praxis.controllers.BaseController;
 import static net.miatech.praxis.controllers.flown.FlightConciliationController.getCellValue;
@@ -626,67 +627,7 @@ public class StatementReconciliationsController extends BaseController {
         return lst;
     }
 
-    @RequestMapping(value = "searchDetLiquidCash")
-    public @ResponseBody
-    String searchDetLiquidCash(ModelMap map, HttpServletRequest request) {
-        System.out.println("-------------- StatementReconciliations : searchDetLiquid+Cash-------------");
-        try {
-            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
-
-            Map<String, Object> result = this.getListDetLiquidCash(request, false);
-            List<A2290Filter> lst = (List<A2290Filter>) result.get("detalles");
-            List<String> cuentasLista = (List<String>) result.get("cuentas");
-
-            map.put("success", true);
-            map.put("data", lst);
-            map.put("cuentas", cuentasLista); // Cambiado aquí
-            map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
-        } catch (SQLException e) {
-            map.put("success", false);
-            map.put("sesion", SESSION_CONTROL);
-        } catch (Exception e) {
-            map.put("success", false);
-            map.put("sesion", SESSION_CONTROL);
-        }
-        return new Gson().toJson(map);
-    }
-
-    public Map<String, Object> getListDetLiquidCash(HttpServletRequest request, Boolean bExcel) {
-
-        List<A2290Filter> lst = new ArrayList<>(0);
-        A2290Filter filter;
-        Gson gson = new Gson();
-        Map<String, Object> result = new HashMap<>();
-        String beanString;
-
-        try {
-            logic = new StatementReconciliationsLogic();
-            logic.setSession(this.serverSession.getServerSession());
-
-            beanString = request.getParameter("beanString");
-            filter = gson.fromJson(beanString, A2290Filter.class);
-            filter.page.TOTROW = -1;
-            filter.page.START = 0;
-            filter.page.LIMIT = 0;
-
-            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
-            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
-
-            if (!bExcel) {
-                filter.page.PAGROW = 20;
-                start = (start != 0 ? start : 0);
-                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
-            } else {
-                filter.page.PAGROW = -1;
-                filter.page.PAGNUM = 1;
-            }
-
-            result = logic.loadPX002CASH(filter);
-        } catch (Exception e) {
-            throw new SpringException(e);
-        }
-        return result;
-    }
+    
 
     /// detalle cash
     @RequestMapping(value = "searchCashDetail")
@@ -4583,53 +4524,7 @@ public class StatementReconciliationsController extends BaseController {
     }
 
     // CASH
-    @RequestMapping(value = "searchCash")
-    public @ResponseBody
-    String searchCash(ModelMap map, HttpServletRequest request) {
-        System.out.println("-------------- StatementReconciliations : SearchCash-------------");
-
-        map.put("success", true);
-        List<MPF100Filter> lst = this.getListCash(request, false);
-        System.out.println("Total : " + lst.size());
-        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
-        map.put("data", lst);
-        return new Gson().toJson(map);
-    }
-
-    public List<MPF100Filter> getListCash(HttpServletRequest request, Boolean bExcel) {
-
-        List<MPF100Filter> lst = new ArrayList<>(0);
-        MPF100Filter filter = new MPF100Filter();
-        Gson gson = new Gson();
-        String beanString = "";
-
-        try {
-            logic = new StatementReconciliationsLogic();
-            logic.setSession(this.serverSession.getServerSession());
-
-            beanString = request.getParameter("beanString");
-            filter = gson.fromJson(beanString, MPF100Filter.class);
-            filter.page.TOTROW = -1;
-            filter.page.START = 0;
-            filter.page.LIMIT = 0;
-
-            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
-            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
-
-            if (!bExcel) {
-                filter.page.PAGROW = 20;
-                start = (start != 0 ? start : 0);
-                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
-            } else {
-                filter.page.PAGROW = -1;
-                filter.page.PAGNUM = 1;
-            }
-            lst = logic.loadCashSummaryMain(filter);
-        } catch (Exception e) {
-            throw new SpringException(e);
-        }
-        return lst;
-    }
+    
 
     @RequestMapping(value = "getCSV")
     public @ResponseBody
@@ -5342,4 +5237,677 @@ public class StatementReconciliationsController extends BaseController {
         }
     }
 
+    //MY OF MY
+    
+    @RequestMapping(value = "searchDashboardCash")
+    public @ResponseBody
+    String searchDashboardCash(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- Cash Controller : searchDashboardCash-------------");
+        map.put("success", true);
+        List<MPF100Filter> lst = this.getListsearchDashboardCash(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<MPF100Filter> getListsearchDashboardCash(HttpServletRequest request, Boolean bExcel) {
+
+        List<MPF100Filter> lst = new ArrayList<>(0);
+        MPF100Filter filter = new MPF100Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, MPF100Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadMPS560(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    
+    @RequestMapping(value = "searchDataDetailSecundary")
+    public @ResponseBody
+    String searchDataDetailSecundary(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- StatementReconciliations : searchDataDetailSecundary-------------");
+        try {
+            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+
+            Map<String, Object> result = this.getListDataDetailSecundary(request, false);
+            List<A2290Filter> lst = (List<A2290Filter>) result.get("detalles");
+            List<String> cuentasLista = (List<String>) result.get("cuentas");
+
+            map.put("success", true);
+            map.put("data", lst);
+            map.put("cuentas", cuentasLista); // Cambiado aquí
+            map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        } catch (SQLException e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        }
+        return new Gson().toJson(map);
+    }
+
+    public Map<String, Object> getListDataDetailSecundary(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2290Filter> lst = new ArrayList<>(0);
+        A2290Filter filter;
+        Gson gson = new Gson();
+        Map<String, Object> result = new HashMap<>();
+        String beanString;
+
+        try {
+            logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            result = logic.loadMPS561(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return result;
+    }
+    
+    @RequestMapping(value = "searchCash")
+    public @ResponseBody
+    String searchCash(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- StatementReconciliations : SearchCash-------------");
+
+        map.put("success", true);
+        List<MPF100Filter> lst = this.getListCash(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<MPF100Filter> getListCash(HttpServletRequest request, Boolean bExcel) {
+
+        List<MPF100Filter> lst = new ArrayList<>(0);
+        MPF100Filter filter = new MPF100Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, MPF100Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+            lst = logic.loadCashSummaryMain(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    
+    @RequestMapping(value = "searchDetLiquidCash")
+    public @ResponseBody
+    String searchDetLiquidCash(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- StatementReconciliations : searchDetLiquid+Cash-------------");
+        try {
+            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
+
+            Map<String, Object> result = this.getListDetLiquidCash(request, false);
+            List<A2290Filter> lst = (List<A2290Filter>) result.get("detalles");
+            List<String> cuentasLista = (List<String>) result.get("cuentas");
+
+            map.put("success", true);
+            map.put("data", lst);
+            map.put("cuentas", cuentasLista); // Cambiado aquí
+            map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        } catch (SQLException e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("sesion", SESSION_CONTROL);
+        }
+        return new Gson().toJson(map);
+    }
+
+    public Map<String, Object> getListDetLiquidCash(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2290Filter> lst = new ArrayList<>(0);
+        A2290Filter filter;
+        Gson gson = new Gson();
+        Map<String, Object> result = new HashMap<>();
+        String beanString;
+
+        try {
+            logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            result = logic.loadPX002CASH(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return result;
+    }
+    
+    @RequestMapping(value = "updateSummary")
+    public @ResponseBody
+    String updateSummary(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- Cash Controller : updateSummary (MPS434) -------------");
+
+        try {
+            String beanString = request.getParameter("beanString");
+            Gson gson = new Gson();
+            A2290Filter filter = gson.fromJson(beanString, A2290Filter.class);
+
+            // Ejecutar el stored procedure MPS440
+            logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            Map<String, Object> result = logic.executeMPS343(filter);
+
+            map.put("success", result.get("success"));
+            map.put("message", result.get("message"));
+            map.put("sqlCode", result.get("sqlCode"));
+
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("message", "Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return new Gson().toJson(map);
+    }
+    
+    @RequestMapping(value = "getXLSXDetCashMainExtractPending")
+    public @ResponseBody
+    void getXLSXDetCashMainExtractPending(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("Report : getXLSXDetCashMainExtract");
+
+        // Generar nombre de archivo
+        String fileNameDownload = String.format("Detalle_Cash_Main_%s.xlsx", Functions.getFechaActual());
+
+        try {
+            // --- 1. Crear archivo temporal y workbook ---
+            File file = File.createTempFile("DetCashMain_", ".xlsx");
+            Workbook workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Detalle Cash Main");
+
+            // --- 2. Obtener datos ---
+            Map<String, Object> resultData = this.getListDataDetailSecundary(request, true);
+
+            // Casting seguro de la lista
+            List<A2290Filter> listaData = (List<A2290Filter>) resultData.get("detalles");
+
+            System.out.println("Tamaño de lista devuelta : " + (listaData != null ? listaData.size() : 0));
+
+            // --- 3. Validar si hay datos ---
+            if (listaData == null || listaData.isEmpty()) {
+                System.out.println("No hay datos para exportar");
+
+                Row row = sheet.createRow(0);
+                Cell cell = row.createCell(0);
+                cell.setCellValue("No hay datos para exportar");
+
+                // Enviar respuesta vacía
+                FileOutputStream fos = new FileOutputStream(file);
+                workbook.write(fos);
+                fos.close();
+
+                response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+                Files.copy(file.toPath(), response.getOutputStream());
+                response.getOutputStream().flush();
+                workbook.close();
+                file.delete();
+                return;
+            }
+
+            // --- 4. Definir Estilos ---
+            // Estilo Cabecera
+            CellStyle headerStyle = workbook.createCellStyle();
+            Font headerFont = workbook.createFont();
+            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            headerStyle.setFont(headerFont);
+            headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+            headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            headerStyle.setBorderBottom(CellStyle.BORDER_THIN);
+            headerStyle.setBorderTop(CellStyle.BORDER_THIN);
+            headerStyle.setBorderLeft(CellStyle.BORDER_THIN);
+            headerStyle.setBorderRight(CellStyle.BORDER_THIN);
+
+            // Estilo Datos (Texto General)
+            CellStyle dataStyle = workbook.createCellStyle();
+            dataStyle.setBorderBottom(CellStyle.BORDER_THIN);
+            dataStyle.setBorderTop(CellStyle.BORDER_THIN);
+            dataStyle.setBorderLeft(CellStyle.BORDER_THIN);
+            dataStyle.setBorderRight(CellStyle.BORDER_THIN);
+
+            // Estilo Numérico (Moneda/Decimales)
+            CellStyle numberStyle = workbook.createCellStyle();
+            numberStyle.cloneStyleFrom(dataStyle);
+            DataFormat format = workbook.createDataFormat();
+            numberStyle.setDataFormat(format.getFormat("#,##0.00")); // Formato con 2 decimales y miles
+
+            // --- 5. Crear Cabeceras ---
+            String[] headers = {
+                "CCUST", "SOCIETY", "CIACOME", "Country", "Doc. Type", "Status",
+                "Doc SAP BANK", "Account", "Abono Date", "REFER", "CLAVE1", "CLAVE3", "TEXTO", "TEXTOLAR", "Currency",
+                "Neto EECC", "Neto Settlement", "Source"
+            };
+
+            Row headerRow = sheet.createRow(0);
+            for (int i = 0; i < headers.length; i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(headers[i]);
+                cell.setCellStyle(headerStyle);
+            }
+
+            // --- 6. Llenar Datos (Iteración optimizada) ---
+            int rowNum = 1;
+            for (A2290Filter row : listaData) {
+                Row excelRow = sheet.createRow(rowNum++);
+                int col = 0;
+                Cell c;
+
+                // --- COLUMNAS DE TEXTO (Usan dataStyle) ---
+                // CCUST
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.CCUST != null ? row.CCUST : "");
+                c.setCellStyle(dataStyle);
+
+                // SOCIETY
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.SOCIETY != null ? row.SOCIETY : "");
+                c.setCellStyle(dataStyle);
+
+                // CIACOME
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.CIACOME != null ? row.CIACOME : "");
+                c.setCellStyle(dataStyle);
+
+                // Country
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.DESC_SCOUNTRY != null ? row.DESC_SCOUNTRY : "");
+                c.setCellStyle(dataStyle);
+
+                // Doc Type (Calculado)
+                String docType = "S".equals(row.TDOC) ? "Sales" : (row.TDOC != null ? row.TDOC : "");
+                c = excelRow.createCell(col++);
+                c.setCellValue(docType);
+                c.setCellStyle(dataStyle);
+
+                // Status (Calculado)
+                String stval;
+                if ("1".equals(row.STVAL)) {
+                    stval = "Match";
+                } else if ("3".equals(row.STVAL)) {
+                    stval = "Pending";
+                } else if ("5".equals(row.STVAL)) {
+                    stval = "Match Manual";
+                } else {
+                    stval = row.STVAL != null ? row.STVAL : "";
+                }
+
+                c = excelRow.createCell(col++);
+                c.setCellValue(stval);
+                c.setCellStyle(dataStyle);
+
+                // Doc SAP BANK
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.BANDOC != null ? row.BANDOC : "");
+                c.setCellStyle(dataStyle);
+
+                // Account
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.ACCOUNT != null ? row.ACCOUNT : "");
+                c.setCellStyle(dataStyle);
+
+                // Abono Date
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.ADATE != null ? row.ADATE : "");
+                c.setCellStyle(dataStyle);
+
+                // REFER
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.REFER != null ? row.REFER : "");
+                c.setCellStyle(dataStyle);
+
+                // CLAVE1
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.CLAVE1 != null ? row.CLAVE1 : "");
+                c.setCellStyle(dataStyle);
+
+                // CLAVE3
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.CLAVE3 != null ? row.CLAVE3 : "");
+                c.setCellStyle(dataStyle);
+
+                // TEXTO
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.TEXTO != null ? row.TEXTO : "");
+                c.setCellStyle(dataStyle);
+
+                // TEXTOLAR
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.TEXTOLAR != null ? row.TEXTOLAR : "");
+                c.setCellStyle(dataStyle);
+
+                // Currency
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.SCURRENCY != null ? row.SCURRENCY : "");
+                c.setCellStyle(dataStyle);
+
+                // --- COLUMNAS NUMÉRICAS (Usan numberStyle) ---
+                // Neto EECC
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.NETO); // Asumiendo que es double/BigDecimal
+                c.setCellStyle(numberStyle); // APLICAR ESTILO NUMÉRICO AQUÍ
+
+                // Neto Settlement
+                c = excelRow.createCell(col++);
+                c.setCellValue(row.NETOC); // Asumiendo que es double/BigDecimal
+                c.setCellStyle(numberStyle); // APLICAR ESTILO NUMÉRICO AQUÍ
+
+              // --- ÚLTIMA COLUMNA: Source ---
+                c = excelRow.createCell(col++);
+                
+                String sourceVal = row.CCUSTPRO != null ? row.CCUSTPRO.trim() : "";
+                
+                if ("00".equals(sourceVal)) {
+                    sourceVal = "BSP";
+                } else if ("01".equals(sourceVal)) {
+                    sourceVal = "ICCS";
+                } else if ("02".equals(sourceVal)) {
+                    sourceVal = "ARC";
+                }
+
+                c.setCellValue(sourceVal);
+                c.setCellStyle(dataStyle);
+
+            }
+
+            // --- 7. Autoajuste de columnas ---
+            for (int i = 0; i < headers.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            // --- 8. Escribir y enviar respuesta ---
+            FileOutputStream fos = new FileOutputStream(file);
+            workbook.write(fos);
+            fos.close();
+
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+
+            Files.copy(file.toPath(), response.getOutputStream());
+            response.getOutputStream().flush();
+
+            workbook.close();
+            file.delete();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SpringException(e);
+        }
+    }
+    
+    @RequestMapping(value = "getXLSXDashboard")
+    public @ResponseBody
+    void getXLSXDashboard(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("Report : getXLSXDashboard");
+        String fileNameDownload = String.format("Report  Dashboard - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
+        try {
+            Workbook workbook;
+            File file = File.createTempFile(fileNameDownload, ".xlsx");
+            List<MPF100Filter> listaData = this.getListsearchDashboardCash(request, true);
+            System.out.println("Tamaño de lista devuelta : " + listaData.size());
+            workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Report");
+            XSSFCellStyle headerF1 = (XSSFCellStyle) workbook.createCellStyle();
+            CellStyle bodyStyle = workbook.createCellStyle();
+
+            Integer vi = 0;
+            Integer vj = 0;
+            Iterator iter = listaData.iterator();
+
+            Font headerFont = workbook.createFont();
+            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            headerFont.setColor(IndexedColors.BLACK.getIndex());
+
+            XSSFCellStyle baseHeaderStyle = (XSSFCellStyle) workbook.createCellStyle();
+            baseHeaderStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            baseHeaderStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            baseHeaderStyle.setBorderRight(CellStyle.BORDER_THIN);
+            baseHeaderStyle.setBorderBottom(CellStyle.BORDER_THIN);
+            baseHeaderStyle.setBorderLeft(CellStyle.BORDER_THIN);
+            baseHeaderStyle.setBorderTop(CellStyle.BORDER_THIN);
+            baseHeaderStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+            baseHeaderStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            baseHeaderStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            baseHeaderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            baseHeaderStyle.setFont(headerFont);
+
+            XSSFCellStyle headerMain = (XSSFCellStyle) workbook.createCellStyle();
+            headerMain.cloneStyleFrom(baseHeaderStyle);
+            headerMain.setFillForegroundColor(IndexedColors.GREY_40_PERCENT.getIndex()); // azul grisáceo aprox
+            headerMain.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            headerF1.setBorderRight(CellStyle.BORDER_THIN);
+            headerF1.setRightBorderColor(IndexedColors.BLACK.getIndex());
+            headerF1.setBorderBottom(CellStyle.BORDER_THIN);
+            headerF1.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            headerF1.setBorderLeft(CellStyle.BORDER_THIN);
+            headerF1.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            headerF1.setBorderTop(CellStyle.BORDER_THIN);
+            headerF1.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            headerF1.setAlignment(CellStyle.ALIGN_CENTER);
+            headerF1.setFillForegroundColor(new XSSFColor(new java.awt.Color(244, 204, 204)));
+            headerF1.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            headerF1.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+
+            XSSFCellStyle headerF2 = (XSSFCellStyle) workbook.createCellStyle();
+            headerF2.cloneStyleFrom(baseHeaderStyle);
+            headerF2.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex()); // verde claro
+            headerF2.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            XSSFCellStyle headerF3 = (XSSFCellStyle) workbook.createCellStyle();
+            headerF3.cloneStyleFrom(baseHeaderStyle);
+            headerF3.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex()); // gris claro
+            headerF3.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            // ====== NIVEL 1 ======
+            Row row1 = sheet.createRow(vj);
+            Cell CH1_0 = row1.createCell(0);
+            Cell CH1_1 = row1.createCell(1);
+            Cell CH1_2 = row1.createCell(2);
+
+            CH1_0.setCellValue("Month");
+            CH1_1.setCellValue("Society");
+            CH1_2.setCellValue("Statement");
+
+            CH1_0.setCellStyle(headerMain);
+            CH1_1.setCellStyle(headerMain);
+            CH1_2.setCellStyle(headerF1);
+
+            sheet.addMergedRegion(new CellRangeAddress(0, 2, 0, 0));
+            sheet.addMergedRegion(new CellRangeAddress(0, 2, 1, 1));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 8));
+            ++vj;
+
+            // ====== NIVEL 2 ======
+            Row row2 = sheet.createRow(vj);
+            String[] headers2 = {"", "", "Total", "Match", "", "", "", "", ""};
+            for (int c = 0; c < headers2.length; c++) {
+                Cell ch = row2.createCell(c);
+                ch.setCellValue(headers2[c]);
+
+                if (c <= 1) {
+                    ch.setCellStyle(headerMain);
+                } else if (c >= 2 && c <= 8) {
+                    ch.setCellStyle(headerF1);
+                } else {
+                    ch.setCellStyle(headerF3);
+                }
+            }
+
+            // Merges nivel 2
+            sheet.addMergedRegion(new CellRangeAddress(1, 2, 2, 2));
+            sheet.addMergedRegion(new CellRangeAddress(1, 1, 3, 6));
+            sheet.addMergedRegion(new CellRangeAddress(1, 1, 7, 8));
+            ++vj;
+
+            // ====== NIVEL 3 ======
+            Row row3 = sheet.createRow(vj);
+            String[] headers3 = {"", "", "", "Auto", "%", "Manual", "W/O Settlement"};
+            for (int c = 0; c < headers3.length; c++) {
+                Cell ch = row3.createCell(c);
+                ch.setCellValue(headers3[c]);
+                if (c <= 1) {
+                    ch.setCellStyle(headerMain);
+                } else if (c >= 2 && c <= 8) {
+                    ch.setCellStyle(headerF1);
+                } else if (c >= 9 && c <= 13) {
+                    ch.setCellStyle(headerF2);
+                } else {
+                    ch.setCellStyle(headerF3);
+                }
+            }
+
+            // Merges nivel 3
+            sheet.addMergedRegion(new CellRangeAddress(2, 2, 3, 3));
+            sheet.addMergedRegion(new CellRangeAddress(2, 2, 4, 4));
+            sheet.addMergedRegion(new CellRangeAddress(2, 2, 5, 5));
+            sheet.addMergedRegion(new CellRangeAddress(2, 2, 6, 6));
+            sheet.addMergedRegion(new CellRangeAddress(2, 2, 7, 7));
+            sheet.addMergedRegion(new CellRangeAddress(2, 2, 8, 8));
+            ++vj;
+
+            //============================================
+            CellStyle bodyStylePercent = workbook.createCellStyle();
+            bodyStylePercent.cloneStyleFrom(bodyStyle);
+            bodyStylePercent.setDataFormat(workbook.createDataFormat().getFormat("0.00%"));
+
+            while (iter.hasNext()) {
+                row1 = sheet.createRow(vj);
+
+                Cell rcell0 = row1.createCell(0);
+                Cell rcell1 = row1.createCell(1);
+                Cell rcell2 = row1.createCell(2);
+                Cell rcell3 = row1.createCell(3);
+                Cell rcell4 = row1.createCell(4);
+                Cell rcell5 = row1.createCell(5);
+                Cell rcell6 = row1.createCell(6);
+                Cell rcell7 = row1.createCell(7);
+                Cell rcell8 = row1.createCell(8);
+
+                MPF100Filter item = listaData.get(vi);
+
+                rcell0.setCellValue(item.SDATE);
+                rcell1.setCellValue(item.CCUST);
+                rcell2.setCellValue(item.QSTATEMENT);
+                rcell3.setCellValue(item.QMATCH);
+                rcell4.setCellValue(item.PCT_MATCH);
+                rcell5.setCellValue(item.QMANUAL);
+                rcell6.setCellValue(item.QPEND);
+
+                iter.next();
+                ++vi;
+                ++vj;
+            }
+
+            sheet.autoSizeColumn(0, true);
+            sheet.autoSizeColumn(1, true);
+            sheet.autoSizeColumn(2, true);
+            sheet.autoSizeColumn(3, true);
+            sheet.autoSizeColumn(4, true);
+            sheet.autoSizeColumn(5, true);
+            sheet.autoSizeColumn(6, true);
+            sheet.autoSizeColumn(7, true);
+            sheet.autoSizeColumn(8, true);
+
+            //============================================
+            response.setContentType("application/vnd.openxml");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+
+            FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
+            workbook.write(response.getOutputStream());
+            fos.close();
+
+        } catch (IOException e) {
+            throw new SpringException(e);
+        }
+    }
+    
 }
