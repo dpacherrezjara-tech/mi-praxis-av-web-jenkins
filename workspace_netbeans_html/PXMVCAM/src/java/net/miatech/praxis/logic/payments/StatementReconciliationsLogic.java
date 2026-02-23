@@ -69,9 +69,7 @@ public class StatementReconciliationsLogic {
     public List<A2290Filter> loadPX287SQP00841(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadPX287SQP00841(filter);
     }
-    public Map<String, Object> loadPX002CASH(A2290Filter filter) throws SQLException, Exception {
-        return StatementReconciliationsDAO.loadPX002CASH(filter);
-    }
+    
     
     //detalle cash
     
@@ -200,9 +198,24 @@ public class StatementReconciliationsLogic {
         return StatementReconciliationsDAO.GET_TOLERANCIA(Adate);
     }
             
-    //CASH
+    //MY OF MY
+    public List<MPF100Filter> loadMPS560(MPF100Filter filter) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadMPS560(filter);
+    }
+    
+    public Map<String, Object> loadMPS561(A2290Filter filter) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadMPS561(filter);
+    }
+    
     public List<MPF100Filter> loadCashSummaryMain(MPF100Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.loadCashSummaryMain(filter);
     }
     
+    public Map<String, Object> loadPX002CASH(A2290Filter filter) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadPX002CASH(filter);
+    }
+    
+     public Map<String, Object> executeMPS343(A2290Filter filter) throws SQLException, Exception {
+        return StatementReconciliationsDAO.executeMPS343(filter);
+    }
 }

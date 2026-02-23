@@ -1545,7 +1545,7 @@ public class ReconciliationReportController extends BaseController {
                 rcell31.setCellValue(listaData.get(vi).PERIODO_DEB);
                 rcell32.setCellValue(listaData.get(vi).TIPO_DEB);
                 rcell33.setCellValue(listaData.get(vi).SUB_TIPO_DEB);
-                rcell34.setCellValue(listaData.get(vi).HEADER_DEB);
+                rcell34.setCellValue(listaData.get(vi).IDCDEB);
                 rcell35.setCellValue(listaData.get(vi).CORRELATIVO_DEB);
                 rcell36.setCellValue(listaData.get(vi).FILENAME_DEB);
                 rcell37.setCellValue(listaData.get(vi).FECSAP_DEB);

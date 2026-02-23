@@ -1,20 +1,17 @@
+prototype.id = 'ControlReportForm';
+prototype.url = CONTEXTPATH + '/ControlReport';
 
-prototype.id = 'StatementReconciliationsForm';
-prototype.url = CONTEXTPATH + '/StatementReconciliations';
-
-Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.StatementReconciliationsForm', {
+Ext.define('Ext.Praxis.view.payments.ControlReportForm.ControlReportForm', {
     extend: 'Ext.form.Panel',
-    alias: 'widget.StatementReconciliationsForm',
+    alias: 'widget.ControlReportForm',
     requires: [
-        'Ext.Praxis.view.payments.StatementReconciliationsForm.Options',
-        'Ext.Praxis.view.payments.StatementReconciliationsForm.Filters',
-        'Ext.Praxis.view.payments.StatementReconciliationsForm.Info',
-        'Ext.Praxis.controller.payments.StatementReconciliations.StatementReconciliationsController'
+        'Ext.Praxis.view.payments.ControlReportForm.Options',
+        'Ext.Praxis.view.payments.ControlReportForm.Filters',
+        'Ext.Praxis.view.payments.ControlReportForm.Info',
+        'Ext.Praxis.controller.payments.ControlReport.ControlReportController'
     ],
-    controller: 'StatementReconciliationsController',
-    layout: {
-        type: 'fit'
-    },
+    controller: 'ControlReportController',
+    layout: {type: 'fit'},
     padding: '0 0 0 0',
     border: false,
     defaults: {
@@ -24,6 +21,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.StatementRecon
         {
             id: prototype.id + '-xpanel',
             border: false,
+            autoScroll: false,
             layout: 'fit',
             items: [
                 {
@@ -39,8 +37,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.StatementRecon
                         {
                             xtype: 'panel',
                             region: 'center',
-                            id: prototype.id + '-panelWid',
-                            width: 1800,
+                            width: 1000,
                             layout: 'border',
                             items: [
                                 {
@@ -51,30 +48,26 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.StatementRecon
                                         align: 'center'
                                     },
                                     border: true,
+                                    autoScroll: true,
                                     defaults: {
+                                        width: 1790,
                                         align: 'center'
                                     },
                                     items: [
                                         {
                                             xtype: prototype.id + '-options',
-                                            id: prototype.id + '-contentOptions',
-                                            style:'margin-top:10px',
-                                             width: 1800,
+                                            style:'margin-top:10px'
                                         }
-                                        ,
-                                        {
+                                        ,{
                                             xtype: prototype.id + '-filters',
                                             id: prototype.id + '-contentFilter',
-                                            hidden: false,
-                                             width: 1800,
+                                            hidden: false
                                         },
-                                        ,
                                         {
                                             xtype: 'panel',
-                                            height: 720,
-                                             width: 1800,
+                                            height: 650,
                                             layout: 'fit',
-                                            id: prototype.id + '-panelHeight',
+                                             id: prototype.id + '-panelHeight',
                                             items: [
                                                 {
                                                     xtype: 'panel',
@@ -106,7 +99,3 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.StatementRecon
         }
     ]
 });
-
-
-
-

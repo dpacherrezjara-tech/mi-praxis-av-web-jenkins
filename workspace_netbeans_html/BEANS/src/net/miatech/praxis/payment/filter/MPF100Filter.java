@@ -45,6 +45,7 @@ public class MPF100Filter extends MPF100 {
     public String COMMISSION = "";
     public String ADM = "";
     public String IN_FECHA_FROM = "";
+    public String IN_SOCIETY = "";
     public String IN_FECHA_TO = "";
     public String strFecFiltro = "";
     public String strFecFiltro2 = "";

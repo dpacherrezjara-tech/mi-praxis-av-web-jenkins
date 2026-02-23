@@ -191,6 +191,9 @@ Ext.define('Ext.Praxis.controller.payments.ReconciliationReport.ReconciliationRe
                 Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue(),
                 Ext.getCmp(prototype.id + '-cmbDateFromDay').getValue()
                 );
+        
+        
+        console.log(me.bean.IN_FROM_VALDATE,'me.bean.IN_FROM_VALDATE')
 
 //        me.bean.IN_FROM_VALDATE = '20251101'
 
@@ -200,6 +203,9 @@ Ext.define('Ext.Praxis.controller.payments.ReconciliationReport.ReconciliationRe
                 Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue(),
                 Ext.getCmp(prototype.id + '-cmbDateToDay').getValue()
                 );
+        
+        
+         console.log(me.bean.IN_TO_VALDATE,'me.bean.IN_FROM_VALDATE')
 //        me.bean.IN_TO_VALDATE = '20251130'
         // Upload File From
         me.bean.IN_FROM_UP = me.buildDate(
@@ -300,7 +306,7 @@ Ext.define('Ext.Praxis.controller.payments.ReconciliationReport.ReconciliationRe
         m = m || '';
         d = d || '';
 
-        if (!y || !m) {
+        if (!y) {
             return '';
         }
 
