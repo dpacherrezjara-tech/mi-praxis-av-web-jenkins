@@ -385,7 +385,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                 panel.setHeight(580);
 
             } else {
-                
+
                 var yearActual = new Date().getFullYear();
 
                 yearFromCash.setValue(yearActual);
@@ -427,8 +427,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             beanString: beanString,
             bean: me.bean
         };
-        
-       console.log(searchParams,'WAAAAAAAAAAAAAAAAAAAAAAA')
+
+        console.log(searchParams, 'WAAAAAAAAAAAAAAAAAAAAAAA')
     },
     // </editor-fold>
 
@@ -671,23 +671,23 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
     setGridDataDetailCash: function () {
         win.lblUser_toolTip("Estructura: MPF194");
         console.log(4)
-        console.log(me.panelActual,'me.panelActualme.panelActual')
-       if (me.panelActual !== '-panelGridDataCash') {
+        console.log(me.panelActual, 'me.panelActualme.panelActual')
+        if (me.panelActual !== '-panelGridDataCash') {
             console.log(2222)
             me.drillDown.push(me.panelActual);
             me.panelActual = '-panelGridDataCash';
-            
+
             // 1. PAUSAMOS EL MOTOR DE RENDERIZADO DE EXTJS
             Ext.suspendLayouts();
-            
+
             global.selectedChild(me.childs, prototype.id + me.panelActual);
-            
+
             // 2. LO REANUDAMOS FORZANDO A QUE DIBUJE TODO DE GOLPE
             Ext.resumeLayouts(true);
-            
+
             console.log(3333)
         }
-        
+
         console.log(5)
         var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
             proxy: {
@@ -2537,50 +2537,50 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         console.log(selected, 'selected')
 
         if (selected === 0) {
-            
+
             Ext.getCmp(prototype.id + '-boxConsultas').mask('Updating sales summary...');
 
-        var params = {
-            beanString: JSON.stringify({
-                IN_CCUST: '134'
-            })
-        };
+            var params = {
+                beanString: JSON.stringify({
+                    IN_CCUST: '134'
+                })
+            };
 
-        Ext.Ajax.request({
-            url: prototype.url + '/updateSummary',
-            method: 'POST',
-            params: params,
-            timeout: 300000,
-            success: function (response, options) {
-                Ext.getCmp(prototype.id + '-boxConsultas').unmask();
+            Ext.Ajax.request({
+                url: prototype.url + '/updateSummary',
+                method: 'POST',
+                params: params,
+                timeout: 300000,
+                success: function (response, options) {
+                    Ext.getCmp(prototype.id + '-boxConsultas').unmask();
 
-                var res = Ext.JSON.decode(response.responseText);
-                if (res.success) {
+                    var res = Ext.JSON.decode(response.responseText);
+                    if (res.success) {
+                        global.Msg({
+                            msg: 'Sales summary updated successfully!',
+                            icon: Ext.Msg.INFO,
+                            buttons: Ext.Msg.OK
+                        });
+
+                        me.btnSearch_click();
+
+                        console.log('MPS343 executed:', res.message);
+                    } else {
+                        global.Msg({
+                            msg: 'Error updating summary: ' + res.message,
+                            icon: Ext.Msg.ERROR
+                        });
+                    }
+                },
+                failure: function (response, options) {
+                    Ext.getCmp(prototype.id + '-boxConsultas').unmask();
                     global.Msg({
-                        msg: 'Sales summary updated successfully!',
-                        icon: Ext.Msg.INFO,
-                        buttons: Ext.Msg.OK
-                    });
-
-                    me.btnSearch_click();
-
-                    console.log('MPS343 executed:', res.message);
-                } else {
-                    global.Msg({
-                        msg: 'Error updating summary: ' + res.message,
+                        msg: 'Server error: ' + response.statusText,
                         icon: Ext.Msg.ERROR
                     });
                 }
-            },
-            failure: function (response, options) {
-                Ext.getCmp(prototype.id + '-boxConsultas').unmask();
-                global.Msg({
-                    msg: 'Server error: ' + response.statusText,
-                    icon: Ext.Msg.ERROR
-                });
-            }
-        });
-            
+            });
+
         } else {
             Ext.Ajax.request({
                 url: prototype.url + '/onCallProgramBySummary',
@@ -2685,18 +2685,18 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
 
         console.log('oeoeoeoe');
         console.log(me.panelActual);
-        
-        
-        console.log(me.panelActual === '-panelGridDataCashDashboard','222')
+
+
+        console.log(me.panelActual === '-panelGridDataCashDashboard', '222')
         if (me.panelActual === '-panelGridDataCashDashboard') {
             this.setFormatParameterDashabordCash();
         } else {
             this.setFormatParameter();
         }
-        
-        console.log(this.searchParams,'this.searchParams')
-        console.log(me.searchParams,'this.searchParams')
-        
+
+        console.log(this.searchParams, 'this.searchParams')
+        console.log(me.searchParams, 'this.searchParams')
+
         switch (me.panelActual) {
             case  '-panelGridData':
                 global.getFile(prototype.url + '/getXLSX?beanString=' + encodeURI(searchParams.beanString));
@@ -2734,6 +2734,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                 break;
             case '-boxDetLiquiCash':
                 global.getFile(prototype.url + '/getXLSXDetCashMainExtract?beanString=' + encodeURI(me.paramsDetail.beanString));
+                break;
+            case '-panelGridDataDetailSecundary':
+                global.getFile(prototype.url + '/getXLSXDetailSecundary?beanString=' + encodeURI(me.searchParamsSecundary.beanString));
                 break;
             case '-panelGridDataDetailSecundaryPending':
                 global.getFile(prototype.url + '/getXLSXDetCashMainExtractPending?beanString=' + encodeURI(me.paramsDetailSource.beanString));
