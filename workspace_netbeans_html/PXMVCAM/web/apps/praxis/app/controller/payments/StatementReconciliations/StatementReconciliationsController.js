@@ -112,6 +112,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             '#StatementReconciliationsForm-cmbDateDay': {
                 select: this.selectComboFromDay
             },
+            '#StatementReconciliationsForm-cmbDateDayCash': {
+                select: this.selectComboFromDayCash
+            },
             '#StatementReconciliationsForm-cmbDateToDay': {
                 select: this.selectComboToDay
             },
@@ -415,12 +418,18 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         var fecFrom = Ext.getCmp(prototype.id + '-cmbDateFromYearCash').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonthCash').getValue()
                 + Ext.getCmp(prototype.id + '-cmbDateDayCash').getValue();
 
+                console.log(Ext.getCmp(prototype.id + '-cmbDateFromYearCash').getValue(),'AAAA');
+
         var fecTo = Ext.getCmp(prototype.id + '-cmbDateToYearCash').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonthCash').getValue()
                 + Ext.getCmp(prototype.id + '-cmbDateToDayCash').getValue();
 
         me.bean.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountryCash').getValue();
         me.bean.IN_FECHA_FROM = fecFrom;
         me.bean.IN_FECHA_TO = fecTo;
+        
+        console.log(fecFrom,'fecFrom')
+        console.log(fecTo,'fecTo')
+        console.log(me.bean,'fecTo')
 
         var beanString = JSON.stringify(me.bean);
         me.searchParams = {
@@ -445,7 +454,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             }, listeners: {
                 beforeload: function (obj) {
                     Ext.getCmp(prototype.id + '-panelGridDataCashDashboard').mask('Loading...');
-                    obj.proxy.extraParams = searchParams;
+                    obj.proxy.extraParams = me.searchParams;
                 },
                 load: function (obj) {
                     Ext.getCmp(prototype.id + '-panelGridDataCashDashboard').unmask();
@@ -3335,6 +3344,10 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
     },
     selectComboFromDay: function (obj) {
         var comboToDay = Ext.getCmp(prototype.id + '-cmbDateToDay');
+        comboToDay.setValue(obj.getValue());
+    },
+     selectComboFromDayCash: function (obj) {
+        var comboToDay = Ext.getCmp(prototype.id + '-cmbDateToDayCash');
         comboToDay.setValue(obj.getValue());
     },
     selectComboToDay: function (obj) {
