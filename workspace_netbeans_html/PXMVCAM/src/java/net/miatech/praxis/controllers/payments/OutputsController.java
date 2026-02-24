@@ -528,13 +528,18 @@ public class OutputsController extends BaseController {
             } else {
                 name += " - AVIANCA";
             }
-            if (filter.IN_FUENTE.equals("C")) {
-                name += " - COLOMBIA";
+
+            if (filter.IN_CASH.equals("Y")) {
+                name += " - CASH";
             } else {
-                name += " - EXTERIOR";
-            }
-            if (!filter.IN_CORE.equals("")) {
-                name += " - " + filter.IN_CORE;
+                if (filter.IN_FUENTE.equals("C")) {
+                    name += " - COLOMBIA";
+                } else {
+                    name += " - EXTERIOR";
+                }
+                if (!filter.IN_CORE.equals("")) {
+                    name += " - PROCES " + filter.IN_CORE;
+                }
             }
 
             int len = listaData.size();
@@ -547,22 +552,42 @@ public class OutputsController extends BaseController {
             }
 
             PrintWriter writer = new PrintWriter(file, "UTF-8");
-            String cadena;
+            String cadena_credito, cadena_cash;
+            String cadena = "";
 
-            cadena = "Fecha de Abono | Fecha de Transaccion | IATA | Terminal | Codigo de venta | Tipo Doc | Moneda | Valor de Venta | Valor IVA | Propina | Valor Total | Comision | Base Rte Fuente | Rte Fuente | Rte IVA | Base Rte ICA | Rte ICA | Neto | Nro Tarjeta de Credito Debito | Autorizacion | Tipo de Tarjeta | Nro de cuenta | Cod Banco | Cod unico | Red | Nro Tiquete | LLAVE | DOC SAP | STVAL | KEYC | CORE PROC";
-            writer.println("" + cadena);
+            cadena_credito = "Fecha de Abono | Fecha de Transaccion | IATA | Terminal | Codigo de venta | Tipo Doc | Moneda | Valor de Venta | Valor IVA | Propina | Valor Total | Comision | Base Rte Fuente | Rte Fuente | Rte IVA | Base Rte ICA | Rte ICA | Neto | Nro Tarjeta de Credito Debito | Autorizacion | Tipo de Tarjeta | Nro de cuenta | Cod Banco | Cod unico | Red | Nro Tiquete | LLAVE | DOC SAP | STVAL | KEYC | CORE PROC";
+            cadena_cash = "CCUST | VALDATE | STVAL | SCOUNTRY | CFUENTE | SAGENT | SCONSOL | SCURRENCY | NETO | RATE | USDEQUI | PAYAMOU | SETADJ | BANDOC | FCONT | IDCONT | CBATCH | DPERIOD | STRDATE | ENDDATE | REFERENCE | KEYC ";
 
-            for (vi = 0; vi < len; vi++) {
-                cadena = "";
-                cadena += "" + listaData.get(vi).DDATA.replaceAll(";", "|") + "|";//
-                if (listaData.get(vi).DATEC == null || listaData.get(vi).DATEC.isEmpty()) {
-                    cadena += "" + "|" + listaData.get(vi).COREP;
-                } else {
-                    cadena += listaData.get(vi).DATEC + listaData.get(vi).TRANC + "|" + listaData.get(vi).COREP;
+            if (filter.IN_CASH.equals("N")) {
+                cadena = cadena_credito;
+                writer.println(cadena);
+                for (vi = 0; vi < len; vi++) {
+                    cadena = "";
+                    cadena += "" + listaData.get(vi).DDATA.replaceAll(";", "|") + "|";//
+                    if (listaData.get(vi).DATEC == null || listaData.get(vi).DATEC.isEmpty()) {
+                        cadena += "" + "|" + listaData.get(vi).COREP;
+                    } else {
+                        cadena += listaData.get(vi).DATEC + listaData.get(vi).TRANC + "|" + listaData.get(vi).COREP;
+                    }
+                    cadena = cadena.replaceAll("null", "");
+                    writer.println("" + cadena);
                 }
-                cadena = cadena.replaceAll("null", "");
-                writer.println("" + cadena);
+            } else {
+                cadena = cadena_cash;
+                writer.println(cadena);
+                for (vi = 0; vi < len; vi++) {
+                    cadena = "";
+                    cadena += "" + listaData.get(vi).DDATA.replaceAll(";", "|") + "|";//
+                    if (listaData.get(vi).DATEC == null || listaData.get(vi).DATEC.isEmpty()) {
+                        cadena += "" + "|" + "";
+                    } else {
+                        cadena += listaData.get(vi).DATEC + listaData.get(vi).TRANC ;
+                    }
+                    cadena = cadena.replaceAll("null", "");
+                    writer.println("" + cadena);
+                }
             }
+
             writer.flush();
             writer.close();
 
@@ -634,9 +659,18 @@ public class OutputsController extends BaseController {
             }
 
             PrintWriter writer = new PrintWriter(file, "UTF-8");
-            String cadena;
+            String cadena_credito, cadena_cash;
+            String cadena = "";
 
-            cadena = "DOCNUM | CFUENTE | SAGENT | SDATE | SPNR | SCARDN | SAUTHOC | SCARCOD | SCURRENCY | SVFOP | KEYCRUCE | BANDOC | INVOICE | CORE PROC";
+            cadena_credito = "DOCNUM | CFUENTE | SAGENT | SDATE | SPNR | SCARDN | SAUTHOC | SCARCOD | SCURRENCY | SVFOP | KEYCRUCE | BANDOC | INVOICE | CORE PROC";
+            cadena_cash = "DOCNUM | CFUENTE | SAGENT | SDATE | SPNR | SCARDN | SAUTHOC | SCARCOD | SCURRENCY | SVFOP | KEYCRUCE | BANDOC |  FDES | FHASTA | MCLOS | INVOICE | CORE PROC ";
+
+            if (filter.IN_CASH.equals("Y")) {
+                cadena = cadena_cash;
+            } else {
+                cadena = cadena_credito;
+            }
+
             writer.println("" + cadena);
 
             for (vi = 0; vi < len; vi++) {
