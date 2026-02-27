@@ -259,7 +259,7 @@ public class ForecastPaymentController extends BaseController {
             // ===== HOJA TC =====
             String[] columnsTC = {
                 "INVOICE_CC","STATUS", "SPAYMENT", "SCOUNTRY", "SCARCOD1", "CCUST", "CFUENTE",
-                "SUBFTE", "SCONSOL", "FDESD", "MCLOS","FPAGO", "SCURRENCY", "SCURREVEN",
+                "SUBFTE","COREP", "SCONSOL", "FDESD", "MCLOS","FPAGO","FPROGRAMADA", "SCURRENCY", "SCURREVEN",
                 "Suma de SVFOPC1", "Suma de SVFOPUSD"
             };
 
@@ -293,18 +293,20 @@ public class ForecastPaymentController extends BaseController {
                 row.createCell(5).setCellValue(item.CCUST);
                 row.createCell(6).setCellValue(item.CFUENTE);
                 row.createCell(7).setCellValue(item.SUBFTE);
-                row.createCell(8).setCellValue(item.SCONSOL);
-                row.createCell(9).setCellValue(item.FDESD);
-                row.createCell(10).setCellValue(item.MCLOS);
-                row.createCell(11).setCellValue(item.FPAGO);
-                row.createCell(12).setCellValue(item.SCURRENCY);
-                row.createCell(13).setCellValue(item.SCURREVEN);
+                row.createCell(8).setCellValue(item.COREP);
+                row.createCell(9).setCellValue(item.SCONSOL);
+                row.createCell(10).setCellValue(item.FDESD);
+                row.createCell(11).setCellValue(item.MCLOS);
+                row.createCell(12).setCellValue(item.FPAGO);
+                row.createCell(13).setCellValue(item.FPAGOP);
+                row.createCell(14).setCellValue(item.SCURRENCY);
+                row.createCell(15).setCellValue(item.SCURREVEN);
 
-                Cell c12 = row.createCell(14);
+                Cell c12 = row.createCell(16);
                 c12.setCellValue(item.SVFOPC1);
                 c12.setCellStyle(moneyStyle);
 
-                Cell c13 = row.createCell(15);
+                Cell c13 = row.createCell(17);
                 c13.setCellValue(item.SVFOPUSD);
                 c13.setCellStyle(moneyStyle);
             }
@@ -315,8 +317,8 @@ public class ForecastPaymentController extends BaseController {
 
             // ===== HOJA CASH =====
             String[] columnsCASH = {
-                "INVOICE_CA","STATUS", "SPAYMENT", "SCOUNTRY", "CCUST", "CFUENTE", "SUBFTE",
-                "SCONSOL", "SDATE", "MCLOS","FPAGO", "SCURRENCY", "SCURREVEN",
+                "INVOICE_CA","STATUS", "SPAYMENT", "SCOUNTRY", "CCUST", "CFUENTE", "SUBFTE", "COREP",
+                "SCONSOL", "SDATE", "MCLOS","FPAGO","FPROGRAMADA", "SCURRENCY", "SCURREVEN",
                 "Suma de SVFOPNETR", "Suma de SVFOPUSD"
             };
 
@@ -350,18 +352,20 @@ public class ForecastPaymentController extends BaseController {
                 row.createCell(4).setCellValue(item.CCUST);
                 row.createCell(5).setCellValue(item.CFUENTE);
                 row.createCell(6).setCellValue(item.SUBFTE);
-                row.createCell(7).setCellValue(item.SCONSOL);
-                row.createCell(8).setCellValue(item.SDATE);
-                row.createCell(9).setCellValue(item.MCLOS);
-                row.createCell(10).setCellValue(item.FPAGO);
-                row.createCell(11).setCellValue(item.SCURRENCY);
-                row.createCell(12).setCellValue(item.SCURREVEN);
+                row.createCell(7).setCellValue(item.COREP);
+                row.createCell(8).setCellValue(item.SCONSOL);
+                row.createCell(9).setCellValue(item.SDATE);
+                row.createCell(10).setCellValue(item.MCLOS);
+                row.createCell(11).setCellValue(item.FPAGO);
+                row.createCell(12).setCellValue(item.FPAGOP);
+                row.createCell(13).setCellValue(item.SCURRENCY);
+                row.createCell(14).setCellValue(item.SCURREVEN);
 
-                Cell c11 = row.createCell(13);
+                Cell c11 = row.createCell(15);
                 c11.setCellValue(item.SVFOPNETR);
                 c11.setCellStyle(moneyStyle);
 
-                Cell c12 = row.createCell(14);
+                Cell c12 = row.createCell(16);
                 c12.setCellValue(item.SVFOPUSD);
                 c12.setCellStyle(moneyStyle);
             }

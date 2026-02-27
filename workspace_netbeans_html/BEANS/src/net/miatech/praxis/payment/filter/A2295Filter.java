@@ -88,6 +88,8 @@ public class A2295Filter  extends A2295{
     public String FDESD = "";
     public String F_STVAL = "";
     public String FPAGO = "";
+    public String FPAGOP = "";
+    public String COREP = "";
     
                 
     public long lngDays = 0;
