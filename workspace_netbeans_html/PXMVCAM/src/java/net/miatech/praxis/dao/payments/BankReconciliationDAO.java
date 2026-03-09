@@ -9104,6 +9104,10 @@ public class BankReconciliationDAO {
                     executeConciliationSP(cnx, "MPS315");
                     executeConciliationSP(cnx, "MPS318");
                     break;
+                case "PARCIAL":
+                    executeConciliationSP(cnx, "MPS542");
+                    executeConciliationSP(cnx, "MPS543");
+                    break;
 
                 default:
                     throw new Exception("Tipo de conciliación no válido: " + tipo);
