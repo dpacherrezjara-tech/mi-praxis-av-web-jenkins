@@ -4940,80 +4940,87 @@ Ext.util.CSS.createStyleSheet(`
                 },
                 // Creación de la Ventana "Data Entry" Innovadora
                 conciliacionFase2: function () {
-                var me = this;
-                        var mainView = me.getView();
-                        var cssStyles =
-                        ".conciliacion-card { transition: all 0.3s ease !important; opacity: 0.9; }" +
-                        ".conciliacion-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.2) !important; opacity: 1; background-color: #fafafa !important; }" +
-                        ".conciliacion-card:active { transform: translateY(1px); }";
-                        Ext.util.CSS.createStyleSheet(cssStyles, 'estilos-conciliacion');
-                        var getCardStyle = function (color, iconCls, titulo, desc) {
-                        return {
-                        xtype: 'container',
-                                flex: 1,
-                                margin: '0 10 0 10',
-                                cls: 'conciliacion-card',
-                                style: {
-                                'background-color': '#fff',
-                                        'border-radius': '8px',
-                                        'box-shadow': '0 4px 6px rgba(0,0,0,0.1)',
-                                        'cursor': 'pointer',
-                                        'border-top': '5px solid ' + color,
-                                        'padding': '20px',
-                                        'text-align': 'center'
-                                },
-                                items: [
-                                {
-                                xtype: 'component',
-                                        autoEl: { tag: 'div', cls: iconCls },
-                                        style: { 'font-size': '40px', 'color': color, 'margin-bottom': '10px' }
-                                },
-                                {
-                                xtype: 'component',
-                                        html: '<h3 style="margin:0; color:#333; font-weight:bold;">' + titulo + '</h3>',
-                                },
-                                {
-                                xtype: 'component',
-                                        html: '<p style="color:#777; font-size:12px; margin-top:5px;">' + desc + '</p>'
-                                }
-                                ]
-                        };
-                        };
-                        // 3. CREAR LA VENTANA (Igual que antes)
-                        var win = Ext.create('Ext.window.Window', {
-                        title: '<span style="font-weight:bold;">🚀 Selector de Conciliación</span>',
-                                modal: true,
-                                width: 650,
-                                height: 350,
-                                layout: { type: 'vbox', align: 'stretch' },
-                                bodyStyle: 'background-color: #f0f2f5; padding: 20px;',
-                                resizable: false,
-                                items: [
-                                {
-                                xtype: 'component',
-                                        html: '<div style="text-align:center; margin-bottom:20px; color:#555; font-size:14px;">Seleccione el tipo de proceso que desea ejecutar:</div>'
-                                },
-                                {
-                                xtype: 'container',
-                                        layout: 'hbox',
-                                        flex: 1,
-                                        items: [
-                                                Ext.apply(getCardStyle('#3498db', 'fa fa-plane', 'BSP', 'Billing Settlement Plan'), {
-                                                listeners: { el: { click: function () { me.ejecutarConciliacion('BSP', win); } } }
-                                                }),
-                                                Ext.apply(getCardStyle('#2ecc71', 'fa fa-globe', 'ARC', 'Airline Reporting Corp'), {
-                                                listeners: { el: { click: function () { me.ejecutarConciliacion('ARC', win); } } }
-                                                }),
-                                                Ext.apply(getCardStyle('#9b59b6', 'fa fa-exchange', 'ICCS', 'IATA Currency Clearance'), {
-                                                listeners: { el: { click: function () { me.ejecutarConciliacion('ICCS', win); } } }
-                                                })
-                                        ]
-                                }
-                                ],
-                                bbar: ['->', { text: 'Cancelar', handler: function () { win.close(); } }]
-                        });
-                        win.show();
-                        },
+    var me = this;
+    var mainView = me.getView();
+    var cssStyles =
+        ".conciliacion-card { transition: all 0.3s ease !important; opacity: 0.9; }" +
+        ".conciliacion-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.2) !important; opacity: 1; background-color: #fafafa !important; }" +
+        ".conciliacion-card:active { transform: translateY(1px); }";
+    Ext.util.CSS.createStyleSheet(cssStyles, 'estilos-conciliacion');
+
+    var getCardStyle = function (color, iconCls, titulo, desc) {
+        return {
+            xtype: 'container',
+            flex: 1,
+            margin: '0 10 0 10',
+            cls: 'conciliacion-card',
+            style: {
+                'background-color': '#fff',
+                'border-radius': '8px',
+                'box-shadow': '0 4px 6px rgba(0,0,0,0.1)',
+                'cursor': 'pointer',
+                'border-top': '5px solid ' + color,
+                'padding': '20px',
+                'text-align': 'center'
+            },
+            items: [
+                {
+                    xtype: 'component',
+                    autoEl: { tag: 'div', cls: iconCls },
+                    style: { 'font-size': '40px', 'color': color, 'margin-bottom': '10px' }
+                },
+                {
+                    xtype: 'component',
+                    html: '<h3 style="margin:0; color:#333; font-weight:bold;">' + titulo + '</h3>',
+                },
+                {
+                    xtype: 'component',
+                    html: '<p style="color:#777; font-size:12px; margin-top:5px;">' + desc + '</p>'
+                }
+            ]
+        };
+    };
+
+    // 3. CREAR LA VENTANA
+    var win = Ext.create('Ext.window.Window', {
+        title: '<span style="font-weight:bold;">🚀 Selector de Conciliación</span>',
+        modal: true,
+        width: 850, // <-- AUMENTÉ ESTO (de 650 a 850) para que quepan bien las 4 tarjetas
+        height: 350,
+        layout: { type: 'vbox', align: 'stretch' },
+        bodyStyle: 'background-color: #f0f2f5; padding: 20px;',
+        resizable: false,
+        items: [
+            {
+                xtype: 'component',
+                html: '<div style="text-align:center; margin-bottom:20px; color:#555; font-size:14px;">Seleccione el tipo de proceso que desea ejecutar:</div>'
+            },
+            {
+                xtype: 'container',
+                layout: 'hbox',
+                flex: 1,
+                items: [
+                    Ext.apply(getCardStyle('#3498db', 'fa fa-plane', 'BSP', 'Billing Settlement Plan'), {
+                        listeners: { el: { click: function () { me.ejecutarConciliacion('BSP', win); } } }
+                    }),
+                    Ext.apply(getCardStyle('#2ecc71', 'fa fa-globe', 'ARC', 'Airline Reporting Corp'), {
+                        listeners: { el: { click: function () { me.ejecutarConciliacion('ARC', win); } } }
+                    }),
+                    Ext.apply(getCardStyle('#9b59b6', 'fa fa-exchange', 'ICCS', 'IATA Currency Clearance'), {
+                        listeners: { el: { click: function () { me.ejecutarConciliacion('ICCS', win); } } }
+                    }),
+                    // 👇 AQUÍ ESTÁ LA NUEVA TARJETA
+                    Ext.apply(getCardStyle('#f39c12', 'fa fa-pie-chart', 'Parciales', 'Pagos Parciales'), {
+                        listeners: { el: { click: function () { me.ejecutarConciliacion('PARCIAL', win); } } }
+                    })
+                ]
+            }
+        ],
+        bbar: ['->', { text: 'Cancelar', handler: function () { win.close(); } }]
+    });
+    
+    win.show();
+},
                 ejecutarConciliacion: function (tipoProceso, ventanaPadre) {
                 var me = this;
                         var mainView = me.getView();
