@@ -34,6 +34,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.FiltersAdm', {
                         hidden: false
                     },
                     items: [
+                        // ── ROW 1 ────────────────────────────────────────────
                         {
                             xtype: 'panel',
                             layout: 'hbox',
@@ -72,12 +73,34 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.FiltersAdm', {
                                     editable: false,
                                     value: ''
                                 },
+                                // NUEVO: Combo para elegir tipo de fecha (Sdate / Update)
+                                {
+                                    xtype: 'combobox',
+                                    labelStyle: 'font-weight:bold;',
+                                    fieldLabel: 'Date Type',
+                                    id: prototype.id + '-cmbDateTypeAdm',
+                                    name: 'IN_DATETYPE',
+                                    store: Ext.create('Ext.data.SimpleStore', {
+                                        fields: ['code', 'name'],
+                                        data: [
+                                            ['SDATE',  'Sdate'],
+                                            ['UPDATE', 'Update']
+                                        ]
+                                    }),
+                                    labelWidth: 75,
+                                    width: 175,
+                                    displayField: 'name',
+                                    valueField: 'code',
+                                    queryMode: 'local',
+                                    editable: false,
+                                    value: 'SDATE'
+                                },
                                 {
                                     xtype: 'datefield',
                                     name: 'IN_FROM',
                                     fieldLabel: 'From',
                                     format: 'Ymd',
-                                    editable: true, // Deshabilita la edición del campo
+                                    editable: true,
                                     labelWidth: 50,
                                     width: 150,
                                     value: new Date(anioActual, mesActual, 1),
@@ -90,7 +113,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.FiltersAdm', {
                                     name: 'IN_TO',
                                     fieldLabel: 'To',
                                     format: 'Ymd',
-                                    editable: true, // Deshabilita la edición del campo
+                                    editable: true,
                                     labelWidth: 30,
                                     width: 120,
                                     value: new Date(),
@@ -105,7 +128,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.FiltersAdm', {
                                     width: 200,
                                     name: 'IN_ADMNUM',
                                     maxLength: 10,
-                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
+                                    enforceMaxLength: true,
                                     listeners: {
                                         specialkey: 'onEnterKeyPress'
                                     }
@@ -117,7 +140,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.FiltersAdm', {
                                     width: 200,
                                     name: 'IN_TICKET',
                                     maxLength: 13,
-                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
+                                    enforceMaxLength: true,
                                     listeners: {
                                         specialkey: 'onEnterKeyPress'
                                     }
@@ -129,21 +152,21 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.FiltersAdm', {
                                     width: 200,
                                     name: 'IN_SCARDN1',
                                     maxLength: 6,
-                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
+                                    enforceMaxLength: true,
                                     listeners: {
                                         specialkey: 'onEnterKeyPress'
                                     }
                                 },
                                 {
-                                    xtype:'label',
-                                    text:'******'
+                                    xtype: 'label',
+                                    text: '******'
                                 },
                                 {
                                     xtype: 'textfield',
                                     width: 70,
                                     name: 'IN_SCARDN2',
                                     maxLength: 4,
-                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
+                                    enforceMaxLength: true,
                                     listeners: {
                                         specialkey: 'onEnterKeyPress'
                                     }
@@ -155,14 +178,14 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.FiltersAdm', {
                                     width: 200,
                                     name: 'IN_SAUTHOC',
                                     maxLength: 6,
-                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
+                                    enforceMaxLength: true,
                                     listeners: {
                                         specialkey: 'onEnterKeyPress'
                                     }
                                 }
-                                
                             ]
                         },
+                        // ── ROW 2 ────────────────────────────────────────────
                         {
                             xtype: 'panel',
                             layout: 'hbox',
@@ -176,8 +199,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.FiltersAdm', {
                                 labelAlign: 'right',
                                 hidden: false
                             },
-                            items:[
-                                
+                            items: [
                                 {
                                     xtype: 'textfield',
                                     fieldLabel: 'Accounting ID',
@@ -185,7 +207,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.FiltersAdm', {
                                     width: 280,
                                     name: 'IN_IDCONT',
                                     maxLength: 25,
-                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
+                                    enforceMaxLength: true,
                                     listeners: {
                                         specialkey: 'onEnterKeyPress',
                                         change: function (field, newValue) {
@@ -200,7 +222,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.FiltersAdm', {
                                     width: 230,
                                     name: 'IN_HEADER',
                                     maxLength: 20,
-                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
+                                    enforceMaxLength: true,
                                     listeners: {
                                         specialkey: 'onEnterKeyPress',
                                         change: function (field, newValue) {
@@ -228,8 +250,8 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.FiltersAdm', {
                                     selectOnFocus: true,
                                     enableKeyEvents: true,
                                     triggerAction: 'all',
-                                    value: '', // Valor inicial (vacío)
-                                    emptyText: '(All)'  // Texto que se muestra cuando no hay selección
+                                    value: '',
+                                    emptyText: '(All)'
                                 },
                                 {
                                     xtype: 'combo',
@@ -251,15 +273,51 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.FiltersAdm', {
                                     selectOnFocus: true,
                                     enableKeyEvents: true,
                                     triggerAction: 'all',
-                                    value: '', // Valor inicial (vacío)
-                                    emptyText: '(All)'  // Texto que se muestra cuando no hay selección
+                                    value: '',
+                                    emptyText: '(All)'
+                                },
+                                // NUEVO: Adjustment Type
+                                {
+                                    xtype: 'combo',
+                                    id: prototype.id + '-cmbAdjTypeAdm',
+                                    name: 'IN_ADJTYPE',
+                                    labelWidth: 110,
+                                    width: 300,
+                                    valueField: 'CODE',
+                                    displayField: 'NAME',
+                                    fieldLabel: 'Adjustment Type',
+                                    queryMode: 'local',
+                                    editable: true,
+                                    allowBlank: true,
+                                    caseSensitive: false,
+                                    autoSelect: true,
+                                    labelAlign: 'right',
+                                    typeAhead: true,
+                                    forceSelection: true,
+                                    selectOnFocus: true,
+                                    enableKeyEvents: true,
+                                    triggerAction: 'all',
+                                    value: '',
+                                    emptyText: '(All)'
+                                },
+                                // NUEVO: Agent
+                                {
+                                    xtype: 'textfield',
+                                    fieldLabel: 'Agent',
+                                    labelWidth: 50,
+                                    width: 150,
+                                    name: 'IN_SAGENT',
+                                    maxLength: 10,
+                                    enforceMaxLength: true,
+                                    listeners: {
+                                        specialkey: 'onEnterKeyPress'
+                                    }
                                 }
                             ]
                         }
                     ]
                 }
                 //</editor-fold>
-
             ]
         }
     ]
