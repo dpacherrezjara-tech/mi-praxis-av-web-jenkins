@@ -18,7 +18,13 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.AccountingReportForm',
         'Ext.Praxis.view.payments.AccountingReportForm.Grids.SettlementsGrid',
         'Ext.Praxis.view.payments.AccountingReportForm.Grids.TaxesGrid',
         'Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.AccountingGrid',
-        'Ext.Praxis.view.payments.AccountingReportForm.Grids.RejectionsGrid'
+        'Ext.Praxis.view.payments.AccountingReportForm.Grids.RejectionsGrid',
+        'Ext.Praxis.view.payments.AccountingReportForm.FiltersAdm',
+        'Ext.Praxis.view.payments.AccountingReportForm.Grids.AdmsGrid',
+        'Ext.Praxis.view.payments.AccountingReportForm.Grids.AdjusGrid',
+        'Ext.Praxis.view.payments.AccountingReportForm.FiltersAdju',
+        'Ext.Praxis.view.payments.AccountingReportForm.Grids.ReverseGrid',
+        'Ext.Praxis.view.payments.AccountingReportForm.FiltersRever'
     ],
     controller: 'AccountingReportController',
     layout: {
@@ -87,7 +93,10 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.AccountingReportForm',
                                                         fields: ['code', 'name'],
                                                         data: [
                                                             //['S', 'Summary'],
-                                                            ['D', 'Detail']
+                                                            ['D', 'Deposits'],
+                                                            ['A', 'Adjustments'],
+                                                            ['S', 'Adms'],
+                                                            ['R', 'Reverse']
                                                         ]
                                                     }),
                                                     fieldStyle:'text-align:center;',
@@ -112,6 +121,21 @@ Ext.define('Ext.Praxis.view.payments.AccountingReportForm.AccountingReportForm',
                                                 {
                                                     xtype: prototype.id + '-filtersSummary',
                                                     id: prototype.id + '-fsummary',
+                                                    hidden:true
+                                                },
+                                                {
+                                                    xtype: prototype.id + '-filtersAdm',
+                                                    id: prototype.id + '-fadm',
+                                                    hidden:true
+                                                },
+                                                {
+                                                    xtype: prototype.id + '-filtersAdju',
+                                                    id: prototype.id + '-fadju',
+                                                    hidden:true
+                                                },
+                                                {
+                                                    xtype: prototype.id + '-filtersReverse',
+                                                    id: prototype.id + '-frever',
                                                     hidden:true
                                                 }
                                             ]

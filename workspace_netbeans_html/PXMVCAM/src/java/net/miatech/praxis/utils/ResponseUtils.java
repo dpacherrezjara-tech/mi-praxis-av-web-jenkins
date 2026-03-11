@@ -14,7 +14,7 @@ public class ResponseUtils<T> {
     public static ResponseEntity<?> ok(Object body){
         Gson gson = new Gson();
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setContentType(MediaType.parseMediaType("application/json;charset=UTF-8"));
         return new ResponseEntity(gson.toJson(body),headers,HttpStatus.OK);
     }
     
