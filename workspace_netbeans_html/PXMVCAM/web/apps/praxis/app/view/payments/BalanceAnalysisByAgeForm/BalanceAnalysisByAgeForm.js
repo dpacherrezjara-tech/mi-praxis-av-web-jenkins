@@ -55,7 +55,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.BalanceAnalysisByA
                                     border: true,
                                     autoScroll: true,
                                     defaults: {
-                                        width: 1880,
+                                        width: 1900,
                                         align: 'center'
                                     },
                                     items: [

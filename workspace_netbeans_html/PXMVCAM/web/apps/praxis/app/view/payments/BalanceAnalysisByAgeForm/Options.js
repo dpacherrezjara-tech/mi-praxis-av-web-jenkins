@@ -168,16 +168,16 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Options', {
                                         title: 'Asignar Comentario - Formato del archivo TXT',
                                         html: `
                     <b>Estructura por línea:</b><br>
-                    CLIENTE,REFERENCIA,COMENTARIO<br><br>
+                    CLIENTE,REFERENCIA,COMENTARIO,PROCESADOR<br><br>
 
                     <b>Ejemplo:</b><br>
-                    133,0040659200003USD,07<br>
-                    133,0040659200005USD,07<br>
-                    133,0040658300004GTQ,06
+                    133,0040659200003USD,07,EV<br>
+                    133,0040659200005USD,07,EV<br>
+                    133,0040658300004GTQ,06,EV
                 `,
                                         anchor: 'top',
                                         maxWidth: 320,
-                                        dismissDelay: 0   // 🔥 no se oculta solo
+                                        dismissDelay: 0  
                                     });
                                 }
                             }

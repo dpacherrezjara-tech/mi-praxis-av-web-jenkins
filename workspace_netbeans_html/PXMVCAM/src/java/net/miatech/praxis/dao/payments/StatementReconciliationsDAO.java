@@ -2171,7 +2171,7 @@ public class StatementReconciliationsDAO {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
-        double totNETO = 0, totNETOC = 0;
+        double totNETO = 0, totNETOC = 0, totNETOCONVERTED = 0;
         long totQTYTRAS = 0, totQTYTRAN1 = 0, totQTYTRAN3 = 0;
         HashMap<String, String> hmDescEstados = new HashMap<String, String>();
         hmDescEstados.put("1", "Match");
@@ -2185,17 +2185,17 @@ public class StatementReconciliationsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00842_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS570(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(11, Types.INTEGER);
             cstmt.registerOutParameter(12, Types.INTEGER);
             cstmt.registerOutParameter(13, Types.INTEGER);
             cstmt.registerOutParameter(14, Types.INTEGER);
+            cstmt.registerOutParameter(15, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.strYearFrom + filter.strMonthFrom + filter.strDayFrom);
@@ -2207,23 +2207,25 @@ public class StatementReconciliationsDAO {
             cstmt.setString(8, filter.IN_SCOUNTRY);
             cstmt.setString(9, filter.IN_COREP);
             cstmt.setString(10, filter.IN_EXT.trim());
+            cstmt.setString(11, filter.IN_SCURRENCY.trim());
 
-            cstmt.setInt(11, filter.page.PAGNUM);
-            cstmt.setInt(12, filter.page.PAGROW);
-            cstmt.setInt(13, filter.page.TOTPAG);
-            cstmt.setInt(14, filter.page.TOTROW);
+            cstmt.setInt(12, filter.page.PAGNUM);
+            cstmt.setInt(13, filter.page.PAGROW);
+            cstmt.setInt(14, filter.page.TOTPAG);
+            cstmt.setInt(15, filter.page.TOTROW);
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(11);
-            filter.page.PAGROW = cstmt.getInt(12);
-            filter.page.TOTPAG = cstmt.getInt(13);
-            filter.page.TOTROW = cstmt.getInt(14);
+            filter.page.PAGNUM = cstmt.getInt(12);
+            filter.page.PAGROW = cstmt.getInt(13);
+            filter.page.TOTPAG = cstmt.getInt(14);
+            filter.page.TOTROW = cstmt.getInt(15);
 
             rst = cstmt.getResultSet();
 
             while (rst.next()) {
                 totNETO = rst.getDouble("NETO");
                 totNETOC = rst.getDouble("NETOC");
+                totNETOCONVERTED = rst.getDouble("LOCAMOUNT2");
                 totQTYTRAS = rst.getLong("QTYTRAS");
                 totQTYTRAN1 = rst.getLong("QTYTRAN1");
                 totQTYTRAN3 = rst.getLong("QTYTRAN3");
@@ -2262,8 +2264,11 @@ public class StatementReconciliationsDAO {
                     beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
                     beanTkt.NETO = rst.getDouble("NETO");
                     beanTkt.NETOC = rst.getDouble("NETOC");
+                    beanTkt.NETOSCU= rst.getString("LOCRENCY2");
+                    beanTkt.NETOUSD= rst.getDouble("LOCAMOUNT2");
                     beanTkt.totNETO = totNETO;
                     beanTkt.totNETOC = totNETOC;
+                    beanTkt.totNETOCONVERTED = totNETOCONVERTED;
                     beanTkt.ACCOUNT = rst.getString("ACCOUNT").trim();
                     beanTkt.BENCENC = rst.getString("BENCENC").trim();
                     beanTkt.ACCCOMP = rst.getString("ACCCOMP").trim();
