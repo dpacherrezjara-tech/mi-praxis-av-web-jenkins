@@ -160,11 +160,11 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryPendingBa
         this.setValue('txtINVOICEMPF199', this.bean.O_INVOICE);
         
         Ext.getCmp(prototype.id + '-txtSTATUSMPF199').setDisabled(true);
-        Ext.getCmp(prototype.id + '-txtCONCEPTMPF199').setDisabled(true);
-        Ext.getCmp(prototype.id + '-txtATYPEMPF199').setDisabled(true);
-        Ext.getCmp(prototype.id + '-txtAGENTMPF199').setDisabled(true);
+        Ext.getCmp(prototype.id + '-txtCONCEPTMPF199').setDisabled(false);
+        Ext.getCmp(prototype.id + '-txtATYPEMPF199').setDisabled(false);
+        Ext.getCmp(prototype.id + '-txtAGENTMPF199').setDisabled(false);
         Ext.getCmp(prototype.id + '-txtVALUEDATEMPF199').setDisabled(true);
-        Ext.getCmp(prototype.id + '-txtCONSOLMPF199').setDisabled(true);
+        Ext.getCmp(prototype.id + '-txtCONSOLMPF199').setDisabled(false);
         Ext.getCmp(prototype.id + '-txtCURRENCYMPF199').setDisabled(true);
         Ext.getCmp(prototype.id + '-txtNETOMPF199').setDisabled(true);
         Ext.getCmp(prototype.id + '-txtIPAYMPF199').setDisabled(true);
@@ -197,15 +197,17 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryPendingBa
         
         beanTemp.O_CCUST = this.bean.O_CCUST;
         beanTemp.O_TINPUT = this.bean.O_TINPUT;
-        beanTemp.O_CONCEPT = this.bean.O_CONCEPT;
-        beanTemp.O_TADJ = this.bean.O_TADJ;
+        beanTemp.O_CONCEPT = this.getValue("txtCONCEPTMPF199");
+        beanTemp.O_TADJ = this.getValue("txtATYPEMPF199");
         beanTemp.O_ADATE = this.bean.O_ADATE;
         beanTemp.O_SCOUNTRY = this.bean.O_SCOUNTRY;
-        beanTemp.O_SAGENT = this.bean.O_SAGENT;
+        beanTemp.O_SAGENT = this.getValue("txtAGENTMPF199");
         beanTemp.O_SCURRENCY = this.bean.O_SCURRENCY;
         beanTemp.O_INVOICE = this.bean.O_INVOICE;
         beanTemp.O_CBATCH = this.bean.O_CBATCH;
         beanTemp.O_SEQ = this.bean.O_SEQ;
+        beanTemp.O_SCONSOL = this.getValue("txtCONSOLMPF199");
+        beanTemp.O_PRDA = this.getValue("txtFECR").trim();
         
         beanTemp.REFERENCE = this.getValue("txtREFEMPF199");
         beanTemp.INVOICE = this.getValue("txtINVOICEMPF199");
@@ -248,11 +250,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryPendingBa
         
         
         
+        
 //        beanTemp.O_USUP = this.getValue("txtUSUP").trim();
 //        beanTemp.O_FEUP = this.getValue("txtFEUP").trim();
 //        beanTemp.O_HOUP = this.getValue("txtHOUP").trim();
 //        beanTemp.O_USCR = this.getValue("txtUSCR").trim();
-//        beanTemp.O_FECR = this.getValue("txtFECR").trim();
+        beanTemp.O_PRDA = this.getValue("txtFECR").trim();
 //        beanTemp.O_HOCR = this.getValue("txtHOCR").trim();
 //        
         

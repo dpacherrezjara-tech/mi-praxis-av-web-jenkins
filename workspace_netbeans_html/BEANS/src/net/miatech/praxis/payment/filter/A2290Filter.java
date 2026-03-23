@@ -1126,6 +1126,7 @@ public class A2290Filter extends A2290 {
     public String O_NSAGENT ="";
     
     public String O_SCONSOL ="";
+    public String O_PRDA ="";
     public String O_SCURRENCY ="";
     public double O_NETO =0;
     public double O_ABALANCE =0;

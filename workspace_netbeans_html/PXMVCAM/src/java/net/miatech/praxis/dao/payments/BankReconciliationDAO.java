@@ -8817,13 +8817,13 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         Connection cnx = null;
 
-        String SQL = "{CALL PRAXISMP.MPS358(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+        String SQL = "{CALL PRAXISMP.MPS358(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQL);
 
-            cstmt.registerOutParameter(15, Types.VARCHAR);
+            cstmt.registerOutParameter(17, Types.VARCHAR);
 
 //            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST.trim());
             cstmt.setString(1, filter.O_CCUST.trim());
@@ -8833,20 +8833,22 @@ public class BankReconciliationDAO {
             cstmt.setString(5, filter.O_ADATE.trim());
             cstmt.setString(6, filter.O_SCOUNTRY.trim());
             cstmt.setString(7, filter.O_SAGENT.trim());
-            cstmt.setString(8, filter.O_SCURRENCY.trim());
-            cstmt.setString(9, filter.O_INVOICE.trim());
-            cstmt.setString(10, filter.O_CBATCH.trim());
-            cstmt.setString(11, filter.O_SEQ.trim());
-            cstmt.setString(12, filter.REFERENCE.trim());
-            cstmt.setString(13, filter.INVOICE.trim());
+            cstmt.setString(8, filter.O_SCONSOL.trim());
+            cstmt.setString(9, filter.O_SCURRENCY.trim());
+            cstmt.setString(10, filter.O_INVOICE.trim());
+            cstmt.setString(11, filter.O_CBATCH.trim());
+            cstmt.setString(12, filter.O_SEQ.trim());
+            cstmt.setString(13, filter.REFERENCE.trim());
+            cstmt.setString(14, filter.INVOICE.trim());
+            cstmt.setString(15, filter.O_PRDA.trim());
 
 
-            cstmt.setString(14, session.getUserView().getUserInfo().USR);
-            cstmt.setString(15, "");
+            cstmt.setString(16, session.getUserView().getUserInfo().USR);
+            cstmt.setString(17, "");
 
             cstmt.execute();
 
-            message = cstmt.getString(15);
+            message = cstmt.getString(17);
 
         } catch (Exception e) {
             e.printStackTrace();
