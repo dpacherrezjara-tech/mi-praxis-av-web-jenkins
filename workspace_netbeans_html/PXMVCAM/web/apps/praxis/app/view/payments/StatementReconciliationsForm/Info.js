@@ -4239,7 +4239,7 @@
                                                     }
                                                 },
                                                 {
-                                                    text: 'Doc SAP BANK',
+                                                    text: '<span style="color:white;font-weight:bold;">Doc SAP BANK </span>', style: 'padding:2px; background: #6C87A8;',
                                                     dataIndex: 'BANDOC',
                                                     width: 100,
                                                     renderer: function (value, metaData) {
@@ -4249,7 +4249,7 @@
                                                     }
                                                 },
                                                 {
-                                                    text: 'Account',
+                                                    text: '<span style="color:white;font-weight:bold;">Account</span>', style: 'padding:2px; background: #6C87A8;',
                                                     dataIndex: 'ACCOUNT',
                                                     width: 70,
                                                     renderer: function (value, metaData) {
@@ -4259,7 +4259,7 @@
                                                     }
                                                 },
                                                 {
-                                                    text: 'Abono Date',
+                                                    text: '<span style="color:white;font-weight:bold;">Abono Date</span>', style: 'padding:2px; background: #6C87A8;',
                                                     dataIndex: 'ADATE',
                                                     width: 90,
                                                     renderer: function (value, metaData) {
@@ -4269,7 +4269,7 @@
                                                     }
                                                 },
                                                 {
-                                                    text: 'REFER',
+                                                    text: '<span style="color:white;font-weight:bold;">REFER</span>', style: 'padding:2px; background: #6C87A8;',
                                                     dataIndex: 'REFER',
                                                     width: 100,
                                                     renderer: function (value, metaData) {
@@ -4279,7 +4279,7 @@
                                                     }
                                                 },
                                                 {
-                                                    text: 'CLAVE1',
+                                                     text: '<span style="color:white;font-weight:bold;">CLAVE1</span>', style: 'padding:2px; background: #6C87A8;',
                                                     dataIndex: 'CLAVE1',
                                                     width: 100,
                                                     renderer: function (value, metaData) {
@@ -4289,7 +4289,7 @@
                                                     }
                                                 },
                                                 {
-                                                    text: 'CLAVE3',
+                                                    text: '<span style="color:white;font-weight:bold;">CLAVE3</span>', style: 'padding:2px; background: #6C87A8;',
                                                     dataIndex: 'CLAVE3',
                                                     width: 100,
                                                     renderer: function (value, metaData) {
@@ -4299,7 +4299,7 @@
                                                     }
                                                 },
                                                 {
-                                                    text: 'TEXTO',
+                                                    text: '<span style="color:white;font-weight:bold;">TEXTO</span>', style: 'padding:2px; background: #6C87A8;',
                                                     dataIndex: 'TEXTO',
                                                     width: 218,
                                                     renderer: function (value, metaData) {
@@ -4309,7 +4309,7 @@
                                                     }
                                                 },
                                                 {
-                                                    text: 'TEXTOLAR',
+                                                    text: '<span style="color:white;font-weight:bold;">TEXTOLAR</span>', style: 'padding:2px; background: #6C87A8;',
                                                     dataIndex: 'TEXTOLAR',
                                                     width: 100,
                                                     renderer: function (value, metaData) {
@@ -4319,7 +4319,7 @@
                                                     }
                                                 },
                                                 {
-                                                    text: 'Currency',
+                                                     text: '<span style="color:white;font-weight:bold;">Currency</span>', style: 'padding:2px; background: #6C87A8;',
                                                     dataIndex: 'SCURRENCY',
                                                     width: 60,
                                                     renderer: function (value, metaData) {
@@ -4331,7 +4331,7 @@
                                                     }
                                                 },
                                                 {
-                                                    text: 'Neto EECC',
+                                                    text: '<span style="color:white;font-weight:bold;">Neto EECC</span>', style: 'padding:2px; background: #6C87A8;',
                                                     dataIndex: 'NETO',
                                                     width: 100,
                                                     renderer: function (value, metaData) {
@@ -4345,7 +4345,7 @@
                                                         }
                                                 },
                                                 {
-                                                    text: 'Neto Settl.',
+                                                    text: '<span style="color:white;font-weight:bold;">Neto Settl.</span>', style: 'padding:2px; background: #6C87A8;',
                                                     dataIndex: 'NETOC',
                                                     width: 90,
                                                     renderer: function (value, metaData) {
@@ -4359,7 +4359,7 @@
                                                         }
                                                 },
                                                 {
-                                                    text: 'Source',
+                                                     text: '<span style="color:white;font-weight:bold;">Source</span>', style: 'padding:2px; background: #6C87A8;',
                                                     dataIndex: 'CCUSTPRO',  
                                                     width: 60,
                                                     renderer: function (value, metaData) {
@@ -4378,7 +4378,7 @@
                                                 {
                                                     xtype: 'actioncolumn',
                                                     width: 40,
-                                                    text: 'Edit',
+                                                     text: '<span style="color:white;font-weight:bold;">Edit</span>', style: 'padding:2px; background: #6C87A8;',
                                                     align: 'center',
                                                     items: [
                                                         {
@@ -4486,7 +4486,7 @@
                                                     }
                                                 },
                                                 {
-                                                    text: 'Doc SAP BANK',
+                                                     text: '<span style="color:white;font-weight:bold;">Doc SAP BANK</span>', style: 'padding:2px; background: #6C87A8;',
                                                     dataIndex: 'BANDOC',
                                                     width: 100,
                                                     renderer: function (value, metaData) {
@@ -4496,7 +4496,7 @@
                                                     }
                                                 },
                                                 {
-                                                    text: 'Account',
+                                                    text: '<span style="color:white;font-weight:bold;">Account</span>', style: 'padding:2px; background: #6C87A8;',
                                                     dataIndex: 'ACCOUNT',
                                                     width: 70,
                                                     renderer: function (value, metaData) {
@@ -4506,7 +4506,7 @@
                                                     }
                                                 },
                                                 {
-                                                    text: 'Abono Date',
+                                                     text: '<span style="color:white;font-weight:bold;">Abono Date</span>', style: 'padding:2px; background: #6C87A8;',
                                                     dataIndex: 'ADATE',
                                                     width: 90,
                                                     renderer: function (value, metaData) {
@@ -4516,7 +4516,7 @@
                                                     }
                                                 },
                                                 {
-                                                    text: 'REFER',
+                                                     text: '<span style="color:white;font-weight:bold;">REFER</span>', style: 'padding:2px; background: #6C87A8;',
                                                     dataIndex: 'REFER',
                                                     width: 100,
                                                     renderer: function (value, metaData) {
@@ -4526,7 +4526,7 @@
                                                     }
                                                 },
                                                 {
-                                                    text: 'CLAVE1',
+                                                     text: '<span style="color:white;font-weight:bold;">CLAVE1</span>', style: 'padding:2px; background: #6C87A8;',
                                                     dataIndex: 'CLAVE1',
                                                     width: 100,
                                                     renderer: function (value, metaData) {
@@ -4536,7 +4536,7 @@
                                                     }
                                                 },
                                                 {
-                                                    text: 'CLAVE3',
+                                                     text: '<span style="color:white;font-weight:bold;">CLAVE3</span>', style: 'padding:2px; background: #6C87A8;',
                                                     dataIndex: 'CLAVE3',
                                                     width: 100,
                                                     renderer: function (value, metaData) {
@@ -4546,7 +4546,7 @@
                                                     }
                                                 },
                                                 {
-                                                    text: 'TEXTO',
+                                                     text: '<span style="color:white;font-weight:bold;">TEXTO</span>', style: 'padding:2px; background: #6C87A8;',
                                                     dataIndex: 'TEXTO',
                                                     width: 218,
                                                     renderer: function (value, metaData) {
@@ -4556,7 +4556,7 @@
                                                     }
                                                 },
                                                 {
-                                                    text: 'TEXTOLAR',
+                                                    text: '<span style="color:white;font-weight:bold;">TEXTOLAR</span>', style: 'padding:2px; background: #6C87A8;',
                                                     dataIndex: 'TEXTOLAR',
                                                     width: 100,
                                                     renderer: function (value, metaData) {
@@ -4566,7 +4566,7 @@
                                                     }
                                                 },
                                                 {
-                                                    text: 'Currency',
+                                                     text: '<span style="color:white;font-weight:bold;">Currency</span>', style: 'padding:2px; background: #6C87A8;',
                                                     dataIndex: 'SCURRENCY',
                                                     width: 60,
                                                     renderer: function (value, metaData) {
@@ -4578,7 +4578,7 @@
                                                     }
                                                 },
                                                 {
-                                                    text: 'Neto EECC',
+                                                     text: '<span style="color:white;font-weight:bold;">Neto EECC</span>', style: 'padding:2px; background: #6C87A8;',
                                                     dataIndex: 'NETO',
                                                     width: 100,
                                                     renderer: function (value, metaData) {
@@ -4592,7 +4592,7 @@
                                                         }
                                                 },
                                                 {
-                                                    text: 'Neto Settl.',
+                                                     text: '<span style="color:white;font-weight:bold;">Neto Settl.</span>', style: 'padding:2px; background: #6C87A8;',
                                                     dataIndex: 'NETOC',
                                                     width: 90,
                                                     renderer: function (value, metaData) {
@@ -4606,7 +4606,7 @@
                                                         }
                                                 },
                                                 {
-                                                    text: 'Source',
+                                                     text: '<span style="color:white;font-weight:bold;">Source</span>', style: 'padding:2px; background: #6C87A8;',
                                                     dataIndex: 'CCUSTPRO',  
                                                     width: 60,
                                                     renderer: function (value, metaData) {
@@ -4625,7 +4625,7 @@
                                                 {
                                                     xtype: 'actioncolumn',
                                                     width: 40,
-                                                    text: 'Edit',
+                                                     text: '<span style="color:white;font-weight:bold;">Edit</span>', style: 'padding:2px; background: #6C87A8;',
                                                     align: 'center',
                                                     items: [
                                                         {

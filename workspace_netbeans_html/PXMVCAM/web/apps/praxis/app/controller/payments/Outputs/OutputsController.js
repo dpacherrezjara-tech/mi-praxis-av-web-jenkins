@@ -157,9 +157,9 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
             '-COL', // Label Colombia
             '-btnToggleSwitch', // Toggle interior/exterior  
             '-EXT', // Label Exterior
-            '-btnTxtLIQUI', // Botón Settlement TXT
+//            '-btnTxtLIQUI', // Botón Settlement TXT
 //            '-btnTxtSALE', // Botón Sales TXT
-            '-txtLIQUI',
+//            '-txtLIQUI',
 //            '-txtSALE'
         ];
 
@@ -296,7 +296,7 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
             me.bean.IN_FUENTE = 'E';
             me.bean.IN_CORE = Ext.getCmp(prototype.id + '-cmbCores').getValue();
         }
-
+        
         var beanString = JSON.stringify(me.bean);
         console.log(me.bean);
         searchParams = {
@@ -493,7 +493,6 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
     },
     btnTxt_clickLIQUI: function (obj, e) {
 
-        this.setFormatParameter();
         Ext.Msg.show({
             title: '.:PRAXIS:.',
             msg: 'Download Txt ?',
@@ -524,7 +523,6 @@ Ext.define('Ext.Praxis.controller.payments.Outputs.OutputsController', {
     },
     btnTxt_clickSALE: function (obj, e) {
 
-        this.setFormatParameter();
         Ext.Msg.show({
             title: '.:PRAXIS:.',
             msg: 'Download Txt ?',

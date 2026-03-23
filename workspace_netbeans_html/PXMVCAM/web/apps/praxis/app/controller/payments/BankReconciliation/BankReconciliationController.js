@@ -1610,6 +1610,8 @@ Ext.util.CSS.createStyleSheet(`
                                 let lngTotQTPEND = lstData[0].lngTotQTPEND
                                 let lngTotQTYECC = lstData[0].lngTotQTYECC
                                 let lngTotQTYADJ = lstData[0].lngTotQTYADJ
+                                let lngTotQPOLIC = lstData[0].lngTotQPOLIC
+                                let lngTotQPOLIPE = lstData[0].lngTotQPOLIPE
 
                                 let dataRoot = {text: '.', expanded: false, children: []};
                                 Ext.Object.each(lstData, function (index, value) {
@@ -1624,6 +1626,8 @@ Ext.util.CSS.createStyleSheet(`
                                         let V_QTMANUAL = 0;
                                         let V_QTPEND = 0;
                                         let V_QEECC = 0;
+                                        let V_QPOLIC = 0;
+                                        let V_QPOLIPE = 0;
 //                                    let V_QTMANUAL = 0;
 
                                         Ext.Object.each(lstData, function (index, valuex) {
@@ -1637,6 +1641,8 @@ Ext.util.CSS.createStyleSheet(`
                                                 V_QTMANUAL += valuex.lngQTMANUAL;
                                                 V_QTPEND += valuex.lngQTPEND;
                                                 V_QEECC += valuex.lngQEECC;
+                                                V_QPOLIC += valuex.lngQPOLIC;
+                                                V_QPOLIPE += valuex.lngQPOLIPE;
                                         }
                                         });
                                         a.push(value.strFormatDate);
@@ -1662,6 +1668,8 @@ Ext.util.CSS.createStyleSheet(`
                                                 lngQTMANUAL: V_QTMANUAL,
                                                 lngQTPEND: V_QTPEND,
                                                 lngQEECC: V_QEECC,
+                                                lngQPOLIC: V_QPOLIC,
+                                                lngQPOLIPE: V_QPOLIPE,
                                                 expanded: false, children: []
                                         });
                                         let b = [];
@@ -1684,6 +1692,8 @@ Ext.util.CSS.createStyleSheet(`
                                                 lngQTMANUAL: value01.lngQTMANUAL,
                                                 lngQTPEND: value01.lngQTPEND,
                                                 lngQEECC: value01.lngQEECC,
+                                                lngQPOLIC: value01.lngQPOLIC,
+                                                lngQPOLIPE: value01.lngQPOLIPE,
                                                 leaf: true
                                         });
                                         }
@@ -1699,11 +1709,14 @@ Ext.util.CSS.createStyleSheet(`
                                 Ext.getCmp(prototype.id + '-lblSummaryCash_13').setText(Ext.util.Format.number(lngTotQTMANUAL, '0,000'));
                                 Ext.getCmp(prototype.id + '-lblSummaryCash_14').setText(Ext.util.Format.number(lngTotQTPEND, '0,000'));
                                 Ext.getCmp(prototype.id + '-lblSummaryCash_3').setText(Ext.util.Format.number(lngTotQTYECC, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblSummaryCash_9').setText(Ext.util.Format.number(lngTotQPOLIC, '0,000'));
+                                Ext.getCmp(prototype.id + '-lblSummaryCash_10').setText(Ext.util.Format.number(lngTotQPOLIPE, '0,000'));
 //                            Ext.getCmp(prototype.id + '-lblSummaryCash_1').setText(Ext.util.Format.number(lngTotQTYADJ, '0,000'));
                                 var storeTree = Ext.create('Ext.data.TreeStore', {
                                 root: dataRoot
                                 });
                                 Ext.getCmp(prototype.id + '-gridDataCash_Sumary').setStore(storeTree);
+                                
                         }
                         }
                 }
