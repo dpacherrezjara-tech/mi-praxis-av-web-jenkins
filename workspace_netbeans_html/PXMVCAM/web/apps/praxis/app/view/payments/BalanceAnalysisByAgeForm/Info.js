@@ -8496,7 +8496,8 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                      {
                                                             text: '<span style="color:black;font-weight:bold;">Return Error</span>', dataIndex: 'F3_TOTAL_ERROR', width: 90, style:'background:#D6D6D6;color:black !important',align: 'center', menuDisabled: true, //flex: 1
                                                              listeners: {
-                                                                 click: 'onGridDataDetail'
+                                                                 click: 'onClickDetailAvianca',
+                                                                 args: ['IN_RETURN_ERROR']
                                                              },
                                                              renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                  metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
@@ -8997,14 +8998,14 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                         {
                             xtype: 'panel',
                             border: false,
-                            width: 1800,
+                            width: '100%',
                             id: prototype.id + '-panelGridSumaryDetail',
                             bodyStyle: 'background-color: #F4F7FD;margin-top:20px',
                             padding: '1',
                             hidden: true,
                             layout: {
                                 type: 'vbox',
-                                align: 'center'
+                                align: 'stretch'
                             },
                             items: [
                                 {
@@ -9012,9 +9013,11 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                     id: prototype.id + '-gridDataDetail',
 //                                    title: '<span style="font-size:15px; font-weight:bold; color:#1a3e75;">📊 Grilla Detalle</span>',
                                     height: 515,
-                                    width: 1730,
+                                    width: '100%',
                                     hidden: false,
                                     columnLines: true,
+                                    scrollable: true,
+                                    autoScroll: true,
                                     viewConfig: {
                                         enableTextSelection: true 
                                     },
@@ -9044,7 +9047,7 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                 
                                                 return  value;
                                             }},
-                                            {text: '<span style="color:black;font-weight:bold;">Status</span>', dataIndex: 'STVAL', width: 120, style: 'padding:2px; background: #c9daf5;',
+                                            {text: '<span style="color:black;font-weight:bold;">Status</span>', dataIndex: 'STVAL', width: 100, style: 'padding:2px; background: #c9daf5;',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
@@ -9067,12 +9070,12 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                 metaData.style = "text-align:left;";
                                                 return  value;
                                             }},
-                                            {text: '<span style="color:black;font-weight:bold;">Days Pending</span>', dataIndex: 'DAYS_PENDING', width: 100,style: 'padding:2px; background: #c9daf5;border-color:white'},
+                                            {text: '<span style="color:black;font-weight:bold;">Days Pending</span>', dataIndex: 'DAYS_PENDING', width: 80,style: 'padding:2px; background: #c9daf5;border-color:white'},
                                       
                                             {
                                                 text: '<span style="color:black;font-weight:bold;">Code Error</span>',
                                                 dataIndex: 'CERROR',
-                                                width: 80,
+                                                width: 70,
                                                 style: 'padding:2px; background: #c9daf5;border-color:white',
                                                 renderer: function (value, metaData, record) {
                                                     var desc = record.get('DESCRIPTION_CERROR') || ''; 
@@ -9084,9 +9087,9 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                             
                                           {text: '<span style="color:black;font-weight:bold;">Corep</span>', dataIndex: 'COREP', width: 60,style: 'padding:2px; background: #c9daf5;border-color:white'},
                                             {text: '<span style="color:black;font-weight:bold;">Codpro</span>', dataIndex: 'CODPRO', width: 60,style: 'padding:2px; background: #c9daf5;border-color:white'},
-                                            {text: '<span style="color:black;font-weight:bold;">Qty Total</span>', dataIndex: 'QTY100_TOTAL', width: 80,style: 'padding:2px; background: #c9daf5;border-color:white'},
-                                            {text: '<span style="color:black;font-weight:bold;">QTY Match</span>', dataIndex: 'QTY100_MATCH', width: 80,style: 'padding:2px; background: #c9daf5;border-color:white'},
-                                            {text: '<span style="color:black;font-weight:bold;">QTY Pending</span>', dataIndex: 'QTY100_PENDING', width: 90,style: 'padding:2px; background: #c9daf5;border-color:white'},
+                                            {text: '<span style="color:black;font-weight:bold;">Qty Total</span>', dataIndex: 'QTY100_TOTAL', width: 60,style: 'padding:2px; background: #c9daf5;border-color:white'},
+                                            {text: '<span style="color:black;font-weight:bold;">QTY Match</span>', dataIndex: 'QTY100_MATCH', width: 60,style: 'padding:2px; background: #c9daf5;border-color:white'},
+                                            {text: '<span style="color:black;font-weight:bold;">QTY Pending</span>', dataIndex: 'QTY100_PENDING', width: 60,style: 'padding:2px; background: #c9daf5;border-color:white'},
                                             {text: '<span style="color:black;font-weight:bold;">Header</span>', dataIndex: 'A4545HEADE', width: 100,style: 'padding:2px; background: #c9daf5;border-color:white'},
                                             {text: '<span style="color:black;font-weight:bold;">Scurrency</span>', dataIndex: 'SCURRENCY', width: 80,style: 'padding:2px; background: #c9daf5;border-color:white'},
                                             {
@@ -9100,6 +9103,28 @@ Ext.define('Ext.Praxis.view.payments.BalanceAnalysisByAgeForm.Info', {
                                                     if (value == null || value === '') return '0.00';
                                                     // Formatea con 2 decimales y separador de miles
                                                     return Ext.util.Format.number(value, '0,0.00');
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Code Error SAP</span>',
+                                                dataIndex: 'CODREC',
+                                                width: 120,
+                                                style: 'padding:2px; background:#c9daf5; border-color:white;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:left;";
+                                                    return  value;
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Descr. Error SAP</span>',
+                                                dataIndex: 'OBSERV',
+                                                width: 120,
+                                                style: 'padding:2px; background:#c9daf5; border-color:white;',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:left;";
+                                                    return  value;
                                                 }
                                             }
                                         ]

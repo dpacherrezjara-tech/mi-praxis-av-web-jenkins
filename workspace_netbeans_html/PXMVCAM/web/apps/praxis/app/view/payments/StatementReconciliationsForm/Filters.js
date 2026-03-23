@@ -662,7 +662,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                                 {
                                     xtype: 'fieldset',
                                     title: '<span style="color:#1a4d8f;font-weight:bold;">MORE OPTIONS</span>',
-                                    width: 490,
+                                    width: 700,
                                     style: 'border: 1px solid #1a4d8f; padding: 8px; margin: 5px;',
                                     layout: 'hbox',
                                     items: [
@@ -681,6 +681,22 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                                             listeners: {
                                                 keypress: 'eventKey_BANDOC'
                                             }
+                                        },
+                                        {
+                                            xtype: 'combo',
+                                            fieldLabel: 'Currency ',
+                                            id: prototype.id + '-cmbCode',
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+//                                            disabled: true,
+                                            valueField: 'A005KEY',
+                                            displayField: 'A005KEY2',
+                                            emptyText: 'All',
+//                                            maxLength: 3,
+                                            labelWidth: 55,
+                                            width: 180,
+                                            hiddenLabel: false,
+                                            margin: '0 10 0 0',
                                         },
                                         {
                                             xtype: 'label',
