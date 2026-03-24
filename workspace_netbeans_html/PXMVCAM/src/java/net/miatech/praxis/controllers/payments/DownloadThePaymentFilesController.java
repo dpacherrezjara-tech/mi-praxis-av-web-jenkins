@@ -224,13 +224,13 @@ public class DownloadThePaymentFilesController extends BaseController {
         Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
         filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
 
-        String v1_urlREST = "/medios-pago/get-directory";
+        String v1_urlREST = "/medios-pago/get-directory"; 
 
         try {
                 
             Map<String, Object> queryParams = new HashMap<>();
-            queryParams.put("fecha", filter.IN_DATETO);
-            queryParams.put("anio", filter.IN_DATETO.substring(0, 4)); 
+            queryParams.put("fecha", filter.IN_DATETO.trim()); 
+            queryParams.put("anio", filter.IN_DATETO.trim().substring(0, 4)); 
             queryParams.put("procesador", filter.IN_PROCESADOR);
             queryParams.put("PREFIX", "MEDIOSPAGO");
 
