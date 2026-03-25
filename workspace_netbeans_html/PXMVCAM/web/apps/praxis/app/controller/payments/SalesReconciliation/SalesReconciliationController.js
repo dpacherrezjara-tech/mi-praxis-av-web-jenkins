@@ -3652,8 +3652,11 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.SalesReconciliati
         }
         Ext.getCmp(prototype.id + '-pie').setVisible(true);
     },
-    seeCash: function () {
+    seeCashBKP: function () {
         window.location.href = '/AVIANCA/Home#payments-cash-form';
+    },
+    seeCash: function () {
+        this.redirectTo('payments-cash-form');
     }
 
 });
