@@ -111,20 +111,22 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryPending', {
                                             width: 90
                                         },
                                         {xtype: 'tbspacer', width: 7},
+                                        
                                         {
+
                                             xtype: 'textfield',
                                             id: prototype.id + '-txtAGENTMPF199',
                                             style: 'font-weight:bold;color:#0B333C;',
-                                            fieldStyle: 'background-color:#FFF2CC; color:#0B333C; text-align:center; font-weight:bold;',
+                                            fieldStyle: 'text-align:center;',
+
                                             editable: true,
-                                            maskRe: /^[0-9]$/, // SOLO NÚMEROS
-                                            regex: /^[0-9]{8}$/, // VALIDACIÓN EXACTA (8 números)
-                                            maxLength: 8,
-                                            minLength: 8,
-                                            enforceMaxLength: true,
-                                            align: 'center',
-                                            width: 80
+
+                                            width: 90,
+
+                                            enforceMaxLength: true
+
                                         },
+                                        
                                         {xtype: 'tbspacer', width: 35},
                                         {
                                             xtype: 'label',
@@ -195,24 +197,17 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryPending', {
                                         },
                                         {xtype: 'tbspacer', width: 17},
                                         {
-                                            xtype: 'combo',
+                                            xtype: 'textfield',
                                             id: prototype.id + '-txtCONCEPTMPF199',
-                                            width: 90,
-                                            queryMode: 'local',
-                                            editable: false,
-                                            forceSelection: true,
-                                            store: [
-                                                {code: 'P', name: 'Positive'},
-                                                {code: 'N', name: 'Negative'},
-                                                {code: 'X', name: 'No Billing'},
-                                                {code: 'A', name: 'No Adjustment'},
-                                                {code: 'M', name: 'Automatic'},
-                                                {code: 'C', name: 'Compensation'},
-                                            ],
-                                            displayField: 'name',
-                                            valueField: 'code',
                                             style: 'font-weight:bold;color:#0B333C;',
-                                            fieldStyle: 'text-align:center;'
+                                            // Se agrega text-transform para que la letra se vea en mayúscula
+                                            fieldStyle: 'text-align:center; text-transform:uppercase;', 
+                                            width: 90,
+                                            maxLength: 1, // Máximo 1 caracter
+                                            enforceMaxLength: true, // Bloquea escribir más de 1
+                                            maskRe: /[a-zA-Z]/, // Solo permite tipear letras (nada de números ni símbolos)
+                                            regex: /^[a-zA-Z]$/, // Valida que sea exactamente 1 letra
+                                            allowBlank: true // Cambiar a false si es obligatorio
                                         },
                                         {xtype: 'tbspacer', width: 20},
                                         {
@@ -224,23 +219,16 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryPending', {
                                         },
                                         {xtype: 'tbspacer', width: 10},
                                         {
-                                            xtype: 'combo',
+                                            xtype: 'textfield',
                                             id: prototype.id + '-txtATYPEMPF199',
-                                            width: 110,
-                                            queryMode: 'local',
-                                            editable: false,
-                                            forceSelection: true,
-                                            store: [
-                                                {code: 'N', name: 'Non Remmitance'},
-                                                {code: 'R', name: 'Recovery'},
-                                                {code: 'U', name: 'Uncleared'},
-                                                {code: 'E', name: 'Excess'},
-                                                {code: 'S', name: 'Short'}
-                                            ],
-                                            displayField: 'name',
-                                            valueField: 'code',
                                             style: 'font-weight:bold;color:#0B333C;',
-                                            fieldStyle: 'text-align:center;'
+                                            fieldStyle: 'text-align:center; text-transform:uppercase;',
+                                            width: 110,
+                                            maxLength: 1, // Máximo 1 caracter
+                                            enforceMaxLength: true, 
+                                            maskRe: /[a-zA-Z]/, // Solo letras
+                                            regex: /^[a-zA-Z]$/, 
+                                            allowBlank: true
                                         },
                                         {xtype: 'tbspacer', width: 40},
                                         {
