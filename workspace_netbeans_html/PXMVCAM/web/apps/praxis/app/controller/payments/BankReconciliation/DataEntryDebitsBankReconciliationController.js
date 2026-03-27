@@ -994,7 +994,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
         });
     },
     onReverseClick: function (btn) {
-        if (this.bean.FCONT == '') {
+//        if (this.bean.FCONT == '') {
             Ext.Msg.show({
                 title: '.:Confirmation:.',
                 msg: 'Are you sure to Reverse?',
@@ -1013,11 +1013,11 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
                     }
                 }
             });
-        } else {
-            global.Msg({msg: 'ACCOUNTED TRANSACTION'});
-            Ext.getCmp(prototype.id + '-de-txtFCONT').setFieldStyle('border: 1px solid red;');
+//        } else {
+//            global.Msg({msg: 'ACCOUNTED TRANSACTION'});
+//            Ext.getCmp(prototype.id + '-de-txtFCONT').setFieldStyle('border: 1px solid red;');
 
-        }
+//        }
 
     },
     onCancelClick: function (btn) {
@@ -1150,108 +1150,51 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryDebitsBan
         }
     },
     reverseOption: function (beanTemp) {
-        let pestañaActiva = Ext.getCmp(prototype.id + '-tabTableDebits').getActiveTab().getId()
-        console.log(pestañaActiva, 'pestañaActiva wdadadadad')
-        let prefixDeb = ''
-        let consultPathRevOnly = ''
-        let consultPathRevAll = ''
-
-        if (pestañaActiva.includes('REFND')) {
-            prefixDeb = 'REFND'
-            consultPathRevOnly = 'reverseOptionOnlyLiq_REFND'
-            consultPathRevAll = 'reverseOption_REFND'
-
-        } else if (pestañaActiva.includes('Chgbak')) {
-            prefixDeb = 'Chgbak'
-            consultPathRevOnly = 'reverseOptionOnlyLiq_CHGBAK'
-            consultPathRevAll = 'reverseOption_CHGBAK'
-
-        } else if (pestañaActiva.includes('Acredit')) {
-            prefixDeb = 'Acredit'
-            consultPathRevOnly = 'reverseOptionOnlyLiq_ACREDIT'
-            consultPathRevAll = 'reverseOption_ACREDIT'
-        }
-        let miGrilla = Ext.getCmp(prototype.id + '-gridDataInfoScan_' + prefixDeb);
-
         let datos = {};
+        
+        datos.SDATE = this.bean.SDATE;
+        datos.SCOUNTRY = this.bean.SCOUNTRY;
+        datos.TDOC = this.bean.TDOC;
+        datos.CODEBANK = this.bean.CODEBANK;
+        datos.SCARCOD = this.bean.SCARCOD;
+        datos.SCARDN = this.bean.SCARDN;
+        datos.SAUTHOC = this.bean.SAUTHOC;
+        datos.SEQ = this.bean.SEQ;
+        datos.SVFOP = this.bean.SVFOP;
+        datos.BANDOC = this.bean.BANDOC;
+        datos.DATEC = this.bean.DATEC;
+        datos.TRANC = this.bean.TRANC;
+        console.log(datos,'datosss')
+        let beanReversa = JSON.stringify(datos);
         var cont;
-        if (miGrilla) {
-            // Llamada a la función procesarRegistros con la grilla como parámetro
-            cont = this.desprocesarRegistros(miGrilla);
-            if (cont === 0) {
+//        return false;
+        Ext.Ajax.request({
+            url: prototype.url + '/reverseOptionDebits',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: beanReversa},
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntryDebits').mask('Loading...'),
+            success: function (response, opts) {
+                Ext.getCmp(prototype.id + '-dataEntryDebits').unmask();
+                var res = Ext.JSON.decode(response.responseText);
+                if (res.success) {
 
-                datos = this.desprocesarOnlyLiquidacion();
-                console.log(datos);
-                Ext.Ajax.request({
-                    url: prototype.url + `/${consultPathRevOnly}`,
-                    method: 'POST',
-                    timeout: 60000000,
-                    params: {beanString: datos},
-                    beforerequest: Ext.getCmp(prototype.id + '-dataEntryDebits').mask('Loading...'),
-                    success: function (response, opts) {
-                        Ext.getCmp(prototype.id + '-dataEntryDebits').unmask();
-                        var res = Ext.JSON.decode(response.responseText);
-                        console.log(res);
-                        if (res.success) {
-
-                            global.Msg({
-                                msg: res.Mensaje,
-                                icon: 1,
-                                fn: function () {
-                                    //exito
-                                    Ext.getCmp(prototype.id + '-dataEntryDebits').close();
-                                    Ext.getCmp(prototype.id + '-cmbTDOC').setValue('D')
-                                    Ext.getCmp(prototype.id + '-cmbStatus').setValue("3")
-                                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
-                                }
-                            });
-                        } else
-                            global.Msg({msg: res.sesion});
-                    },
-                    failure: function (response, opts) {
-                        console.log('server-side failure with status code ' + response.status);
-                        Ext.getCmp(prototype.id + '-dataEntryDebits').unmask();
-                    }
-                });
-
-            } else {
-                datos = this.desprocesarRegistros(miGrilla);
-                console.log(datos);
-                Ext.Ajax.request({
-                    url: prototype.url + `/${consultPathRevAll}`,
-                    method: 'POST',
-                    timeout: 60000000,
-                    params: {beanString: datos},
-                    beforerequest: Ext.getCmp(prototype.id + '-dataEntryDebits').mask('Loading...'),
-                    success: function (response, opts) {
-                        Ext.getCmp(prototype.id + '-dataEntryDebits').unmask();
-                        var res = Ext.JSON.decode(response.responseText);
-                        console.log(res);
-                        if (res.success) {
-
-                            global.Msg({
-                                msg: res.Mensaje,
-                                icon: 1,
-                                fn: function () {
-                                    //exito
-                                    Ext.getCmp(prototype.id + '-dataEntryDebits').close();
-                                    Ext.getCmp(prototype.id + '-cmbTDOC').setValue('D')
-                                    Ext.getCmp(prototype.id + '-cmbStatus').setValue("3")
-                                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
-                                }
-                            });
-                        } else
-                            global.Msg({msg: res.sesion});
-                    },
-                    failure: function (response, opts) {
-                        console.log('server-side failure with status code ' + response.status);
-                        Ext.getCmp(prototype.id + '-dataEntryDebits').unmask();
-                    }
-                });
+                    global.Msg({
+                        msg: res.Mensaje,
+                        icon: 1,
+                        fn: function () {
+                            Ext.getCmp(prototype.id + '-dataEntryDebits').close();
+                            Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+                        }
+                    });
+                } else
+                    global.Msg({msg: res.sesion});
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+                Ext.getCmp(prototype.id + '-dataEntryDebits').unmask();
             }
-        } else {
-            console.error('No se pudo encontrar la grilla con el ID especificado.');
-        }
+        });
     },
     //</editor-fold>
 
