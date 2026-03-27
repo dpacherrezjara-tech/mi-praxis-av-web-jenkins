@@ -2877,73 +2877,47 @@ public class BankReconciliationDAO {
         return strMsj;
     }
 
-    public String loadPX269SQP05117_REFND(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
+    public String loadPX269SQP05117_REFND(A2290Filter filter, UserView user) throws SQLException, Exception {
 
         //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
-        String strMsj = "SUCCESSFUL. Information Updated.", strCardn = "";
+        String strMsj = "", strCardn = "";
         CallableStatement cstmt = null;
         CallableStatement cstmt2 = null;
         Connection cnx = null;
         Connection cnx2 = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05117DECONCILIMPF101_REFND(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.MPS216(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            A2290Filter filter = filters.get(0);
+
 
             cstmt = cnx.prepareCall(SQLCLL01);
 
+            cstmt.registerOutParameter(17, Types.VARCHAR);
+            
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            cstmt.setString(2, filter.PRDA.trim());
-            cstmt.setString(3, filter.SDATE.trim());
-            cstmt.setString(4, filter.DATEC.trim());
-            cstmt.setString(5, filter.TRANC.trim());
-            cstmt.setDouble(6, filter.VFOP);
-            cstmt.setString(7, filter.SAUTHOCM.trim());
-            cstmt.setString(8, filter.SCARDNM.trim());
-            cstmt.setString(9, filter.CERROR);
-            cstmt.setInt(10, filters.size());
-            cstmt.setString(11, user.getUserInfo().USR);
-            cstmt.setString(12, Functions.getFechaActual());
-            cstmt.setString(13, Functions.getHoraActual());
-            cstmt.setString(14, filter.strComment.toUpperCase());
-            cstmt.setString(15, filter.TDOC.trim());
+            cstmt.setString(2, filter.SDATE.trim());
+            cstmt.setString(3, filter.SCOUNTRY.trim());
+            cstmt.setString(4, filter.TDOC.trim());
+            cstmt.setString(5, filter.CODEBANK.trim());
+            cstmt.setString(6, filter.SCARCOD.trim());
+            cstmt.setString(7, filter.SCARDN.trim());
+            cstmt.setString(8, filter.SAUTHOC.trim());
+            cstmt.setString(9, filter.SEQ);
+            cstmt.setDouble(10, filter.SVFOP);
+            cstmt.setString(11, filter.BANDOC);
+            cstmt.setString(12, filter.DATEC);
+            cstmt.setString(13, filter.TRANC);
+            cstmt.setString(14, user.getUserInfo().USR);
+            cstmt.setString(15, Functions.getFechaActual());
+            cstmt.setString(16, Functions.getHoraActual());
+//            cstmt.setString(17, "");
 
             cstmt.execute();
-            cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
-
-            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP05117DECONCILIMPF100_REFND(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
-
-            cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
-            cstmt2 = cnx2.prepareCall(SQLCLL02);
-
-            for (int i = 0; i < filters.size(); i++) {
-
-                cstmt2 = cnx2.prepareCall(SQLCLL02);
-                A2290Filter filterC = filters.get(i);
-
-                cstmt2.setString(1, session.getUserView().getCustomerInfo().CCUST);
-                cstmt2.setString(2, filterC.PRDA.trim());
-                cstmt2.setString(3, filterC.SCARDN.trim());
-                cstmt2.setString(4, filterC.SAUTHOC.trim());
-                cstmt2.setDouble(5, filterC.VFOP);
-                cstmt2.setString(6, filterC.SDATE.trim());
-                cstmt2.setString(7, filterC.DATEC.trim());
-                cstmt2.setString(8, filterC.TICKET.trim());
-                cstmt2.setString(9, filterC.TRANC.trim());
-                cstmt2.setString(10, filterC.BANDOC.trim());
-                cstmt2.setString(11, filter.CERROR);
-                cstmt2.setString(12, user.getUserInfo().USR);
-                cstmt2.setString(13, Functions.getFechaActual());
-                cstmt2.setString(14, Functions.getHoraActual());
-                cstmt2.setString(15, filter.strComment.toUpperCase());
-
-                cstmt2.execute();
-                cstmt2.close(); // Cerrar el CallableStatement después de cada ejecución
-            }
+            strMsj = cstmt.getString(17);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -2952,185 +2926,6 @@ public class BankReconciliationDAO {
             if (cstmt != null) {
                 try {
                     cstmt.close();
-                    cstmt2.close();
-                } catch (SQLException e) {
-                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
-                }
-            }
-            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
-            pasarGarbageCollector();
-        }
-
-        return strMsj;
-    }
-
-    public String loadPX269SQP05117_CHGBAK(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
-
-        //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
-        String strMsj = "SUCCESSFUL. Information Updated.", strCardn = "";
-        CallableStatement cstmt = null;
-        CallableStatement cstmt2 = null;
-        Connection cnx = null;
-        Connection cnx2 = null;
-
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05117DECONCILIMPF101_CHGBAK(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
-
-        try {
-            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-            cstmt = cnx.prepareCall(SQLCLL01);
-
-            A2290Filter filter = filters.get(0);
-
-            cstmt = cnx.prepareCall(SQLCLL01);
-
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            cstmt.setString(2, filter.PRDA.trim());
-            cstmt.setString(3, filter.SDATE.trim());
-            cstmt.setString(4, filter.DATEC.trim());
-            cstmt.setString(5, filter.TRANC.trim());
-            cstmt.setDouble(6, filter.VFOP);
-            cstmt.setString(7, filter.SAUTHOCM.trim());
-            cstmt.setString(8, filter.SCARDNM.trim());
-            cstmt.setString(9, filter.CERROR);
-            cstmt.setInt(10, filters.size());
-            cstmt.setString(11, user.getUserInfo().USR);
-            cstmt.setString(12, Functions.getFechaActual());
-            cstmt.setString(13, Functions.getHoraActual());
-            cstmt.setString(14, filter.strComment.toUpperCase());
-            cstmt.setString(15, filter.TDOC.trim());
-
-            cstmt.execute();
-            cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
-
-            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP05117DECONCILIMPF100_CHGBAK(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
-
-            cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
-            cstmt2 = cnx2.prepareCall(SQLCLL02);
-
-            for (int i = 0; i < filters.size(); i++) {
-
-                cstmt2 = cnx2.prepareCall(SQLCLL02);
-                A2290Filter filterC = filters.get(i);
-
-                cstmt2.setString(1, session.getUserView().getCustomerInfo().CCUST);
-                cstmt2.setString(2, filterC.PRDA.trim());
-                cstmt2.setString(3, filterC.SCARDN.trim());
-                cstmt2.setString(4, filterC.SAUTHOC.trim());
-                cstmt2.setDouble(5, filterC.VFOP);
-                cstmt2.setString(6, filterC.SDATE.trim());
-                cstmt2.setString(7, filterC.DATEC.trim());
-                cstmt2.setString(8, filterC.TICKET.trim());
-                cstmt2.setString(9, filterC.TRANC.trim());
-                cstmt2.setString(10, filterC.BANDOC.trim());
-                cstmt2.setString(11, filter.CERROR);
-                cstmt2.setString(12, user.getUserInfo().USR);
-                cstmt2.setString(13, Functions.getFechaActual());
-                cstmt2.setString(14, Functions.getHoraActual());
-                cstmt2.setString(15, filter.strComment.toUpperCase());
-                cstmt2.setInt(16, filterC.MPF076TRAN);
-                cstmt2.setString(17, filterC.SPNR.trim());
-
-                cstmt2.execute();
-                cstmt2.close(); // Cerrar el CallableStatement después de cada ejecución
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            strMsj = e.getMessage();
-        } finally {
-            if (cstmt != null) {
-                try {
-                    cstmt.close();
-                    cstmt2.close();
-                } catch (SQLException e) {
-                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
-                }
-            }
-            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
-            pasarGarbageCollector();
-        }
-
-        return strMsj;
-    }
-
-    public String loadPX269SQP05117_ACREDIT(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
-
-        //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
-        String strMsj = "SUCCESSFUL. Information Updated.", strCardn = "";
-        CallableStatement cstmt = null;
-        CallableStatement cstmt2 = null;
-        Connection cnx = null;
-        Connection cnx2 = null;
-
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05117DECONCILIMPF101_ACREDIT(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
-
-        try {
-            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-            cstmt = cnx.prepareCall(SQLCLL01);
-
-            A2290Filter filter = filters.get(0);
-
-            cstmt = cnx.prepareCall(SQLCLL01);
-
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            cstmt.setString(2, filter.PRDA.trim());
-            cstmt.setString(3, filter.SDATE.trim());
-            cstmt.setString(4, filter.DATEC.trim());
-            cstmt.setString(5, filter.TRANC.trim());
-            cstmt.setDouble(6, filter.VFOP);
-            cstmt.setString(7, filter.SAUTHOCM.trim());
-            cstmt.setString(8, filter.SCARDNM.trim());
-            cstmt.setString(9, filter.CERROR);
-            cstmt.setInt(10, filters.size());
-            cstmt.setString(11, user.getUserInfo().USR);
-            cstmt.setString(12, Functions.getFechaActual());
-            cstmt.setString(13, Functions.getHoraActual());
-            cstmt.setString(14, filter.strComment.toUpperCase());
-            cstmt.setString(15, filter.TDOC.trim());
-
-            cstmt.execute();
-            cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
-
-            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP05117DECONCILIMPF100_ACREDIT(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
-
-            cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
-            cstmt2 = cnx2.prepareCall(SQLCLL02);
-
-            for (int i = 0; i < filters.size(); i++) {
-
-                cstmt2 = cnx2.prepareCall(SQLCLL02);
-                A2290Filter filterC = filters.get(i);
-
-                cstmt2.setString(1, session.getUserView().getCustomerInfo().CCUST);
-                cstmt2.setString(2, filterC.PRDA.trim());
-                cstmt2.setString(3, filterC.SCARDN.trim());
-                cstmt2.setString(4, filterC.SAUTHOC.trim());
-                cstmt2.setDouble(5, filterC.VFOP);
-                cstmt2.setString(6, filterC.SDATE.trim());
-                cstmt2.setString(7, filterC.DATEC.trim());
-                cstmt2.setString(8, filterC.TICKET.trim());
-                cstmt2.setString(9, filterC.TRANC.trim());
-                cstmt2.setString(10, filterC.BANDOC.trim());
-                cstmt2.setString(11, filter.CERROR);
-                cstmt2.setString(12, user.getUserInfo().USR);
-                cstmt2.setString(13, Functions.getFechaActual());
-                cstmt2.setString(14, Functions.getHoraActual());
-                cstmt2.setString(15, filter.strComment.toUpperCase());
-                cstmt2.setInt(16, filterC.MPF077TRAN);
-                cstmt2.setString(17, filterC.SPNR.trim());
-
-                cstmt2.execute();
-                cstmt2.close(); // Cerrar el CallableStatement después de cada ejecución
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            strMsj = e.getMessage();
-        } finally {
-            if (cstmt != null) {
-                try {
-                    cstmt.close();
-                    cstmt2.close();
                 } catch (SQLException e) {
                     logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
                 }
@@ -3174,168 +2969,6 @@ public class BankReconciliationDAO {
             cstmt.setString(13, Functions.getFechaActual());
             cstmt.setString(14, Functions.getHoraActual());
             cstmt.setString(15, filter.strComment.toUpperCase());
-
-            cstmt.execute();
-            cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            strMsj = e.getMessage();
-        } finally {
-            if (cstmt != null) {
-                try {
-                    cstmt.close();
-                } catch (SQLException e) {
-                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
-                }
-            }
-            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
-            pasarGarbageCollector();
-        }
-
-        return strMsj;
-    }
-
-    public String loadPX269SQP05117OnlyLiq_REFND(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
-
-        //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
-        String strMsj = "SUCCESSFUL. Information Updated.", strCardn = "";
-        CallableStatement cstmt = null;
-        Connection cnx = null;
-
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05117DECONCILIMPF101_REFND(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
-
-        try {
-            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-            cstmt = cnx.prepareCall(SQLCLL01);
-
-            A2290Filter filter = filters.get(0);
-
-            cstmt = cnx.prepareCall(SQLCLL01);
-
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            cstmt.setString(2, filter.PRDA.trim());
-            cstmt.setString(3, filter.SDATE.trim());
-            cstmt.setString(4, filter.DATEC.trim());
-            cstmt.setString(5, filter.TRANC.trim());
-            cstmt.setDouble(6, filter.VFOP);
-            cstmt.setString(7, filter.SAUTHOCM.trim());
-            cstmt.setString(8, filter.SCARDNM.trim());
-            cstmt.setString(9, filter.CERROR);
-            cstmt.setInt(10, filters.size());
-            cstmt.setString(11, user.getUserInfo().USR);
-            cstmt.setString(12, Functions.getFechaActual());
-            cstmt.setString(13, Functions.getHoraActual());
-            cstmt.setString(14, filter.strComment.toUpperCase());
-            cstmt.setString(15, filter.TDOC.trim());
-
-            cstmt.execute();
-            cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            strMsj = e.getMessage();
-        } finally {
-            if (cstmt != null) {
-                try {
-                    cstmt.close();
-                } catch (SQLException e) {
-                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
-                }
-            }
-            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
-            pasarGarbageCollector();
-        }
-
-        return strMsj;
-    }
-
-    public String loadPX269SQP05117OnlyLiq_CHGBAK(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
-
-        //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
-        String strMsj = "SUCCESSFUL. Information Updated.", strCardn = "";
-        CallableStatement cstmt = null;
-        Connection cnx = null;
-
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05117DECONCILIMPF101_CHGBAK(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
-
-        try {
-            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-            cstmt = cnx.prepareCall(SQLCLL01);
-
-            A2290Filter filter = filters.get(0);
-
-            cstmt = cnx.prepareCall(SQLCLL01);
-
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            cstmt.setString(2, filter.PRDA.trim());
-            cstmt.setString(3, filter.SDATE.trim());
-            cstmt.setString(4, filter.DATEC.trim());
-            cstmt.setString(5, filter.TRANC.trim());
-            cstmt.setDouble(6, filter.VFOP);
-            cstmt.setString(7, filter.SAUTHOCM.trim());
-            cstmt.setString(8, filter.SCARDNM.trim());
-            cstmt.setString(9, filter.CERROR);
-            cstmt.setInt(10, filters.size());
-            cstmt.setString(11, user.getUserInfo().USR);
-            cstmt.setString(12, Functions.getFechaActual());
-            cstmt.setString(13, Functions.getHoraActual());
-            cstmt.setString(14, filter.strComment.toUpperCase());
-            cstmt.setString(15, filter.TDOC.trim());
-
-            cstmt.execute();
-            cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            strMsj = e.getMessage();
-        } finally {
-            if (cstmt != null) {
-                try {
-                    cstmt.close();
-                } catch (SQLException e) {
-                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
-                }
-            }
-            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
-            pasarGarbageCollector();
-        }
-
-        return strMsj;
-    }
-
-    public String loadPX269SQP05117OnlyLiq_ACREDIT(List<A2290Filter> filters, UserView user) throws SQLException, Exception {
-
-        //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
-        String strMsj = "SUCCESSFUL. Information Updated.", strCardn = "";
-        CallableStatement cstmt = null;
-        Connection cnx = null;
-
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP05117DECONCILIMPF101_ACREDIT(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
-
-        try {
-            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-            cstmt = cnx.prepareCall(SQLCLL01);
-
-            A2290Filter filter = filters.get(0);
-
-            cstmt = cnx.prepareCall(SQLCLL01);
-
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-            cstmt.setString(2, filter.PRDA.trim());
-            cstmt.setString(3, filter.SDATE.trim());
-            cstmt.setString(4, filter.DATEC.trim());
-            cstmt.setString(5, filter.TRANC.trim());
-            cstmt.setDouble(6, filter.VFOP);
-            cstmt.setString(7, filter.SAUTHOCM.trim());
-            cstmt.setString(8, filter.SCARDNM.trim());
-            cstmt.setString(9, filter.CERROR);
-            cstmt.setInt(10, filters.size());
-            cstmt.setString(11, user.getUserInfo().USR);
-            cstmt.setString(12, Functions.getFechaActual());
-            cstmt.setString(13, Functions.getHoraActual());
-            cstmt.setString(14, filter.strComment.toUpperCase());
-            cstmt.setString(15, filter.TDOC.trim());
 
             cstmt.execute();
             cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
