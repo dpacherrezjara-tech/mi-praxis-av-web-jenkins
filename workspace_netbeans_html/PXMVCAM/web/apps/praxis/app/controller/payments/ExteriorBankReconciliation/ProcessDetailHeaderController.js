@@ -52,10 +52,12 @@ onAfterRenderSettlements: async function () {
          if (grid && storeData) {
             const rows = storeData.lstRs?.[0] || []; 
             if (rows.length > 0) {
+                // Inicializar TDOC_OLD con el TDOC que viene del server
+                rows.forEach(row => { row.TDOC_OLD = row.TDOC; });
                 store.loadData(rows);
                 store.commitChanges(); // limpia los dirty flags
             } else {
-                store.removeAll(); // limpiar si hubiera algo
+                store.removeAll();
                 grid.getView().setEmptyText("No settlements data available.");
                 grid.getView().refresh();
             }
@@ -67,6 +69,19 @@ onAfterRenderSettlements: async function () {
     }
 },
 //</editor-fold> 
+
+//<editor-fold defaultstate="collapsed" desc="onBeforeEditSettlements">
+onBeforeEditSettlements: function (editor, context) {
+    // Solo capturar TDOC_OLD cuando se va a editar la columna TDOC
+    if (context.field === 'TDOC') {
+        const rec = context.record;
+        // Solo guardar si aún no fue modificado (para no pisar el original en ediciones sucesivas)
+        if (!rec.get('TDOC_OLD') || rec.get('TDOC_OLD') === '') {
+            rec.set('TDOC_OLD', rec.get('TDOC'));
+        }
+    }
+},
+//</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="onAfterRenderTaxes">
 onAfterRenderTaxes: async function () {
@@ -106,7 +121,7 @@ onAfterRenderTaxes: async function () {
                 store.loadData(rows);
                 store.commitChanges(); // limpia los dirty flags
             } else {
-                store.removeAll(); // limpiar si hubiera algo
+                store.removeAll();
                 grid.getView().setEmptyText("No taxes data available.");
                 grid.getView().refresh();
             }
@@ -121,7 +136,7 @@ onAfterRenderTaxes: async function () {
 
 //<editor-fold defaultstate="collapsed" desc="onProcessInsert">
 onProcessInsert: function () {
-    const grid = this.lookupReference('settlementsGrid'); // antes estaba mal con 'transactionsGrid'
+    const grid = this.lookupReference('settlementsGrid');
     const store = grid.getStore();
     
     let maxRN = 0;
@@ -136,11 +151,11 @@ onProcessInsert: function () {
    const firstRec = store.getAt(0);
     let baseData = {};
     
-        // ahora sobreescribes solo lo necesario
         Ext.apply(baseData, {
             RN: maxRN + 1,
             STVAL: firstRec ? firstRec.get('STVAL') : '',
             TDOC: firstRec ? firstRec.get('TDOC') : '',
+            TDOC_OLD: '',   // vacío en insert, no hay valor anterior
             LIQUIDACIO: firstRec ? firstRec.get('LIQUIDACIO') : '',
             CCUST: firstRec ? firstRec.get('CCUST') : '',
             SDATE: firstRec ? firstRec.get('SDATE') : '',
@@ -158,8 +173,6 @@ onProcessInsert: function () {
             COMISION: 0
         });
 
-
- 
     const newRecord = store.add(baseData)[0];
     
        grid.getView().scrollRowIntoView(newRecord);
@@ -201,10 +214,16 @@ onProcessSave: async function () {
                         try {
                              for (const rec of modified) {
                                  let total = rec.get('TOTAL') || 0;
-                                 let rawTDOC = rec.get('TDOC') || '';
-                                 let tdocValueOld = tdocMap[rawTDOC] || rawTDOC;
-                                 const tdocValue = total >= 0 ? 'S' : 'D'; 
-                                 
+
+                                 // TDOC elegido por el usuario (nuevo)
+                                 let rawTDOC_NEW = rec.get('TDOC') || '';
+                                 let tdocNew = tdocMap[rawTDOC_NEW] || rawTDOC_NEW;
+
+                                 // TDOC original antes de editar (viejo)
+                                 // En insert TDOC_OLD viene vacío, se usa el mismo tdocNew
+                                 let rawTDOC_OLD = rec.get('TDOC_OLD') || rawTDOC_NEW;
+                                 let tdocOld = tdocMap[rawTDOC_OLD] || rawTDOC_OLD;
+
                                  let params = {
                                         IN_TYPE: rec.phantom ? 'I' : 'U',
                                         IN_LIQUIDACIO: (rec.get('LIQUIDACIO') || '').toString().trim(),
@@ -212,8 +231,8 @@ onProcessSave: async function () {
                                         IN_SDATE: (rec.get('SDATE') || '').toString().trim(),
                                         IN_ADATE: (rec.get('ADATE') || '').toString().trim(),
                                         IN_SCOUNTRY: (rec.get('SCOUNTRY') || '').toString().trim(),
-                                        IN_TDOC_OLD: tdocValueOld,
-                                        IN_TDOC_NEW: tdocValue,
+                                        IN_TDOC_OLD: tdocOld,
+                                        IN_TDOC_NEW: tdocNew,
                                         IN_CODEBANK: (rec.get('CODEBANK') || '').toString().trim(),
                                         IN_SCARCOD: (rec.get('SCARCOD') || '').toString().trim(),
                                         IN_SCARDN: (rec.get('SCARDN') || '').toString().trim(),
@@ -323,5 +342,3 @@ onProcessSaveTaxes: async function () {
 
 
 });
-
-
