@@ -34,13 +34,15 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.Proces
                 xtype: 'grid',
                 reference: 'settlementsGrid',
                 listeners: {
-                    afterrender: 'onAfterRenderSettlements'
+                    afterrender: 'onAfterRenderSettlements',
+                    beforeedit: 'onBeforeEditSettlements'
                 },
                 store: {
                     fields: [
                         { name: 'RN', type: 'int' },
                         { name: 'STVAL', type: 'string' },
                         { name: 'TDOC', type: 'string' },
+                        { name: 'TDOC_OLD', type: 'string' },  // guarda el TDOC original antes de editar
                         { name: 'LIQUIDACIO', type: 'string' },
                         { name: 'CCUST', type: 'string' },
                         { name: 'SDATE', type: 'string' },
@@ -66,7 +68,32 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.DataEntrys.Proces
                 columns: [
                     { text: 'RN', dataIndex: 'RN', width: 50 },
                     { text: 'Status', dataIndex: 'STVAL', flex: 1 },
-                    { text: 'Doc. Type', dataIndex: 'TDOC', flex: 1 },
+                    {
+                        text: 'Doc. Type',
+                        dataIndex: 'TDOC',
+                        flex: 1,
+                        editor: {
+                            xtype: 'combobox',
+                            valueField: 'code',
+                            displayField: 'name',
+                            editable: false,
+                            allowBlank: false,
+                            forceSelection: true,
+                            store: Ext.create('Ext.data.Store', {
+                                fields: ['code', 'name'],
+                                data: [
+                                    { code: 'S', name: 'SALE'   },
+                                    { code: 'D', name: 'DEBIT'  },
+                                    { code: 'R', name: 'REFUND' },
+                                    { code: 'V', name: 'VOID'   }
+                                ]
+                            })
+                        },
+                        renderer: function (value) {
+                            const map = { S: 'SALE', D: 'DEBIT', R: 'REFUND', V: 'VOID' };
+                            return map[value] || value;
+                        }
+                    },
                     { text: 'Settlement', dataIndex: 'LIQUIDACIO', flex: 1.2 },
                     { text: 'Client', dataIndex: 'CCUST', flex: 0.5 },
                     { text: 'Sale Date', dataIndex: 'SDATE', flex: 1 },
