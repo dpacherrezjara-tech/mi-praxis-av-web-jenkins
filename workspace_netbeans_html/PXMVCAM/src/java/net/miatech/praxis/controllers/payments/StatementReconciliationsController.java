@@ -3395,6 +3395,8 @@ public class StatementReconciliationsController extends BaseController {
                 Cell CH1_18 = row1.createCell(18);
                 Cell CH1_19 = row1.createCell(19);
                 Cell CH1_20 = row1.createCell(20);
+                Cell CH1_21 = row1.createCell(21);
+                Cell CH1_22 = row1.createCell(22);
 
                 CH1_0.setCellValue("CCUST");
                 CH1_1.setCellValue("BANDOC");
@@ -3407,16 +3409,18 @@ public class StatementReconciliationsController extends BaseController {
                 CH1_8.setCellValue("SCURRENCY");
                 CH1_9.setCellValue("NETO");
                 CH1_10.setCellValue("NETOC");
-                CH1_11.setCellValue("ACCOUNT");
-                CH1_12.setCellValue("BENCENC");
-                CH1_13.setCellValue("ACCCOMP");
-                CH1_14.setCellValue("SOCIETY");
-                CH1_15.setCellValue("CIACOME");
-                CH1_16.setCellValue("REFER");
-                CH1_17.setCellValue("CLAVE1");
-                CH1_18.setCellValue("CLAVE3");
-                CH1_19.setCellValue("TEXTO");
-                CH1_20.setCellValue("TEXTOLAR");
+                CH1_11.setCellValue("LOCRENCY2");
+                CH1_12.setCellValue("LOCAMOUNT2");
+                CH1_13.setCellValue("ACCOUNT");
+                CH1_14.setCellValue("BENCENC");
+                CH1_15.setCellValue("ACCCOMP");
+                CH1_16.setCellValue("SOCIETY");
+                CH1_17.setCellValue("CIACOME");
+                CH1_18.setCellValue("REFER");
+                CH1_19.setCellValue("CLAVE1");
+                CH1_20.setCellValue("CLAVE3");
+                CH1_21.setCellValue("TEXTO");
+                CH1_22.setCellValue("TEXTOLAR");
 
                 CH1_0.setCellStyle(headerStyle);
                 CH1_1.setCellStyle(headerStyle);
@@ -3439,6 +3443,8 @@ public class StatementReconciliationsController extends BaseController {
                 CH1_18.setCellStyle(headerStyle);
                 CH1_19.setCellStyle(headerStyle);
                 CH1_20.setCellStyle(headerStyle);
+                CH1_21.setCellStyle(headerStyle);
+                CH1_22.setCellStyle(headerStyle);
 
                 //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
@@ -3462,6 +3468,8 @@ public class StatementReconciliationsController extends BaseController {
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 18, 18));
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 19, 19));
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 20, 20));
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, 21, 21));
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, 22, 22));
                 ++vj;
                 //============================================
 
@@ -3488,6 +3496,8 @@ public class StatementReconciliationsController extends BaseController {
                     Cell rcell18 = row1.createCell(18);
                     Cell rcell19 = row1.createCell(19);
                     Cell rcell20 = row1.createCell(20);
+                    Cell rcell21 = row1.createCell(21);
+                    Cell rcell22 = row1.createCell(22);
 
                     rcell0.setCellValue(listaData.get(vi).CCUST);
                     rcell1.setCellValue(listaData.get(vi).BANDOC);
@@ -3500,16 +3510,18 @@ public class StatementReconciliationsController extends BaseController {
                     rcell8.setCellValue(listaData.get(vi).SCURRENCY);
                     rcell9.setCellValue(listaData.get(vi).NETO);
                     rcell10.setCellValue(listaData.get(vi).NETOC);
-                    rcell11.setCellValue(listaData.get(vi).ACCOUNT);
-                    rcell12.setCellValue(listaData.get(vi).BENCENC);
-                    rcell13.setCellValue(listaData.get(vi).ACCCOMP);
-                    rcell14.setCellValue(listaData.get(vi).SOCIETY);
-                    rcell15.setCellValue(listaData.get(vi).CIACOME);
-                    rcell16.setCellValue(listaData.get(vi).REFER);
-                    rcell17.setCellValue(listaData.get(vi).CLAVE1);
-                    rcell18.setCellValue(listaData.get(vi).CLAVE3);
-                    rcell19.setCellValue(listaData.get(vi).TEXTO);
-                    rcell20.setCellValue(listaData.get(vi).TEXTOLAR);
+                    rcell11.setCellValue(listaData.get(vi).NETOSCU);
+                    rcell12.setCellValue(listaData.get(vi).NETOUSD);
+                    rcell13.setCellValue(listaData.get(vi).ACCOUNT);
+                    rcell14.setCellValue(listaData.get(vi).BENCENC);
+                    rcell15.setCellValue(listaData.get(vi).ACCCOMP);
+                    rcell16.setCellValue(listaData.get(vi).SOCIETY);
+                    rcell17.setCellValue(listaData.get(vi).CIACOME);
+                    rcell18.setCellValue(listaData.get(vi).REFER);
+                    rcell19.setCellValue(listaData.get(vi).CLAVE1);
+                    rcell20.setCellValue(listaData.get(vi).CLAVE3);
+                    rcell21.setCellValue(listaData.get(vi).TEXTO);
+                    rcell22.setCellValue(listaData.get(vi).TEXTOLAR);
                     iter.next();
                     ++vi;
                     ++vj;
@@ -3535,6 +3547,8 @@ public class StatementReconciliationsController extends BaseController {
                 sheet.autoSizeColumn(18, true);
                 sheet.autoSizeColumn(19, true);
                 sheet.autoSizeColumn(20, true);
+                sheet.autoSizeColumn(21, true);
+                sheet.autoSizeColumn(22, true);
 
                 //============================================
                 response.setContentType("application/vnd.openxml");
@@ -3558,7 +3572,7 @@ public class StatementReconciliationsController extends BaseController {
 
                 PrintWriter writer = new PrintWriter(fileA, "UTF-8");
                 String cadena;
-                cadena = "CCUST|BANDOC|MERCHAND|STVAL|TDOC|SCOUNTRY|VALDATE|ADATE|SCURRENCY|NETO|NETOC|ACCOUNT|BENCENC|ACCCOMP|SOCIETY|CIACOME|REFER|CLAVE1|CLAVE3|TEXTO|TEXTOLAR";
+                cadena = "CCUST|BANDOC|MERCHAND|STVAL|TDOC|SCOUNTRY|VALDATE|ADATE|SCURRENCY|NETO|NETOC|LOCRENCY2|LOCAMOUNT2|ACCOUNT|BENCENC|ACCCOMP|SOCIETY|CIACOME|REFER|CLAVE1|CLAVE3|TEXTO|TEXTOLAR";
                 writer.println("" + cadena);
 
                 for (vi = 0; vi < len; vi++) {
@@ -3574,6 +3588,8 @@ public class StatementReconciliationsController extends BaseController {
                     cadena += "" + listaData.get(vi).SCURRENCY + "|";
                     cadena += "" + listaData.get(vi).NETO + "|";
                     cadena += "" + listaData.get(vi).NETOC + "|";
+                    cadena += "" + listaData.get(vi).NETOSCU + "|";
+                    cadena += "" + listaData.get(vi).NETOUSD + "|";
                     cadena += "" + listaData.get(vi).ACCOUNT + "|";
                     cadena += "" + listaData.get(vi).BENCENC + "|";
                     cadena += "" + listaData.get(vi).ACCCOMP + "|";

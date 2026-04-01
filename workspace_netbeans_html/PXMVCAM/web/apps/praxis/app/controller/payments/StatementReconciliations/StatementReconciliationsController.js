@@ -134,13 +134,84 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             me.procesador();
         });
 
-        $('#BankReconciliationForm-btnToggleSwitchFT').change(function () {
-            if (me.panelActual === '-panelGridData') {
-                me.btnSearch_click();
-                var checkbox = Ext.getCmp(prototype.id + '-btnToggleSwitchCASH').getEl().down("#chkCash").dom.checked;
-                var isActive = checkbox.checked;
-                console.log("Activo? ", isActive);
+        $('#StatementReconciliationsForm-btnToggleSwitchFT').change(function (e) {
+            var isExterior = e.target.checked; 
+
+            var cmbMoneda = Ext.getCmp(prototype.id + '-cmbCode'); 
+
+            if (!cmbMoneda) {
+                console.error("No se encontró el combo de monedas en la vista.");
+                return;
             }
+
+            var storeMoneda = cmbMoneda.getStore();
+
+            storeMoneda.clearFilter();
+
+            storeMoneda.filterBy(function(record) {
+                var currencyCode = record.get('A005KEY');
+
+                if (currencyCode === '') return true; 
+
+                if (!isExterior) {
+                    return currencyCode === 'COP';
+                } else {
+                    return currencyCode !== 'COP';
+                }
+            });
+
+            if (!isExterior) { 
+                cmbMoneda.setValue(''); 
+//                cmbMoneda.setReadOnly(true); 
+
+                Ext.getCmp(prototype.id + '-COL').setStyle('font-weight', 'bold');
+                Ext.getCmp(prototype.id + '-EXT').setStyle('font-weight', 'normal');
+            } else { 
+//                cmbMoneda.setReadOnly(false); 
+                cmbMoneda.setValue(''); // Limpiamos para que elijan
+
+                Ext.getCmp(prototype.id + '-COL').setStyle('font-weight', 'normal');
+                Ext.getCmp(prototype.id + '-EXT').setStyle('font-weight', 'bold');
+            }
+        });
+
+        $('#StatementReconciliationsForm-btnToggleSwitchFTBKP').change(function (e, target) {
+            
+            var isExterior = e.target.checked; 
+            console.log("¿Es Exterior? ", isExterior);
+
+            var cmbMoneda = Ext.getCmp(prototype.id + '-cmbCode'); 
+
+            if (!cmbMoneda) {
+                console.error("No se encontró el combo de monedas en la vista.");
+                return;
+            }
+
+            if (!isExterior) { 
+                cmbMoneda.setValue('COP'); // Forzamos a COP
+                cmbMoneda.setReadOnly(true); // Lo bloqueamos para que no puedan cambiarlo
+
+                // Opcional: Resaltamos la etiqueta visualmente
+                Ext.getCmp(prototype.id + '-COL').setStyle('font-weight', 'bold');
+                Ext.getCmp(prototype.id + '-EXT').setStyle('font-weight', 'normal');
+
+            } else { 
+                // ----- MODO EXTERIOR (Azul) -----
+                cmbMoneda.setReadOnly(false); // Lo desbloqueamos
+                cmbMoneda.setValue(''); // Limpiamos el combo para obligarlos a elegir
+
+                // Opcional: Resaltamos la etiqueta visualmente
+                Ext.getCmp(prototype.id + '-COL').setStyle('font-weight', 'normal');
+                Ext.getCmp(prototype.id + '-EXT').setStyle('font-weight', 'bold');
+            }
+            
+            
+//            if (me.panelActual === '-panelGridData') {
+//                me.btnSearch_click();
+//                var checkbox = Ext.getCmp(prototype.id + '-btnToggleSwitchCASH').getEl().down("#chkCash").dom.checked;
+//                var isActive = checkbox.checked;
+//                console.log("Activo? ", isActive);
+//            }
         });
 
         $('#StatementReconciliationsForm-btnToggleSwitchCashCD').on('change', function () {
@@ -237,6 +308,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.dataObtain.COUNTRY = 2;
         this.dataObtain.COREP = 2;
         this.dataObtain.USERPERMIS = 2;
+        this.dataObtain.CURRENCY = 1;
         this.dataObtain.NPROG = sessionStorage.getItem('nprog');
 
 
@@ -248,7 +320,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                 beanString: JSON.stringify(this.dataObtain)},
             success: function (response, options) {
                 var res = Ext.JSON.decode(response.responseText);
-
+                console.log(res,'res')
                 var lstBank = res.lstBank;
                 var storeData = Ext.create('Ext.data.Store', {
                     data: lstBank,
@@ -275,8 +347,24 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                 });
                 Ext.getCmp(prototype.id + '-cmbCOREP').bindStore(storeDataProcessor);
                 Ext.getCmp(prototype.id + '-cmbCOREP').setValue('');
+                
+                var lstCurrencies = res.lstCurrencies;
+                var storeDataCurrencies = Ext.create('Ext.data.Store', {
+                    data: lstCurrencies,
+                    autoLoad: true
+                });
+                
+                 storeDataCurrencies.filterBy(function(record) {
+                var currencyCode = record.get('A005KEY');
 
-                // <-- 2. SE EJECUTA EL CALLBACK AQUÍ CUANDO YA TERMINÓ DE CARGAR TODO
+                if (currencyCode === '') return true; 
+
+                return currencyCode === 'COP';
+            });
+                
+                Ext.getCmp(prototype.id + '-cmbCode').bindStore(storeDataCurrencies);
+                Ext.getCmp(prototype.id + '-cmbCode').setValue('');
+
                 if (typeof callback === 'function') {
                     callback();
                 }
@@ -325,7 +413,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                 this.searchMPF060();
                 this.mostrarCamposCredit();
             } else if (Ext.getCmp(prototype.id + '-txtBANDOC').getValue() !== '' || Ext.getCmp(prototype.id + '-cmbDateDay').getValue() !== ''
-                    || Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() !== '') {
+                    || Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() !== ''  || Ext.getCmp(prototype.id + '-cmbCode').getValue() !== '') {
                 this.btnSearch_BANDOC();
                 this.mostrarCamposCredit();
             } else {
@@ -2387,6 +2475,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         this.beanDetails.IN_STVAL = Ext.getCmp(prototype.id + '-cmbStatus').getValue();
         this.beanDetails.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
         this.beanDetails.IN_COREP = Ext.getCmp(prototype.id + '-cmbCOREP').getValue()
+        this.beanDetails.IN_SCURRENCY = Ext.getCmp(prototype.id + '-cmbCode').getValue()
         let proces = Ext.getCmp(prototype.id + '-TEST');
         if (!proces.isVisible()) {
             this.beanDetails.IN_EXT = 'N';
@@ -2401,6 +2490,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         me.setWidthPie();
         this.setFormatParameter();
         var msj = this.validateFields();
+        
+        console.log(me.paramsDetail,'me.paramsDetail')
+        
         if (msj !== '') {
             global.Msg({msg: msj
             });

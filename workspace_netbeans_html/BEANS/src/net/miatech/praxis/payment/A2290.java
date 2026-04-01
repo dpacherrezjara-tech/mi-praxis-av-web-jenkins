@@ -140,6 +140,7 @@ public class A2290 {
     public double TOTAL_IMPORTEPAG = 0;
     public double TOTAL_IMPORTE = 0;
     
+    public String NETOSCU = "";
     public String SCURRENCY = "";
     public String SCURRENCYL = "";
     public String SCURRENCYADJ = "";

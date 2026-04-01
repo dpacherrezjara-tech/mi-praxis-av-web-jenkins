@@ -4430,6 +4430,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 
     },
     checkAndProceed: function (cantidad, label) {
+        console.log(cantidad, label,'cantidad, label')
         if ((cantidad || 0) < 1) {
             Ext.Msg.alert('No Detail Available', `There are no ${label} records to display.`);
             return false;
@@ -4456,6 +4457,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
 
         console.log(data, 'data')
         console.log("IN_CCUST:", me.paramsDetail.IN_CCUST);
+        
+        console.log(IN_FLAG,'IN_FLAG')
 
         switch (IN_FLAG) {
             case "IN_WSETT":
@@ -4473,7 +4476,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                     IN_WSALES: "",
                     IN_PENDING_ACC: "",
                     IN_PENDING_SENT: "",
-                    IN_SENT: ""
+                    IN_SENT: "",
+                    IN_RETURN_ERROR: ""
                 };
                 break;
             }
@@ -4493,7 +4497,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                     IN_WSALES: "",
                     IN_PENDING_ACC: "",
                     IN_PENDING_SENT: "",
-                    IN_SENT: ""
+                    IN_SENT: "",
+                    IN_RETURN_ERROR: ""
                 };
                 break;
             }
@@ -4512,7 +4517,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                     IN_WSALES: "",
                     IN_PENDING_ACC: "",
                     IN_PENDING_SENT: "",
-                    IN_SENT: ""
+                    IN_SENT: "",
+                    IN_RETURN_ERROR: ""
                 };
                 break;
             }
@@ -4531,7 +4537,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                     IN_WSALES: "",
                     IN_PENDING_ACC: "",
                     IN_PENDING_SENT: "",
-                    IN_SENT: ""
+                    IN_SENT: "",
+                    IN_RETURN_ERROR: ""
                 };
                 break;
             }
@@ -4550,7 +4557,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                     IN_WSALES: "1",
                     IN_PENDING_ACC: "",
                     IN_PENDING_SENT: "",
-                    IN_SENT: ""
+                    IN_SENT: "",
+                    IN_RETURN_ERROR: ""
                 };
                 break;
             }
@@ -4569,7 +4577,8 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                     IN_WSALES: "",
                     IN_PENDING_ACC: "1",
                     IN_PENDING_SENT: "",
-                    IN_SENT: ""
+                    IN_SENT: "",
+                    IN_RETURN_ERROR: ""
                 };
                 break;
             }
@@ -4588,14 +4597,17 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                     IN_WSALES: "",
                     IN_PENDING_ACC: "",
                     IN_PENDING_SENT: "1",
-                    IN_SENT: ""
+                    IN_SENT: "",
+                    IN_RETURN_ERROR: ""
                 };
                 break;
             }
 
             case "IN_SENT":
             {
-                const cantidad = data.F3_TOTAL_PENDING_SENT;
+                const cantidad = data.F3_TOTAL_COMPLETED;
+                console.log(data,'data')
+                console.log(cantidad,'cantidad')
                 if (!me.checkAndProceed(cantidad, 'Send'))
                     return;
                 me.paramsDetail = {
@@ -4607,7 +4619,30 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                     IN_WSALES: "",
                     IN_PENDING_ACC: "",
                     IN_PENDING_SENT: "",
-                    IN_SENT: "1"
+                    IN_SENT: "1",
+                    IN_RETURN_ERROR: ""
+                };
+                break;
+            }
+            
+            case "IN_RETURN_ERROR":
+            {
+                const cantidad = data.F3_TOTAL_ERROR;
+                console.log(data,'data')
+                console.log(cantidad,'cantidad')
+                if (!me.checkAndProceed(cantidad, 'Return Error SAP'))
+                    console.log("ACACACACA")
+                me.paramsDetail = {
+                    ...me.paramsDetail,
+                    IN_WSETT: "",
+                    IN_TAXES: "",
+                    IN_ERROR: "",
+                    IN_PENDING_F2: "",
+                    IN_WSALES: "",
+                    IN_PENDING_ACC: "",
+                    IN_PENDING_SENT: "",
+                    IN_SENT: "",
+                    IN_RETURN_ERROR: "1"
                 };
                 break;
             }
@@ -4616,7 +4651,7 @@ Ext.define('Ext.Praxis.controller.payments.BalanceAnalysisByAge.BalanceAnalysisB
                 Ext.Msg.alert('Invalid Option', 'This option is not recognized.');
                 return;
         }
-
+        console.log(me.paramsDetail,'me.paramsDetail')
         me.paramsDetail.beanString = JSON.stringify(me.paramsDetail);
         me.setGridDataDashboardDetail()
     },

@@ -61,6 +61,8 @@ public class A2356 {
         public String CODPRO  = "";  
         public String IDCONT  = "";  
         public String IDCDEB  = "";  
+        public String CODREC  = "";  
+        public String OBSERV  = "";  
         public String A4545HEADE  = "";  
         public String REFERENCE  = "";  
         public String CAR6  = "";  

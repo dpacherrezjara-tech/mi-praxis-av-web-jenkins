@@ -279,7 +279,9 @@ public class A2290Filter extends A2290 {
     public double DIFF = 0;
     public double totNETO = 0;
     public double totNETOC = 0;
+    public double totNETOCONVERTED = 0;
     public double NETOC = 0;
+    public double NETOUSD = 0;
     public double netoAcum = 0;
 
     public String EMISOR = "";

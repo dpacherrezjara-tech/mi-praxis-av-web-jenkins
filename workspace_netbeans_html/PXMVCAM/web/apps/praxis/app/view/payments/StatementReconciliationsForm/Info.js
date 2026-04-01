@@ -1779,7 +1779,7 @@
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: false,
                             height: 'auto',
-                            width: 1073,
+                            width: 1300,
                             margin: '10 0 0 0 ',
                             layout: {
                                 type: 'vbox',
@@ -1789,7 +1789,7 @@
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDetDetails',
-                                    width: 1073,
+                                    width: 1300,
                                     columnLines: true,
                                     features: [{
                                             ftype: 'summary'
@@ -1866,14 +1866,30 @@
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;background-color:#c0e0fc;font-weight:bold";
                                                             return Ext.util.Format.number(value, '0,000.00');
-                                                        },
-                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                            var data = Ext.getCmp(prototype.id + '-gridDetDetails').getStore().getData().items[0].data;
-                                                            metaData.style = 'text-align:right; margin-right:3px ';
-                                                            return '<b>' + Ext.util.Format.number(data.totNETO, '0,000.00') + '<b>';
                                                         }
                                                     },
                                                     {text: 'Neto Settlement', dataIndex: 'NETOC', width: 140,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "text-align:right;background-color:#c0e0fc;font-weight:bold";
+                                                            return Ext.util.Format.number(value, '0,000.00');
+                                                        }
+                                                    },
+                                                    {
+                                                text: 'Converted USD',
+                                                defaults: {
+                                                    menuDisabled: true,
+                                                    sortable: false,
+                                                    align: 'center'
+                                                },
+                                                columns: [
+                                                    {text: 'Currency', dataIndex: 'NETOSCU', width: 80,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            var data = record.data;
+                                                            metaData.style = "text-align:center;background-color:#c0e0fc;font-weight:bold";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {text: 'Neto EECC', dataIndex: 'NETOUSD', width: 120,
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                             metaData.style = "text-align:right;background-color:#c0e0fc;font-weight:bold";
                                                             return Ext.util.Format.number(value, '0,000.00');
@@ -1881,9 +1897,12 @@
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
                                                             var data = Ext.getCmp(prototype.id + '-gridDetDetails').getStore().getData().items[0].data;
                                                             metaData.style = 'text-align:right; margin-right:3px ';
-                                                            return '<b>' + Ext.util.Format.number(data.totNETOC, '0,000.00') + '<b>';
+                                                            return '<b>' + Ext.util.Format.number(data.totNETOCONVERTED, '0,000.00') + '<b>';
                                                         }
-                                                    },
+                                                    }
+                                                ]
+                                            },
+                                                    
                                                 ]
                                             },
 
