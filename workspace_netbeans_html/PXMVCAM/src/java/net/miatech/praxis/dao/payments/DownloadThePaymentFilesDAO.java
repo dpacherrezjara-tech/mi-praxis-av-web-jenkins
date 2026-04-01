@@ -80,6 +80,7 @@ public class DownloadThePaymentFilesDAO {
                 //objRtn.A4719CORRE = rs01.getInt("A4719CORRE"); 
                 objRtn.A4719TOTAL = rs01.getDouble("A4719TOTAL");
                 objRtn.A4719DIFE = rs01.getDouble("A4719DIFE");
+                objRtn.A4719PERIO = rs01.getString("A4719PERIO");
                // objRtn.A4719CODEF = rs01.getString("A4719CODEF");
                 //objRtn.A4719IQTIP = rs01.getString("A4719IQTIP");
                 objRtn.A4719USRIN = rs01.getString("A4719USRIN");

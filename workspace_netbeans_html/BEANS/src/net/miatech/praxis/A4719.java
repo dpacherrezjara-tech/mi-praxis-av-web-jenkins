@@ -16,6 +16,7 @@ public class A4719 {
     public String A4719TYPE;
     public int A4719CORRE;
     public String A4719ESTAT;
+    public String A4719PERIO;
     public Double A4719TOTAL;
     public Double A4719DIFE;
     public String A4719CODEF;

@@ -4,6 +4,7 @@ Ext.define('Ext.Praxis.controller.payments.DownloadThePaymentFiles.DownloadThePa
     alias: 'controller.DownloadThePaymentFilesController',
     childs: '5',
     bean: '',
+    fecha: new Date(),
     paginActual: '',
     gridActual: '',
     panelActual: '',
@@ -104,16 +105,39 @@ Ext.define('Ext.Praxis.controller.payments.DownloadThePaymentFiles.DownloadThePa
             pageSize: 25
         });
         grid01.setStore(store01);
-        Ext.getCmp(prototype.id + '-pagginator-01').setStore(store01);     
+        Ext.getCmp(prototype.id + '-pagginator-01').setStore(store01);
+        // 
+        var storeComboDataYear = win.getStoreYear(false);
+        var storeComboDataMonth = win.getStoreMonth(true);
+        var mes = String(this.fecha.getMonth() + 1).padStart(2, '0');
+        Ext.getCmp(prototype.id + '-cmbDateFromYearProcesador').bindStore(storeComboDataYear);
+        Ext.getCmp(prototype.id + '-cmbDateFromMonthProcesador').bindStore(storeComboDataMonth);
+        Ext.getCmp(prototype.id + '-cmbDateToYearProcesador').bindStore(storeComboDataYear);
+        Ext.getCmp(prototype.id + '-cmbDateToMonthProcesador').bindStore(storeComboDataMonth);
+
+        Ext.getCmp(prototype.id + '-cmbDateFromYearProcesador').setValue(this.fecha.getFullYear());
+        Ext.getCmp(prototype.id + '-cmbDateFromMonthProcesador').setValue(mes);
+        Ext.getCmp(prototype.id + '-cmbDateToYearProcesador').setValue(this.fecha.getFullYear());
+        Ext.getCmp(prototype.id + '-cmbDateToMonthProcesador').setValue(mes);
 
     },
     onCmbSearchChange: function (obj, records, eOpts) {
-        if (obj.getValue() === "1" || obj.getValue() === "2") {
-            Ext.getCmp(prototype.id + '-txtFilterDateFrom').show();
-            Ext.getCmp(prototype.id + '-txtFilterDateTo').show();
+        if (obj.getValue() === "PBDI" || obj.getValue() === "CRDO") {
+            Ext.getCmp(prototype.id + '-cmbDateFromYearProcesador').show();
+            Ext.getCmp(prototype.id + '-cmbDateFromMonthProcesador').show();
+            Ext.getCmp(prototype.id + '-cmbDateToYearProcesador').show();
+            Ext.getCmp(prototype.id + '-cmbDateToMonthProcesador').show();
+            //
+            Ext.getCmp(prototype.id + '-txtFilterDateFrom').hide();
+            Ext.getCmp(prototype.id + '-txtFilterDateTo').hide();
         } else {
             Ext.getCmp(prototype.id + '-txtFilterDateFrom').show();
             Ext.getCmp(prototype.id + '-txtFilterDateTo').show();
+            //
+            Ext.getCmp(prototype.id + '-cmbDateFromYearProcesador').hide();
+            Ext.getCmp(prototype.id + '-cmbDateFromMonthProcesador').hide();
+            Ext.getCmp(prototype.id + '-cmbDateToYearProcesador').hide();
+            Ext.getCmp(prototype.id + '-cmbDateToMonthProcesador').hide();
         }
     },
     onRendererColumnOnStatus: function (value, metaData, record, rowIndex, colIndex, store, view) {
@@ -143,13 +167,20 @@ Ext.define('Ext.Praxis.controller.payments.DownloadThePaymentFiles.DownloadThePa
     },
     onSearchClick: function (btn) {
         var me = this;
+        var txtFilterDateFrom ='';
+        var txtFilterDateTo='';
         var grid01 = Ext.getCmp(prototype.id + '-gridDataMain');
         var store01 = grid01.getStore();
-        var txtFilterDateFrom = Ext.getCmp(prototype.id + '-txtFilterDateFrom').getRawValue();
-        var txtFilterDateTo = Ext.getCmp(prototype.id + '-txtFilterDateTo').getRawValue();
         var CmbTypeprocesa = Ext.getCmp(prototype.id + '-CmbTypeprocesa').getValue();
         var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue();
-
+        //
+        if (["PBDI", "CRDO"].includes(CmbTypeprocesa)) {
+             txtFilterDateFrom = Ext.getCmp(prototype.id + '-cmbDateFromYearProcesador').getValue() +""+ Ext.getCmp(prototype.id + '-cmbDateFromMonthProcesador').getValue();
+             txtFilterDateTo = Ext.getCmp(prototype.id + '-cmbDateToYearProcesador').getValue() +""+ Ext.getCmp(prototype.id + '-cmbDateToMonthProcesador').getValue();
+        } else {
+             txtFilterDateFrom = Ext.getCmp(prototype.id + '-txtFilterDateFrom').getRawValue();
+             txtFilterDateTo = Ext.getCmp(prototype.id + '-txtFilterDateTo').getRawValue();
+        }
         me.beanTMP.IN_OPTION = cmbFecFiltro;
         me.beanTMP.IN_TYPEPROCES = CmbTypeprocesa;
         me.beanTMP.IN_DATETO = txtFilterDateTo;
@@ -334,7 +365,7 @@ Ext.define('Ext.Praxis.controller.payments.DownloadThePaymentFiles.DownloadThePa
     },
     onPagingBeforeChange01: function (obj, page, opts) {
         var me = this;
-        obj.store.proxy.extraParams =  me.beanTM;
+        obj.store.proxy.extraParams = me.beanTM;
     },
     viewDataEntry_clickHandler: function (grid, rowIndex, colIndex) {
         var me = this;
@@ -359,10 +390,7 @@ Ext.define('Ext.Praxis.controller.payments.DownloadThePaymentFiles.DownloadThePa
                 type = Ext.String.trim(rec.data.A4719TYPE);
             }
 
-
-
-
-            me.beanDownload.IN_DATETO = rec.data.A4719FCARG;
+            me.beanDownload.IN_DATETO = ["PBDI", "CRDO"].includes(rec.data.A4719TYPE) ? rec.data.A4719PERIO : rec.data.A4719FCARG;
             me.beanDownload.IN_TYPEPROCES = rec.data.A4719TYPE;
             me.beanDownload.IN_PROCESADOR = type;
             me.exportFiles(prototype.url + '/DownloadFiles_python?beanString=' + encodeURI(JSON.stringify(me.beanDownload)));
