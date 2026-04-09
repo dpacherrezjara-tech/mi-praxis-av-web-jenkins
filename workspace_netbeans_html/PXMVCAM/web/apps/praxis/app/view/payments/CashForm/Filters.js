@@ -379,11 +379,12 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Filters', {
                                             store: {
                                                 fields: ['code', 'name'],
                                                 data: [
+                                                    {code: '', name: 'All'},
                                                     {code: 'S', name: 'SALES'},
-                                                    {code: 'D', name: 'DEBITS'},
+                                                    {code: 'D', name: 'ADM'},
                                                     {code: 'R', name: 'REFUND'},
-                                                    {code: 'C', name: 'CHBCK'},
-                                                    {code: 'A', name: 'ACREDIT'}
+                                                    {code: 'C', name: 'ACM'},
+                                                    {code: 'A', name: 'AJUST'}
                                                 ]
                                             },
                                             margin: '0 10 0 0'
