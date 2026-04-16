@@ -117,40 +117,90 @@ Ext.define('Ext.Praxis.controller.payments.ProcessLogger.ProcessDataEntryControl
         const me = this;
         let notifier = new AWN();
         const form = Ext.getCmp(prototype.idProcess + '-formPRO');
+
         if (form.isValid()) {
             form.setLoading(true);
             const file = Ext.getCmp(prototype.idProcess + '-fileProvision').fileInputEl.dom.files[0];
             let nameFile = file.name;
+
             global.readExcelFile(file, async (json) => {
                 try {
-                    json = json.map(x => ({
-                            FILENAM: nameFile,
-                            ...x
-                        }));
-                    const tmp = await global.loadRecordsOnTable('PRAXISMP', 'XTEMPO', json);
 
+                    // ===== VALIDACION PREVIA =====
+
+                    // 1. Al menos 1 fila de datos
+                    if (!json || json.length === 0) {
+                        notifier.alert('File has no data rows');
+                        return;
+                    }
+
+                    // 2. Validar headers requeridos
+                    const requiredHeaders = ['ACTION', 'REFER', 'VALDATE'];
+                    const fileHeaders = Object.keys(json[0]);
+                    const missingHeaders = requiredHeaders.filter(h => !fileHeaders.includes(h));
+
+                    if (missingHeaders.length > 0) {
+                        notifier.alert('Missing columns: ' + missingHeaders.join(', '));
+                        return;
+                    }
+
+                    // 3. Validar que ACTION solo tenga valores permitidos
+                    const validActions = ['P', 'U', 'B'];
+                    const invalidRows = json
+                        .map((row, i) => ({ row: i + 2, action: row.ACTION }))
+                        .filter(x => !validActions.includes(String(x.action).trim().toUpperCase()));
+
+                    if (invalidRows.length > 0) {
+                        notifier.alert(
+                            'Invalid ACTION values at rows: ' +
+                            invalidRows.map(x => x.row).join(', ') +
+                            '<br>Allowed: P, U, B'
+                        );
+                        return;
+                    }
+
+                    // 4. Validar que REFER y VALDATE no estén vacíos
+                    const emptyRows = json
+                        .map((row, i) => ({ row: i + 2, refer: row.REFER, valdate: row.VALDATE }))
+                        .filter(x => !x.refer || String(x.refer).trim() === '' ||
+                                     !x.valdate || String(x.valdate).trim() === '');
+
+                    if (emptyRows.length > 0) {
+                        notifier.alert(
+                            'Empty REFER or VALDATE at rows: ' +
+                            emptyRows.map(x => x.row).join(', ')
+                        );
+                        return;
+                    }
+
+                    // ===== FIN VALIDACION =====
+
+                    json = json.map(x => ({
+                        FILENAM: nameFile,
+                        ...x
+                    }));
+
+                    const tmp = await global.loadRecordsOnTable('PRAXISMP', 'XTEMPO', json);
                     const res = await me.request.post('/executeProvision', {
                         IN_CUUID: tmp.cuuid,
                         IN_FUUID: tmp.fuuid
                     });
-                    console.log("res: ", res);
 
                     const data = res.data;
-                    console.log("data: ", data);
-
                     if (data && data.STATUS === true) {
                         notifier.success('Provision Started');
                     } else {
                         notifier.alert('Provision Failed');
                     }
+
                 } catch (e) {
                     console.error(e);
                     notifier.alert('Error on process');
                 } finally {
                     form.setLoading(false);
                 }
-
             });
+
         } else {
             notifier.alert('Select file');
         }
