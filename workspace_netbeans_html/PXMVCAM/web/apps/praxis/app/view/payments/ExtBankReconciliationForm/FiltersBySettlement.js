@@ -161,7 +161,7 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.FiltersBySettleme
                                         fields: ['code', 'name'],
                                         data: [
                                             ['PRDA', 'Processing Date'],
-                                            ['ADATE', 'Payment Date']
+                                            ['FLIQUIDACI', 'Payment Date']
                                         ]
                                     }),
                                     labelWidth: 60,
@@ -290,7 +290,8 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.FiltersBySettleme
                                         data: [
                                             ['', 'All'],
                                             ['1', 'Match'],
-                                            ['3', 'Settlement w/o Statement'],
+                                            ['2', 'Settlement w/o Statement'],
+                                            ['3', 'Settlement w/o Sales'],
                                             ['4', 'Match Diff.'],
                                             ['5', 'Match Manual'],
                                             ['6', 'Match Forced']

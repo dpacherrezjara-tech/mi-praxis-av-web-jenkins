@@ -32,13 +32,7 @@ public class A2290Filter extends A2290 {
     public double IMPORTECeba = 0;
     public double origSVFOP = 0;
     public double VFOP = 0;
-    public String tipo = "";
     public String IMPORTE = "";
-    public String IN_CODIGO = "";
-    public String IN_CORRL = "";
-    public String IN_MONEDA = "";
-    public String IN_FLIQUIDACI = "";
-    public String IN_CCUSTPRO = "";
     public String IN_CODPRO = "";
     public String IN_DATEFROM = "";
     public String IN_DATETO = "";
@@ -172,7 +166,6 @@ public class A2290Filter extends A2290 {
     public String IN_TTRAN = "";
 
     public int TRANL = 0;
-    public double  IN_IMPORTE = 0;
     public String IN_DATECI = "";
     public String IN_DATEC = "";
     public String IN_TRANCI = "";
@@ -1076,6 +1069,7 @@ public class A2290Filter extends A2290 {
     public String O_EXCEPTION_CODE;
 
     public List<DetalleConciliacion> listaDetalles = new ArrayList<>();
+    public String tipo;
     public static class DetalleConciliacion {
         public String SCOUNTRY;
         public String SCURRENCY;
@@ -1188,7 +1182,13 @@ public class A2290Filter extends A2290 {
     public String HOSEND = "";
     public String FERECV = "";
     public String HORECV = "";
-    public String IN_FECFILTRO;
+    public String IN_FECFILTRO  = "";
+    public String IN_CCUSTPRO = "";
+    public String IN_FLIQUIDACI = "";
+    public String IN_MONEDA = "";
+    public String IN_CORRL = "";
+    public String IN_CODIGO = "";
+    public double IN_IMPORTE = 0;
 
     public String getVariable() {
         return BANDOC;

@@ -62,7 +62,8 @@ Ext.define('Ext.Praxis.view.payments.ExtBankReconciliationForm.Grids.SettlementD
                     metaData.style = "text-align:center;font-weight:bold;background-color:#8EDFB3;";
                     const opts = {
                         '1': 'Match',
-                        '3': 'Settlement w/o Settlement',
+                        '2': 'Settlement w/o Statement',
+                        '3': 'Statement w/o Settlement',
                         '4': 'Match Difference',
                         '5': 'Match Manual'
                     };
