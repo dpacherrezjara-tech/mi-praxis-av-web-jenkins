@@ -33,7 +33,8 @@ Ext.define('Ext.Praxis.controller.panel.PerPro.PerProController', {
             fields: ['code', 'name'],
             data: [
                 ["1", "User"],
-                ["2", "Program Id"]
+                ["2", "Program Id"],
+                ["3","Client"]
             ]
         }));
         var cboModuleGroup = Ext.getCmp(prototype.id + '-cboModuleGroup');
@@ -83,13 +84,13 @@ Ext.define('Ext.Praxis.controller.panel.PerPro.PerProController', {
     // <editor-fold defaultstate="collapsed" desc="Options">
     btnSearch_click: function(obj, e) {
         var option = Ext.getCmp(prototype.id+'-codigo-option').getValue();
-        if (option==='') {
-            this.msjAlert='Enter data';
-            global.Msg({
-                msg: this.msjAlert
-            });
-            return false;
-        }
+//        if (option==='') {
+//            this.msjAlert='Enter data';
+//            global.Msg({
+//                msg: this.msjAlert
+//            });
+//            return false;
+//        }
         this.setFormatParameter();
         this.setGridData();
     },

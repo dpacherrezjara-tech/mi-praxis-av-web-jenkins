@@ -64,6 +64,9 @@ Ext.define('Ext.Praxis.view.panel.PerProForm.Info', {
                                         },
                                         items: [
                                             { text:'User', dataIndex: 'USR', type: 'string', width: 100, align: 'C' },
+                                            { text:'Client', dataIndex: 'CITY', type: 'string', width: 100, align: 'C' },
+                                            { text:'Placa', dataIndex: 'CCUST', type: 'string', width: 100, align: 'C' },
+                                            { text:'Modul', dataIndex: 'MODUL', type: 'string', width: 100, align: 'C' },
                                             { text:'Program', dataIndex: 'NPROG', type: 'string', width: 100, align: 'C' },
                                             { text:'Description', dataIndex: 'PROG', type: 'string', width: 200, align: 'L' },
                                             { text: 'Authorization',

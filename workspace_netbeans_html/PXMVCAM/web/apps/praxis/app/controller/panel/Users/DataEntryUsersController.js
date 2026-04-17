@@ -49,6 +49,12 @@ Ext.define('Ext.Praxis.controller.panel.Users.DataEntryUsersController',{
         console.log(rec);
         this.setValue('txtUSR', rec.get('USR'));
         this.setValue('cboCity', rec.get('CITY'));
+        this.setValue('txtCargo', rec.get('CARGO'));
+        this.setValue('txtDESC', rec.get('DESC1'));
+        this.setValue('txtNOM', rec.get('NOM').trim());
+        this.setValue('txtAPE', rec.get('APE').trim());
+        this.setValue('txtCREMP', rec.get('CREMP').trim());
+        this.setValue('txtCODEM', rec.get('CODEM').trim());
         Ext.getCmp(prototype.id+'-chkStatus').setValue(rec.get('STAT') === 'ACTIVO' ? true : false);
         
         // <editor-fold defaultstate="collapsed" desc="ControlData">
@@ -189,6 +195,7 @@ Ext.define('Ext.Praxis.controller.panel.Users.DataEntryUsersController',{
                         msg: res.sesion
                     });
                 }
+                mod.limpiarCampos();
                 Ext.getCmp('DataEntryUsersForm').unmask();
             },
             failure: function(response, opts) {
@@ -217,14 +224,24 @@ Ext.define('Ext.Praxis.controller.panel.Users.DataEntryUsersController',{
         var DESC = this.getValue('txtDESC');
         var CITY = this.getValue('cboCity');
         var chkExpiredDate = Ext.getCmp(prototype.id+'-chkExpiredDate').getValue() ? 'true' : 'false';
-        var DTEXPIRED = Ext.util.Format.date(Ext.getCmp(prototype.id+'-txtExpDate').getValue(), 'Ymd')        
+        var DTEXPIRED = Ext.util.Format.date(Ext.getCmp(prototype.id+'-txtExpDate').getValue(), 'Ymd');
         var chkPass = Ext.getCmp(prototype.id+'-chkPass').getValue() ? 'true' : 'false';
         var txtPass = this.getValue('txtPass');
         var strOption = this.p.action;
         var STAT =  Ext.getCmp(prototype.id+'-chkStatus').getValue() ? 'A' : 'L';
+        var CARGO = this.getValue('txtCargo');
+        var NOM = this.getValue('txtNOM').trim();
+        var APE = this.getValue('txtAPE').trim();
+        var CREMP = this.getValue('txtCREMP').trim();
+        var CODEM = this.getValue('txtCODEM').trim();
         this.beanOption = {
             USR: USR,
+            NOM: NOM,
+            APE: APE,
+            CREMP: CREMP,
+            CODEM: CODEM,
             DESC: DESC,
+            CARGO: CARGO,
             CITY: CITY,
             chkExpiredDate: chkExpiredDate,
             DTEXPIRED: DTEXPIRED,
@@ -238,7 +255,20 @@ Ext.define('Ext.Praxis.controller.panel.Users.DataEntryUsersController',{
     },
     limpiarCampos: function() {
                      
-        //this.setValue("txtProcessDate", "");
+        this.setValue("txtUSR", "");
+        this.setValue("txtDESC", "");
+        this.setValue("txtUSR", "");
+        this.setValue("chkExpiredDate", "false");
+        this.setValue("txtExpDate", "");
+        this.setValue("chkPass", "false");
+        this.setValue("txtPass", "");
+        this.setValue("chkStatus", "false");
+        this.setValue("txtCargo", "");
+        this.setValue("txtNOM", "");
+        this.setValue("txtAPE", "");
+        this.setValue("txtCREMP", "");
+        this.setValue("txtCODEM", "");
+        
     },
     onUpperValue: function(field, newValue, oldValue) {
         field.setValue(newValue.toUpperCase());

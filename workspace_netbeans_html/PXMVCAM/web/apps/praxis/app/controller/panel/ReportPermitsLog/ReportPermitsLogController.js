@@ -1,6 +1,6 @@
-Ext.define('Ext.Praxis.controller.panel.Users.UsersController', {
+Ext.define('Ext.Praxis.controller.panel.ReportPermitsLog.ReportPermitsLogController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.UsersController',
+    alias: 'controller.ReportPermitsLogController',
     // <editor-fold defaultstate="collapsed" desc="Variables Globales">
     fecha: new Date(),
     searchParams: {},    
@@ -8,8 +8,8 @@ Ext.define('Ext.Praxis.controller.panel.Users.UsersController', {
     // </editor-fold>
     init: function(view) {
         // <editor-fold defaultstate="collapsed" desc="prototype">
-        prototype.id = 'UsersForm';
-        prototype.url = CONTEXTPATH+'/Users';
+        prototype.id = 'ReportPermitsLogForm';
+        prototype.url = CONTEXTPATH+'/ReportPermitsLog';
         prototype.widthContenedor = 1300;
         prototype.widthGrid = 863;
         // </editor-fold>
@@ -33,34 +33,13 @@ Ext.define('Ext.Praxis.controller.panel.Users.UsersController', {
             fields: ['code', 'name'],
             data: [
                 ["1", "User"],
-                ["2", "Client"]
+                ["2", "Cod. Programa"],
+                ["3", "Cliente"]
             ]
         }));
     },
     // </editor-fold>
     
-    // <editor-fold defaultstate="collapsed" desc="Info">
-    onEditClick: function(grid, rowIndex, colIndex) {
-        var store = grid.getStore();
-        var rec = store.getAt(rowIndex);
-        console.log(rec);
-        this.winDataEntry('U', rec);
-    },
-    winDataEntry: function(action, rec) {
-        action = action === null || action === undefined ? 'U' : action;
-        rec = rec === null || rec === undefined ? {} : rec;
-        Ext.create('Ext.Praxis.view.panel.UsersForm.DataEntry', {
-            id: 'DataEntryUsersForm',
-            params: {
-                action: action,
-                rec: rec
-            }
-        }).show();
-    },
-    // </editor-fold>
-    
-    // <editor-fold defaultstate="collapsed" desc="onViewClick">
-    // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Options">
     btnSearch_click: function(obj, e) {
@@ -112,9 +91,6 @@ Ext.define('Ext.Praxis.controller.panel.Users.UsersController', {
         
         // </editor-fold>
     },
-    btnAdd_click: function() {
-        this.winDataEntry('I');
-    },
     btnBack_click: function() {
         if (Ext.getCmp(prototype.id+'-boxMainData').isVisible()) {
             var heightMenu = 400;
@@ -130,20 +106,24 @@ Ext.define('Ext.Praxis.controller.panel.Users.UsersController', {
         
         searchParams = { 
                 group: group,
-                option: option
+                option: option,
+                IN_FECHA_PROCESO : Ext.util.Format.date(Ext.getCmp(prototype.id+'-txtDateFrom').getValue(), 'Ymd'),
+                IN_FECHA_ACUSE : Ext.util.Format.date(Ext.getCmp(prototype.id+'-txtDateTo').getValue(), 'Ymd')
             };
         
         // <editor-fold defaultstate="collapsed" desc="asignación">
-        _path = prototype.url+'/getXLSX?' +
+        _path = prototype.url +'/getXLSX?' +
                 'group='+searchParams.group+'&' +
-                'option='+searchParams.option;
+                'option='+searchParams.option+'&' +
+                'IN_FECHA_PROCESO='+searchParams.IN_FECHA_PROCESO+'&' +
+                'IN_FECHA_ACUSE='+searchParams.IN_FECHA_ACUSE;
         // </editor-fold>
     },
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="setGridData">
     setGridData: function() {
-        var storeGridDatas = Ext.create('Ext.Praxis.store.panel.Users.GridData', {
+        var storeGridDatas = Ext.create('Ext.Praxis.store.panel.ReportPermitsLog.GridData', {
             proxy: {
                 url: prototype.url+'/search'
             },
