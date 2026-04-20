@@ -205,8 +205,18 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
             Ext.getCmp(prototype.id + '-panelGridDataMain').show();
             Ext.getCmp(prototype.id + '-boxContenedorGrid').hide();
             Ext.getCmp(prototype.id + '-cmbTabla').setValue('');
-
+            Ext.getCmp(prototype.id + '-viewFase1').hide();
             this.obtainData('MPF101', '', 0);
+        } else if (Ext.getCmp(prototype.id + '-cmbFunction').getValue() === 'MPF060') {
+            Ext.getCmp(prototype.id + '-cmbDateFromDay').setDisabled(true)
+            Ext.getCmp(prototype.id + '-cmbDateToDay').setDisabled(true)
+            Ext.getCmp(prototype.id + '-boxFunctions').hide()
+            Ext.getCmp(prototype.id + '-btnAdd').hide()
+            Ext.getCmp(prototype.id + '-panelGridDataMain').hide();
+            Ext.getCmp(prototype.id + '-boxContenedorGrid').hide();
+            Ext.getCmp(prototype.id + '-cmbTabla').setValue('');
+            Ext.getCmp(prototype.id + '-viewFase1').show();
+//            this.obtainData('MPF101', '', 0);
         } else {
             Ext.getCmp(prototype.id + '-boxFunctions').hide()
             Ext.getCmp(prototype.id + '-panelGridDataMain').hide();
@@ -214,6 +224,7 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
             Ext.getCmp(prototype.id + '-btnAdd').hide();
             Ext.getCmp(prototype.id + '-cmbDateFromDay').setDisabled(false)
             Ext.getCmp(prototype.id + '-cmbDateToDay').setDisabled(false)
+            Ext.getCmp(prototype.id + '-viewFase1').hide();
         }
 
     },
@@ -460,10 +471,23 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
 //                ["TAX", "Match Tax"],
 //                ["ADM", "Generation of ADM"],
 //                ["QATPCO", "Match Q"],
-                ["MPF101", "Mass Conciliation"],
+                ["MPF060", "Mass Conciliation - Fase 1"],
+                ["MPF101", "Mass Conciliation - Fase 2"]
 //                ["FORCE", "Match Force"],
 //                ["XO", "Tax XO"],
 //                ["F31", "Tax F31"]
+            ]}));
+
+        var cmbRulesFase1 = Ext.getCmp(prototype.id + '-cmbRulesFase1');
+        cmbRulesFase1.bindStore(Ext.create('Ext.data.ArrayStore', {
+            autoLoad: false,
+            fields: ['code', 'name'],
+            data: [
+                ['', 'Select'],
+                ["1", "Regla 1"],
+                ["2", "Regla 2"],
+                ["3", "Regla 3"],
+                ["4", "Regla 4"]
             ]}));
 
         var cmbTabla = Ext.getCmp(prototype.id + '-cmbTabla');
@@ -2610,5 +2634,78 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
                 this.btnSearch_click();
                 break;
         }
+    },
+    executeRulesFase1: function () {
+        console.log('Ejecutando executeRulesFase1...');
+
+        var vDateFrom = Ext.getCmp(prototype.id + '-dtFromValueDate');
+        var vDateTo = Ext.getCmp(prototype.id + '-dtToValueDate');
+        var vTypeRule = Ext.getCmp(prototype.id + '-cmbRulesFase1');
+
+        var valRule = vTypeRule.getValue();
+        var valDateFrom = vDateFrom.getValue();
+        var valDateTo = vDateTo.getValue();
+
+        if (!valRule) {
+            Ext.Msg.alert('Alerta', 'Por favor, seleccione una Regla a Escoger.');
+            return;
+        }
+
+        if (!vDateFrom.isValid() || !valDateFrom) {
+            Ext.Msg.alert('Alerta', 'Por favor, ingrese una fecha válida en "From".');
+            return;
+        }
+
+        if (!vDateTo.isValid() || !valDateTo) {
+            Ext.Msg.alert('Alerta', 'Por favor, ingrese una fecha válida en "To".');
+            return;
+        }
+
+        if (valDateFrom > valDateTo) {
+            Ext.Msg.alert('Alerta', 'La fecha "From" no puede ser mayor que "To".');
+            return;
+        }
+
+        var formatoDateFrom = Ext.Date.format(valDateFrom, 'Ymd');
+        var formatoDateTo = Ext.Date.format(valDateTo, 'Ymd');
+
+        var bean = {};
+
+        bean.RULE = valRule;
+        bean.DFROM = formatoDateFrom;
+        bean.DTO = formatoDateTo;
+
+        var beanString = JSON.stringify(bean);
+
+        var searchParamsFase1 = {
+            beanString: beanString,
+            bean: bean
+        };
+
+        console.log("Datos listos para enviar:", searchParamsFase1);
+
+        Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
+
+        Ext.Ajax.request({
+            url: prototype.url + '/executeFase1',
+            params: {beanString: beanString},
+            method: 'POST',
+            success: function (response, options) {
+                Ext.getCmp(prototype.id + '-contentInfo').unmask();
+
+                var res = Ext.JSON.decode(response.responseText);
+
+                global.Msg({
+                    msg: res.mensaje
+                });
+            },
+            failure: function (response, options) {
+                Ext.getCmp(prototype.id + '-contentInfo').unmask();
+
+                Ext.Msg.alert('Error de Servidor', 'Ocurrió un problema al ejecutar la regla. Verifique su conexión o intente más tarde.');
+
+                console.error("Fallo en AJAX executeFase1: ", response);
+            }
+        });
     }
 });

@@ -1999,7 +1999,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Filters', {
                                                 {
                                                     xtype: 'checkboxfield',
                                                     margin: '5 0 0 5',
-                                                        id: prototype.id + '-chkIntercompany',
+                                                    id: prototype.id + '-chkIntercompany',
                                                     boxLabel: '<b>Intercompany</b>',
                                                     checked: false,
                                                     hidden: false,
@@ -2123,7 +2123,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Filters', {
                     id: prototype.id + '-panelFilters3',
                     border: false,
                     layout: 'column',
-                    width: 1400,
+                    width: 1800,
                     margin: '0 0 0 200',
                     defaults: {
                         //labelStyle: 'font-weight:bold;',
@@ -2204,7 +2204,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Filters', {
                             labelWidth: 70,
                             width: 275,
                             anchor: '100%',
-                            margin: '0 0 0 410',
+                            margin: '0 0 0 350',
                             listeners: {
                                 change: 'ChangeFunction',
                                 args: ['Primario']
@@ -2219,6 +2219,102 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Filters', {
 //                                    )
 
                         },
+                        {
+                            xtype: 'container',
+                            layout: 'vbox',
+                            hidden: true,
+                            id: prototype.id + '-viewFase1',
+                            margin: '10 10 10 10',
+                            width: '1500',
+                            style: {
+                                backgroundColor: '#f0f4f8', 
+                                padding: '15px',           
+                                border: '1px solid #d0d7de',
+                                borderRadius: '5px' 
+                            },
+                            items: [
+                                {
+                                    xtype: 'container',
+                                    layout: 'hbox', 
+                                    margin: '0 0 20 0', 
+                                    items: [
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbRulesFase1',
+                                            hidden: false,
+                                            fieldLabel: 'Reglas a Escoger',
+                                            labelAlign: 'left',
+                                            fieldStyle: 'text-align: left;',
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            editable: false,
+                                            autoSelect: false,
+                                            enableKeyEvents: true,
+                                            caseSensitive: true,
+                                            valueField: 'code',
+                                            displayField: 'name',
+                                            emptyText: 'Select',
+                                            labelWidth: 100,
+                                            width: 240,
+                                            margin: '25 40 0 0' 
+                                        },
+                                        {
+                                            xtype: 'fieldcontainer', 
+                                            fieldLabel: 'Value Date',
+                                            labelAlign: 'top',
+                                            labelStyle: 'text-align: center; font-weight: bold;',
+                                            layout: 'hbox',
+                                            items: [
+                                                {
+                                                    xtype: 'datefield',
+                                                    id: prototype.id + '-dtFromValueDate',
+                                                    fieldLabel: 'From',
+                                                    labelAlign: 'left',
+                                                    labelWidth: 40,
+                                                    width: 170,
+                                                    format: 'd/m/Y',
+                                                    emptyText: 'dd/mm/yyyy',
+                                                    margin: '0 20 0 0'
+                                                },
+                                                {
+                                                    xtype: 'datefield',
+                                                    id: prototype.id + '-dtToValueDate',
+                                                    fieldLabel: 'To',
+                                                    labelAlign: 'left',
+                                                    labelWidth: 25,
+                                                    width: 155,
+                                                    format: 'd/m/Y',
+                                                    emptyText: 'dd/mm/yyyy'
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    xtype: 'container',
+                                    width: '100%',
+                                    layout: {
+                                        type: 'hbox',
+                                        pack: 'center'
+                                    },
+                                    items: [
+                                        {
+                                            xtype: 'button',
+                                            id: prototype.id + '-btnEjecutarFase1',
+                                            text: 'Ejecutar',
+                                            width: 100,
+                                            height: 28,
+                                            style: {
+                                                fontWeight: 'bold'
+                                            },
+                                            listeners: {
+                                                click: 'executeRulesFase1'
+                                            },
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
                     ]
                 }
                 // </editor-fold>

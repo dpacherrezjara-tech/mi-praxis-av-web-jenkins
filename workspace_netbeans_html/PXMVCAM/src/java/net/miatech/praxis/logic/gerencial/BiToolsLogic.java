@@ -6,6 +6,7 @@
 package net.miatech.praxis.logic.gerencial;
 
 import java.util.List;
+import net.miatech.beans.FilterFase1;
 import net.miatech.beans.SQP00768;
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.libmiatec.A1248;
@@ -59,5 +60,8 @@ public class BiToolsLogic {
     public SQP00768 executeValuation(SQP00768 filter) throws Exception {
         return businessToolsDAO.executeValuation(filter);
     }
-
+    
+    public FilterFase1 executeFase1(FilterFase1 filter) throws Exception {
+        return businessToolsDAO.executeFase1(filter);
+    }
 }

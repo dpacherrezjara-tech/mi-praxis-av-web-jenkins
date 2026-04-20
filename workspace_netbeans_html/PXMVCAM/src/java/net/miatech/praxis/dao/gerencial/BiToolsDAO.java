@@ -13,6 +13,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+import net.miatech.beans.FilterFase1;
 import net.miatech.beans.SQP00768;
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.libmiatec.A1248;
@@ -1258,6 +1259,57 @@ public class BiToolsDAO {
                         throw new SpringException(e);
                     }
                 }
+                if (cstmt != null) {
+                    try {
+                        cstmt.close();
+                    } catch (SQLException e) {
+                        throw new SpringException(e);
+                    }
+                }
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            } catch (Exception e) {
+            }
+
+            pasarGarbageCollector();
+        }
+
+        return filter;
+    }
+
+    public FilterFase1 executeFase1(FilterFase1 filter) throws SQLException, Exception {
+
+        CallableStatement cstmt = null;
+        String SQLCLL01 = "";
+        
+        SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS555(?,?,?,?,?)}";
+
+        Connection cnx = null;
+
+        try {
+
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, filter.RULE);
+            cstmt.setString(2, filter.DFROM);
+            cstmt.setString(3, filter.DTO);
+
+            cstmt.setInt(4, 0);
+            cstmt.setString(5, "");
+
+            cstmt.registerOutParameter(4, Types.INTEGER); 
+            cstmt.registerOutParameter(5, Types.VARCHAR);
+
+            cstmt.execute();
+
+            filter.sqlCode = cstmt.getInt(4);
+            filter.strMSG = cstmt.getString(5);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            filter.strMSG = e.getMessage();
+        } finally {
+            try {
                 if (cstmt != null) {
                     try {
                         cstmt.close();
