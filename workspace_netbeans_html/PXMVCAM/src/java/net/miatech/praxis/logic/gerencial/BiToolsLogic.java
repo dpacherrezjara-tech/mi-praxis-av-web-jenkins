@@ -7,6 +7,7 @@ package net.miatech.praxis.logic.gerencial;
 
 import java.util.List;
 import net.miatech.beans.FilterFase1;
+import net.miatech.beans.RuleFase1Bean;
 import net.miatech.beans.SQP00768;
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.libmiatec.A1248;
@@ -63,5 +64,9 @@ public class BiToolsLogic {
     
     public FilterFase1 executeFase1(FilterFase1 filter) throws Exception {
         return businessToolsDAO.executeFase1(filter);
+    }
+    
+    public List<RuleFase1Bean> getRulesFase1(String ccust) throws Exception {
+        return businessToolsDAO.getRulesFase1(ccust);
     }
 }

@@ -477,18 +477,56 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
 //                ["XO", "Tax XO"],
 //                ["F31", "Tax F31"]
             ]}));
+        
+        Ext.Ajax.request({
+            url: prototype.url + '/getRulesFase1',
+            method: 'GET',
+            success: function (response) {
+                Ext.getCmp(prototype.id + '-contentInfo').unmask();
+                
+                var res = Ext.JSON.decode(response.responseText);
+                
+                if (res.success) {
+                    // Creamos el store con los datos de la DB
+                    var storeRules = Ext.create('Ext.data.Store', {
+                        fields: ['code', 'name', 'description'],
+                        data: res.data // Aquí viene la lista devuelta por Java
+                    });
 
-        var cmbRulesFase1 = Ext.getCmp(prototype.id + '-cmbRulesFase1');
-        cmbRulesFase1.bindStore(Ext.create('Ext.data.ArrayStore', {
-            autoLoad: false,
-            fields: ['code', 'name'],
-            data: [
-                ['', 'Select'],
-                ["1", "Regla 1"],
-                ["2", "Regla 2"],
-                ["3", "Regla 3"],
-                ["4", "Regla 4"]
-            ]}));
+                    var cmbRules = Ext.getCmp(prototype.id + '-cmbRulesFase1');
+                    cmbRules.bindStore(storeRules);
+
+                    // 3. AÑADIMOS EL EVENTO 'select' AL COMBOBOX
+                    // Cuando el usuario elige una regla, tomamos la descripción del registro y la mostramos
+                    cmbRules.on('select', function(combo, record) {
+                        var lblDesc = Ext.getCmp(prototype.id + '-lblRuleDesc');
+                        if (record && record.get('description')) {
+                            lblDesc.setValue(record.get('description'));
+                        } else {
+                            lblDesc.setValue('Sin descripción disponible.');
+                        }
+                    });
+                } else {
+                    Ext.Msg.alert('Error', 'No se pudieron cargar las reglas.');
+                }
+            },
+            failure: function() {
+                Ext.getCmp(prototype.id + '-contentInfo').unmask();
+                Ext.Msg.alert('Error', 'Fallo de conexión al cargar reglas.');
+            }
+        });
+
+//        var cmbRulesFase1 = Ext.getCmp(prototype.id + '-cmbRulesFase1');
+//        cmbRulesFase1.bindStore(Ext.create('Ext.data.ArrayStore', {
+//            autoLoad: false,
+//            fields: ['code', 'name'],
+//            data: [
+//                ['', 'Select'],
+//                ["1", "Regla 1"],
+//                ["2", "Regla 2"],
+//                ["3", "Regla 3"],
+//                ["4", "Regla 4"]
+//            ]}));
 
         var cmbTabla = Ext.getCmp(prototype.id + '-cmbTabla');
         cmbTabla.bindStore(Ext.create('Ext.data.ArrayStore', {

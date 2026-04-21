@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import net.miatech.beans.FilterFase1;
+import net.miatech.beans.RuleFase1Bean;
 import net.miatech.beans.SQP00768;
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.libmiatec.A1248;
@@ -1326,4 +1327,47 @@ public class BiToolsDAO {
 
         return filter;
     }
+    
+    public List<RuleFase1Bean> getRulesFase1(String ccust) throws Exception {
+        List<RuleFase1Bean> list = new ArrayList<>();
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        Connection cnx = null;
+        
+        String sql = "{CALL " + session.getMainLibrary() + "MP.MPS585(?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(sql);
+
+            cstmt.setString(1, ccust);
+            cstmt.setInt(2, 0);
+            cstmt.setString(3, "");
+
+            cstmt.registerOutParameter(2, Types.INTEGER);
+            cstmt.registerOutParameter(3, Types.VARCHAR);
+
+            cstmt.execute();
+            
+            // Leemos el cursor devuelto por el SP
+            rst = cstmt.getResultSet();
+            while (rst != null && rst.next()) {
+                RuleFase1Bean bean = new RuleFase1Bean();
+                bean.code = rst.getString("CODE");
+                bean.name = rst.getString("NAME");
+                bean.description = rst.getString("DESCRIPTION");
+                list.add(bean);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SpringException(e);
+        } finally {
+            // Cierra rst, cstmt y cnx aquí (igual que en tus otros DAOs)
+            try { if (rst != null) rst.close(); } catch (Exception e) {}
+            try { if (cstmt != null) cstmt.close(); } catch (Exception e) {}
+            try { session.getCNXIBMDB2().closeIBMDB2Connection(cnx); } catch (Exception e) {}
+        }
+        return list;
+    }
+    
 }

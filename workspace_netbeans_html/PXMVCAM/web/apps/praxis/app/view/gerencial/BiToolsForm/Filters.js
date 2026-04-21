@@ -2225,18 +2225,18 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Filters', {
                             hidden: true,
                             id: prototype.id + '-viewFase1',
                             margin: '10 10 10 10',
-                            width: '1500',
+                            width: '1700',
                             style: {
-                                backgroundColor: '#f0f4f8', 
-                                padding: '15px',           
+                                backgroundColor: '#f0f4f8',
+                                padding: '15px',
                                 border: '1px solid #d0d7de',
-                                borderRadius: '5px' 
+                                borderRadius: '5px'
                             },
                             items: [
                                 {
                                     xtype: 'container',
-                                    layout: 'hbox', 
-                                    margin: '0 0 20 0', 
+                                    layout: 'hbox',
+                                    margin: '0 0 20 0',
                                     items: [
                                         {
                                             xtype: 'combo',
@@ -2256,14 +2256,32 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Filters', {
                                             emptyText: 'Select',
                                             labelWidth: 100,
                                             width: 240,
-                                            margin: '25 40 0 0' 
+                                            margin: '35 0 0 0'
                                         },
                                         {
-                                            xtype: 'fieldcontainer', 
+                                            xtype: 'container',
+                                            width: '250',
+                                            margin: '0 0 20 10',
+                                            items: [
+                                                {
+                                                    xtype: 'displayfield',
+                                                    id: prototype.id + '-lblRuleDesc',
+                                                    fieldLabel: 'Detalle de la Regla',
+                                                    labelAlign: 'top',
+                                                    labelStyle: 'font-weight: bold; color: #333;',
+                                                    fieldStyle: 'color: #0056b3; font-style: italic; white-space: normal; background-color: #e9ecef; padding: 10px; border-radius: 4px;',
+                                                    value: 'Seleccione una regla para ver su descripción...',
+                                                    width: '200'
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            xtype: 'fieldcontainer',
                                             fieldLabel: 'Value Date',
                                             labelAlign: 'top',
                                             labelStyle: 'text-align: center; font-weight: bold;',
                                             layout: 'hbox',
+                                            margin: '10 0 0 10',
                                             items: [
                                                 {
                                                     xtype: 'datefield',
