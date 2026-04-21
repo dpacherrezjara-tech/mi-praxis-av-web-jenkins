@@ -2708,6 +2708,8 @@ Ext.define('Ext.Praxis.controller.gerencial.BiTools.BiToolsController', {
         var formatoDateTo = Ext.Date.format(valDateTo, 'Ymd');
 
         var bean = {};
+        
+        valRule = parseInt(valRule, 10).toString();
 
         bean.RULE = valRule;
         bean.DFROM = formatoDateFrom;
