@@ -90,6 +90,7 @@ public class A2295Filter  extends A2295{
     public String FPAGO = "";
     public String FPAGOP = "";
     public String COREP = "";
+    public String CORPP = "";
     
                 
     public long lngDays = 0;
