@@ -98,6 +98,29 @@ Ext.define('Ext.Praxis.view.panel.UsersForm.DataEntry',{
                             listeners:{
                                 change: 'onUpperValue'
                             }
+                        },
+                        { xtype: 'tbspacer', width: 7 },
+                        {
+                            xtype: 'label',
+                            text: 'Cargo: ',
+                            style: 'font-weight:bold;color:#000;',
+                            width: 80
+                        },
+                        {
+                            xtype: 'textfield',
+                            id: prototype.id + '-txtCargo',                            
+                            text: '',
+                            maxLength: 30,
+                            enforceMaxLength: true,
+                            //style: 'font-weight:bold;color:red;',
+                            width: 250,
+                            autoEl: {
+                                tag: 'label',
+                                'data-qtip': 'Mandatory Field'
+                            },
+                            listeners:{
+                                change: 'onUpperValue'
+                            }
                         }
                     ]
                 },
@@ -112,7 +135,119 @@ Ext.define('Ext.Praxis.view.panel.UsersForm.DataEntry',{
                         { xtype: 'tbspacer', width: 7 },
                         {
                             xtype: 'label',
-                            text: 'City: ',
+                            text: 'Nombre: ',
+                            style: 'font-weight:bold;color:#000;',
+                            width: 80
+                        },
+                        {
+                            xtype: 'textfield',
+                            id: prototype.id + '-txtNOM',                            
+                            text: '',
+                            maxLength: 30,
+                            enforceMaxLength: true,
+                            //style: 'font-weight:bold;color:red;',
+                            width: 250,
+                            autoEl: {
+                                tag: 'label',
+                                'data-qtip': 'Mandatory Field'
+                            },
+                            listeners:{
+                                change: 'onUpperValue'
+                            }
+                        },
+                        { xtype: 'tbspacer', width: 7 },
+                        {
+                            xtype: 'label',
+                            text: 'Apellido: ',
+                            style: 'font-weight:bold;color:#000;',
+                            width: 80
+                        },
+                        {
+                            xtype: 'textfield',
+                            id: prototype.id + '-txtAPE',                            
+                            text: '',
+                            maxLength: 30,
+                            enforceMaxLength: true,
+                            //style: 'font-weight:bold;color:red;',
+                            width: 250,
+                            autoEl: {
+                                tag: 'label',
+                                'data-qtip': 'Mandatory Field'
+                            },
+                            listeners:{
+                                change: 'onUpperValue'
+                            }
+                        }
+                    ]
+                },
+                {
+                    xtype: 'panel',
+                    layout: 'hbox' 
+                },
+                {
+                    xtype: 'panel',
+                    layout: 'hbox',
+                    items:[
+                        { xtype: 'tbspacer', width: 7 },
+                        {
+                            xtype: 'label',
+                            text: 'Correo: ',
+                            style: 'font-weight:bold;color:#000;',
+                            width: 80
+                        },
+                        {
+                            xtype: 'textfield',
+                            id: prototype.id + '-txtCREMP',                            
+                            text: '',
+                            maxLength: 30,
+                            enforceMaxLength: true,
+                            //style: 'font-weight:bold;color:red;',
+                            width: 250,
+                            autoEl: {
+                                tag: 'label',
+                                'data-qtip': 'Mandatory Field'
+                            },
+                            listeners:{
+                                change: 'onUpperValue'
+                            }
+                        },
+                        { xtype: 'tbspacer', width: 7 },
+                        {
+                            xtype: 'label',
+                            text: 'Cod. Empleado: ',
+                            style: 'font-weight:bold;color:#000;',
+                            width: 80
+                        },
+                        {
+                            xtype: 'textfield',
+                            id: prototype.id + '-txtCODEM',                            
+                            text: '',
+                            maxLength: 30,
+                            enforceMaxLength: true,
+                            //style: 'font-weight:bold;color:red;',
+                            width: 250,
+                            autoEl: {
+                                tag: 'label',
+                                'data-qtip': 'Mandatory Field'
+                            },
+                            listeners:{
+                                change: 'onUpperValue'
+                            }
+                        }
+                    ]
+                },
+                {
+                    xtype: 'panel',
+                    layout: 'hbox' 
+                },
+                {
+                    xtype: 'panel',
+                    layout: 'hbox',
+                    items:[
+                        { xtype: 'tbspacer', width: 7 },
+                        {
+                            xtype: 'label',
+                            text: 'Client: ',
                             style: 'font-weight:bold;color:#000;',
                             width: 80
                         },
@@ -123,8 +258,7 @@ Ext.define('Ext.Praxis.view.panel.UsersForm.DataEntry',{
                                 fields: ['code', 'name'],
                                 data: [
                                     ["", "- SELECT -"],
-                                    ["MEX", "MEXICO DF"],
-                                    ["LIM", "LIMA"],
+                                    ["MIA", "MIATECH"],
                                     ["AV", "AVIANCA"]
                                 ]
                             }),

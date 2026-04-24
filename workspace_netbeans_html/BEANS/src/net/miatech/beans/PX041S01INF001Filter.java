@@ -16,8 +16,11 @@ public class PX041S01INF001Filter {
     public int VP_TYPEF  =1;
     public String VP_PROGRAM = "";
     // out
+    public String CCUST = "";
     public String USR = "";
+    public String CITY = "";
     public String NPROG = ""; 
+    public String MODUL = ""; 
     public String PERMA = "";
     public String PERML = "";
     public String PERMC = ""; 

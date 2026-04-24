@@ -234,6 +234,7 @@ public class ForecastPaymentDAO {
                 objRtn.SCARCOD1 = rs01.getString("SCARCOD1").trim();
                 objRtn.CCUST = rs01.getString("CCUST").trim();
                 objRtn.CFUENTE = rs01.getString("CFUENTE").trim();
+                objRtn.SDATE = rs01.getString("SDATE").trim();
                 objRtn.SUBFTE = rs01.getString("SUBFTE").trim();
                 objRtn.SCONSOL = rs01.getString("SCONSOL").trim();
                 objRtn.FDESD = rs01.getString("FDESD").trim();
@@ -244,6 +245,7 @@ public class ForecastPaymentDAO {
                 objRtn.FPAGO       = rs01.getString("FPAGO").trim();
                 objRtn.FPAGOP       = rs01.getString("FPAGOP").trim();
                 objRtn.COREP       = rs01.getString("COREP").trim();
+                objRtn.CORPP       = rs01.getString("CORPP").trim();
 
                 objRtn.SVFOPC1 = rs01.getDouble("SUMA_SVFOPC1"); // Si necesitas double, usa getDouble
                 objRtn.SVFOPUSD = rs01.getDouble("SUMA_SVFOPUSD");

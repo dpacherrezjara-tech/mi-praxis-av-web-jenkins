@@ -25,6 +25,7 @@ import net.miatech.beans.A1692Filter;
 import net.miatech.beans.PX041S01INF001Filter;
 import net.miatech.beans.PX075S01INF001Filter;
 import net.miatech.beans.PX076S01INF053Filter;
+import net.miatech.beans.SQP05851Filter;
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.libmiatec.A1007;
 import net.miatech.praxis.classes.ExportUtil;
@@ -69,6 +70,11 @@ public class PerProController extends BaseController {
         PX041S01INF001Filter filter = new PX041S01INF001Filter();
         filter.VP_CCUST = "139";
         filter.VP_APLICA = "PX";
+        filter.page.PAGNUM = 0;
+        filter.page.PAGROW = 0;
+        filter.page.TOTPAG = 0;
+        filter.page.TOTROW = 1;
+        filter.page.PAGINIT = 1;
         
         if(request.getParameter("option")!=null && request.getParameter("group")!=null)
         {
@@ -130,6 +136,16 @@ public class PerProController extends BaseController {
             }
             response = filter.dbException.MESSAGE;
             
+            //LOG INIT
+            SQP05851Filter objLog = new SQP05851Filter();
+            objLog.VP_ACTIO = request.getParameter("strOption").trim();
+            objLog.VP_ID_OPERATOR = request.getParameter("USR").trim();
+            objLog.VP_DESC1 = "PERMITS MANAGEMENT - A:" + filter.VP_PERMA + " L:" + filter.VP_PERML + " C:" + filter.VP_PERMC + " M:" + filter.VP_PERMM + " E:" + filter.VP_PERME + " X:" + filter.VP_PERMX;
+            objLog.VP_OPER = request.getParameter("USR").trim();
+            objLog.VP_NPROG = request.getParameter("NPROG")!= null ? request.getParameter("NPROG").trim() : "";
+            logic.setSQP05851(objLog);
+            //LOG END
+            
         } catch (Exception e) {
             throw new SpringException(e);
         }
@@ -185,31 +201,37 @@ public class PerProController extends BaseController {
             Cell cell00 = row.createCell(0);
             cell00.setCellValue("USR");
             Cell cell01 = row.createCell(1);
-            cell01.setCellValue("NPROG");
+            cell01.setCellValue("CLIENT");
             Cell cell02 = row.createCell(2);
-            cell02.setCellValue("PROG");
+            cell02.setCellValue("PLACA");
             Cell cell03 = row.createCell(3);
-            cell03.setCellValue("PERMA");
+            cell03.setCellValue("MODUL");
             Cell cell04 = row.createCell(4);
-            cell04.setCellValue("PERML");
+            cell04.setCellValue("NPROG");
             Cell cell05 = row.createCell(5);
-            cell05.setCellValue("PERMC");
+            cell05.setCellValue("PROG");
             Cell cell06 = row.createCell(6);
-            cell06.setCellValue("PERMM");
+            cell06.setCellValue("PERMA");
             Cell cell07 = row.createCell(7);
-            cell07.setCellValue("PERME");
+            cell07.setCellValue("PERML");
             Cell cell08 = row.createCell(8);
-            cell08.setCellValue("PERMX");
+            cell08.setCellValue("PERMC");
             Cell cell09 = row.createCell(9);
-            cell09.setCellValue("STAT");
+            cell09.setCellValue("PERMM");
             Cell cell10 = row.createCell(10);
-            cell10.setCellValue("USCR");
+            cell10.setCellValue("PERME");
             Cell cell11 = row.createCell(11);
-            cell11.setCellValue("DTCR");
+            cell11.setCellValue("PERMX");
             Cell cell12 = row.createCell(12);
-            cell12.setCellValue("USUP");
+            cell12.setCellValue("STAT");
             Cell cell13 = row.createCell(13);
-            cell13.setCellValue("DTUP");
+            cell13.setCellValue("USCR");
+            Cell cell14 = row.createCell(14);
+            cell14.setCellValue("DTCR");
+            Cell cell15 = row.createCell(15);
+            cell15.setCellValue("USUP");
+            Cell cell16 = row.createCell(16);
+            cell16.setCellValue("DTUP");
 
             ++vj;
             while (iter.hasNext()) {
@@ -229,21 +251,27 @@ public class PerProController extends BaseController {
                 Cell cel21 = row.createCell(11);
                 Cell cel22 = row.createCell(12);
                 Cell cel23 = row.createCell(13);
+                Cell cel24 = row.createCell(14);
+                Cell cel25 = row.createCell(15);
+                Cell cel26 = row.createCell(16);
 
                 cell0.setCellValue(lstData.get(vi).USR);
-                cell1.setCellValue(lstData.get(vi).NPROG);
-                cell2.setCellValue(lstData.get(vi).PROG);
-                cell3.setCellValue(lstData.get(vi).PERMA);
-                cell4.setCellValue(lstData.get(vi).PERML);
-                cell5.setCellValue(lstData.get(vi).PERMC);
-                cell6.setCellValue(lstData.get(vi).PERMM);
-                cell7.setCellValue(lstData.get(vi).PERME);
-                cell8.setCellValue(lstData.get(vi).PERMX);
-                cell9.setCellValue(lstData.get(vi).STAT);
-                cel20.setCellValue(lstData.get(vi).USCR);
-                cel21.setCellValue(lstData.get(vi).DTCR);
-                cel22.setCellValue(lstData.get(vi).USUP);
-                cel23.setCellValue(lstData.get(vi).DTUP);
+                cell1.setCellValue(lstData.get(vi).CITY);
+                cell2.setCellValue(lstData.get(vi).CCUST);
+                cell3.setCellValue(lstData.get(vi).MODUL);
+                cell4.setCellValue(lstData.get(vi).NPROG);
+                cell5.setCellValue(lstData.get(vi).PROG);
+                cell6.setCellValue(lstData.get(vi).PERMA);
+                cell7.setCellValue(lstData.get(vi).PERML);
+                cell8.setCellValue(lstData.get(vi).PERMC);
+                cell9.setCellValue(lstData.get(vi).PERMM);
+                cel20.setCellValue(lstData.get(vi).PERME);
+                cel21.setCellValue(lstData.get(vi).PERMX);
+                cel22.setCellValue(lstData.get(vi).STAT);
+                cel23.setCellValue(lstData.get(vi).USCR);
+                cel24.setCellValue(lstData.get(vi).DTCR);
+                cel25.setCellValue(lstData.get(vi).USUP);
+                cel26.setCellValue(lstData.get(vi).DTUP);
 
                 iter.next();
                 ++vi;

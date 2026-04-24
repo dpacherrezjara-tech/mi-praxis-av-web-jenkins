@@ -97,7 +97,7 @@ public class UserDAO  {
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstm01 = cnx.prepareCall(SQLCLL01);
-            cstm01.setString("VP_CCUST", "139");
+            cstm01.setString("VP_CCUST", "139"); //no se utiliza en el store
             cstm01.setString("VP_APLICA", "PX");
             cstm01.setString("VP_USR", filter.VP_USR);
             cstm01.execute();

@@ -1,4 +1,4 @@
-Ext.define('Ext.Praxis.view.panel.UsersForm.Info', {
+Ext.define('Ext.Praxis.view.panel.ReportAccessLogForm.Info', {
     extend: 'Ext.form.Panel',
     alias: 'widget.' + prototype.id + '-info',
     layout: 'border',
@@ -57,110 +57,40 @@ Ext.define('Ext.Praxis.view.panel.UsersForm.Info', {
                                     {
                                         text: 'User',
                                         dataIndex: 'USR',
-                                        width: 100,
-                                        align: 'center'
+                                        //width: 200,
+                                        flex:1,
+                                        align: 'center',
+                                        cls: 'column_header_double'
                                     },
                                     {
                                         text: 'Client',
                                         dataIndex: 'CITY',
                                         //width: 200,
                                         flex:1,
-                                        align: 'left',
-                                        cls: 'column_header_double'
-                                    },
-                                    {
-                                        text: 'Status',
-                                        dataIndex: 'STAT',
-                                        //width: 200,
-                                        flex:1,
-                                        align: 'center',
-                                        cls: 'column_header_double'
-                                    },
-									{
-                                        text: 'Name',
-                                        dataIndex: 'NOM',
-                                        width: 100,
-                                        align: 'center',
-                                        cls: 'column_header_double'
-                                    },
-                                    {
-                                        text: 'Last Name',
-                                        dataIndex: 'APE',
-                                        width: 100,
-                                        align: 'center',
-                                        cls: 'column_header_double'
-                                    },
-                                    {
-                                        text: 'Email',
-                                        dataIndex: 'CREMP',
-                                        width: 100,
-                                        align: 'center',
-                                        cls: 'column_header_double'
-                                    },
-                                    {
-                                        text: 'Position',
-                                        dataIndex: 'CARGO',
-                                        width: 100,
-                                        align: 'center',
-                                        cls: 'column_header_double'
-                                    },
-                                    {
-                                        text: 'Cod. Empleado',
-                                        dataIndex: 'CODEM',
-                                        width: 100,
-                                        align: 'center',
-                                        cls: 'column_header_double'
-                                    },
-                                    {
-                                        text: 'Description',
-                                        dataIndex: 'DESC1',
-                                        width: 100,
                                         align: 'center',
                                         cls: 'column_header_double'
                                     },
                                     {                
-                                        text: 'User Create',
-                                        dataIndex: 'USCR',
+                                        text: 'Program Code',
+                                        dataIndex: 'NPROG',
                                         width: 150,
                                         cls: 'column_header_double',
                                         align: 'center'
                                     },
                                     {                
                                         text: 'Date Create',
-                                        dataIndex: 'DTCR',
+                                        dataIndex: 'FECIN',
                                         //width: 100,
                                         flex:1,
                                         cls: 'column_header_double',
                                         align: 'left'
                                     },
                                     {                
-                                        text: 'User Update',
-                                        dataIndex: 'USUP',
+                                        text: 'Hour Create',
+                                        dataIndex: 'HORIN',
                                         width: 150,
                                         cls: 'column_header_double',
                                         align: 'center'
-                                    },
-                                    {                
-                                        text: 'Date Update',
-                                        dataIndex: 'DTUP',
-                                        //width: 100,
-                                        flex:1,
-                                        cls: 'column_header_double',
-                                        align: 'left'
-                                    },
-                                    {
-                                        text: 'Edit',
-                                        sortable: false,
-                                        xtype: 'actioncolumn',
-                                        width: 90,
-                                        align: 'center',
-                                        items: [
-                                            {
-                                                iconCls: 'prx-icon-edit',
-                                                tooltip: 'Edit',
-                                                handler: 'onEditClick'
-                                            }
-                                        ]
                                     }
                                 ]
                             }

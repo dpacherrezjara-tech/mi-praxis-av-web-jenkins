@@ -23,4 +23,10 @@ public class INF001 {
     public String USUP = "";
     public String DTUP = "";
     public String CONTEXT = "";
+    public String CREMP = "";
+    public String NOM = "";
+    public String APE = "";
+    public String CODEM = "";
+    public String CARGO = "";
+    public String DESC1 = "";
 }

@@ -825,7 +825,7 @@ public class UserDaoImpl implements BaseDao, UserDao {
         PX041S01INF001Filter accessProgram = new PX041S01INF001Filter();
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL PRAXIS.PX041S01INFLOG(?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXIS.SQP05900(?,?,?,?)}"; //Antes PX041S01INFLOG
         CallableStatement cstm01 = null;
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);

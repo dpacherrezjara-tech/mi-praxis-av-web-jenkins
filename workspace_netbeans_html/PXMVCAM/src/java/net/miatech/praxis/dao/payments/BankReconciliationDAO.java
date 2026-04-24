@@ -5763,7 +5763,7 @@ public class BankReconciliationDAO {
             cstmt.registerOutParameter(11, Types.INTEGER);
             cstmt.registerOutParameter(12, Types.INTEGER);
 
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(1, filter.IN_CCUST.trim());
             cstmt.setString(2, filter.IN_SCOUNTRY.trim());
             cstmt.setString(3, filter.IN_TRANC.trim());
             cstmt.setString(4, filter.IN_DATEC.trim());
@@ -9479,7 +9479,7 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-            String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS397(?,?,?,?,?,?,?,?,?,?)}";
+            String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS397(?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -9496,6 +9496,7 @@ public class BankReconciliationDAO {
             cstmt.setString(8, filter.SCONSOL.trim());
             cstmt.setString(9, filter.MCLOS.trim());
             cstmt.setString(10, filter.SPAYMENT.trim());
+            cstmt.setString(11, filter.IN_TYPES.trim());
 
             cstmt.execute();
 
@@ -9793,5 +9794,54 @@ public class BankReconciliationDAO {
     }
     return result;
 }
+    
 
+
+    public Map<String, Object> reversaFaseDosParcial(A2290Filter filter) throws Exception {    Map<String, Object> result = new HashMap<>();
+    CallableStatement cstmt = null;
+    Connection cnx = null;
+
+    String SQL = "{CALL PRAXISMP.MPS557(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+
+    try {
+        cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+        cstmt = cnx.prepareCall(SQL);
+
+        // Registro de parámetros de salida
+        cstmt.registerOutParameter(9, Types.INTEGER);
+        cstmt.registerOutParameter(10, Types.VARCHAR);
+
+        // Seteo de parámetros de entrada con validación de nulos y trim
+        cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST.trim());
+        cstmt.setString(2, filter.O_ADATE != null ? filter.O_ADATE.trim() : "");
+        cstmt.setString(3, filter.O_SCOUNTRY != null ? filter.O_SCOUNTRY.trim() : "");
+        cstmt.setString(4, filter.O_CBATCH != null ? filter.O_CBATCH.trim() : "");
+        cstmt.setString(5, filter.O_BANDOC != null ? filter.O_BANDOC.trim() : "");
+        cstmt.setString(6, filter.O_DATECI != null ? filter.O_DATECI.trim() : "");
+        cstmt.setString(7, filter.O_TRANCI != null ? filter.O_TRANCI.trim() : "");
+        cstmt.setString(8, session.getUserView().getUserInfo().USR.trim());
+        
+        // Inicialización de los INOUT
+        cstmt.setInt(9, -1);
+        cstmt.setString(10, ""); // Importante: no enviar un string largo aquí si el SP lo va a llenar
+
+        cstmt.execute();
+
+        int sqlCode = cstmt.getInt(9);
+        String message = cstmt.getString(10);
+
+        result.put("success", sqlCode == 1);
+        result.put("message", message);
+
+    } catch (Exception e) {
+        // Si falla Java, capturamos el error para el front
+        result.put("success", false);
+        result.put("message", "Error Java: " + e.getMessage());
+        logError.error("Error en DAO reversaFaseDos: ", e);
+    } finally {
+        if (cstmt != null) cstmt.close();
+        session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+    }
+    return result;
+}
 }

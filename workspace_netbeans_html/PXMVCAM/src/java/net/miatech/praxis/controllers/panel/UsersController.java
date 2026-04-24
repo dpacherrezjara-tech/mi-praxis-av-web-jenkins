@@ -25,6 +25,9 @@ import net.miatech.beans.A1740Filter;
 import net.miatech.beans.JavaToFlexResponse;
 import net.miatech.beans.PX075S01INF001Filter;
 import net.miatech.beans.PX075S02INF001Filter;
+import net.miatech.beans.SQP05851Filter;
+import net.miatech.beans.SQP05856Filter;
+import net.miatech.beans.SQP05908Filter;
 import net.miatech.beans.UserView;
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.libmiatec.A1007;
@@ -67,8 +70,8 @@ public class UsersController extends BaseController {
     
     @RequestMapping(value = "search")
     public @ResponseBody String search(HttpServletRequest request) {
-        PX075S01INF001Filter  filter = new PX075S01INF001Filter();
-        List<PX075S01INF001Filter> lstData = new ArrayList<PX075S01INF001Filter>();
+        SQP05908Filter  filter = new SQP05908Filter();
+        List<SQP05908Filter> lstData = new ArrayList<SQP05908Filter>();
         
         int limit = Integer.parseInt(request.getParameter("limit").toString());
         int start = Integer.parseInt(request.getParameter("start").toString());
@@ -78,7 +81,7 @@ public class UsersController extends BaseController {
         filter.page.START = start!=0?start:0;
         filter.page.PAGE  = page!=0?page:1;
         
-        filter.IN_OPCION = 2;// Integer.parseInt(request.getParameter("strOption").toString());
+        filter.IN_OPCION = Integer.parseInt(request.getParameter("group").toString());//filter.IN_OPCION = 1;// 
         filter.IN_USR = ""; //request.getParameter("strCampo").toString().trim();
         if(request.getParameter("option")!=null && request.getParameter("group")!=null)
         {
@@ -87,7 +90,7 @@ public class UsersController extends BaseController {
         try {
             PanelLogic logic = new PanelLogic();
             logic.setSession(this.serverSession.getServerSession());
-            lstData = logic.loadPX075S01INF001(filter);
+            lstData = logic.loadSQP05908(filter);
         } catch (Exception e) {
             throw new SpringException(e);
         }
@@ -105,8 +108,8 @@ public class UsersController extends BaseController {
     
     @RequestMapping(value = "setMantUser")
     public @ResponseBody String setMantUser(HttpServletRequest request) {
-        PX075S02INF001Filter filter = new PX075S02INF001Filter();
-        PX075S02INF001Filter objRtn = new PX075S02INF001Filter();      
+        SQP05856Filter filter = new SQP05856Filter();
+        SQP05856Filter objRtn = new SQP05856Filter();      
         JavaToFlexResponse resp = new JavaToFlexResponse();
         boolean boValida = false;
         try {
@@ -119,19 +122,34 @@ public class UsersController extends BaseController {
             filter.chkExpiredDate = ("true".equals(request.getParameter("chkExpiredDate")));
             filter.TOKEN = request.getParameter("txtPass").trim();
             filter.VP_DESC = request.getParameter("DESC").trim();
+            filter.VP_CARGO = request.getParameter("CARGO").trim();
+            filter.VP_CODEM = request.getParameter("CODEM").trim();
+            filter.VP_NOM = request.getParameter("NOM").trim();
+            filter.VP_APE = request.getParameter("APE").trim();
+            filter.VP_EMAIL = request.getParameter("CREMP").trim();
             filter.DTEXPIRED = request.getParameter("DTEXPIRED").trim();
             filter.chkPass = ("true".equals(request.getParameter("chkPass")));
             UserLogic userLogic = new UserLogic();
             userLogic.setSession(this.serverSession.getServerSession());
             PanelLogic logic = new PanelLogic();
-            logic.setSession(this.serverSession.getServerSession());            
+            logic.setSession(this.serverSession.getServerSession()); 
+            
+            //LOG INIT
+            SQP05851Filter objLog = new SQP05851Filter();
+            objLog.VP_ACTIO = request.getParameter("strOption").trim();
+            objLog.VP_ID_OPERATOR = request.getParameter("USR").trim();
+            objLog.VP_DESC1 = "USERS MANAGEMENT" + request.getParameter("USR").trim();
+            objLog.VP_OPER = "Change in USER " + request.getParameter("DESC").trim();
+            logic.setSQP05851(objLog);
+            //LOG END
+            
             if("I".equals(filter.VP_ACTION))
             {
                 boValida = userLogic.SQP03268(filter.VP_USR); // VALIDA SI YA EXISTE USUARIO
                 if(!boValida)
                 {
                     userLogic.SQP03219(filter.VP_USR,filter.TOKEN,filter.VP_DESC); // REGISTRA AS400
-                    objRtn = logic.setPX075S02INF001(filter); // REGISTRO EN TABLAS PRAXIS
+                    objRtn = logic.setSQP05856(filter); // REGISTRO EN TABLAS PRAXIS
                     if("A".equals(filter.VP_STAT))
                     {
                         if(filter.chkExpiredDate) 
@@ -162,7 +180,7 @@ public class UsersController extends BaseController {
             }
             else if("U".equals(filter.VP_ACTION))
             {
-                objRtn = logic.setPX075S02INF001(filter); // ACTUALIZACION EN TABLAS PRAXIS
+                objRtn = logic.setSQP05856(filter); // ACTUALIZACION EN TABLAS PRAXIS
                 if("A".equals(filter.VP_STAT))
                 {
                    if(filter.chkExpiredDate) 
@@ -187,7 +205,7 @@ public class UsersController extends BaseController {
             }
             else
             {
-                objRtn = logic.setPX075S02INF001(filter); // ELIMINACION EN TABLAS PRAXIS
+                objRtn = logic.setSQP05856(filter); // ELIMINACION EN TABLAS PRAXIS
                 resp.info.add("User deleted successfully"); // objRtn.dbException.MESSAGE
             }
             
@@ -199,7 +217,7 @@ public class UsersController extends BaseController {
         try{
 	        m.put("success",true);
                 m.put("sql_code",objRtn.dbException.SQLCODE);
-	        m.put("response",objRtn.dbException.MESSAGE);
+                m.put("response",(objRtn.dbException.MESSAGE));
 	        
         }catch (Exception e) {
             throw new SpringException(e);
@@ -218,19 +236,19 @@ public class UsersController extends BaseController {
 
             Workbook workbook = null;
             File file = File.createTempFile(fileName, ".xlsx");
-            List<PX075S01INF001Filter> lstData = new ArrayList<PX075S01INF001Filter>();
-            PX075S01INF001Filter  filter = new PX075S01INF001Filter();
+            List<SQP05908Filter> lstData = new ArrayList<SQP05908Filter>();
+            SQP05908Filter  filter = new SQP05908Filter();
             PanelLogic logic = new PanelLogic();
             logic.setSession(this.serverSession.getServerSession());
 
-            filter.page.PAGNUM = 1;
-            filter.page.PAGROW = -1;
+            filter.page.PAGNUM = 0;
+            filter.page.PAGROW = 0;
             filter.page.TOTPAG = 0;
-            filter.page.TOTROW = 1;
-            filter.page.PAGINIT = 1;
+            filter.page.TOTROW = 0;
+            filter.page.PAGINIT = 0;
 
             
-            lstData = logic.loadPX075S01INF001(filter);
+            lstData = logic.loadSQP05908(filter);
 
             workbook = new XSSFWorkbook();
             Sheet sheet = workbook.createSheet("Users Management");
@@ -246,33 +264,57 @@ public class UsersController extends BaseController {
             Cell cell02 = row.createCell(2);
             cell02.setCellValue("STAT");
             Cell cell03 = row.createCell(3);
-            cell03.setCellValue("USCR");
+            cell03.setCellValue("NOM");
             Cell cell04 = row.createCell(4);
-            cell04.setCellValue("DTCR");
+            cell04.setCellValue("APE");
             Cell cell05 = row.createCell(5);
-            cell05.setCellValue("USUP");
+            cell05.setCellValue("CREMP");
             Cell cell06 = row.createCell(6);
-            cell06.setCellValue("DTUP");
+            cell06.setCellValue("CARGO");
+            Cell cell07 = row.createCell(7);
+            cell07.setCellValue("CODEMP");
+            Cell cell08 = row.createCell(8);
+            cell08.setCellValue("DESC1");
+            Cell cell09 = row.createCell(9);
+            cell09.setCellValue("USCR");
+            Cell cell10 = row.createCell(10);
+            cell10.setCellValue("DTCR");
+            Cell cell11 = row.createCell(11);
+            cell11.setCellValue("USUP");
+            Cell cell12 = row.createCell(12);
+            cell12.setCellValue("DTUP");
 
             ++vj;
             while (iter.hasNext()) {
 
                 row = sheet.createRow(vj);
-                Cell cell0 = row.createCell(0);
-                Cell cell1 = row.createCell(1);
-                Cell cell2 = row.createCell(2);
-                Cell cell3 = row.createCell(3);
-                Cell cell4 = row.createCell(4);
-                Cell cell5 = row.createCell(5);
-                Cell cell6 = row.createCell(6);
+                Cell cell000 = row.createCell(0);
+                Cell cell001 = row.createCell(1);
+                Cell cell002 = row.createCell(2);
+                Cell cell003 = row.createCell(3);
+                Cell cell004 = row.createCell(4);
+                Cell cell005 = row.createCell(5);
+                Cell cell006 = row.createCell(6);
+                Cell cell007 = row.createCell(7);
+                Cell cell008 = row.createCell(8);
+                Cell cell009 = row.createCell(9);
+                Cell cell010 = row.createCell(10);
+                Cell cell011 = row.createCell(11);
+                Cell cell012 = row.createCell(12);
 
-                cell0.setCellValue(lstData.get(vi).USR);
-                cell1.setCellValue(lstData.get(vi).CITY);
-                cell2.setCellValue(lstData.get(vi).STAT);
-                cell3.setCellValue(lstData.get(vi).USCR);
-                cell4.setCellValue(lstData.get(vi).DTCR);
-                cell5.setCellValue(lstData.get(vi).USUP);
-                cell6.setCellValue(lstData.get(vi).DTUP);
+                cell000.setCellValue(lstData.get(vi).USR);
+                cell001.setCellValue(lstData.get(vi).CITY);
+                cell002.setCellValue(lstData.get(vi).STAT);
+                cell003.setCellValue(lstData.get(vi).NOM);
+                cell004.setCellValue(lstData.get(vi).APE);
+                cell005.setCellValue(lstData.get(vi).CREMP);
+                cell006.setCellValue(lstData.get(vi).CARGO);
+                cell007.setCellValue(lstData.get(vi).CODEM);
+                cell008.setCellValue(lstData.get(vi).DESC1);
+                cell009.setCellValue(lstData.get(vi).USCR);
+                cell010.setCellValue(lstData.get(vi).DTCR);
+                cell011.setCellValue(lstData.get(vi).USUP);
+                cell012.setCellValue(lstData.get(vi).DTUP);
 
                 iter.next();
                 ++vi;

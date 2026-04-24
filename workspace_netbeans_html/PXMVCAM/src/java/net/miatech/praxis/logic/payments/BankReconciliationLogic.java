@@ -375,4 +375,12 @@ public class BankReconciliationLogic {
     public Map<String, Object> reversaFaseDosMap(A2290Filter filter) throws Exception {
     return bankReconciliationDAO.reversaFaseDos(filter); 
 }
+    
+    
+ 
+    
+    public Map<String, Object> reversaFaseDosMapParcial(A2290Filter filter) throws Exception {
+    return bankReconciliationDAO.reversaFaseDosParcial(filter); 
+}
+    
 }

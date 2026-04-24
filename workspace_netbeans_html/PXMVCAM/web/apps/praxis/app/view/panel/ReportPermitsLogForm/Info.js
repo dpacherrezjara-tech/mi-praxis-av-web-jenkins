@@ -1,4 +1,4 @@
-Ext.define('Ext.Praxis.view.panel.UsersForm.Info', {
+Ext.define('Ext.Praxis.view.panel.ReportPermitsLogForm.Info', {
     extend: 'Ext.form.Panel',
     alias: 'widget.' + prototype.id + '-info',
     layout: 'border',
@@ -55,68 +55,47 @@ Ext.define('Ext.Praxis.view.panel.UsersForm.Info', {
                                 },
                                 items: [
                                     {
-                                        text: 'User',
-                                        dataIndex: 'USR',
+                                        text: 'User Modified Id',
+                                        dataIndex: 'ID_OPERATOR',
                                         width: 100,
                                         align: 'center'
                                     },
                                     {
                                         text: 'Client',
                                         dataIndex: 'CITY',
+                                        width: 100,
+                                        align: 'center'
+                                    },
+                                    {
+                                        text: 'Description',
+                                        dataIndex: 'OPER',
                                         //width: 200,
                                         flex:1,
                                         align: 'left',
                                         cls: 'column_header_double'
                                     },
                                     {
-                                        text: 'Status',
-                                        dataIndex: 'STAT',
+                                        text: 'Program Code',
+                                        dataIndex: 'NPROG',
                                         //width: 200,
                                         flex:1,
                                         align: 'center',
                                         cls: 'column_header_double'
                                     },
-									{
-                                        text: 'Name',
-                                        dataIndex: 'NOM',
-                                        width: 100,
-                                        align: 'center',
-                                        cls: 'column_header_double'
-                                    },
-                                    {
-                                        text: 'Last Name',
-                                        dataIndex: 'APE',
-                                        width: 100,
-                                        align: 'center',
-                                        cls: 'column_header_double'
-                                    },
-                                    {
-                                        text: 'Email',
-                                        dataIndex: 'CREMP',
-                                        width: 100,
-                                        align: 'center',
-                                        cls: 'column_header_double'
-                                    },
-                                    {
-                                        text: 'Position',
-                                        dataIndex: 'CARGO',
-                                        width: 100,
-                                        align: 'center',
-                                        cls: 'column_header_double'
-                                    },
-                                    {
-                                        text: 'Cod. Empleado',
-                                        dataIndex: 'CODEM',
-                                        width: 100,
-                                        align: 'center',
-                                        cls: 'column_header_double'
-                                    },
-                                    {
-                                        text: 'Description',
+                                    {                
+                                        text: 'Detail',
                                         dataIndex: 'DESC1',
-                                        width: 100,
-                                        align: 'center',
-                                        cls: 'column_header_double'
+                                        width: 150,
+                                        cls: 'column_header_double',
+                                        align: 'center'
+                                    },
+                                    {                
+                                        text: 'Oper.',
+                                        dataIndex: 'ACTIO',
+                                        //width: 100,
+                                        flex:1,
+                                        cls: 'column_header_double',
+                                        align: 'left'
                                     },
                                     {                
                                         text: 'User Create',
@@ -128,39 +107,9 @@ Ext.define('Ext.Praxis.view.panel.UsersForm.Info', {
                                     {                
                                         text: 'Date Create',
                                         dataIndex: 'DTCR',
-                                        //width: 100,
-                                        flex:1,
-                                        cls: 'column_header_double',
-                                        align: 'left'
-                                    },
-                                    {                
-                                        text: 'User Update',
-                                        dataIndex: 'USUP',
                                         width: 150,
                                         cls: 'column_header_double',
                                         align: 'center'
-                                    },
-                                    {                
-                                        text: 'Date Update',
-                                        dataIndex: 'DTUP',
-                                        //width: 100,
-                                        flex:1,
-                                        cls: 'column_header_double',
-                                        align: 'left'
-                                    },
-                                    {
-                                        text: 'Edit',
-                                        sortable: false,
-                                        xtype: 'actioncolumn',
-                                        width: 90,
-                                        align: 'center',
-                                        items: [
-                                            {
-                                                iconCls: 'prx-icon-edit',
-                                                tooltip: 'Edit',
-                                                handler: 'onEditClick'
-                                            }
-                                        ]
                                     }
                                 ]
                             }

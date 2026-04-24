@@ -4997,6 +4997,7 @@ public class StatementReconciliationsDAO {
                     beanTkt = new MPF100Filter();
 
                     beanTkt.IN_COUNTRY = filter.IN_COUNTRY.trim();
+                    beanTkt.IN_SOCIETY = filter.IN_SOCIETY.trim();
                     beanTkt.SDATE = rst.getString("PERIOD").trim();
                     beanTkt.strFormatDate = Functions.getMonthConvert(beanTkt.SDATE);
 
@@ -5066,7 +5067,7 @@ public class StatementReconciliationsDAO {
 
     public Map<String, Object> loadPX002CASH(A2290Filter filter) throws SQLException, Exception {
 
-        List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
+            List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
         List<String> cuentasLista = new ArrayList<>(); 
         A2290Filter beanTkt;
         double totNETOEECC = 0, totNETOSETLEMENT = 0;
@@ -5093,7 +5094,7 @@ public class StatementReconciliationsDAO {
             cstmt.registerOutParameter(9, Types.INTEGER);
             cstmt.registerOutParameter(10, Types.INTEGER);
 
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(1, filter.IN_SOCIETY.trim());
             cstmt.setString(2, filter.IN_ADATE);
             cstmt.setString(3, filter.IN_SCURRENCY);
             cstmt.setString(4, filter.IN_STVAL);
