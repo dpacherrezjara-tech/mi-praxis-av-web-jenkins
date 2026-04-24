@@ -1258,6 +1258,19 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                 },
                                                 {xtype: 'tbspacer', width: 10},
                                                 {
+                                                    xtype: 'button',
+                                                    width: 30,
+                                                    hidden: true,
+//                                                    margin: '30 30 0 30',
+                                                    id: prototype.id + '-reversaParcialCash',
+                                                    icon: 'resources/img/icon/16x16/icon_update_bash.png',
+                                                    tooltip: 'Reversa Parcial Cash',
+                                                    listeners: {
+                                                        click: 'btnReversaParcial_click'
+                                                    }
+                                                },
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
                                                     xtype: 'panel',
                                                     layout: 'hbox',
                                                     border: false,
@@ -1376,6 +1389,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                                                     ftype: 'summary'
                                                                                 }],
                                                                             viewConfig: {
+                                                                                enableTextSelection: true,
                                                                                 getRowClass: function (record) {
 
                                                                                     if (record.get('DES_CERROR_COMMENT') && record.get('DES_CERROR_COMMENT').trim() !== '') {
@@ -2025,11 +2039,32 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                         },
                                         {
                                             items: [
+                                                {xtype: 'label', text: 'Type Search', width: 80, style: 'font-weight:bold;color:#0B333C;'},
+                                                {
+                                                    xtype: 'combo',
+                                                    id: prototype.id + '-cmbTypeSearch',
+                                                    fieldStyle: 'text-align:left;',
+                                                    valueField: 'CODE',
+                                                    displayField: 'NAME',
+                                                    queryMode: 'local',
+                                                    triggerAction: 'all',
+                                                    editable: false,
+                                                    value: 'FDESD',
+                                                    width: 60,
+                                                    store: Ext.create('Ext.data.Store', {
+                                                        fields: ['CODE', 'NAME'],
+                                                        data: [
+                                                            {CODE: 'SDATE', NAME: 'SDATE'},
+                                                            {CODE: 'FDESD', NAME: 'FDESD'},
+                                                            {CODE: 'FHAST', NAME: 'FHAST'}
+                                                        ]
+                                                    })
+                                                },
                                                 {xtype: 'label', text: 'Start Date', width: 80, style: 'font-weight:bold;color:#0B333C;'},
-                                                {xtype: 'datefield', id: prototype.id + '-txtFromDateCash', fieldStyle: 'text-align:center;', format: 'Y/m/d', width: 110, editable: false},
+                                                {xtype: 'datefield', id: prototype.id + '-txtFromDateCash', fieldStyle: 'text-align:center;', format: 'Y/m/d', width: 110, editable: true},
                                                 {xtype: 'tbspacer', width: 30},
                                                 {xtype: 'label', text: 'End Date', width: 60, style: 'font-weight:bold;color:#0B333C;'},
-                                                {xtype: 'datefield', id: prototype.id + '-txtToDateCash', fieldStyle: 'text-align:center;', format: 'Y/m/d', width: 110, editable: false},
+                                                {xtype: 'datefield', id: prototype.id + '-txtToDateCash', fieldStyle: 'text-align:center;', format: 'Y/m/d', width: 110, editable: true},
                                                 {xtype: 'tbspacer', width: 30},
                                                 {xtype: 'label', text: 'Mclos', width: 60, style: 'font-weight:bold;color:#0B333C;'},
                                                 {xtype: 'datefield', id: prototype.id + '-txtMclos', fieldStyle: 'text-align:center;', format: 'Y/m/d', width: 110, editable: false},
@@ -2050,7 +2085,8 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                         fields: ['CODE', 'NAME'],
                                                         data: [
                                                             {CODE: 'CA', NAME: 'CA'},
-                                                            {CODE: 'EP', NAME: 'EP'}
+                                                            {CODE: 'EP', NAME: 'EP'},
+                                                            {CODE: '', NAME: 'ALL'}
                                                         ]
                                                     })
                                                 },

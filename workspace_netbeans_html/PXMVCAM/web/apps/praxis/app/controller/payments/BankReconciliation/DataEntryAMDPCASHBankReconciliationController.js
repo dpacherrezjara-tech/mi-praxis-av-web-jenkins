@@ -4,6 +4,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
     // <editor-fold defaultstate="collapsed" desc="Variables Globales">
     meDe: '',
     actionCode: '',
+    excelCash: true,
     storeDataCash: {},
     showOnlyPending: false,
     bean: {},
@@ -17,6 +18,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
     lstBlocked: [],
     lstAdjustment: [],
     sumAmount: 0,
+    paramsDetailScan: {},
     sumAmountBlocked: 0,
     dataObtain: {},
     beanReversed: {},
@@ -63,7 +65,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         console.log(this.bean.CBATCH, "wdaaaaaaaaaaaaaaA")
 
         this.onSearchCompleteDetail();
-        
+
     },
     ocultarBtnReversa: function () {
         let validacion1 = ['45', '46', '54', '55'].includes(this.bean.CERROR);
@@ -122,6 +124,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         });
     },
     mostrarData: function () {
+
+        if (this.bean.SCOUNTRY === "GB" || this.bean.SCOUNTRY === "ES") {
+            Ext.getCmp(prototype.id + '-reversaParcialCash').show();
+        } else {
+            Ext.getCmp(prototype.id + '-reversaParcialCash').hide();
+        }
 
         // DETAIL SETTLEMENT
         this.setValue('de-txtStatusCash', this.bean.descSTVAL);
@@ -879,16 +887,19 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
 
     onGridViewTKTAgent: function (column, e, row, columnIndex, x, rowData) {
 
+        console.log(x.record.data, 'x.record.data')
+
         var value = x.record.data.QTYTKT;
         if (!value || value <= 0) {
             Ext.Msg.alert('Aviso', 'No se encuentran tickets.');
             return;
         }
-        
+
         me.hasScanTicketContext = true;
 
-     
+
         me.beanCashAgent = {};
+        me.beanCashAgent.IN_CCUST = x.record.data.CCUST;
         me.beanCashAgent.IN_SAGENT = x.record.data.SAGENT;
         me.beanCashAgent.IN_SCOUNTRY = x.record.data.SCOUNTRY;
         me.beanCashAgent.IN_DATEC = x.record.data.DATEC;
@@ -898,20 +909,16 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         me.beanCashAgent.IN_SPAYMENT =
                 (x.record.data.TPERIOD === 'E') ? 'EP' : 'CA';
 
-    
+
         me.beanCashAgent.beanString = JSON.stringify(me.beanCashAgent);
 
         me.paramsDetail = {};
         me.paramsDetail.beanString = me.beanCashAgent.beanString;
 
         me.panelActual = '-panelGridDataDetalleCashScan';
-
+        this.excelCash = true;
         this.setGridDataScanAgent();
     },
-    
-    
-
-
 
     setGridDataScanAgent: function () {
 
@@ -921,7 +928,6 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
             },
             listeners: {
 
-                
                 beforeload: function (obj) {
                     obj.proxy.extraParams = {
                         beanString: me.beanCashAgent.beanString
@@ -934,11 +940,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
 
 
                     Ext.getCmp(prototype.id + '-lbl-currentPageScan').setText(pagData.currentPage);
-                    Ext.getCmp(prototype.id + '-lbl-pageCountScan').setText(pagData.pageCount);                        
+                    Ext.getCmp(prototype.id + '-lbl-pageCountScan').setText(pagData.pageCount);
                     Ext.getCmp(prototype.id + '-lbl-totalScan').setText(pagData.total);
-                            
 
-                    if (obj.data.length === 0) {global.Msg({msg: 'Data not found.'});
+
+                    if (obj.data.length === 0) {
+                        global.Msg({msg: 'Data not found.'});
                     }
                 }
             }
@@ -1169,12 +1176,17 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
 
     addCash_keyDownHandler: function () {
         var me = this;
+        this.excelCash = false;
         var fecha_a_validar = "";
         this.bean_scan.TICKET = Ext.getCmp(prototype.id + '-input-txtTKTScanCash').getValue();
         let fechaFrom = Ext.getCmp(prototype.id + '-txtFromDateCash').getValue() || fecha_a_validar;
         let fechato = Ext.getCmp(prototype.id + '-txtToDateCash').getValue() || fecha_a_validar;
         let fechaClos = Ext.getCmp(prototype.id + '-txtMclos').getValue() || fecha_a_validar;
 
+        if (!fechaFrom || !fechato) {
+            Ext.Msg.alert('Alerta', 'Por favor, completa los rangos de fecha.');
+            return;
+        }
 
         // --- Fechas ---
         if (fechaFrom || fechato || fechaClos) {
@@ -1204,6 +1216,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
             global.Msg({msg: 'Fields to Scan must be filled out'});
             return;
         }
+
+        this.bean_scan.IN_TYPES = Ext.getCmp(prototype.id + '-cmbTypeSearch').getValue();
+
+        this.paramsDetail = {};
+        this.paramsDetailScan.beanString = JSON.stringify(this.bean_scan);
+
 
         let gridConciliacion = Ext.getCmp(prototype.id + '-gridDataInfoScanConciliacion');
         let store = gridConciliacion.getStore();
@@ -1261,7 +1279,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
 
                     console.log(`🟢 ${nuevos} registros nuevos agregados, ${duplicados} duplicados ignorados.`);
 
-
+                    console.log('cambie algo', this.panelActual)
                     Ext.getCmp(prototype.id + '-panelDataInfoScanAgent').show();
                     Ext.getCmp(prototype.id + '-containerPaginationToolbar').hide();
                     Ext.getCmp(prototype.id + '-containerPageSummary').hide();
@@ -1280,6 +1298,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
                 console.log('server-side failure with status code ' + response.status);
             }
         });
+
     },
 
     onConciliationCash: function (element) {
@@ -1320,9 +1339,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
 
         var totalAgent = 0;
         storeAgent.each(function (r) {
-            if(r.get('SPAYMENT') == 'CA'){
+            if (r.get('SPAYMENT') == 'CA') {
                 totalAgent += parseFloat(r.get('SVFOPNETR') || 0);
-            }else{
+            } else {
                 totalAgent += parseFloat(r.get('SVFOP') || 0);
             }
 
@@ -1331,8 +1350,8 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
 
         var scan = Number(totalScan.toFixed(2));
         var agent = Number(totalAgent.toFixed(2));
-        console.log(scan,'scan')
-        console.log(agent,'agent')
+        console.log(scan, 'scan')
+        console.log(agent, 'agent')
         // --- Validar que las sumas coincidan (con pequeña tolerancia)
         var diferencia = Math.abs(scan - agent);
 
@@ -1425,46 +1444,70 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
 
         global.getFile(url);
     },
-    
+
     /////NUEVO EXCEL
     /////////////
-    
- 
+
+
     getExcelCashTicket: function () {
 
-        if (!me.beanCashAgent || !me.beanCashAgent.beanString) {
-            Ext.Msg.alert('Aviso', 'Debe seleccionar primero un Qty. Tkt.');
-            return;
-        }
+        console.log(this.panelActual, 'me.panelActualme.panelActualme.panelActual')
+        console.log(this.excelCash, 'me.panelActualme.panelActualme.panelActual')
+
+        console.log(this.bean_scan, 'bean SCAN')
+        console.log(me.beanCashAgent, 'bean CASH')
+
+//        if (!me.beanCashAgent || !me.beanCashAgent.beanString) {
+//            Ext.Msg.alert('Aviso', 'Debe seleccionar primero un Qty. Tkt.');
+//            return;
+//        }
 
         Ext.Msg.show({
             title: '.:PRAXIS:.',
             msg: 'Download Excel ?',
             buttons: Ext.MessageBox.OKCANCEL,
             icon: Ext.MessageBox.QUESTION,
-            scope: this, 
+            scope: this,
             fn: function (btn) {
                 if (btn === 'ok') {
                     console.log('OK presionado, llamando exportExcel');
-                    this.exportExcel();  
+                    this.exportExcel();
                 }
             }
         });
 
     },
     exportExcel: function () {
-        
-        
-       
 
-        switch (me.panelActual) {
+
+        console.log(me.excelCash, 'me.me.excelCash')
+
+        if (this.excelCash) {
+            global.getFile(
+                    prototype.url +
+                    '/getXLSXScan?beanString=' +
+                    encodeURIComponent(me.paramsDetail.beanString)
+                    );
+        } else if (this.excelCash === false) {
+            global.getFile(
+                    prototype.url +
+                    '/getXLSXScanSearch?beanString=' +
+                    encodeURIComponent(this.paramsDetailScan.beanString)
+                    );
+        } else {
+            global.Msg({msg: 'Under Construction'});
+        }
+
+        return
+
+        switch (me.excelCash) {
             case '-panelGridDataDetalleCashScan':
                 console.log('ENTRÓ AL CASE Scan');
-                global.getFile(
-                        prototype.url +
-                        '/getXLSXScan?beanString=' +
-                        encodeURIComponent(me.paramsDetail.beanString)
-                        );
+
+                break;
+            case '-panelDataInfoScanAgent ':
+                console.log('ENTRÓ AL CASE Scan');
+
                 break;
 
             default:
@@ -1472,7 +1515,6 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
                 global.Msg({msg: 'Under Construction'});
         }
     },
-
 
     //////
 
@@ -1603,41 +1645,75 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         }
     },
 
-
- btnReversa_click: function () {
-    var me = this;
+    btnReversa_click: function () {
+        var me = this;
         var beanReversa = {
-        O_ADATE: me.bean.ADATE,
-        O_BANDOC: me.bean.BANDOC,
-        O_CBATCH: me.bean.CBATCH,
-        O_DATECI: me.bean.DATECI,
-        O_TRANCI: me.bean.TRANCI,
-        O_SCOUNTRY: me.bean.SCOUNTRY
-    };
-    
-    let tinput = me.bean.TINPUT
-    
-    if (tinput === 'B') {
-        Ext.Msg.show({
-            title: '.:PRAXIS:.',
-            msg: '¿Está seguro de realizar la reversa de este registro?',
-            buttons: Ext.MessageBox.OKCANCEL,
-            icon: Ext.MessageBox.QUESTION,
-            fn: function (btn) {
-                if (btn === 'ok') {
-                    me.ejecutarReversa(beanReversa);
+            O_ADATE: me.bean.ADATE,
+            O_BANDOC: me.bean.BANDOC,
+            O_CBATCH: me.bean.CBATCH,
+            O_DATECI: me.bean.DATECI,
+            O_TRANCI: me.bean.TRANCI,
+            O_SCOUNTRY: me.bean.SCOUNTRY
+        };
+
+        let tinput = me.bean.TINPUT
+
+        if (tinput === 'B') {
+            Ext.Msg.show({
+                title: '.:PRAXIS:.',
+                msg: '¿Está seguro de realizar la reversa de este registro?',
+                buttons: Ext.MessageBox.OKCANCEL,
+                icon: Ext.MessageBox.QUESTION,
+                fn: function (btn) {
+                    if (btn === 'ok') {
+                        me.ejecutarReversa(beanReversa);
+                    }
                 }
-            }
-        });
-    } else {
-        global.Msg({
-            msg: 'REVERSA NO HABILITADA PARA ESTA FUENTE',
-            icon: Ext.Msg.WARNING 
-        });
-    }
-    
-    
-},
+            });
+        } else {
+            global.Msg({
+                msg: 'REVERSA NO HABILITADA PARA ESTA FUENTE',
+                icon: Ext.Msg.WARNING
+            });
+        }
+
+
+    },
+
+    btnReversaParcial_click: function () {
+        var me = this;
+        var beanReversa = {
+            O_ADATE: me.bean.ADATE,
+            O_BANDOC: me.bean.BANDOC,
+            O_CBATCH: me.bean.CBATCH,
+            O_DATECI: me.bean.DATECI,
+            O_TRANCI: me.bean.TRANCI,
+            O_SCOUNTRY: me.bean.SCOUNTRY
+        };
+
+        let tinput = me.bean.TINPUT
+
+        if (tinput === 'B') {
+            Ext.Msg.show({
+                title: '.:PRAXIS:.',
+                msg: '¿Está seguro de realizar la reversa de este registro?',
+                buttons: Ext.MessageBox.OKCANCEL,
+                icon: Ext.MessageBox.QUESTION,
+                fn: function (btn) {
+                    if (btn === 'ok') {
+                        me.ejecutarReversa(beanReversa);
+                    }
+                }
+            });
+        } else {
+            global.Msg({
+                msg: 'REVERSA NO HABILITADA PARA ESTA FUENTE',
+                icon: Ext.Msg.WARNING
+            });
+        }
+
+
+    },
 
     ejecutarReversa: function (params) {
         var me = this;
@@ -1645,9 +1721,9 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').mask('Procesando Reversa...');
 
         Ext.Ajax.request({
-            url: prototype.url + '/reversaCashBSP', 
+            url: prototype.url + '/reversaCashBSP',
             method: 'POST',
-            timeout: 60000, 
+            timeout: 60000,
             params: {
                 beanString: JSON.stringify(params)
             },
@@ -1659,7 +1735,47 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
                         msg: 'Reversa ejecutada correctamente.',
                         icon: Ext.Msg.INFO
                     });
-                    me.btnSearch_click(); 
+                    me.btnSearch_click();
+
+                } else {
+                    global.Msg({
+                        msg: res.message || res.Mensaje || 'Error interno en el proceso de reversa.',
+                        icon: Ext.Msg.ERROR
+                    });
+                }
+            },
+            failure: function (response) {
+                Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
+                console.error('Error de servidor:', response.status);
+                global.Msg({
+                    msg: 'Error de comunicación con el servidor (Status ' + response.status + ')',
+                    icon: Ext.Msg.ERROR
+                });
+            }
+        });
+    },
+
+    ejecutarReversaParcial: function (params) {
+        var me = this;
+
+        Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').mask('Procesando Reversa...');
+
+        Ext.Ajax.request({
+            url: prototype.url + '/reversaCashBSP_Parcial',
+            method: 'POST',
+            timeout: 60000,
+            params: {
+                beanString: JSON.stringify(params)
+            },
+            success: function (response) {
+                Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').unmask();
+                var res = Ext.JSON.decode(response.responseText);
+                if (res.success) {
+                    global.Msg({
+                        msg: 'Reversa ejecutada correctamente.',
+                        icon: Ext.Msg.INFO
+                    });
+                    me.btnSearch_click();
 
                 } else {
                     global.Msg({
@@ -1678,7 +1794,5 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
             }
         });
     }
-
-
 });
 
