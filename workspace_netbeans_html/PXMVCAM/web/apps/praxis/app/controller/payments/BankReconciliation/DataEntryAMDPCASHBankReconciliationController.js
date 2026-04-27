@@ -1701,7 +1701,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
                 icon: Ext.MessageBox.QUESTION,
                 fn: function (btn) {
                     if (btn === 'ok') {
-                        me.ejecutarReversa(beanReversa);
+                        me.ejecutarReversaParcial(beanReversa);
                     }
                 }
             });
