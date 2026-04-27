@@ -42,6 +42,7 @@ public class MPF100 {
     public String SDATE = "";
     public String SDATEVTA = "";
     public String SPAYMENT = "";
+    public String IN_TYPES = "";
     public String SCARCOD = "";
     public String STCNTR = "";
     public double SVFOP = 0;
