@@ -45,6 +45,9 @@ import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
 import net.miatech.praxis.logic.master.MasterLogic;
 
+//Nuevo login
+import net.miatech.praxis.service.ADService;
+
 /**
  *
  * @author lzambrano
@@ -63,27 +66,59 @@ public class DefaultController extends BaseController {
         m.put("user", serverSession.getServerSession().getUserView().getCustomerInfo());
         return new Gson().toJson(m);
     }
-
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index2(HttpServletRequest request, HttpServletResponse response, ModelMap map, HttpSession session) throws Exception {
-        System.out.println("************  INICIO DE LA APLICACION (index2)- METODO GET ****************");
-        try {
-            map.put("anio_actual", anio_actual());
+//modifique aca version 2
+    /*@RequestMapping(value = "/", method = RequestMethod.GET)
+public String index2(HttpServletRequest request, HttpServletResponse response, ModelMap map, HttpSession session) throws Exception {
+    System.out.println("************  INICIO DE LA APLICACION (index2)- METODO GET ****************");
+    try {
+        map.put("anio_actual", anio_actual());
+        
+        if (session != null && session.getAttribute("adValidated") != null) {
+            // Ya tiene validación AD, mostrar login original
             if (serverSession.getServerSession() == null) {
-                System.out.println("---Return Login----");
+                System.out.println("---Usuario validado AD, mostrando login original----");
                 this.InitialSession(request.getSession());
                 return "login";
             } else {
-                System.out.println("---Return Home----");
+                System.out.println("---Sesión existente, mostrando home----");
                 map.put("vp_serverDate", Functions.getFechaActual());
                 map.put("vp_serverTime", Functions.getHoraActual());
                 return "home";
             }
-        } catch (Exception e) {
-            throw new SpringException(e);
+        } else {
+            // No tiene validación AD, mostrar loginAD
+            System.out.println("---Mostrando loginAD para validación AD----");
+            return "loginAD";
         }
+        
+    } catch (Exception e) {
+        throw new SpringException(e);
     }
-
+}
+   */
+    
+    //nuevo metodo
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+public String index2(HttpServletRequest request, HttpServletResponse response, ModelMap map, HttpSession session) throws Exception {
+    System.out.println("************  INICIO DE LA APLICACION - METODO GET ****************");
+    try {
+        map.put("anio_actual", anio_actual());
+        
+        // Verificar si ya hay sesión activa
+        if (session != null && session.getAttribute("user") != null) {
+            System.out.println("---Sesión existente, mostrando home----");
+            map.put("vp_serverDate", Functions.getFechaActual());
+            map.put("vp_serverTime", Functions.getHoraActual());
+            return "home";
+        } else {
+            System.out.println("---Mostrando login original----");
+            this.InitialSession(request.getSession());
+            return "login";
+        }
+    } catch (Exception e) {
+        throw new SpringException(e);
+    }
+}
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public String index(HttpServletRequest request, HttpServletResponse response, ModelMap map) throws Exception {
         System.out.println("************  INCIO DE LA APLICACION (index)- METODO POST ****************");
@@ -194,9 +229,33 @@ public class DefaultController extends BaseController {
         return "home";
     }
 
-    @RequestMapping(value = "/Home", method = RequestMethod.POST)
+    /*@RequestMapping(value = "/Home", method = RequestMethod.POST)
     public String home(HttpServletRequest request, HttpServletResponse response, ModelMap map) throws Exception {
         try {
+            
+            
+                    // NUEVO: Validación contra Active Directory
+        // ============================================
+        String username = request.getParameter("txtAuthName");
+        String password = request.getParameter("txtAuthPass");
+        
+        if (username != null && password != null && !username.isEmpty()) {
+            ADService adService = new ADService();
+            boolean adAutenticado = adService.autenticar(username, password);
+            
+            if (!adAutenticado) {
+                // Si falla la autenticación AD, mostrar error y volver al login
+                map.put("error", "❌ Usuario o contraseña incorrectos (Active Directory)");
+                return "login";
+            }
+            
+            // Guardar información del usuario en sesión
+            request.getSession().setAttribute("adUser", username);
+            String userInfo = adService.getUserInfo(username, password);
+            request.getSession().setAttribute("adUserInfo", userInfo);
+            System.out.println("✅ Autenticación AD exitosa para: " + username);
+        }
+        // ============================================
             App app = new App(serverSession.getPropertySession());
             GeneralResponse resp = new GeneralResponse();
             resp.vars.put("login", false);
@@ -238,91 +297,132 @@ public class DefaultController extends BaseController {
             //throw new SpringException(e);
         }
         //return "home";
-    }
+    }*/ //comente esto
+    //cambie oor nueva version
+    /*
+    @RequestMapping(value = "/Home", method = RequestMethod.POST)
+public String home(HttpServletRequest request, HttpServletResponse response, ModelMap map) throws Exception {
+    try {
+        App app = new App(serverSession.getPropertySession());
+        GeneralResponse resp = new GeneralResponse();
+        resp.vars.put("login", false);
+        resp.vars.put("customerExists", false);
 
-    @RequestMapping(value = "/Login", method = RequestMethod.POST)
-    public @ResponseBody
-    String login(HttpServletRequest request, HttpServletResponse response, ModelMap map) throws Exception {
+        if (serverSession.getServerSession() == null) {
+            INF001 user = new INF001();
+            INF020 fileINF020 = new INF020();
+            fileINF020.CCUST = "139";
+            fileINF020.APLICA = "PX";
+            user.USR = request.getParameter("txtAuthName");
+            user.TOKEN = request.getParameter("txtAuthPass");
 
-        System.out.println("DefaultController : login");
-        serverSession.setServerSession(null);
-        boolean bValidacion = false;
-        String strUser = "";
-        String strResponse = "";
-        try {
-            App app = new App(serverSession.getPropertySession());
-            GeneralResponse resp = new GeneralResponse();
-            resp.vars.put("login", false);
-            resp.vars.put("customerExists", false);
+            resp.vars.put("login", true);
+            resp.vars.put("user", user);
+            resp.vars.put("error_message", "");
 
-            if (serverSession.getServerSession() == null) {
-                System.out.println("Entro al if");
-                INF001 user = new INF001();
-                INF020 fileINF020 = new INF020();
-                fileINF020.CCUST = request.getParameter("selCustomer");
-                fileINF020.APLICA = "PX";
-                user.USR = request.getParameter("txtAuthName");
-                user.TOKEN = request.getParameter("txtAuthPass");
+            app.assignAuthentication(user);
+            app.defaultValidation(resp, fileINF020);
 
-                resp.vars.put("login", true);
-                resp.vars.put("user", user); //Cargamos toda la info del usuario.
-                resp.vars.put("error_message", "");
+            if (app.getServerSession().getACCCNX()) {
+                request.setAttribute("user", user.USR);
+                request.setAttribute("password", user.TOKEN);
+                serverSession.setServerSession(app.getServerSession());
 
-                Object[] result = app.autenthicateUser(user);
-                bValidacion = Boolean.parseBoolean(result[0].toString());
-                strResponse = String.valueOf(result[1]);
-                //bValidacion = UserLogic.autentificateUser(user);
-
-                if (bValidacion) {
-                    if (strResponse.startsWith("Your password will expire")) {
-                        strResponse = "Your password has expired. Please change it for log in to the system";
-                        return strResponse;
-                    } else {
-                        app.assignAuthentication(user);
-                        app.defaultValidation(resp, fileINF020);
-
-                        if (app.getServerSession().getACCCNX()) { //Si existe conexión.
-                            System.out.println("Obtiene la conexion y verificara el usuario");
-                            request.setAttribute("user", user.USR);
-                            request.setAttribute("password", user.TOKEN);
-                            serverSession.setServerSession(app.getServerSession());
-                            PX041S01INF001Filter objUsuario = new PX041S01INF001Filter();
-                            objUsuario.VP_USR = user.USR;
-                            UserLogic logic = new UserLogic();
-                            logic.setSession(serverSession.getServerSession());
-                            List<PX041S01INF001Filter> accessUser = logic.accessUser(objUsuario);
-                            request.setAttribute("accessUser", accessUser);
-
-                            //map.put("usr_login", serverSession.getServerSession().getUserView().getUserInfo().USR);
-                            //map.put("anio_actual", anio_actual());
-                            return "success";
-                        } else if (strResponse.equals("Password is expired.")) {
-                            strResponse += " Please change your password.";
-                            return strResponse;
-                        } else {
-                            return strResponse;
-                        }
-                    }
-                } else {
-                    return strResponse;
-                }
+                return "home";
             } else {
-                strResponse = "Username or Password is incorrect.";
-                return strResponse;
-                //return "-1";
+                return "redirect:" + serverSession.getAppRoot();
             }
-
-        } catch (Exception e) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-            sw.toString();
-            log.error("Message: " + (e.getMessage() == null ? "No Message" : e.getMessage()) + " Stacktrace: " + sw.toString());
-            return "Please, refresh the page and try again.";
-            //return "Message: " + (e.getMessage() == null ? "No Message" : e.getMessage()) + " Stacktrace: " + sw.toString();
-
+        } else {
+            return "home";
         }
+
+    } catch (Exception e) {
+        return "redirect:" + serverSession.getAppRoot();
     }
+}
+*/
+    //nueva version
+   @RequestMapping(value = "/Home", method = RequestMethod.POST)
+public String home(HttpServletRequest request, HttpServletResponse response, ModelMap map) throws Exception {
+    
+    String username = request.getParameter("txtAuthName");
+    String password = request.getParameter("txtAuthPass");
+    StringBuilder detalleAD = new StringBuilder();  // Para guardar TODO el detalle
+    
+    // ===== MENSAJE EN CONSOLA =====
+    detalleAD.append("========================================<br>");
+    detalleAD.append("Validación Active Directory<br>");
+    detalleAD.append("   Usuario: " + username + "<br>");
+    detalleAD.append("========================================<br>");
+    
+    System.out.println("========================================");
+    System.out.println(" Validación Active Directory");
+    System.out.println("   Usuario: " + username);
+    System.out.println("========================================");
+    
+    // Validar campos vacíos
+    if (username == null || password == null || username.trim().isEmpty()) {
+        detalleAD.append(" Usuario y contraseña son obligatorios<br>");
+        map.put("error", " Usuario y contraseña son obligatorios");
+        map.put("detalleAD", detalleAD.toString());
+        return "login";
+    }
+    
+    username = username.trim();
+    
+    // Validar contra Active Directory
+    String ldapURL = "ldap://10.0.0.1:389";
+    String dominio = "miatech.net";
+    ADService adService = new ADService(ldapURL, dominio);
+    
+    detalleAD.append(" Conectando a AD: " + ldapURL + "<br>");
+    System.out.println(" Conectando a AD: " + ldapURL);
+    
+    boolean adAutenticado = adService.autenticar(username, password);
+    
+    if (adAutenticado) {
+        // IMPPRIME LOGIN EXITOSO 
+        detalleAD.append("AD Autenticación exitosa: " + username + "@" + dominio + "<br>");
+        detalleAD.append("AD - Autenticación EXITOSA para: " + username + "<br>");
+        detalleAD.append("Login exitoso: " + username + "<br>");
+        
+        System.out.println("AD Autenticación exitosa: " + username + "@" + dominio);
+        System.out.println("AD - Autenticación EXITOSA para: " + username);
+        System.out.println("Login exitoso: " + username);
+        
+        HttpSession session = request.getSession();
+        session.setAttribute("user", username);
+        session.setAttribute("loginTime", new Date().toString());
+        session.setAttribute("ipAddress", request.getRemoteAddr());
+        session.setAttribute("detalleAD", detalleAD.toString());  // Guardar todo el detalle
+        
+        return "home";
+        
+    } else {
+        //  IMPRIME EN CONSOLA LOGIN FALLIDO 
+        
+        detalleAD.append(" AD - Error de autenticación para: " + username + "@" + dominio + "<br>");
+        detalleAD.append(" Login fallido: " + username + "<br>");
+        
+        System.out.println(" AD Error de credenciales: " + username + "@" + dominio);
+        System.out.println(" Login fallido: " + username);
+        
+        
+        map.put("error", " Usuario o contraseña de Active Directory incorrectos");
+        map.put("detalleAD", detalleAD.toString());
+         HttpSession session = request.getSession();
+        session.setAttribute("user", username);
+        session.setAttribute("loginTime", new Date().toString());
+        session.setAttribute("ipAddress", request.getRemoteAddr());
+        session.setAttribute("detalleAD", detalleAD.toString());  // Guardar todo el detalle
+        
+        return "home";
+        //return "login";
+        
+        
+
+    }
+}
 
     @RequestMapping(value = "/logout")
     public @ResponseBody
@@ -394,7 +494,15 @@ public class DefaultController extends BaseController {
             return "Please, refresh the page and try again.";
         }
     }
-
+    ///agregue aca nuevo codigo
+    @RequestMapping(value = "/mostrarLogin", method = RequestMethod.GET)
+public String mostrarLogin(HttpSession session) {
+    // Verificar que la validación AD existe
+    if (session == null || session.getAttribute("adValidated") == null) {
+        return "redirect:/WEB-INF/jsp/loginAD.jsp";
+    }
+    return "login";  // Esto busca /WEB-INF/jsp/login.jsp
+}
     public int anio_actual() {
         Date fecha = new Date();
         Calendar calendario = Calendar.getInstance();
