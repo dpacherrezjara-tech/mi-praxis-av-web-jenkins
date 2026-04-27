@@ -220,25 +220,5 @@
             <file>file:/D:/RepositorioGit/java/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/dao/master/MasterDAO.java</file>
             <file>file:/D:/RepositorioGit/java/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/controllers/program/ProMasterTicketController.java</file>
         </group>
-        <group name="mi-praxis-av-web"/>
-        <group name="Avianca_Medios_Pagos">
-            <file>file:/D:/REPROSITORIO-GIT/JAVA/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/build/web/WEB-INF/web.xml</file>
-            <file>file:/D:/REPROSITORIO-GIT/JAVA/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/web/WEB-INF/jsp/errorPage.jsp</file>
-            <file>file:/D:/REPROSITORIO-GIT/JAVA/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/web/WEB-INF/jsp/loginAD.jsp</file>
-            <file>file:/D:/REPROSITORIO-GIT/JAVA/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/controllers/BaseController.java</file>
-            <file>file:/D:/REPROSITORIO-GIT/JAVA/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/controllers/ErrorController.java</file>
-            <file>file:/D:/REPROSITORIO-GIT/JAVA/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/controllers/HomeController.java</file>
-            <file>file:/D:/REPROSITORIO-GIT/JAVA/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/web/WEB-INF/web.xml</file>
-            <file>file:/D:/REPROSITORIO-GIT/JAVA/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/servlet/LoginServlet.java</file>
-            <file>file:/D:/REPROSITORIO-GIT/JAVA/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/web/WEB-INF/dispatcher-servlet.xml</file>
-            <file>file:/D:/REPROSITORIO-GIT/JAVA/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/service/ADService.java</file>
-            <file>file:/D:/REPROSITORIO-GIT/JAVA/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/web/META-INF/context.xml</file>
-            <file>file:/D:/REPROSITORIO-GIT/JAVA/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/web/WEB-INF/jsp/login.jsp</file>
-            <file>file:/D:/REPROSITORIO-GIT/JAVA/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/web/WEB-INF/weblogic.xml</file>
-            <file>file:/D:/REPROSITORIO-GIT/JAVA/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/web/WEB-INF/jsp/home.jsp</file>
-            <file>file:/D:/REPROSITORIO-GIT/JAVA/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/controllers/DefaultController.java</file>
-            <file>file:/D:/REPROSITORIO-GIT/JAVA/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/web/resources/img/LOGO_TEXT.png</file>
-            <file>file:/D:/REPROSITORIO-GIT/JAVA/mi-praxis-av-web/workspace_netbeans_html/PXMVCAM/src/java/net/miatech/praxis/servlet/LogoutServlet.java</file>
-        </group>
     </open-files>
 </project-private>

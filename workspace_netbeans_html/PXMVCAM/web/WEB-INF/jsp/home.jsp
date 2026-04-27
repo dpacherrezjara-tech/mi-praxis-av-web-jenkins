@@ -2,18 +2,6 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html manifest="">
-    <--<!-- MENSJE DE CONEXION AL AD -->
-<%
-    String detalleAD = (String) session.getAttribute("detalleAD");
-    if (detalleAD != null && !detalleAD.isEmpty()) {
-        out.print("<div style='background: #d4edda; color: #155724; padding: 10px; margin: 10px 20px; border-radius: 5px; font-family: monospace; font-size: 12px; border-left: 4px solid #28a745; text-align: left;'>");
-        out.print("<strong> Detalle de Autenticación AD:</strong><br>");
-        out.print(detalleAD);
-        out.print("</div>");
-        session.removeAttribute("detalleAD");
-    }
-%>
-
     <head>
         <meta charset="UTF-8">
         <title>Home</title>
