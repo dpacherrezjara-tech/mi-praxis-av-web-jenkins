@@ -2,18 +2,36 @@
 <web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <!--<param-value>/WEB-INF/applicationContext.xml</param-value>-->
         <param-value>/WEB-INF/dispatcher-servlet.xml</param-value>
     </context-param>
     <listener>
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
     </listener>
-    <!--<listener>
-        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
-    </listener>-->
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
+    
+    <!-- AGREGAR LoginServlet para validación AD       
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>net.miatech.praxis.servlet.LoginServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/loginAD</url-pattern>
+    </servlet-mapping>
+    
+    
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>net.miatech.praxis.servlet.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/logoutAD</url-pattern>
+    </servlet-mapping>
+     %-->
     <servlet>
         <servlet-name>dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -23,20 +41,21 @@
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+    
     <context-param>
         <param-name>log4jConfigLocation</param-name>
         <param-value>/WEB-INF/configs/Log4j.properties</param-value>
     </context-param>
+    
     <session-config>
-        <session-timeout>
-            60
-        </session-timeout>
+        <session-timeout>60</session-timeout>
     </session-config>
+    
     <welcome-file-list>
-        <!--<welcome-file>/index.jsp</welcome-file>-->
         <welcome-file>/</welcome-file>
     </welcome-file-list>
-	<error-page>
+    
+    <error-page>
         <error-code>404</error-code>
         <location>/errorPage</location>
     </error-page>
@@ -44,7 +63,5 @@
         <error-code>500</error-code>
         <location>/errorPage</location>
     </error-page>
-    <!--session-management>
-        <concurrency-control expired-url="/" />
-    </session-management-->
+    
 </web-app>

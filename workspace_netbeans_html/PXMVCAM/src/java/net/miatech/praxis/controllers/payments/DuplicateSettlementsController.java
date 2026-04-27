@@ -576,6 +576,10 @@ public class DuplicateSettlementsController extends BaseController {
                 .getPropertySession()
                 .get("DB_SERVER_DEFAULT_TYPE")
                 .toString(); // TEST / PROD
+        
+        if ("PRO".equalsIgnoreCase(environment)) {
+            environment = "PROD";
+        }
 
         String rutaBaseKey = "RUTA_LIQUIDATION_" + environment + "_JUSTIFICATION";
         String rutaBase = this.serverSession
@@ -620,6 +624,10 @@ public class DuplicateSettlementsController extends BaseController {
                 .getPropertySession()
                 .get("DB_SERVER_DEFAULT_TYPE")
                 .toString(); // TEST / PROD
+        
+        if ("PRO".equalsIgnoreCase(environment)) {
+            environment = "PROD";
+        }
 
         String rutaBaseKey = "RUTA_LIQUIDATION_" + environment + "_JUSTIFICATION";
         String rutaBase = this.serverSession
@@ -670,6 +678,10 @@ public class DuplicateSettlementsController extends BaseController {
                 .getPropertySession()
                 .get("DB_SERVER_DEFAULT_TYPE")
                 .toString();
+        
+        if ("PRO".equalsIgnoreCase(environment)) {
+            environment = "PROD";
+        }
 
         String rutaBaseKey = "RUTA_LIQUIDATION_" + environment + "_JUSTIFICATION";
         String rutaBase = this.serverSession
