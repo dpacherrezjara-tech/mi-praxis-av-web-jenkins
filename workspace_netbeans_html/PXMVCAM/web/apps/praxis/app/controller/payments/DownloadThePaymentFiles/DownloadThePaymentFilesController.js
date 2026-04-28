@@ -84,7 +84,9 @@ Ext.define('Ext.Praxis.controller.payments.DownloadThePaymentFiles.DownloadThePa
                 ["PBDI", "PB-DINERS"],
                 ["PBPV", "PB-PVA"],
                 ["SAFE", "SAFETYPAY"],
-                ["CODE", "CODENSA"]
+                ["CODE", "CODENSA"],
+                ["GYE", "GUAYAQUIL"],
+                ["PACI", "PACIFICAR"],
             ]
         }));
         CmbTypeprocesa.setValue("");
@@ -122,7 +124,7 @@ Ext.define('Ext.Praxis.controller.payments.DownloadThePaymentFiles.DownloadThePa
 
     },
     onCmbSearchChange: function (obj, records, eOpts) {
-        if (obj.getValue() === "PBDI" || obj.getValue() === "CRDO") {
+        if (obj.getValue() === "PBDI" || obj.getValue() === "CRDO" || obj.getValue() === "GYE") {
             Ext.getCmp(prototype.id + '-cmbDateFromYearProcesador').show();
             Ext.getCmp(prototype.id + '-cmbDateFromMonthProcesador').show();
             Ext.getCmp(prototype.id + '-cmbDateToYearProcesador').show();
@@ -174,7 +176,7 @@ Ext.define('Ext.Praxis.controller.payments.DownloadThePaymentFiles.DownloadThePa
         var CmbTypeprocesa = Ext.getCmp(prototype.id + '-CmbTypeprocesa').getValue();
         var cmbFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue();
         //
-        if (["PBDI", "CRDO"].includes(CmbTypeprocesa)) {
+        if (["PBDI", "CRDO","GYE"].includes(CmbTypeprocesa)) {
              txtFilterDateFrom = Ext.getCmp(prototype.id + '-cmbDateFromYearProcesador').getValue() +""+ Ext.getCmp(prototype.id + '-cmbDateFromMonthProcesador').getValue();
              txtFilterDateTo = Ext.getCmp(prototype.id + '-cmbDateToYearProcesador').getValue() +""+ Ext.getCmp(prototype.id + '-cmbDateToMonthProcesador').getValue();
         } else {
@@ -385,13 +387,15 @@ Ext.define('Ext.Praxis.controller.payments.DownloadThePaymentFiles.DownloadThePa
             } else if (Ext.String.trim(rec.data.A4719TYPE) === 'CODE') {
                 type = 'CODE';
             } else if (Ext.String.trim(rec.data.A4719TYPE) === 'SAFE') {
-                type = 'SAFE';
+                type = 'SAFE'; 
+            }else if (Ext.String.trim(rec.data.A4719TYPE) === 'GYE') {
+                type = 'Guayaquil';  
             } else {
                 type = Ext.String.trim(rec.data.A4719TYPE);
             }
-
-            me.beanDownload.IN_DATETO = ["PBDI", "CRDO"].includes(rec.data.A4719TYPE) ? rec.data.A4719PERIO : rec.data.A4719FCARG;
-            me.beanDownload.IN_TYPEPROCES = rec.data.A4719TYPE;
+            console.log(rec.data.A4719TYPE);
+            me.beanDownload.IN_DATETO = ["PBDI", "CRDO","GYE"].includes(Ext.String.trim(rec.data.A4719TYPE)) ? rec.data.A4719PERIO : rec.data.A4719FCARG;
+            me.beanDownload.IN_TYPEPROCES = ["GYE"].includes(rec.data.A4719TYPE) ? 'Guayaquil' : rec.data.A4719TYPE;
             me.beanDownload.IN_PROCESADOR = type;
             me.exportFiles(prototype.url + '/DownloadFiles_python?beanString=' + encodeURI(JSON.stringify(me.beanDownload)));
         } else {
