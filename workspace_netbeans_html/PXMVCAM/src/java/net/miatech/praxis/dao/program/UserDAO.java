@@ -65,11 +65,6 @@ public class UserDAO  {
     private IServerSession session;
     private static final Logger logError = Logger.getLogger("errorLog");
     //private ServerSession serverSession;
-    
-    //SE AGRESO ESTA LINEA DE CODIGO
-    private static final String CSV_PATH = "\\\\px\\PRAXISAM\\PERMITS.txt";
-    //
-    
     private Application application;
     /**
      * Creates a new instance of UserDAO

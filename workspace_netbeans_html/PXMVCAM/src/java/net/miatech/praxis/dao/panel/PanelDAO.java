@@ -63,7 +63,7 @@ public class PanelDAO {
         CallableStatement cstmt01 = null;
         ResultSet rs01 = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".PX041S01INF001(?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXIS.SQP06036(?,?,?,?,?,?,?,?)}";
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();  
