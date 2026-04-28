@@ -378,7 +378,7 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.Filters', {
                                 {
                                     xtype: 'fieldset',
                                     title: '<span style="color:#1a4d8f;font-weight:bold;">INPUT FILTERS</span>',
-                                    width: 550,
+                                    width: 735,
                                     style: 'border: 1px solid #1a4d8f; padding: 8px; margin: 5px;',
                                     layout: 'hbox',
                                     items: [
@@ -456,7 +456,29 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.Filters', {
                                             listeners: {
                                                 keypress: 'eventKey'
                                             },
-                                        }
+                                        },
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbTDoc',
+                                            fieldLabel: 'Type Document',
+                                            labelStyle: 'text-align: left; font-size: 12px;',
+                                            fieldStyle: 'text-align: center; font-size: 12px;',
+                                            labelAlign: 'right',
+                                            queryMode: 'local',
+                                            editable: false,
+                                            triggerAction: 'all',
+                                            autoSelect: false,
+                                            enableKeyEvents: true,
+                                            caseSensitive: true,
+                                            hidden: false,
+                                            valueField: 'code',
+                                            displayField: 'name',
+                                            emptyText: 'All',
+                                            labelWidth: 90,
+                                            width: 180,
+                                            anchor: '100%',
+                                            margin: '0 10 0 0'
+                                        },
                                     ]
                                 },
                                 {

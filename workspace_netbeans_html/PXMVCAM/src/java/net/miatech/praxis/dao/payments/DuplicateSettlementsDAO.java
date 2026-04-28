@@ -11,6 +11,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import net.miatech.praxis.payment.filter.A2358Filter;
 import net.miatech.beans.ReportEmdDetailsA1530Filter;
 
@@ -56,17 +57,17 @@ public class DuplicateSettlementsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS370(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS370(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(13, Types.INTEGER);
             cstmt.registerOutParameter(14, Types.INTEGER);
             cstmt.registerOutParameter(15, Types.INTEGER);
             cstmt.registerOutParameter(16, Types.INTEGER);
+            cstmt.registerOutParameter(17, Types.INTEGER);
 
             cstmt.setString(1, filter.IN_FECHA_FROM);
             cstmt.setString(2, filter.IN_FECHA_TO);
@@ -80,17 +81,18 @@ public class DuplicateSettlementsDAO {
             cstmt.setString(10, filter.IN_SCARCOD);
             cstmt.setString(11, filter.IN_FASE2);
             cstmt.setString(12, filter.IN_SECUENCE);
-            cstmt.setInt(13, filter.page.PAGNUM);
-            cstmt.setInt(14, filter.page.PAGROW);
-            cstmt.setInt(15, filter.page.TOTPAG);
-            cstmt.setInt(16, filter.page.TOTROW);
+            cstmt.setString(13, filter.IN_TDOC);
+            cstmt.setInt(14, filter.page.PAGNUM);
+            cstmt.setInt(15, filter.page.PAGROW);
+            cstmt.setInt(16, filter.page.TOTPAG);
+            cstmt.setInt(17, filter.page.TOTROW);
 
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(13);
-            filter.page.PAGROW = cstmt.getInt(14);
-            filter.page.TOTPAG = cstmt.getInt(15);
-            filter.page.TOTROW = cstmt.getInt(16);
+            filter.page.PAGNUM = cstmt.getInt(14);
+            filter.page.PAGROW = cstmt.getInt(15);
+            filter.page.TOTPAG = cstmt.getInt(16);
+            filter.page.TOTROW = cstmt.getInt(17);
 
             rst = cstmt.getResultSet();
             while (rst.next()) {
@@ -117,6 +119,16 @@ public class DuplicateSettlementsDAO {
                 beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
                 beanTkt.SEQ = rst.getString("SEQ").trim();
                 beanTkt.FSELEC = rst.getString("FSELEC").trim();
+                beanTkt.USCR = rst.getString("USCR").trim();
+                beanTkt.FECR = rst.getString("FECR").trim();
+                beanTkt.HOCR = rst.getString("HOCR").trim();
+                beanTkt.NEGOC = rst.getString("NEGOC").trim();
+                
+                beanTkt.USUP = rst.getString("USUP").trim();
+                beanTkt.FEUP = rst.getString("FEUP").trim();
+                beanTkt.HOUP = rst.getString("HOUP").trim();
+                
+                beanTkt.ADATE = rst.getString("ADATE").trim();
                 beanTkt.checkActive = false;
                 
                 beanTkt.TOTAL = rst.getDouble("TOTAL");
@@ -463,7 +475,59 @@ public class DuplicateSettlementsDAO {
         return strMsj;
     }
     
-    
+    public Map<String, Object> updateMPS590(MPF060Filter bean) throws Exception {
+        Map<String, Object> response = new HashMap<>();
+
+        // 15 parámetros: 10 llaves + 1 campo a actualizar + 2 de auditoría + 2 salidas
+        String SQLCLL = "{CALL PRAXISMP.MPS590(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+
+        try (Connection cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+             CallableStatement cstmt = cnx.prepareCall(SQLCLL)) {
+
+            // --- 1. SETEAMOS LAS 10 LLAVES DE BÚSQUEDA (WHERE) ---
+            cstmt.setString(1, bean.IN_CCUST);
+            cstmt.setString(2, bean.IN_SDATE);
+            cstmt.setString(3, bean.IN_SCOUNTRY);
+            cstmt.setString(4, bean.IN_TDOC); // TDOC vuelve a ser llave normal
+            cstmt.setString(5, bean.IN_CODEBANK);
+            cstmt.setString(6, bean.IN_SCARCOD);
+            cstmt.setString(7, bean.IN_SCARDN);
+            cstmt.setString(8, bean.IN_SAUTHOC);
+            cstmt.setString(9, bean.IN_SEQ);
+            cstmt.setDouble(10, bean.IN_SVFOP); 
+
+            // --- 2. SETEAMOS EL CAMPO A ACTUALIZAR (SET) ---
+            cstmt.setString(11, bean.IN_NEGOC); // El nuevo valor del negocio
+
+            // --- 3. OPCIÓN Y USUARIO ---
+            cstmt.setString(12, bean.option);
+            cstmt.setString(13, session.getUserView().getUserInfo().USR);
+
+            // --- 4. PARÁMETROS DE SALIDA ---
+            cstmt.registerOutParameter(14, Types.INTEGER); 
+            cstmt.registerOutParameter(15, Types.VARCHAR); 
+
+            cstmt.execute();
+
+            int outCode = cstmt.getInt(14);
+            String outMensaje = cstmt.getString(15);
+
+            response.put("success", (outCode == 1)); 
+            response.put("mensaje", outMensaje);
+
+        } catch (SQLException e) {
+            logError.error("Error ejecutando MPS590 para usuario " +
+                session.getUserView().getUserInfo().USR + " -> " + e.getMessage(), e);
+            
+            e.printStackTrace();
+            response.put("success", false);
+            response.put("mensaje", "Error en BD: " + e.getMessage());
+        }
+
+        pasarGarbageCollector();
+        
+        return response;
+    }
     
     
     

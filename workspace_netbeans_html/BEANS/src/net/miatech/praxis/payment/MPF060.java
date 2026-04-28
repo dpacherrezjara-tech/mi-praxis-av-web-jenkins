@@ -28,6 +28,7 @@ public class MPF060 {
      public String ACCNUMBER = "";
      public String STVAL = "";
      public String FECR = "";
+     public String USCR = "";
      public String HOCR = "";
      public String SCARDN = "";
      public String SAUTHOC = "";

@@ -152,13 +152,27 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DuplicateSettlem
             autoLoad: false,
             fields: ['code', 'name'],
             data: [
+                ["", "ALL"],
                 ["1", "PASAJES"],
                 ["2", "CARGO"],
                 ["3", "CORREO"],
+                ["4", "TURISMO"],
                 ["S", "STANDBY"],
             ]
         }));
         cmbNEGOC.setValue("1");
+        
+        var cmbTDOC = Ext.getCmp(prototype.id + '-cmbTDoc');
+        cmbTDOC.bindStore(Ext.create('Ext.data.ArrayStore', {
+            autoLoad: false,
+            fields: ['code', 'name'],
+            data: [
+                ["", "All"],
+                ["S", "Sale"],
+                ["D", "Debits"]
+            ]
+        }));
+        cmbTDOC.setValue("S");
 
         this.paramsObtainData.CARD = 2;
         this.paramsObtainData.IN_PF122CODPR = 2;
@@ -258,6 +272,7 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DuplicateSettlem
         me.bean.IN_SCARCOD = Ext.getCmp(prototype.id + '-txtCardType').getValue() || '';
         me.bean.IN_FASE2 = Ext.getCmp(prototype.id + '-cmbFase2').getValue() || '';
         me.bean.IN_SECUENCE = Ext.getCmp(prototype.id + '-cmbSecuence').getValue() || '';
+        me.bean.IN_TDOC = Ext.getCmp(prototype.id + '-cmbTDoc').getValue() || '';
 
         var beanString = JSON.stringify(me.bean);
         searchParams = {
@@ -400,6 +415,7 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DuplicateSettlem
         me.beanDelete.IN_SCARCOD = Ext.getCmp(prototype.id + '-txtCardType').getValue() || '';
         me.beanDelete.IN_MASSIVE = 'N';
         me.beanDelete.IN_SECUENCE = Ext.getCmp(prototype.id + '-cmbSecuence').getValue() || '';
+        me.beanDelete.IN_TDOC = Ext.getCmp(prototype.id + '-cmbTDoc').getValue() || '';
 
         me.searchParamsDelete = {
             beanString: JSON.stringify(me.beanDelete),
@@ -428,6 +444,7 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DuplicateSettlem
         me.beanDelete.IN_SCARCOD = Ext.getCmp(prototype.id + '-txtCardType').getValue() || '';
         me.beanDelete.IN_MASSIVE = 'Y';
         me.beanDelete.IN_SECUENCE = Ext.getCmp(prototype.id + '-cmbSecuence').getValue() || '';
+        me.beanDelete.IN_TDOC = Ext.getCmp(prototype.id + '-cmbTDoc').getValue() || '';
 
         me.searchParamsDelete = {
             beanString: JSON.stringify(me.beanDelete),
@@ -1124,5 +1141,28 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DuplicateSettlem
         var comboToDay = Ext.getCmp(prototype.id + '-cmbDateToDayRemoved');
         comboToDay.setValue(obj.getValue());
     },
+    
+    
+    onEditClick: function (grid, rowIndex, colIndex) {
+        var rec = grid.getStore().getAt(rowIndex);
+        this.winDataEntry('U', rec);
+    },
+    winDataEntry: function (action, rec) {
+        action = action === null || action === undefined ? 'U' : action;
+        rec = rec === null || rec === undefined ? {} : rec;
+
+        Ext.create('Ext.Praxis.view.payments.DuplicateSettlementsForm.DataEntry', {
+            id: prototype.id + '-dataEntry',
+            params: {
+                action: action,
+                rec: rec,
+                lstCountry: []
+//                lstCountry: me.lstCountry
+            }
+        }).show();
+    },
+    
+    
+    
 }
 );

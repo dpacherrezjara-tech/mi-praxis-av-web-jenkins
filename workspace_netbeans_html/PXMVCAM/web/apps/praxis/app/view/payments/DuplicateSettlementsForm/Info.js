@@ -36,7 +36,7 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.Info', {
                         {
                             xtype: 'panel',
                             border: false,
-                            width: 1200,
+                            width: 1360,
                             id: prototype.id + '-panelGridData',
                             bodyStyle: 'background-color: #F4F7FD;',
                             padding: '1',
@@ -50,7 +50,7 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.Info', {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridMainData',
                                     height: 490,
-                                    width: 1142,
+                                    width: 1355,
                                     hidden: false,
                                     columnLines: true,
                                     viewConfig: {
@@ -158,6 +158,28 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.Info', {
                                                     value = Ext.util.Format.number(value, '0,000.00');
                                                     return '<b>' + value + '</b>';
                                                 }},
+                                            {text: 'Date Create', dataIndex: 'FECR', width: 85, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                            {text: 'Payment Date', dataIndex: 'ADATE', width: 85, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                            {
+                                                    sortable: false,
+                                                    xtype: 'actioncolumn',
+                                                    disabled: true,
+                                                    width: 45,
+                                                    text: '<span style="color:white;font-weight:bold;">Edit</span>',
+                                                    style: 'background:#6C87A8; border-color:white',
+                                                    align: 'center',
+                                                    items: [
+                                                        {
+                                                            iconCls: 'prx-icon-edit',
+                                                            tooltip: 'Edit',
+                                                            handler: 'onEditClick'
+                                                        }
+                                                    ],
+                                                    summaryRenderer: function (v, s, d, meta) {
+                                                        meta.style = "background:#6C87A8;color:white";
+                                                        return "";
+                                                    }
+                                                }
                                         ]
                                     }
                                 }
@@ -470,3 +492,16 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.Info', {
 );
 
 
+Ext.util.CSS.createStyleSheet(`
+    .section-title {
+        font-weight: bold;
+        font-size: 13px;
+        color: #0B333C;
+        text-decoration: underline;
+        background-color: #E5ECEF;
+        padding: 4px 8px;
+        border-radius: 3px;
+        display: block;
+        margin: 8px 0 4px 8px;
+    }
+`, 'section-title-style');
