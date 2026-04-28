@@ -78,7 +78,14 @@ Ext.define('Ext.Praxis.view.payments.DownloadThePaymentFilesForm.Info', {
                                                             {
                                                                 iconCls: 'prx-icon-1400209639_24',
                                                                 tooltip: 'Download',
-                                                                handler: 'viewDataEntry_clickHandler'
+                                                                handler: 'viewDataEntry_clickHandler',
+
+                                                                getClass: function (v, meta, record) {
+                                                                    if (Ext.String.trim(record.get('A4719TYPE')) === 'PACI') {
+                                                                        return 'x-hidden'; // oculta el ícono
+                                                                    }
+                                                                    return 'prx-icon-1400209639_24';
+                                                                }
                                                             }
                                                         ]
                                                     }
