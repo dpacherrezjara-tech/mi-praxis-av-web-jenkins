@@ -273,6 +273,10 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DuplicateSettlem
         me.bean.IN_FASE2 = Ext.getCmp(prototype.id + '-cmbFase2').getValue() || '';
         me.bean.IN_SECUENCE = Ext.getCmp(prototype.id + '-cmbSecuence').getValue() || '';
         me.bean.IN_TDOC = Ext.getCmp(prototype.id + '-cmbTDoc').getValue() || '';
+        me.bean.IN_SAUTHOC = Ext.getCmp(prototype.id + '-txtSAUTHOC').getValue() || '';
+        me.bean.IN_NETO = Ext.getCmp(prototype.id + '-txtNETO').getValue() || '';
+        me.bean.IN_SCARDN6 = Ext.getCmp(prototype.id + '-txtSCARDN1').getValue() || '';
+        me.bean.IN_SCARDN4 = Ext.getCmp(prototype.id + '-txtSCARDN2').getValue() || '';
 
         var beanString = JSON.stringify(me.bean);
         searchParams = {

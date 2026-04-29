@@ -152,7 +152,7 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.Info', {
                                             {text: 'Card Number', dataIndex: 'SCARDN', width: 130, style: 'padding:2px; background: #6C87A8;border-color:white'},
                                             {text: 'Authorization', dataIndex: 'SAUTHOC', width: 100, style: 'padding:2px; background: #6C87A8;border-color:white'},
                                             {text: 'Secuence', dataIndex: 'SEQ', width: 80, style: 'padding:2px; background: #6C87A8;border-color:white'},
-                                            {text: 'Amount', dataIndex: 'SVFOP', width: 120, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                            {text: 'Neto', dataIndex: 'NETO', width: 120, style: 'padding:2px; background: #6C87A8;border-color:white',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:right;";
                                                     value = Ext.util.Format.number(value, '0,000.00');

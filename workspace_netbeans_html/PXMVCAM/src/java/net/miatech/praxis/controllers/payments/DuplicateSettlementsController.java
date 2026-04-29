@@ -577,6 +577,10 @@ public class DuplicateSettlementsController extends BaseController {
                 .get("DB_SERVER_DEFAULT_TYPE")
                 .toString(); // TEST / PROD
 
+        if ("PRO".equals(environment)) {
+            environment = "PROD";
+        }
+
         String rutaBaseKey = "RUTA_LIQUIDATION_" + environment + "_JUSTIFICATION";
         String rutaBase = this.serverSession
                 .getPropertySession()
@@ -627,6 +631,10 @@ public class DuplicateSettlementsController extends BaseController {
                 .get(rutaBaseKey)
                 .toString();
 
+        if ("PRO".equals(environment)) {
+            environment = "PROD";
+        }
+
         String folder = request.getParameter("folder");
         String filename = request.getParameter("filename");
 
@@ -670,6 +678,10 @@ public class DuplicateSettlementsController extends BaseController {
                 .getPropertySession()
                 .get("DB_SERVER_DEFAULT_TYPE")
                 .toString();
+
+        if ("PRO".equals(environment)) {
+            environment = "PROD";
+        }
 
         String rutaBaseKey = "RUTA_LIQUIDATION_" + environment + "_JUSTIFICATION";
         String rutaBase = this.serverSession

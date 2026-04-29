@@ -20,6 +20,8 @@ public class MPF060Filter {
     public String IN_OLD_TDOC = "";
     public String IN_SCARDN = "";
     public String IN_SAUTHOC = "";
+    public String IN_SCARDN6 = "";
+    public String IN_SCARDN4 = "";
     public String option = "";
     public String IN_PROCESSOR = "";
     public String IN_MERCHAND = "";
@@ -41,6 +43,7 @@ public class MPF060Filter {
     public String IN_FEUP = "";
     public String IN_HOUP = "";
     public String IN_PGMUP = "";
+    public String IN_NETO = "";
     
     public double IN_SVFOP = 0;
 }

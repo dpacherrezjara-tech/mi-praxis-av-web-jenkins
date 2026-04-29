@@ -378,7 +378,7 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.Filters', {
                                 {
                                     xtype: 'fieldset',
                                     title: '<span style="color:#1a4d8f;font-weight:bold;">INPUT FILTERS</span>',
-                                    width: 735,
+                                    width: 1170,
                                     style: 'border: 1px solid #1a4d8f; padding: 8px; margin: 5px;',
                                     layout: 'hbox',
                                     items: [
@@ -413,7 +413,7 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.Filters', {
                                                 ]
                                             }),
                                             width: 150,
-                                            labelWidth: 85  ,
+                                            labelWidth: 85,
                                             emptyText: 'All',
                                             value: '',
                                             displayField: 'description',
@@ -458,6 +458,22 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.Filters', {
                                             },
                                         },
                                         {
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-txtSAUTHOC',
+                                            fieldLabel: 'Sauthoc',
+                                            labelStyle: 'text-align: left; font-size: 12px;',
+                                            fieldStyle: 'text-align: center; font-size: 12px;',
+                                            labelWidth: 50,
+                                            width: 110,
+                                            margin: '0 10 0 0',
+                                            maxLength: 6,
+                                            enforceMaxLength: true,
+                                            enableKeyEvents: true,
+                                            listeners: {
+                                                keypress: 'eventKey'
+                                            },
+                                        },
+                                        {
                                             xtype: 'combo',
                                             id: prototype.id + '-cmbTDoc',
                                             fieldLabel: 'Type Document',
@@ -478,6 +494,68 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.Filters', {
                                             width: 180,
                                             anchor: '100%',
                                             margin: '0 10 0 0'
+                                        },
+                                        {
+                                            xtype: 'numberfield',
+                                            id: prototype.id + '-txtNETO',
+                                            fieldLabel: 'Neto',
+                                            labelStyle: 'text-align: left; font-size: 12px;',
+                                            fieldStyle: 'text-align: center; font-size: 12px;',
+                                            labelWidth: 40,
+                                            width: 110,
+                                            margin: '0 10 0 0',
+                                            hideTrigger: true,
+                                            allowExponential: false,
+                                            allowDecimals: true,
+                                            decimalSeparator: '.',
+                                            decimalPrecision: 2,
+                                            minValue: 0,
+                                            allowBlank: true, 
+                                            value: null,
+                                            emptyText: '', 
+                                            enableKeyEvents: true,
+                                            listeners: {
+                                                keypress: 'eventKey'
+                                            }
+                                        },
+                                        {
+                                            xtype: 'fieldcontainer',
+                                            fieldLabel: 'Scardn',
+                                            labelStyle: 'text-align: left; font-size: 12px;',
+                                            labelWidth: 40,
+                                            layout: 'hbox', // Pone los elementos en fila (horizontal)
+                                            margin: '0 0 0 0',
+                                            items: [
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-txtSCARDN1',
+                                                    emptyText: '6 DIGITS',
+                                                    fieldStyle: 'text-align: center; font-size: 12px;',
+                                                    width: 70,
+                                                    margin: '0 5 0 0',
+                                                    maxLength: 6,
+                                                    enforceMaxLength: true,
+                                                    maskRe: /[0-9]/,
+                                                    enableKeyEvents: true,
+                                                    listeners: {
+                                                        keypress: 'eventKey'
+                                                    }
+                                                },
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-txtSCARDN2',
+                                                    emptyText: '4 DIGITS',
+                                                    fieldStyle: 'text-align: center; font-size: 12px;',
+                                                    width: 60,
+                                                    maxLength: 4,
+                                                    enforceMaxLength: true,
+                                                    maskRe: /[0-9]/,
+                                                    enableKeyEvents: true,
+                                                    listeners: {
+                                                        keypress: 'eventKey'
+                                                    }
+                                                }
+                                            ]
                                         },
                                     ]
                                 },
