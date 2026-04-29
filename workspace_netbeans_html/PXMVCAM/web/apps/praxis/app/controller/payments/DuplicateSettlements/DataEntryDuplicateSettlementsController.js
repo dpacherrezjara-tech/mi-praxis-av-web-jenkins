@@ -40,11 +40,11 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DataEntryDuplica
         }
     },
     mostrarData: function () {
-        console.log('Mostrar Data',this.bean);
-        
+        console.log('Mostrar Data', this.bean);
+
         // DETAIL (DATA ENTRY – CAMPOS DEL GRID)
         this.setValue('de-txtCCUST', this.bean.data.CCUST);
-        this.setValue('de-txtSDATE', this.bean.data.SDATE); 
+        this.setValue('de-txtSDATE', this.bean.data.SDATE);
         this.setValue('de-txtSCOUNTRY', this.bean.data.SCOUNTRY);
         this.setValue('de-txtTDOC', this.bean.data.TDOC);
         this.setValue('de-txtCODEBANK', this.bean.data.CODEBANK);
@@ -56,13 +56,13 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DataEntryDuplica
 
         let importe = this.bean.data.SVFOP;
         if (importe !== null && importe !== undefined) {
-            this.setValue('de-txtSVFOP', importe); 
+            this.setValue('de-txtSVFOP', importe);
         }
 
         this.setValue('de-txtUSCR', this.bean.data.USCR);
         this.setValue('de-txtFECR', this.bean.data.FECR);
         this.setValue('de-txtHOCR', this.bean.data.HOCR);
-        
+
         this.setValue('de-txtUSUP', this.bean.data.USUP);
         this.setValue('de-txtFEUP', this.bean.data.FEUP);
         this.setValue('de-txtHOUP', this.bean.data.HOUP);
@@ -121,7 +121,7 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DataEntryDuplica
         beanTemp.IN_SEQ = this.bean.data.SEQ;
         beanTemp.IN_SVFOP = this.bean.data.SVFOP;
         beanTemp.IN_NEGOC = this.getValue("de-txtNEGOC");
-        
+
         console.log(beanTemp);
     },
     getData: function () {
@@ -242,13 +242,16 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DataEntryDuplica
 
     //<editor-fold defaultstate="collapsed" desc="MaintenanceA1852">
     MaintenanceA2280: function (beanTemp) {
+        var me = this; // Guardamos el contexto del controlador
         var beanString = JSON.stringify(beanTemp);
+
         Ext.Ajax.request({
             url: prototype.url + '/MaintenanceA2280',
             method: 'POST',
             timeout: 60000000,
             params: {beanString: beanString},
             beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+
             success: function (response, opts) {
                 Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
                 var res = Ext.JSON.decode(response.responseText);
@@ -258,11 +261,22 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DataEntryDuplica
                     global.Msg({msg: res.Mensaje});
                     Ext.getCmp(prototype.id + '-dataEntry').unmask();
                     Ext.getCmp(prototype.id + '-dataEntry').close();
-                   var btnSearch = Ext.getCmp(prototype.id + '-btnSearch');
-                   btnSearch.fireEvent('click', btnSearch);
 
-                } else
-                    global.Msg({msg: ''});
+                    // --- SOLUCIÓN PARA RECARGAR LA GRILLA ---
+                    // Obtenemos el botón de búsqueda
+                    var btnSearch = Ext.getCmp(prototype.id + '-btnSearch');
+
+                    if (btnSearch) {
+                        // Simulamos el clic pasándole el mismo botón como parámetro
+                        btnSearch.fireEvent('click', btnSearch);
+                    } else {
+                        // Plan B infalible: llamamos a la función directamente usando el contexto 'me'
+                        me.btnSearch_click();
+                    }
+
+                } else {
+                    global.Msg({msg: res.Mensaje}); // Aquí te sugiero poner res.Mensaje para ver el error
+                }
             }
         });
     },
