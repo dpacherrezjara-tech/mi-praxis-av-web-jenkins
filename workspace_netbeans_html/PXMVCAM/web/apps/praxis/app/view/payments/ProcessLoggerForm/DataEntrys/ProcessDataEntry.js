@@ -328,7 +328,9 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.DataEntrys.ProcessDataEnt
                         {
                             xtype: 'label',
                             width: '100%',
-                            html: '<b style="color:#c82d2d;font-size:9px;text-align:right;display:block">Required Layout (*): REFER-VALDATE</b>'
+                            html:   '<b style="color:#c82d2d;font-size:9px;text-align:right;display:block">' +
+                                    'Required Layout (*): ACTION | REFER | VALDATE<br>' +
+                                    'Actions: P=Process | U=Update Provision | B=Change Banco</b>'
                         }
                     ]
                 }
