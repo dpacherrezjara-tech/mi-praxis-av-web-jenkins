@@ -15,6 +15,14 @@ public class MPF060Filter {
     public String IN_FECHA_FROM = "";
     public String IN_FECHA_TO = "";
     public String IN_CCUST = "";
+    public String IN_SDATE = "";
+    public String IN_SCOUNTRY = "";
+    public String IN_OLD_TDOC = "";
+    public String IN_SCARDN = "";
+    public String IN_SAUTHOC = "";
+    public String IN_SCARDN6 = "";
+    public String IN_SCARDN4 = "";
+    public String option = "";
     public String IN_PROCESSOR = "";
     public String IN_MERCHAND = "";
     public String IN_LIQUIDACIO = "";
@@ -29,9 +37,13 @@ public class MPF060Filter {
     public String IN_SCARCOD = "";
     public String IN_FASE2 = "";
     public String IN_SECUENCE = "";
+    public String IN_TDOC = "";
     public String IN_MASSIVE = "";
     public String IN_USUP = "";
     public String IN_FEUP = "";
     public String IN_HOUP = "";
     public String IN_PGMUP = "";
+    public String IN_NETO = "";
+    
+    public double IN_SVFOP = 0;
 }

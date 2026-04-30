@@ -6,7 +6,7 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DataEntryDuplica
     actionCode: '',
     bean: {},
     beanResult: {},
-    lst: [],
+    lstCountry: [],
     searchParams: {},
     lstA1852: {},
     dataObtain: {},
@@ -18,265 +18,148 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DataEntryDuplica
         this.p = this.view.params;
         this.actionCode = this.p.action;
         this.bean = this.p.rec;
-        this.lst = this.p.lst;
-//        console.log(this.p);
-//        this.obtainData();
+        this.lstCountry = this.p.lstCountry;
     },
     afterRender: function () {
-//        console.log('afterRender');
+//        this.obtainData();
         switch (this.actionCode) {
             case 'I':
-                var cmbSTAT = Ext.getCmp(prototype.id + '-de-cmbSTAT');
-                cmbSTAT.bindStore(Ext.create('Ext.data.ArrayStore', {
-                    autoLoad: false,
-                    fields: ['code', 'name'],
-                    data: [
-                        ["", ""],
-                        ["A", "A - ACTIVE"],
-                        ["I", "I - INACTIVE"]
-                    ]
-                }));
-                cmbSTAT.setValue('');
-
-                var cmbFASE = Ext.getCmp(prototype.id + '-de-cmbFASE');
-                cmbFASE.bindStore(Ext.create('Ext.data.ArrayStore', {
-                    autoLoad: false,
-                    fields: ['code', 'name'],
-                    data: [
-                        ["", ""],
-                        ["0", "0 - FASE 0"],
-                        ["1", "1 - FASE I"],
-                        ["2", "2 - FASE II"],
-                        ["3", "3 - FASE III"],
-                        ["4", "4 - FASE VI"]
-                    ]
-                }));
-                cmbFASE.setValue('');
-
-                var cmbINPTYPE = Ext.getCmp(prototype.id + '-de-cmbINPTYPE');
-                cmbINPTYPE.bindStore(Ext.create('Ext.data.ArrayStore', {
-                    autoLoad: false,
-                    fields: ['code', 'name'],
-                    data: [
-                        ["", ""],
-                        ["D", "D - DATA"],
-                        ["C", "C - CONTROL"],
-                        ["M", "M - MISCELLANEOUS"]
-                    ]
-                }));
-                cmbINPTYPE.setValue('');
-
-                var cmbINPEXTE = Ext.getCmp(prototype.id + '-de-cmbINPEXTE');
-                cmbINPEXTE.bindStore(Ext.create('Ext.data.ArrayStore', {
-                    autoLoad: false,
-                    fields: ['code', 'name'],
-                    data: [
-                        ["", ""],
-                        [".txt", ".TXT"],
-                        [".TXT", ".TXT"],
-                        [".DAT", ".DAT"],
-                        [".CSV", ".CSV"],
-                        [".cmp", ".CMP"]
-                    ]
-                }));
-                cmbINPEXTE.setValue('');
-
                 Ext.getCmp(prototype.id + '-btn-save').show();
                 Ext.getCmp(prototype.id + '-btn-update').hide();
                 Ext.getCmp(prototype.id + '-btn-delete').hide();
                 Ext.getCmp(prototype.id + '-btn-cancel').show();
                 break;
             case 'U':
-                this.getData();
+                this.mostrarData();
                 this.DeshabilitarCampoClave();
                 Ext.getCmp(prototype.id + '-btn-save').hide();
-                Ext.getCmp(prototype.id + '-btn-update').show();
-                Ext.getCmp(prototype.id + '-btn-delete').show();
+//                Ext.getCmp(prototype.id + '-btn-update').show();
+//                Ext.getCmp(prototype.id + '-btn-delete').show();
                 Ext.getCmp(prototype.id + '-btn-cancel').show();
                 break;
         }
     },
     mostrarData: function () {
-        console.log(this.beanResult);
-        this.setValue('de-txtAPLIC', this.beanResult.APLIC);
-        this.setValue('de-txtSEQNUM', this.beanResult.SEQNUM);
-        this.setValue('de-cmbSTAT', this.beanResult.STAT);
-        this.setValue('de-txtNETDIR', this.beanResult.NETDIR);
-        this.setValue('de-txtLIBNAME', this.beanResult.LIBNAME);
-        this.setValue('de-txtTABLA', this.beanResult.TABLA);
-        this.setValue('de-txtOUTNAME', this.beanResult.OUTNAME);
-        this.setValue('de-txtQTYREG', this.beanResult.QTYREG);
-        this.setValue('de-txtFECPROC', this.beanResult.FECPROC);
-        this.setValue('de-cmbFASE', this.beanResult.FASE);
-        this.setValue('de-txtINPNAME', this.beanResult.INPNAME);
-        this.setValue('de-cmbINPEXTE', this.beanResult.INPEXTE);
-        this.setValue('de-txtINPDESC', this.beanResult.INPDESC);
-        this.setValue('de-cmbINPTYPE', this.beanResult.INPTYPE);
-        
-        if(this.beanResult.DENV.includes('1')){
-            (Ext.getCmp(prototype.id + '-de-txtLun')).setValue(1);
-        }
-        if(this.beanResult.DENV.includes('2')){
-            (Ext.getCmp(prototype.id + '-de-txtMar')).setValue(1);
-        }
-        if(this.beanResult.DENV.includes('3')){
-            (Ext.getCmp(prototype.id + '-de-txtMie')).setValue(1);
-        }
-        if(this.beanResult.DENV.includes('4')){
-            (Ext.getCmp(prototype.id + '-de-txtJue')).setValue(1);
-        }
-        if(this.beanResult.DENV.includes('5')){
-            (Ext.getCmp(prototype.id + '-de-txtVie')).setValue(1);
-        }
-        if(this.beanResult.DENV.includes('6')){
-            (Ext.getCmp(prototype.id + '-de-txtSab')).setValue(1);
-        }
-        if(this.beanResult.DENV.includes('7')){
-            (Ext.getCmp(prototype.id + '-de-txtDom')).setValue(1);
+        console.log('Mostrar Data', this.bean);
+
+        // DETAIL (DATA ENTRY – CAMPOS DEL GRID)
+        this.setValue('de-txtCCUST', this.bean.data.CCUST);
+        this.setValue('de-txtSDATE', this.bean.data.SDATE);
+        this.setValue('de-txtSCOUNTRY', this.bean.data.SCOUNTRY);
+        this.setValue('de-txtTDOC', this.bean.data.TDOC);
+        this.setValue('de-txtCODEBANK', this.bean.data.CODEBANK);
+        this.setValue('de-txtSCARCOD', this.bean.data.SCARCOD);
+        this.setValue('de-txtSCARDN', this.bean.data.SCARDN);
+        this.setValue('de-txtSAUTHOC', this.bean.data.SAUTHOC);
+        this.setValue('de-txtSEQ', this.bean.data.SEQ);
+        this.setValue('de-txtNEGOC', this.bean.data.NEGOC);
+
+        let importe = this.bean.data.SVFOP;
+        if (importe !== null && importe !== undefined) {
+            this.setValue('de-txtSVFOP', importe);
         }
 
-        this.setValue('txtUSCR', this.beanResult.USCR);
-        this.setValue('txtFECR', this.beanResult.FECR);
-        this.setValue('txtHOCR', this.beanResult.HOCR);
-        this.setValue('txtUSUP', this.beanResult.USUP);
-        this.setValue('txtFEUP', this.beanResult.FEUP);
-        this.setValue('txtHOUP', this.beanResult.HOUP);
+        this.setValue('de-txtUSCR', this.bean.data.USCR);
+        this.setValue('de-txtFECR', this.bean.data.FECR);
+        this.setValue('de-txtHOCR', this.bean.data.HOCR);
 
+        this.setValue('de-txtUSUP', this.bean.data.USUP);
+        this.setValue('de-txtFEUP', this.bean.data.FEUP);
+        this.setValue('de-txtHOUP', this.bean.data.HOUP);
+    },
+    obtainData: function () {
+
+        console.log("obtainData");
+
+        var cmbFreqType = Ext.getCmp(prototype.id + '-de-cmbFREQTYPE');
+        cmbFreqType.bindStore(Ext.create('Ext.data.ArrayStore', {
+            autoLoad: false,
+            fields: ['code', 'name'],
+            data: [
+                ["", "None"],
+                ["D", "Daily"],
+                ["W", "Weekly"],
+                ["M", "Monthly"],
+                ["N", "Not Scheduled"]
+            ]
+        }));
+
+        var cmbFREQDAYS = Ext.getCmp(prototype.id + '-de-cmbFREQDAYS');
+        cmbFREQDAYS.bindStore(Ext.create('Ext.data.ArrayStore', {
+            autoLoad: false,
+            fields: ['code', 'name'],
+            data: [
+                ["A", "All Days"],
+                ["W", "Weekdays"],
+                ["S", "Weekend"],
+                ["", "None"]
+            ]
+        }));
+
+        var cmb = Ext.getCmp(prototype.id + '-de-cmbSTATUSRO');
+        cmb.bindStore(Ext.create('Ext.data.ArrayStore', {
+            fields: ['code', 'name'],
+            data: [
+                ["A", "Active"],
+                ["I", "Inactive"]
+            ]
+        }));
 
     },
     //<editor-fold defaultstate="collapsed" desc="llenarData">
     llenarData: function (beanTemp) {
-//        console.log('llenarData');
-        
-        beanTemp.APLIC = this.getValue("de-txtAPLIC");
-        beanTemp.SEQNUM = this.getValue("de-txtSEQNUM");
-        beanTemp.STAT = this.getValue("de-cmbSTAT");
-        beanTemp.NETDIR = this.getValue("de-txtNETDIR");
-        beanTemp.LIBNAME = this.getValue("de-txtLIBNAME");
-        beanTemp.TABLA = this.getValue("de-txtTABLA");
-        beanTemp.OUTNAME = this.getValue("de-txtOUTNAME");
-        beanTemp.QTYREG = this.getValue("de-txtQTYREG");
-        beanTemp.TABLA = this.getValue("de-txtTABLA");
-        beanTemp.FECPROC = this.getValue("de-txtFECPROC");
-        beanTemp.FASE = this.getValue("de-cmbFASE");
-        beanTemp.INPNAME = this.getValue("de-txtINPNAME");
-        beanTemp.INPEXTE = this.getValue("de-cmbINPEXTE");
-        beanTemp.INPDESC = this.getValue("de-txtINPDESC");
-        beanTemp.INPTYPE = this.getValue("de-cmbINPTYPE");
-        
-        var DENValues = "";
-        if ($(Ext.getCmp(prototype.id + '-de-txtLun')).prop('checked')) {
-            DENValues =  DENValues + "1";
-        }
-        if ($(Ext.getCmp(prototype.id + '-de-txtMar')).prop('checked')) {
-            DENValues =  DENValues + "2";
-        }
-        if ($(Ext.getCmp(prototype.id + '-de-txtMie')).prop('checked')) {
-            DENValues =  DENValues + "3";
-        }
-        if ($(Ext.getCmp(prototype.id + '-de-txtJue')).prop('checked')) {
-            DENValues =  DENValues + "4";
-        }
-        if ($(Ext.getCmp(prototype.id + '-de-txtVie')).prop('checked')) {
-            DENValues =  DENValues + "5";
-        }
-        if ($(Ext.getCmp(prototype.id + '-de-txtSab')).prop('checked')) {
-            DENValues =  DENValues + "6";
-        }
-        if ($(Ext.getCmp(prototype.id + '-de-txtDom')).prop('checked')) {
-            DENValues =  DENValues + "7";
-        }
-        console.log(DENValues);
-        beanTemp.DENV = DENValues;
-        
-        beanTemp.USCR = this.getValue("txtUSCR").trim();
-        beanTemp.FECR = this.getValue("txtFECR").trim();
-        beanTemp.HOCR = this.getValue("txtHOCR").trim();
-        beanTemp.USUP = this.getValue("txtUSUP").trim();
-        beanTemp.FEUP = this.getValue("txtFEUP").trim();
-        beanTemp.HOUP = this.getValue("txtHOUP").trim();
+        console.log('llenarData');
 
+        beanTemp.IN_CCUST = this.bean.data.CCUST;
+        beanTemp.IN_SDATE = this.bean.data.SDATE;
+        beanTemp.IN_SCOUNTRY = this.bean.data.SCOUNTRY;
+        beanTemp.IN_TDOC = this.bean.data.TDOC;
+        beanTemp.IN_CODEBANK = this.bean.data.CODEBANK;
+        beanTemp.IN_SCARCOD = this.bean.data.SCARCOD;
+        beanTemp.IN_SCARDN = this.bean.data.SCARDN;
+        beanTemp.IN_SAUTHOC = this.bean.data.SAUTHOC;
+        beanTemp.IN_SEQ = this.bean.data.SEQ;
+        beanTemp.IN_SVFOP = this.bean.data.SVFOP;
+        beanTemp.IN_NEGOC = this.getValue("de-txtNEGOC");
+
+        console.log(beanTemp);
     },
     getData: function () {
-        var cmbSTAT = Ext.getCmp(prototype.id + '-de-cmbSTAT');
-        cmbSTAT.bindStore(Ext.create('Ext.data.ArrayStore', {
-            autoLoad: false,
-            fields: ['code', 'name'],
-            data: [
-                ["", ""],
-                ["A", "A - ACTIVE"],
-                ["I", "I - INACTIVE"]
-            ]
-        }));
-
-        var cmbFASE = Ext.getCmp(prototype.id + '-de-cmbFASE');
-        cmbFASE.bindStore(Ext.create('Ext.data.ArrayStore', {
-            autoLoad: false,
-            fields: ['code', 'name'],
-            data: [
-                ["", ""],
-                ["0", "0 - FASE 0"],
-                ["1", "1 - FASE I"],
-                ["2", "2 - FASE II"],
-                ["3", "3 - FASE III"],
-                ["4", "4 - FASE VI"]
-            ]
-        }));
-
-        var cmbINPTYPE = Ext.getCmp(prototype.id + '-de-cmbINPTYPE');
-        cmbINPTYPE.bindStore(Ext.create('Ext.data.ArrayStore', {
-            autoLoad: false,
-            fields: ['code', 'name'],
-            data: [
-                ["", ""],
-                ["D", "D - DATA"],
-                ["C", "C - CONTROL"],
-                ["M", "M - MISCELLANEOUS"]
-            ]
-        }));
-
-        var cmbINPEXTE = Ext.getCmp(prototype.id + '-de-cmbINPEXTE');
-        cmbINPEXTE.bindStore(Ext.create('Ext.data.ArrayStore', {
-            autoLoad: false,
-            fields: ['code', 'name'],
-            data: [
-                ["", ""],
-                [".txt", ".TXT"],
-                [".TXT", ".TXT"],
-                [".DAT", ".DAT"],
-                [".CSV", ".CSV"],
-                [".cmp", ".CMP"]
-            ]
-        }));
-
+//        console.log('getData');
         var beanString = JSON.stringify(meDE.bean.data);
+//        console.log(beanString);
 
-        Ext.Ajax.request({
-            url: prototype.url + '/searchCompleteDetail',
-            method: 'POST',
-            timeout: 60000000,
-            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
-            params: {beanString: beanString},
-            success: function (response, options) {
-                Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
-                var res = Ext.JSON.decode(response.responseText);
-                meDE.beanResult = res.result;
-                meDE.mostrarData();
-
-            }
-        });
+//        Ext.Ajax.request({
+//            url: prototype.url + '/searchCompleteDetail',
+//            method: 'POST',
+//            timeout: 60000000,
+//            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+//            params: {beanString: beanString},
+//            success: function (response, options) {
+//                Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
+//                var res = Ext.JSON.decode(response.responseText);
+//                meDE.beanResult = res.result;
+//                meDE.mostrarData();
+//
+//            }
+//        });
     },
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="limpiarData">
     limpiarData: function () {
+        this.setValue('txtCODSOUR', '');
+        this.setValue('txtDESSOU', '');
+        this.setValue('txtGRUSOR', '');
+        this.setValue('txtstrGRUSOR', '');
+        Ext.getCmp(prototype.id + '-lblDescripcion').setText('');
+        Ext.getCmp(prototype.id + '-lblDescripcion2').setText('');
         this.setValue('txtUSCR', '');
         this.setValue('txtFECR', '');
         this.setValue('txtHOCR', '');
         this.setValue('txtUSUP', '');
         this.setValue('txtFEUP', '');
         this.setValue('txtHOUP', '');
-        //this.setValue('-de-cmbUNIOPE', '');
     },
     //</editor-fold>
     toUpperCase: function (obj, value, opts) {
@@ -298,10 +181,10 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DataEntryDuplica
                     var beanTemp = {};
                     this.llenarData(beanTemp);
                     var msjResult = this.validacionInsert(beanTemp);
-
+                    console.log('onSaveClick');
                     if (msjResult === '') {
                         beanTemp.option = 'I';
-                        this.MaintenanceA2358(beanTemp);
+                        this.MaintenanceA2280(beanTemp);
                     } else {
                         global.Msg({msg: msjResult});
                     }
@@ -311,27 +194,25 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DataEntryDuplica
     },
     onUpdateClick: function (btn) {
         console.log('onUpdateClick');
+        console.log(btn, 'BTN')
+        this.update(btn);
+    },
+    update: function (btn) {
         Ext.Msg.show(
                 {
                     title: '.:PRAXIS:.',
                     msg: 'Are you sure to update ?',
                     buttons: Ext.MessageBox.YESNO,
-                    //scope: this,
-                    //animateTarget: btn,
+                    scope: this,
+                    animateTarget: btn,
                     icon: Ext.MessageBox.QUESTION,
                     modal: true,
                     fn: function (btn) {
                         if (btn === 'yes') {
                             var beanTemp = {};
-
-                            var msjResult = meDE.validacionUpdate(beanTemp);
-                            if (msjResult === '') {
-                                meDE.llenarData(beanTemp);
-                                beanTemp.option = 'U';
-                                meDE.MaintenanceA2358(beanTemp);
-                            } else {
-                                global.Msg({msg: msjResult});
-                            }
+                            this.llenarData(beanTemp);
+                            beanTemp.option = 'U';
+                            this.MaintenanceA2280(beanTemp);
                         }
                     }
                 });
@@ -349,7 +230,7 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DataEntryDuplica
                     var beanTemp = {};
                     this.llenarData(beanTemp);
                     beanTemp.option = 'D';
-                    this.MaintenanceA2358(beanTemp);
+                    this.MaintenanceA2280(beanTemp);
                 }
             }
         });
@@ -359,26 +240,43 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DataEntryDuplica
     },
     // </editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="MaintenanceA2354">
-    MaintenanceA2358: function (beanTemp) {
-//        console.log(beanTemp);
+    //<editor-fold defaultstate="collapsed" desc="MaintenanceA1852">
+    MaintenanceA2280: function (beanTemp) {
+        var me = this; // Guardamos el contexto del controlador
         var beanString = JSON.stringify(beanTemp);
+
         Ext.Ajax.request({
-            url: prototype.url + '/MaintenanceA2358',
+            url: prototype.url + '/MaintenanceA2280',
             method: 'POST',
             timeout: 60000000,
-            params: {beanString: beanString, option: beanTemp.option},
+            params: {beanString: beanString},
             beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+
             success: function (response, opts) {
                 Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
                 var res = Ext.JSON.decode(response.responseText);
+                console.log(res);
+
                 if (res.success) {
                     global.Msg({msg: res.Mensaje});
                     Ext.getCmp(prototype.id + '-dataEntry').unmask();
                     Ext.getCmp(prototype.id + '-dataEntry').close();
-                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
-                } else
-                    global.Msg({msg: ''});
+
+                    // --- SOLUCIÓN PARA RECARGAR LA GRILLA ---
+                    // Obtenemos el botón de búsqueda
+                    var btnSearch = Ext.getCmp(prototype.id + '-btnSearch');
+
+                    if (btnSearch) {
+                        // Simulamos el clic pasándole el mismo botón como parámetro
+                        btnSearch.fireEvent('click', btnSearch);
+                    } else {
+                        // Plan B infalible: llamamos a la función directamente usando el contexto 'me'
+                        me.btnSearch_click();
+                    }
+
+                } else {
+                    global.Msg({msg: res.Mensaje}); // Aquí te sugiero poner res.Mensaje para ver el error
+                }
             }
         });
     },
@@ -386,38 +284,53 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DataEntryDuplica
 
     validacionInsert: function (beanTemp) {
         var msjResult = '';
-//        if (this.getValue("de-txtMERCHN") === '') {
-//            msjResult = "You must enter the required field.";
-//        }
-//        if (this.getValue("de-txtMERCHP") === '') {
-//            msjResult = "You must enter the required field.";
-//        }
-        return msjResult;
-    },
-    validacionUpdate: function (beanTemp) {
-        var msjResult = '';
-//        if (this.getValue("de-txtMERCHP").trim() === '') {
-//            msjResult = "The field Merchant Payment cannot be left empty";
-//        }
+        if (this.getValue("de-txtCODE") === '' || this.getValue("de-txtCODEBANK") === '' || this.getValue("de-txtCOUNTRY") === '' || this.getValue("de-txtCURRENC") === '') {
+            msjResult = "You must enter the required field.";
+        }
         return msjResult;
     },
     DeshabilitarCampoClave: function () {
-        Ext.getCmp(prototype.id + '-de-txtAPLIC').setEditable(false);
-        Ext.getCmp(prototype.id + '-de-txtINPNAME').setReadOnly(true);
+
+        let camposDeshabilitar = [
+            'de-txtSVFOP',
+            'de-txtCCUST',
+            'de-txtSDATE',
+            'de-txtSCOUNTRY',
+            'de-txtCODEBANK',
+            'de-txtSCARCOD',
+            'de-txtSCARDN',
+            'de-txtSAUTHOC',
+            'de-txtSEQ',
+            'de-txtSVFOP',
+            'de-txtTDOC'
+        ];
+
+        camposDeshabilitar.forEach(id => {
+            let cmp = Ext.getCmp(prototype.id + '-' + id);
+            if (cmp)
+                cmp.setReadOnly(true);
+        });
     },
     Habilitarlbl: function () {
-//        Ext.getCmp(prototype.id + '-lblDescripcion').show();
-//        Ext.getCmp(prototype.id + '-txtDESSOU').hide();
-//        Ext.getCmp(prototype.id + '-lbldes2').show();
+        Ext.getCmp(prototype.id + '-lblDescripcion').show();
+        Ext.getCmp(prototype.id + '-txtDESSOU').hide();
+        Ext.getCmp(prototype.id + '-lbldes2').show();
     },
     desHabilitartxt: function () {
-//        if (this.getValue("txtGRUSOR") !== this.bean.GRUSOR) {
-//            Ext.getCmp(prototype.id + '-lbldes').hide();
-//        } else {
-//            Ext.getCmp(prototype.id + '-lbldes').show();
-//        }
+        if (this.getValue("txtGRUSOR") !== this.bean.GRUSOR) {
+            Ext.getCmp(prototype.id + '-lbldes').hide();
+        } else {
+            Ext.getCmp(prototype.id + '-lbldes').show();
+        }
     },
-
+    Habilitarlbl1: function () {
+        Ext.getCmp(prototype.id + '-lbldes').hide();
+        if (this.getValue("txtCODSOUR") === '') {
+            Ext.getCmp(prototype.id + '-lbldes2').hide();
+        } else {
+            Ext.getCmp(prototype.id + '-lbldes2').show();
+        }
+    },
     // <editor-fold defaultstate="collapsed" desc="Utilitarios">
     getValue: function (id) {
         return Ext.getCmp(prototype.id + '-' + id).getValue();
@@ -426,6 +339,7 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DataEntryDuplica
         Ext.getCmp(prototype.id + '-' + id).focus();
     },
     setValue: function (id, txt) {
+        console.log(prototype.id + '-' + id, 'uu')
         Ext.getCmp(prototype.id + '-' + id).setValue(txt);
     },
     onUpperValue: function (field, newValue, oldValue) {
@@ -435,8 +349,31 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DataEntryDuplica
         if (e.getKey() === e.ENTER) {
 //            this.btnSearch_click();
         }
+    },
+    buildCron: function (freqType, freqDays, timeExec) {
+        if (!freqType || freqType === "N")
+            return "0 0 0 31 2 ?"; // deshabilitado
+
+        let hour = timeExec.substring(0, 2);
+        let minute = timeExec.substring(2, 4);
+
+        if (freqType === "D") {
+            return `0 ${minute} ${hour} * * ?`;
+        }
+
+        if (freqType === "W") {
+            if (freqDays === "W")
+                return `0 ${minute} ${hour} ? * MON-FRI`;
+            if (freqDays === "S")
+                return `0 ${minute} ${hour} ? * SAT,SUN`;
+            return `0 ${minute} ${hour} * * ?`;
+        }
+
+        if (freqType === "M") {
+            return `0 ${minute} ${hour} 1 * ?`;
+        }
+
+        return "0 0 0 31 2 ?"; // safe fallback
     }
 // </editor-fold>
-
-
-});
+})

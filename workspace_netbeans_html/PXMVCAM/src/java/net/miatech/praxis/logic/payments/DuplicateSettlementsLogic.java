@@ -4,6 +4,7 @@ import net.miatech.praxis.logic.interline.*;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import net.miatech.praxis.payment.filter.A2358Filter;
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.praxis.dao.payments.DuplicateSettlementsDAO;
@@ -40,7 +41,9 @@ public class DuplicateSettlementsLogic {
         return DuplicateSettlementsDAO.loadMPS374_MPS375(lst, filter);
     }
    
-   
+   public Map<String, Object> updateMPS590(MPF060Filter bean) throws SQLException, Exception {
+        return DuplicateSettlementsDAO.updateMPS590(bean);
+    }
    
    
    
