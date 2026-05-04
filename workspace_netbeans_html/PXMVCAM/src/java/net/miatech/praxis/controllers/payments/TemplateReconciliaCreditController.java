@@ -1567,4 +1567,23 @@ public class TemplateReconciliaCreditController extends BaseController {
         }
     }
 
+   @RequestMapping(value = "searchCodeComision")
+    public @ResponseBody String searchCodeComision(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- fetchCodeComision -----------");
+        map.put("success", true);
+        try {
+            TemplateReconciliaCreditLogic logic = new TemplateReconciliaCreditLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            
+            // Recibe el Map con las 3 listas
+            Map<String, List<Map<String, String>>> result = logic.loadMPS610(); 
+            map.put("result", result);
+            
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("message", e.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+    
 }

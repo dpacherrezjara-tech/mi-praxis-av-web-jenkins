@@ -32,6 +32,8 @@ public class MPF091 {
     public String USCR = "";
     public String FECR = "";
     public String HOCR = "";
+    public String PGMCR = "";
+    public String PGMUP = "";
     public String USUP = "";
     public String FEUP = "";
     public String HOUP = "";

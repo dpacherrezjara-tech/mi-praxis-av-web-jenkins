@@ -22,6 +22,7 @@ public class MPF091Filter {
     public String IN_MONEDA = "";
     public String IN_CORRL = "";
     public String IN_CODIGO = "";
+    public String option = "";
     public String IN_PRDA = "";
     public String IN_DATEFROM = "";
     public String IN_DATETO = "";

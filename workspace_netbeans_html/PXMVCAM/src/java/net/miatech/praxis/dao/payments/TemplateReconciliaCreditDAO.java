@@ -6,8 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.praxis.exceptions.SpringException;
@@ -364,6 +366,15 @@ public class TemplateReconciliaCreditDAO {
                     record.IMPORTECeba = rst2.getDouble("IMPORTE");
                     record.IMPORTEPAG = rst2.getDouble("IMPORTEPAG");
                     record.checkActive = false;
+                    
+                    record.USCR = rst2.getString("USCR");
+                    record.FECR = rst2.getString("FECR");
+                    record.HOCR = rst2.getString("HOCR");
+                    record.PGMCR = rst2.getString("PGMCR");
+                    record.USUP = rst2.getString("USUP");
+                    record.FEUP = rst2.getString("FEUP");
+                    record.HOUP = rst2.getString("HOUP");
+                    record.PGMUP = rst2.getString("PGMUP");
 
                     record.page.PAGNUM = filter.page.PAGNUM;
                     record.page.PAGROW = filter.page.PAGROW;
@@ -396,6 +407,15 @@ public class TemplateReconciliaCreditDAO {
                     thirdRecord.IMPORTECeba = rst3.getDouble("IMPORTE");
                     thirdRecord.IMPORTEPAG = rst3.getDouble("IMPORTEPAG");
                     thirdRecord.checkActive = false;
+                    
+                    thirdRecord.USCR = rst3.getString("USCR");
+                    thirdRecord.FECR = rst3.getString("FECR");
+                    thirdRecord.HOCR = rst3.getString("HOCR");
+                    thirdRecord.PGMCR = rst3.getString("PGMCR");
+                    thirdRecord.USUP = rst3.getString("USUP");
+                    thirdRecord.FEUP = rst3.getString("FEUP");
+                    thirdRecord.HOUP = rst3.getString("HOUP");
+                    thirdRecord.PGMUP = rst3.getString("PGMUP");
 
                     thirdRecord.TOTAL_IMPORTE = TOTAL_IMPORTE;
                     thirdRecord.TOTAL_IMPORTEPAG = TOTAL_IMPORTEPAG;
@@ -1745,7 +1765,7 @@ public class TemplateReconciliaCreditDAO {
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
 
-            String SQL = "{CALL " + session.getMainLibrary() + "MP.MPS420(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+            String SQL = "{CALL " + session.getMainLibrary() + "MP.MPS420(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
             cstmt = cnx.prepareCall(SQL);
 
             cstmt.setString(1, trimOrEmpty(bean.IN_CCUST));
@@ -1760,21 +1780,21 @@ public class TemplateReconciliaCreditDAO {
             cstmt.setString(10, trimOrEmpty(bean.IN_CODIGO));
             cstmt.setDouble(11, bean.IN_IMPORTE);
             cstmt.setDouble(12, bean.IN_IMPORTEPAGO);
+            
+            cstmt.setString(13, session.getUserView().getUserInfo().USR);
+            cstmt.setString(14, trimOrEmpty(bean.option));               
 
-            cstmt.registerOutParameter(13, java.sql.Types.VARCHAR);
+            cstmt.registerOutParameter(15, java.sql.Types.VARCHAR);
 
             cstmt.execute();
 
-            outMensaje = cstmt.getString(13);
+            outMensaje = cstmt.getString(15);
 
         } catch (Exception e) {
             e.printStackTrace();
             throw new SpringException(e);
         } finally {
-            if (cstmt != null) try {
-                cstmt.close();
-            } catch (SQLException e) {
-            }
+            if (cstmt != null) try { cstmt.close(); } catch (SQLException e) { }
             session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
         }
 
@@ -1816,6 +1836,70 @@ public class TemplateReconciliaCreditDAO {
         }
 
         return outMensaje;
+    }
+    
+    public Map<String, List<Map<String, String>>> loadMPS610() throws SQLException, Exception {
+        Map<String, List<Map<String, String>>> multiResult = new HashMap<>();
+        
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        Connection cnx = null;
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS610()}";
+            cstmt = cnx.prepareCall(SQLCLL01);
+            cstmt.execute();
+
+            // 1. CÓDIGOS
+            rst = cstmt.getResultSet();
+            multiResult.put("codigos", extraerLista(rst));
+
+            // 2. MONEDAS (Aquí inyectamos el vacío)
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+                List<Map<String, String>> listaMonedas = extraerLista(rst);
+                
+                // --- CAMBIO AQUÍ: Opción vacía con texto "EMPTY" ---
+                Map<String, String> opcionVacia = new HashMap<>();
+                opcionVacia.put("code", "");        // El valor que irá a la base de datos
+                opcionVacia.put("name", "EMPTY");   // El texto visible que soluciona el problema en ExtJS
+                listaMonedas.add(0, opcionVacia); 
+                // ----------------------------------------------------
+                
+                multiResult.put("monedas", listaMonedas);
+            }
+
+            // 3. CCUSTPROS
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+                multiResult.put("ccustpros", extraerLista(rst));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SpringException(e);
+        } finally {
+            if (rst != null) { try { rst.close(); } catch (SQLException e) {} }
+            if (cstmt != null) { try { cstmt.close(); } catch (SQLException e) {} }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+        }
+
+        return multiResult;
+    }
+
+    private List<Map<String, String>> extraerLista(ResultSet rst) throws SQLException {
+        List<Map<String, String>> lst = new ArrayList<>();
+        if (rst != null) {
+            while (rst.next()) {
+                Map<String, String> record = new HashMap<>();
+                String valor = rst.getString("VALOR").trim(); 
+                record.put("code", valor);
+                record.put("name", valor);
+                lst.add(record);
+            }
+        }
+        return lst;
     }
 
 }

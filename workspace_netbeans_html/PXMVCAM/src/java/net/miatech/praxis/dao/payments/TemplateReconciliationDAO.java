@@ -565,6 +565,15 @@ public class TemplateReconciliationDAO {
                     record.IMPORTECeba = rst2.getDouble("IMPORTE");
                     record.IMPORTEPAG = rst2.getDouble("IMPORTEPAG");
                     record.checkActive = false;
+                    
+                    record.USCR = rst2.getString("USCR");
+                    record.FECR = rst2.getString("FECR");
+                    record.HOCR = rst2.getString("HOCR");
+                    record.PGMCR = rst2.getString("PGMCR");
+                    record.USUP = rst2.getString("USUP");
+                    record.FEUP = rst2.getString("FEUP");
+                    record.HOUP = rst2.getString("HOUP");
+                    record.PGMUP = rst2.getString("PGMUP");
 
                     record.page.PAGNUM = filter.page.PAGNUM;
                     record.page.PAGROW = filter.page.PAGROW;
@@ -597,6 +606,15 @@ public class TemplateReconciliationDAO {
                     thirdRecord.IMPORTECeba = rst3.getDouble("IMPORTE");
                     thirdRecord.IMPORTEPAG = rst3.getDouble("IMPORTEPAG");
                     thirdRecord.checkActive = false;
+                    
+                    record.USCR = rst3.getString("USCR");
+                    record.FECR = rst3.getString("FECR");
+                    record.HOCR = rst3.getString("HOCR");
+                    record.PGMCR = rst3.getString("PGMCR");
+                    record.USUP = rst3.getString("USUP");
+                    record.FEUP = rst3.getString("FEUP");
+                    record.HOUP = rst3.getString("HOUP");
+                    record.PGMUP = rst3.getString("PGMUP");
 
                     thirdRecord.TOTAL_IMPORTE = TOTAL_IMPORTE;
                     thirdRecord.TOTAL_IMPORTEPAG = TOTAL_IMPORTEPAG;
