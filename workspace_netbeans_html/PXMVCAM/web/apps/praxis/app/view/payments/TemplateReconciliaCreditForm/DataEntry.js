@@ -7,8 +7,8 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.DataEntry', {
     controller: 'DataEntryTemplateReconciliaCreditController',
     title: 'Credit Card - Data Entry Form',
     header: true,
-    height: 520,
-    width: 820,
+    height: 590,
+    width: 1100,
     resizable: false,
     layout: 'fit',
     modal: true,
@@ -46,9 +46,52 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.DataEntry', {
                             items: [
                                 {xtype: 'textfield', fieldLabel: 'RN', id: prototype.id + '-de-txtRN', width: 230, labelWidth: 90, fieldStyle: 'text-align:center;'},
                                 {xtype: 'tbspacer', width: 15},
-                                {xtype: 'textfield', fieldLabel: 'CCUST', id: prototype.id + '-de-txtCCUST2', width: 220, labelWidth: 90, fieldStyle: 'text-align:center;'},
+                                {
+                                    fieldLabel: 'CUSTOMER',
+                                    xtype: 'combo',
+                                    width: 220,
+                                    labelWidth: 90,
+                                    fieldStyle: 'text-align: center; font-size: 12px;',
+                                    disabled: false,
+                                    id: prototype.id + '-de-txtCCUST2',
+                                    queryMode: 'local',
+                                    allowBlank: false,
+                                    forceSelection: true,
+                                    selectOnFocus: true,
+                                    caseSensitive: false,
+                                    autoSelect: true,
+                                    editable: true,
+                                    listConfig: {maxHeight: 130},
+                                    typeAhead: true,
+                                    valueField: 'code',
+                                    displayField: 'name',
+                                    enableKeyEvents: true,
+                                    triggerAction: 'all',
+                                    value: '134',
+                                    store: {
+                                        fields: ['code', 'name'],
+                                        data: [
+                                            {code: '133', name: 'LACSA'},
+                                            {code: '134', name: 'AVIANCA'},
+                                            {code: '202', name: 'TACA'},
+                                            {code: '547', name: 'AEROGAL'},
+//                                    {code: '', name: 'ALL'}
+                                        ]
+                                    },
+                                    margin: '0 10 0 0'
+                                },
                                 {xtype: 'tbspacer', width: 15},
-                                {xtype: 'textfield', fieldLabel: 'PRDA', id: prototype.id + '-de-txtPRDA', width: 220, labelWidth: 90, fieldStyle: 'text-align:center;'}
+                                {
+                                    xtype: 'textfield',
+                                    fieldLabel: 'PRDA',
+                                    id: prototype.id + '-de-txtPRDA',
+                                    width: 220,
+                                    labelWidth: 80,
+                                    fieldStyle: 'text-align:center;',
+                                    maskRe: /[0-9]/,
+                                    maxLength: 8,
+                                    enforceMaxLength: true
+                                }
                             ]
                         },
                         {
@@ -60,9 +103,23 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.DataEntry', {
                             items: [
                                 {xtype: 'textfield', fieldLabel: 'CODPRO', id: prototype.id + '-de-txtCODPRO', width: 230, labelWidth: 90, fieldStyle: 'text-align:center;'},
                                 {xtype: 'tbspacer', width: 15},
-                                {xtype: 'textfield', fieldLabel: 'CCUSTPRO', id: prototype.id + '-de-txtCCUSTPRO', width: 220, labelWidth: 90, fieldStyle: 'text-align:center;'},
+                                {
+                                    xtype: 'combobox', fieldLabel: 'CCUSTPRO', id: prototype.id + '-de-txtCCUSTPRO', width: 220, labelWidth: 90, fieldStyle: 'text-align:center;',
+                                    displayField: 'name', valueField: 'code', queryMode: 'local', editable: false,
+                                    store: Ext.create('Ext.data.ArrayStore', {fields: ['code', 'name'], data: []})
+                                },
                                 {xtype: 'tbspacer', width: 15},
-                                {xtype: 'textfield', fieldLabel: 'FLIQUIDACI', id: prototype.id + '-de-txtFLIQUIDACI', width: 220, labelWidth: 90, fieldStyle: 'text-align:center;'}
+                                {
+                                    xtype: 'textfield',
+                                    fieldLabel: 'FLIQUIDACI',
+                                    id: prototype.id + '-de-txtFLIQUIDACI',
+                                    width: 220,
+                                    labelWidth: 90,
+                                    fieldStyle: 'text-align:center;',
+                                    maskRe: /[0-9]/,
+                                    maxLength: 8,
+                                    enforceMaxLength: true
+                                },
                             ]
                         },
                         {
@@ -72,11 +129,44 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.DataEntry', {
                             padding: '6 12 6 12',
                             defaults: {labelStyle: 'font-weight:bold;color:#0B333C;'},
                             items: [
-                                {xtype: 'textfield', fieldLabel: 'LIQUIDACIO', id: prototype.id + '-de-txtLIQUIDACIO', width: 230, labelWidth: 90, fieldStyle: 'text-align:center;'},
+                                {
+                                    xtype: 'textfield',
+                                    fieldLabel: 'LIQUIDACIO',
+                                    id: prototype.id + '-de-txtLIQUIDACIO',
+                                    width: 230,
+                                    labelWidth: 90,
+                                    fieldStyle: 'text-align:center;',
+                                    maxLength: 50,
+                                    enforceMaxLength: true
+                                },
                                 {xtype: 'tbspacer', width: 15},
-                                {xtype: 'textfield', fieldLabel: 'MERCHAND', id: prototype.id + '-de-txtMERCHAND', width: 220, labelWidth: 90, fieldStyle: 'text-align:center;'},
+                                {
+                                    xtype: 'textfield',
+                                    fieldLabel: 'MERCHAND',
+                                    id: prototype.id + '-de-txtMERCHAND',
+                                    width: 220,
+                                    labelWidth: 90,
+                                    fieldStyle: 'text-align:center;',
+                                    maxLength: 16,
+                                    enforceMaxLength: true
+                                },
                                 {xtype: 'tbspacer', width: 15},
-                                {xtype: 'textfield', fieldLabel: 'CODIGO', id: prototype.id + '-de-txtCODIGO', width: 220, labelWidth: 90, fieldStyle: 'text-align:center;'}
+                                {
+                                    xtype: 'combobox',
+                                    fieldLabel: 'CODIGO',
+                                    id: prototype.id + '-de-txtCODIGO',
+                                    width: 220,
+                                    labelWidth: 90,
+                                    fieldStyle: 'text-align:center;',
+                                    displayField: 'name',
+                                    valueField: 'code',
+                                    queryMode: 'local',
+                                    editable: false,
+                                    store: Ext.create('Ext.data.ArrayStore', {
+                                        fields: ['code', 'name'],
+                                        data: []
+                                    })
+                                }
                             ]
                         },
                         {
@@ -105,12 +195,9 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.DataEntry', {
                             defaults: {labelStyle: 'font-weight:bold;color:#0B333C;'},
                             items: [
                                 {
-                                    xtype: 'textfield',
-                                    fieldLabel: 'MONEDA',
-                                    id: prototype.id + '-de-txtMONEDA',
-                                    width: 230,
-                                    labelWidth: 90,
-                                    fieldStyle: 'text-align:center;font-weight:bold;'
+                                    xtype: 'combobox', fieldLabel: 'MONEDA', id: prototype.id + '-de-txtMONEDA', width: 230, labelWidth: 90, fieldStyle: 'text-align:center;font-weight:bold;',
+                                    displayField: 'name', valueField: 'code', queryMode: 'local', editable: false, maxLength: 3, enforceMaxLength: true,
+                                    store: Ext.create('Ext.data.ArrayStore', {fields: ['code', 'name'], data: []})
                                 },
                                 {xtype: 'tbspacer', width: 15},
                                 {
@@ -120,6 +207,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.DataEntry', {
                                     width: 210,
                                     labelWidth: 90,
                                     hideTrigger: true,
+                                    value: 0,
                                     decimalPrecision: 2,
                                     allowDecimals: true,
                                     fieldStyle: 'text-align:right;font-weight:bold;'
@@ -134,12 +222,9 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.DataEntry', {
                             defaults: {labelStyle: 'font-weight:bold;color:#0B333C;'},
                             items: [
                                 {
-                                    xtype: 'textfield',
-                                    fieldLabel: 'MONEDA PAGO',
-                                    id: prototype.id + '-de-txtMONEDAPAGO',
-                                    width: 230,
-                                    labelWidth: 90,
-                                    fieldStyle: 'text-align:center;font-weight:bold;'
+                                    xtype: 'combobox', fieldLabel: 'MONEDA PAGO', id: prototype.id + '-de-txtMONEDAPAGO', width: 230, labelWidth: 90, fieldStyle: 'text-align:center;font-weight:bold;',
+                                    displayField: 'name', valueField: 'code', queryMode: 'local', editable: false, maxLength: 3, enforceMaxLength: true,
+                                    store: Ext.create('Ext.data.ArrayStore', {fields: ['code', 'name'], data: []})
                                 },
                                 {xtype: 'tbspacer', width: 15},
                                 {
@@ -149,6 +234,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.DataEntry', {
                                     width: 210,
                                     labelWidth: 90,
                                     hideTrigger: true,
+                                    value: 0,
                                     decimalPrecision: 2,
                                     allowDecimals: true,
                                     fieldStyle: 'text-align:right;font-weight:bold;'
@@ -198,6 +284,16 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.DataEntry', {
                                     labelWidth: 90,
                                     readOnly: true,
                                     fieldStyle: 'text-align:center;background:#e8e8e8;'
+                                },
+                                {xtype: 'tbspacer', width: 15},
+                                {
+                                    xtype: 'textfield',
+                                    fieldLabel: 'By Program',
+                                    id: prototype.id + '-de-txtPGMCR',
+                                    width: 230,
+                                    labelWidth: 90,
+                                    readOnly: true,
+                                    fieldStyle: 'text-align:center;background:#e8e8e8;'
                                 }
                             ]
                         },
@@ -232,6 +328,16 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.DataEntry', {
                                     xtype: 'textfield',
                                     fieldLabel: 'Update Time',
                                     id: prototype.id + '-de-txtHOUP',
+                                    width: 230,
+                                    labelWidth: 90,
+                                    readOnly: true,
+                                    fieldStyle: 'text-align:center;background:#e8e8e8;'
+                                },
+                                {xtype: 'tbspacer', width: 15},
+                                {
+                                    xtype: 'textfield',
+                                    fieldLabel: 'By Program',
+                                    id: prototype.id + '-de-txtPGMUP',
                                     width: 230,
                                     labelWidth: 90,
                                     readOnly: true,

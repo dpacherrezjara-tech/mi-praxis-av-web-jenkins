@@ -1503,7 +1503,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.Info', {
                                                                     {
                                                                         sortable: false,
                                                                         xtype: 'actioncolumn',
-                                                                        disabled: true,
+//                                                                        disabled: true,
                                                                         width: 45,
                                                                         text: '<span style="color:white;font-weight:bold;">Edit</span>',
                                                                         style: 'background:#6C87A8; border-color:white',
@@ -1512,7 +1512,7 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.Info', {
                                                                             {
                                                                                 iconCls: 'prx-icon-edit',
                                                                                 tooltip: 'Edit',
-                                                                                disabled: true,
+//                                                                                disabled: true,
                                                                                 handler: 'onEditClick'
                                                                             }
                                                                         ],
@@ -1525,6 +1525,12 @@ Ext.define('Ext.Praxis.view.payments.TemplateReconciliaCreditForm.Info', {
                                                             }
                                                         ]
                                                     }
+                                                },
+                                                {
+                                                    xtype: 'button',
+                                                    id: prototype.id + '-btnAddDiscountAll',
+                                                    iconCls: 'prx-icon-add',
+                                                    tooltip: 'New Discount'
                                                 }
                                             ]
                                         },

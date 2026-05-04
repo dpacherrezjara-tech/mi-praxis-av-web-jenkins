@@ -2,6 +2,7 @@ package net.miatech.praxis.logic.payments;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.praxis.dao.payments.TemplateReconciliaCreditDAO;
 import net.miatech.praxis.payment.MPF060Filter;
@@ -103,6 +104,10 @@ public class TemplateReconciliaCreditLogic {
     
     public String loadMPS426(MPF091Filter bean) throws Exception {
         return TemplateReconciliaCreditDAO.loadMPS426(bean);
+    }
+    
+    public Map<String, List<Map<String, String>>> loadMPS610() throws SQLException, Exception {
+        return TemplateReconciliaCreditDAO.loadMPS610();
     }
     
 }
