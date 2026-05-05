@@ -43,6 +43,15 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
             '#CargoGuideForm-btnAdd': {
                 click: this.btnAdd_click
             },
+            '#CargoGuideForm-btnGenerarCartera': {
+                click: this.btnGenerarCartera_click
+            },
+            '#CargoGuideForm-btnRunProcess': {
+                click: this.btnRunProcess_click
+            },
+            '#CargoGuideForm-btnLinkMPF291': {
+                click: this.btnLinkMPF291_click
+            },
             '#CargoGuideForm-btnBack': {
                 click: this.btnBack_click
             },
@@ -695,6 +704,60 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
     onEditClick: function (column, e, row, colIndex, x, rowData) {
         let data = rowData;
         this.winDataEntry('U', data);
+    },
+    btnLinkMPF291_click: function () {
+        var grid     = Ext.getCmp(prototype.id + '-gridDataDetail');
+        var selected = grid ? grid.getSelectionModel().getSelection() : [];
+
+        if (!selected || selected.length === 0) {
+            Ext.Msg.alert('.:PRAXIS:.', 'Please select a MPF295 record from the grid before linking MPF291 records.');
+            return;
+        }
+
+        var rec  = selected[0];
+        var data = rec.data;
+
+        if (!data.SFILE || data.SFILE.trim() === '') {
+            Ext.Msg.alert('.:PRAXIS:.', 'The selected MPF295 record does not have a SFILE value to search by.');
+            return;
+        }
+
+        if (Ext.getCmp(prototype.id + '-mpf291Link')) {
+            Ext.getCmp(prototype.id + '-mpf291Link').close();
+        }
+
+        Ext.create('Ext.Praxis.view.payments.CargoGuideForm.MPF291LinkForm', {
+            id: prototype.id + '-mpf291Link',
+            params: {
+                mpf295: {
+                    CCUST:    data.CCUST    || '',
+                    SFILE:    data.SFILE    || '',
+                    NPAGE:    data.NPAGE    || '',
+                    PAYDAY:   data.PAYDAY   || '',
+                    TYPE:     data.TYPE     || '',
+                    SEQ:      data.SEQ      || '',
+                    CBATCH:   data.CBATCH   || '',
+                    DATEBAT:  data.DATEBAT  || '',
+                    SCOUNTRY: data.SCOUNTRY || ''
+                }
+            }
+        }).show();
+    },
+    btnGenerarCartera_click: function () {
+        if (Ext.getCmp(prototype.id + '-generarCartera')) {
+            Ext.getCmp(prototype.id + '-generarCartera').close();
+        }
+        Ext.create('Ext.Praxis.view.payments.CargoGuideForm.GenerarCarteraForm', {
+            id: prototype.id + '-generarCartera'
+        }).show();
+    },
+    btnRunProcess_click: function () {
+        if (Ext.getCmp(prototype.id + '-runProcess')) {
+            Ext.getCmp(prototype.id + '-runProcess').close();
+        }
+        Ext.create('Ext.Praxis.view.payments.CargoGuideForm.RunProcessForm', {
+            id: prototype.id + '-runProcess'
+        }).show();
     },
     winDataEntry: function (action, rec) {
         action = action === null || action === undefined ? 'U' : action;

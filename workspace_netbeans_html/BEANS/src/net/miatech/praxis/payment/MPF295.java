@@ -24,9 +24,13 @@ public class MPF295 {
     public String NPAGE = "";
     public String CUSCA = "";
     public String CODPSE = "";
+    public String SFILE  = "";
     public String BANDOC = "";
-    public String TYPE = "";
-    public String SEQ = "";
+    public String TYPE   = "";
+    public String SEQ    = "";
+    public String CBATCH = "";
+    public String DATEBAT = "";
+    public String STATE = "";
     
     public String USCR = "";
     public String FECR = "";

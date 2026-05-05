@@ -91,6 +91,31 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Options', {
                     items: [
                         {
                             xtype: 'button',
+                            id: prototype.id + '-btnGenerarCartera',
+                            iconCls: 'prx-icon-excel',
+                            text: 'Generar CARTERA',
+                            style: 'background:#1565C0;color:#fff;font-weight:bold;',
+                            tooltip: 'Generar Excel de Cartera (MPS603)'
+                        },
+                        {xtype: 'tbseparator'},
+                        {
+                            xtype: 'button',
+                            id: prototype.id + '-btnRunProcess',
+                            iconCls: 'prx-icon-process',
+                            text: 'Run Process',
+                            tooltip: 'Execute a process (FASE 1 / FASE 2 / FASE GENERAL)'
+                        },
+                        {xtype: 'tbseparator'},
+                        {
+                            xtype: 'button',
+                            id: prototype.id + '-btnLinkMPF291',
+                            iconCls: 'prx-icon-update',
+                            text: 'Match Detail',
+                            tooltip: 'Link MPF291 detail records to the selected MPF295 header'
+                        },
+                        {xtype: 'tbseparator'},
+                        {
+                            xtype: 'button',
                             id: prototype.id + '-btnSearch',
                             iconCls: 'prx-icon-search',
                             tooltip: 'Search'

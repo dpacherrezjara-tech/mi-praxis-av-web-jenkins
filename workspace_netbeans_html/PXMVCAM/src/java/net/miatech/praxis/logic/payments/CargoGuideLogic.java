@@ -16,6 +16,8 @@ import net.miatech.praxis.payment.MPF218;
 import net.miatech.praxis.payment.MPF218Filter;
 import net.miatech.praxis.payment.MPF221;
 import net.miatech.praxis.payment.MPF221Filter;
+import net.miatech.praxis.payment.MPF291;
+import net.miatech.praxis.payment.MPF291Filter;
 import net.miatech.praxis.payment.MPF295;
 import net.miatech.praxis.payment.MPF295Filter;
 import net.miatech.praxis.payment.filter.A2280Filter;
@@ -40,5 +42,29 @@ public class CargoGuideLogic {
     public Map<String, Object> updateMPS588(MPF295Filter bean) throws SQLException, Exception {
         return CargoGuideDAO.updateMPS588(bean);
     }
-    
+
+    public List<MPF291> loadMPS600(MPF291Filter filter) throws SQLException, Exception {
+        return CargoGuideDAO.loadMPS600(filter);
+    }
+
+    public List<MPF291> loadMPS602(MPF291Filter filter) throws SQLException, Exception {
+        return CargoGuideDAO.loadMPS602(filter);
+    }
+
+    public Map<String, Object> updateMPS601(MPF291Filter bean) throws SQLException, Exception {
+        return CargoGuideDAO.updateMPS601(bean);
+    }
+
+    public List<Map<String, Object>> loadMPS603(String country, String sfile) throws SQLException, Exception {
+        return CargoGuideDAO.loadMPS603(country, sfile);
+    }
+
+    public Map<String, Object> runMPS556() throws Exception {
+        return CargoGuideDAO.runMPS556();
+    }
+
+    public Map<String, Object> runMPS557() throws Exception {
+        return CargoGuideDAO.runMPS557();
+    }
+
 }

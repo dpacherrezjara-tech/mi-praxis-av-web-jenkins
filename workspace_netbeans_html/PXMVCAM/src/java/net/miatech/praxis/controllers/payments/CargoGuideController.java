@@ -16,6 +16,9 @@ import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.dao.master.MasterDAO;
 import net.miatech.praxis.exceptions.SpringException;
 import net.miatech.praxis.logic.payments.CargoGuideLogic;
+import net.miatech.praxis.payment.MPF291;
+import net.miatech.praxis.payment.MPF291Filter;
+import net.miatech.praxis.payment.MPF291LinkPayload;
 import net.miatech.praxis.payment.MPF295;
 import net.miatech.praxis.payment.MPF295Filter;
 import net.miatech.utils.Functions;
@@ -27,7 +30,12 @@ import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -184,6 +192,463 @@ public class CargoGuideController extends BaseController {
         }
     }
 
+    @RequestMapping(value = "searchMPF291")
+    public @ResponseBody
+    String searchMPF291(HttpServletRequest request) {
+        System.out.println("-------------- CargoGuide : searchMPF291 (MPS600) -------------");
+        Map<String, Object> map = new HashMap<>();
+        Gson gson = new Gson();
+
+        try {
+            CargoGuideLogic logic = new CargoGuideLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String beanString = request.getParameter("beanString");
+            MPF291Filter filter = gson.fromJson(beanString, MPF291Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START  = 0;
+            filter.page.LIMIT  = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit"));
+            int start = request.getParameter("start") == null ?  0 : Integer.parseInt(request.getParameter("start"));
+
+            filter.page.PAGROW = 20;
+            filter.page.PAGNUM = (start != 0 ? (start / filter.page.PAGROW) + 1 : 1);
+
+            List<MPF291> lst = logic.loadMPS600(filter);
+
+            map.put("success", true);
+            map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+            map.put("data", lst);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("success", false);
+            map.put("data", new ArrayList<>());
+            map.put("total", 0);
+        }
+
+        return new Gson().toJson(map);
+    }
+
+    @RequestMapping(value = "getCartera", method = RequestMethod.GET)
+    public void getCartera(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("-------------- CargoGuide : getCartera (MPS603 conciliacion) -------------");
+
+        String country = request.getParameter("country");
+        String sfile   = request.getParameter("sfile");
+
+        if (country == null || country.trim().isEmpty() || sfile == null || sfile.trim().isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
+        try {
+            CargoGuideLogic logic = new CargoGuideLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            List<Map<String, Object>> lst = logic.loadMPS603(country.trim(), sfile.trim());
+
+            // Deduplicate by BANDOC — keep first occurrence
+            java.util.LinkedHashMap<String, Map<String, Object>> byBandoc = new java.util.LinkedHashMap<String, Map<String, Object>>();
+            for (Map<String, Object> row : lst) {
+                String bandoc = row.containsKey("BANDOC") ? String.valueOf(row.get("BANDOC")).trim() : "";
+                if (!byBandoc.containsKey(bandoc)) byBandoc.put(bandoc, row);
+            }
+
+            // ── Column layout ─────────────────────────────────────────
+            String[] bancosHdrs = {
+                "BANDOC","DATECI","TRANCI","TIPODOC","CONCEPTO",
+                "MONEDA_B","VALOR","ABONOS","CARGOS","NETO",
+                "ESTADO_B","CANAL","BANCO","CUENTA_ORIG","CUENTA_DEST",
+                "REFPAGO","SEQ_B","HORA"
+            };
+            String[] carteraHdrs = {
+                "BANDOC_C","DATECI_C","NCICLO","AWBNO","NPAGE",
+                "METPAGO","NPAGPAGO","MONEDA_C","MONTO","NETOLOC",
+                "PAYDAY","STVAL","REFERENCE","PRDA","CBATCH",
+                "CERROR","DIFERENCIA"
+            };
+            // Keys used to read CARTERA values from the row map (DIFERENCIA is computed)
+            String[] carteraKeys = {
+                "BANDOC_C","DATECI_C","NCICLO","AWBNO","NPAGE",
+                "METPAGO","NPAGPAGO","MONEDA_C","MONTO","NETOLOC",
+                "PAYDAY","STVAL","REFERENCE","PRDA","CBATCH","CERROR"
+            };
+            int nBancos = bancosHdrs.length;  // 18
+            int nTotal  = nBancos + carteraHdrs.length; // 35
+
+            // ── Workbook (XSSFWorkbook for merged cells + autofilter) ──
+            XSSFWorkbook wb = new XSSFWorkbook();
+            Sheet sheet = wb.createSheet("Conciliacion");
+
+            DataFormat numFmt = wb.createDataFormat();
+            short amtFmtIdx = numFmt.getFormat("#,##0.00");
+
+            // Title: #1F3864 bg, white bold 16
+            XSSFCellStyle titleStyle = (XSSFCellStyle) wb.createCellStyle();
+            titleStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(0x1F, 0x38, 0x64)));
+            titleStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            titleStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            titleStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            XSSFFont titleFont = (XSSFFont) wb.createFont();
+            titleFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            titleFont.setFontHeightInPoints((short) 16);
+            titleFont.setColor(new XSSFColor(new java.awt.Color(0xFF, 0xFF, 0xFF)));
+            titleStyle.setFont(titleFont);
+
+            // Subtitle: plain small
+            XSSFCellStyle subtitleStyle = (XSSFCellStyle) wb.createCellStyle();
+            subtitleStyle.setAlignment(CellStyle.ALIGN_LEFT);
+            XSSFFont subtitleFont = (XSSFFont) wb.createFont();
+            subtitleFont.setFontHeightInPoints((short) 9);
+            subtitleStyle.setFont(subtitleFont);
+
+            // BANCOS section header: #2E75B6 bg, white bold
+            XSSFCellStyle bancosSecStyle = buildColorStyle(wb,
+                new java.awt.Color(0x2E, 0x75, 0xB6), new java.awt.Color(0xFF, 0xFF, 0xFF), true, (short)11, CellStyle.ALIGN_CENTER);
+
+            // CARTERA section header: #C65911 bg, white bold
+            XSSFCellStyle carteraSecStyle = buildColorStyle(wb,
+                new java.awt.Color(0xC6, 0x59, 0x11), new java.awt.Color(0xFF, 0xFF, 0xFF), true, (short)11, CellStyle.ALIGN_CENTER);
+
+            // BANCOS column header: #D6E4F0 bg, #1F3864 text bold
+            XSSFCellStyle bancosColStyle = buildColorStyle(wb,
+                new java.awt.Color(0xD6, 0xE4, 0xF0), new java.awt.Color(0x1F, 0x38, 0x64), true, (short)10, CellStyle.ALIGN_CENTER);
+
+            // CARTERA column header: #FCE4D6 bg, #7B2D00 text bold
+            XSSFCellStyle carteraColStyle = buildColorStyle(wb,
+                new java.awt.Color(0xFC, 0xE4, 0xD6), new java.awt.Color(0x7B, 0x2D, 0x00), true, (short)10, CellStyle.ALIGN_CENTER);
+
+            // Data cell styles: BANCOS white / #EBF3FB, CARTERA white / #FDF0E8
+            XSSFCellStyle bDataStyle    = (XSSFCellStyle) wb.createCellStyle();
+            XSSFCellStyle bDataAltStyle = buildColorStyle(wb,
+                new java.awt.Color(0xEB, 0xF3, 0xFB), null, false, (short)0, CellStyle.ALIGN_LEFT);
+            XSSFCellStyle cDataStyle    = (XSSFCellStyle) wb.createCellStyle();
+            XSSFCellStyle cDataAltStyle = buildColorStyle(wb,
+                new java.awt.Color(0xFD, 0xF0, 0xE8), null, false, (short)0, CellStyle.ALIGN_LEFT);
+
+            // Amount styles (cartera alt)
+            XSSFCellStyle cAmtStyle    = (XSSFCellStyle) wb.createCellStyle();
+            cAmtStyle.setDataFormat(amtFmtIdx);
+            XSSFCellStyle cAmtAltStyle = (XSSFCellStyle) wb.createCellStyle();
+            cAmtAltStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(0xFD, 0xF0, 0xE8)));
+            cAmtAltStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            cAmtAltStyle.setDataFormat(amtFmtIdx);
+
+            // DIFERENCIA: green (#E2EFDA / #375623) or red (#FFCCCC / #9C0006)
+            XSSFCellStyle difOkStyle  = buildColorStyle(wb,
+                new java.awt.Color(0xE2, 0xEF, 0xDA), new java.awt.Color(0x37, 0x56, 0x23), true, (short)0, CellStyle.ALIGN_RIGHT);
+            difOkStyle.setDataFormat(amtFmtIdx);
+            XSSFCellStyle difErrStyle = buildColorStyle(wb,
+                new java.awt.Color(0xFF, 0xCC, 0xCC), new java.awt.Color(0x9C, 0x00, 0x06), true, (short)0, CellStyle.ALIGN_RIGHT);
+            difErrStyle.setDataFormat(amtFmtIdx);
+
+            // ── Row 0: empty ──────────────────────────────────────────
+            sheet.createRow(0);
+
+            // ── Row 1: title ──────────────────────────────────────────
+            Row titleRow = sheet.createRow(1);
+            titleRow.setHeightInPoints(28f);
+            Cell titleCell = titleRow.createCell(0);
+            titleCell.setCellValue("FORMATO DE CONCILIACIÓN " + country.trim().toUpperCase());
+            titleCell.setCellStyle(titleStyle);
+            sheet.addMergedRegion(new CellRangeAddress(1, 1, 0, nTotal - 1));
+
+            // ── Row 2: subtitle ───────────────────────────────────────
+            Row subRow = sheet.createRow(2);
+            String ts = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
+            Cell subCell = subRow.createCell(0);
+            subCell.setCellValue("Generado: " + ts + "  |  Archivo: " + sfile + "  |  BANDOCs: " + byBandoc.size());
+            subCell.setCellStyle(subtitleStyle);
+            sheet.addMergedRegion(new CellRangeAddress(2, 2, 0, nTotal - 1));
+
+            // ── Row 3: empty ──────────────────────────────────────────
+            sheet.createRow(3);
+
+            // ── Row 4: section headers ────────────────────────────────
+            Row secRow = sheet.createRow(4);
+            secRow.setHeightInPoints(18f);
+            Cell bSec = secRow.createCell(0);
+            bSec.setCellValue("BANCOS");
+            bSec.setCellStyle(bancosSecStyle);
+            sheet.addMergedRegion(new CellRangeAddress(4, 4, 0, nBancos - 1));
+            Cell cSec = secRow.createCell(nBancos);
+            cSec.setCellValue("CARTERA");
+            cSec.setCellStyle(carteraSecStyle);
+            sheet.addMergedRegion(new CellRangeAddress(4, 4, nBancos, nTotal - 1));
+
+            // ── Row 5: column headers ─────────────────────────────────
+            Row hdrRow = sheet.createRow(5);
+            hdrRow.setHeightInPoints(16f);
+            for (int i = 0; i < bancosHdrs.length; i++) {
+                Cell c = hdrRow.createCell(i);
+                c.setCellValue(bancosHdrs[i]);
+                c.setCellStyle(bancosColStyle);
+                sheet.setColumnWidth(i, 4400);
+            }
+            for (int i = 0; i < carteraHdrs.length; i++) {
+                Cell c = hdrRow.createCell(nBancos + i);
+                c.setCellValue(carteraHdrs[i]);
+                c.setCellStyle(carteraColStyle);
+                sheet.setColumnWidth(nBancos + i, 4400);
+            }
+            sheet.setAutoFilter(new CellRangeAddress(5, 5, 0, nTotal - 1));
+            sheet.createFreezePane(0, 6);
+
+            // ── Data rows (row 6+) ────────────────────────────────────
+            int rowIdx = 6;
+            int altIdx = 0;
+            for (Map<String, Object> row : byBandoc.values()) {
+                boolean alt = (altIdx % 2 == 1);
+                Row dRow = sheet.createRow(rowIdx);
+
+                // BANCOS columns
+                for (int i = 0; i < bancosHdrs.length; i++) {
+                    Cell c = dRow.createCell(i);
+                    setCellValue(c, row.get(bancosHdrs[i]));
+                    c.setCellStyle(alt ? bDataAltStyle : bDataStyle);
+                }
+
+                // CARTERA columns (all except DIFERENCIA)
+                for (int i = 0; i < carteraKeys.length; i++) {
+                    Cell c = dRow.createCell(nBancos + i);
+                    Object val = row.get(carteraKeys[i]);
+                    if ("MONTO".equals(carteraKeys[i]) || "NETOLOC".equals(carteraKeys[i])) {
+                        c.setCellValue(toDouble(val));
+                        c.setCellStyle(alt ? cAmtAltStyle : cAmtStyle);
+                    } else {
+                        setCellValue(c, val);
+                        c.setCellStyle(alt ? cDataAltStyle : cDataStyle);
+                    }
+                }
+
+                // DIFERENCIA = NETO + NETOLOC (same-currency check)
+                Cell difCell = dRow.createCell(nBancos + carteraKeys.length);
+                String monedaB = String.valueOf(row.containsKey("MONEDA_B") ? row.get("MONEDA_B") : "").trim();
+                String monedaC = String.valueOf(row.containsKey("MONEDA_C") ? row.get("MONEDA_C") : "").trim();
+                if (!monedaB.isEmpty() && monedaB.equalsIgnoreCase(monedaC)) {
+                    double dif = toDouble(row.get("NETO")) + toDouble(row.get("NETOLOC"));
+                    difCell.setCellValue(dif);
+                    difCell.setCellStyle(Math.abs(dif) < 0.01 ? difOkStyle : difErrStyle);
+                } else {
+                    difCell.setCellValue("N/A");
+                    difCell.setCellStyle(alt ? cDataAltStyle : cDataStyle);
+                }
+
+                rowIdx++;
+                altIdx++;
+            }
+
+            // ── Stream response ───────────────────────────────────────
+            String safeSfile = sfile.trim().replaceAll("[^a-zA-Z0-9_\\-\\.]", "_");
+            String fileName = "Conciliacion_" + country.trim() + "_" + safeSfile + ".xlsx";
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+            wb.write(response.getOutputStream());
+            wb.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logError.error("getCartera -> " + e.getMessage(), e);
+        }
+    }
+
+    private XSSFCellStyle buildColorStyle(XSSFWorkbook wb, java.awt.Color bg, java.awt.Color fg, boolean bold, short fontSize, short align) {
+        XSSFCellStyle style = (XSSFCellStyle) wb.createCellStyle();
+        if (bg != null) {
+            style.setFillForegroundColor(new XSSFColor(bg));
+            style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        }
+        style.setAlignment(align);
+        XSSFFont font = (XSSFFont) wb.createFont();
+        if (fg != null) font.setColor(new XSSFColor(fg));
+        font.setBoldweight(bold ? Font.BOLDWEIGHT_BOLD : Font.BOLDWEIGHT_NORMAL);
+        if (fontSize > 0) font.setFontHeightInPoints(fontSize);
+        style.setFont(font);
+        return style;
+    }
+
+    private void setCellValue(Cell cell, Object val) {
+        if (val == null) {
+            cell.setCellValue("");
+        } else if (val instanceof Number) {
+            cell.setCellValue(((Number) val).doubleValue());
+        } else {
+            cell.setCellValue(String.valueOf(val));
+        }
+    }
+
+    private double toDouble(Object val) {
+        if (val == null) return 0.0;
+        if (val instanceof Number) return ((Number) val).doubleValue();
+        try { return Double.parseDouble(String.valueOf(val).trim()); }
+        catch (Exception e) { return 0.0; }
+    }
+
+    @RequestMapping(value = "downloadPDF", method = RequestMethod.GET)
+    public void downloadPDF(HttpServletRequest request, HttpServletResponse response) {
+        String sfile = request.getParameter("sfile");
+        String disposition = request.getParameter("disposition");
+        if (disposition == null || disposition.trim().isEmpty()) disposition = "attachment";
+
+        if (sfile == null || sfile.trim().isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
+        String basename = sfile.contains(".") ? sfile.substring(0, sfile.lastIndexOf('.')) : sfile;
+        String pdfName  = basename + "_LOADED.pdf";
+        String pdfPath  = "\\\\10.0.0.87\\av\\CARGA\\dev\\process\\CO\\PDF\\" + pdfName;
+
+        java.io.File pdfFile = new java.io.File(pdfPath);
+        if (!pdfFile.exists() || !pdfFile.isFile()) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            logError.warn("downloadPDF: file not found -> " + pdfPath);
+            return;
+        }
+
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", disposition + "; filename=\"" + pdfName + "\"");
+        response.setContentLength((int) pdfFile.length());
+
+        try (java.io.FileInputStream fis = new java.io.FileInputStream(pdfFile);
+             java.io.OutputStream os = response.getOutputStream()) {
+            byte[] buf = new byte[8192];
+            int n;
+            while ((n = fis.read(buf)) != -1) {
+                os.write(buf, 0, n);
+            }
+        } catch (java.io.IOException e) {
+            logError.error("downloadPDF -> " + e.getMessage(), e);
+        }
+    }
+
+    @RequestMapping(value = "searchMPF291ByBatch")
+    public @ResponseBody
+    String searchMPF291ByBatch(HttpServletRequest request) {
+        System.out.println("-------------- CargoGuide : searchMPF291ByBatch (MPS600B) -------------");
+        Map<String, Object> map = new HashMap<>();
+        Gson gson = new Gson();
+
+        try {
+            CargoGuideLogic logic = new CargoGuideLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String beanString = request.getParameter("beanString");
+            MPF291Filter filter = gson.fromJson(beanString, MPF291Filter.class);
+
+            List<MPF291> lst = logic.loadMPS602(filter);
+
+            map.put("success", true);
+            map.put("total", lst.size());
+            map.put("data", lst);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("success", false);
+            map.put("data", new ArrayList<>());
+            map.put("total", 0);
+        }
+
+        return new Gson().toJson(map);
+    }
+
+    @RequestMapping(value = "linkMPF291", method = RequestMethod.POST)
+    public @ResponseBody
+    String linkMPF291(HttpServletRequest request) {
+        System.out.println("-------------- CargoGuide : linkMPF291 (MPS601) -------------");
+        Map<String, Object> map = new HashMap<>();
+        Gson gson = new Gson();
+
+        try {
+            CargoGuideLogic logic = new CargoGuideLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String beanString = request.getParameter("beanString");
+
+            MPF291LinkPayload payload = gson.fromJson(beanString, MPF291LinkPayload.class);
+
+            int linked = 0;
+            int errors = 0;
+
+            for (MPF291LinkPayload.SelectedRecord rec : payload.selected) {
+                MPF291Filter filter = new MPF291Filter();
+                filter.IN_AWBNO   = rec.AWBNO;
+                filter.IN_NCICLO  = rec.NCICLO;
+                filter.IN_SFILE   = payload.IN_SFILE;
+                filter.IN_NPAGE   = payload.IN_NPAGE;
+                filter.IN_PAYDAY  = payload.IN_PAYDAY;
+                filter.IN_TYPE    = payload.IN_TYPE;
+                filter.IN_SEQ     = payload.IN_SEQ;
+                filter.IN_CBATCH  = payload.IN_CBATCH;
+                filter.IN_DATEBAT = payload.IN_DATEBAT;
+                filter.option     = "U";
+
+                Map<String, Object> result = logic.updateMPS601(filter);
+                if (Boolean.TRUE.equals(result.get("success"))) {
+                    linked++;
+                } else {
+                    errors++;
+                }
+            }
+
+            map.put("success", errors == 0);
+            map.put("Mensaje", linked + " record(s) linked" + (errors > 0 ? ", " + errors + " error(s)." : "."));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("success", false);
+            map.put("Mensaje", "Server error: " + e.getMessage());
+        }
+
+        return new Gson().toJson(map);
+    }
+
+    @RequestMapping(value = "runProcess", method = RequestMethod.POST)
+    public @ResponseBody
+    String runProcess(HttpServletRequest request) {
+        System.out.println("-------------- CargoGuide : runProcess -------------");
+        Map<String, Object> map = new HashMap<>();
+        Gson gson = new Gson();
+
+        try {
+            CargoGuideLogic logic = new CargoGuideLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String beanString = request.getParameter("beanString");
+            java.lang.reflect.Type mapStrType = new com.google.gson.reflect.TypeToken<java.util.Map<String, String>>(){}.getType();
+            java.util.Map<String, String> bean = gson.fromJson(beanString, mapStrType);
+
+            String country = bean.get("country");
+            String process = bean.get("process");
+
+            System.out.println("runProcess -> country=" + country + ", process=" + process);
+
+            Map<String, Object> result;
+
+            if ("CO".equals(country) && "FASE1".equals(process)) {
+                result = logic.runMPS556();
+            } else if ("CO".equals(country) && "FASE2".equals(process)) {
+                result = logic.runMPS557();
+            } else {
+                result = new HashMap<>();
+                result.put("success", false);
+                result.put("mensaje", "Process combination not available: " + country + " / " + process);
+            }
+
+            map.put("success", result.get("success"));
+            map.put("Mensaje", result.get("mensaje"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("success", false);
+            map.put("Mensaje", "Server error: " + e.getMessage());
+        }
+
+        return new Gson().toJson(map);
+    }
+
     @RequestMapping(value = "MaintenanceA2280", method = RequestMethod.POST)
     public @ResponseBody
     String MaintenanceA2280(HttpServletRequest request) {
@@ -192,18 +657,24 @@ public class CargoGuideController extends BaseController {
         Gson gson = new Gson();
 
         try {
-            // Instanciamos la lógica y seteamos la sesión
+            if (this.serverSession == null || this.serverSession.getServerSession() == null) {
+                map.put("success", false);
+                map.put("Mensaje", "Session not available. Please log in again.");
+                return new Gson().toJson(map);
+            }
+
             CargoGuideLogic logic = new CargoGuideLogic();
             logic.setSession(this.serverSession.getServerSession());
 
-            // Capturamos el string enviado por ExtJS y lo parseamos
             String beanString = request.getParameter("beanString");
+            if (beanString == null || beanString.trim().isEmpty()) {
+                map.put("success", false);
+                map.put("Mensaje", "No data received from client.");
+                return new Gson().toJson(map);
+            }
 
-            // NOTA: Usa la clase Bean que tengas definida para estos campos. 
-            // Aquí la llamaré MPF295Filter asumiendo que tiene los campos IN_CCUST, IN_MONTO, etc.
             MPF295Filter bean = gson.fromJson(beanString, MPF295Filter.class);
 
-            // Ejecutamos la actualización
             Map<String, Object> result = logic.updateMPS588(bean);
 
             // El SP debe devolver si fue exitoso y un mensaje

@@ -32,9 +32,11 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.DataEntryCargoGuideControl
             case 'U':
                 this.mostrarData();
                 this.DeshabilitarCampoClave();
+                this.searchMPF291ByBatch();
+                Ext.getCmp(prototype.id + '-de-btnDownloadPDF').show();
+                Ext.getCmp(prototype.id + '-de-btnPreviewPDF').show();
                 Ext.getCmp(prototype.id + '-btn-save').hide();
-//                Ext.getCmp(prototype.id + '-btn-update').show();
-//                Ext.getCmp(prototype.id + '-btn-delete').show();
+                Ext.getCmp(prototype.id + '-btn-update').show();
                 Ext.getCmp(prototype.id + '-btn-cancel').show();
                 break;
         }
@@ -52,10 +54,12 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.DataEntryCargoGuideControl
         this.setValue('de-txtCUSCA', this.bean.data.CUSCA);
         this.setValue('de-txtCODPSE', this.bean.data.CODPSE);
         this.setValue('de-txtBANDOC', this.bean.data.BANDOC);
+        this.setValue('de-txtSTATE', this.bean.data.STATE);
 
         this.setValue('de-txtMONEDA', this.bean.data.SCURRENCY);
 
         let importe = this.bean.data.MONTO;
+        
         if (importe !== null && importe !== undefined) {
             this.setValue('de-txtIMPORTE', importe); 
         }
@@ -119,9 +123,93 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.DataEntryCargoGuideControl
         beanTemp.IN_SEQ = this.bean.data.SEQ;
         beanTemp.IN_MONTO =  this.getValue('de-txtIMPORTE');
         beanTemp.IN_ADATE =  this.getValue('de-txtADATE');
+        beanTemp.IN_CUSCA =  this.getValue('de-txtCUSCA');
+        beanTemp.IN_CODPSE = this.getValue('de-txtCODPSE');
+        beanTemp.IN_CBATCH = this.bean.data.CBATCH;
+        beanTemp.IN_DATEBAT = this.bean.data.DATEBAT;
+        beanTemp.IN_STATE = this.getValue('de-txtSTATE');
 
         console.log(beanTemp);
 
+    },
+    searchMPF291ByBatch: function () {
+        var win   = this.view;
+        var data  = this.bean.data;
+        var grid  = Ext.getCmp(prototype.id + '-de-gridMPF291');
+        var panel = Ext.getCmp(prototype.id + '-de-panelMPF291');
+
+        var bean = {
+            IN_CBATCH:  data.CBATCH  || '',
+            IN_DATEBAT: data.DATEBAT || ''
+        };
+
+        win.mask('Loading linked records...');
+
+        Ext.Ajax.request({
+            url: prototype.url + '/searchMPF291ByBatch',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: JSON.stringify(bean)},
+            success: function (response) {
+                win.unmask();
+                var res     = Ext.JSON.decode(response.responseText);
+                var records = res.data || [];
+                grid.getStore().loadData(records);
+                panel.setVisible(records.length > 0);
+                if (records.length > 0) {
+                    win.setHeight(820);
+                    win.center();
+                }
+            },
+            failure: function () {
+                win.unmask();
+                Ext.Msg.alert('Error', 'Could not load linked MPF291 records.');
+            }
+        });
+    },
+
+    onDownloadPDF: function () {
+        var sfile = (this.bean && this.bean.data) ? (this.bean.data.SFILE || '') : '';
+        if (!sfile) {
+            Ext.Msg.alert('Warning', 'No file associated with this record (SFILE is empty).');
+            return;
+        }
+        window.open(prototype.url + '/downloadPDF?sfile=' + encodeURIComponent(sfile) + '&disposition=attachment');
+    },
+
+    onPreviewPDF: function () {
+        var sfile = (this.bean && this.bean.data) ? (this.bean.data.SFILE || '') : '';
+        if (!sfile) {
+            Ext.Msg.alert('Warning', 'No file associated with this record (SFILE is empty).');
+            return;
+        }
+        var url = prototype.url + '/downloadPDF?sfile=' + encodeURIComponent(sfile) + '&disposition=inline';
+        Ext.create('Ext.window.Window', {
+            title: 'PDF Preview — ' + sfile,
+            width: 900,
+            height: 700,
+            modal: true,
+            layout: 'fit',
+            items: [{
+                xtype: 'component',
+                autoEl: {
+                    tag: 'iframe',
+                    src: url,
+                    frameborder: '0',
+                    style: 'width:100%;height:100%;border:none;'
+                }
+            }],
+            dockedItems: [{
+                xtype: 'toolbar',
+                dock: 'bottom',
+                layout: {pack: 'center'},
+                items: [{
+                    text: 'Close',
+                    scale: 'medium',
+                    handler: function (btn) { btn.up('window').close(); }
+                }]
+            }]
+        }).show();
     },
     getData: function () {
 //        console.log('getData');
@@ -284,8 +372,6 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.DataEntryCargoGuideControl
             'de-txtNCICLO',
             'de-txtMETPAGO',
             'de-txtNPAGE',
-            'de-txtCUSCA',
-            'de-txtCODPSE',
             'de-txtBANDOC',
             'de-txtMONEDA',
             'de-txtUSCR',
@@ -302,10 +388,12 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.DataEntryCargoGuideControl
                 cmp.setReadOnly(true);
         });
 
-        // IMPORTE es el único editable
-        let campoImporte = Ext.getCmp(prototype.id + '-de-txtIMPORTE');
-        if (campoImporte)
-            campoImporte.setReadOnly(false);
+        // Campos editables en modo Update
+        ['de-txtIMPORTE', 'de-txtCUSCA', 'de-txtCODPSE'].forEach(id => {
+            let cmp = Ext.getCmp(prototype.id + '-' + id);
+            if (cmp)
+                cmp.setReadOnly(false);
+        });
     },
     Habilitarlbl: function () {
         Ext.getCmp(prototype.id + '-lblDescripcion').show();

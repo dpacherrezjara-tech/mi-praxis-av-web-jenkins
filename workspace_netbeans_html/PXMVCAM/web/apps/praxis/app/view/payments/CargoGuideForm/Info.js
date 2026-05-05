@@ -78,11 +78,11 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Info', {
                                                         return  '133';
                                                     } else if (value == '2K01') {
                                                         return  '547';
-                                                    }
+                                                    } 
 
                                                     return  value;
                                                 }},
-                                            {text: '<span style="color:white;font-weight:bold;">ADATE</span>', dataIndex: 'ADATE', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                            {text: '<span style="color:white;font-weight:bold;">Abono <br> Date</span>', dataIndex: 'ADATE', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
@@ -90,7 +90,7 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Info', {
                                                     return  value;
                                                 }
                                             },
-                                            {text: '<span style="color:white;font-weight:bold;">PAYDAY</span>', dataIndex: 'PAYDAY', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                            {text: '<span style="color:white;font-weight:bold;">File <br> Adate </span>', dataIndex: 'PAYDAY', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
@@ -106,7 +106,7 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Info', {
                                                     return  value;
                                                 }
                                             },
-                                            {text: '<span style="color:white;font-weight:bold;">NCICLO</span>', dataIndex: 'NCICLO', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                            {text: '<span style="color:white;font-weight:bold;">Cycle </span>', dataIndex: 'NCICLO', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
@@ -114,7 +114,26 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Info', {
                                                     return  value;
                                                 }
                                             },
-                                            {text: '<span style="color:white;font-weight:bold;">METPAGO</span>', dataIndex: 'METPAGO', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                            {text: '<span style="color:white;font-weight:bold;">Payment <br> method</span>', dataIndex: 'METPAGO', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    
+                                                    if (value == 'P') {
+                                                        return  'PSE';
+                                                    } else if (value == 'B') {
+                                                        return  'DAVIVIENDA';
+                                                    } else if (value == 'N') {
+                                                        return  'NEQUI';
+                                                    } else if (value == 'O') {
+                                                        return  'OTROS';
+                                                    } 
+
+                                                    return  value;
+                                                }
+                                            },
+
+                                            {text: '<span style="color:white;font-weight:bold;">Page <br> Number</span>', dataIndex: 'NPAGE', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
@@ -123,7 +142,7 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Info', {
                                                 }
                                             },
 
-                                            {text: '<span style="color:white;font-weight:bold;">NPAGE</span>', dataIndex: 'NPAGE', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                            {text: '<span style="color:white;font-weight:bold;">Cod. <br> Cusca</span>', dataIndex: 'CUSCA', width: 80, style: 'padding:2px; background: #6C87A8;border-color:white',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
@@ -131,16 +150,7 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Info', {
                                                     return  value;
                                                 }
                                             },
-
-                                            {text: '<span style="color:white;font-weight:bold;">CUSCA</span>', dataIndex: 'CUSCA', width: 80, style: 'padding:2px; background: #6C87A8;border-color:white',
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    var data = record.data;
-                                                    metaData.style = "text-align:center;";
-
-                                                    return  value;
-                                                }
-                                            },
-                                            {text: '<span style="color:white;font-weight:bold;">CODPSE</span>', dataIndex: 'CODPSE', width: 80, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                            {text: '<span style="color:white;font-weight:bold;">Cod. <br> PSE</span>', dataIndex: 'CODPSE', width: 80, style: 'padding:2px; background: #6C87A8;border-color:white',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
@@ -170,11 +180,7 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Info', {
                                                 width: 100,
                                                 style: 'padding:2px; background: #6C87A8;border-color:white',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-
-                                                    // 1. Pegado a la derecha (puedes agregar un padding si queda muy pegado al borde)
                                                     metaData.style = "text-align:right; ";
-
-                                                    // 2. Formateado a 2 decimales (ej. 1,250.50)
                                                     return Ext.util.Format.number(value, '0,000.00');
                                                 }
                                             },
@@ -184,8 +190,7 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Info', {
                                                 align: 'center',
                                                 style: 'padding:2px; background: #6C87A8; border-color:white',
                                                 renderer: function (value, metaData, record) {
-                                                    let file = record.get('FILE_NAME');  // o el campo que tú uses para descargar
-
+                                                    let file = record.get('FILE_NAME'); 
                                                     return `<img src="resources/img/botones/1326498593_018.png"
                                                                  style="cursor:pointer; width:18px; height:18px;"
                                                                 >`;
