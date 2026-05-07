@@ -536,4 +536,122 @@ public class CargoGuideDAO {
 
         return response;
     }
+    
+    public List<MPF295> loadMPS603(MPF295Filter filter) throws SQLException, Exception {
+
+        List<MPF295> lstData = new ArrayList<>(0);
+        MPF295 bean;
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        // El MPS603 tiene exactamente 8 parámetros (4 filtros + 4 paginación)
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS603(?,?,?,?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            // Registramos los parámetros de salida (Paginación: índices 5, 6, 7, 8)
+            cstmt.registerOutParameter(5, Types.INTEGER);
+            cstmt.registerOutParameter(6, Types.INTEGER);
+            cstmt.registerOutParameter(7, Types.INTEGER);
+            cstmt.registerOutParameter(8, Types.INTEGER);
+
+            // Seteamos los parámetros de entrada
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.IN_FECHA_FROM.trim());
+            cstmt.setString(3, filter.IN_FECHA_TO.trim());
+            cstmt.setString(4, filter.IN_COUNTRY.trim());
+            
+            // Seteamos los parámetros INOUT de paginación
+            cstmt.setInt(5, filter.page.PAGNUM);
+            cstmt.setInt(6, filter.page.PAGROW);
+            cstmt.setInt(7, filter.page.TOTPAG);
+            cstmt.setInt(8, filter.page.TOTROW);
+
+            // Ejecutamos el SP
+            cstmt.execute();
+
+            // Recuperamos la metadata de paginación actualizada
+            filter.page.PAGNUM = cstmt.getInt(5);
+            filter.page.PAGROW = cstmt.getInt(6);
+            filter.page.TOTPAG = cstmt.getInt(7);
+            filter.page.TOTROW = cstmt.getInt(8);
+
+            rst = cstmt.getResultSet();
+            
+            // Mapeo de columnas a objeto Java
+            while (rst.next()) {
+                bean = new MPF295();
+                
+                bean.RN = rst.getLong("RN");
+                
+                // --- DATOS BANCO (T1) ---
+                bean.SOCIETY_T1    = rst.getString("SOCIETY_T1") != null ? rst.getString("SOCIETY_T1").trim() : "";
+                bean.SCOUNTRY_T1   = rst.getString("SCOUNTRY_T1") != null ? rst.getString("SCOUNTRY_T1").trim() : "";
+                bean.BENCENC_T1    = rst.getString("BENCENC_T1") != null ? rst.getString("BENCENC_T1").trim() : "";
+                bean.ACCOUNT_T1    = rst.getString("ACCOUNT_T1") != null ? rst.getString("ACCOUNT_T1").trim() : "";
+                bean.ASSIGNMEN_T1  = rst.getString("ASSIGNMEN_T1") != null ? rst.getString("ASSIGNMEN_T1").trim() : "";
+                bean.REFER_T1      = rst.getString("REFER_T1") != null ? rst.getString("REFER_T1").trim() : "";
+                bean.CLAVE1_T1     = rst.getString("CLAVE1_T1") != null ? rst.getString("CLAVE1_T1").trim() : "";
+                bean.TXTCABDOC_T1  = rst.getString("TXTCABDOC_T1") != null ? rst.getString("TXTCABDOC_T1").trim() : "";
+                bean.BANDOC_T1     = rst.getString("BANDOC_T1") != null ? rst.getString("BANDOC_T1").trim() : "";
+                bean.CLAVE3_T1     = rst.getString("CLAVE3_T1") != null ? rst.getString("CLAVE3_T1").trim() : "";
+                bean.CLASEDOC_T1   = rst.getString("CLASEDOC_T1") != null ? rst.getString("CLASEDOC_T1").trim() : "";
+                bean.DOCDATE_T1    = rst.getString("DOCDATE_T1") != null ? rst.getString("DOCDATE_T1").trim() : "";
+                bean.CLAVECONT_T1  = rst.getString("CLAVECONT_T1") != null ? rst.getString("CLAVECONT_T1").trim() : "";
+                bean.SCURRENCY_T1  = rst.getString("SCURRENCY_T1") != null ? rst.getString("SCURRENCY_T1").trim() : "";
+                bean.NETO_T1       = rst.getDouble("NETO_T1");
+                bean.LOCAMOUNT2_T1 = rst.getDouble("LOCAMOUNT2_T1");
+                bean.LOCRENCY2_T1  = rst.getString("LOCRENCY2_T1") != null ? rst.getString("LOCRENCY2_T1").trim() : "";
+                bean.TEXTO_T1      = rst.getString("TEXTO_T1") != null ? rst.getString("TEXTO_T1").trim() : "";
+
+                // --- DATOS CARTERA (T2) ---
+                bean.SOCIETY_T2    = rst.getString("SOCIETY_T2") != null ? rst.getString("SOCIETY_T2").trim() : "";
+                bean.ACCOUNT_T2    = rst.getString("ACCOUNT_T2") != null ? rst.getString("ACCOUNT_T2").trim() : "";
+                bean.FECBASE_T2    = rst.getString("FECBASE_T2") != null ? rst.getString("FECBASE_T2").trim() : "";
+                bean.BANDOCCAR_T2  = rst.getString("BANDOCCAR_T2") != null ? rst.getString("BANDOCCAR_T2").trim() : "";
+                bean.NUMLEG_T2     = rst.getString("NUMLEG_T2") != null ? rst.getString("NUMLEG_T2").trim() : "";
+                bean.FCONT_T2      = rst.getString("FCONT_T2") != null ? rst.getString("FCONT_T2").trim() : "";
+                bean.IMPORTLOC2_T2 = rst.getDouble("IMPORTLOC2_T2");
+                bean.MONSUC2_T2    = rst.getString("MONSUC2_T2") != null ? rst.getString("MONSUC2_T2").trim() : "";
+                bean.TEXTO_T2      = rst.getString("TEXTO_T2") != null ? rst.getString("TEXTO_T2").trim() : "";
+                bean.CLAVREF1_T2   = rst.getString("CLAVREF1_T2") != null ? rst.getString("CLAVREF1_T2").trim() : "";
+                bean.CLAVREF3_T2   = rst.getString("CLAVREF3_T2") != null ? rst.getString("CLAVREF3_T2").trim() : "";
+                bean.CENBEN_T2     = rst.getString("CENBEN_T2") != null ? rst.getString("CENBEN_T2").trim() : "";
+                bean.SCOUNTRY_T2   = rst.getString("SCOUNTRY_T2") != null ? rst.getString("SCOUNTRY_T2").trim() : "";
+
+                // --- DATOS EXTRAS ---
+                bean.DIFERENCIA         = rst.getDouble("DIFERENCIA");
+                bean.COMENTARIO         = rst.getString("COMENTARIO") != null ? rst.getString("COMENTARIO").trim() : "";
+                bean.FECHA_ENVIO_VB     = rst.getString("FECHA_ENVIO_VB") != null ? rst.getString("FECHA_ENVIO_VB").trim() : "";
+                bean.FECHA_COMPENSACION = rst.getString("FECHA_COMPENSACION") != null ? rst.getString("FECHA_COMPENSACION").trim() : "";
+
+                // Paginación
+                bean.page.PAGNUM = filter.page.PAGNUM;
+                bean.page.PAGROW = filter.page.PAGROW;
+                bean.page.TOTPAG = filter.page.TOTPAG;
+                bean.page.TOTROW = filter.page.TOTROW;
+
+                lstData.add(bean);
+            }
+            rst.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try { rst.close(); } catch (SQLException e) { logError.error("Error cerrado RST", e); }
+            }
+            if (cstmt != null) {
+                try { cstmt.close(); } catch (SQLException e) { logError.error("Error cerrado CSTM", e); }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstData;
+    }
 }

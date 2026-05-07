@@ -744,12 +744,37 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
         }).show();
     },
     btnGenerarCartera_click: function () {
-        if (Ext.getCmp(prototype.id + '-generarCartera')) {
-            Ext.getCmp(prototype.id + '-generarCartera').close();
+        
+        var me = this;
+        me.bean = {};
+
+        var fromYear = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue();
+        var fromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue();
+        var fromDay = Ext.getCmp(prototype.id + '-cmbDateFromDay').getValue();
+        
+        var toYear = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue();
+        var toMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue();
+        var toDay = Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
+
+        if (!fromYear || !fromMonth  || !toYear || !toMonth ) {
+            global.Msg({
+                msg: 'Por favor, seleccione un rango de fechas válido antes de exportar.'
+            });
+            return;
         }
-        Ext.create('Ext.Praxis.view.payments.CargoGuideForm.GenerarCarteraForm', {
-            id: prototype.id + '-generarCartera'
-        }).show();
+
+        me.bean.IN_FECHA_FROM = me.buildDate(fromYear, fromMonth, fromDay);
+        me.bean.IN_FECHA_TO = me.buildDate(toYear, toMonth, toDay);
+        
+        me.bean.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue() || '';
+
+        var beanString = JSON.stringify(me.bean);
+
+        // 5. Llamamos al endpoint de Java para descargar el Excel
+        var urlExport = prototype.url + '/exportExcel?beanString=' + encodeURIComponent(beanString);
+        
+        window.open(urlExport, '_blank');
+
     },
     btnRunProcess_click: function () {
         if (Ext.getCmp(prototype.id + '-runProcess')) {

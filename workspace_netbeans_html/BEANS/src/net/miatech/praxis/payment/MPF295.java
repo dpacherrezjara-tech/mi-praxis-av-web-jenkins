@@ -40,5 +40,42 @@ public class MPF295 {
     public String FEUP = "";
     public String HOUP = "";
     
+    public String SOCIETY_T1 = "";
+    public String SCOUNTRY_T1 = "";
+    public String BENCENC_T1 = "";
+    public String ACCOUNT_T1 = "";
+    public String ASSIGNMEN_T1 = "";
+    public String REFER_T1 = "";
+    public String CLAVE1_T1 = "";
+    public String TXTCABDOC_T1 = "";
+    public String BANDOC_T1 = "";
+    public String CLAVE3_T1 = "";
+    public String CLASEDOC_T1 = "";
+    public String DOCDATE_T1 = "";
+    public String CLAVECONT_T1 = "";
+    public String SCURRENCY_T1 = "";
+    public String LOCRENCY2_T1 = "";
+    public String TEXTO_T1 = "";
+    public String SOCIETY_T2 = "";
+    public String ACCOUNT_T2 = "";
+    public String FECBASE_T2 = "";
+    public String BANDOCCAR_T2 = "";
+    public String NUMLEG_T2 = "";
+    public String FCONT_T2 = "";
+    public String MONSUC2_T2 = "";
+    public String TEXTO_T2 = "";
+    public String CLAVREF1_T2 = "";
+    public String CLAVREF3_T2 = "";
+    public String CENBEN_T2 = "";
+    public String SCOUNTRY_T2 = "";
+    public String COMENTARIO = "";
+    public String FECHA_ENVIO_VB = "";
+    public String FECHA_COMPENSACION = "";
+    
+    public double NETO_T1 = 0;
+    public double LOCAMOUNT2_T1 = 0;
+    public double IMPORTLOC2_T2 = 0;
+    public double DIFERENCIA = 0;
+    
     public double MONTO = 0;
 }

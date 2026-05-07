@@ -66,5 +66,9 @@ public class CargoGuideLogic {
     public Map<String, Object> runMPS557() throws Exception {
         return CargoGuideDAO.runMPS557();
     }
+    
+    public List<MPF295> loadMPS603(MPF295Filter filter) throws SQLException, Exception {
+        return CargoGuideDAO.loadMPS603(filter);
+    }
 
 }
