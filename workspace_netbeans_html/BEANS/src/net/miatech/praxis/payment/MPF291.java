@@ -9,6 +9,8 @@ public class MPF291 {
     public String CCUST     = "";
     public String AWBNO     = "";
     public String NCICLO    = "";
+    public String DATEBAT    = "";
+    public String IN_SFILE    = "";
     public String METPAGO   = "";
     public String NPAGPAGO  = "";
     public String SCOUNTRY  = "";

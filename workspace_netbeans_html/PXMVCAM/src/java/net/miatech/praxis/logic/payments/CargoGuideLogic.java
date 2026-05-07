@@ -71,4 +71,9 @@ public class CargoGuideLogic {
         return CargoGuideDAO.loadMPS603(filter);
     }
 
+    public Map<String, Object> deleteMPS604(MPF295Filter filter) throws Exception {
+        return CargoGuideDAO.deleteMPS604(filter);
+    }
+    
+    
 }

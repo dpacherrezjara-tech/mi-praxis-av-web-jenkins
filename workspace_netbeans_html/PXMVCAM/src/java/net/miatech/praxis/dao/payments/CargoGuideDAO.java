@@ -391,9 +391,11 @@ public class CargoGuideDAO {
             rst = cstmt.getResultSet();
             while (rst.next()) {
                 MPF291 bean = new MPF291();
+                bean.RN = rst.getLong("RN");
                 bean.CCUST     = rst.getString("CCUST").trim();
                 bean.AWBNO     = rst.getString("AWBNO").trim();
                 bean.NCICLO    = rst.getString("NCICLO").trim();
+                bean.DATEBAT    = rst.getString("DATEBAT").trim();
                 bean.METPAGO   = rst.getString("METPAGO").trim();
                 bean.NPAGPAGO  = rst.getString("NPAGPAGO").trim();
                 bean.SCOUNTRY  = rst.getString("SCOUNTRY").trim();
@@ -644,4 +646,51 @@ public class CargoGuideDAO {
 
         return lstData;
     }
+
+    public Map<String, Object> deleteMPS604(MPF295Filter filter) throws Exception {
+        Map<String, Object> result = new HashMap<>();
+        CallableStatement cstmt = null;
+        Connection cnx = null;
+
+        // Ahora son 7 parámetros en total (5 IN + 2 INOUT)
+        String SQLCLL = "{CALL " + session.getMainLibrary() + "MP.MPS604(?,?,?,?,?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL);
+
+            // 1. Parámetros IN
+            cstmt.setString(1, filter.IN_CCUST != null ? filter.IN_CCUST.trim() : "");
+            cstmt.setString(2, filter.IN_CBATCH != null ? filter.IN_CBATCH.trim() : "");
+            cstmt.setString(3, filter.IN_DATEBAT != null ? filter.IN_DATEBAT.trim() : "");
+            cstmt.setString(4, filter.IN_AWBNO != null ? filter.IN_AWBNO.trim() : "");   // NUEVO
+            cstmt.setString(5, filter.IN_SFILE != null ? filter.IN_SFILE.trim() : "");   // NUEVO
+
+            // FIX: Set initial values for INOUT parameters (ahora en posiciones 6 y 7)
+            cstmt.setInt(6, 0); 
+            cstmt.setString(7, "");
+
+            // 2. Parámetros OUT
+            cstmt.registerOutParameter(6, Types.INTEGER); // OUT_CODE
+            cstmt.registerOutParameter(7, Types.VARCHAR); // OUT_MESSAGE
+
+            // 3. Ejecutar SP
+            cstmt.execute();
+
+            // 4. Leer resultados de salida
+            result.put("OUT_CODE", cstmt.getInt(6));
+            result.put("OUT_MESSAGE", cstmt.getString(7));
+
+        } finally {
+            if (cstmt != null) {
+                try { cstmt.close(); } catch (SQLException e) { logError.error("Error CSTM", e); }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+        }
+
+        return result;
+    }
+
+
+
 }

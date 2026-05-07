@@ -31,6 +31,8 @@ public class MPF295Filter {
     public String IN_CODPSE = "";
     public String IN_CBATCH = "";
     public String IN_DATEBAT = "";
+    public String IN_AWBNO = "";
+    public String IN_SFILE = "";
     public String IN_STATE = "";
     public String option  = "";
     public double IN_MONTO  = 0;

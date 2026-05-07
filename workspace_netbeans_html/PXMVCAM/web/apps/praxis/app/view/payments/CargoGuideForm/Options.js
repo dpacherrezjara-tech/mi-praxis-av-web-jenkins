@@ -89,14 +89,6 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Options', {
                 {
                     xtype: 'toolbar',
                     items: [
-                        {
-                            xtype: 'button',
-                            id: prototype.id + '-btnGenerarCartera',
-                            iconCls: 'prx-icon-excel',
-                            text: 'Generar CARTERA',
-                            style: 'background:#1565C0;color:#fff;font-weight:bold;',
-                            tooltip: 'Generar Excel de Cartera (MPS603)'
-                        },
                         {xtype: 'tbseparator'},
                         {
                             xtype: 'button',
@@ -146,6 +138,12 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Options', {
                             id: prototype.id + '-btnExcel',
                             iconCls: 'prx-icon-excel',
                             tooltip: 'Export to Excel'
+                        },
+                        {
+                            xtype: 'button',
+                            id: prototype.id + '-btnGenerarCartera',
+                             icon: 'resources/img/botones/account.png',
+                            tooltip: 'Generar Excel de Cartera (MPS603)'
                         },
                         {
                             xtype: 'button',

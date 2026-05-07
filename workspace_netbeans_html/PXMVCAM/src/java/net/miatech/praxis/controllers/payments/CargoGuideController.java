@@ -953,4 +953,29 @@ public class CargoGuideController extends BaseController {
         }
     }
 
+    @RequestMapping(value = "deleteDetailPayment", method = RequestMethod.POST)
+    public @ResponseBody String deleteDetailPayment(HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            String beanString = request.getParameter("beanString");
+            MPF295Filter filter = new Gson().fromJson(beanString, MPF295Filter.class);
+
+            CargoGuideLogic logic = new CargoGuideLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            
+            Map<String, Object> result = logic.deleteMPS604(filter);
+
+            int outCode = (int) result.get("OUT_CODE");
+            map.put("success", outCode == 1);
+            map.put("message", result.get("OUT_MESSAGE"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("success", false);
+            map.put("message", "Error interno al intentar limpiar el registro.");
+        }
+        return new Gson().toJson(map);
+    }
+    
+    
 }

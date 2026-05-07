@@ -5,6 +5,7 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.DataEntryCargoGuideControl
     meDE: '',
     actionCode: '',
     bean: {},
+    beandDeleteDetailPayment: {},
     beanResult: {},
     lstCountry: [],
     searchParams: {},
@@ -154,7 +155,15 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.DataEntryCargoGuideControl
                 win.unmask();
                 var res     = Ext.JSON.decode(response.responseText);
                 var records = res.data || [];
+                
+                // --- CAMBIO CLAVE AQUÍ ---
+                // Limpiar la grilla antes de cargar los nuevos datos
+                grid.getStore().removeAll();
+                
+                // Cargar la nueva data (que debería venir con un registro menos si lo borraste)
                 grid.getStore().loadData(records);
+                // -------------------------
+                
                 panel.setVisible(records.length > 0);
                 if (records.length > 0) {
                     win.setHeight(820);
@@ -415,6 +424,62 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.DataEntryCargoGuideControl
             Ext.getCmp(prototype.id + '-lbldes2').show();
         }
     },
+    
+    
+    
+    
+    
+    
+    
+    
+    onDeleteDetailPayment: function (column, e, row, colIndex, x, rowData) {
+        var data = rowData.data;
+
+        var beanDelete = {
+            IN_CBATCH: data.CBATCH,
+            IN_DATEBAT: data.DATEBAT,
+            IN_CCUST : data.CCUST,
+            IN_AWBNO : data.AWBNO,
+            IN_SFILE : data.SFILE
+        };
+
+        // Pedimos confirmación al usuario
+        Ext.Msg.confirm('Confirmación', '¿Está seguro que desea liberar/limpiar los registros del lote ' + data.CBATCH + '?', function (btn) {
+            if (btn === 'yes') {
+                
+                // Si dice que sí, enviamos la petición al endpoint
+                Ext.Ajax.request({
+                    url: prototype.url + '/deleteDetailPayment', // Nombre del nuevo endpoint
+                    method: 'POST',
+                    params: {
+                        beanString: JSON.stringify(beanDelete)
+                    },
+                    success: function (response) {
+                        var res = Ext.decode(response.responseText);
+                        
+                        if (res.success) {
+                            global.Msg({ msg: res.message });
+                            
+                            meDE.searchMPF291ByBatch();
+                        } else {
+                            global.Msg({ msg: res.message });
+                        }
+                    },
+                    failure: function () {
+                        global.Msg({ msg: 'Error de comunicación con el servidor.' });
+                    }
+                });
+            }
+        });
+    },
+    
+    
+    
+    
+    
+    
+    
+    
     // <editor-fold defaultstate="collapsed" desc="Utilitarios">
     getValue: function (id) {
         return Ext.getCmp(prototype.id + '-' + id).getValue();

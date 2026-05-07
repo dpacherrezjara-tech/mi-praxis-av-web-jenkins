@@ -141,6 +141,7 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.DataEntry', {
                 border: false,
                 viewConfig: {stripeRows: true},
                 columns: [
+                    {text: 'Nbr',       dataIndex: 'RN',     width: 30},
                     {text: 'AWB No',       dataIndex: 'AWBNO',     width: 140},
                     {text: 'Cycle',        dataIndex: 'NCICLO',    width: 55,  align: 'center'},
                     {text: 'METPAGO',      dataIndex: 'METPAGO',   width: 80,  align: 'center'},
@@ -159,7 +160,22 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.DataEntry', {
                             m.style = 'text-align:center;color:#1565C0;font-weight:bold;';
                             return v;
                         }},
-                    {text: 'State',        dataIndex: 'STATE',     width: 55,  align: 'center'}
+                    {text: 'State',        dataIndex: 'STATE',     width: 55,  align: 'center'},
+                    {
+                            text: '<span style="color:white;font-weight:bold;">Delete</span>',
+                            width: 60,
+                            align: 'center',
+                            style: 'padding:2px; background: #6C87A8; border-color:white',
+                            renderer: function (value, metaData, record) {
+                                let file = record.get('FILE_NAME'); 
+                                return `<img src="resources/img/botones/restricted_folder_symbol_stop-16.png"
+                                             style="cursor:pointer; width:18px; height:18px;"
+                                            >`;
+                            },
+                            listeners: {
+                                click: 'onDeleteDetailPayment'
+                            }
+                        }
                 ],
                 store: {
                     fields: [
