@@ -545,7 +545,6 @@ public class CargoGuideDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        // El MPS603 tiene exactamente 8 parámetros (4 filtros + 4 paginación)
         String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS603(?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
@@ -553,28 +552,23 @@ public class CargoGuideDAO {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            // Registramos los parámetros de salida (Paginación: índices 5, 6, 7, 8)
             cstmt.registerOutParameter(5, Types.INTEGER);
             cstmt.registerOutParameter(6, Types.INTEGER);
             cstmt.registerOutParameter(7, Types.INTEGER);
             cstmt.registerOutParameter(8, Types.INTEGER);
 
-            // Seteamos los parámetros de entrada
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_FECHA_FROM.trim());
             cstmt.setString(3, filter.IN_FECHA_TO.trim());
             cstmt.setString(4, filter.IN_COUNTRY.trim());
             
-            // Seteamos los parámetros INOUT de paginación
             cstmt.setInt(5, filter.page.PAGNUM);
             cstmt.setInt(6, filter.page.PAGROW);
             cstmt.setInt(7, filter.page.TOTPAG);
             cstmt.setInt(8, filter.page.TOTROW);
 
-            // Ejecutamos el SP
             cstmt.execute();
 
-            // Recuperamos la metadata de paginación actualizada
             filter.page.PAGNUM = cstmt.getInt(5);
             filter.page.PAGROW = cstmt.getInt(6);
             filter.page.TOTPAG = cstmt.getInt(7);
@@ -582,13 +576,11 @@ public class CargoGuideDAO {
 
             rst = cstmt.getResultSet();
             
-            // Mapeo de columnas a objeto Java
             while (rst.next()) {
                 bean = new MPF295();
                 
                 bean.RN = rst.getLong("RN");
                 
-                // --- DATOS BANCO (T1) ---
                 bean.SOCIETY_T1    = rst.getString("SOCIETY_T1") != null ? rst.getString("SOCIETY_T1").trim() : "";
                 bean.SCOUNTRY_T1   = rst.getString("SCOUNTRY_T1") != null ? rst.getString("SCOUNTRY_T1").trim() : "";
                 bean.BENCENC_T1    = rst.getString("BENCENC_T1") != null ? rst.getString("BENCENC_T1").trim() : "";
@@ -608,7 +600,6 @@ public class CargoGuideDAO {
                 bean.LOCRENCY2_T1  = rst.getString("LOCRENCY2_T1") != null ? rst.getString("LOCRENCY2_T1").trim() : "";
                 bean.TEXTO_T1      = rst.getString("TEXTO_T1") != null ? rst.getString("TEXTO_T1").trim() : "";
 
-                // --- DATOS CARTERA (T2) ---
                 bean.SOCIETY_T2    = rst.getString("SOCIETY_T2") != null ? rst.getString("SOCIETY_T2").trim() : "";
                 bean.ACCOUNT_T2    = rst.getString("ACCOUNT_T2") != null ? rst.getString("ACCOUNT_T2").trim() : "";
                 bean.FECBASE_T2    = rst.getString("FECBASE_T2") != null ? rst.getString("FECBASE_T2").trim() : "";
@@ -623,13 +614,12 @@ public class CargoGuideDAO {
                 bean.CENBEN_T2     = rst.getString("CENBEN_T2") != null ? rst.getString("CENBEN_T2").trim() : "";
                 bean.SCOUNTRY_T2   = rst.getString("SCOUNTRY_T2") != null ? rst.getString("SCOUNTRY_T2").trim() : "";
 
-                // --- DATOS EXTRAS ---
                 bean.DIFERENCIA         = rst.getDouble("DIFERENCIA");
                 bean.COMENTARIO         = rst.getString("COMENTARIO") != null ? rst.getString("COMENTARIO").trim() : "";
                 bean.FECHA_ENVIO_VB     = rst.getString("FECHA_ENVIO_VB") != null ? rst.getString("FECHA_ENVIO_VB").trim() : "";
                 bean.FECHA_COMPENSACION = rst.getString("FECHA_COMPENSACION") != null ? rst.getString("FECHA_COMPENSACION").trim() : "";
+                bean.NAMEFILE = rst.getString("NAMEFILE") != null ? rst.getString("NAMEFILE").trim() : "";
 
-                // Paginación
                 bean.page.PAGNUM = filter.page.PAGNUM;
                 bean.page.PAGROW = filter.page.PAGROW;
                 bean.page.TOTPAG = filter.page.TOTPAG;

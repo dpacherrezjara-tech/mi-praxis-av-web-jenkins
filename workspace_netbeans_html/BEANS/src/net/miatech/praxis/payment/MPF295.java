@@ -71,6 +71,7 @@ public class MPF295 {
     public String COMENTARIO = "";
     public String FECHA_ENVIO_VB = "";
     public String FECHA_COMPENSACION = "";
+    public String NAMEFILE = "";
     
     public double NETO_T1 = 0;
     public double LOCAMOUNT2_T1 = 0;

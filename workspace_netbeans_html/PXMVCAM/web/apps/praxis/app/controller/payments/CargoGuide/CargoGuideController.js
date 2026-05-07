@@ -770,7 +770,6 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
 
         var beanString = JSON.stringify(me.bean);
 
-        // 5. Llamamos al endpoint de Java para descargar el Excel
         var urlExport = prototype.url + '/exportExcel?beanString=' + encodeURIComponent(beanString);
         
         window.open(urlExport, '_blank');
