@@ -849,11 +849,13 @@ public class CargoGuideController extends BaseController {
                 Row rowHeaders = sheet.createRow(rowIdx++);
                 rowHeaders.setHeightInPoints(35);
                 String[] columns = {
-                    "Centro de beneficio", "Cuenta", "Asignación", "Referencia", "Clave referencia 1", "Texto cab. documento",
+                    "Sociedad", "Centro de beneficio País","Centro de beneficio", "Cuenta", "Asignación", "Referencia", "Clave referencia 1", 
+                    "Texto cab. documento",
                     "Nº documento", "Clave referencia 3", "Clase de\ndocumento", "Fecha de\ndocumento", "Clave contabiliz.",
-                    "Importe moneda doc.", "Moneda del\ndocumento", "Importe valorado ML2", "Moneda del\ngrupo", "Texto", "Sociedad", "País",
+                    "Importe moneda doc.", "Moneda del\ndocumento", "Importe valorado ML2", "Moneda del\ngrupo", "Texto", 
+                    
                     "Sociedad", "Cuenta", "Fecha DOC.", "Referencia de pago", "Nº documento", "Fecha Contabilización",
-                    "Importe moneda doc.", "Moneda del doc...", "Texto", "Clave referencia 1", "Clave referencia 3", "Centro de beneficio", "País",
+                    "Importe moneda doc.", "Moneda del documento", "Texto", "Clave referencia 1", "Clave referencia 3", "Centro de beneficio", "País",
                     "Diferencia", "Comentario", "Fecha Envío VB", "Fecha compensación"
                 };
 
@@ -876,32 +878,33 @@ public class CargoGuideController extends BaseController {
                     if (esNuevoGrupo) {
                         ultimoBandoc = bandocActual;
 
-                        row.createCell(0).setCellValue(item.BENCENC_T1);
-                        row.createCell(1).setCellValue(item.ACCOUNT_T1);
-                        row.createCell(2).setCellValue(item.ASSIGNMEN_T1);
-                        row.createCell(3).setCellValue(item.REFER_T1);
-                        row.createCell(4).setCellValue(item.CLAVE1_T1);
-                        row.createCell(5).setCellValue(item.TXTCABDOC_T1);
-                        row.createCell(6).setCellValue(item.BANDOC_T1);
-                        row.createCell(7).setCellValue(item.CLAVE3_T1);
-                        row.createCell(8).setCellValue(item.CLASEDOC_T1);
-                        row.createCell(9).setCellValue(item.DOCDATE_T1);
-                        row.createCell(10).setCellValue(item.CLAVECONT_T1);
+                        
+                        row.createCell(0).setCellValue(item.SOCIETY_T1);
+                        row.createCell(1).setCellValue(item.SCOUNTRY_T1);
+                        row.createCell(2).setCellValue(item.BENCENC_T1);
+                        row.createCell(3).setCellValue(item.ACCOUNT_T1);
+                        row.createCell(4).setCellValue(item.ASSIGNMEN_T1);
+                        row.createCell(5).setCellValue(item.REFER_T1);
+                        row.createCell(6).setCellValue(item.CLAVE1_T1);
+                        row.createCell(7).setCellValue(item.TXTCABDOC_T1);
+                        row.createCell(8).setCellValue(item.BANDOC_T1);
+                        row.createCell(9).setCellValue(item.CLAVE3_T1);
+                        row.createCell(10).setCellValue(item.CLASEDOC_T1);
+                        row.createCell(11).setCellValue(item.DOCDATE_T1);
+                        row.createCell(12).setCellValue(item.CLAVECONT_T1);
 
-                        Cell cellNeto = row.createCell(11);
+                        Cell cellNeto = row.createCell(13);
                         cellNeto.setCellValue(item.NETO_T1);
                         cellNeto.setCellStyle(amountStyle);
 
-                        row.createCell(12).setCellValue(item.SCURRENCY_T1);
+                        row.createCell(14).setCellValue(item.SCURRENCY_T1);
 
-                        Cell cellLoc = row.createCell(13);
+                        Cell cellLoc = row.createCell(15);
                         cellLoc.setCellValue(item.LOCAMOUNT2_T1);
                         cellLoc.setCellStyle(amountStyle);
 
-                        row.createCell(14).setCellValue(item.LOCRENCY2_T1);
-                        row.createCell(15).setCellValue(item.TEXTO_T1);
-                        row.createCell(16).setCellValue(item.SOCIETY_T1);
-                        row.createCell(17).setCellValue(item.SCOUNTRY_T1);
+                        row.createCell(16).setCellValue(item.LOCRENCY2_T1);
+                        row.createCell(17).setCellValue(item.TEXTO_T1);
 
                         Cell cellDif = row.createCell(31);
                         cellDif.setCellValue(item.DIFERENCIA);
@@ -915,8 +918,8 @@ public class CargoGuideController extends BaseController {
                     row.createCell(18).setCellValue(item.SOCIETY_T2);
                     row.createCell(19).setCellValue(item.ACCOUNT_T2);
                     row.createCell(20).setCellValue(item.FECBASE_T2);
-                    row.createCell(21).setCellValue(item.BANDOCCAR_T2);
-                    row.createCell(22).setCellValue(item.NUMLEG_T2);
+                    row.createCell(21).setCellValue(item.NUMLEG_T2);
+                    row.createCell(22).setCellValue(item.BANDOCCAR_T2);
                     row.createCell(23).setCellValue(item.FCONT_T2);
 
                     Cell cellImp2 = row.createCell(24);
