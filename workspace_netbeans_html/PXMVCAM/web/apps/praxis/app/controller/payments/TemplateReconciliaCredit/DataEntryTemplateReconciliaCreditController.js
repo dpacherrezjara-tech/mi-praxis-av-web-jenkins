@@ -24,6 +24,8 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.DataEntryTem
 //        this.obtainData();
         switch (this.actionCode) {
             case 'I':
+                this.DeshabilitarCampoCreacion();
+                this.getData();
                 Ext.getCmp(prototype.id + '-btn-save').show();
                 Ext.getCmp(prototype.id + '-btn-update').hide();
                 Ext.getCmp(prototype.id + '-btn-delete').hide();
@@ -33,8 +35,8 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.DataEntryTem
                 this.mostrarData();
                 this.DeshabilitarCampoClave();
                 Ext.getCmp(prototype.id + '-btn-save').hide();
-//                Ext.getCmp(prototype.id + '-btn-update').show();
-//                Ext.getCmp(prototype.id + '-btn-delete').show();
+                Ext.getCmp(prototype.id + '-btn-update').show();
+                Ext.getCmp(prototype.id + '-btn-delete').show();
                 Ext.getCmp(prototype.id + '-btn-cancel').show();
                 break;
         }
@@ -59,6 +61,8 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.DataEntryTem
         return trimmed === '' ? '' : trimmed;
     },
     mostrarData: function () {
+        
+        console.log(this.bean.data,'USUUUUUGAAA')
 
         // DETAIL (DATA ENTRY – CAMPOS DEL GRID)
         this.setValue('de-txtRN', this.bean.data.RN);
@@ -90,9 +94,11 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.DataEntryTem
         this.setValue('de-txtUSCR', this.trimValue(this.bean.data.USCR));
         this.setValue('de-txtFECR', this.trimValue(this.bean.data.FECR));
         this.setValue('de-txtHOCR', this.trimValue(this.bean.data.HOCR));
+        this.setValue('de-txtPGMCR', this.trimValue(this.bean.data.PGMCR));
         this.setValue('de-txtUSUP', this.trimValue(this.bean.data.USUP));
         this.setValue('de-txtFEUP', this.trimValue(this.bean.data.FEUP));
         this.setValue('de-txtHOUP', this.trimValue(this.bean.data.HOUP));
+        this.setValue('de-txtPGMUP', this.trimValue(this.bean.data.PGMUP));
     },
     obtainData: function () {
 
@@ -153,25 +159,75 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.DataEntryTem
         console.log(beanTemp);
 
     },
-    getData: function () {
-//        console.log('getData');
-        var beanString = JSON.stringify(meDE.bean.data);
-//        console.log(beanString);
+    llenarDataInsert: function (beanTemp) {
+        console.log('llenarData');
 
-//        Ext.Ajax.request({
-//            url: prototype.url + '/searchCompleteDetail',
-//            method: 'POST',
-//            timeout: 60000000,
-//            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
-//            params: {beanString: beanString},
-//            success: function (response, options) {
-//                Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
-//                var res = Ext.JSON.decode(response.responseText);
-//                meDE.beanResult = res.result;
-//                meDE.mostrarData();
-//
-//            }
-//        });
+        beanTemp.IN_CCUST = this.getValue('de-txtCCUST2');
+        beanTemp.IN_PRDA = this.getValue('de-txtPRDA');
+        beanTemp.IN_CODPRO = this.getValue('de-txtCODPRO');
+        beanTemp.IN_CCUSTPRO = this.getValue('de-txtCCUSTPRO');
+        beanTemp.IN_FLIQUIDACI = this.getValue('de-txtFLIQUIDACI');
+        beanTemp.IN_LIQUIDACIO = this.getValue('de-txtLIQUIDACIO');
+        beanTemp.IN_MERCHAND = this.getValue('de-txtMERCHAND');
+        beanTemp.IN_CODIGO = this.getValue('de-txtCODIGO');
+        
+        beanTemp.IN_MONEDA = this.getValue('de-txtMONEDA');
+        beanTemp.IN_IMPORTE = this.getValue('de-txtIMPORTE');
+        beanTemp.IN_MONEDA_PAGO = this.getValue('de-txtMONEDAPAGO');
+        beanTemp.IN_IMPORTEPAGO = this.getValue('de-txtIMPORTEPAGO');
+
+        console.log(beanTemp);
+
+    },
+    getData: function () {
+        var beanString = JSON.stringify(meDE.bean.data);
+
+        Ext.Ajax.request({
+            url: prototype.url + '/searchCodeComision',
+            method: 'POST',
+            timeout: 60000000,
+            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+            params: {beanString: beanString},
+            success: function (response, options) {
+                Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
+                var res = Ext.JSON.decode(response.responseText);
+                
+                if (res.success && res.result) {
+                    var comboCodigos = [];
+                    var comboMonedas = [["", ""]]; 
+                    var comboCcustpros = [];
+                    
+                    Ext.Array.each(res.result.codigos, function(item) {
+                        comboCodigos.push([item.code, item.name]); 
+                    });
+                    
+                    Ext.Array.each(res.result.monedas, function(item) {
+                        comboMonedas.push([item.code, item.name]); 
+                    });
+
+                    Ext.Array.each(res.result.ccustpros, function(item) {
+                        comboCcustpros.push([item.code, item.name]); 
+                    });
+                    
+                    var cmbCodigo = Ext.getCmp(prototype.id + '-de-txtCODIGO');
+                    cmbCodigo.getStore().loadData(comboCodigos);
+                    cmbCodigo.setValue('COMISI');
+
+                    var cmbCcustpro = Ext.getCmp(prototype.id + '-de-txtCCUSTPRO');
+                    cmbCcustpro.getStore().loadData(comboCcustpros);
+
+                    var cmbMoneda = Ext.getCmp(prototype.id + '-de-txtMONEDA');
+                    cmbMoneda.getStore().loadData(comboMonedas);
+                    
+                    var cmbMonedaPago = Ext.getCmp(prototype.id + '-de-txtMONEDAPAGO');
+                    cmbMonedaPago.getStore().loadData(comboMonedas); 
+                    
+                    console.log(me.p,'this.beanthis.bean')
+                    meDE.setValue('de-txtCODPRO', meDE.bean.IN_CODPRO);
+                    
+                }
+            }
+        });
     },
     //</editor-fold>
 
@@ -208,7 +264,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.DataEntryTem
             fn: function (btn) {
                 if (btn === 'yes') {
                     var beanTemp = {};
-                    this.llenarData(beanTemp);
+                    this.llenarDataInsert(beanTemp);
                     var msjResult = this.validacionInsert(beanTemp);
                     console.log('onSaveClick');
                     if (msjResult === '') {
@@ -311,6 +367,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.DataEntryTem
 
                                 // Llamar al método
                                 controller.searchBandocReview(field, e);
+                                controller.searchDiscountsWMH(field, e);
                             }
                         } else {
                             console.error('No se encontró componente con controlador');
@@ -324,13 +381,83 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.DataEntryTem
         });
     },
     //</editor-fold>
-
     validacionInsert: function (beanTemp) {
         var msjResult = '';
-        if (this.getValue("de-txtCODE") === '' || this.getValue("de-txtCODEBANK") === '' || this.getValue("de-txtCOUNTRY") === '' || this.getValue("de-txtCURRENC") === '') {
-            msjResult = "You must enter the required field.";
+        var camposFaltantes = [];
+
+        var camposBaseRequeridos = [
+            { id: "de-txtPRDA", nombre: "PRDA" },
+            { id: "de-txtFLIQUIDACI", nombre: "FLIQUIDACI" }
+        ];
+
+        Ext.Array.each(camposBaseRequeridos, function(campo) {
+            var valor = this.getValue(campo.id);
+            if (valor === null || valor === undefined || String(valor).trim() === '') {
+                camposFaltantes.push(campo.nombre);
+            }
+        }, this);
+
+        var valMoneda = this.getValue("de-txtMONEDA");
+        var valImporte = this.getValue("de-txtIMPORTE");
+        
+        var tieneMoneda = (valMoneda !== null && valMoneda !== undefined && String(valMoneda).trim() !== '');
+        var numImporte = parseFloat(valImporte) || 0; 
+        
+        if (tieneMoneda || numImporte !== 0) {
+            if (!tieneMoneda) {
+                camposFaltantes.push("MONEDA");
+            }
+            if (numImporte === 0) {
+                camposFaltantes.push("IMPORTE");
+            }
         }
+
+        var valMonedaPago = this.getValue("de-txtMONEDAPAGO");
+        var valImportePago = this.getValue("de-txtIMPORTEPAGO"); 
+        
+        var tieneMonedaPago = (valMonedaPago !== null && valMonedaPago !== undefined && String(valMonedaPago).trim() !== '');
+        var numImportePago = parseFloat(valImportePago) || 0;
+
+        if (tieneMonedaPago || numImportePago !== 0) {
+            if (!tieneMonedaPago) {
+                camposFaltantes.push("MONEDA PAGO");
+            }
+            if (numImportePago === 0) {
+                camposFaltantes.push("IMPORTE PAGO");
+            }
+        }
+
+        if (camposFaltantes.length > 0) {
+            msjResult = "You must enter the required fields: " + camposFaltantes.join(", ") + ".";
+        }
+
         return msjResult;
+    },
+    DeshabilitarCampoCreacion: function () {
+        let camposDeshabilitar = [
+            'de-txtRN',
+            'de-txtCODPRO',
+            'de-txtCORRL',
+            'de-txtUSCR',
+            'de-txtFECR',
+            'de-txtHOCR',
+            'de-txtPGMCR',
+            'de-txtUSUP',
+            'de-txtFEUP',
+            'de-txtHOUP',
+            'de-txtPGMUP'
+        ];
+
+        camposDeshabilitar.forEach(id => {
+            let cmp = Ext.getCmp(prototype.id + '-' + id);
+            if (cmp)
+                cmp.setReadOnly(true);
+        });
+
+        // IMPORTE es el único editable
+        let campoImporte = Ext.getCmp(prototype.id + '-de-txtIMPORTE');
+        if (campoImporte)
+            campoImporte.setReadOnly(false);
     },
     DeshabilitarCampoClave: function () {
 

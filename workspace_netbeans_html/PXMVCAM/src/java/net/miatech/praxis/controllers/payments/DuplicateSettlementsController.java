@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -577,6 +578,10 @@ public class DuplicateSettlementsController extends BaseController {
                 .get("DB_SERVER_DEFAULT_TYPE")
                 .toString(); // TEST / PROD
 
+        if ("PRO".equals(environment)) {
+            environment = "PROD";
+        }
+
         String rutaBaseKey = "RUTA_LIQUIDATION_" + environment + "_JUSTIFICATION";
         String rutaBase = this.serverSession
                 .getPropertySession()
@@ -627,6 +632,10 @@ public class DuplicateSettlementsController extends BaseController {
                 .get(rutaBaseKey)
                 .toString();
 
+        if ("PRO".equals(environment)) {
+            environment = "PROD";
+        }
+
         String folder = request.getParameter("folder");
         String filename = request.getParameter("filename");
 
@@ -671,6 +680,10 @@ public class DuplicateSettlementsController extends BaseController {
                 .get("DB_SERVER_DEFAULT_TYPE")
                 .toString();
 
+        if ("PRO".equals(environment)) {
+            environment = "PROD";
+        }
+
         String rutaBaseKey = "RUTA_LIQUIDATION_" + environment + "_JUSTIFICATION";
         String rutaBase = this.serverSession
                 .getPropertySession()
@@ -692,6 +705,35 @@ public class DuplicateSettlementsController extends BaseController {
                     .map(p -> p.getFileName().toString())
                     .collect(Collectors.toList());
         }
+    }
+    
+    @RequestMapping(value = "MaintenanceA2280", method = RequestMethod.POST)
+    public @ResponseBody
+    String MaintenanceA2280(HttpServletRequest request) {
+        System.out.println("-------------- DuplicateSettlements : MaintenanceA2280 (Update) -------------");
+        Map<String, Object> map = new HashMap<>();
+        Gson gson = new Gson();
+
+        try {
+            DuplicateSettlementsLogic logic = new DuplicateSettlementsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String beanString = request.getParameter("beanString");
+            // Usamos tu Bean MPF060Filter para atrapar las llaves
+            MPF060Filter bean = gson.fromJson(beanString, MPF060Filter.class);
+
+            Map<String, Object> result = logic.updateMPS590(bean);
+
+            map.put("success", result.get("success"));
+            map.put("Mensaje", result.get("mensaje"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("success", false);
+            map.put("Mensaje", "Ocurrió un error en el servidor: " + e.getMessage());
+        }
+        
+        return new Gson().toJson(map);
     }
 
 }

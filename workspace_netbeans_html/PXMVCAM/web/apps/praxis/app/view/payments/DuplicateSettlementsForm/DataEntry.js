@@ -5,10 +5,10 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.DataEntry', {
         'Ext.Praxis.controller.payments.DuplicateSettlements.DataEntryDuplicateSettlementsController'
     ],
     controller: 'DataEntryDuplicateSettlementsController',
-    title: 'Inputs Catalog - Data Entry Form',
+    title: 'Credit Card - Data Entry Form',
     header: true,
-    height: 470,
-    width: 845,
+    height: 520,
+    width: 820,
     resizable: false,
     layout: 'fit',
     modal: true,
@@ -20,696 +20,254 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.DataEntry', {
         {
             xtype: 'form',
             defaults: {
-                style: 'margin: 3px;',
+                style: 'margin: 10px;',
                 border: false
             },
             items: [
                 {
-                    xtype: 'panel',
-                    bodyStyle: 'background: transparent;"',
-                    layout: 'vbox',
-                    width: 840,
-                    defaults: {
-                        anchor: '100%'
-                    },
-                    items: [
-                        {
-                            xtype: 'panel',
-                            layout: 'hbox',
-                            border: false,
-                            items: [
-                                {xtype: 'tbspacer', width: 7},
-                                {
-                                    xtype: 'label',
-                                    text: "General information",
-                                    style: 'font-weight:bold; color:#121E31; text-decoration: underline;',
-                                    width: 200,
-                                    margin: '15 0 5 0',
-                                }
-                            ]
-                        },
-                        {
-                            xtype: 'panel',
-                            layout: 'hbox',
-                            border: false,
-                            //bodyStyle: 'background:#E5ECEF;',
-                            margin: '10 2 0 20',
-                            defaults: {
-                                anchor: '100%',
-                                width: 1080
-                            },
-                            items: [
-
-                                {xtype: 'tbspacer', width: 7},
-                                {
-                                    xtype: 'label',
-                                    text: 'Aplication Group',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 110
-                                },
-//                                {
-//                                    xtype: 'label',
-//                                    text: '(*)',
-//                                    style: 'font-weight:bold;color:red;',
-//                                    width: 20,
-//                                    autoEl: {
-//                                        tag: 'label',
-//                                        'data-qtip': 'Mandatory Field'
-//                                    }
-//                                },
-                                {xtype: 'tbspacer', width: 5},
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtAPLIC',
-                                    fieldStyle: 'text-align:left',
-                                    enforceMaxLength: true,
-                                    editable: true,
-                                    enabled: false,
-                                    readOnly: false,
-                                    width: 210
-                                },
-                                {xtype: 'tbspacer', width: 40},
-                                {
-                                    xtype: 'label',
-                                    text: 'Seq',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 60
-                                },
-                                {xtype: 'tbspacer', width: 5},
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtSEQNUM',
-                                    fieldStyle: 'text-align:left',
-                                    enforceMaxLength: true,
-                                    editable: true,
-                                    enabled: false,
-                                    maxLength: 2,
-                                    maskRe: /[0-9]/,
-                                    readOnly: false,
-                                    width: 50
-                                },
-                                {xtype: 'tbspacer', width: 90},
-                                {
-                                    xtype: 'label',
-                                    text: 'Status',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 70
-                                },
-                                {xtype: 'tbspacer', width: 5},
-                                {
-                                    xtype: 'combo',
-                                    id: prototype.id + '-de-cmbSTAT',
-                                    queryMode: 'local',
-                                    width: 130,
-                                    fieldStyle: 'color:#074066;',
-                                    forceSelection: true,
-                                    selectOnFocus: false,
-                                    caseSensitive: false,
-                                    hidden: false,
-                                    autoSelect: true,
-                                    editable: false,
-                                    disabled: false,
-                                    typeAhead: true,
-                                    valueField: 'code',
-                                    displayField: 'name',
-                                    enableKeyEvents: true,
-                                    triggerAction: 'all',
-                                    listeners: {
-                                        change: 'onUpperValue'
-                                    }
-                                },
-                            ]
-                        },
-                        {
-                            xtype: 'panel',
-                            layout: 'hbox',
-                            border: false,
-                            //bodyStyle: 'background:#E5ECEF;',
-                            margin: '10 2 0 20',
-                            defaults: {
-                                anchor: '100%',
-                                width: 1080
-                            },
-                            items: [
-
-                                {xtype: 'tbspacer', width: 7},
-                                {
-                                    xtype: 'label',
-                                    text: 'Net Directory',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 110
-                                },
-                                {xtype: 'tbspacer', width: 5},
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtNETDIR',
-                                    fieldStyle: 'text-align:left',
-                                    enforceMaxLength: true,
-                                    editable: true,
-                                    enabled: false,
-                                    readOnly: false,
-                                    width: 210
-                                },
-                                {xtype: 'tbspacer', width: 40},
-                                {
-                                    xtype: 'label',
-                                    text: 'Library',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 60
-                                },
-                                {xtype: 'tbspacer', width: 5},
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtLIBNAME',
-                                    fieldStyle: 'text-align:left',
-                                    enforceMaxLength: true,
-                                    editable: true,
-                                    enabled: false,
-                                    readOnly: false,
-                                    width: 90
-                                },
-                                {xtype: 'tbspacer', width: 50},
-                                {
-                                    xtype: 'label',
-                                    text: 'Table',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 70
-                                },
-                                {xtype: 'tbspacer', width: 5},
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtTABLA',
-                                    fieldStyle: 'text-align:left',
-                                    enforceMaxLength: true,
-                                    editable: true,
-                                    enabled: false,
-                                    readOnly: false,
-                                    width: 130
-                                },
-                            ]
-                        },
-                        {
-                            xtype: 'panel',
-                            layout: 'hbox',
-                            border: false,
-                            items: [
-                                {xtype: 'tbspacer', width: 7},
-                                {
-                                    xtype: 'label',
-                                    text: "Shipping days",
-                                    style: 'font-weight:bold; color:#121E31;',
-                                    width: 200,
-                                    margin: '10 2 0 20',
-                                }
-                            ]
-                        },
-                        {
-                            xtype: 'panel',
-                            layout: 'hbox',
-                            border: false,
-                            //bodyStyle: 'background:#E5ECEF;',
-                            margin: '10 5 0 110',
-                            defaults: {
-                                anchor: '100%',
-                                width: 1080
-                            },
-                            items: [
-                                //{xtype: 'tbspacer', width: 110},
-                                {
-                                    xtype: 'checkbox',
-                                    id: prototype.id + '-de-txtLun',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 20
-                                },
-                                {
-                                    xtype: 'label',
-                                    text: 'Lunes',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 70
-                                },
-                                {
-                                    xtype: 'checkbox',
-                                    id: prototype.id + '-de-txtMar',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 20
-                                },
-                                {
-                                    xtype: 'label',
-                                    text: 'Martes',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 70
-                                },
-                                {
-                                    xtype: 'checkbox',
-                                    id: prototype.id + '-de-txtMie',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 20
-                                },
-                                {
-                                    xtype: 'label',
-                                    text: 'Miercoles',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 70
-                                },
-                                {
-                                    xtype: 'checkbox',
-                                    id: prototype.id + '-de-txtJue',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 20
-                                },
-                                {
-                                    xtype: 'label',
-                                    text: 'Jueves',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 70
-                                },
-                                {
-                                    xtype: 'checkbox',
-                                    id: prototype.id + '-de-txtVie',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 20
-                                },
-                                {
-                                    xtype: 'label',
-                                    text: 'Viernes',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 70
-                                },
-                                {
-                                    xtype: 'checkbox',
-                                    id: prototype.id + '-de-txtSab',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 20
-                                },
-                                {
-                                    xtype: 'label',
-                                    text: 'Sabado',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 70
-                                },
-                                {
-                                    xtype: 'checkbox',
-                                    id: prototype.id + '-de-txtDom',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 20
-                                },
-                                {
-                                    xtype: 'label',
-                                    text: 'Domingo',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 70
-                                },
-                                
-                            ]
-                        },
-                        {
-                            xtype: 'panel',
-                            layout: 'hbox',
-                            border: false,
-                            //bodyStyle: 'background:#E5ECEF;',
-                            margin: '10 2 0 20',
-                            defaults: {
-                                anchor: '100%',
-                                width: 1080
-                            },
-                            items: [
-                                {xtype: 'tbspacer', width: 7},
-                                {
-                                    xtype: 'label',
-                                    text: 'Output Name ',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 110
-                                },
-                                {xtype: 'tbspacer', width: 5},
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtOUTNAME',
-                                    fieldStyle: 'text-align:left',
-                                    enforceMaxLength: true,
-                                    editable: true,
-                                    enabled: false,
-                                    readOnly: false,
-                                    width: 80
-                                },
-                                {xtype: 'tbspacer', width: 15},
-                                {
-                                    xtype: 'label',
-                                    text: 'Qty Rec.Unproc.',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 100
-                                },
-                                {xtype: 'tbspacer', width: 5},
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtQTYREG',
-                                    fieldStyle: 'text-align:left',
-                                    enforceMaxLength: true,
-                                    editable: true,
-                                    enabled: false,
-                                    readOnly: false,
-                                    width: 50
-                                },
-                                {xtype: 'tbspacer', width: 15},
-                                {
-                                    xtype: 'label',
-                                    text: 'Date last Proc.',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 90
-                                },
-                                {xtype: 'tbspacer', width: 5},
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtFECPROC',
-                                    fieldStyle: 'text-align:left',
-                                    enforceMaxLength: true,
-                                    editable: true,
-                                    enabled: false,
-                                    readOnly: false,
-                                    width: 80
-                                },
-                                {xtype: 'tbspacer', width: 15},
-                                {
-                                    xtype: 'label',
-                                    text: 'Phase',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 70
-                                },
-                                {xtype: 'tbspacer', width: 5},
-                                {
-                                    xtype: 'combo',
-                                    id: prototype.id + '-de-cmbFASE',
-                                    queryMode: 'local',
-                                    width: 130,
-                                    fieldStyle: 'color:#074066;',
-                                    forceSelection: true,
-                                    selectOnFocus: false,
-                                    caseSensitive: false,
-                                    hidden: false,
-                                    autoSelect: true,
-                                    editable: false,
-                                    disabled: false,
-                                    typeAhead: true,
-                                    valueField: 'code',
-                                    displayField: 'name',
-                                    enableKeyEvents: true,
-                                    triggerAction: 'all',
-                                    listeners: {
-                                        change: 'onUpperValue'
-                                    }
-                                },
-                            ]
-                        },
-                        {
-                            xtype: 'panel',
-                            layout: 'hbox',
-                            border: false,
-                            items: [
-                                {xtype: 'tbspacer', width: 7},
-                                {
-                                    xtype: 'label',
-                                    text: "Input information",
-                                    style: 'font-weight:bold; color:#121E31; text-decoration: underline;',
-                                    width: 200,
-                                    margin: '15 0 5 0',
-                                }
-                            ]
-                        },
-                        {
-                            xtype: 'panel',
-                            layout: 'hbox',
-                            border: false,
-                            //bodyStyle: 'background:#E5ECEF;',
-                            margin: '10 2 0 20',
-                            defaults: {
-                                anchor: '100%',
-                                width: 1080
-                            },
-                            items: [
-
-                                {xtype: 'tbspacer', width: 7},
-                                {
-                                    xtype: 'label',
-                                    text: 'Name',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 110
-                                },
-                                {xtype: 'tbspacer', width: 5},
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtINPNAME',
-                                    fieldStyle: 'text-align:left',
-                                    enforceMaxLength: true,
-                                    editable: true,
-                                    enabled: false,
-                                    readOnly: false,
-                                    width: 300
-                                },
-                                {xtype: 'tbspacer', width: 155},
-                                {
-                                    xtype: 'label',
-                                    text: 'Extension',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 70
-                                },
-                                {xtype: 'tbspacer', width: 5},
-                                {
-                                    xtype: 'combo',
-                                    id: prototype.id + '-de-cmbINPEXTE',
-                                    queryMode: 'local',
-                                    width: 130,
-                                    fieldStyle: 'color:#074066;',
-                                    forceSelection: true,
-                                    selectOnFocus: false,
-                                    caseSensitive: false,
-                                    hidden: false,
-                                    autoSelect: true,
-                                    editable: false,
-                                    disabled: false,
-                                    typeAhead: true,
-                                    valueField: 'code',
-                                    displayField: 'name',
-                                    enableKeyEvents: true,
-                                    triggerAction: 'all',
-                                    listeners: {
-                                        change: 'onUpperValue'
-                                    }
-                                },
-                            ]
-                        },
-                        {
-                            xtype: 'panel',
-                            layout: 'hbox',
-                            border: false,
-                            //bodyStyle: 'background:#E5ECEF;',
-                            margin: '10 2 0 20',
-                            defaults: {
-                                anchor: '100%',
-                                width: 1080
-                            },
-                            items: [
-
-                                {xtype: 'tbspacer', width: 7},
-                                {
-                                    xtype: 'label',
-                                    text: 'Description',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 110
-                                },
-                                {xtype: 'tbspacer', width: 5},
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-de-txtINPDESC',
-                                    fieldStyle: 'text-align:left',
-                                    enforceMaxLength: true,
-                                    editable: true,
-                                    enabled: false,
-                                    readOnly: false,
-                                    width: 300
-                                },
-                                {xtype: 'tbspacer', width: 155},
-                                {
-                                    xtype: 'label',
-                                    text: 'Type',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 70
-                                },
-                                {xtype: 'tbspacer', width: 5},
-                                {
-                                    xtype: 'combo',
-                                    id: prototype.id + '-de-cmbINPTYPE',
-                                    queryMode: 'local',
-                                    width: 130,
-                                    fieldStyle: 'color:#074066;',
-                                    forceSelection: true,
-                                    selectOnFocus: false,
-                                    caseSensitive: false,
-                                    hidden: false,
-                                    autoSelect: true,
-                                    editable: false,
-                                    disabled: false,
-                                    typeAhead: true,
-                                    valueField: 'code',
-                                    displayField: 'name',
-                                    enableKeyEvents: true,
-                                    triggerAction: 'all',
-                                    listeners: {
-                                        change: 'onUpperValue'
-                                    }
-                                },
-                            ]
-                        },
-                    ]
-                },
-                // <editor-fold defaultstate="collapsed" desc="ControlData">
-                {
-                    xtype: 'panel',
-                    layout: 'hbox',
+                    xtype: 'form',
+                    id: prototype.id + '-formRPA',
                     border: false,
-//                                bodyStyle: 'background:#E5ECEF;',
-//                                bodyStyle: 'background:#efe5e5',
-                    margin: '10 2 0 20',
-                    defaults: {
-                        anchor: '100%',
-                        width: 1080
-                    },
+                    defaults: {margin: '3 0 0 0'},
                     items: [
+                        // <editor-fold defaultstate="collapsed" desc="DETAIL">
                         {
                             xtype: 'label',
-                            html: '<strong style="color:#121E31; text-decoration: underline; ">Control Data</strong>',
-//                                        bodyStyle: 'background:#E5ECEF;',
-                            fontSize: '11',
-                            margin: '0 0 0 7',
-                            width: 234
-                        }
-//                        { xtype: 'tbspacer', width: 470}
-                    ]
-                },
-                // </editor-fold>
-
-                {
-                    items: [
+                            text: 'Detail',
+                            cls: 'section-title',
+                            margin: '14 0 6 10'
+                        },
                         {
-                            xtype: 'panel',
-                            layout: 'hbox',
-                            border: false,
-                            margin: '4 2 4 50',
-                            defaults: {
-                                labelAlign: 'left'
-                            },
+                            xtype: 'container',
+                            layout: {type: 'hbox', align: 'middle'},
+                            bodyStyle: 'background:#F4F7FD;',
+                            padding: '6 12 6 12',
+                            defaults: {labelStyle: 'font-weight:bold;color:#0B333C;'},
                             items: [
-                                {xtype: 'tbspacer', width: 7},
+                                {xtype: 'textfield', fieldLabel: 'CCUST', id: prototype.id + '-de-txtCCUST', width: 220, labelWidth: 90, fieldStyle: 'text-align:center;'},
+                                {xtype: 'tbspacer', width: 15},
+                                 {xtype: 'textfield', fieldLabel: 'SDATE', id: prototype.id + '-de-txtSDATE', width: 230, labelWidth: 90, fieldStyle: 'text-align:center;'},
+                                {xtype: 'tbspacer', width: 15},
+                                {xtype: 'textfield', fieldLabel: 'SCOUNTRY', id: prototype.id + '-de-txtSCOUNTRY', width: 220, labelWidth: 90, fieldStyle: 'text-align:center;'}
+                            ]
+                        },
+                        {
+                            xtype: 'container',
+                            layout: {type: 'hbox', align: 'middle'},
+                            bodyStyle: 'background:#F4F7FD;',
+                            padding: '6 12 6 12',
+                            defaults: {labelStyle: 'font-weight:bold;color:#0B333C;'},
+                            items: [
+                                {xtype: 'textfield', maxLength: 1,enforceMaxLength: true,fieldLabel: 'TDOC', id: prototype.id + '-de-txtTDOC', width: 230, labelWidth: 90, fieldStyle: 'text-align:center;'},
+                                {xtype: 'tbspacer', width: 15},
+                                {xtype: 'textfield', fieldLabel: 'CODEBANK', id: prototype.id + '-de-txtCODEBANK', width: 220, labelWidth: 90, fieldStyle: 'text-align:center;'},
+                                {xtype: 'tbspacer', width: 15},
+                                {xtype: 'textfield', fieldLabel: 'SCARCOD', id: prototype.id + '-de-txtSCARCOD', width: 220, labelWidth: 90, fieldStyle: 'text-align:center;'}
+                            ]
+                        },
+                        {
+                            xtype: 'container',
+                            layout: {type: 'hbox', align: 'middle'},
+                            bodyStyle: 'background:#F4F7FD;',
+                            padding: '6 12 6 12',
+                            defaults: {labelStyle: 'font-weight:bold;color:#0B333C;'},
+                            items: [
+                                {xtype: 'textfield', fieldLabel: 'SCARDN', id: prototype.id + '-de-txtSCARDN', width: 230, labelWidth: 90, fieldStyle: 'text-align:center;'},
+                                {xtype: 'tbspacer', width: 15},
+                                {xtype: 'textfield', fieldLabel: 'SAUTHOC', id: prototype.id + '-de-txtSAUTHOC', width: 220, labelWidth: 90, fieldStyle: 'text-align:center;'},
+                                {xtype: 'tbspacer', width: 15},
+                                {xtype: 'textfield', fieldLabel: 'SEQ', id: prototype.id + '-de-txtSEQ', width: 220, labelWidth: 90, fieldStyle: 'text-align:center;'}
+                            ]
+                        },
+                        {
+                            xtype: 'container',
+                            layout: {type: 'hbox', align: 'middle'},
+                            bodyStyle: 'background:#F4F7FD;',
+                            padding: '6 12 6 12',
+                            defaults: {labelStyle: 'font-weight:bold;color:#0B333C;'},
+                            items: [
+                                {xtype: 'textfield', fieldLabel: 'SVFOP', id: prototype.id + '-de-txtSVFOP', width: 230, labelWidth: 90, fieldStyle: 'text-align:center;'},
+                                {xtype: 'tbspacer', width: 15},
                                 {
-                                    xtype: 'label',
-                                    text: 'Creator User ',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 120,
-                                    height: 20
-                                },
+    xtype: 'combobox', 
+    fieldLabel: 'NEGOC', 
+    id: prototype.id + '-de-txtNEGOC', 
+    width: 220, 
+    labelWidth: 90, 
+    
+    queryMode: 'local',      // Evita que busque en el servidor
+    displayField: 'nombre',  // El texto que lee el usuario
+    valueField: 'codigo',    // El valor real ("1", "2", "S") que viaja al backend y que seteas
+    editable: false,         // Bloquea el teclado para obligar a usar la lista
+    
+    store: {
+        fields: ['codigo', 'nombre'],
+        data: [
+            { codigo: '1', nombre: 'PASAJES' },
+            { codigo: '2', nombre: 'CARGO' },
+            { codigo: '3', nombre: 'CORREO' },
+            { codigo: '4', nombre: 'TURISMO' },
+            { codigo: 'S', nombre: 'STANDBY' }
+        ]
+    }
+}
+                            ]
+                        },
+                        // </editor-fold>
+                        // <editor-fold defaultstate="collapsed" desc="AMOUNT">
+                        /*
+                        {
+                            xtype: 'label',
+                            text: 'Amount',
+                            cls: 'section-title',
+                            margin: '18 0 6 10'
+                        },
+                        {
+                            xtype: 'container',
+                            layout: {type: 'hbox', align: 'middle'},
+                            bodyStyle: 'background:#F4F7FD;',
+                            padding: '6 12 12 12',
+                            defaults: {labelStyle: 'font-weight:bold;color:#0B333C;'},
+                            items: [
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-txtUSCR',
-                                    readOnly: true,
-                                    width: 80,
-                                    listeners: {
-                                        change: 'onUpperValue'
-                                    }
+                                    fieldLabel: 'MONEDA',
+                                    id: prototype.id + '-de-txtMONEDA',
+                                    width: 230,
+                                    labelWidth: 90,
+                                    fieldStyle: 'text-align:center;font-weight:bold;'
                                 },
-                                {xtype: 'tbspacer', width: 20},
+                                {xtype: 'tbspacer', width: 15},
                                 {
-                                    xtype: 'label',
-                                    text: 'Creation Date',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 120
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-txtFECR',
-                                    readOnly: true,
-                                    width: 80,
-                                    listeners: {
-                                        change: 'onUpperValue'
-                                    }
-                                },
-                                {xtype: 'tbspacer', width: 20},
-                                {
-                                    xtype: 'label',
-                                    text: 'Creation Time',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 120
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    id: prototype.id + '-txtHOCR',
-                                    readOnly: true,
-                                    width: 80,
-                                    listeners: {
-                                        change: 'onUpperValue'
-                                    }
+                                    xtype: 'numberfield',
+                                    fieldLabel: 'IMPORTE',
+                                    id: prototype.id + '-de-txtIMPORTE',
+                                    width: 210,
+                                    labelWidth: 90,
+                                    hideTrigger: true,
+                                    decimalPrecision: 2,
+                                    allowDecimals: true,
+                                    fieldStyle: 'text-align:right;font-weight:bold;'
                                 }
                             ]
                         },
                         {
-                            xtype: 'panel',
-                            border: false,
-                            layout: 'hbox',
-                            margin: '5 0 10 50',
-                            defaults: {
-                                labelAlign: 'left'
-                            },
+                            xtype: 'container',
+                            layout: {type: 'hbox', align: 'middle'},
+                            bodyStyle: 'background:#F4F7FD;',
+                            padding: '6 12 12 12',
+                            defaults: {labelStyle: 'font-weight:bold;color:#0B333C;'},
                             items: [
-                                {xtype: 'tbspacer', width: 7},
-                                {
-                                    xtype: 'label',
-                                    text: 'User Update',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 120
-                                },
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-txtUSUP',
-                                    readOnly: true,
-                                    width: 80,
-                                    listeners: {
-                                        change: 'onUpperValue'
-                                    }
+                                    fieldLabel: 'MONEDA PAGO',
+                                    id: prototype.id + '-de-txtMONEDAPAGO',
+                                    width: 230,
+                                    labelWidth: 90,
+                                    fieldStyle: 'text-align:center;font-weight:bold;'
                                 },
-                                {xtype: 'tbspacer', width: 20},
+                                {xtype: 'tbspacer', width: 15},
                                 {
-                                    xtype: 'label',
-                                    text: 'Update Date',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 120
-                                },
+                                    xtype: 'numberfield',
+                                    fieldLabel: 'IMPORTE PAGO',
+                                    id: prototype.id + '-de-txtIMPORTEPAGO',
+                                    width: 210,
+                                    labelWidth: 90,
+                                    hideTrigger: true,
+                                    decimalPrecision: 2,
+                                    allowDecimals: true,
+                                    fieldStyle: 'text-align:right;font-weight:bold;'
+                                }
+                            ]
+                        },
+                        */
+                        // </editor-fold>
+                        // <editor-fold defaultstate="collapsed" desc="Audit Information">
+                        {
+                            xtype: 'label',
+                            text: 'Audit Information',
+                            cls: 'section-title',
+                            margin: '20 0 6 10'
+                        },
+                        {
+                            xtype: 'container',
+                            layout: {type: 'hbox', align: 'middle'},
+                            bodyStyle: 'background:#F4F7FD;',
+                            padding: '8 12 4 12',
+                            defaults: {labelStyle: 'font-weight:bold;color:#0B333C;'},
+                            items: [
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-txtFEUP',
+                                    fieldLabel: 'Created By',
+                                    id: prototype.id + '-de-txtUSCR',
+                                    width: 230,
+                                    labelWidth: 90,
                                     readOnly: true,
-                                    width: 80,
-                                    listeners: {
-                                        change: 'onUpperValue'
-                                    }
+                                    fieldStyle: 'text-align:center;background:#e8e8e8;'
                                 },
-                                {xtype: 'tbspacer', width: 20},
-                                {
-                                    xtype: 'label',
-                                    text: 'Update Time',
-                                    style: 'font-weight:bold;color:#0B333C;',
-                                    width: 120
-                                },
+                                {xtype: 'tbspacer', width: 15},
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-txtHOUP',
+                                    fieldLabel: 'Creation Date',
+                                    id: prototype.id + '-de-txtFECR',
+                                    width: 230,
+                                    labelWidth: 90,
                                     readOnly: true,
-                                    width: 80,
-                                    listeners: {
-                                        change: 'onUpperValue'
-                                    }
+                                    fieldStyle: 'text-align:center;background:#e8e8e8;'
+                                },
+                                {xtype: 'tbspacer', width: 15},
+                                {
+                                    xtype: 'textfield',
+                                    fieldLabel: 'Creation Time',
+                                    id: prototype.id + '-de-txtHOCR',
+                                    width: 230,
+                                    labelWidth: 90,
+                                    readOnly: true,
+                                    fieldStyle: 'text-align:center;background:#e8e8e8;'
+                                }
+                            ]
+                        },
+                        {
+                            xtype: 'container',
+                            layout: {type: 'hbox', align: 'middle'},
+                            bodyStyle: 'background:#F4F7FD;',
+                            padding: '4 12 14 12',
+                            defaults: {labelStyle: 'font-weight:bold;color:#0B333C;'},
+                            items: [
+                                {
+                                    xtype: 'textfield',
+                                    fieldLabel: 'Updated By',
+                                    id: prototype.id + '-de-txtUSUP',
+                                    width: 230,
+                                    labelWidth: 90,
+                                    readOnly: true,
+                                    fieldStyle: 'text-align:center;background:#e8e8e8;'
+                                },
+                                {xtype: 'tbspacer', width: 15},
+                                {
+                                    xtype: 'textfield',
+                                    fieldLabel: 'Update Date',
+                                    id: prototype.id + '-de-txtFEUP',
+                                    width: 230,
+                                    labelWidth: 90,
+                                    readOnly: true,
+                                    fieldStyle: 'text-align:center;background:#e8e8e8;'
+                                },
+                                {xtype: 'tbspacer', width: 15},
+                                {
+                                    xtype: 'textfield',
+                                    fieldLabel: 'Update Time',
+                                    id: prototype.id + '-de-txtHOUP',
+                                    width: 230,
+                                    labelWidth: 90,
+                                    readOnly: true,
+                                    fieldStyle: 'text-align:center;background:#e8e8e8;'
                                 }
                             ]
                         }
+                        // </editor-fold>
                     ]
                 }
-                // </editor-fold>
             ]
         }
     ],
@@ -746,6 +304,7 @@ Ext.define('Ext.Praxis.view.payments.DuplicateSettlementsForm.DataEntry', {
                 {
                     text: 'Delete',
                     id: prototype.id + '-btn-delete',
+                    hidden: true,
                     iconCls: 'prx-icon-delete',
                     listeners: {
                         click: 'onDeleteClick'

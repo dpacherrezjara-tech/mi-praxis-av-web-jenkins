@@ -73,6 +73,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
     Fuente: '',
     me: '',
     searchParams: {},
+    beanDataDiscount: {},
     searchParamsDelete: {},
     paramsObtainData: {},
     lstSettlement: [],
@@ -118,6 +119,9 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
             },
             '#TemplateReconciliaCreditForm-btnAddDiscount': {
                 click: this.btnAddDiscount
+            },
+            '#TemplateReconciliaCreditForm-btnAddDiscountAll': {
+                click: this.btnAddDiscountAll
             },
             '#TemplateReconciliaCreditForm-btnExecute': {
                 click: this.verifyConciliationWMH
@@ -1207,6 +1211,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
 
     // <editor-fold defaultstate="collapsed" desc="Levantar Dataentry Para Modificar Descuentos">
     onEditClick: function (grid, rowIndex, colIndex) {
+        console.log('araaa')
         var rec = grid.getStore().getAt(rowIndex);
         this.winDataEntry('U', rec);
     },
@@ -1295,6 +1300,15 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
         });
     },
     // </editor-fold>
+
+    btnAddDiscountAll: function () {
+        me = this;
+        me.beanDataDiscount = {};
+        me.beanDataDiscount.IN_CODPRO = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
+        this.winDataEntry('I', me.beanDataDiscount);
+    },
+
+
 
 //    FUNCIONES PARA CONCILIAR
 
@@ -1903,6 +1917,8 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
                         global.Msg({msg: 'Error al obtener descuentos.'});
                         return;
                     }
+
+                    console.log(records,'records')
 
                     me.allDiscountRecords = records.map(r => r.data);
 

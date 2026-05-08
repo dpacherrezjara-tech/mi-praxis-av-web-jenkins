@@ -1417,7 +1417,7 @@ public class ManualConciliationDAO {
         ResultSet rst = null;
         ResultSet rst2 = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS541(?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS541(?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -1432,9 +1432,10 @@ public class ManualConciliationDAO {
             cstmt.setString(6, filter.COREP);
             cstmt.setString(7, filter.SPNR);
             cstmt.setInt(8, filter.DIFFDAYS);
-            cstmt.setString(9, filter.RQUERY);
-            cstmt.setString(10, filter.TQUERY);
-            cstmt.setString(11, filter.TTABLE);
+            cstmt.setString(9, filter.INTERCOMPANY.trim());
+            cstmt.setString(10, filter.RQUERY);
+            cstmt.setString(11, filter.TQUERY);
+            cstmt.setString(12, filter.TTABLE);
 
             cstmt.execute();
 
