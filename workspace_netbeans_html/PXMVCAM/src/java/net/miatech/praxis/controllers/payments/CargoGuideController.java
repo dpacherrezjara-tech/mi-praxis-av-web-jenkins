@@ -712,11 +712,11 @@ public class CargoGuideController extends BaseController {
         return new Gson().toJson(map);
     }
 
-    @RequestMapping(value = "exportExcel", method = RequestMethod.GET)
-    public void exportExcel(HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "exportExcelBKP", method = RequestMethod.GET)
+    public void exportExcelBKP(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("-------------- CargoGuide : Export Excel Conciliacion Multi-Sheet -------------");
 
-        String fileNameDownload = "RV_Conciliacion_CO_" + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + ".xlsx";
+        String fileNameDownload = "RV_Conciliacion_" + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + ".xlsx";
 
         try {
             String beanString = request.getParameter("beanString");
@@ -949,6 +949,398 @@ public class CargoGuideController extends BaseController {
             out.close();
 
             System.out.println("-------------- Excel exportado correctamente Multi-Sheet -------------");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    @RequestMapping(value = "exportExcel", method = RequestMethod.GET)
+    public void exportExcel(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("-------------- CargoGuide : Export Excel Conciliacion Multi-Sheet/HN -------------");
+
+        String fileNameDownload = "RV_Conciliacion_" + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + ".xlsx";
+
+        try {
+            String beanString = request.getParameter("beanString");
+            Gson gson = new Gson();
+            MPF295Filter filter = gson.fromJson(beanString, MPF295Filter.class);
+
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+            filter.page.PAGROW = -1;
+            filter.page.PAGNUM = 1;
+
+            CargoGuideLogic logic = new CargoGuideLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            List<MPF295> lstData = logic.loadMPS603(filter);
+
+            SXSSFWorkbook workbook = new SXSSFWorkbook(100);
+
+            // ==============================================
+            // DEFINICIÓN DE ESTILOS (Común para ambos países)
+            // ==============================================
+            Font fontTitle = workbook.createFont();
+            fontTitle.setColor(IndexedColors.WHITE.getIndex());
+            fontTitle.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            fontTitle.setFontHeightInPoints((short) 14);
+
+            Font fontSubtitle = workbook.createFont();
+            fontSubtitle.setItalic(true);
+            fontSubtitle.setFontHeightInPoints((short) 10);
+
+            Font fontHeaderCol = workbook.createFont();
+            fontHeaderCol.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            fontHeaderCol.setColor(IndexedColors.DARK_BLUE.getIndex());
+
+            CellStyle styleTitle = workbook.createCellStyle();
+            styleTitle.setFillForegroundColor(IndexedColors.DARK_BLUE.getIndex());
+            styleTitle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            styleTitle.setAlignment(CellStyle.ALIGN_CENTER);
+            styleTitle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            styleTitle.setFont(fontTitle);
+
+            CellStyle styleSubtitle = workbook.createCellStyle();
+            styleSubtitle.setAlignment(CellStyle.ALIGN_RIGHT);
+            styleSubtitle.setFont(fontSubtitle);
+
+            CellStyle styleBancos = workbook.createCellStyle();
+            styleBancos.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
+            styleBancos.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            styleBancos.setAlignment(CellStyle.ALIGN_CENTER);
+            styleBancos.setFont(fontTitle);
+
+            CellStyle styleCartera = workbook.createCellStyle();
+            styleCartera.setFillForegroundColor(IndexedColors.ORANGE.getIndex());
+            styleCartera.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            styleCartera.setAlignment(CellStyle.ALIGN_CENTER);
+            styleCartera.setFont(fontTitle);
+
+            CellStyle styleColHeader = workbook.createCellStyle();
+            styleColHeader.setFillForegroundColor(IndexedColors.LIGHT_CORNFLOWER_BLUE.getIndex());
+            styleColHeader.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            styleColHeader.setBorderBottom(CellStyle.BORDER_THIN);
+            styleColHeader.setBorderTop(CellStyle.BORDER_THIN);
+            styleColHeader.setBorderLeft(CellStyle.BORDER_THIN);
+            styleColHeader.setBorderRight(CellStyle.BORDER_THIN);
+            styleColHeader.setAlignment(CellStyle.ALIGN_CENTER);
+            styleColHeader.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            styleColHeader.setFont(fontHeaderCol);
+
+            CellStyle amountStyle = workbook.createCellStyle();
+            DataFormat format = workbook.createDataFormat();
+            amountStyle.setDataFormat(format.getFormat("#,##0.00"));
+
+            String[] columns = {
+                "Sociedad", "Centro de beneficio País","Centro de beneficio", "Cuenta", "Asignación", "Referencia", "Clave referencia 1", 
+                "Texto cab. documento",
+                "Nº documento", "Clave referencia 3", "Clase de\ndocumento", "Fecha de\ndocumento", "Clave contabiliz.",
+                "Importe moneda doc.", "Moneda del\ndocumento", "Importe valorado ML2", "Moneda del\ngrupo", "Texto", 
+                
+                "Sociedad", "Cuenta", "Fecha DOC.", "Referencia de pago", "Nº documento", "Fecha Contabilización",
+                "Importe moneda doc.", "Moneda del documento", "Texto", "Clave referencia 1", "Clave referencia 3", "Centro de beneficio", "País",
+                "Diferencia", "Comentario", "Fecha Envío VB", "Fecha compensación"
+            };
+
+            // ==============================================
+            // DETECTAR EL PAÍS PARA DECIDIR LA LÓGICA
+            // ==============================================
+            boolean isHonduras = false;
+            if (lstData != null && !lstData.isEmpty()) {
+                String pais = lstData.get(0).SCOUNTRY_T1;
+                if (pais != null && pais.trim().equalsIgnoreCase("HN")) {
+                    isHonduras = true;
+                }
+            }
+
+            if (isHonduras) {
+                // ==============================================================
+                // LÓGICA HONDURAS: Una sola hoja y ocultar importes repetidos
+                // ==============================================================
+                Sheet sheet = workbook.createSheet("Conciliacion HN");
+                int rowIdx = 0;
+
+                Row rowTitle = sheet.createRow(rowIdx++);
+                rowTitle.setHeightInPoints(30);
+                Cell cellTitle = rowTitle.createCell(0);
+                cellTitle.setCellValue("FORMATO DE CONCILIACIÓN HN");
+                cellTitle.setCellStyle(styleTitle);
+                sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(0, 0, 0, 34));
+
+                Row rowSubtitle = sheet.createRow(rowIdx++);
+                Cell cellSub = rowSubtitle.createCell(0);
+                String fechaGen = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date());
+                cellSub.setCellValue("Generado: " + fechaGen + " | Total de BANDOCs conciliados: " + lstData.size());
+                cellSub.setCellStyle(styleSubtitle);
+                sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(1, 1, 0, 34));
+
+                Row rowGroup = sheet.createRow(rowIdx++);
+                rowGroup.setHeightInPoints(25);
+
+                Cell cellBancos = rowGroup.createCell(0);
+                cellBancos.setCellValue("BANCOS");
+                cellBancos.setCellStyle(styleBancos);
+                sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(2, 2, 0, 17));
+
+                Cell cellCartera = rowGroup.createCell(18);
+                cellCartera.setCellValue("CARTERA");
+                cellCartera.setCellStyle(styleCartera);
+                sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(2, 2, 18, 30));
+
+                Row rowHeaders = sheet.createRow(rowIdx++);
+                rowHeaders.setHeightInPoints(35);
+
+                for (int i = 0; i < columns.length; i++) {
+                    Cell cell = rowHeaders.createCell(i);
+                    cell.setCellValue(columns[i]);
+                    cell.setCellStyle(styleColHeader);
+                    sheet.setColumnWidth(i, 4800);
+                }
+
+                // Variable para identificar si es fila repetida de la Cartera
+                String ultimaCarteraUnica = "";
+
+                for (MPF295 item : lstData) {
+                    Row row = sheet.createRow(rowIdx++);
+
+                    // 1. LLENAMOS EL BANCO (Se imprime siempre igual en Honduras)
+                    row.createCell(0).setCellValue(item.SOCIETY_T1);
+                    row.createCell(1).setCellValue(item.SCOUNTRY_T1);
+                    row.createCell(2).setCellValue(item.BENCENC_T1);
+                    row.createCell(3).setCellValue(item.ACCOUNT_T1);
+                    row.createCell(4).setCellValue(item.ASSIGNMEN_T1);
+                    row.createCell(5).setCellValue(item.REFER_T1);
+                    row.createCell(6).setCellValue(item.CLAVE1_T1);
+                    row.createCell(7).setCellValue(item.TXTCABDOC_T1);
+                    row.createCell(8).setCellValue(item.BANDOC_T1);
+                    row.createCell(9).setCellValue(item.CLAVE3_T1);
+                    row.createCell(10).setCellValue(item.CLASEDOC_T1);
+                    row.createCell(11).setCellValue(item.DOCDATE_T1);
+                    row.createCell(12).setCellValue(item.CLAVECONT_T1);
+
+                    Cell cellNeto = row.createCell(13);
+                    cellNeto.setCellValue(item.NETO_T1);
+                    cellNeto.setCellStyle(amountStyle);
+
+                    row.createCell(14).setCellValue(item.SCURRENCY_T1);
+
+                    Cell cellLoc = row.createCell(15);
+                    cellLoc.setCellValue(item.LOCAMOUNT2_T1);
+                    cellLoc.setCellStyle(amountStyle);
+
+                    row.createCell(16).setCellValue(item.LOCRENCY2_T1);
+                    row.createCell(17).setCellValue(item.TEXTO_T1);
+
+                    // 2. MAGIA DE HONDURAS (CARTERA): Detectar si la cartera es nueva o repetida
+                    String carteraActualUnica = (item.NUMLEG_T2 != null ? item.NUMLEG_T2 : "") + "-" + 
+                                                (item.BANDOCCAR_T2 != null ? item.BANDOCCAR_T2 : "");
+                    
+                    boolean esNuevaCartera = !carteraActualUnica.equals(ultimaCarteraUnica);
+                    
+                    if (esNuevaCartera) {
+                        ultimaCarteraUnica = carteraActualUnica;
+                    }
+
+                    // 3. LLENAMOS LA CARTERA
+                    row.createCell(18).setCellValue(item.SOCIETY_T2);
+                    row.createCell(19).setCellValue(item.ACCOUNT_T2);
+                    row.createCell(20).setCellValue(item.FECBASE_T2);
+                    row.createCell(21).setCellValue(item.NUMLEG_T2);
+                    row.createCell(22).setCellValue(item.BANDOCCAR_T2);
+                    row.createCell(23).setCellValue(item.FCONT_T2);
+
+                    // AQUI CONTROLAMOS EL MONTO REPETIDO DE LA CARTERA
+                    Cell cellImp2 = row.createCell(24);
+                    if (esNuevaCartera) {
+                        cellImp2.setCellValue(item.IMPORTLOC2_T2);
+                    } else {
+                        cellImp2.setCellValue(0.0);
+                    }
+                    cellImp2.setCellStyle(amountStyle);
+
+                    row.createCell(25).setCellValue(item.MONSUC2_T2);
+                    row.createCell(26).setCellValue(item.TEXTO_T2);
+                    row.createCell(27).setCellValue(item.CLAVREF1_T2);
+                    row.createCell(28).setCellValue(item.CLAVREF3_T2);
+                    row.createCell(29).setCellValue(item.CENBEN_T2);
+                    row.createCell(30).setCellValue(item.SCOUNTRY_T2);
+
+                    // -------------------------------------------------------------
+                    // 4. MAGIA DE HONDURAS (DIFERENCIA): Solo en la primera fila
+                    // -------------------------------------------------------------
+                    // ¡Corrección! Usamos la bandera esNuevaCartera en lugar del BANDOC
+                    if (esNuevaCartera) {
+                        Cell cellDif = row.createCell(31);
+                        cellDif.setCellValue(item.DIFERENCIA);
+                        cellDif.setCellStyle(amountStyle);
+
+                        row.createCell(32).setCellValue(item.COMENTARIO);
+                        row.createCell(33).setCellValue(item.FECHA_ENVIO_VB);
+                        row.createCell(34).setCellValue(item.FECHA_COMPENSACION);
+                    }
+                }
+
+                if (lstData.isEmpty()) {
+                    workbook.createSheet("Sin Datos");
+                }
+
+            } else {
+                // ==============================================================
+                // LÓGICA COLOMBIA: CÓDIGO ORIGINAL INTACTO (No se tocó nada)
+                // ==============================================================
+                java.util.Map<String, java.util.List<MPF295>> datosAgrupados = new java.util.LinkedHashMap<>();
+
+                for (MPF295 item : lstData) {
+                    String nombreHoja = "Sin_Archivo"; 
+
+                    if (item.NAMEFILE != null && !item.NAMEFILE.trim().isEmpty()) {
+                        nombreHoja = item.NAMEFILE.trim();
+                        if (nombreHoja.toLowerCase().endsWith(".txt") || nombreHoja.toLowerCase().endsWith(".csv")) {
+                            nombreHoja = nombreHoja.substring(0, nombreHoja.length() - 4);
+                        }
+                        
+                        if (nombreHoja.length() > 31) {
+                            nombreHoja = nombreHoja.substring(0, 31);
+                        }
+                    }
+
+                    if (!datosAgrupados.containsKey(nombreHoja)) {
+                        datosAgrupados.put(nombreHoja, new java.util.ArrayList<MPF295>());
+                    }
+                    
+                    datosAgrupados.get(nombreHoja).add(item);
+                }
+
+                for (java.util.Map.Entry<String, java.util.List<MPF295>> entry : datosAgrupados.entrySet()) {
+                    
+                    String nombreSheet = entry.getKey();
+                    java.util.List<MPF295> listaPorHoja = entry.getValue();
+
+                    Sheet sheet = workbook.createSheet(nombreSheet);
+                    int rowIdx = 0;
+
+                    Row rowTitle = sheet.createRow(rowIdx++);
+                    rowTitle.setHeightInPoints(30);
+                    Cell cellTitle = rowTitle.createCell(0);
+                    cellTitle.setCellValue("FORMATO DE CONCILIACIÓN CO");
+                    cellTitle.setCellStyle(styleTitle);
+                    sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(0, 0, 0, 34));
+
+                    Row rowSubtitle = sheet.createRow(rowIdx++);
+                    Cell cellSub = rowSubtitle.createCell(0);
+                    String fechaGen = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date());
+                    String nombreOriginal = listaPorHoja.get(0).NAMEFILE.trim().isEmpty() ? "Sin Archivo" : listaPorHoja.get(0).NAMEFILE.trim();
+                    cellSub.setCellValue("Generado: " + fechaGen + " | Archivo Origen: " + nombreOriginal + " | BANDOCs conciliados: " + listaPorHoja.size());
+                    cellSub.setCellStyle(styleSubtitle);
+                    sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(1, 1, 0, 34));
+
+                    Row rowGroup = sheet.createRow(rowIdx++);
+                    rowGroup.setHeightInPoints(25);
+
+                    Cell cellBancos = rowGroup.createCell(0);
+                    cellBancos.setCellValue("BANCOS");
+                    cellBancos.setCellStyle(styleBancos);
+                    sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(2, 2, 0, 17));
+
+                    Cell cellCartera = rowGroup.createCell(18);
+                    cellCartera.setCellValue("CARTERA");
+                    cellCartera.setCellStyle(styleCartera);
+                    sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(2, 2, 18, 30));
+
+                    Row rowHeaders = sheet.createRow(rowIdx++);
+                    rowHeaders.setHeightInPoints(35);
+
+                    for (int i = 0; i < columns.length; i++) {
+                        Cell cell = rowHeaders.createCell(i);
+                        cell.setCellValue(columns[i]);
+                        cell.setCellStyle(styleColHeader);
+                        sheet.setColumnWidth(i, 4800);
+                    }
+
+                    String ultimoBandoc = "";
+
+                    for (MPF295 item : listaPorHoja) {
+                        Row row = sheet.createRow(rowIdx++);
+
+                        String bandocActual = item.BANDOC_T1 != null ? item.BANDOC_T1 : "";
+                        boolean esNuevoGrupo = !bandocActual.equals(ultimoBandoc);
+
+                        if (esNuevoGrupo) {
+                            ultimoBandoc = bandocActual;
+                            
+                            row.createCell(0).setCellValue(item.SOCIETY_T1);
+                            row.createCell(1).setCellValue(item.SCOUNTRY_T1);
+                            row.createCell(2).setCellValue(item.BENCENC_T1);
+                            row.createCell(3).setCellValue(item.ACCOUNT_T1);
+                            row.createCell(4).setCellValue(item.ASSIGNMEN_T1);
+                            row.createCell(5).setCellValue(item.REFER_T1);
+                            row.createCell(6).setCellValue(item.CLAVE1_T1);
+                            row.createCell(7).setCellValue(item.TXTCABDOC_T1);
+                            row.createCell(8).setCellValue(item.BANDOC_T1);
+                            row.createCell(9).setCellValue(item.CLAVE3_T1);
+                            row.createCell(10).setCellValue(item.CLASEDOC_T1);
+                            row.createCell(11).setCellValue(item.DOCDATE_T1);
+                            row.createCell(12).setCellValue(item.CLAVECONT_T1);
+
+                            Cell cellNeto = row.createCell(13);
+                            cellNeto.setCellValue(item.NETO_T1);
+                            cellNeto.setCellStyle(amountStyle);
+
+                            row.createCell(14).setCellValue(item.SCURRENCY_T1);
+
+                            Cell cellLoc = row.createCell(15);
+                            cellLoc.setCellValue(item.LOCAMOUNT2_T1);
+                            cellLoc.setCellStyle(amountStyle);
+
+                            row.createCell(16).setCellValue(item.LOCRENCY2_T1);
+                            row.createCell(17).setCellValue(item.TEXTO_T1);
+
+                            Cell cellDif = row.createCell(31);
+                            cellDif.setCellValue(item.DIFERENCIA);
+                            cellDif.setCellStyle(amountStyle);
+
+                            row.createCell(32).setCellValue(item.COMENTARIO);
+                            row.createCell(33).setCellValue(item.FECHA_ENVIO_VB);
+                            row.createCell(34).setCellValue(item.FECHA_COMPENSACION);
+                        }
+
+                        row.createCell(18).setCellValue(item.SOCIETY_T2);
+                        row.createCell(19).setCellValue(item.ACCOUNT_T2);
+                        row.createCell(20).setCellValue(item.FECBASE_T2);
+                        row.createCell(21).setCellValue(item.NUMLEG_T2);
+                        row.createCell(22).setCellValue(item.BANDOCCAR_T2);
+                        row.createCell(23).setCellValue(item.FCONT_T2);
+
+                        Cell cellImp2 = row.createCell(24);
+                        cellImp2.setCellValue(item.IMPORTLOC2_T2);
+                        cellImp2.setCellStyle(amountStyle);
+
+                        row.createCell(25).setCellValue(item.MONSUC2_T2);
+                        row.createCell(26).setCellValue(item.TEXTO_T2);
+                        row.createCell(27).setCellValue(item.CLAVREF1_T2);
+                        row.createCell(28).setCellValue(item.CLAVREF3_T2);
+                        row.createCell(29).setCellValue(item.CENBEN_T2);
+                        row.createCell(30).setCellValue(item.SCOUNTRY_T2);
+                    }
+                }
+                
+                if (datosAgrupados.isEmpty()) {
+                     workbook.createSheet("Sin Datos");
+                }
+            }
+
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+
+            OutputStream out = response.getOutputStream();
+            workbook.write(out);
+            workbook.dispose(); 
+            out.flush();
+            out.close();
+
+            System.out.println("-------------- Excel exportado correctamente -------------");
 
         } catch (Exception e) {
             e.printStackTrace();
