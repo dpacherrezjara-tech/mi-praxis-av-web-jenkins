@@ -149,6 +149,8 @@ public class A2290 {
     public String SCARDN = "";
     public String SDATEXP = "";
     public String SAUTHOC = "";
+    public String SDATE_FROM = "";
+    public String SDATE_TO = "";
     public String SAUTHOCM = "";
     public String CARDTYPE = "";
     public String SINVN = "";

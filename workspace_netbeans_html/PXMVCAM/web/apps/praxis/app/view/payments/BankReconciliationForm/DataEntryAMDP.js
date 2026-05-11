@@ -462,15 +462,15 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         },
                                         {xtype: 'tbspacer', width: 30},
                                         {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-de-txtDebType',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        
-                                        readOnly: true,
-                                        width: 130
-                                  
-                                    },
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtDebType',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
+
+                                            readOnly: true,
+                                            width: 130
+
+                                        },
 
                                         {xtype: 'tbspacer', width: 10}
                                     ]
@@ -533,17 +533,16 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                         },
                                         {xtype: 'tbspacer', width: 50},
                                         {
-                                        xtype: 'textfield',
-                                        id: prototype.id + '-de-txtDescDebType',
-                                        fieldStyle: 'text-align:center',
-                                        enforceMaxLength: true,
-                                        
-                                        readOnly: true,
-                                        width: 230
-                                  
-                                    },
+                                            xtype: 'textfield',
+                                            id: prototype.id + '-de-txtDescDebType',
+                                            fieldStyle: 'text-align:center',
+                                            enforceMaxLength: true,
 
-                                        
+                                            readOnly: true,
+                                            width: 230
+
+                                        },
+
                                         {xtype: 'tbspacer', width: 10}
                                     ]
                                 },
@@ -1030,7 +1029,6 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                     width: 100,
                                                 },
                                                 {xtype: 'tbspacer', width: 30},
-                                                
                                             ]
                                         },
                                         {xtype: 'tbspacer', width: 32},
@@ -1661,6 +1659,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                     xtype: 'datefield',
                                                     id: prototype.id + '-txtFromDate',
                                                     fieldStyle: 'text-align:center',
+                                                    fieldLabel: 'From',
                                                     format: 'Y/m/d',
                                                     formatText: '',
                                                     invalidText: 'Format valid YYYY/MM/DD',
@@ -1670,7 +1669,25 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                     enforceMaxLength: true,
                                                     maxLength: 10,
                                                     inputAttrTpl: "data-qtip='Format valid YYYY/MM/DD'",
-                                                    width: 90
+                                                    width: 120,
+                                                    labelWidth: 30,
+                                                },
+                                                {
+                                                    xtype: 'datefield',
+                                                    id: prototype.id + '-txtToDate',
+                                                    fieldStyle: 'text-align:center',
+                                                    fieldLabel: 'To',
+                                                    format: 'Y/m/d',
+                                                    formatText: '',
+                                                    invalidText: 'Format valid YYYY/MM/DD',
+                                                    minValue: new Date(1990, 00, 01),
+                                                    maskRe: /[0-9/]/,
+                                                    editable: false,
+                                                    enforceMaxLength: true,
+                                                    maxLength: 10,
+                                                    inputAttrTpl: "data-qtip='Format valid YYYY/MM/DD'",
+                                                    width: 110,
+                                                    labelWidth: 20,
                                                 },
                                                 {xtype: 'tbspacer', width: 20},
                                                 {
@@ -1817,7 +1834,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
 
                                                 },
                                                 {xtype: 'tbspacer', width: 20},
-                                                 {
+                                                {
                                                     xtype: 'label',
                                                     text: 'Customer',
                                                     textAlign: 'center',
@@ -1844,11 +1861,11 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                     store: Ext.create('Ext.data.Store', {
                                                         fields: ['CODE', 'NAME'],
                                                         data: [
-                                                            { CODE: '', NAME: 'All' },
-                                                            { CODE: '134', NAME: 'AVIANCA' },
-                                                            { CODE: '202', NAME: 'TACA' },
-                                                            { CODE: '133', NAME: 'LACSA' },
-                                                            { CODE: '547', NAME: 'AEROGAL' }
+                                                            {CODE: '', NAME: 'All'},
+                                                            {CODE: '134', NAME: 'AVIANCA'},
+                                                            {CODE: '202', NAME: 'TACA'},
+                                                            {CODE: '133', NAME: 'LACSA'},
+                                                            {CODE: '547', NAME: 'AEROGAL'}
                                                         ]
                                                     })
                                                 },
@@ -2089,12 +2106,20 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
 //                                        },
                                         {
                                             xtype: 'panel',
-                                            layout: 'hbox',
+                                            layout: 'vbox',
                                             border: false,
                                             margin: '0 0 0 0',
                                             width: 1225,
                                             //bodyStyle: 'background:#efe5e5;',
                                             items: [
+                                                {
+                                                    xtype: 'label',
+                                                    id: prototype.id + '-lblTituloDinamico',
+                                                    text: 'Los tickets pendientes superan la cantidad de 500',
+                                                    style: 'font-size: 14px; font-weight: bold; color: #0B333C;',
+                                                    hidden: true,
+                                                    margin: '10 0 10 20' 
+                                                },
                                                 {
                                                     xtype: 'tabpanel',
                                                     id: prototype.id + '-tabMain',
