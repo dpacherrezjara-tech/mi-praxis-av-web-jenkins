@@ -5525,7 +5525,7 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS303_V10(?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS303(?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -9847,4 +9847,41 @@ public class BankReconciliationDAO {
     }
     return result;
 }
+    
+    public double convertAmountUSD(double amount, String currency, String date) throws Exception {
+        double converted = 0.0;
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        Connection cnx = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS621(?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setDouble(1, amount);
+            cstmt.setString(2, currency);
+            cstmt.setString(3, date);
+
+            cstmt.execute();
+            rst = cstmt.getResultSet();
+
+            if (rst.next()) {
+                // Leemos el alias "CONVERTED_AMOUNT" que pusimos en el cursor del SP
+                converted = rst.getDouble("CONVERTED_AMOUNT");
+            }
+        } finally {
+            if (rst != null) {
+                try { rst.close(); } catch (SQLException e) { }
+            }
+            if (cstmt != null) {
+                try { cstmt.close(); } catch (SQLException e) { }
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+        }
+        return converted;
+    }
 }

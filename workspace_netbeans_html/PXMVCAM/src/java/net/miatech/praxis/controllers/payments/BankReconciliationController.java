@@ -7743,5 +7743,37 @@ public class BankReconciliationController extends BaseController {
         }
         return gson.toJson(map);
     }
+    
+    
+    
+    
+    
+    @RequestMapping(value = "convertAmountToUSD_AMDP")
+    public @ResponseBody String convertAmountToUSD_AMDP(HttpServletRequest request) {
+        System.out.println("-------------- BankReconciliation : convertAmountToUSD_AMDP -------------");
+        Map<String, Object> map = new HashMap<>();
+
+        try {
+            // Recibimos los parámetros enviados por ExtJS
+            double amount = Double.parseDouble(request.getParameter("amount"));
+            String currency = request.getParameter("currency");
+            String date = request.getParameter("date");
+
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            // Llamamos a la lógica para que ejecute el SP
+            double convertedAmount = logic.convertAmountUSD(amount, currency, date);
+
+            map.put("success", true);
+            map.put("convertedAmount", convertedAmount);
+            
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("Mensaje", "Error al convertir la moneda: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return new Gson().toJson(map);
+    }
 
 }

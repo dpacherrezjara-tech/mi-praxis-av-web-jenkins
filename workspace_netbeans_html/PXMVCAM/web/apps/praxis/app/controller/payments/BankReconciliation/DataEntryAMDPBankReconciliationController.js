@@ -1552,6 +1552,71 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.calcularMontos();
     },
     onAdjust: function (grid, rowIndex, colIndex) {
+        var me = this; // Guardamos el contexto para usarlo dentro del Ajax
+        var data = grid.getStore().getAt(rowIndex).data;
+        me.lstAdjustment = [];
+        me.calcularMontos();
+        
+        if (data.STMANUAL !== 'Blocked') {
+            if (me.sumAmount === me.bean.SVFOP) {
+                global.Msg({msg: 'The sum amount is equal to transaction amount.'});
+            } else {
+                Ext.getCmp(prototype.id + '-gridDataAdjustment').show();
+                Ext.getCmp(prototype.id + '-panelADJ').show();
+                
+                var rec = Object.create(grid.getStore().getAt(rowIndex).data);
+                console.log(grid.getStore().getAt(rowIndex).data, 'recrecrec');
+                
+                var fechaVenta = data.A720FECVTA;
+                var monedaVenta = data.A1531MFOP;
+                var monto_ajustado = parseFloat(parseFloat(me.bean.SVFOP - me.sumAmount).toFixed(2));
+
+                Ext.getCmp(prototype.id + '-dataEntryAMDP').mask('Convirtiendo moneda a USD...');
+
+                Ext.Ajax.request({
+                    url: prototype.url + '/convertAmountToUSD_AMDP',
+                    method: 'POST',
+                    params: {
+                        amount: monto_ajustado,
+                        currency: monedaVenta,
+                        date: fechaVenta
+                    },
+                    success: function (response) {
+                        Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+                        var res = Ext.JSON.decode(response.responseText);
+                        
+                        if (res.success) {
+                            rec.A1531VFOP = monto_ajustado;
+                            rec.tot_VFOP = monto_ajustado;
+                            
+                            rec.MontoUSD = res.convertedAmount; 
+                            rec.CurrencyUSD = 'USD'; 
+                            
+                            me.lstAdjustment.push(rec);
+                            console.log(me.lstAdjustment, 'this.lstAdjustment');
+                            
+                            Ext.getCmp(prototype.id + '-gridDataAdjustment').bindStore(
+                                Ext.create('Ext.data.Store', { data: me.lstAdjustment, autoLoad: true })
+                            );
+                            
+                            me.calcularSumAmount();
+                            me.calcularMontos();
+                            
+                        } else {
+                            global.Msg({msg: res.Mensaje});
+                        }
+                    },
+                    failure: function (response) {
+                        Ext.getCmp(prototype.id + '-dataEntryAMDP').unmask();
+                        global.Msg({msg: 'Fallo la conexión con el servidor al convertir moneda.'});
+                    }
+                });
+            }
+        } else {
+            global.Msg({msg: 'Can\'t adjust a blocked ticket.'});
+        }
+    },
+    onAdjustBKP: function (grid, rowIndex, colIndex) {
 
         var data = grid.getStore().getAt(rowIndex).data;
         if (data.STMANUAL !== 'Blocked') {
@@ -1561,11 +1626,17 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                 Ext.getCmp(prototype.id + '-gridDataAdjustment').show();
                 Ext.getCmp(prototype.id + '-panelADJ').show();
                 var rec = Object.create(grid.getStore().getAt(rowIndex).data);
+                console.log(grid.getStore().getAt(rowIndex).data,'recrecrec')
+                
+                
+                var fechaVenta = data.A720FECVTA;
+                var monedaVenta = data.A1531MFOP;
                 var monto_ajustado = parseFloat(parseFloat(this.bean.SVFOP - this.sumAmount).toFixed(2))
 
                 rec.A1531VFOP = monto_ajustado;
                 rec.tot_VFOP = monto_ajustado;
                 this.lstAdjustment.push(rec);
+                console.log(this.lstAdjustment,'this.lstAdjustmentthis.lstAdjustment')
                 Ext.getCmp(prototype.id + '-gridDataAdjustment').bindStore(
                         Ext.create('Ext.data.Store', {data: this.lstAdjustment, autoLoad: true})
                         );

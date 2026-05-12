@@ -1665,7 +1665,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                     invalidText: 'Format valid YYYY/MM/DD',
                                                     minValue: new Date(1990, 00, 01),
                                                     maskRe: /[0-9/]/,
-                                                    editable: false,
+                                                    editable: true,
                                                     enforceMaxLength: true,
                                                     maxLength: 10,
                                                     inputAttrTpl: "data-qtip='Format valid YYYY/MM/DD'",
@@ -1682,7 +1682,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                     invalidText: 'Format valid YYYY/MM/DD',
                                                     minValue: new Date(1990, 00, 01),
                                                     maskRe: /[0-9/]/,
-                                                    editable: false,
+                                                    editable: true,
                                                     enforceMaxLength: true,
                                                     maxLength: 10,
                                                     inputAttrTpl: "data-qtip='Format valid YYYY/MM/DD'",
@@ -2630,17 +2630,18 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDP', {
                                                                                             return value;
                                                                                         }
                                                                                     },
-                                                                                    {text: '', dataIndex: '', width: 142,
+                                                                                    {text: 'Amount Converted', dataIndex: 'MontoUSD', width: 142,
                                                                                         editor: {xtype: 'textfield', editable: false},
                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                                            metaData.style = "text-align:center;";
+                                                                                            metaData.style = "text-align:right;";
+                                                                                            value = Ext.util.Format.number(value, '0,000.00');
                                                                                             return value;
                                                                                         }
                                                                                     },
-                                                                                    {text: '', dataIndex: '', width: 40,
+                                                                                    {text: 'Curr', dataIndex: 'CurrencyUSD', width: 40,
                                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                                             metaData.style = "text-align:center;";
-                                                                                            return '';
+                                                                                            return value;
                                                                                         }
                                                                                     },
                                                                                     {text: '', dataIndex: '', width: 40,
