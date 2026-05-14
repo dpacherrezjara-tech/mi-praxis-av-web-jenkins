@@ -1102,7 +1102,7 @@ public class BankReconciliationDAO {
                     beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
                     beanTkt.SVFOP = rst.getDouble("SVFOP");
                     beanTkt.SEQ = rst.getString("SEQ");
-                    
+
                     beanTkt.totSVFOP = totSVFOP;
                     beanTkt.lngQTYTKT = rst.getLong("QTYTKT");
                     beanTkt.lngQTYDOC = rst.getLong("QTYDOC");
@@ -2173,11 +2173,13 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         CallableStatement cstmt2 = null;
         CallableStatement cstmt3 = null;
+        CallableStatement cstmt4 = null;
         Connection cnx = null;
         Connection cnx2 = null;
         Connection cnx3 = null;
+        Connection cnx4 = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCILIMPF101(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS595(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -2205,11 +2207,12 @@ public class BankReconciliationDAO {
             cstmt.setString(16, filter.strComment.toUpperCase());
             cstmt.setString(17, filter.FREGLA.trim());
             cstmt.setString(18, filter.SAGENT.trim());
+            cstmt.setString(19, filter.BANDOC.trim());
 
             cstmt.execute();
             cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
 
-            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCILIMPF100_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+            String SQLCLL02 = "{CALL " + session.getMainLibrary() + "MP.MPS596(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
             cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt2 = cnx2.prepareCall(SQLCLL02);
@@ -2240,6 +2243,10 @@ public class BankReconciliationDAO {
                 cstmt2.setString(19, Functions.getFechaActual());
                 cstmt2.setString(20, Functions.getHoraActual());
                 cstmt2.setString(21, filter.strComment.toUpperCase());
+                cstmt2.setString(22, filter.SEQ.trim());
+                cstmt2.setString(23, filter.CORRL.trim());
+                cstmt2.setString(24, filter.CCUST.trim());
+                cstmt2.setString(25, filter.TDOC.trim());
 
                 cstmt2.execute();
                 cstmt2.close(); // Cerrar el CallableStatement después de cada ejecución
@@ -2248,10 +2255,9 @@ public class BankReconciliationDAO {
             A2290Filter filterA = filters.get(filters.size() - 1);
 
             if (filterA.ATDOC.equals("A")) {
-                String SQLCLL03 = "{CALL " + session.getMainLibrary() + ".SQP00834INSERTMPF100_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+                String SQLCLL03 = "{CALL " + session.getMainLibrary() + "MP.MPS597(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
                 cnx3 = session.getCNXIBMDB2().getIBMDB2Connection();
-                cstmt3 = cnx3.prepareCall(SQLCLL03);
 
                 cstmt3 = cnx3.prepareCall(SQLCLL03);
 
@@ -2279,14 +2285,30 @@ public class BankReconciliationDAO {
                 cstmt3.setString(21, user.getUserInfo().USR);
                 cstmt3.setString(22, Functions.getFechaActual());
                 cstmt3.setString(23, Functions.getHoraActual());
+                cstmt3.setString(24, filterA.CCUST.trim());
+                cstmt3.setString(25, filter.SEQ.trim());
+                cstmt3.setString(26, filter.CORRL.trim());
+                cstmt3.setString(27, filter.TDOC.trim());
 
                 cstmt3.execute();
                 cstmt3.close(); // Cerrar el CallableStatement después de cada ejecución
 
-            } else {
-                //NADA
-            }
-
+            } 
+            
+            String SQLCLL04 = "{CALL " + session.getMainLibrary() + "MP.MPS594(?,?,?,?)}";
+            cnx4 = session.getCNXIBMDB2().getIBMDB2Connection();
+            
+            cstmt4 = cnx4.prepareCall(SQLCLL04);
+            
+            cstmt4.setString(1, filter.BANDOC.trim());
+            cstmt4.setString(2, filter.DATEC.trim());
+            cstmt4.setString(3, filter.TRANC.trim());
+            cstmt4.registerOutParameter(4, Types.VARCHAR);
+            cstmt4.execute();
+            strMsj = cstmt4.getString(4);
+            
+            cstmt4.close();
+            
         } catch (Exception e) {
             e.printStackTrace();
             strMsj = e.getMessage();
@@ -2831,7 +2853,7 @@ public class BankReconciliationDAO {
 
         return strMsj;
     }
-    
+
     public String loadPX269MPS287(A2290Filter filter, UserView user) throws SQLException, Exception {
 
         //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
@@ -2847,7 +2869,6 @@ public class BankReconciliationDAO {
             cstmt = cnx.prepareCall(SQLCLL01);
 
 //            A2290Filter filter = filters.get(0);
-
             cstmt = cnx.prepareCall(SQLCLL01);
 
             cstmt.setString(1, filter.DATEC.trim());
@@ -2892,12 +2913,10 @@ public class BankReconciliationDAO {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-
-
             cstmt = cnx.prepareCall(SQLCLL01);
 
             cstmt.registerOutParameter(17, Types.VARCHAR);
-            
+
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.SDATE.trim());
             cstmt.setString(3, filter.SCOUNTRY.trim());
@@ -5388,7 +5407,7 @@ public class BankReconciliationDAO {
         objRtn0.CODE = "";
         objRtn0.NAME = "All";
         lstData.add(objRtn0);
-        
+
         A2290Filter objRtn1;
         objRtn1 = new A2290Filter();
         objRtn1.CODE = "EM";
@@ -5540,8 +5559,8 @@ public class BankReconciliationDAO {
             cstmt.setString(3, filter.CARD1.trim());
             cstmt.setString(4, filter.CARD2.trim());
             cstmt.setString(5, filter.SAUTHOC.trim());
-            cstmt.setString(6, filter.SDATE_MIN.trim());
-            cstmt.setString(7, filter.SDATE_MAX.trim());
+            cstmt.setString(6, filter.SDATE_FROM.trim());
+            cstmt.setString(7, filter.SDATE_TO.trim());
             cstmt.setString(8, filter.SPNR.trim());
             cstmt.setString(9, filter.SAGENT.trim());
             cstmt.setString(10, filter.SCURRENCY.trim());
@@ -5552,52 +5571,70 @@ public class BankReconciliationDAO {
 
             rst = cstmt.getResultSet();
 
+            int recordCount = 0;
+
             while (rst.next()) {
+                recordCount++;
 
-                beanTkt = new A2290Filter();
+                if (recordCount <= 500) {
+                    beanTkt = new A2290Filter();
 
-                beanTkt.CCIA = rst.getString("CCIA").trim();
-                beanTkt.FORMA = rst.getString("FORMA").trim();
-                beanTkt.SERIE = rst.getString("SERIE").trim();
-                beanTkt.A1531TKT = beanTkt.CCIA + beanTkt.FORMA + beanTkt.SERIE;
-                beanTkt.SCARDN = rst.getString("SCARDN").trim();
-                beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
-                beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
-                beanTkt.SDATE = rst.getString("SDATE").trim();
-                beanTkt.SPNR = rst.getString("SPNR").trim();
-                beanTkt.STVAL = rst.getString("STVAL").trim();
+                    beanTkt.CCUST = rst.getString("CCUST").trim();
+                    beanTkt.CCIA = rst.getString("CCIA").trim();
+                    beanTkt.FORMA = rst.getString("FORMA").trim();
+                    beanTkt.SERIE = rst.getString("SERIE").trim();
+                    beanTkt.A1531TKT = beanTkt.CCIA + beanTkt.FORMA + beanTkt.SERIE;
+                    beanTkt.SCARDN = rst.getString("SCARDN").trim();
+                    beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
+                    beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
+                    beanTkt.SDATE = rst.getString("SDATE").trim();
+                    beanTkt.SPNR = rst.getString("SPNR").trim();
+                    beanTkt.STVAL = rst.getString("STVAL").trim();
 
-                beanTkt.FDESGLOSE = rst.getString("FDESGLOSE").trim(); //REVISAR
-                if (rst.getString("TDOC").trim().equals("R")) {
-                    beanTkt.descTDOC = "Refund";
-                } else if (rst.getString("TDOC").trim().equals("A")) {
-                    beanTkt.descTDOC = "Adjust.";
-                } else {
-                    beanTkt.descTDOC = "Sales";
+                    beanTkt.FDESGLOSE = rst.getString("FDESGLOSE").trim(); //REVISAR
+                    if (rst.getString("TDOC").trim().equals("R")) {
+                        beanTkt.descTDOC = "Refund";
+                    } else if (rst.getString("TDOC").trim().equals("A")) {
+                        beanTkt.descTDOC = "Adjust.";
+                    } else {
+                        beanTkt.descTDOC = "Sales";
+                    }
+                    beanTkt.A1531TTARJ = rst.getString("SCARCOD").trim();
+                    beanTkt.A1531NREF = rst.getString("SCARDN").trim();
+                    beanTkt.A1531CAPL = rst.getString("SAUTHOC").trim();
+                    beanTkt.A1531MFOP = rst.getString("SCURRENCY").trim();
+                    beanTkt.A1531VFOP = rst.getDouble("SVFOP");
+                    beanTkt.tot_VFOP = rst.getDouble("SVFOP");
+                    beanTkt.A720FECVTA = rst.getString("SDATE").trim();
+                    beanTkt.A720PNR = rst.getString("SPNR").trim();
+
+                    beanTkt.A720SCOUNTRY = rst.getString("SCOUNTRY").trim();
+
+                    beanTkt.A720AGENTE = rst.getString("SAGENT").trim();
+                    beanTkt.CFUENTE = rst.getString("CFUENTE").trim();
+                    beanTkt.INVOICE = rst.getString("INVOICE").trim();
+                    beanTkt.ACCNUMA = rst.getString("ACCNUMA").trim();
+                    beanTkt.COSTCEN = rst.getString("COSTCEN").trim();
+                    beanTkt.SCONSOL = rst.getString("SCONSOL").trim();
+                    beanTkt.TDOC = rst.getString("TDOC").trim();
+                    beanTkt.SCARDNCOR = rst.getString("SCARDNCOR").trim();
+                    beanTkt.SEQ = rst.getString("SEQ").trim();
+                    beanTkt.CORRL = rst.getString("CORRL").trim();
+
+                    lstData.add(beanTkt);
                 }
-                beanTkt.A1531TTARJ = rst.getString("SCARCOD").trim();
-                beanTkt.A1531NREF = rst.getString("SCARDN").trim();
-                beanTkt.A1531CAPL = rst.getString("SAUTHOC").trim();
-                beanTkt.A1531MFOP = rst.getString("SCURRENCY").trim();
-                beanTkt.A1531VFOP = rst.getDouble("SVFOP");
-                beanTkt.tot_VFOP = rst.getDouble("SVFOP");
-                beanTkt.A720FECVTA = rst.getString("SDATE").trim();
-                beanTkt.A720PNR = rst.getString("SPNR").trim();
 
-                beanTkt.A720SCOUNTRY = rst.getString("SCOUNTRY").trim();
-
-                beanTkt.A720AGENTE = rst.getString("SAGENT").trim();
-                beanTkt.CFUENTE = rst.getString("CFUENTE").trim();
-                beanTkt.INVOICE = rst.getString("INVOICE").trim();
-                beanTkt.ACCNUMA = rst.getString("ACCNUMA").trim();
-                beanTkt.COSTCEN = rst.getString("COSTCEN").trim();
-                beanTkt.SCONSOL = rst.getString("SCONSOL").trim();
-
-                lstData.add(beanTkt);
             }
             rst.close();
 
+            if (recordCount > 500) {
+                throw new Exception("EXCEDE_LIMITE|" + recordCount);
+            }
+            
         } catch (Exception e) {
+            if (e.getMessage() != null && e.getMessage().startsWith("EXCEDE_LIMITE")) {
+                throw e; 
+            }
             e.printStackTrace();
         } finally {
             if (rst != null) {
@@ -5641,7 +5678,7 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00833_MDP_SCAN_PENDING(?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS620(?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -5665,49 +5702,69 @@ public class BankReconciliationDAO {
 
             rst = cstmt.getResultSet();
 
+            int recordCount = 0; // NUEVO CONTADOR
+
             while (rst.next()) {
+                recordCount++;
 
-                beanTkt = new A2290Filter();
+                // Solo instanciamos y agregamos a la lista los primeros 500
+                if (recordCount <= 500) {
+                    beanTkt = new A2290Filter();
 
-                beanTkt.CCIA = rst.getString("CCIA").trim();
-                beanTkt.FORMA = rst.getString("FORMA").trim();
-                beanTkt.SERIE = rst.getString("SERIE").trim();
-                beanTkt.A1531TKT = beanTkt.CCIA + beanTkt.FORMA + beanTkt.SERIE;
-                beanTkt.SCARDN = rst.getString("SCARDN").trim();
-                beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
-                beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
-                beanTkt.A720SCOUNTRY = rst.getString("SCOUNTRY").trim();
-                beanTkt.SDATE = rst.getString("SDATE").trim();
-                beanTkt.SPNR = rst.getString("SPNR").trim();
+                    beanTkt.CCUST = rst.getString("CCUST").trim();
+                    beanTkt.CCIA = rst.getString("CCIA").trim();
+                    beanTkt.FORMA = rst.getString("FORMA").trim();
+                    beanTkt.SERIE = rst.getString("SERIE").trim();
+                    beanTkt.A1531TKT = beanTkt.CCIA + beanTkt.FORMA + beanTkt.SERIE;
+                    beanTkt.SCARDN = rst.getString("SCARDN").trim();
+                    beanTkt.SAUTHOC = rst.getString("SAUTHOC").trim();
+                    beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
+                    beanTkt.A720SCOUNTRY = rst.getString("SCOUNTRY").trim();
+                    beanTkt.SDATE = rst.getString("SDATE").trim();
+                    beanTkt.SPNR = rst.getString("SPNR").trim();
 
-                beanTkt.FDESGLOSE = "2";
-                if (rst.getString("TDOC").trim().equals("R")) {
-                    beanTkt.descTDOC = "Refund";
-                } else if (rst.getString("TDOC").trim().equals("A")) {
-                    beanTkt.descTDOC = "Adjust.";
-                } else {
-                    beanTkt.descTDOC = "Sales";
+                    beanTkt.FDESGLOSE = "2";
+                    if (rst.getString("TDOC").trim().equals("R")) {
+                        beanTkt.descTDOC = "Refund";
+                    } else if (rst.getString("TDOC").trim().equals("A")) {
+                        beanTkt.descTDOC = "Adjust.";
+                    } else {
+                        beanTkt.descTDOC = "Sales";
+                    }
+                    beanTkt.A1531TTARJ = rst.getString("SCARCOD").trim();
+                    beanTkt.A1531NREF = rst.getString("SCARDN").trim();
+                    beanTkt.A1531CAPL = rst.getString("SAUTHOC").trim();
+                    beanTkt.A1531MFOP = rst.getString("SCURRENCY").trim();
+                    beanTkt.A1531VFOP = rst.getDouble("SVFOP");
+                    beanTkt.tot_VFOP = rst.getDouble("SVFOP");
+                    beanTkt.A720FECVTA = rst.getString("SDATE").trim();
+                    beanTkt.A720PNR = rst.getString("SPNR").trim();
+                    beanTkt.A720AGENTE = rst.getString("SAGENT").trim();
+                    beanTkt.STVAL = rst.getString("STVAL").trim();
+                    beanTkt.CFUENTE = rst.getString("CFUENTE").trim();
+                    beanTkt.INVOICE = rst.getString("INVOICE").trim();
+                    beanTkt.SCONSOL = rst.getString("SCONSOL").trim();
+                    beanTkt.TDOC = rst.getString("TDOC").trim();
+                    beanTkt.SCARDNCOR = rst.getString("SCARDNCOR").trim();
+                    beanTkt.SEQ = rst.getString("SEQ").trim();
+                    beanTkt.CORRL = rst.getString("CORRL").trim();
+
+                    lstData.add(beanTkt);
                 }
-                beanTkt.A1531TTARJ = rst.getString("SCARCOD").trim();
-                beanTkt.A1531NREF = rst.getString("SCARDN").trim();
-                beanTkt.A1531CAPL = rst.getString("SAUTHOC").trim();
-                beanTkt.A1531MFOP = rst.getString("SCURRENCY").trim();
-                beanTkt.A1531VFOP = rst.getDouble("SVFOP");
-                beanTkt.tot_VFOP = rst.getDouble("SVFOP");
-                beanTkt.A720FECVTA = rst.getString("SDATE").trim();
-                beanTkt.A720PNR = rst.getString("SPNR").trim();
-                beanTkt.A720AGENTE = rst.getString("SAGENT").trim();
-                beanTkt.STVAL = rst.getString("STVAL").trim();
-                beanTkt.CFUENTE = rst.getString("CFUENTE").trim();
-                beanTkt.INVOICE = rst.getString("INVOICE").trim();
-                beanTkt.SCONSOL = rst.getString("SCONSOL").trim();
-
-                lstData.add(beanTkt);
             }
             rst.close();
 
+            // NUEVA VALIDACIÓN: Si superó los 500, lanzamos la excepción con la cantidad
+            if (recordCount > 500) {
+                throw new Exception("EXCEDE_LIMITE|" + recordCount);
+            }
+
         } catch (Exception e) {
+            if (e.getMessage() != null && e.getMessage().startsWith("EXCEDE_LIMITE")) {
+                throw e;
+            }
             e.printStackTrace();
+
         } finally {
             if (rst != null) {
                 try {
@@ -5729,7 +5786,7 @@ public class BankReconciliationDAO {
 
         return lstData;
     }
-    
+
     public List<A2290Filter> loadPXBeanTicketAgent(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstData = new ArrayList<A2290Filter>(0);
@@ -5756,8 +5813,8 @@ public class BankReconciliationDAO {
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
-            
-               // para la paginacion
+
+            // para la paginacion
             cstmt.registerOutParameter(9, Types.INTEGER);
             cstmt.registerOutParameter(10, Types.INTEGER);
             cstmt.registerOutParameter(11, Types.INTEGER);
@@ -5775,11 +5832,10 @@ public class BankReconciliationDAO {
             cstmt.setInt(10, filter.page.PAGROW);
             cstmt.setInt(11, filter.page.TOTPAG);
             cstmt.setInt(12, filter.page.TOTROW);
-            
+
             cstmt.execute();
-            
-            
-           // se actualiza paginacion
+
+            // se actualiza paginacion
             filter.page.PAGNUM = cstmt.getInt(9);
             filter.page.PAGROW = cstmt.getInt(10);
             filter.page.TOTPAG = cstmt.getInt(11);
@@ -5814,13 +5870,12 @@ public class BankReconciliationDAO {
                 beanTkt.CFUENTE = rst.getString("CFUENTE").trim();
                 beanTkt.SPAYMENT = rst.getString("SPAYMENT").trim();
                 beanTkt.tot_VFOP = rst.getDouble("SUM_SVFOPNETR");
-                
-                                // Copiar paginación en cada bean si es necesario
+
+                // Copiar paginación en cada bean si es necesario
                 beanTkt.page.PAGNUM = filter.page.PAGNUM;
                 beanTkt.page.PAGROW = filter.page.PAGROW;
                 beanTkt.page.TOTPAG = filter.page.TOTPAG;
                 beanTkt.page.TOTROW = filter.page.TOTROW;
-
 
                 lstData.add(beanTkt);
             }
@@ -7717,13 +7772,13 @@ public class BankReconciliationDAO {
 
         return lstTkts;
     }
-    
+
     public String loadPX598update_cerror_conci(A2290Filter objmpf101, UserView user) throws SQLException, Exception {
 
         //REALIZA EL INSERT, UPDATE O DELETE DE UN REGISTRO EN LA TABLA A2291.
         String strMsj = "Error ocurred";
         CallableStatement cstmt = null;
-        
+
         Connection cnx = null;
 
         String SQLCLL01 = "{CALL PRAXISMP.update_cerror_conci(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
@@ -7731,11 +7786,8 @@ public class BankReconciliationDAO {
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
-            
-            
-            cstmt.registerOutParameter(15, Types.VARCHAR);
-        
 
+            cstmt.registerOutParameter(15, Types.VARCHAR);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, objmpf101.SDATE.trim());
@@ -7747,19 +7799,18 @@ public class BankReconciliationDAO {
             cstmt.setString(8, objmpf101.SAUTHOC.trim());
             cstmt.setString(9, objmpf101.SEQ);
             cstmt.setDouble(10, objmpf101.SVFOP);
-            
+
             cstmt.setString(11, objmpf101.DATEC.trim());
             cstmt.setString(12, objmpf101.TRANC.trim());
             cstmt.setString(13, session.getUserView().getCustomerInfo().USR);
             cstmt.setString(14, objmpf101.CERROR.trim());
-            
+
             cstmt.setString(15, "");
             cstmt.execute();
-            
+
             strMsj = cstmt.getString(15);
-            
+
             cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
-           
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -7768,7 +7819,7 @@ public class BankReconciliationDAO {
             if (cstmt != null) {
                 try {
                     cstmt.close();
-                    
+
                 } catch (SQLException e) {
                     logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
                 }
@@ -7779,7 +7830,7 @@ public class BankReconciliationDAO {
 
         return strMsj;
     }
-    
+
     public List<A2290Filter> loadPX269SQP00698MainCash(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
@@ -7847,7 +7898,7 @@ public class BankReconciliationDAO {
                 lngTotQTYECC = rst.getLong("QTYECC");
                 //
                 lngTotQTYADJ = rst.getLong("QTYADJ");
-                
+
             }
             rst.close();
 
@@ -7937,7 +7988,7 @@ public class BankReconciliationDAO {
 
         return lstTkts;
     }
-    
+
     public List<A2290Filter> loadPX269SQP00698CountryCash(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
@@ -8089,26 +8140,19 @@ public class BankReconciliationDAO {
 
         return lstTkts;
     }
-    
-    
+
     ///LISTA MPF199
-    
-     public List<A2290Filter> loadLISTAR_MPF199(A2290Filter filter)throws SQLException, Exception {
-        
-        
-        
+    public List<A2290Filter> loadLISTAR_MPF199(A2290Filter filter) throws SQLException, Exception {
+
         List<A2290Filter> listaData = new ArrayList<>();
         A2290Filter bean;
-        
-        
+
         String SQL = "{CALL PRAXISMP.MPS333(?, ?, ? , ?, ? , ?, ?, ?, ?, ?, ?)}";
-        
+
         CallableStatement cstmt = null;
         ResultSet rst = null;
         Connection cnx = null;
-        
-        
-        
+
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQL);
@@ -8120,7 +8164,6 @@ public class BankReconciliationDAO {
             cstmt.registerOutParameter(11, Types.INTEGER);
 
             // los de entrada
-    
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_SDATE);
             cstmt.setString(3, filter.IN_SAGENT);
@@ -8171,10 +8214,7 @@ public class BankReconciliationDAO {
                 bean.O_DATEA = rst.getString("DATEA");
                 bean.O_TRANA = rst.getString("TRANA");
                 bean.O_INVOICE = rst.getString("INVOICE");
-                
-                
-                
-                
+
                 bean.O_USCR = rst.getString("USCR");
                 bean.O_FECR = rst.getString("FECR");
                 bean.O_HOCR = rst.getString("HOCR");
@@ -8210,31 +8250,23 @@ public class BankReconciliationDAO {
         }
 
         return listaData;
-        
-        
-        
-        
+
     }
-    
-     ////
-     /// LISTA DE LA MPF223
-     ///
-     public List<A2290Filter> loadLISTAR_MPF223(A2290Filter filter)throws SQLException, Exception {
-        
-        
-        
+
+    ////
+    /// LISTA DE LA MPF223
+    ///
+    public List<A2290Filter> loadLISTAR_MPF223(A2290Filter filter) throws SQLException, Exception {
+
         List<A2290Filter> listaData = new ArrayList<>();
         A2290Filter bean;
-        
-        
+
         String SQL = "{CALL PRAXISMP.MPS453(?, ?, ? , ?, ? , ?, ?, ?, ? )}";
-        
+
         CallableStatement cstmt = null;
         ResultSet rst = null;
         Connection cnx = null;
-        
-        
-        
+
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQL);
@@ -8244,7 +8276,6 @@ public class BankReconciliationDAO {
             cstmt.registerOutParameter(8, Types.INTEGER);
             cstmt.registerOutParameter(9, Types.INTEGER);
 
-    
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_SDATE);
             cstmt.setString(3, filter.IN_ADATE);
@@ -8276,10 +8307,7 @@ public class BankReconciliationDAO {
                 bean.SUM_NETO = rst.getDouble("SUM_IMPORTE");
                 bean.SCOUNTRY = rst.getString("SCOUNTRY");
                 bean.BANDOC = rst.getString("BANDOC");
-                
-                
-                
-                
+
                 bean.O_USCR = rst.getString("USCR");
                 bean.O_FECR = rst.getString("FECR");
                 bean.O_HOCR = rst.getString("HOCR");
@@ -8315,31 +8343,21 @@ public class BankReconciliationDAO {
         }
 
         return listaData;
-        
-        
-        
-        
+
     }
-     
-     ///loadLISTAR_CARTERAMPF199
-     
-    
-    public List<A2290Filter> loadLISTAR_CARTERAMPF199(A2290Filter filter)throws SQLException, Exception {
-        
-        
-        
+
+    ///loadLISTAR_CARTERAMPF199
+    public List<A2290Filter> loadLISTAR_CARTERAMPF199(A2290Filter filter) throws SQLException, Exception {
+
         List<A2290Filter> listaData = new ArrayList<>();
         A2290Filter bean;
-        
-        
+
         String SQL = "{CALL PRAXISMP.MPS477(?, ?, ?, ?, ?, ?)}";
-        
+
         CallableStatement cstmt = null;
         ResultSet rst = null;
         Connection cnx = null;
-        
-        
-        
+
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQL);
@@ -8349,9 +8367,7 @@ public class BankReconciliationDAO {
 //            cstmt.registerOutParameter(9, Types.INTEGER);
 //            cstmt.registerOutParameter(10, Types.INTEGER);
 //            cstmt.registerOutParameter(11, Types.INTEGER);
-
             // los de entrada
-    
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_STATUS);
             cstmt.setString(3, filter.IN_ADATE_FROM);
@@ -8374,33 +8390,29 @@ public class BankReconciliationDAO {
 //            filter.page.PAGROW = cstmt.getInt(9);
 //            filter.page.TOTPAG = cstmt.getInt(10);
 //            filter.page.TOTROW = cstmt.getInt(11);
-
             rst = cstmt.getResultSet();
 
             while (rst != null && rst.next()) {
                 bean = new A2290Filter();
 
-                            // === MAPEO EXACTO DEL SP ===
-            bean.O_INVOICE   = rst.getString("INVOICE");
-            bean.O_ADATE     = rst.getString("ADATE");
-            bean.O_CONCEPT   = rst.getString("CONCEPT");
-            bean.O_STVAL     = rst.getString("STVAL");
-            bean.O_SCOUNTRY  = rst.getString("SCOUNTRY");
-            bean.O_SCURRENCY = rst.getString("SCURRENCY");
-            bean.O_NETO      = rst.getDouble("NETO");
-            bean.O_ABALANCE  = rst.getDouble("ABALANCE");
-            bean.O_APAYMENT  = rst.getDouble("APAYMENT");
-            bean.O_BANDOC    = rst.getString("BANDOC");
-            bean.O_CFUENTE    = rst.getString("CFUENTE");
-            bean.O_TINPUT    = rst.getString("TINPUT");
-            bean.O_STRDATE    = rst.getString("STRDATE");
-            bean.O_ENDDATE    = rst.getString("ENDDATE");
+                // === MAPEO EXACTO DEL SP ===
+                bean.O_INVOICE = rst.getString("INVOICE");
+                bean.O_ADATE = rst.getString("ADATE");
+                bean.O_CONCEPT = rst.getString("CONCEPT");
+                bean.O_STVAL = rst.getString("STVAL");
+                bean.O_SCOUNTRY = rst.getString("SCOUNTRY");
+                bean.O_SCURRENCY = rst.getString("SCURRENCY");
+                bean.O_NETO = rst.getDouble("NETO");
+                bean.O_ABALANCE = rst.getDouble("ABALANCE");
+                bean.O_APAYMENT = rst.getDouble("APAYMENT");
+                bean.O_BANDOC = rst.getString("BANDOC");
+                bean.O_CFUENTE = rst.getString("CFUENTE");
+                bean.O_TINPUT = rst.getString("TINPUT");
+                bean.O_STRDATE = rst.getString("STRDATE");
+                bean.O_ENDDATE = rst.getString("ENDDATE");
 
-            listaData.add(bean);
-                
-                
-                
-                
+                listaData.add(bean);
+
 //                bean.O_USCR = rst.getString("USCR");
 //                bean.O_FECR = rst.getString("FECR");
 //                bean.O_HOCR = rst.getString("HOCR");
@@ -8413,7 +8425,6 @@ public class BankReconciliationDAO {
 //                bean.page.PAGROW = filter.page.PAGROW;
 //                bean.page.TOTPAG = filter.page.TOTPAG;
 //                bean.page.TOTROW = filter.page.TOTROW;
-
 //                listaData.add(bean);
             }
 
@@ -8436,15 +8447,11 @@ public class BankReconciliationDAO {
         }
 
         return listaData;
-        
 
     }
-     
-     
-     ///////////////////////////////////////////////////
-    
-     /////UPDATE DATAENTRY MPF199
-     
+
+    ///////////////////////////////////////////////////
+    /////UPDATE DATAENTRY MPF199
     public String MPF199Update(A2290Filter filter) throws SQLException, Exception {
         String message = "Update successful.";
         CallableStatement cstmt = null;
@@ -8475,7 +8482,6 @@ public class BankReconciliationDAO {
             cstmt.setString(14, filter.INVOICE.trim());
             cstmt.setString(15, filter.O_PRDA.trim());
 
-
             cstmt.setString(16, session.getUserView().getUserInfo().USR);
             cstmt.setString(17, "");
 
@@ -8499,11 +8505,8 @@ public class BankReconciliationDAO {
 
         return message;
     }
-    
-    
+
     //// INSERT 
-    
-      
     public String MPF199Insert(A2290Filter filter) throws SQLException, Exception {
         String message = " Successfully Inserted.";
         CallableStatement cstmt = null;
@@ -8514,8 +8517,6 @@ public class BankReconciliationDAO {
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQL);
-
-           
 
 //            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST.trim());
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST.trim());
@@ -8534,14 +8535,10 @@ public class BankReconciliationDAO {
             cstmt.setString(13, filter.O_SCOUNTRY.trim());
             cstmt.setString(14, filter.O_REFERENCE.trim());
             cstmt.setString(15, filter.O_COMMENTS.trim());
-            
 
             cstmt.setString(16, session.getUserView().getUserInfo().USR);
-           
 
             cstmt.execute();
-
-           
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -8559,14 +8556,13 @@ public class BankReconciliationDAO {
 
         return message;
     }
-    
-    
+
     public String MPF199InsertArgentina(A2290Filter filter) throws SQLException, Exception {
         String message = " Successfully Inserted.";
         CallableStatement cstmt = null;
         Connection cnx = null;
 
-        String SQL = "{CALL PRAXISMP.MPS450(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)}"; 
+        String SQL = "{CALL PRAXISMP.MPS450(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -8585,7 +8581,7 @@ public class BankReconciliationDAO {
             cstmt.setString(11, filter.O_MONEDA);
             cstmt.setString(12, session.getUserView().getUserInfo().USR);
 
-            cstmt.setInt(13, 0); 
+            cstmt.setInt(13, 0);
             cstmt.setString(14, "");
 
             cstmt.registerOutParameter(13, java.sql.Types.INTEGER);
@@ -8596,27 +8592,27 @@ public class BankReconciliationDAO {
             int sqlCode = cstmt.getInt(13);
             String sqlMessage = cstmt.getString(14);
 
-            if (sqlCode == 1) { 
-                 message = sqlMessage; 
+            if (sqlCode == 1) {
+                message = sqlMessage;
             } else {
-                 message = "ERROR SP: " + sqlMessage;
-                 throw new Exception(message); 
+                message = "ERROR SP: " + sqlMessage;
+                throw new Exception(message);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            message = e.getMessage(); 
+            message = e.getMessage();
         } finally {
         }
 
         return message;
     }
-    
+
     public String MPF199UpdateIndia(A2290Filter filter) throws SQLException, Exception {
         String message = " Successfully Inserted.";
         CallableStatement cstmt = null;
         Connection cnx = null;
-        String SQL = "{CALL PRAXISMP.MPS451(?, ?, ?, ?, ?, ?, ?)}"; 
+        String SQL = "{CALL PRAXISMP.MPS451(?, ?, ?, ?, ?, ?, ?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -8629,9 +8625,8 @@ public class BankReconciliationDAO {
             cstmt.setString(4, filter.O_EXCEPTION_CODE);
             cstmt.setString(5, session.getUserView().getUserInfo().USR);
 
-            cstmt.setInt(6, 0); 
+            cstmt.setInt(6, 0);
             cstmt.setString(7, "");
-
 
             cstmt.registerOutParameter(6, java.sql.Types.INTEGER);
             cstmt.registerOutParameter(7, java.sql.Types.VARCHAR);
@@ -8640,28 +8635,28 @@ public class BankReconciliationDAO {
             int sqlCode = cstmt.getInt(6);
             String sqlMessage = cstmt.getString(7);
 
-            if (sqlCode == 1) { 
-                 message = sqlMessage; 
+            if (sqlCode == 1) {
+                message = sqlMessage;
             } else {
-                
-                 message = "ERROR SP: " + sqlMessage;
-                 throw new Exception(message); 
+
+                message = "ERROR SP: " + sqlMessage;
+                throw new Exception(message);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            message = e.getMessage(); 
+            message = e.getMessage();
         } finally {
         }
 
-        return message; 
+        return message;
     }
-    
+
     public String executeIndiaConciliationBatch(A2290Filter filter) throws Exception {
         Connection cnx = null;
         CallableStatement cstmt = null;
         String message = "Proceso Terminado.";
-        String SQL = "{CALL PRAXISMP.MPS451(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}"; 
+        String SQL = "{CALL PRAXISMP.MPS451(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -8686,30 +8681,39 @@ public class BankReconciliationDAO {
                 String sqlMessage = cstmt.getString(10);
 
                 if (sqlCode != 1) {
-                        throw new Exception("Error en ítem " + (contador + 1) + ": " + sqlMessage);
+                    throw new Exception("Error en ítem " + (contador + 1) + ": " + sqlMessage);
                 }
 
                 contador++;
             }
 
-            cnx.commit(); 
+            cnx.commit();
             message = "Se procesaron " + contador + " registros correctamente.";
 
         } catch (Exception e) {
-            if (cnx != null) try { cnx.rollback(); } catch (SQLException ex) {}
+            if (cnx != null) try {
+                cnx.rollback();
+            } catch (SQLException ex) {
+            }
             e.printStackTrace();
-            throw new Exception(e.getMessage()); 
+            throw new Exception(e.getMessage());
         } finally {
-            if (cstmt != null) try { cstmt.close(); } catch (SQLException e) {}
+            if (cstmt != null) try {
+                cstmt.close();
+            } catch (SQLException e) {
+            }
             if (cnx != null) {
-                try { cnx.setAutoCommit(true); } catch (SQLException e) {}
+                try {
+                    cnx.setAutoCommit(true);
+                } catch (SQLException e) {
+                }
                 session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
             }
         }
 
         return message;
     }
-    
+
     public String processFaseDosConciliation(String tipo) throws SQLException, Exception {
 
         String message = "Proceso de Conciliación " + tipo + " ejecutado exitosamente.";
@@ -8755,7 +8759,7 @@ public class BankReconciliationDAO {
             throw new SQLException("Error SQL en Conciliador (" + tipo + "): " + e.getMessage());
         } catch (Exception e) {
             logError.error("Exception -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
-            throw e; 
+            throw e;
         } finally {
             if (cnx != null) {
                 session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
@@ -8771,7 +8775,7 @@ public class BankReconciliationDAO {
 
         try {
             cstmt = cnx.prepareCall(SQL);
-            cstmt.setInt(1, 0); 
+            cstmt.setInt(1, 0);
             cstmt.setString(2, "");
 
             cstmt.registerOutParameter(1, java.sql.Types.INTEGER);
@@ -8787,7 +8791,9 @@ public class BankReconciliationDAO {
             }
 
         } finally {
-            if (cstmt != null) cstmt.close();
+            if (cstmt != null) {
+                cstmt.close();
+            }
         }
     }
 
@@ -8801,13 +8807,13 @@ public class BankReconciliationDAO {
             cstmt.execute();
 
         } finally {
-            if (cstmt != null) cstmt.close();
+            if (cstmt != null) {
+                cstmt.close();
+            }
         }
     }
-    
-    
+
     ////
-    
     public String ConciliacionAdjust(A2290Filter filter) throws SQLException, Exception {
         String message = "Update successful.";
         CallableStatement cstmt = null;
@@ -8836,7 +8842,6 @@ public class BankReconciliationDAO {
             cstmt.setString(11, filter.TINPUT.trim());
             cstmt.setInt(12, sqlCode);
             cstmt.setString(13, message);
-            
 
             cstmt.execute();
 
@@ -8859,7 +8864,7 @@ public class BankReconciliationDAO {
 
         return message;
     }
-    
+
     public String ConciliationAddAdjust(A2290Filter filter) throws SQLException, Exception {
         String message = "Update successful.";
         CallableStatement cstmt = null;
@@ -8883,7 +8888,6 @@ public class BankReconciliationDAO {
             cstmt.setString(6, filter.TINPUT.trim());
             cstmt.setInt(7, sqlCode);
             cstmt.setString(8, message);
-            
 
             cstmt.execute();
 
@@ -8907,8 +8911,7 @@ public class BankReconciliationDAO {
         return message;
     }
 
-     ///////
-    
+    ///////
     public List<A2290Filter> loadPX269SQP00698DayCash(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
@@ -8967,15 +8970,14 @@ public class BankReconciliationDAO {
                 lngTotQTMATCH = rst.getLong("QTMATCH");
                 lngTotQTMANUAL = rst.getLong("QTMANUAL");
                 lngTotQTPEND = rst.getLong("QTPEND");
-                
+
                 // Header
                 lngTotHMatch = rst.getLong("QHMATCH");
                 lngTotHManual = rst.getLong("QHMANUAL");
                 lngTotHDiff = rst.getLong("QHDIFF");
                 lngTotHSales = rst.getLong("QHSALES");
                 lngTotHAll = rst.getLong("QHALL");
-                        
-                
+
             }
             rst.close();
 
@@ -9005,7 +9007,7 @@ public class BankReconciliationDAO {
                     beanTkt.lngQTMATCH = rst.getLong("QTMATCH");
                     beanTkt.lngQTMANUAL = rst.getLong("QTMANUAL");
                     beanTkt.lngQTPEND = rst.getLong("QTPEND");
-                    
+
                     beanTkt.lngTotQSALES = lngTotQSALES;
                     beanTkt.lngTotQMATCH = lngTotQMATCH;
                     beanTkt.lngTotQMANUAL = lngTotQMANUAL;
@@ -9015,15 +9017,14 @@ public class BankReconciliationDAO {
                     beanTkt.lngTotQTMATCH = lngTotQTMATCH;
                     beanTkt.lngTotQTMANUAL = lngTotQTMANUAL;
                     beanTkt.lngTotQTPEND = lngTotQTPEND;
-                    
+
                     // Header
-                    
                     beanTkt.lngQHMatch = rst.getLong("HMATCH");
                     beanTkt.lngQHManual = rst.getLong("HMANUAL");
-                        beanTkt.lngQHDiff = rst.getLong("HDIFF");
+                    beanTkt.lngQHDiff = rst.getLong("HDIFF");
                     beanTkt.lngQHSales = rst.getLong("HSALES");
                     beanTkt.lngQHAll = rst.getLong("HALL");
-                    
+
                     beanTkt.lngTotHMatch = lngTotHMatch;
                     beanTkt.lngTotHManual = lngTotHManual;
                     beanTkt.lngTotHDiff = lngTotHDiff;
@@ -9150,15 +9151,15 @@ public class BankReconciliationDAO {
                     }
                     beanTkt.SAGENT = rst.getString("SAGENT").trim();
                     // Consulta por el momento porque en el formateo tenemos que agregar el SCOONSOL
-                    beanTkt.SCONSOL = rst.getString("SCONSOL").trim(); 
-                    beanTkt.ADATE = rst.getString("ADATE").trim(); 
-                    beanTkt.TINPUT = rst.getString("TINPUT").trim(); 
-                    beanTkt.CBATCH = rst.getString("CBATCH").trim(); 
-                    beanTkt.FECR = rst.getString("FECR").trim(); 
+                    beanTkt.SCONSOL = rst.getString("SCONSOL").trim();
+                    beanTkt.ADATE = rst.getString("ADATE").trim();
+                    beanTkt.TINPUT = rst.getString("TINPUT").trim();
+                    beanTkt.CBATCH = rst.getString("CBATCH").trim();
+                    beanTkt.FECR = rst.getString("FECR").trim();
                     beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
                     beanTkt.SVFOP = rst.getDouble("NETO");
                     beanTkt.SEQ = rst.getString("SEQ");
-                    
+
                     beanTkt.totSVFOP = totSVFOP;
                     beanTkt.lngQTYTKT = rst.getLong("QTYTKT");
                     beanTkt.lngQTYDOC = rst.getLong("QTYDOC");
@@ -9175,8 +9176,8 @@ public class BankReconciliationDAO {
                     beanTkt.NEGOC = rst.getString("NEGOC").trim();
                     if (beanTkt.NEGOC.equals("1")) {
                         beanTkt.NEGOC = "PASAJES";
-                    } 
-    
+                    }
+
                     beanTkt.BANDOC = rst.getString("BANDOC").trim();
                     beanTkt.FREGLA = rst.getString("FREGLA").trim();
                     beanTkt.REFER = rst.getString("REFER").trim();
@@ -9217,130 +9218,133 @@ public class BankReconciliationDAO {
 
     public A2290Filter loadPX269SQPXXXCash(A2290Filter filter) throws SQLException, Exception {
 
-    A2290Filter objRtn = new A2290Filter();
-    CallableStatement cstmt01 = null;
-    ResultSet rs01 = null;
+        A2290Filter objRtn = new A2290Filter();
+        CallableStatement cstmt01 = null;
+        ResultSet rs01 = null;
 
-    // Diccionario de estados
-    HashMap<String, String> hmDescEstados = new HashMap<>();
-    hmDescEstados.put("1", "Match");
-    hmDescEstados.put("3", "Pending");
-    hmDescEstados.put("4", "Match to be confirmed");
-    hmDescEstados.put("5", "Match Manual");
+        // Diccionario de estados
+        HashMap<String, String> hmDescEstados = new HashMap<>();
+        hmDescEstados.put("1", "Match");
+        hmDescEstados.put("3", "Pending");
+        hmDescEstados.put("4", "Match to be confirmed");
+        hmDescEstados.put("5", "Match Manual");
 
-    // CALL
-    String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS394(?,?,?,?,?,?,?,?,?,?)}";
+        // CALL
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS394(?,?,?,?,?,?,?,?,?,?)}";
 
-    Connection cnx = null;
+        Connection cnx = null;
 
-    try {
-        cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-        cstmt01 = cnx.prepareCall(SQLCLL01);
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt01 = cnx.prepareCall(SQLCLL01);
 
-        // Parámetros del SP
-        cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
-        cstmt01.setString(2, filter.SDATE.trim());
-        cstmt01.setString(3, filter.SCOUNTRY.trim());
-        cstmt01.setString(4, filter.SCURRENCY.trim());
-        cstmt01.setString(5, filter.SAGENT.trim());
-        cstmt01.setString(6, filter.TRANC.trim());
-        cstmt01.setString(7, filter.CBATCH.trim());
-        cstmt01.setString(8, filter.TINPUT.trim());
-        cstmt01.setString(9, filter.FECR.trim());
-        cstmt01.setString(10, filter.CHEADER.trim());
-        cstmt01.execute();
+            // Parámetros del SP
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt01.setString(2, filter.SDATE.trim());
+            cstmt01.setString(3, filter.SCOUNTRY.trim());
+            cstmt01.setString(4, filter.SCURRENCY.trim());
+            cstmt01.setString(5, filter.SAGENT.trim());
+            cstmt01.setString(6, filter.TRANC.trim());
+            cstmt01.setString(7, filter.CBATCH.trim());
+            cstmt01.setString(8, filter.TINPUT.trim());
+            cstmt01.setString(9, filter.FECR.trim());
+            cstmt01.setString(10, filter.CHEADER.trim());
+            cstmt01.execute();
 
-        rs01 = cstmt01.getResultSet();
-        while (rs01.next()) {
-            objRtn.IN_TKT_ASIG = filter.IN_TKT_ASIG;
-            objRtn.CCUST = rs01.getString("CCUST");
+            rs01 = cstmt01.getResultSet();
+            while (rs01.next()) {
+                objRtn.IN_TKT_ASIG = filter.IN_TKT_ASIG;
+                objRtn.CCUST = rs01.getString("CCUST");
 
+                objRtn.SAGENT = rs01.getString("SAGENT");
+                objRtn.DESAGENT = objRtn.SAGENT + " - " + rs01.getString("DESAGENT");
 
-            objRtn.SAGENT = rs01.getString("SAGENT");
-            objRtn.DESAGENT = objRtn.SAGENT + " - " + rs01.getString("DESAGENT");
+                objRtn.SDATE = rs01.getString("SDATE");
 
-            objRtn.SDATE = rs01.getString("SDATE");
+                // STVAL + descripción mapeada
+                objRtn.STVAL = rs01.getString("STVAL_FASE2");
+                objRtn.descSTVAL = hmDescEstados.getOrDefault(
+                        objRtn.STVAL.trim(),
+                        objRtn.STVAL.trim()
+                );
 
-            // STVAL + descripción mapeada
-            objRtn.STVAL = rs01.getString("STVAL_FASE2");
-            objRtn.descSTVAL = hmDescEstados.getOrDefault(
-                objRtn.STVAL.trim(),
-                objRtn.STVAL.trim()
-            );
+                objRtn.SCOUNTRY = rs01.getString("SCOUNTRY");
+                objRtn.CBATCH = rs01.getString("CBATCH");
+                objRtn.CHEADER = rs01.getString("CHEADER");
+                objRtn.TINPUT = rs01.getString("TINPUT");
+                objRtn.DCYCLE = rs01.getString("DCYCLE");
+                objRtn.ADATE = rs01.getString("ADATE");
+                objRtn.NEGOC = rs01.getString("NEGOC");
+                objRtn.BANDOC = rs01.getString("BANDOC");
 
-            objRtn.SCOUNTRY = rs01.getString("SCOUNTRY");
-            objRtn.CBATCH = rs01.getString("CBATCH");
-            objRtn.CHEADER = rs01.getString("CHEADER");
-            objRtn.TINPUT = rs01.getString("TINPUT");
-            objRtn.DCYCLE = rs01.getString("DCYCLE");
-            objRtn.ADATE = rs01.getString("ADATE");
-            objRtn.NEGOC = rs01.getString("NEGOC");
-            objRtn.BANDOC = rs01.getString("BANDOC");
+                objRtn.ACCNUMB = rs01.getString("ACCNUMBER").trim();
+                objRtn.DESC_SCOUNTRY = objRtn.SCOUNTRY + " - " + rs01.getString("DESC_SCOUNTRY");
 
-            objRtn.ACCNUMB = rs01.getString("ACCNUMBER").trim();
-            objRtn.DESC_SCOUNTRY = objRtn.SCOUNTRY + " - " + rs01.getString("DESC_SCOUNTRY");
+                // Montos
+                objRtn.SVFOP = rs01.getDouble("SVFOP");
 
+                objRtn.SCURRENCY = rs01.getString("SCURRENCY");
+                objRtn.CERROR = rs01.getString("CERROR").trim();
 
-            // Montos
-            objRtn.SVFOP = rs01.getDouble("SVFOP");
+                objRtn.NEGOC = rs01.getString("NEGOC").trim();
 
-            objRtn.SCURRENCY = rs01.getString("SCURRENCY");
-            objRtn.CERROR = rs01.getString("CERROR").trim();
+                objRtn.DES_CERROR = rs01.getString("DES_CERROR").trim();
+                objRtn.CERROIN = rs01.getString("CERROIN").trim();
+                objRtn.DES_CERROIN = rs01.getString("DES_CERROIN").trim();
 
-            objRtn.NEGOC = rs01.getString("NEGOC").trim();
+                objRtn.QTYTKT = rs01.getInt("QTYTKT");
+                objRtn.QTYDOC = rs01.getInt("QTYDOC");
 
-            objRtn.DES_CERROR = rs01.getString("DES_CERROR").trim();
-            objRtn.CERROIN = rs01.getString("CERROIN").trim();
-            objRtn.DES_CERROIN = rs01.getString("DES_CERROIN").trim();
+                objRtn.DATEC = rs01.getString("DATEC").trim();
+                objRtn.TRANC = rs01.getString("TRANC").trim();
+                objRtn.DATECI = rs01.getString("DATECI").trim();
+                objRtn.TRANCI = rs01.getString("TRANCI").trim();
+                objRtn.NETO = rs01.getDouble("NETO");
 
-            objRtn.QTYTKT = rs01.getInt("QTYTKT");
-            objRtn.QTYDOC = rs01.getInt("QTYDOC");
+                objRtn.USCR = rs01.getString("USCR");
+                objRtn.FECR = rs01.getString("FECR");
+                objRtn.HOCR = rs01.getString("HOCR");
 
-            objRtn.DATEC = rs01.getString("DATEC").trim();
-            objRtn.TRANC = rs01.getString("TRANC").trim();
-            objRtn.DATECI = rs01.getString("DATECI").trim();
-            objRtn.TRANCI = rs01.getString("TRANCI").trim();
-            objRtn.NETO = rs01.getDouble("NETO");
+                objRtn.USUP = rs01.getString("USUP");
+                objRtn.FEUP = rs01.getString("FEUP");
+                objRtn.HOUP = rs01.getString("HOUP");
 
-            objRtn.USCR = rs01.getString("USCR");
-            objRtn.FECR = rs01.getString("FECR");
-            objRtn.HOCR = rs01.getString("HOCR");
+                // Datos MPF191
+                objRtn.SCOUNTRY_191 = rs01.getString("SCOUNTRY_191").trim();
+                objRtn.SCURRENCY_191 = rs01.getString("SCURRENCY_191").trim();
+                objRtn.SCONSOL_191 = rs01.getString("SCONSOL_191").trim();
+                objRtn.STARDATE_191 = rs01.getString("STARDATE_191").trim();
+                objRtn.ENDDATE_191 = rs01.getString("ENDDATE_191").trim();
+                objRtn.NETO_191 = rs01.getDouble("NETO_191");
+                objRtn.PAYAMOU_191 = rs01.getDouble("PAYAMOU_191");
+                objRtn.QTYTKT_191 = rs01.getString("QTYTKT_191").trim();
+                objRtn.COMISION_191 = rs01.getDouble("COMISION_191");
 
-            objRtn.USUP = rs01.getString("USUP");
-            objRtn.FEUP = rs01.getString("FEUP");
-            objRtn.HOUP = rs01.getString("HOUP");
+                objRtn.lngPayamou = rs01.getLong("TOTAL_PAYAMOU");
+                objRtn.lngPayamouPending = rs01.getLong("TOTAL_PAYAMOU_STVAL3");
+                objRtn.lngPayamouMatch = rs01.getLong("DIF_PAYAMOU");
+            }
 
-            // Datos MPF191
-            objRtn.SCOUNTRY_191 = rs01.getString("SCOUNTRY_191").trim();
-            objRtn.SCURRENCY_191 = rs01.getString("SCURRENCY_191").trim();
-            objRtn.SCONSOL_191 = rs01.getString("SCONSOL_191").trim();
-            objRtn.STARDATE_191 = rs01.getString("STARDATE_191").trim();
-            objRtn.ENDDATE_191 = rs01.getString("ENDDATE_191").trim();
-            objRtn.NETO_191 = rs01.getDouble("NETO_191");
-            objRtn.PAYAMOU_191 = rs01.getDouble("PAYAMOU_191");
-            objRtn.QTYTKT_191 = rs01.getString("QTYTKT_191").trim();
-            objRtn.COMISION_191 = rs01.getDouble("COMISION_191");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
 
-            objRtn.lngPayamou = rs01.getLong("TOTAL_PAYAMOU");
-            objRtn.lngPayamouPending = rs01.getLong("TOTAL_PAYAMOU_STVAL3");
-            objRtn.lngPayamouMatch = rs01.getLong("DIF_PAYAMOU");
+            if (rs01 != null) try {
+                rs01.close();
+            } catch (SQLException e) {
+            }
+
+            if (cstmt01 != null) try {
+                cstmt01.close();
+            } catch (SQLException e) {
+            }
+
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
         }
 
-    } catch (Exception e) {
-        e.printStackTrace();
-    } finally {
-
-        if (rs01 != null) try { rs01.close(); } catch (SQLException e) {}
-
-        if (cstmt01 != null) try { cstmt01.close(); } catch (SQLException e) {}
-
-        session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
-        pasarGarbageCollector();
+        return objRtn;
     }
-
-    return objRtn;
-}
-
 
     public List<A2290Filter> loadPX269SQP00833_MDP_DETAILCASH(A2290Filter filter) throws SQLException, Exception {
 
@@ -9420,7 +9424,7 @@ public class BankReconciliationDAO {
                 beanTkt.CONCEPT = rst.getString("CONCEPT");
                 beanTkt.STRDATE = rst.getString("STRDATE");
                 beanTkt.ENDDATE = rst.getString("ENDDATE");
-                beanTkt.REFERENCE  = rst.getString("REFERENCE");
+                beanTkt.REFERENCE = rst.getString("REFERENCE");
                 beanTkt.COMMENTS = rst.getString("COMMENTS");
                 beanTkt.BANDOC = rst.getString("BANDOC");
                 beanTkt.CBATCH = rst.getString("CBATCH");
@@ -9459,7 +9463,7 @@ public class BankReconciliationDAO {
 
         return lstData;
     }
-    
+
     public List<MPF100Filter> loadMPS306_AMDP_SCANCASH(MPF100Filter filter) throws SQLException, Exception {
 
         List<MPF100Filter> lstData = new ArrayList<MPF100Filter>(0);
@@ -9479,7 +9483,7 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-            String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS397(?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS397(?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -9505,7 +9509,7 @@ public class BankReconciliationDAO {
             while (rst.next()) {
 
                 beanTkt = new MPF100Filter();
-                
+
                 beanTkt.CCUST = rst.getString("CCUST").trim();
                 beanTkt.CCIA = rst.getString("CCIA").trim();
                 beanTkt.FORMA = rst.getString("FORMA").trim();
@@ -9554,7 +9558,7 @@ public class BankReconciliationDAO {
             rst.close();
 
         } catch (Exception e) {
-                e.printStackTrace();
+            e.printStackTrace();
         } finally {
             if (rst != null) {
                 try {
@@ -9576,224 +9580,255 @@ public class BankReconciliationDAO {
 
         return lstData;
     }
-    
-        public MPF100Filter ConciliationManualCash(MPF100Filter filter) throws SQLException, Exception {
 
-            MPF100Filter bean = new MPF100Filter();
-            MPF100Filter beanTkt;
-            List<MPF100Filter> listaMain = filter.getMainRecords();
-            List<MPF100Filter> listaAgent = filter.getAgentList();
-            int totalTkt = (listaAgent != null) ? listaAgent.size() : 0;
-            if (listaMain == null || listaMain.isEmpty()) {
-                throw new Exception("No se encontró información en la lista principal (mainRecords)");
-            }
+    public MPF100Filter ConciliationManualCash(MPF100Filter filter) throws SQLException, Exception {
 
-            MPF100Filter main = listaMain.get(0);
-            HashMap<String, String> hmDescEstados = new HashMap<String, String>();
-            hmDescEstados.put("1", "Match");
-            hmDescEstados.put("3", "Pending");
-            hmDescEstados.put("5", "Match Manual");
+        MPF100Filter bean = new MPF100Filter();
+        MPF100Filter beanTkt;
+        List<MPF100Filter> listaMain = filter.getMainRecords();
+        List<MPF100Filter> listaAgent = filter.getAgentList();
+        int totalTkt = (listaAgent != null) ? listaAgent.size() : 0;
+        if (listaMain == null || listaMain.isEmpty()) {
+            throw new Exception("No se encontró información en la lista principal (mainRecords)");
+        }
 
-            CallableStatement cstmt = null;
-            ResultSet rst = null;
-            Connection cnx = null;
+        MPF100Filter main = listaMain.get(0);
+        HashMap<String, String> hmDescEstados = new HashMap<String, String>();
+        hmDescEstados.put("1", "Match");
+        hmDescEstados.put("3", "Pending");
+        hmDescEstados.put("5", "Match Manual");
 
-            String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS321(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
-            try {
-                cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-                for (MPF100Filter agent : listaAgent) {
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        Connection cnx = null;
 
-                    cstmt = cnx.prepareCall(SQLCLL01);
-                    cstmt.setString(1, main.CCUST);
-                    cstmt.setString(2, main.CBATCH != null ? main.CBATCH.trim() : "");
-                    cstmt.setString(3, main.SAGENT != null ? main.SAGENT.trim() : "");
-                    cstmt.setString(4, main.STRDATE != null ? main.STRDATE.trim() : "");
-                    cstmt.setString(5, main.ENDDATE != null ? main.ENDDATE.trim() : "");
-                    cstmt.setString(6, main.TREG != null ? main.TREG.trim() : "");
-                    cstmt.setString(7, main.ADATE != null ? main.ADATE.trim() : "");
-                    cstmt.setString(8, main.SCOUNTRY != null ? main.SCOUNTRY.trim() : "");
-                    cstmt.setString(9, main.SCURRENCY != null ? main.SCURRENCY.trim() : "");
-                    cstmt.setString(10, main.SEQ != null ? main.SEQ.trim() : "");
-                    cstmt.setInt(11, totalTkt);
-                    cstmt.setString(12, main.DATECI != null ? main.DATECI.trim() : "");
-                    cstmt.setString(13, main.TRANCI != null ? main.TRANCI.trim() : "");
-                    cstmt.setString(14, main.DATEC != null ? main.DATEC.trim() : "");
-                    cstmt.setString(15, main.TRANC != null ? main.TRANC.trim() : "");
-                    cstmt.setString(16, main.BANDOC != null ? main.BANDOC.trim() : "");
-                    cstmt.setString(17, agent.CCUST != null ? agent.CCUST.trim() : "");
-                    cstmt.setString(18, agent.TKT != null ? agent.TKT.trim() : "");
-                    cstmt.setString(19, agent.TDOC != null ? agent.TDOC.trim() : "");
-                    cstmt.setString(20, agent.TDOCORG != null ? agent.TDOCORG.trim() : "");
-                    cstmt.setString(21, agent.SCARDNCOR != null ? agent.SCARDNCOR.trim() : "");
-                    cstmt.setString(22, agent.SAUTHOC != null ? agent.SAUTHOC.trim() : "");
-                    cstmt.setString(23, agent.SEQ != null ? agent.SEQ.trim() : "");
-                    cstmt.setString(24, agent.CORRL != null ? agent.CORRL.trim() : "");
-                    cstmt.setDouble(25, agent.SVFOPNETR );
-                    cstmt.setDouble(26, filter.SVFOPNETR);
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS321(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            for (MPF100Filter agent : listaAgent) {
+
+                cstmt = cnx.prepareCall(SQLCLL01);
+                cstmt.setString(1, main.CCUST);
+                cstmt.setString(2, main.CBATCH != null ? main.CBATCH.trim() : "");
+                cstmt.setString(3, main.SAGENT != null ? main.SAGENT.trim() : "");
+                cstmt.setString(4, main.STRDATE != null ? main.STRDATE.trim() : "");
+                cstmt.setString(5, main.ENDDATE != null ? main.ENDDATE.trim() : "");
+                cstmt.setString(6, main.TREG != null ? main.TREG.trim() : "");
+                cstmt.setString(7, main.ADATE != null ? main.ADATE.trim() : "");
+                cstmt.setString(8, main.SCOUNTRY != null ? main.SCOUNTRY.trim() : "");
+                cstmt.setString(9, main.SCURRENCY != null ? main.SCURRENCY.trim() : "");
+                cstmt.setString(10, main.SEQ != null ? main.SEQ.trim() : "");
+                cstmt.setInt(11, totalTkt);
+                cstmt.setString(12, main.DATECI != null ? main.DATECI.trim() : "");
+                cstmt.setString(13, main.TRANCI != null ? main.TRANCI.trim() : "");
+                cstmt.setString(14, main.DATEC != null ? main.DATEC.trim() : "");
+                cstmt.setString(15, main.TRANC != null ? main.TRANC.trim() : "");
+                cstmt.setString(16, main.BANDOC != null ? main.BANDOC.trim() : "");
+                cstmt.setString(17, agent.CCUST != null ? agent.CCUST.trim() : "");
+                cstmt.setString(18, agent.TKT != null ? agent.TKT.trim() : "");
+                cstmt.setString(19, agent.TDOC != null ? agent.TDOC.trim() : "");
+                cstmt.setString(20, agent.TDOCORG != null ? agent.TDOCORG.trim() : "");
+                cstmt.setString(21, agent.SCARDNCOR != null ? agent.SCARDNCOR.trim() : "");
+                cstmt.setString(22, agent.SAUTHOC != null ? agent.SAUTHOC.trim() : "");
+                cstmt.setString(23, agent.SEQ != null ? agent.SEQ.trim() : "");
+                cstmt.setString(24, agent.CORRL != null ? agent.CORRL.trim() : "");
+                cstmt.setDouble(25, agent.SVFOPNETR);
+                cstmt.setDouble(26, filter.SVFOPNETR);
 //                    cstmt.setString(14, agent.TDOC != null ? agent.TDOC.trim() : "");
 //                    cstmt.setDouble(15,agent.SVFOPNETR);
-                    cstmt.execute();
-                    rst = cstmt.getResultSet();
-
-
-                    if (rst != null) rst.close();
-                    if (cstmt != null) cstmt.close();
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new SQLException("Error al ejecutar conciliación manual: " + e.getMessage(), e);
-            } finally {
-                if (rst != null) try { rst.close(); } catch (SQLException ignored) {}
-                if (cstmt != null) try { cstmt.close(); } catch (SQLException ignored) {}
-                if (cnx != null) session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
-                pasarGarbageCollector();
-            }
-
-            return bean;
-        }
-    
-        public MPF100Filter AssignCashComment(MPF100Filter filter) throws SQLException, Exception {
-
-            MPF100Filter bean = new MPF100Filter();
-            List<MPF100Filter> listaMain = filter.getMainRecords();
-            if (listaMain == null || listaMain.isEmpty()) {
-                throw new Exception("No se encontró información en la lista principal (mainRecords)");
-            }
-
-            CallableStatement cstmt = null;
-            ResultSet rst = null;
-            Connection cnx = null;
-
-            String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS414(?,?,?,?,?,?,?)}";
-            try {
-                cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-                for (MPF100Filter mainC : listaMain) {
-
-                    cstmt = cnx.prepareCall(SQLCLL01);
-                    cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-                    cstmt.setString(2, mainC.CBATCH != null ? mainC.CBATCH.trim() : "");
-                    cstmt.setString(3, mainC.SAGENT != null ? mainC.SAGENT.trim() : "");
-                    cstmt.setString(4, mainC.STRDATE != null ? mainC.STRDATE.trim() : "");
-                    cstmt.setString(5, mainC.ENDDATE != null ? mainC.ENDDATE.trim() : "");
-                    cstmt.setString(6, mainC.SCOUNTRY != null ? mainC.SCOUNTRY.trim() : "");
-//                    cstmt.setString(6, mainC.SCOUNTRY != null ? mainC.SCOUNTRY.trim() : "");
-                    cstmt.setString(7, filter.codeComment);
-                    cstmt.execute();
-                    rst = cstmt.getResultSet();
-
-                    if (rst != null) rst.close();
-                    if (cstmt != null) cstmt.close();
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new SQLException("Error al asignar comentario: " + e.getMessage(), e);
-            } finally {
-                if (rst != null) try { rst.close(); } catch (SQLException ignored) {}
-                if (cstmt != null) try { cstmt.close(); } catch (SQLException ignored) {}
-                if (cnx != null) session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
-                pasarGarbageCollector();
-            }
-
-            return bean;
-        }
-        
-        //LISTAR INDIA
-        
-        public List<A2290Filter> getPendingAmountsIndia(String dateLimit) throws SQLException, Exception {
-    
-            List<A2290Filter> listaData = new ArrayList<>();
-            Connection cnx = null;
-            CallableStatement cstmt = null;
-            ResultSet rst = null;
-
-            String SQL = "{CALL PRAXISMP.MPS494(?)}";
-
-            try {
-                cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-                cstmt = cnx.prepareCall(SQL);
-
-                cstmt.setString(1, dateLimit);
                 cstmt.execute();
                 rst = cstmt.getResultSet();
 
-                while (rst != null && rst.next()) {
-                    A2290Filter bean = new A2290Filter();
-                    bean.O_SCOUNTRY   = rst.getString("SCOUNTRY");
-                    bean.O_SCURRENCY  = rst.getString("SCURRENCY");
-                    bean.O_ADATE      = rst.getString("ADATE");
-                    bean.O_NETO   = rst.getDouble("NETO");
-                    bean.O_STVAL      = rst.getString("STVAL");
-
-                    listaData.add(bean);
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw e;
-            } finally {
                 if (rst != null) {
-                    try { rst.close(); } catch (SQLException e) {}
+                    rst.close();
                 }
                 if (cstmt != null) {
-                    try { cstmt.close(); } catch (SQLException e) {}
-                }
-                if (cnx != null) {
-                    session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+                    cstmt.close();
                 }
             }
 
-            return listaData;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SQLException("Error al ejecutar conciliación manual: " + e.getMessage(), e);
+        } finally {
+            if (rst != null) try {
+                rst.close();
+            } catch (SQLException ignored) {
+            }
+            if (cstmt != null) try {
+                cstmt.close();
+            } catch (SQLException ignored) {
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+            pasarGarbageCollector();
         }
-        
-    public Map<String, Object> reversaFaseDos(A2290Filter filter) throws Exception {    Map<String, Object> result = new HashMap<>();
-    CallableStatement cstmt = null;
-    Connection cnx = null;
 
-    String SQL = "{CALL PRAXISMP.MPS544(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
-
-    try {
-        cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-        cstmt = cnx.prepareCall(SQL);
-
-        // Registro de parámetros de salida
-        cstmt.registerOutParameter(9, Types.INTEGER);
-        cstmt.registerOutParameter(10, Types.VARCHAR);
-
-        // Seteo de parámetros de entrada con validación de nulos y trim
-        cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST.trim());
-        cstmt.setString(2, filter.O_ADATE != null ? filter.O_ADATE.trim() : "");
-        cstmt.setString(3, filter.O_SCOUNTRY != null ? filter.O_SCOUNTRY.trim() : "");
-        cstmt.setString(4, filter.O_CBATCH != null ? filter.O_CBATCH.trim() : "");
-        cstmt.setString(5, filter.O_BANDOC != null ? filter.O_BANDOC.trim() : "");
-        cstmt.setString(6, filter.O_DATECI != null ? filter.O_DATECI.trim() : "");
-        cstmt.setString(7, filter.O_TRANCI != null ? filter.O_TRANCI.trim() : "");
-        cstmt.setString(8, session.getUserView().getUserInfo().USR.trim());
-        
-        // Inicialización de los INOUT
-        cstmt.setInt(9, -1);
-        cstmt.setString(10, ""); // Importante: no enviar un string largo aquí si el SP lo va a llenar
-
-        cstmt.execute();
-
-        int sqlCode = cstmt.getInt(9);
-        String message = cstmt.getString(10);
-
-        result.put("success", sqlCode == 1);
-        result.put("message", message);
-
-    } catch (Exception e) {
-        // Si falla Java, capturamos el error para el front
-        result.put("success", false);
-        result.put("message", "Error Java: " + e.getMessage());
-        logError.error("Error en DAO reversaFaseDos: ", e);
-    } finally {
-        if (cstmt != null) cstmt.close();
-        session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+        return bean;
     }
-    return result;
-}
+
+    public MPF100Filter AssignCashComment(MPF100Filter filter) throws SQLException, Exception {
+
+        MPF100Filter bean = new MPF100Filter();
+        List<MPF100Filter> listaMain = filter.getMainRecords();
+        if (listaMain == null || listaMain.isEmpty()) {
+            throw new Exception("No se encontró información en la lista principal (mainRecords)");
+        }
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        Connection cnx = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS414(?,?,?,?,?,?,?)}";
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            for (MPF100Filter mainC : listaMain) {
+
+                cstmt = cnx.prepareCall(SQLCLL01);
+                cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+                cstmt.setString(2, mainC.CBATCH != null ? mainC.CBATCH.trim() : "");
+                cstmt.setString(3, mainC.SAGENT != null ? mainC.SAGENT.trim() : "");
+                cstmt.setString(4, mainC.STRDATE != null ? mainC.STRDATE.trim() : "");
+                cstmt.setString(5, mainC.ENDDATE != null ? mainC.ENDDATE.trim() : "");
+                cstmt.setString(6, mainC.SCOUNTRY != null ? mainC.SCOUNTRY.trim() : "");
+//                    cstmt.setString(6, mainC.SCOUNTRY != null ? mainC.SCOUNTRY.trim() : "");
+                cstmt.setString(7, filter.codeComment);
+                cstmt.execute();
+                rst = cstmt.getResultSet();
+
+                if (rst != null) {
+                    rst.close();
+                }
+                if (cstmt != null) {
+                    cstmt.close();
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SQLException("Error al asignar comentario: " + e.getMessage(), e);
+        } finally {
+            if (rst != null) try {
+                rst.close();
+            } catch (SQLException ignored) {
+            }
+            if (cstmt != null) try {
+                cstmt.close();
+            } catch (SQLException ignored) {
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+            pasarGarbageCollector();
+        }
+
+        return bean;
+    }
+
+    //LISTAR INDIA
+    public List<A2290Filter> getPendingAmountsIndia(String dateLimit) throws SQLException, Exception {
+
+        List<A2290Filter> listaData = new ArrayList<>();
+        Connection cnx = null;
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQL = "{CALL PRAXISMP.MPS494(?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQL);
+
+            cstmt.setString(1, dateLimit);
+            cstmt.execute();
+            rst = cstmt.getResultSet();
+
+            while (rst != null && rst.next()) {
+                A2290Filter bean = new A2290Filter();
+                bean.O_SCOUNTRY = rst.getString("SCOUNTRY");
+                bean.O_SCURRENCY = rst.getString("SCURRENCY");
+                bean.O_ADATE = rst.getString("ADATE");
+                bean.O_NETO = rst.getDouble("NETO");
+                bean.O_STVAL = rst.getString("STVAL");
+
+                listaData.add(bean);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                }
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+        }
+
+        return listaData;
+    }
+
+    public Map<String, Object> reversaFaseDos(A2290Filter filter) throws Exception {
+        Map<String, Object> result = new HashMap<>();
+        CallableStatement cstmt = null;
+        Connection cnx = null;
+
+        String SQL = "{CALL PRAXISMP.MPS544(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQL);
+
+            // Registro de parámetros de salida
+            cstmt.registerOutParameter(9, Types.INTEGER);
+            cstmt.registerOutParameter(10, Types.VARCHAR);
+
+            // Seteo de parámetros de entrada con validación de nulos y trim
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST.trim());
+            cstmt.setString(2, filter.O_ADATE != null ? filter.O_ADATE.trim() : "");
+            cstmt.setString(3, filter.O_SCOUNTRY != null ? filter.O_SCOUNTRY.trim() : "");
+            cstmt.setString(4, filter.O_CBATCH != null ? filter.O_CBATCH.trim() : "");
+            cstmt.setString(5, filter.O_BANDOC != null ? filter.O_BANDOC.trim() : "");
+            cstmt.setString(6, filter.O_DATECI != null ? filter.O_DATECI.trim() : "");
+            cstmt.setString(7, filter.O_TRANCI != null ? filter.O_TRANCI.trim() : "");
+            cstmt.setString(8, session.getUserView().getUserInfo().USR.trim());
+
+            // Inicialización de los INOUT
+            cstmt.setInt(9, -1);
+            cstmt.setString(10, ""); // Importante: no enviar un string largo aquí si el SP lo va a llenar
+
+            cstmt.execute();
+
+            int sqlCode = cstmt.getInt(9);
+            String message = cstmt.getString(10);
+
+            result.put("success", sqlCode == 1);
+            result.put("message", message);
+
+        } catch (Exception e) {
+            // Si falla Java, capturamos el error para el front
+            result.put("success", false);
+            result.put("message", "Error Java: " + e.getMessage());
+            logError.error("Error en DAO reversaFaseDos: ", e);
+        } finally {
+            if (cstmt != null) {
+                cstmt.close();
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+        }
+        return result;
+    }
     
 
 
@@ -9844,4 +9879,41 @@ public class BankReconciliationDAO {
     }
     return result;
 }
+    
+    public double convertAmountUSD(double amount, String currency, String date) throws Exception {
+        double converted = 0.0;
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        Connection cnx = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS621(?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setDouble(1, amount);
+            cstmt.setString(2, currency);
+            cstmt.setString(3, date);
+
+            cstmt.execute();
+            rst = cstmt.getResultSet();
+
+            if (rst.next()) {
+                // Leemos el alias "CONVERTED_AMOUNT" que pusimos en el cursor del SP
+                converted = rst.getDouble("CONVERTED_AMOUNT");
+            }
+        } finally {
+            if (rst != null) {
+                try { rst.close(); } catch (SQLException e) { }
+            }
+            if (cstmt != null) {
+                try { cstmt.close(); } catch (SQLException e) { }
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+        }
+        return converted;
+    }
 }

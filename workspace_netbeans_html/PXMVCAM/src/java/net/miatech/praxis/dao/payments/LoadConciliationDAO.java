@@ -3315,6 +3315,7 @@ public class LoadConciliationDAO {
                     beanTkt.DATEC = rst.getString("DATEC").trim();
                     beanTkt.TRANC = rst.getString("TRANC").trim();
                     beanTkt.DATCO = rst.getString("DATCO").trim();
+                    beanTkt.FECSELEC = rst.getString("FECSELEC").trim();
                     beanTkt.DATECTRANC = rst.getString("TRANC").trim() + " - " + rst.getString("DATEC").trim();
                     beanTkt.FADYEN = rst.getString("FADYEN").trim();
                     beanTkt.BANDOC = rst.getString("BANDOC").trim();
