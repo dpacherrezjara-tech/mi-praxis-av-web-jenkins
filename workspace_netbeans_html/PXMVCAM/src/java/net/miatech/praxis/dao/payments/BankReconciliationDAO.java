@@ -2173,11 +2173,13 @@ public class BankReconciliationDAO {
         CallableStatement cstmt = null;
         CallableStatement cstmt2 = null;
         CallableStatement cstmt3 = null;
+        CallableStatement cstmt4 = null;
         Connection cnx = null;
         Connection cnx2 = null;
         Connection cnx3 = null;
+        Connection cnx4 = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCILIMPF101(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS595(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -2205,11 +2207,12 @@ public class BankReconciliationDAO {
             cstmt.setString(16, filter.strComment.toUpperCase());
             cstmt.setString(17, filter.FREGLA.trim());
             cstmt.setString(18, filter.SAGENT.trim());
+            cstmt.setString(19, filter.BANDOC.trim());
 
             cstmt.execute();
             cstmt.close(); // Cerrar el CallableStatement después de cada ejecución
 
-            String SQLCLL02 = "{CALL " + session.getMainLibrary() + ".SQP00834CONCILIMPF100_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+            String SQLCLL02 = "{CALL " + session.getMainLibrary() + "MP.MPS596(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
             cnx2 = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt2 = cnx2.prepareCall(SQLCLL02);
@@ -2240,6 +2243,10 @@ public class BankReconciliationDAO {
                 cstmt2.setString(19, Functions.getFechaActual());
                 cstmt2.setString(20, Functions.getHoraActual());
                 cstmt2.setString(21, filter.strComment.toUpperCase());
+                cstmt2.setString(22, filter.SEQ.trim());
+                cstmt2.setString(23, filter.CORRL.trim());
+                cstmt2.setString(24, filter.CCUST.trim());
+                cstmt2.setString(25, filter.TDOC.trim());
 
                 cstmt2.execute();
                 cstmt2.close(); // Cerrar el CallableStatement después de cada ejecución
@@ -2248,10 +2255,9 @@ public class BankReconciliationDAO {
             A2290Filter filterA = filters.get(filters.size() - 1);
 
             if (filterA.ATDOC.equals("A")) {
-                String SQLCLL03 = "{CALL " + session.getMainLibrary() + ".SQP00834INSERTMPF100_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+                String SQLCLL03 = "{CALL " + session.getMainLibrary() + "MP.MPS597(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
                 cnx3 = session.getCNXIBMDB2().getIBMDB2Connection();
-                cstmt3 = cnx3.prepareCall(SQLCLL03);
 
                 cstmt3 = cnx3.prepareCall(SQLCLL03);
 
@@ -2279,14 +2285,30 @@ public class BankReconciliationDAO {
                 cstmt3.setString(21, user.getUserInfo().USR);
                 cstmt3.setString(22, Functions.getFechaActual());
                 cstmt3.setString(23, Functions.getHoraActual());
+                cstmt3.setString(24, filterA.CCUST.trim());
+                cstmt3.setString(25, filter.SEQ.trim());
+                cstmt3.setString(26, filter.CORRL.trim());
+                cstmt3.setString(27, filter.TDOC.trim());
 
                 cstmt3.execute();
                 cstmt3.close(); // Cerrar el CallableStatement después de cada ejecución
 
-            } else {
-                //NADA
-            }
-
+            } 
+            
+            String SQLCLL04 = "{CALL " + session.getMainLibrary() + "MP.MPS594(?,?,?,?)}";
+            cnx4 = session.getCNXIBMDB2().getIBMDB2Connection();
+            
+            cstmt4 = cnx4.prepareCall(SQLCLL04);
+            
+            cstmt4.setString(1, filter.BANDOC.trim());
+            cstmt4.setString(2, filter.DATEC.trim());
+            cstmt4.setString(3, filter.TRANC.trim());
+            cstmt4.registerOutParameter(4, Types.VARCHAR);
+            cstmt4.execute();
+            strMsj = cstmt4.getString(4);
+            
+            cstmt4.close();
+            
         } catch (Exception e) {
             e.printStackTrace();
             strMsj = e.getMessage();
@@ -5557,6 +5579,7 @@ public class BankReconciliationDAO {
                 if (recordCount <= 500) {
                     beanTkt = new A2290Filter();
 
+                    beanTkt.CCUST = rst.getString("CCUST").trim();
                     beanTkt.CCIA = rst.getString("CCIA").trim();
                     beanTkt.FORMA = rst.getString("FORMA").trim();
                     beanTkt.SERIE = rst.getString("SERIE").trim();
@@ -5593,6 +5616,10 @@ public class BankReconciliationDAO {
                     beanTkt.ACCNUMA = rst.getString("ACCNUMA").trim();
                     beanTkt.COSTCEN = rst.getString("COSTCEN").trim();
                     beanTkt.SCONSOL = rst.getString("SCONSOL").trim();
+                    beanTkt.TDOC = rst.getString("TDOC").trim();
+                    beanTkt.SCARDNCOR = rst.getString("SCARDNCOR").trim();
+                    beanTkt.SEQ = rst.getString("SEQ").trim();
+                    beanTkt.CORRL = rst.getString("CORRL").trim();
 
                     lstData.add(beanTkt);
                 }
@@ -5684,6 +5711,7 @@ public class BankReconciliationDAO {
                 if (recordCount <= 500) {
                     beanTkt = new A2290Filter();
 
+                    beanTkt.CCUST = rst.getString("CCUST").trim();
                     beanTkt.CCIA = rst.getString("CCIA").trim();
                     beanTkt.FORMA = rst.getString("FORMA").trim();
                     beanTkt.SERIE = rst.getString("SERIE").trim();
@@ -5716,6 +5744,10 @@ public class BankReconciliationDAO {
                     beanTkt.CFUENTE = rst.getString("CFUENTE").trim();
                     beanTkt.INVOICE = rst.getString("INVOICE").trim();
                     beanTkt.SCONSOL = rst.getString("SCONSOL").trim();
+                    beanTkt.TDOC = rst.getString("TDOC").trim();
+                    beanTkt.SCARDNCOR = rst.getString("SCARDNCOR").trim();
+                    beanTkt.SEQ = rst.getString("SEQ").trim();
+                    beanTkt.CORRL = rst.getString("CORRL").trim();
 
                     lstData.add(beanTkt);
                 }

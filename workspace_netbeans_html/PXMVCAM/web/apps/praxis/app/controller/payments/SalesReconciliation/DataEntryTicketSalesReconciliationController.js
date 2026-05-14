@@ -319,7 +319,13 @@ Ext.define('Ext.Praxis.controller.payments.SalesReconciliation.DataEntryTicketSa
 //        }
         win.setValue("2-txtERRORADJ", this.bean.CERROR.trim());
         win.setValue("2-txtDATECTRANC", this.bean.DATECTRANC.trim());
-        win.setValue("2-txtDATCO", this.bean.DATCO.trim());
+        
+        if( this.bean.DATCO.trim() != '' ){
+            win.setValue("2-txtDATCO", this.bean.DATCO.trim());
+        }else{
+            win.setValue("2-txtDATCO", this.bean.FECSELEC.trim());
+        }
+//        win.setValue("2-txtDATCO", this.bean.DATCO.trim());
         win.setValue("2-txtBANDOC", this.bean.BANDOC.trim());
         win.setValue("txtADMNUM", this.bean.ADMNUM.trim());
         //SETTLEMENTS

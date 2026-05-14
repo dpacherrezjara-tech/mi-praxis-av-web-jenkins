@@ -245,7 +245,11 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                                     INVOICE: item.INVOICE,
                                     ACCNUMA: item.ACCNUMA,
                                     COSTCEN: item.COSTCEN,
-                                    SCONSOL: item.SCONSOL
+                                    SCONSOL: item.SCONSOL,
+                                    SEQ: item.SEQ,
+                                    CORRL: item.CORRL,
+                                    CCUST: item.CCUST,
+                                    TDOC: item.TDOC
                                 });
                             } else {
                                 if (`${item.STVAL}#${item.descTDOC}#${item.A720AGENTE}#${item.A720FECVTA}#${item.A720PNR}#${item.A720SCOUNTRY}#${item.A1531TKT}#${item.A1531TTARJ}#${item.A1531NREF}#${item.A1531CAPL}#${item.A1531MFOP}#${item.A1531VFOP}` in listAux) {
@@ -269,7 +273,11 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                                     INVOICE: item.INVOICE,
                                     ACCNUMA: item.ACCNUMA,
                                     COSTCEN: item.COSTCEN,
-                                    SCONSOL: item.SCONSOL
+                                    SCONSOL: item.SCONSOL,
+                                    SEQ: item.SEQ,
+                                    CORRL: item.CORRL,
+                                    CCUST: item.CCUST,
+                                    TDOC: item.TDOC
                                 });
                             }
                         }
@@ -1316,7 +1324,12 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                 SAGENT: isDiff === false ? record.get('A720AGENTE') : '',
                 COREP: meDe.bean.COREP,
                 CODPRO: meDe.bean.CODPRO,
-                CCUSTPRO: meDe.bean.CCUSTPRO
+                CCUSTPRO: meDe.bean.CCUSTPRO,
+                SEQ: record.get('SEQ'),
+                CORRL: record.get('CORRL'),
+                CCUST: record.get('CCUST'),
+                TDOC: record.get('TDOC')
+
             };
             if (record.get('STVAL') === '1' || record.get('STVAL') === '5') {
                 ticketsOcupados.push(record.get('A1531TKT'));
@@ -1348,7 +1361,11 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                     FREGLA: Ext.getCmp(prototype.id + '-de-txtIN_FREGLA').getValue(),
                     BANDOC: Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue(),
                     CFUENTE: record.get('CFUENTE'),
-                    ADATEC: Ext.getCmp(prototype.id + '-de-txtDATEC').getValue()
+                    ADATEC: Ext.getCmp(prototype.id + '-de-txtDATEC').getValue(),
+                    SEQ: record.get('SEQ'),
+                    CORRL: record.get('CORRL'),
+                    CCUST: record.get('CCUST'),
+                    TDOC: record.get('TDOC')
                 };
                 listaDeDatos.push(registro);
             });
