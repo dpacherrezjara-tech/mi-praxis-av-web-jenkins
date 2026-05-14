@@ -383,4 +383,8 @@ public class BankReconciliationLogic {
     return bankReconciliationDAO.reversaFaseDosParcial(filter); 
 }
     
+    public double convertAmountUSD(double amount, String currency, String date) throws Exception {
+        return bankReconciliationDAO.convertAmountUSD(amount, currency, date);
+    }
+    
 }
