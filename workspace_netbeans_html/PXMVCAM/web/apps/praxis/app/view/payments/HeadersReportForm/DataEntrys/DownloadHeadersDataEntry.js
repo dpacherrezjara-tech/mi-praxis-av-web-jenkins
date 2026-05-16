@@ -38,7 +38,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.DownloadHeader
                 margin: '2 2 2 2',
                 width: '100%',
                 style: {
-                    backgroundColor: '#efe5e5' // Cambiar el color de fondo a gris claro (#f0f0f0)
+                    backgroundColor: '#efe5e5'
                 },
                 defaults: {
                     xtype: 'panel',
@@ -72,7 +72,6 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.DownloadHeader
                                     width: 150,
                                     name: 'IN_PRDAF',
                                     fieldStyle: 'font-weight:bold;text-align:center;'
-                                    
                                 },
                                 {
                                     xtype: 'monthfield2',
@@ -81,6 +80,24 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.DownloadHeader
                                     width: 130,
                                     name: 'IN_PRDAT',
                                     fieldStyle: 'font-weight:bold;text-align:center;'
+                                }
+                            ]
+                        },
+                        // *** NUEVO: panel con el combo Type ***
+                        {
+                            items: [
+                                {
+                                    xtype: 'combobox',
+                                    fieldLabel: 'Type',
+                                    labelWidth: 50,
+                                    width: 200,
+                                    name: 'REPORT_TYPE',
+                                    id: prototype.idDE2 + '-reportType',
+                                    editable: false,
+                                    value: 'CREDIT',
+                                    store: ['CREDIT', 'CASH'],
+                                    fieldStyle: 'font-weight:bold;text-align:center;',
+                                    labelStyle: 'text-align:left;font-weight: bolder;'
                                 }
                             ]
                         }
@@ -106,7 +123,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.DownloadHeader
                 margin: '5 0 5 0'
             },
             items: [
-                 {
+                {
                     text: 'Process',
                     iconCls: 'prx-icon-image-process',
                     listeners: {
