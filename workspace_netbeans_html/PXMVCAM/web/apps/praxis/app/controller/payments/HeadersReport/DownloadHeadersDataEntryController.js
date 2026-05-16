@@ -27,39 +27,36 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.DownloadHeadersDataEntr
         }
     },
 
-    processCashDownload: async function (params) {
+    processCashDownload: function (params) {
         const me = this;
-        try {
-            const res = await global.callStorePost('PRAXISMP', 'MPS142', {
-                'IN_PRDAF': params.IN_PRDAF,
-                'IN_PRDAT': params.IN_PRDAT
-            });
 
-            if (!res || !res.data) {
-                new AWN().alert('No data returned from server.');
-                return;
-            }
+        new AWN().async(
+            (async () => {
+                const res = await global.callStorePost('PRAXISMP', 'MPS142', {
+                    'IN_PRDAF': params.IN_PRDAF,
+                    'IN_PRDAT': params.IN_PRDAT
+                });
 
-            // res.data puede ser array de rows o un objeto con rows
-            const rows = Array.isArray(res.data) ? res.data : (res.data.rows || res.data.data || []);
+                if (!res || !res.data) {
+                    throw new Error('No data returned from server.');
+                }
 
-            if (!rows.length) {
-                new AWN().info('No records found for the selected period.');
-                return;
-            }
+                const rows = res.data.lstRs?.[0] ?? [];
 
-            me.downloadCashAsExcel(rows, params.IN_PRDAF, params.IN_PRDAT);
+                if (!rows.length) {
+                    throw new Error('No records found for the selected period.');
+                }
 
-        } catch (e) {
-            console.error('Error on CASH download', e);
-            new AWN().alert('Error on CASH download.');
-        }
+                me.downloadCashAsExcel(rows, params.IN_PRDAF, params.IN_PRDAT);
+            })(),
+            'Successfully Downloaded',
+            'Error on Download'
+        );
     },
 
     downloadCashAsExcel: function (rows, fromPeriod, toPeriod) {
-        // Mapeo de columnas: nombre interno -> header legible
         const columnHeaders = {
-            TIPOCON:      'Contract Type',
+            TIPOCON:      'Accounting Type',
             PERIODO:      'Period',
             POSTING_DATE: 'Posting Date',
             HEADER:       'Header',
