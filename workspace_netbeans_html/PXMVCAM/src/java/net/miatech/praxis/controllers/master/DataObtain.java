@@ -11,6 +11,8 @@ public class DataObtain {
     public byte USO = 0;
     public byte CITY = 0;
     public byte COUNTRY = 0;
+    public byte DEBTYPE = 0;
+    public byte COMMENTS = 0;
     public byte OPERADOR = 0;
     public byte CAMPO = 0;
     public byte BANK = 0;

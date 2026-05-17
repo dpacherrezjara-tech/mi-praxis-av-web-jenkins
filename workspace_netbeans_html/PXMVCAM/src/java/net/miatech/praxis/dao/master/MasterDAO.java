@@ -2146,7 +2146,7 @@ public class MasterDAO {
         try {
             Class.forName("com.ibm.as400.access.AS400JDBCDriver");
             DriverManager.setLoginTimeout(60 * 10); // 10min
-
+            
             //return DriverManager.getConnection(url, "RBTAVIANCA", "rbtavia"); //DESARROLLO
             return DriverManager.getConnection(url, "USRWEBAV", "C7e4g9G3F");//PRODUCCION
         } catch (Exception ex) {
@@ -2335,5 +2335,89 @@ public class MasterDAO {
         return lstProcesador;
     }
 
+    public List<A4451Filter> listarDebType(A4451Filter filter) throws SQLException, Exception {
+
+        List<A4451Filter> lstDebType = new ArrayList<>(0);
+        A4451Filter item;
+
+        item = new A4451Filter();
+        item.CODE = "";
+        item.NAME = "All";
+        lstDebType.add(item);
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        String SQLCLL01 = "{CALL PRAXISMP.MPS643(?)}";
+        Connection cnx = null;
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, "134"); 
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+                item = new A4451Filter();
+                item.CODE = rst.getString("CODE").trim();
+                item.NAME = rst.getString("NAME").trim();
+                lstDebType.add(item);
+            }
+            rst.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (rst != null) {
+                try { rst.close(); } catch (SQLException e) { }
+            }
+            if (cstmt != null) {
+                try { cstmt.close(); } catch (SQLException e) { }
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+        }
+
+        return lstDebType;
+    }
     
+    public List<A4451Filter> listarComentarios(A4451Filter filter) throws SQLException, Exception {
+        List<A4451Filter> lstComments = new ArrayList<>(0);
+        A4451Filter item;
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        String SQLCLL01 = "{CALL PRAXISMP.MPS646()}";
+        Connection cnx = null;
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+                item = new A4451Filter();
+                item.CODE = rst.getString("CODIGO").trim();
+                item.NAME = rst.getString("DESCRIPTC").trim(); 
+                lstComments.add(item);
+            }
+            rst.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (rst != null) { try { rst.close(); } catch (SQLException e) { } }
+            if (cstmt != null) { try { cstmt.close(); } catch (SQLException e) { } }
+            if (cnx != null) { session.getCNXIBMDB2().closeIBMDB2Connection(cnx); }
+        }
+
+        return lstComments;
+    }
 }
