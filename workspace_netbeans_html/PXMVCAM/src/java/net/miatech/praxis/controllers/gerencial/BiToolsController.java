@@ -20,6 +20,8 @@ import java.util.zip.ZipOutputStream;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.miatech.beans.FilterFase1;
+import net.miatech.beans.RuleFase1Bean;
 import net.miatech.beans.SQP00768;
 import net.miatech.libmiatec.A1248;
 import net.miatech.praxis.classes.ExportSchema;
@@ -671,4 +673,54 @@ public class BiToolsController extends BaseController {
 //        }
 //
 //    }
+    
+    
+    @RequestMapping(value = "executeFase1")
+    public @ResponseBody
+    String executeFase1(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BiTools : executeFase1 -------------");
+        logic = new BiToolsLogic();
+        FilterFase1 filter = new FilterFase1();
+        String msj = "";
+        
+        try {
+            logic.setSession(this.serverSession.getServerSession());
+
+            filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
+
+            logic.executeFase1(filter);
+            
+            msj = filter.strMSG;
+            
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+
+        map.put("success", true);
+        map.put("mensaje", msj);
+
+        return new Gson().toJson(map);
+    }
+    
+    @RequestMapping(value = "getRulesFase1", method = RequestMethod.GET)
+    public @ResponseBody String getRulesFase1(ModelMap map, HttpServletRequest request) {
+        logic = new BiToolsLogic();
+        List<RuleFase1Bean> list = new ArrayList<>();
+        
+        try {
+            logic.setSession(this.serverSession.getServerSession());
+            // Obtenemos el CCUST de la sesión actual
+            String ccust = this.serverSession.getServerSession().getUserView().getCustomerInfo().CCUST;
+            
+            list = logic.getRulesFase1(ccust);
+            
+            map.put("success", true);
+            map.put("data", list); // Devolvemos la lista bajo el nodo "data"
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("mensaje", e.getMessage());
+        }
+
+        return new Gson().toJson(map);
+    }
 }
