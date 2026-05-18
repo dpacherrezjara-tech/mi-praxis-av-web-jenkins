@@ -20,6 +20,8 @@ public class A4451Filter {
     public String A4451KEY1 = "";
     public String A4451KEY2 = "";
     public String A4451KEY3 = "";
+    public String CODE = "";
+    public String NAME = "";
 //    public String V_CODPRO = "";
 //    public String V_PRDA = "";
     

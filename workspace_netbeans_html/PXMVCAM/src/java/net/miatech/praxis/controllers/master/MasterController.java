@@ -172,6 +172,21 @@ public class MasterController extends BaseController {
                 map.put("listarCuentasChargeback", lst);
             }
             
+            if (data.DEBTYPE != 0) {
+                A4451Filter filter = new A4451Filter();
+                List<A4451Filter> lst;
+                lst = masterDAO.listarDebType(filter);
+                map.put("lstDEBTYPE", lst);
+                
+            }
+            
+            if (data.COMMENTS != 0) {
+                A4451Filter filter = new A4451Filter(); 
+                List<A4451Filter> lst;
+                lst = masterDAO.listarComentarios(filter); 
+                map.put("lstCOMMENTS", lst);
+            }
+            
         } catch (NumberFormatException | SQLException ex) {
             map.put("success", false);
             map.put("sesion", ex.getMessage());

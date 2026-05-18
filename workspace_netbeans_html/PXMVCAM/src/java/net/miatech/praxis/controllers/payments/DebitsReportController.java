@@ -1,0 +1,1384 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.miatech.praxis.controllers.payments;
+
+import com.google.gson.Gson;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import net.miatech.praxis.controllers.BaseController;
+import net.miatech.praxis.dao.master.MasterDAO;
+import net.miatech.praxis.exceptions.SpringException;
+import net.miatech.praxis.logic.payments.DebitsReportLogic;
+import net.miatech.praxis.payment.MPF060D;
+import net.miatech.praxis.payment.MPF060DFilter;
+import net.miatech.praxis.payment.MPF075;
+import net.miatech.praxis.payment.MPF075Filter;
+import net.miatech.praxis.payment.MPF076;
+import net.miatech.praxis.payment.MPF076Filter;
+import net.miatech.praxis.payment.MPF077;
+import net.miatech.praxis.payment.MPF077Filter;
+import net.miatech.praxis.payment.MPF218;
+import net.miatech.praxis.payment.MPF218Filter;
+import net.miatech.praxis.payment.MPF221;
+import net.miatech.praxis.payment.MPF221Filter;
+import net.miatech.praxis.payment.MPF303Filter;
+import net.miatech.utils.Functions;
+import org.apache.log4j.Logger;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+/**
+ *
+ * @author singa
+ */
+@Controller
+@Scope("request")
+@RequestMapping("/DebitsReport")
+public class DebitsReportController extends BaseController {
+
+    private static final Logger logError = Logger.getLogger("errorLog");
+    private DebitsReportLogic logic;
+    private MasterDAO masterDAO;
+
+    @RequestMapping(method = RequestMethod.POST)
+    public String index(ModelMap map) {
+        map.put("vp_serverDate", Functions.getFechaActual());
+        map.put("vp_serverTime", Functions.getHoraActual());
+        return "sales/DebitsReport/form_index";
+    }
+
+    @RequestMapping(value = "search")
+    public @ResponseBody
+    String search(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- DebitsReport : Search-------------");
+        map.put("success", true);
+        List<MPF218> lst = this.getList(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<MPF218> getList(HttpServletRequest request, Boolean bExcel) {
+
+        List<MPF218> lst = new ArrayList<>(0);
+        MPF218Filter filter = new MPF218Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new DebitsReportLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, MPF218Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadMPS415(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+
+    @RequestMapping(value = "searchARC")
+    public @ResponseBody
+    String searchARC(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- DebitsReport : Search ARC-------------");
+        map.put("success", true);
+        List<MPF221> lst = this.getListARC(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<MPF221> getListARC(HttpServletRequest request, Boolean bExcel) {
+
+        List<MPF221> lst = new ArrayList<>(0);
+        MPF221Filter filter = new MPF221Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new DebitsReportLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, MPF221Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadMPS446(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+
+    @RequestMapping(value = "getXLSXARC")
+    public @ResponseBody
+    void getXLSXARC(HttpServletRequest request, HttpServletResponse response) {
+
+        String fileNameDownload = "ARC File Downloads - " + Functions.getFechaActual() + ".xlsx";
+
+        try {
+            List<MPF221> listaData = this.getListARC(request, true);
+
+            SXSSFWorkbook workbook = new SXSSFWorkbook(100);
+            Sheet sheet = workbook.createSheet("Report");
+
+            CellStyle headerStyle = workbook.createCellStyle();
+            Font headerFont = workbook.createFont();
+
+            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            headerFont.setColor(IndexedColors.WHITE.getIndex());
+            headerStyle.setFont(headerFont);
+            headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            headerStyle.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.getIndex());
+            headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            Row header = sheet.createRow(0);
+            String[] columns = {
+                "Nbr", "Report ID", "User ID (N/A)", "REF NBR (B*MM*W*C)",
+                "PED (yy/mm/dd)", "Date", "File Name", "Time", "Dist. Name", "Group ID (N/A)",
+                "Lines", "Pages"
+            };
+
+            for (int i = 0; i < columns.length; i++) {
+                Cell cell = header.createCell(i);
+                cell.setCellValue(columns[i]);
+                cell.setCellStyle(headerStyle);
+                sheet.setColumnWidth(i, 5500);
+            }
+
+            int rowIdx = 1;
+            for (MPF221 item : listaData) {
+                Row row = sheet.createRow(rowIdx++);
+                row.createCell(0).setCellValue(item.RN);
+                row.createCell(1).setCellValue(item.REPORTID);
+                row.createCell(2).setCellValue(item.USERID);
+                row.createCell(3).setCellValue(item.REFNBR);
+                row.createCell(4).setCellValue(item.PEDARC);
+                row.createCell(5).setCellValue(item.DATEARC);
+                row.createCell(6).setCellValue(item.NAMEFILE);
+                row.createCell(7).setCellValue(item.TIMEARC);
+                row.createCell(8).setCellValue(item.DISTNAME);
+                row.createCell(9).setCellValue(item.GROUPID);
+                row.createCell(10).setCellValue(item.LINESARC);
+                row.createCell(11).setCellValue(item.PAGESARC);
+            }
+
+            response.setContentType(
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            );
+            response.setHeader(
+                    "Content-Disposition",
+                    "attachment; filename=\"" + fileNameDownload + "\""
+            );
+
+            workbook.write(response.getOutputStream());
+            workbook.dispose();
+
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+    }
+
+    @RequestMapping(value = "getXLSX")
+    public @ResponseBody
+    void getXLSX(HttpServletRequest request, HttpServletResponse response) {
+
+        String fileNameDownload = "Cash File Downloads - " + Functions.getFechaActual() + ".xlsx";
+
+        try {
+            List<MPF218> listaData = this.getList(request, true);
+
+            SXSSFWorkbook workbook = new SXSSFWorkbook(100);
+            Sheet sheet = workbook.createSheet("Report");
+
+            CellStyle headerStyle = workbook.createCellStyle();
+            Font headerFont = workbook.createFont();
+
+            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            headerFont.setColor(IndexedColors.WHITE.getIndex());
+            headerStyle.setFont(headerFont);
+            headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            headerStyle.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.getIndex());
+            headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            Row header = sheet.createRow(0);
+            String[] columns = {
+                "Nbr", "Customer", "Country", "Settlement Date",
+                "File Name", "File Type", "Upload Date", "Size"
+            };
+
+            for (int i = 0; i < columns.length; i++) {
+                Cell cell = header.createCell(i);
+                cell.setCellValue(columns[i]);
+                cell.setCellStyle(headerStyle);
+                sheet.setColumnWidth(i, 5500);
+            }
+
+            int rowIdx = 1;
+            for (MPF218 item : listaData) {
+                Row row = sheet.createRow(rowIdx++);
+                row.createCell(0).setCellValue(item.RN);
+                row.createCell(1).setCellValue(item.CUSTOMER);
+                row.createCell(2).setCellValue(item.COUNTRY);
+                row.createCell(3).setCellValue(item.DATESETT);
+                row.createCell(4).setCellValue(item.NAMEFILE);
+                row.createCell(5).setCellValue(item.TYPEFILE);
+                row.createCell(6).setCellValue(item.DATEUPLO);
+                row.createCell(7).setCellValue(item.SIZEFILE);
+            }
+
+            response.setContentType(
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            );
+            response.setHeader(
+                    "Content-Disposition",
+                    "attachment; filename=\"" + fileNameDownload + "\""
+            );
+
+            workbook.write(response.getOutputStream());
+            workbook.dispose();
+
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+    }
+
+    @RequestMapping(value = "getCSV")
+    public @ResponseBody
+    void getCSV(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        System.out.println("Report : getCSV");
+
+        String environment = this.serverSession
+                .getPropertySession()
+                .get("DB_SERVER_DEFAULT_TYPE")
+                .toString();
+
+        String rutaBaseKey = "RUTA_CASH_" + environment + "_FILES";
+        String rutaBase = this.serverSession
+                .getPropertySession()
+                .get(rutaBaseKey)
+                .toString();
+
+        String country = request.getParameter("country");
+        String dateSett = request.getParameter("dateSett"); // YYYYMMDD
+        String customer = request.getParameter("customer");
+        String filename = request.getParameter("filename");
+
+        System.out.println("Parámetros → country=" + country
+                + ", dateSett=" + dateSett
+                + ", customer=" + customer
+                + ", filename=" + filename);
+
+        if (country == null || dateSett == null || customer == null || filename == null
+                || country.isEmpty() || dateSett.isEmpty()
+                || customer.isEmpty() || filename.isEmpty()) {
+
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write(
+                    "Parámetros obligatorios: country, customer, dateSett y filename"
+            );
+            return;
+        }
+
+        String year = dateSett.substring(0, 4);
+
+        String folderStr
+                = rutaBase
+                + "\\workspace\\HISTORY\\"
+                + country + "\\"
+                + year;
+
+        Path folderPath = Paths.get(folderStr);
+
+        System.out.println("Buscando en: " + folderPath);
+
+        Path filePath = folderPath.resolve(filename);
+
+        if (!Files.exists(filePath)) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.getWriter().write("Archivo no encontrado: " + filename);
+            return;
+        }
+
+        System.out.println("Archivo encontrado: " + filePath);
+
+        response.setContentType("text/csv");
+        response.setHeader(
+                "Content-Disposition",
+                "attachment; filename=\"" + filename + "\""
+        );
+
+        try (FileInputStream fis = new FileInputStream(filePath.toFile()); OutputStream out = response.getOutputStream()) {
+
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = fis.read(buffer)) != -1) {
+                out.write(buffer, 0, bytesRead);
+            }
+            out.flush();
+        }
+    }
+
+    @RequestMapping(value = "getTXTARC")
+    public @ResponseBody
+    void getTXTARC(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        System.out.println("Report : getTXTARC");
+
+        String environment = this.serverSession
+                .getPropertySession()
+                .get("DB_SERVER_DEFAULT_TYPE")
+                .toString();
+
+        String rutaBaseKey = "RUTA_CASH_" + environment + "_FILES";
+        String rutaBase = this.serverSession
+                .getPropertySession()
+                .get(rutaBaseKey)
+                .toString();
+
+        String year = request.getParameter("year");       // ej: 2025
+        String filename = request.getParameter("filename"); // ej: 134_ARC_XXXX.txt
+
+        System.out.println("Parámetros → year=" + year + ", filename=" + filename);
+
+        if (year == null || filename == null
+                || year.isEmpty() || filename.isEmpty()) {
+
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write(
+                    "Parámetros obligatorios: year y filename"
+            );
+            return;
+        }
+
+        String country = "US";
+        String[] parts = filename.split("_");
+
+        if (parts.length > 0) {
+            String clientCode = parts[0];
+
+            switch (clientCode) {
+                case "202":
+                    country = "SV";
+                    break;
+                case "134":
+                    country = "US";
+                    break;
+                default:
+                    country = "US"; // Por defecto
+                    break;
+            }
+        }
+
+        System.out.println("Cliente detectado: " + (parts.length > 0 ? parts[0] : "N/A") + " → País: " + country);
+
+        String folderStr
+                = rutaBase
+                + "\\workspace\\HISTORY-ARC\\"
+                + country + "\\"
+                + year;
+
+        Path folderPath = Paths.get(folderStr);
+
+        System.out.println("Buscando en: " + folderPath);
+
+        Path filePath = folderPath.resolve(filename);
+
+        if (!Files.exists(filePath)) {
+            // Opcional: buscar en carpeta por defecto si no se encuentra
+            String defaultFolderStr = rutaBase + "\\workspace\\HISTORY-ARC\\US\\" + year;
+            Path defaultFilePath = Paths.get(defaultFolderStr).resolve(filename);
+
+            if (Files.exists(defaultFilePath)) {
+                System.out.println("Archivo encontrado en carpeta por defecto (US): " + defaultFilePath);
+                filePath = defaultFilePath;
+            } else {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                response.getWriter().write("Archivo no encontrado: " + filename
+                        + " (buscado en: " + folderPath + " y " + defaultFilePath.getParent() + ")");
+                return;
+            }
+        }
+
+        System.out.println("Archivo encontrado: " + filePath);
+
+        response.setContentType("text/plain");
+        response.setHeader(
+                "Content-Disposition",
+                "attachment; filename=\"" + filename + "\""
+        );
+
+        try (FileInputStream fis = new FileInputStream(filePath.toFile()); OutputStream out = response.getOutputStream()) {
+
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = fis.read(buffer)) != -1) {
+                out.write(buffer, 0, bytesRead);
+            }
+            out.flush();
+        }
+    }
+
+    @RequestMapping(value = "getBulkCSV", method = RequestMethod.POST)
+    public void getBulkCSV(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        System.out.println("Report : getBulkCSV");
+
+        String beanString = request.getParameter("beanString");
+        if (beanString == null || beanString.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("beanString es obligatorio");
+            return;
+        }
+
+        Gson gson = new Gson();
+        MPF218Filter filter = gson.fromJson(beanString, MPF218Filter.class);
+
+        filter.page.PAGROW = -1;
+        filter.page.PAGNUM = 1;
+
+        DebitsReportLogic logic = new DebitsReportLogic();
+        logic.setSession(this.serverSession.getServerSession());
+        List<MPF218> list = logic.loadMPS415(filter);
+
+        System.out.println("Registros encontrados: " + list.size());
+
+        if (list.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.getWriter().write("No hay archivos para descargar");
+            return;
+        }
+
+        String environment = this.serverSession
+                .getPropertySession()
+                .get("DB_SERVER_DEFAULT_TYPE")
+                .toString();
+
+        String rutaBaseKey = "RUTA_CASH_" + environment + "_FILES";
+        String rutaBase = this.serverSession
+                .getPropertySession()
+                .get(rutaBaseKey)
+                .toString();
+
+        File tempZip = File.createTempFile("Cash_Files_", ".zip");
+        int addedFiles = 0;
+
+        try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(tempZip))) {
+
+            for (MPF218 item : list) {
+
+                try {
+                    String year = item.DATESETT.substring(0, 4);
+
+                    String folderStr
+                            = rutaBase
+                            + "\\workspace\\HISTORY\\"
+                            + item.COUNTRY + "\\"
+                            + year;
+
+                    Path filePath = Paths.get(folderStr).resolve(item.NAMEFILE);
+
+                    if (!Files.exists(filePath)) {
+                        System.err.println("Archivo NO encontrado: " + filePath);
+                        continue;
+                    }
+
+                    zos.putNextEntry(new ZipEntry(item.NAMEFILE));
+                    Files.copy(filePath, zos);
+                    zos.closeEntry();
+                    addedFiles++;
+
+                } catch (Exception eFile) {
+                    System.err.println("Error agregando archivo al ZIP: "
+                            + item.NAMEFILE + " → " + eFile.getMessage());
+                }
+            }
+        }
+
+        System.out.println("Archivos incluidos en el ZIP: " + addedFiles + " de " + list.size());
+
+        if (addedFiles == 0) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.getWriter().write("No se encontraron archivos físicos para descargar");
+            tempZip.delete();
+            return;
+        }
+
+        response.setContentType("application/zip");
+        response.setHeader(
+                "Content-Disposition",
+                "attachment; filename=\"Cash_Files_BSP.zip\""
+        );
+
+        Files.copy(tempZip.toPath(), response.getOutputStream());
+        response.flushBuffer();
+        tempZip.delete();
+    }
+
+    @RequestMapping(value = "getARCImage", method = RequestMethod.GET)
+    public void getARCImage(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        System.out.println("Report : getARCImage");
+
+        String environment = this.serverSession
+                .getPropertySession()
+                .get("DB_SERVER_DEFAULT_TYPE")
+                .toString();
+
+        // Base: \\Px\av\Efectivo\<env>
+        String rutaBaseKey = "RUTA_CASH_" + environment + "_FILES";
+        String rutaBase = this.serverSession
+                .getPropertySession()
+                .get(rutaBaseKey)
+                .toString();
+
+        String filename = request.getParameter("filename");
+
+        if (filename == null || filename.trim().isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("filename es obligatorio");
+            return;
+        }
+
+        String realFileName = filename + "_img.png";
+
+        Path imagePath = Paths.get(
+                rutaBase,
+                "workspace",
+                "ARC-IMAGENES",
+                realFileName
+        );
+
+        System.out.println("Buscando imagen en: " + imagePath);
+
+        if (!Files.exists(imagePath)) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.getWriter().write("Imagen no encontrada: " + realFileName);
+            return;
+        }
+
+        response.setContentType("image/png");
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+
+        try (OutputStream out = response.getOutputStream()) {
+            Files.copy(imagePath, out);
+            out.flush();
+        }
+    }
+
+    @RequestMapping(value = "getBulkTXTARC", method = RequestMethod.POST)
+    public void getBulkTXTARC(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        System.out.println("Report : getBulkTXTARC");
+
+        String beanString = request.getParameter("beanString");
+        if (beanString == null || beanString.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("beanString es obligatorio");
+            return;
+        }
+
+        Gson gson = new Gson();
+        MPF221Filter filter = gson.fromJson(beanString, MPF221Filter.class);
+
+        filter.page.PAGROW = -1;
+        filter.page.PAGNUM = 1;
+
+        DebitsReportLogic logic = new DebitsReportLogic();
+        logic.setSession(this.serverSession.getServerSession());
+
+        List<MPF221> list = logic.loadMPS446(filter);
+
+        System.out.println("Registros encontrados ARC: " + list.size());
+
+        if (list.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.getWriter().write("No hay archivos ARC para descargar");
+            return;
+        }
+
+        String environment = this.serverSession
+                .getPropertySession()
+                .get("DB_SERVER_DEFAULT_TYPE")
+                .toString();
+
+        String rutaBaseKey = "RUTA_CASH_" + environment + "_FILES";
+        String rutaBase = this.serverSession
+                .getPropertySession()
+                .get(rutaBaseKey)
+                .toString();
+
+        File tempZip = File.createTempFile("ARC_Files_", ".zip");
+        int addedFiles = 0;
+        int skippedInvalidCcust = 0;
+
+        try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(tempZip))) {
+
+            for (MPF221 item : list) {
+
+                try {
+                    // Validar CCUST primero
+                    String ccust = item.CUSTOMER;
+                    if (!isValidCcust(ccust)) {
+                        System.err.println("CCUST inválido: " + ccust + " - Saltando archivo: " + item.NAMEFILE);
+                        skippedInvalidCcust++;
+                        continue;  // Saltar este registro
+                    }
+
+                    // PEDARC = YY/MM/DD → YEAR = 20YY
+                    String pedarc = item.PEDARC;
+                    if (pedarc == null || pedarc.length() < 2) {
+                        System.err.println("PEDARC inválido para: " + item.NAMEFILE);
+                        continue;
+                    }
+
+                    String year = "20" + pedarc.substring(0, 2);
+
+                    String countryCode = getCountryCode(ccust);
+
+                    if ("UN".equals(countryCode)) {
+                        System.err.println("Código de país desconocido para CCUST válido: " + ccust);
+                        continue;  // Por si acaso
+                    }
+
+                    String folderStr
+                            = rutaBase
+                            + File.separator + "workspace"
+                            + File.separator + "HISTORY-ARC"
+                            + File.separator + countryCode
+                            + File.separator + year;
+
+                    String fileName = item.NAMEFILE;
+                    if (!fileName.toLowerCase().endsWith(".txt")) {
+                        fileName += ".txt";
+                    }
+
+                    Path filePath = Paths.get(folderStr).resolve(fileName);
+
+                    if (!Files.exists(filePath)) {
+                        System.err.println("Archivo ARC NO encontrado: " + filePath);
+                        continue;
+                    }
+
+                    zos.putNextEntry(new ZipEntry(fileName));
+                    Files.copy(filePath, zos);
+                    zos.closeEntry();
+
+                    addedFiles++;
+
+                } catch (Exception eFile) {
+                    System.err.println("Error agregando ARC al ZIP: "
+                            + item.NAMEFILE + " → " + eFile.getMessage());
+                }
+            }
+        }
+
+        System.out.println("ARC incluidos en ZIP: " + addedFiles + " de " + list.size());
+        System.out.println("Registros saltados por CCUST inválido: " + skippedInvalidCcust);
+
+        if (addedFiles == 0) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.getWriter().write("No se encontraron archivos ARC físicos");
+            tempZip.delete();
+            return;
+        }
+
+        response.setContentType("application/zip");
+        response.setHeader(
+                "Content-Disposition",
+                "attachment; filename=\"Cash_Files_ARC.zip\""
+        );
+
+        Files.copy(tempZip.toPath(), response.getOutputStream());
+        response.flushBuffer();
+        tempZip.delete();
+    }
+
+    private boolean isValidCcust(String ccust) {
+        if (ccust == null || ccust.trim().isEmpty()) {
+            return false;
+        }
+
+        String cleanedCcust = ccust.trim();
+        return "134".equals(cleanedCcust) || "202".equals(cleanedCcust);
+    }
+
+    private String getCountryCode(String ccust) {
+        if (ccust == null) {
+            return "UN";
+        }
+
+        ccust = ccust.trim();
+
+        if ("134".equals(ccust)) {
+            return "US";  // Estados Unidos
+        } else if ("202".equals(ccust)) {
+            return "SV";  // El Salvador
+        }
+
+        return "UN";
+    }
+    
+    @RequestMapping(value = "searchChargeback")
+    public @ResponseBody
+    String searchChargeback(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- DebitsReport : searchChargeback-------------");
+        map.put("success", true);
+        List<MPF076> lst = this.getListChargeback(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<MPF076> getListChargeback(HttpServletRequest request, Boolean bExcel) {
+
+        List<MPF076> lst = new ArrayList<>(0);
+        MPF076Filter filter = new MPF076Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new DebitsReportLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, MPF076Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadMPS640(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    
+    @RequestMapping(value = "getXLSXChargeback")
+    public @ResponseBody
+    void getXLSXChargeback(HttpServletRequest request, HttpServletResponse response) {
+
+        String fileNameDownload = "Chargeback_Report_" + Functions.getFechaActual() + ".xlsx";
+
+        try {
+            // Pasamos 'true' para que el filtro sepa que es Excel y traiga todos los registros (sin paginación)
+            List<MPF076> listaData = this.getListChargeback(request, true);
+
+            // Usamos SXSSFWorkbook(100) para máxima velocidad y bajo consumo de RAM
+            SXSSFWorkbook workbook = new SXSSFWorkbook(100);
+            Sheet sheet = workbook.createSheet("Data");
+
+            // Cabeceras exactas según tu grilla ExtJS (Sin estilos para mayor velocidad)
+            Row header = sheet.createRow(0);
+            String[] columns = {
+                "Nbr", "ID", "ID Concepto", "Aerolinea", "Status", "Deb Type", 
+                "Date Create", "Transaction Date", "Code Tarjet", "Number Tarjet", 
+                "Currency", "Amount"
+            };
+
+            for (int i = 0; i < columns.length; i++) {
+                header.createCell(i).setCellValue(columns[i]);
+            }
+
+            // Llenado de datos
+            int rowIdx = 1;
+            for (MPF076 item : listaData) {
+                Row row = sheet.createRow(rowIdx++);
+                
+                // Lógica de transformación para el Status (igual a tu JS)
+                String statusDesc = item.STVAL != null ? item.STVAL.trim() : "";
+                if (statusDesc.equals("1")) {
+                    statusDesc = "Match";
+                } else if (statusDesc.equals("3")) {
+                    statusDesc = "Pending";
+                } else if (statusDesc.equals("5")) {
+                    statusDesc = "Match Manual";
+                } else if (statusDesc.equals("")) {
+                    statusDesc = "Blank";
+                }
+
+                // Escribir las celdas
+                row.createCell(0).setCellValue(item.RN);
+                row.createCell(1).setCellValue(item.IDDEB != null ? item.IDDEB : "");
+                row.createCell(2).setCellValue(item.IDCONCEP != null ? item.IDCONCEP : "");
+                row.createCell(3).setCellValue(item.CCIA != null ? item.CCIA : "");
+                row.createCell(4).setCellValue(statusDesc);
+                row.createCell(5).setCellValue(item.DEBTYPE != null ? item.DEBTYPE : "");
+                row.createCell(6).setCellValue(item.FECR != null ? item.FECR : "");
+                row.createCell(7).setCellValue(item.DATEC != null ? item.DATEC : "");
+                row.createCell(8).setCellValue(item.SCARCOD != null ? item.SCARCOD : "");
+                row.createCell(9).setCellValue(item.SCARDN != null ? item.SCARDN : "");
+                row.createCell(10).setCellValue(item.CURRLOCAL != null ? item.CURRLOCAL : "");
+                
+                // Monto como número para que Excel lo reconozca bien
+                if(item.VALLOCAL != null && !item.VALLOCAL.isEmpty()){
+                    try {
+                        row.createCell(11).setCellValue(Double.parseDouble(item.VALLOCAL));
+                    } catch (NumberFormatException e) {
+                        row.createCell(11).setCellValue(item.VALLOCAL);
+                    }
+                } else {
+                    row.createCell(11).setCellValue(0.0);
+                }
+            }
+
+            // Configurar la respuesta HTTP para forzar la descarga
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+
+            // Escribir y limpiar archivos temporales
+            workbook.write(response.getOutputStream());
+            workbook.dispose();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @RequestMapping(value = "searchRefund")
+    public @ResponseBody
+    String searchRefund(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- DebitsReport : searchRefund-------------");
+        map.put("success", true);
+        List<MPF075> lst = this.getListRefund(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<MPF075> getListRefund(HttpServletRequest request, Boolean bExcel) {
+
+        List<MPF075> lst = new ArrayList<>(0);
+        MPF075Filter filter = new MPF075Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new DebitsReportLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, MPF075Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadMPS641(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    
+    @RequestMapping(value = "getXLSXRefund")
+    public @ResponseBody
+    void getXLSXRefund(HttpServletRequest request, HttpServletResponse response) {
+
+        String fileNameDownload = "Refund_Report_" + Functions.getFechaActual() + ".xlsx";
+
+        try {
+            // Pasamos 'true' para obtener todos los registros sin paginar
+            List<MPF075> listaData = this.getListRefund(request, true);
+
+            // SXSSFWorkbook(100) para procesar archivos inmensos sin colapsar la memoria RAM
+            SXSSFWorkbook workbook = new SXSSFWorkbook(100);
+            Sheet sheet = workbook.createSheet("Refund Data");
+
+            // 1. Cabeceras (Exactamente las de tu grilla)
+            Row header = sheet.createRow(0);
+            String[] columns = {
+                "Nbr", "Aerolinea", "Ticket", "Status", "Deb Type", "Date Create", 
+                "Sale Date", "Refund Date", "Code", "Number", "Author", "Agent", 
+                "PNR", "Origen", "Currency", "Amount"
+            };
+
+            for (int i = 0; i < columns.length; i++) {
+                header.createCell(i).setCellValue(columns[i]);
+            }
+
+            // 2. Llenado de datos fila por fila
+            int rowIdx = 1;
+            for (MPF075 item : listaData) {
+                Row row = sheet.createRow(rowIdx++);
+                
+                // Lógica de traducción para el Status
+                String statusDesc = item.STVAL != null ? item.STVAL.trim() : "";
+                if (statusDesc.equals("1")) {
+                    statusDesc = "Match";
+                } else if (statusDesc.equals("3")) {
+                    statusDesc = "Pending";
+                } else if (statusDesc.equals("5")) {
+                    statusDesc = "Match Manual";
+                } else if (statusDesc.equals("")) {
+                    statusDesc = "Blank";
+                }
+
+                row.createCell(0).setCellValue(item.RN);
+                row.createCell(1).setCellValue(item.CCIA != null ? item.CCIA : "");
+                row.createCell(2).setCellValue(item.TKT != null ? item.TKT : "");
+                row.createCell(3).setCellValue(statusDesc);
+                row.createCell(4).setCellValue(item.DEBTYPE != null ? item.DEBTYPE : "");
+                row.createCell(5).setCellValue(item.FECR != null ? item.FECR : "");
+                row.createCell(6).setCellValue(item.SDATE != null ? item.SDATE : "");
+                row.createCell(7).setCellValue(item.RFNDATE != null ? item.RFNDATE : "");
+                row.createCell(8).setCellValue(item.SCARCOD != null ? item.SCARCOD : "");
+                row.createCell(9).setCellValue(item.SCARDN != null ? item.SCARDN : "");
+                row.createCell(10).setCellValue(item.SAUTHOC != null ? item.SAUTHOC : "");
+                row.createCell(11).setCellValue(item.SAGENT != null ? item.SAGENT : "");
+                row.createCell(12).setCellValue(item.SPNR != null ? item.SPNR : "");
+                row.createCell(13).setCellValue(item.ORIGEN != null ? item.ORIGEN : "");
+                row.createCell(14).setCellValue(item.SCURRENCY != null ? item.SCURRENCY : "");
+                
+                // Procesar Amount (TOTAL) como número real para Excel
+                if(item.TOTAL != null && !item.TOTAL.isEmpty()){
+                    try {
+                        row.createCell(15).setCellValue(Double.parseDouble(item.TOTAL));
+                    } catch (NumberFormatException e) {
+                        row.createCell(15).setCellValue(item.TOTAL);
+                    }
+                } else {
+                    row.createCell(15).setCellValue(0.0);
+                }
+            }
+
+            // 3. Forzar la descarga en el navegador
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+
+            // 4. Escribir datos y limpiar caché temporal
+            workbook.write(response.getOutputStream());
+            workbook.dispose();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @RequestMapping(value = "searchAcredit")
+    public @ResponseBody
+    String searchAcredit(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- DebitsReport : searchAcredit-------------");
+        map.put("success", true);
+        List<MPF077> lst = this.getListAcredit(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<MPF077> getListAcredit(HttpServletRequest request, Boolean bExcel) {
+
+        List<MPF077> lst = new ArrayList<>(0);
+        MPF077Filter filter = new MPF077Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new DebitsReportLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, MPF077Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadMPS642(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    
+    @RequestMapping(value = "getXLSXAcredit")
+    public @ResponseBody
+    void getXLSXAcredit(HttpServletRequest request, HttpServletResponse response) {
+
+        String fileNameDownload = "Acredit_Report_" + Functions.getFechaActual() + ".xlsx";
+
+        try {
+            // Pasamos 'true' para indicar que es descarga de Excel (sin paginación)
+            List<MPF077> listaData = this.getListAcredit(request, true);
+
+            // SXSSFWorkbook con ventana de 100 para no saturar la RAM
+            SXSSFWorkbook workbook = new SXSSFWorkbook(100);
+            Sheet sheet = workbook.createSheet("Acredit Data");
+
+            // 1. Cabeceras (Las mismas de tu grilla ExtJS)
+            Row header = sheet.createRow(0);
+            String[] columns = {
+                "Nbr", "Aerolinea", "Status", "Deb Type", "Date Create", 
+                "Date Transaction", "Date Process", "Code", "Number", "Author", 
+                "Agent", "PNR", "Caso CVS", "Currency", "Amount"
+            };
+
+            for (int i = 0; i < columns.length; i++) {
+                header.createCell(i).setCellValue(columns[i]);
+            }
+
+            // 2. Llenado de datos
+            int rowIdx = 1;
+            for (MPF077 item : listaData) {
+                Row row = sheet.createRow(rowIdx++);
+                
+                // Traducción de Status (STVAL)
+                String statusDesc = item.STVAL != null ? item.STVAL.trim() : "";
+                if (statusDesc.equals("1")) {
+                    statusDesc = "Match";
+                } else if (statusDesc.equals("3")) {
+                    statusDesc = "Pending";
+                } else if (statusDesc.equals("5")) {
+                    statusDesc = "Match Manual";
+                } else if (statusDesc.equals("")) {
+                    statusDesc = "Blank";
+                }
+
+                // Celdas
+                row.createCell(0).setCellValue(item.RN);
+                row.createCell(1).setCellValue(item.CCIA != null ? item.CCIA : "");
+                row.createCell(2).setCellValue(statusDesc);
+                row.createCell(3).setCellValue(item.DEBTYPE != null ? item.DEBTYPE : "");
+                row.createCell(4).setCellValue(item.FECR != null ? item.FECR : "");
+                row.createCell(5).setCellValue(item.DTRAN != null ? item.DTRAN : "");
+                row.createCell(6).setCellValue(item.FPROC != null ? item.FPROC : "");
+                row.createCell(7).setCellValue(item.SCARCOD != null ? item.SCARCOD : "");
+                row.createCell(8).setCellValue(item.SCARDN != null ? item.SCARDN : "");
+                row.createCell(9).setCellValue(item.SAUTHOC != null ? item.SAUTHOC : "");
+                row.createCell(10).setCellValue(item.IATA != null ? item.IATA : "");
+                row.createCell(11).setCellValue(item.SPNR != null ? item.SPNR : "");
+                row.createCell(12).setCellValue(item.CASOCVS != null ? item.CASOCVS : "");
+                row.createCell(13).setCellValue(item.SCURRENCY != null ? item.SCURRENCY : "");
+                
+                // Formateo del monto (VALOR) como numérico para Excel
+                if(item.VALOR != null && !item.VALOR.isEmpty()){
+                    try {
+                        row.createCell(14).setCellValue(Double.parseDouble(item.VALOR));
+                    } catch (NumberFormatException e) {
+                        row.createCell(14).setCellValue(item.VALOR);
+                    }
+                } else {
+                    row.createCell(14).setCellValue(0.0);
+                }
+            }
+
+            // 3. Forzar descarga del archivo
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+
+            // 4. Escribir y liberar RAM
+            workbook.write(response.getOutputStream());
+            workbook.dispose();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @RequestMapping(value = "searchStatus")
+    public @ResponseBody
+    String searchStatus(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- DebitsReport : searchStatus-------------");
+        map.put("success", true);
+        List<MPF060D> lst = this.getListSearchStatus(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<MPF060D> getListSearchStatus(HttpServletRequest request, Boolean bExcel) {
+
+        List<MPF060D> lst = new ArrayList<>(0);
+        MPF060DFilter filter = new MPF060DFilter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new DebitsReportLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, MPF060DFilter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadMPS644(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+
+    @RequestMapping(value = "getXLSXStatus")
+    public @ResponseBody
+    void getXLSXStatus(HttpServletRequest request, HttpServletResponse response) {
+
+        String fileNameDownload = "Status_Report_" + Functions.getFechaActual() + ".xlsx";
+
+        try {
+            // true para traer todo sin paginación
+            List<MPF060D> listaData = this.getListSearchStatus(request, true);
+
+            // SXSSFWorkbook(100) para máxima velocidad
+            SXSSFWorkbook workbook = new SXSSFWorkbook(100);
+            Sheet sheet = workbook.createSheet("Status Data");
+
+            // 1. Definir Cabeceras (26 columnas exactas de tu grilla)
+            Row header = sheet.createRow(0);
+            String[] columns = {
+                "Nbr", "Aerolinea", "Processor", "Code Bank", "Payment Date", 
+                "Date Create", "Bandoc", "Reference", "Agent", "Merchant", 
+                "Code", "Number", "Author", "Country", "Monto Neto", 
+                "Moneda Local", "Monto Local", "Moneda en Dolares", "Monto en Dolares", 
+                "Type", "F1", "F2", "Accounting ID DEB", "Accounting Date DEB", 
+                "Status Accounting DEB", "BPO Comment"
+            };
+
+            for (int i = 0; i < columns.length; i++) {
+                header.createCell(i).setCellValue(columns[i]);
+            }
+
+            // 2. Llenar los datos
+            int rowIdx = 1;
+            for (MPF060D item : listaData) {
+                Row row = sheet.createRow(rowIdx++);
+
+                row.createCell(0).setCellValue(item.RN);
+                row.createCell(1).setCellValue(item.CCUST != null ? item.CCUST : "");
+                row.createCell(2).setCellValue(item.CODPRO != null ? item.CODPRO : "");
+                row.createCell(3).setCellValue(item.CODEBANK != null ? item.CODEBANK : "");
+                row.createCell(4).setCellValue(item.ADATE != null ? item.ADATE : "");
+                row.createCell(5).setCellValue(item.FECR != null ? item.FECR : "");
+                row.createCell(6).setCellValue(item.BANDOC != null ? item.BANDOC : "");
+                row.createCell(7).setCellValue(item.REFER != null ? item.REFER : "");
+                row.createCell(8).setCellValue(item.SAGENT != null ? item.SAGENT : "");
+                row.createCell(9).setCellValue(item.MERCHAND != null ? item.MERCHAND : "");
+                row.createCell(10).setCellValue(item.SCARCOD != null ? item.SCARCOD : "");
+                row.createCell(11).setCellValue(item.SCARDN != null ? item.SCARDN : "");
+                row.createCell(12).setCellValue(item.SAUTHOC != null ? item.SAUTHOC : ""); // Author
+                row.createCell(13).setCellValue(item.SCOUNTRY != null ? item.SCOUNTRY : "");
+                
+                // Monto Neto a numérico
+                if(item.NETO != null && !item.NETO.isEmpty()){
+                    try { row.createCell(14).setCellValue(Double.parseDouble(item.NETO)); } 
+                    catch (Exception e) { row.createCell(14).setCellValue(item.NETO); }
+                } else { row.createCell(14).setCellValue(0.0); }
+
+                row.createCell(15).setCellValue(item.SCURRENCY != null ? item.SCURRENCY : "");
+                
+                // Monto Local (TOTAL) a numérico
+                if(item.TOTAL != null && !item.TOTAL.isEmpty()){
+                    try { row.createCell(16).setCellValue(Double.parseDouble(item.TOTAL)); } 
+                    catch (Exception e) { row.createCell(16).setCellValue(item.TOTAL); }
+                } else { row.createCell(16).setCellValue(0.0); }
+
+                row.createCell(17).setCellValue(item.MONEDA_DOLARES != null ? item.MONEDA_DOLARES : "");
+                
+                // Monto en Dolares a numérico
+                if(item.MONTO_DOLARES != null && !item.MONTO_DOLARES.isEmpty()){
+                    try { row.createCell(18).setCellValue(Double.parseDouble(item.MONTO_DOLARES)); } 
+                    catch (Exception e) { row.createCell(18).setCellValue(item.MONTO_DOLARES); }
+                } else { row.createCell(18).setCellValue(0.0); }
+
+                row.createCell(19).setCellValue(item.DEBTYPE != null ? item.DEBTYPE : "");
+                row.createCell(20).setCellValue(item.FASE1 != null ? item.FASE1 : "");
+                row.createCell(21).setCellValue(item.FASE2 != null ? item.FASE2 : "");
+                row.createCell(22).setCellValue(item.IDCDEB != null ? item.IDCDEB : "");
+                row.createCell(23).setCellValue(item.FCONT != null ? item.FCONT : "");
+                row.createCell(24).setCellValue(item.STATUS_SAP != null ? item.STATUS_SAP : "");
+                row.createCell(25).setCellValue(item.SAUTHOC != null ? item.SAUTHOC : ""); // BPO Comment (Mismo dataIndex en tu JS)
+            }
+
+            // 3. Forzar descarga
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+
+            // 4. Escribir y limpiar RAM
+            workbook.write(response.getOutputStream());
+            workbook.dispose();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @RequestMapping(value = "manageComment")
+    public @ResponseBody
+    String manageComment(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- DebitsReport : manageComment -------------");
+        
+        try {
+            logic = new DebitsReportLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String beanString = request.getParameter("beanString");
+            
+            MPF303Filter filter = new Gson().fromJson(beanString, MPF303Filter.class);
+
+            Map<String, String> result = logic.manageComment(filter);
+
+            if ("00".equals(result.get("OUT_CODE"))) {
+                map.put("success", true);
+                map.put("msg", result.get("OUT_MSG"));
+                map.put("newCode", result.get("OUT_NEW_CODIGO")); 
+            } else {
+                map.put("success", false);
+                map.put("msg", result.get("OUT_MSG"));
+            }
+
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("msg", ex.getMessage());
+        }
+        
+        return new Gson().toJson(map);
+    }
+    
+    @RequestMapping(value = "assignComment")
+    public @ResponseBody
+    String assignComment(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- DebitsReport : assignComment -------------");
+        
+        try {
+            logic = new DebitsReportLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String beanString = request.getParameter("beanString");
+            
+            MPF303Filter filter = new Gson().fromJson(beanString, MPF303Filter.class);
+
+            String userSession = serverSession.getServerSession().getUserView().getUserInfo().USR;
+
+            Map<String, String> result = logic.assignComment(filter, userSession);
+
+            if ("00".equals(result.get("OUT_CODE"))) {
+                map.put("success", true);
+                map.put("msg", result.get("OUT_MSG"));
+            } else {
+                map.put("success", false);
+                map.put("msg", result.get("OUT_MSG"));
+            }
+
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("msg", ex.getMessage());
+        }
+        
+        return new Gson().toJson(map);
+    }
+}
