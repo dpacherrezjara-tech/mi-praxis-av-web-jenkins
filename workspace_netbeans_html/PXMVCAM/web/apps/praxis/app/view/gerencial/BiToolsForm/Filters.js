@@ -2277,7 +2277,7 @@ Ext.define('Ext.Praxis.view.gerencial.BiToolsForm.Filters', {
                                         },
                                         {
                                             xtype: 'fieldcontainer',
-                                            fieldLabel: 'Value Date',
+                                            fieldLabel: 'Abono Date',
                                             labelAlign: 'top',
                                             labelStyle: 'text-align: center; font-weight: bold;',
                                             layout: 'hbox',
