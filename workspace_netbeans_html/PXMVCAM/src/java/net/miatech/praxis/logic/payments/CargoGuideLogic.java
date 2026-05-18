@@ -16,8 +16,16 @@ import net.miatech.praxis.payment.MPF218;
 import net.miatech.praxis.payment.MPF218Filter;
 import net.miatech.praxis.payment.MPF221;
 import net.miatech.praxis.payment.MPF221Filter;
+import net.miatech.praxis.payment.MPF288;
+import net.miatech.praxis.payment.MPF288Filter;
 import net.miatech.praxis.payment.MPF291;
 import net.miatech.praxis.payment.MPF291Filter;
+import net.miatech.praxis.payment.MPF292;
+import net.miatech.praxis.payment.MPF292Filter;
+import net.miatech.praxis.payment.MPF293;
+import net.miatech.praxis.payment.MPF293Filter;
+import net.miatech.praxis.payment.MPF294;
+import net.miatech.praxis.payment.MPF294Filter;
 import net.miatech.praxis.payment.MPF295;
 import net.miatech.praxis.payment.MPF295Filter;
 import net.miatech.praxis.payment.filter.A2280Filter;
@@ -75,5 +83,20 @@ public class CargoGuideLogic {
         return CargoGuideDAO.deleteMPS604(filter);
     }
     
+    public List<MPF292> loadMPS605(MPF292Filter filter) throws SQLException, Exception {
+        return CargoGuideDAO.loadMPS605(filter);
+    }
+    
+    public List<MPF294> loadMPS606(MPF294Filter filter) throws SQLException, Exception {
+        return CargoGuideDAO.loadMPS606(filter);
+    }
+    
+    public List<MPF288> loadMPS607(MPF288Filter filter) throws SQLException, Exception {
+        return CargoGuideDAO.loadMPS607(filter);
+    }
+    
+    public List<MPF293> loadMPS608(MPF293Filter filter) throws SQLException, Exception {
+        return CargoGuideDAO.loadMPS608(filter);
+    }
     
 }

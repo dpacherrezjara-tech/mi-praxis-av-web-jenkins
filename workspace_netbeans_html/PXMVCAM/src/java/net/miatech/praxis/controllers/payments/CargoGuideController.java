@@ -19,9 +19,17 @@ import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.dao.master.MasterDAO;
 import net.miatech.praxis.exceptions.SpringException;
 import net.miatech.praxis.logic.payments.CargoGuideLogic;
+import net.miatech.praxis.payment.MPF288;
+import net.miatech.praxis.payment.MPF288Filter;
 import net.miatech.praxis.payment.MPF291;
 import net.miatech.praxis.payment.MPF291Filter;
 import net.miatech.praxis.payment.MPF291LinkPayload;
+import net.miatech.praxis.payment.MPF292;
+import net.miatech.praxis.payment.MPF292Filter;
+import net.miatech.praxis.payment.MPF293;
+import net.miatech.praxis.payment.MPF293Filter;
+import net.miatech.praxis.payment.MPF294;
+import net.miatech.praxis.payment.MPF294Filter;
 import net.miatech.praxis.payment.MPF295;
 import net.miatech.praxis.payment.MPF295Filter;
 import net.miatech.utils.Functions;
@@ -1372,5 +1380,554 @@ public class CargoGuideController extends BaseController {
         return new Gson().toJson(map);
     }
     
+    @RequestMapping(value = "searchARCDaily")
+    public @ResponseBody
+    String searchARCDaily(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- CargoGuide : searchARCDaily (DAILY) -------------");
+        map.put("success", true);
+        List<MPF292> lst = this.getListDaily(request, false);
+        System.out.println("Total Daily: " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<MPF292> getListDaily(HttpServletRequest request, Boolean bExcel) {
+        List<MPF292> lst = new ArrayList<>();
+        MPF292Filter filter = new MPF292Filter(); 
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new CargoGuideLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, MPF292Filter.class);
+            
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadMPS605(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
     
+    @RequestMapping(value = "searchARCLibera")
+    public @ResponseBody
+    String searchARCLibera(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- CargoGuide : searchARCLibera (LIBERA) -------------");
+        map.put("success", true);
+        List<MPF294> lst = this.getListLibera(request, false);
+        System.out.println("Total Libera: " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<MPF294> getListLibera(HttpServletRequest request, Boolean bExcel) {
+        List<MPF294> lst = new ArrayList<>();
+        MPF294Filter filter = new MPF294Filter(); 
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new CargoGuideLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, MPF294Filter.class);
+            
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadMPS606(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    
+    @RequestMapping(value = "searchARCOpen")
+    public @ResponseBody
+    String searchARCOpen(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- CargoGuide : searchARCOpen (OPEN) -------------");
+        map.put("success", true);
+        List<MPF288> lst = this.getListOpen(request, false);
+        System.out.println("Total Open: " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<MPF288> getListOpen(HttpServletRequest request, Boolean bExcel) {
+        List<MPF288> lst = new ArrayList<>();
+        MPF288Filter filter = new MPF288Filter(); 
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new CargoGuideLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, MPF288Filter.class);
+            
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadMPS607(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    
+    @RequestMapping(value = "searchARCPse")
+    public @ResponseBody
+    String searchARCPse(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- CargoGuide : searchARCPse (PSE) -------------");
+        map.put("success", true);
+        List<MPF293> lst = this.getListPse(request, false);
+        System.out.println("Total Pse: " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<MPF293> getListPse(HttpServletRequest request, Boolean bExcel) {
+        List<MPF293> lst = new ArrayList<>();
+        MPF293Filter filter = new MPF293Filter(); 
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new CargoGuideLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, MPF293Filter.class);
+            
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadMPS608(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    
+    @RequestMapping(value = "getXLSX_Daily")
+    public @ResponseBody
+    void getXLSX_Daily(HttpServletRequest request, HttpServletResponse response) {
+
+        String fileNameDownload = "Cargo Guide DAILY - " + Functions.getFechaActual() + ".xlsx";
+
+        try {
+            // bExcel = true -> Trae TODOS los registros sin paginar
+            List<MPF292> listaData = this.getListDaily(request, true);
+
+            SXSSFWorkbook workbook = new SXSSFWorkbook(100);
+            Sheet sheet = workbook.createSheet("Daily Report");
+
+            // --- ESTILO CABECERA ---
+            CellStyle headerStyle = workbook.createCellStyle();
+            Font headerFont = workbook.createFont();
+            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            headerFont.setColor(IndexedColors.WHITE.getIndex());
+            headerStyle.setFont(headerFont);
+            headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            headerStyle.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.getIndex());
+            headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            // --- CABECERAS (Basado en tu grilla ExtJS) ---
+            Row header = sheet.createRow(0);
+            String[] columns = {
+                "Nbr", "Customer", "Country", "AWBNO", "Org Cod", "Dst Cod", "Chg Wgt", 
+                "Imp/Exp Flg", "Cus Cod", "Cus Nam", "CCA Ref Num", "Pay Adv Num", 
+                "Pay Typ", "Fnl Amt", "Fcchd Amt", "Oth Chg Amt", "Agt Com", "Discount", 
+                "PA Cur Cod", "AWB Cur Cod", "Exc Rat", "Pay Mtd", "Flt Num"
+            };
+
+            for (int i = 0; i < columns.length; i++) {
+                Cell cell = header.createCell(i);
+                cell.setCellValue(columns[i]);
+                cell.setCellStyle(headerStyle);
+                sheet.setColumnWidth(i, 4500);
+            }
+
+            // --- LLENADO DE FILAS ---
+            int rowIdx = 1;
+            for (MPF292 item : listaData) {
+                Row row = sheet.createRow(rowIdx++);
+
+                row.createCell(0).setCellValue(item.RN);
+                row.createCell(1).setCellValue(item.CCUST);
+                row.createCell(2).setCellValue(item.SCOUNTRY);
+                row.createCell(3).setCellValue(item.AWBNO);
+                row.createCell(4).setCellValue(item.ORGCOD);
+                row.createCell(5).setCellValue(item.DSTCOD);
+                row.createCell(6).setCellValue(item.CHGWGT);
+                row.createCell(7).setCellValue(item.IMPEXPFLG);
+                row.createCell(8).setCellValue(item.CUSCOD);
+                row.createCell(9).setCellValue(item.CUSNAM);
+                row.createCell(10).setCellValue(item.CCAREFNUM);
+                row.createCell(11).setCellValue(item.PAYADVNUM);
+                row.createCell(12).setCellValue(item.PAYTYP);
+                row.createCell(13).setCellValue(item.FNLAMT);
+                row.createCell(14).setCellValue(item.FCCHDAMT);
+                row.createCell(15).setCellValue(item.OTHCHGAMT);
+                row.createCell(16).setCellValue(item.AGTCOM);
+                row.createCell(17).setCellValue(item.DISCOUNT);
+                row.createCell(18).setCellValue(item.PACURCOD);
+                row.createCell(19).setCellValue(item.AWBCURCOD);
+                row.createCell(20).setCellValue(item.EXCRAT);
+                row.createCell(21).setCellValue(item.PAYMTD);
+                row.createCell(22).setCellValue(item.FLTNUM);
+            }
+
+            // --- RESPUESTA HTTP ---
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+
+            workbook.write(response.getOutputStream());
+            workbook.dispose();
+
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+    }
+    
+    @RequestMapping(value = "getXLSX_Libera")
+    public @ResponseBody
+    void getXLSX_Libera(HttpServletRequest request, HttpServletResponse response) {
+
+        String fileNameDownload = "Cargo Guide LIBERA - " + Functions.getFechaActual() + ".xlsx";
+
+        try {
+            // bExcel = true -> Trae TODOS los registros sin paginar
+            List<MPF294> listaData = this.getListLibera(request, true);
+
+            SXSSFWorkbook workbook = new SXSSFWorkbook(100);
+            Sheet sheet = workbook.createSheet("Libera Report");
+
+            // --- ESTILO CABECERA ---
+            CellStyle headerStyle = workbook.createCellStyle();
+            Font headerFont = workbook.createFont();
+            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            headerFont.setColor(IndexedColors.WHITE.getIndex());
+            headerStyle.setFont(headerFont);
+            headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            headerStyle.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.getIndex());
+            headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            // --- CABECERAS (Basado en tu grilla ExtJS de Libera) ---
+            Row header = sheet.createRow(0);
+            String[] columns = {
+                "Nbr", "Customer", "Bandoc", "Res Pay", "Ref Cli", "Lug Com", 
+                "Num Fac", "Neto", "Inf Sales", "Material", "Desc Pos", 
+                "Centro", "Reference", "Importe", "Ref Guia", "Guia", 
+                "Currency", "Status"
+            };
+
+            for (int i = 0; i < columns.length; i++) {
+                Cell cell = header.createCell(i);
+                cell.setCellValue(columns[i]);
+                cell.setCellStyle(headerStyle);
+                sheet.setColumnWidth(i, 4500); // Ancho estándar, ajustable según necesidad
+            }
+
+            // --- LLENADO DE FILAS ---
+            int rowIdx = 1;
+            for (MPF294 item : listaData) {
+                Row row = sheet.createRow(rowIdx++);
+
+                row.createCell(0).setCellValue(item.RN);
+                row.createCell(1).setCellValue(item.CCUST);
+                row.createCell(2).setCellValue(item.BANDOC);
+                row.createCell(3).setCellValue(item.RESPAY);
+                row.createCell(4).setCellValue(item.REFCLI);
+                row.createCell(5).setCellValue(item.LUGCOM);
+                row.createCell(6).setCellValue(item.NUMFAC);
+                row.createCell(7).setCellValue(item.NETO);
+                row.createCell(8).setCellValue(item.INFSALES);
+                row.createCell(9).setCellValue(item.MATERIAL);
+                row.createCell(10).setCellValue(item.DESCPOS);
+                row.createCell(11).setCellValue(item.CENTRO);
+                row.createCell(12).setCellValue(item.REFERENCE);
+                row.createCell(13).setCellValue(item.IMPORTE);
+                row.createCell(14).setCellValue(item.REFGUIA);
+                row.createCell(15).setCellValue(item.GUIA);
+                row.createCell(16).setCellValue(item.SCURRENCY);
+                row.createCell(17).setCellValue(item.STVAL);
+            }
+
+            // --- RESPUESTA HTTP ---
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+
+            workbook.write(response.getOutputStream());
+            workbook.dispose();
+
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+    }
+    
+    @RequestMapping(value = "getXLSX_Open")
+    public @ResponseBody
+    void getXLSX_Open(HttpServletRequest request, HttpServletResponse response) {
+
+        String fileNameDownload = "Cargo Guide OPEN - " + Functions.getFechaActual() + ".xlsx";
+
+        try {
+            // bExcel = true -> Trae TODOS los registros sin paginar
+            List<MPF288> listaData = this.getListOpen(request, true);
+
+            SXSSFWorkbook workbook = new SXSSFWorkbook(100);
+            Sheet sheet = workbook.createSheet("Open Report");
+
+            // --- ESTILO CABECERA ---
+            CellStyle headerStyle = workbook.createCellStyle();
+            Font headerFont = workbook.createFont();
+            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            headerFont.setColor(IndexedColors.WHITE.getIndex());
+            headerStyle.setFont(headerFont);
+            headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            headerStyle.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.getIndex());
+            headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            // --- CABECERAS (Basado en tu grilla ExtJS de Open) ---
+            Row header = sheet.createRow(0);
+            String[] columns = {
+                "Nbr", "Customer", "Society", "LCom", "Div", "Cen Ben", "Country", 
+                "Status", "Bloc Pag", "Clav Ref 1", "Clav Ref 3", "Nombre 1", 
+                "Num Leg", "Account", "Reference", "Bandoc Car", "Adate", 
+                "Currency", "Texto", "Pay Met", "Fcont", "Cls Doc", "Fec Base", 
+                "Delay Day", "Fec Venc", "Con Pay", "CME", "Clave Cont", "Neto Loc", 
+                "Importe Loc", "Import Loc 2", "Mon Loc", "Mon Suc", "Mon Suc 2", 
+                "Doc Comp", "Prda", "Tran", "Bandoc", "Seq", "Acc Number", 
+                "FRegla", "CBatch", "TPeriod", "DCycle"
+            };
+
+            for (int i = 0; i < columns.length; i++) {
+                Cell cell = header.createCell(i);
+                cell.setCellValue(columns[i]);
+                cell.setCellStyle(headerStyle);
+                sheet.setColumnWidth(i, 4500); // Ancho estándar
+            }
+
+            // --- LLENADO DE FILAS ---
+            int rowIdx = 1;
+            for (MPF288 item : listaData) {
+                Row row = sheet.createRow(rowIdx++);
+
+                row.createCell(0).setCellValue(item.RN);
+                row.createCell(1).setCellValue(item.CCUST);
+                row.createCell(2).setCellValue(item.SOCIETY);
+                row.createCell(3).setCellValue(item.LCOM);
+                row.createCell(4).setCellValue(item.DIV);
+                row.createCell(5).setCellValue(item.CENBEN);
+                row.createCell(6).setCellValue(item.SCOUNTRY);
+                row.createCell(7).setCellValue(item.STVAL);
+                row.createCell(8).setCellValue(item.BLOCPAG);
+                row.createCell(9).setCellValue(item.CLAVREF1);
+                row.createCell(10).setCellValue(item.CLAVREF3);
+                row.createCell(11).setCellValue(item.NOMBRE1);
+                row.createCell(12).setCellValue(item.NUMLEG);
+                row.createCell(13).setCellValue(item.ACCOUNT);
+                row.createCell(14).setCellValue(item.REFERENCE);
+                row.createCell(15).setCellValue(item.BANDOCCAR);
+                row.createCell(16).setCellValue(item.ADATE);
+                row.createCell(17).setCellValue(item.SCURRENCY);
+                row.createCell(18).setCellValue(item.TEXTO);
+                row.createCell(19).setCellValue(item.PAYMET);
+                row.createCell(20).setCellValue(item.FCONT);
+                row.createCell(21).setCellValue(item.CLSDOC);
+                row.createCell(22).setCellValue(item.FECBASE);
+                row.createCell(23).setCellValue(item.DELAYDAY);
+                row.createCell(24).setCellValue(item.FECVENC);
+                row.createCell(25).setCellValue(item.CONPAY);
+                row.createCell(26).setCellValue(item.CME);
+                row.createCell(27).setCellValue(item.CLAVECONT);
+                row.createCell(28).setCellValue(item.NETOLOC);
+                row.createCell(29).setCellValue(item.IMPORTELOC);
+                row.createCell(30).setCellValue(item.IMPORTLOC2);
+                row.createCell(31).setCellValue(item.MONLOC);
+                row.createCell(32).setCellValue(item.MONSUC);
+                row.createCell(33).setCellValue(item.MONSUC2);
+                row.createCell(34).setCellValue(item.DOCCOMP);
+                row.createCell(35).setCellValue(item.PRDA);
+                row.createCell(36).setCellValue(item.TRAN);
+                row.createCell(37).setCellValue(item.BANDOC);
+                row.createCell(38).setCellValue(item.SEQ);
+                row.createCell(39).setCellValue(item.ACCNUMBER);
+                row.createCell(40).setCellValue(item.FREGLA);
+                row.createCell(41).setCellValue(item.CBATCH);
+                row.createCell(42).setCellValue(item.TPERIOD);
+                row.createCell(43).setCellValue(item.DCYCLE);
+            }
+
+            // --- RESPUESTA HTTP ---
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+
+            workbook.write(response.getOutputStream());
+            workbook.dispose();
+
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+    }
+    
+    @RequestMapping(value = "getXLSX_Pse")
+    public @ResponseBody
+    void getXLSX_Pse(HttpServletRequest request, HttpServletResponse response) {
+
+        String fileNameDownload = "Cargo Guide PSE - " + Functions.getFechaActual() + ".xlsx";
+
+        try {
+            // bExcel = true -> Trae TODOS los registros sin paginar
+            List<MPF293> listaData = this.getListPse(request, true);
+
+            SXSSFWorkbook workbook = new SXSSFWorkbook(100);
+            Sheet sheet = workbook.createSheet("PSE Report");
+
+            // --- ESTILO CABECERA ---
+            CellStyle headerStyle = workbook.createCellStyle();
+            Font headerFont = workbook.createFont();
+            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            headerFont.setColor(IndexedColors.WHITE.getIndex());
+            headerStyle.setFont(headerFont);
+            headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            headerStyle.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.getIndex());
+            headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            // --- CABECERAS (Basado en tu grilla ExtJS de PSE) ---
+            Row header = sheet.createRow(0);
+            String[] columns = {
+                "Nbr", "Customer", "FDate", "ID Uni", "Comercio", "TDoc", "NRut", 
+                "ID Taq", "Cod Apli", "Doc", "NDoc", "Nombre", "Telf", "Reference", 
+                "Concepto", "Monto", "T. Payment", "Refer Pay", "F. Payment", "State", 
+                "Cuotas", "T. Tarjet", "Msg Resp", "Cod Auth", "Cyc PSE", "CUS", 
+                "Mul Fact", "Camp 1", "Camp 2", "Camp 3", "Camp 4", "Camp 5", "Status Val"
+            };
+
+            for (int i = 0; i < columns.length; i++) {
+                Cell cell = header.createCell(i);
+                cell.setCellValue(columns[i]);
+                cell.setCellStyle(headerStyle);
+                sheet.setColumnWidth(i, 4500); // Ancho estándar
+            }
+
+            // --- LLENADO DE FILAS ---
+            int rowIdx = 1;
+            for (MPF293 item : listaData) {
+                Row row = sheet.createRow(rowIdx++);
+
+                row.createCell(0).setCellValue(item.RN);
+                row.createCell(1).setCellValue(item.CCUST);
+                row.createCell(2).setCellValue(item.FDATE);
+                row.createCell(3).setCellValue(item.IDUNI);
+                row.createCell(4).setCellValue(item.COMERCIO);
+                row.createCell(5).setCellValue(item.TDOC);
+                row.createCell(6).setCellValue(item.NRUT);
+                row.createCell(7).setCellValue(item.IDTAQ);
+                row.createCell(8).setCellValue(item.CODAPLI);
+                row.createCell(9).setCellValue(item.DOC);
+                row.createCell(10).setCellValue(item.NDOC);
+                row.createCell(11).setCellValue(item.NOM);
+                row.createCell(12).setCellValue(item.TELF);
+                row.createCell(13).setCellValue(item.REFERENCE);
+                row.createCell(14).setCellValue(item.CONCEPTO);
+                row.createCell(15).setCellValue(item.MONTO);
+                row.createCell(16).setCellValue(item.TPAYMENT);
+                row.createCell(17).setCellValue(item.REFERPAY);
+                row.createCell(18).setCellValue(item.FPAYMENT);
+                row.createCell(19).setCellValue(item.STATE);
+                row.createCell(20).setCellValue(item.CUOTAS);
+                row.createCell(21).setCellValue(item.TTARJET);
+                row.createCell(22).setCellValue(item.MSGRESP);
+                row.createCell(23).setCellValue(item.CODAUTH);
+                row.createCell(24).setCellValue(item.CYCPSE);
+                row.createCell(25).setCellValue(item.CUS);
+                row.createCell(26).setCellValue(item.MULFACT);
+                row.createCell(27).setCellValue(item.CAMP1);
+                row.createCell(28).setCellValue(item.CAMP2);
+                row.createCell(29).setCellValue(item.CAMP3);
+                row.createCell(30).setCellValue(item.CAMP4);
+                row.createCell(31).setCellValue(item.CAMP5);
+                row.createCell(32).setCellValue(item.STVAL);
+            }
+
+            // --- RESPUESTA HTTP ---
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+
+            workbook.write(response.getOutputStream());
+            workbook.dispose();
+
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+    }
 }

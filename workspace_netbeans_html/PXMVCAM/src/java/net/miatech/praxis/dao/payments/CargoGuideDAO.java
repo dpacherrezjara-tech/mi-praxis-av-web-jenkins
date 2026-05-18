@@ -30,8 +30,16 @@ import net.miatech.praxis.payment.MPF218;
 import net.miatech.praxis.payment.MPF218Filter;
 import net.miatech.praxis.payment.MPF221;
 import net.miatech.praxis.payment.MPF221Filter;
+import net.miatech.praxis.payment.MPF288;
+import net.miatech.praxis.payment.MPF288Filter;
 import net.miatech.praxis.payment.MPF291;
 import net.miatech.praxis.payment.MPF291Filter;
+import net.miatech.praxis.payment.MPF292;
+import net.miatech.praxis.payment.MPF292Filter;
+import net.miatech.praxis.payment.MPF293;
+import net.miatech.praxis.payment.MPF293Filter;
+import net.miatech.praxis.payment.MPF294;
+import net.miatech.praxis.payment.MPF294Filter;
 import net.miatech.praxis.payment.MPF295;
 import net.miatech.praxis.payment.MPF295Filter;
 import net.miatech.praxis.payment.filter.A2280Filter;
@@ -691,6 +699,377 @@ public class CargoGuideDAO {
         return result;
     }
 
+    public List<MPF292> loadMPS605(MPF292Filter filter) throws SQLException, Exception {
 
+        List<MPF292> lstData = new ArrayList<>();
+        MPF292 bean;
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        Connection cnx = null;
 
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS605(?,?,?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.registerOutParameter(2, Types.INTEGER);
+            cstmt.registerOutParameter(3, Types.INTEGER);
+            cstmt.registerOutParameter(4, Types.INTEGER);
+            cstmt.registerOutParameter(5, Types.INTEGER);
+
+            cstmt.setString(1, filter.IN_NUMGUIA != null ? filter.IN_NUMGUIA.trim() : "");
+            
+            cstmt.setInt(2, filter.page.PAGNUM);
+            cstmt.setInt(3, filter.page.PAGROW);
+            cstmt.setInt(4, filter.page.TOTPAG);
+            cstmt.setInt(5, filter.page.TOTROW);
+
+            cstmt.execute();
+
+            filter.page.PAGNUM = cstmt.getInt(2);
+            filter.page.PAGROW = cstmt.getInt(3);
+            filter.page.TOTPAG = cstmt.getInt(4);
+            filter.page.TOTROW = cstmt.getInt(5);
+
+            rst = cstmt.getResultSet();
+            while (rst.next()) {
+                bean = new MPF292();
+                
+                bean.RN = rst.getLong("RN");
+                bean.CCUST = rst.getString("CCUST") != null ? rst.getString("CCUST").trim() : "";
+                bean.SCOUNTRY = rst.getString("SCOUNTRY") != null ? rst.getString("SCOUNTRY").trim() : "";
+                bean.AWBNO = rst.getString("AWBNO") != null ? rst.getString("AWBNO").trim() : "";
+                bean.ORGCOD = rst.getString("ORGCOD") != null ? rst.getString("ORGCOD").trim() : "";
+                bean.DSTCOD = rst.getString("DSTCOD") != null ? rst.getString("DSTCOD").trim() : "";
+                bean.CHGWGT = rst.getString("CHGWGT") != null ? rst.getString("CHGWGT").trim() : "";
+                bean.IMPEXPFLG = rst.getString("IMPEXPFLG") != null ? rst.getString("IMPEXPFLG").trim() : "";
+                bean.CUSCOD = rst.getString("CUSCOD") != null ? rst.getString("CUSCOD").trim() : "";
+                bean.CUSNAM = rst.getString("CUSNAM") != null ? rst.getString("CUSNAM").trim() : "";
+                bean.CCAREFNUM = rst.getString("CCAREFNUM") != null ? rst.getString("CCAREFNUM").trim() : "";
+                bean.PAYADVNUM = rst.getString("PAYADVNUM") != null ? rst.getString("PAYADVNUM").trim() : "";
+                bean.PAYTYP = rst.getString("PAYTYP") != null ? rst.getString("PAYTYP").trim() : "";
+                bean.FNLAMT = rst.getString("FNLAMT") != null ? rst.getString("FNLAMT").trim() : "";
+                bean.FCCHDAMT = rst.getString("FCCHDAMT") != null ? rst.getString("FCCHDAMT").trim() : "";
+                bean.OTHCHGAMT = rst.getString("OTHCHGAMT") != null ? rst.getString("OTHCHGAMT").trim() : "";
+                bean.AGTCOM = rst.getString("AGTCOM") != null ? rst.getString("AGTCOM").trim() : "";
+                bean.DISCOUNT = rst.getString("DISCOUNT") != null ? rst.getString("DISCOUNT").trim() : "";
+                bean.PACURCOD = rst.getString("PACURCOD") != null ? rst.getString("PACURCOD").trim() : "";
+                bean.AWBCURCOD = rst.getString("AWBCURCOD") != null ? rst.getString("AWBCURCOD").trim() : "";
+                bean.EXCRAT = rst.getString("EXCRAT") != null ? rst.getString("EXCRAT").trim() : "";
+                bean.PAYMTD = rst.getString("PAYMTD") != null ? rst.getString("PAYMTD").trim() : "";
+                bean.FLTNUM = rst.getString("FLTNUM") != null ? rst.getString("FLTNUM").trim() : "";
+                
+                
+                bean.page.PAGNUM = filter.page.PAGNUM;
+                bean.page.PAGROW = filter.page.PAGROW;
+                bean.page.TOTPAG = filter.page.TOTPAG;
+                bean.page.TOTROW = filter.page.TOTROW;
+
+                lstData.add(bean);
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try { rst.close(); } catch (SQLException e) {}
+            }
+            if (cstmt != null) {
+                try { cstmt.close(); } catch (SQLException e) {}
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+        }
+
+        return lstData;
+    }
+
+    public List<MPF294> loadMPS606(MPF294Filter filter) throws SQLException, Exception {
+
+        List<MPF294> lstData = new ArrayList<>();
+        MPF294 bean;
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        Connection cnx = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS606(?,?,?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.registerOutParameter(2, Types.INTEGER);
+            cstmt.registerOutParameter(3, Types.INTEGER);
+            cstmt.registerOutParameter(4, Types.INTEGER);
+            cstmt.registerOutParameter(5, Types.INTEGER);
+
+            // Parámetro IN (Filtro enviado desde ExtJS)
+            cstmt.setString(1, filter.IN_NUMGUIA != null ? filter.IN_NUMGUIA.trim() : "");
+            
+            cstmt.setInt(2, filter.page.PAGNUM);
+            cstmt.setInt(3, filter.page.PAGROW);
+            cstmt.setInt(4, filter.page.TOTPAG);
+            cstmt.setInt(5, filter.page.TOTROW);
+
+            cstmt.execute();
+
+            filter.page.PAGNUM = cstmt.getInt(2);
+            filter.page.PAGROW = cstmt.getInt(3);
+            filter.page.TOTPAG = cstmt.getInt(4);
+            filter.page.TOTROW = cstmt.getInt(5);
+
+            rst = cstmt.getResultSet();
+            while (rst.next()) {
+                bean = new MPF294(); 
+                
+                bean.RN = rst.getLong("RN");
+
+                bean.CCUST = rst.getString("CCUST") != null ? rst.getString("CCUST").trim() : "";
+                bean.RESPAY = rst.getString("RESPAY") != null ? rst.getString("RESPAY").trim() : "";
+                bean.REFCLI = rst.getString("REFCLI") != null ? rst.getString("REFCLI").trim() : "";
+                bean.LUGCOM = rst.getString("LUGCOM") != null ? rst.getString("LUGCOM").trim() : "";
+                bean.NUMFAC = rst.getString("NUMFAC") != null ? rst.getString("NUMFAC").trim() : "";
+                bean.NETO = rst.getString("NETO") != null ? rst.getString("NETO").trim() : "";
+                bean.INFSALES = rst.getString("INFSALES") != null ? rst.getString("INFSALES").trim() : "";
+                bean.MATERIAL = rst.getString("MATERIAL") != null ? rst.getString("MATERIAL").trim() : "";
+                bean.DESCPOS = rst.getString("DESCPOS") != null ? rst.getString("DESCPOS").trim() : "";
+                bean.CENTRO = rst.getString("CENTRO") != null ? rst.getString("CENTRO").trim() : "";
+                bean.REFERENCE = rst.getString("REFERENCE") != null ? rst.getString("REFERENCE").trim() : "";
+                bean.IMPORTE = rst.getString("IMPORTE") != null ? rst.getString("IMPORTE").trim() : "";
+                bean.REFGUIA = rst.getString("REFGUIA") != null ? rst.getString("REFGUIA").trim() : "";
+                bean.GUIA = rst.getString("GUIA") != null ? rst.getString("GUIA").trim() : "";
+                bean.SCURRENCY = rst.getString("SCURRENCY") != null ? rst.getString("SCURRENCY").trim() : "";
+                bean.STVAL = rst.getString("STVAL") != null ? rst.getString("STVAL").trim() : "";
+                bean.BANDOC = rst.getString("BANDOC") != null ? rst.getString("BANDOC").trim() : "";
+                
+                bean.page.PAGNUM = filter.page.PAGNUM;
+                bean.page.PAGROW = filter.page.PAGROW;
+                bean.page.TOTPAG = filter.page.TOTPAG;
+                bean.page.TOTROW = filter.page.TOTROW;
+
+                lstData.add(bean);
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try { rst.close(); } catch (SQLException e) {}
+            }
+            if (cstmt != null) {
+                try { cstmt.close(); } catch (SQLException e) {}
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+        }
+
+        return lstData;
+    }
+    
+    public List<MPF288> loadMPS607(MPF288Filter filter) throws SQLException, Exception {
+
+        List<MPF288> lstData = new ArrayList<>();
+        MPF288 bean;
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        Connection cnx = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS607(?,?,?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.registerOutParameter(2, Types.INTEGER);
+            cstmt.registerOutParameter(3, Types.INTEGER);
+            cstmt.registerOutParameter(4, Types.INTEGER);
+            cstmt.registerOutParameter(5, Types.INTEGER);
+
+            cstmt.setString(1, filter.IN_NUMGUIA != null ? filter.IN_NUMGUIA.trim() : "");
+            
+            cstmt.setInt(2, filter.page.PAGNUM);
+            cstmt.setInt(3, filter.page.PAGROW);
+            cstmt.setInt(4, filter.page.TOTPAG);
+            cstmt.setInt(5, filter.page.TOTROW);
+
+            cstmt.execute();
+
+            filter.page.PAGNUM = cstmt.getInt(2);
+            filter.page.PAGROW = cstmt.getInt(3);
+            filter.page.TOTPAG = cstmt.getInt(4);
+            filter.page.TOTROW = cstmt.getInt(5);
+
+            rst = cstmt.getResultSet();
+            while (rst.next()) {
+                bean = new MPF288(); 
+                
+                bean.RN = rst.getLong("RN");
+                
+                bean.CCUST = rst.getString("CCUST") != null ? rst.getString("CCUST").trim() : "";
+                bean.SOCIETY = rst.getString("SOCIETY") != null ? rst.getString("SOCIETY").trim() : "";
+                bean.LCOM = rst.getString("LCOM") != null ? rst.getString("LCOM").trim() : "";
+                bean.DIV = rst.getString("DIV") != null ? rst.getString("DIV").trim() : "";
+                bean.CENBEN = rst.getString("CENBEN") != null ? rst.getString("CENBEN").trim() : "";
+                bean.SCOUNTRY = rst.getString("SCOUNTRY") != null ? rst.getString("SCOUNTRY").trim() : "";
+                bean.STVAL = rst.getString("STVAL") != null ? rst.getString("STVAL").trim() : "";
+                bean.BLOCPAG = rst.getString("BLOCPAG") != null ? rst.getString("BLOCPAG").trim() : "";
+                bean.CLAVREF1 = rst.getString("CLAVREF1") != null ? rst.getString("CLAVREF1").trim() : "";
+                bean.CLAVREF3 = rst.getString("CLAVREF3") != null ? rst.getString("CLAVREF3").trim() : "";
+                bean.NOMBRE1 = rst.getString("NOMBRE1") != null ? rst.getString("NOMBRE1").trim() : "";
+                bean.NUMLEG = rst.getString("NUMLEG") != null ? rst.getString("NUMLEG").trim() : "";
+                bean.ACCOUNT = rst.getString("ACCOUNT") != null ? rst.getString("ACCOUNT").trim() : "";
+                bean.REFERENCE = rst.getString("REFERENCE") != null ? rst.getString("REFERENCE").trim() : "";
+                bean.BANDOCCAR = rst.getString("BANDOCCAR") != null ? rst.getString("BANDOCCAR").trim() : "";
+                bean.ADATE = rst.getString("ADATE") != null ? rst.getString("ADATE").trim() : "";
+                bean.SCURRENCY = rst.getString("SCURRENCY") != null ? rst.getString("SCURRENCY").trim() : "";
+                bean.TEXTO = rst.getString("TEXTO") != null ? rst.getString("TEXTO").trim() : "";
+                bean.PAYMET = rst.getString("PAYMET") != null ? rst.getString("PAYMET").trim() : "";
+                bean.FCONT = rst.getString("FCONT") != null ? rst.getString("FCONT").trim() : "";
+                bean.CLSDOC = rst.getString("CLSDOC") != null ? rst.getString("CLSDOC").trim() : "";
+                bean.FECBASE = rst.getString("FECBASE") != null ? rst.getString("FECBASE").trim() : "";
+                bean.DELAYDAY = rst.getString("DELAYDAY") != null ? rst.getString("DELAYDAY").trim() : "";
+                bean.FECVENC = rst.getString("FECVENC") != null ? rst.getString("FECVENC").trim() : "";
+                bean.CONPAY = rst.getString("CONPAY") != null ? rst.getString("CONPAY").trim() : "";
+                bean.CME = rst.getString("CME") != null ? rst.getString("CME").trim() : "";
+                bean.CLAVECONT = rst.getString("CLAVECONT") != null ? rst.getString("CLAVECONT").trim() : "";
+                bean.NETOLOC = rst.getString("NETOLOC") != null ? rst.getString("NETOLOC").trim() : "";
+                bean.IMPORTELOC = rst.getString("IMPORTELOC") != null ? rst.getString("IMPORTELOC").trim() : "";
+                bean.IMPORTLOC2 = rst.getString("IMPORTLOC2") != null ? rst.getString("IMPORTLOC2").trim() : "";
+                bean.MONLOC = rst.getString("MONLOC") != null ? rst.getString("MONLOC").trim() : "";
+                bean.MONSUC = rst.getString("MONSUC") != null ? rst.getString("MONSUC").trim() : "";
+                bean.MONSUC2 = rst.getString("MONSUC2") != null ? rst.getString("MONSUC2").trim() : "";
+                bean.DOCCOMP = rst.getString("DOCCOMP") != null ? rst.getString("DOCCOMP").trim() : "";
+                bean.PRDA = rst.getString("PRDA") != null ? rst.getString("PRDA").trim() : "";
+                bean.TRAN = rst.getString("TRAN") != null ? rst.getString("TRAN").trim() : "";
+                bean.BANDOC = rst.getString("BANDOC") != null ? rst.getString("BANDOC").trim() : "";
+                bean.SEQ = rst.getString("SEQ") != null ? rst.getString("SEQ").trim() : "";
+                bean.ACCNUMBER = rst.getString("ACCNUMBER") != null ? rst.getString("ACCNUMBER").trim() : "";
+                bean.FREGLA = rst.getString("FREGLA") != null ? rst.getString("FREGLA").trim() : "";
+                bean.CBATCH = rst.getString("CBATCH") != null ? rst.getString("CBATCH").trim() : "";
+                bean.TPERIOD = rst.getString("TPERIOD") != null ? rst.getString("TPERIOD").trim() : "";
+                bean.DCYCLE = rst.getString("DCYCLE") != null ? rst.getString("DCYCLE").trim() : "";
+                
+                bean.page.PAGNUM = filter.page.PAGNUM;
+                bean.page.PAGROW = filter.page.PAGROW;
+                bean.page.TOTPAG = filter.page.TOTPAG;
+                bean.page.TOTROW = filter.page.TOTROW;
+
+                lstData.add(bean);
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try { rst.close(); } catch (SQLException e) {}
+            }
+            if (cstmt != null) {
+                try { cstmt.close(); } catch (SQLException e) {}
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+        }
+
+        return lstData;
+    }
+    
+    public List<MPF293> loadMPS608(MPF293Filter filter) throws SQLException, Exception {
+
+        List<MPF293> lstData = new ArrayList<>();
+        MPF293 bean;
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        Connection cnx = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS608(?,?,?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.registerOutParameter(2, Types.INTEGER);
+            cstmt.registerOutParameter(3, Types.INTEGER);
+            cstmt.registerOutParameter(4, Types.INTEGER);
+            cstmt.registerOutParameter(5, Types.INTEGER);
+
+            cstmt.setString(1, filter.IN_NUMGUIA != null ? filter.IN_NUMGUIA.trim() : "");
+            
+            cstmt.setInt(2, filter.page.PAGNUM);
+            cstmt.setInt(3, filter.page.PAGROW);
+            cstmt.setInt(4, filter.page.TOTPAG);
+            cstmt.setInt(5, filter.page.TOTROW);
+
+            cstmt.execute();
+
+            filter.page.PAGNUM = cstmt.getInt(2);
+            filter.page.PAGROW = cstmt.getInt(3);
+            filter.page.TOTPAG = cstmt.getInt(4);
+            filter.page.TOTROW = cstmt.getInt(5);
+
+            rst = cstmt.getResultSet();
+            while (rst.next()) {
+                bean = new MPF293(); 
+                
+                bean.RN = rst.getLong("RN");
+                bean.CCUST = rst.getString("CCUST") != null ? rst.getString("CCUST").trim() : "";
+                bean.FDATE = rst.getString("FDATE") != null ? rst.getString("FDATE").trim() : "";
+                bean.IDUNI = rst.getString("IDUNI") != null ? rst.getString("IDUNI").trim() : "";
+                bean.COMERCIO = rst.getString("COMERCIO") != null ? rst.getString("COMERCIO").trim() : "";
+                bean.TDOC = rst.getString("TDOC") != null ? rst.getString("TDOC").trim() : "";
+                bean.NRUT = rst.getString("NRUT") != null ? rst.getString("NRUT").trim() : "";
+                bean.IDTAQ = rst.getString("IDTAQ") != null ? rst.getString("IDTAQ").trim() : "";
+                bean.CODAPLI = rst.getString("CODAPLI") != null ? rst.getString("CODAPLI").trim() : "";
+                bean.DOC = rst.getString("DOC") != null ? rst.getString("DOC").trim() : "";
+                bean.NDOC = rst.getString("NDOC") != null ? rst.getString("NDOC").trim() : "";
+                bean.NOM = rst.getString("NOM") != null ? rst.getString("NOM").trim() : "";
+                bean.TELF = rst.getString("TELF") != null ? rst.getString("TELF").trim() : "";
+                bean.REFERENCE = rst.getString("REFERENCE") != null ? rst.getString("REFERENCE").trim() : "";
+                bean.CONCEPTO = rst.getString("CONCEPTO") != null ? rst.getString("CONCEPTO").trim() : "";
+                bean.MONTO = rst.getString("MONTO") != null ? rst.getString("MONTO").trim() : "";
+                bean.TPAYMENT = rst.getString("TPAYMENT") != null ? rst.getString("TPAYMENT").trim() : "";
+                bean.REFERPAY = rst.getString("REFERPAY") != null ? rst.getString("REFERPAY").trim() : "";
+                bean.FPAYMENT = rst.getString("FPAYMENT") != null ? rst.getString("FPAYMENT").trim() : "";
+                bean.STATE = rst.getString("STATE") != null ? rst.getString("STATE").trim() : "";
+                bean.CUOTAS = rst.getString("CUOTAS") != null ? rst.getString("CUOTAS").trim() : "";
+                bean.TTARJET = rst.getString("TTARJET") != null ? rst.getString("TTARJET").trim() : "";
+                bean.MSGRESP = rst.getString("MSGRESP") != null ? rst.getString("MSGRESP").trim() : "";
+                bean.CODAUTH = rst.getString("CODAUTH") != null ? rst.getString("CODAUTH").trim() : "";
+                bean.CYCPSE = rst.getString("CYCPSE") != null ? rst.getString("CYCPSE").trim() : "";
+                bean.CUS = rst.getString("CUS") != null ? rst.getString("CUS").trim() : "";
+                bean.MULFACT = rst.getString("MULFACT") != null ? rst.getString("MULFACT").trim() : "";
+                bean.CAMP1 = rst.getString("CAMP1") != null ? rst.getString("CAMP1").trim() : "";
+                bean.CAMP2 = rst.getString("CAMP2") != null ? rst.getString("CAMP2").trim() : "";
+                bean.CAMP3 = rst.getString("CAMP3") != null ? rst.getString("CAMP3").trim() : "";
+                bean.CAMP4 = rst.getString("CAMP4") != null ? rst.getString("CAMP4").trim() : "";
+                bean.CAMP5 = rst.getString("CAMP5") != null ? rst.getString("CAMP5").trim() : "";
+                bean.STVAL = rst.getString("STVAL") != null ? rst.getString("STVAL").trim() : "";
+                
+                bean.page.PAGNUM = filter.page.PAGNUM;
+                bean.page.PAGROW = filter.page.PAGROW;
+                bean.page.TOTPAG = filter.page.TOTPAG;
+                bean.page.TOTROW = filter.page.TOTROW;
+
+                lstData.add(bean);
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try { rst.close(); } catch (SQLException e) {}
+            }
+            if (cstmt != null) {
+                try { cstmt.close(); } catch (SQLException e) {}
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+        }
+
+        return lstData;
+    }
 }

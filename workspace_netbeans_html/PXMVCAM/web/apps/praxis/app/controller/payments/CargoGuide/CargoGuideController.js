@@ -135,7 +135,7 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
 
         this.paramsObtainData.COUNTRY = 2;
         this.paramsObtainData.CURRENCY = 2;
-        
+
         Ext.Ajax.request({
             url: prototype.urlMaster + '/obtainData',
             method: 'POST',
@@ -155,15 +155,15 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
                 });
                 Ext.getCmp(prototype.id + '-cmbCountry').bindStore(storeData3);
                 Ext.getCmp(prototype.id + '-cmbCountry').setValue('');
-                
+
                 var storeData4 = Ext.create('Ext.data.Store', {
                     data: me.lstCurrencies,
                     autoLoad: true
                 });
                 Ext.getCmp(prototype.id + '-cmbCurrencies').bindStore(storeData4);
                 Ext.getCmp(prototype.id + '-cmbCurrencies').setValue('');
-                
-                
+
+
                 global.clear();
             }
         });
@@ -191,6 +191,13 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
         } else if (selected === 1) {
             Ext.getCmp(prototype.id + '-panelBSP').setVisible(false);
             Ext.getCmp(prototype.id + '-panelARC').setVisible(true);
+
+            let ticketValue = Ext.getCmp(prototype.id + '-txtTicket').getValue();
+
+            if (!ticketValue || ticketValue.trim() === '') {
+                return;
+            }
+
             this.setFormatParameterARC();
             this.setGridDataARC();
         }
@@ -258,25 +265,23 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
     setFormatParameterARC: function () {
         me.bean = {};
 
-        // Settlement From
         me.bean.IN_FECHA_FROM = me.buildDate(
                 Ext.getCmp(prototype.id + '-cmbDateFromYearARC').getValue(),
                 Ext.getCmp(prototype.id + '-cmbDateFromMonthARC').getValue(),
                 Ext.getCmp(prototype.id + '-cmbDateFromDayARC').getValue()
                 );
 
-        // Settlement To
         me.bean.IN_FECHA_TO = me.buildDate(
                 Ext.getCmp(prototype.id + '-cmbDateToYearARC').getValue(),
                 Ext.getCmp(prototype.id + '-cmbDateToMonthARC').getValue(),
                 Ext.getCmp(prototype.id + '-cmbDateToDayARC').getValue()
                 );
 
-        // Additional
         me.bean.IN_SOCIETY = Ext.getCmp(prototype.id + '-typeSocietyARC').getValue() || '';
         me.bean.IN_COMAND = Ext.getCmp(prototype.id + '-cmbComand').getValue() || '';
         me.bean.IN_FILE_NAME = Ext.getCmp(prototype.id + '-txtINameFileARC').getValue() || '';
         me.bean.IN_OPTION = Ext.getCmp(prototype.id + '-cmbInputDateARC').getValue() || '';
+        me.bean.IN_NUMGUIA = Ext.getCmp(prototype.id + '-txtTicket').getValue() || '';
 
         var beanString = JSON.stringify(me.bean);
         searchParams = {
@@ -287,15 +292,48 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
         console.log(searchParams, 'searchParamsARC');
     },
     setGridDataARC: function () {
-        win.lblUser_toolTip("Estructura: MPF218");
+        var me = this;
+
+        var tabPanel = Ext.getCmp(prototype.id + '-mainTabPanelARC');
+        var activeTabTitle = tabPanel.getActiveTab().title;
+
+        var currentUrl = '';
+        var currentGridId = '';
+        var toolTipStruct = '';
+
+        switch (activeTabTitle) {
+            case '1. DAILY':
+                currentUrl = prototype.url + '/searchARCDaily';
+                currentGridId = prototype.id + '-gridDataDetailARC';
+                toolTipStruct = "Estructura: MPF218";
+                break;
+            case '2. LIBERA':
+                currentUrl = prototype.url + '/searchARCLibera';
+                currentGridId = prototype.id + '-gridLiberaARC';
+                toolTipStruct = "Estructura: MPF_LIBERA";
+                break;
+            case '3. OPEN':
+                currentUrl = prototype.url + '/searchARCOpen';
+                currentGridId = prototype.id + '-gridOpenARC';
+                toolTipStruct = "Estructura: MPF_OPEN";
+                break;
+            case '4. PSE':
+                currentUrl = prototype.url + '/searchARCPse';
+                currentGridId = prototype.id + '-gridPseARC';
+                toolTipStruct = "Estructura: MPF_PSE";
+                break;
+        }
+
+        win.lblUser_toolTip(toolTipStruct);
         me.panelActual = '-panelGridDataARC';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
         me.setWidthPie();
 
         var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
             proxy: {
-                url: prototype.url + '/searchARC'
-            }, listeners: {
+                url: currentUrl
+            },
+            listeners: {
                 beforeload: function (obj) {
                     obj.proxy.extraParams = searchParams;
                 },
@@ -305,6 +343,7 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
                     Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
                     Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
                     Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+
                     if (obj.data.length === 0) {
                         global.Msg({
                             msg: 'Data not found.'
@@ -313,10 +352,17 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
                 }
             }
         });
+
         global.clear();
-        Ext.getCmp(prototype.id + '-gridDataDetailARC').bindStore(storeGridDatas);
+
+        Ext.getCmp(currentGridId).bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
 
+        this.getPaggin();
+    },
+    onTabChangeARC: function (tabPanel, newCard, oldCard) {
+        this.setFormatParameterARC();
+        this.setGridDataARC();
     },
     onViewCSVARC: function (column, e, row, colIndex, x, rowData) {
         let data = rowData.data;
@@ -346,8 +392,8 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
                             src: imageUrl,
                             style: {
                                 display: 'block',
-                                transform: 'scale(1.4)', // 🔍 nivel de zoom
-                                transformOrigin: 'top left', // 🎯 foco arriba izquierda
+                                transform: 'scale(1.4)',
+                                transformOrigin: 'top left',
                                 margin: '0'
                             }
                         }]
@@ -414,13 +460,38 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
         });
     },
     exportExcel: function () {
+        var me = this;
+
         switch (me.panelActual) {
-            case  '-panelGridDataDetail':
+            case '-panelGridDataDetail':
                 global.getFile(prototype.url + '/getXLSX?beanString=' + encodeURI(searchParams.beanString));
                 break;
-            case  '-panelGridDataARC':
-                global.getFile(prototype.url + '/getXLSXARC?beanString=' + encodeURI(searchParams.beanString));
+
+            case '-panelGridDataARC':
+                var tabPanel = Ext.getCmp(prototype.id + '-mainTabPanelARC');
+                var activeTabTitle = tabPanel.getActiveTab().title;
+                var excelUrl = '';
+
+                switch (activeTabTitle) {
+                    case '1. DAILY':
+                        excelUrl = prototype.url + '/getXLSX_Daily';
+                        break;
+                    case '2. LIBERA':
+                        excelUrl = prototype.url + '/getXLSX_Libera';
+                        break;
+                    case '3. OPEN':
+                        excelUrl = prototype.url + '/getXLSX_Open';
+                        break;
+                    case '4. PSE':
+                        excelUrl = prototype.url + '/getXLSX_Pse';
+                        break;
+                }
+
+                if (excelUrl !== '') {
+                    global.getFile(excelUrl + '?beanString=' + encodeURI(searchParams.beanString));
+                }
                 break;
+
             default:
                 global.Msg({msg: 'Under Construction'});
         }
@@ -486,10 +557,10 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
                 Ext.getCmp(prototype.id + '-pie').setVisible(true);
                 me.pagginActual = '-paggin';
                 break;
-            case  '-panelGridDataARC':
+            case '-panelGridDataARC':
                 me.pagginActual = '-paggin';
                 Ext.getCmp(prototype.id + '-pie').setVisible(true);
-                me.pagginActual = '-paggin';
+                Ext.getCmp(prototype.id + '-panelHeight').setHeight(670);
                 break;
         }
     },
@@ -706,7 +777,7 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
         this.winDataEntry('U', data);
     },
     btnLinkMPF291_click: function () {
-        var grid     = Ext.getCmp(prototype.id + '-gridDataDetail');
+        var grid = Ext.getCmp(prototype.id + '-gridDataDetail');
         var selected = grid ? grid.getSelectionModel().getSelection() : [];
 
         if (!selected || selected.length === 0) {
@@ -714,7 +785,7 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
             return;
         }
 
-        var rec  = selected[0];
+        var rec = selected[0];
         var data = rec.data;
 
         if (!data.SFILE || data.SFILE.trim() === '') {
@@ -730,33 +801,33 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
             id: prototype.id + '-mpf291Link',
             params: {
                 mpf295: {
-                    CCUST:    data.CCUST    || '',
-                    SFILE:    data.SFILE    || '',
-                    NPAGE:    data.NPAGE    || '',
-                    PAYDAY:   data.PAYDAY   || '',
-                    TYPE:     data.TYPE     || '',
-                    SEQ:      data.SEQ      || '',
-                    CBATCH:   data.CBATCH   || '',
-                    DATEBAT:  data.DATEBAT  || '',
+                    CCUST: data.CCUST || '',
+                    SFILE: data.SFILE || '',
+                    NPAGE: data.NPAGE || '',
+                    PAYDAY: data.PAYDAY || '',
+                    TYPE: data.TYPE || '',
+                    SEQ: data.SEQ || '',
+                    CBATCH: data.CBATCH || '',
+                    DATEBAT: data.DATEBAT || '',
                     SCOUNTRY: data.SCOUNTRY || ''
                 }
             }
         }).show();
     },
     btnGenerarCartera_click: function () {
-        
+
         var me = this;
         me.bean = {};
 
         var fromYear = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue();
         var fromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue();
         var fromDay = Ext.getCmp(prototype.id + '-cmbDateFromDay').getValue();
-        
+
         var toYear = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue();
         var toMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue();
         var toDay = Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
 
-        if (!fromYear || !fromMonth  || !toYear || !toMonth ) {
+        if (!fromYear || !fromMonth || !toYear || !toMonth) {
             global.Msg({
                 msg: 'Por favor, seleccione un rango de fechas válido antes de exportar.'
             });
@@ -765,13 +836,13 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
 
         me.bean.IN_FECHA_FROM = me.buildDate(fromYear, fromMonth, fromDay);
         me.bean.IN_FECHA_TO = me.buildDate(toYear, toMonth, toDay);
-        
+
         me.bean.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue() || '';
 
         var beanString = JSON.stringify(me.bean);
 
         var urlExport = prototype.url + '/exportExcel?beanString=' + encodeURIComponent(beanString);
-        
+
         window.open(urlExport, '_blank');
 
     },
