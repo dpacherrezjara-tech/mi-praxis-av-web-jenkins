@@ -87,7 +87,6 @@ Ext.define('Ext.Praxis.controller.payments.DebitsReport.DebitsReportController',
     },
     xpanel_afterrender: function () {
         me.obtainData();
-//        me.btnSearch_click();
     },
     obtainData: function () {
         var fechaActual = me.fecha || new Date();
@@ -203,7 +202,13 @@ Ext.define('Ext.Praxis.controller.payments.DebitsReport.DebitsReportController',
                 global.clear();
             }
         });
-
+        
+        var comboDoctype = Ext.getCmp(prototype.id + '-filterDoctype'); 
+        
+        if (comboDoctype) {
+            var initialValue = "R";
+            me.onChangeDoctype(comboDoctype, initialValue, null); 
+        }
     },
     btnSearch_click: function (obj, e) {
         let fs = Ext.getCmp(prototype.id + '-titleFieldsetBSP');

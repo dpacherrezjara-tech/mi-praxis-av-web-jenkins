@@ -660,7 +660,7 @@ Ext.define('Ext.Praxis.view.payments.DebitsReportForm.Info', {
                                                     return  value;
                                                 }
                                             },
-                                            {align: 'center', text: '<span style="color:white;font-weight:bold;">BPO Comment</span>', dataIndex: 'SAUTHOC', width: 140, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                            {align: 'center', text: '<span style="color:white;font-weight:bold;">BPO Comment</span>', dataIndex: 'BPO_COMMENT_DESC', width: 140, style: 'padding:2px; background: #6C87A8;border-color:white',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
