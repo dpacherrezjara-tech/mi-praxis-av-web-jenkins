@@ -387,4 +387,8 @@ public class BankReconciliationLogic {
         return bankReconciliationDAO.convertAmountUSD(amount, currency, date);
     }
     
+    public String updateMPF223(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.updateMPF223(filter);
+    }
+    
 }
