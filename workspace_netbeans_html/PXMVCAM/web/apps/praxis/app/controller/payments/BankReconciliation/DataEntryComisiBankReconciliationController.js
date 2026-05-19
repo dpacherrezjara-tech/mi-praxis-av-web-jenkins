@@ -1,0 +1,710 @@
+/* global callbackMostrarData */
+
+Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryComisiBankReconciliationController', {
+    extend: 'Ext.app.ViewController',
+    alias: 'controller.DataEntryComisiBankReconciliationController',
+    // <editor-fold defaultstate="collapsed" desc="Variables Globales">
+    meDE: '',
+    actionCode: '',
+    bean: {},
+    beanTemp: {},
+    beanResult: {},
+    
+    lstCountry: [],
+    searchParams: {},
+    lstA1852: {},
+    dataObtain: {},
+    copia: '',
+    // </editor-fold>
+    init: function (view) {
+        prototype.id = 'BankReconciliationForm';
+        prototype.url = CONTEXTPATH + '/BankReconciliation';
+        meDE = this;
+        this.p = this.view.params;
+        this.actionCode = this.p.action;
+        this.bean = this.p.rec;
+        this.lstCountry = this.p.listaPaises;
+        this.lstStatus = this.p.lstStatus;
+        this.lstConcept = this.p.lstConcept;
+        this.lstAdjType = this.p.lstAdjType;
+        
+        console.log(this.view.params,'this.view.params')
+    },
+    
+   
+    afterRender: function () {
+        
+
+//        var obtenerLista = Ext.create('Ext.data.Store', {
+//            data: this.lstCountry,
+//            autoLoad: true
+//        });
+//
+//
+//        Ext.getCmp(prototype.id + '-cmbCOUNTRY').bindStore(obtenerLista);
+//        Ext.getCmp(prototype.id + '-cmbCOUNTRY').setValue('');
+        
+
+         
+         
+        switch (this.actionCode) {
+            case 'I':
+                Ext.getCmp(prototype.id + '-btn-save').show();
+                Ext.getCmp(prototype.id + '-btn-update').hide();
+                Ext.getCmp(prototype.id + '-btn-cancel').show();
+                break;
+            case 'U':
+                this.mostrarData();
+                Ext.getCmp(prototype.id + '-btn-save').hide();
+                Ext.getCmp(prototype.id + '-btn-update').show();
+                Ext.getCmp(prototype.id + '-btn-cancel').show();
+                break;
+        }
+    },
+    mostrarData: function () {
+        
+        this.setValue('txtRN', this.bean.RN);
+        this.setValue('txtTINPUT', this.bean.TINPUT);
+        this.setValue('txtCCUST', this.bean.CCUST);
+        this.setValue('txtSCOUNTRY2', this.bean.SCOUNTRY);
+        this.setValue('txtBANDOC2', this.bean.BANDOC);
+        this.setValue('txtADATE', this.bean.ADATE);
+        this.setValue('txtCONCEPT', this.bean.CONCEPT);
+        this.setValue('txtPRDA', this.bean.PRDA);
+        this.setValue('txtACCCOMP', this.bean.ACCCOMP);
+        this.setValue('txtMONEDA', this.bean.MONEDA);
+        this.setValue('txtIMPORTEN', this.bean.IMPORTEN);
+        this.setValue('txtMONEDAPAGO', this.bean.MONEDAPAGO);
+        this.setValue('txtIMPORTEPAG', this.bean.IMPORTEPAG);
+        
+        Ext.getCmp(prototype.id + '-txtRN').setDisabled(true);
+        Ext.getCmp(prototype.id + '-txtTINPUT').setDisabled(true);
+        Ext.getCmp(prototype.id + '-txtCCUST').setDisabled(true);
+        Ext.getCmp(prototype.id + '-txtSCOUNTRY2').setDisabled(true);
+        Ext.getCmp(prototype.id + '-txtBANDOC2').setDisabled(true);
+        Ext.getCmp(prototype.id + '-txtADATE').setDisabled(true);
+//        Ext.getCmp(prototype.id + '-txtCONCEPT').setDisabled(true);
+        Ext.getCmp(prototype.id + '-txtPRDA').setDisabled(true);
+//        Ext.getCmp(prototype.id + '-txtACCCOMP').setDisabled(true);
+        Ext.getCmp(prototype.id + '-txtMONEDA').setDisabled(true);
+        Ext.getCmp(prototype.id + '-txtIMPORTEN').setDisabled(true);
+        Ext.getCmp(prototype.id + '-txtMONEDAPAGO').setDisabled(true);
+        Ext.getCmp(prototype.id + '-txtIMPORTEPAG').setDisabled(true);
+        
+        this.setValue('txtUSUP', this.bean.O_USUP);
+        this.setValue('txtFEUP', this.bean.O_FEUP);
+        this.setValue('txtHOUP', this.bean.O_HOUP);
+        this.setValue('txtUSCR', this.bean.O_USCR);
+        this.setValue('txtFECR', this.bean.O_FECR);
+        this.setValue('txtHOCR', this.bean.O_HOCR);
+
+    },
+
+  
+    llenarData:function(beanTemp){
+        beanTemp.O_CCUST = this.bean.CCUST;
+        beanTemp.O_PRDA = this.bean.PRDA;
+        beanTemp.O_CODPRO = this.bean.CODPRO;
+        beanTemp.O_CCUSTPRO = this.bean.CCUSTPRO;
+        beanTemp.O_FLIQUIDACI = this.bean.FLIQUIDACI;
+        beanTemp.O_LIQUIDACIO = this.bean.LIQUIDACIO;
+        beanTemp.O_MERCHAND = this.bean.MERCHAND;
+        beanTemp.O_MONEDA = this.bean.MONEDA;
+        beanTemp.O_CORRL = this.bean.CORRL;
+        beanTemp.O_CBATCH = this.bean.CBATCH;
+        
+        beanTemp.O_CODIGO_OLD = this.bean.CODIGO;
+        beanTemp.O_CODIGO = this.getValue("txtCONCEPT");
+        beanTemp.O_ACCCOMP = this.getValue("txtACCCOMP");
+        
+        console.log(beanTemp,'beanTemp')
+    },
+    
+    
+    llenarDataInsert:function(beanTemp){
+        
+        
+ 
+        beanTemp.O_SAGENT = this.getValue("txtAGENTMPF199");
+        beanTemp.O_STVAL = this.getValue("txtSTATUSMPF199");  
+        beanTemp.O_ADATE = this.getValue("txtVALUEDATEMPF199");
+        beanTemp.O_CONCEPT = this.getValue("txtCONCEPTMPF199");
+        beanTemp.O_TADJ = this.getValue("txtATYPEMPF199");
+        beanTemp.O_SCONSOL = this.getValue("txtCONSOLMPF199");
+        beanTemp.O_SCURRENCY = this.getValue("txtCURRENCYMPF199");
+        beanTemp.O_NETO = this.getValue("txtNETOMPF199");
+        beanTemp.O_PAYAMOU = this.getValue("txtIPAYMPF199");
+        beanTemp.O_STRDATE = this.getValue("txtSTARTMPF199");
+        beanTemp.O_ENDDATE = this.getValue("txtENDMPF199");
+        beanTemp.O_SCOUNTRY = this.getValue("cmbCOUNTRY");
+        beanTemp.O_REFERENCE = this.getValue("txtREFEMPF199");
+        beanTemp.O_COMMENTS = this.getValue("txtCOMMENTSMPF199");
+        
+        
+        
+        
+//        beanTemp.O_USUP = this.getValue("txtUSUP").trim();
+//        beanTemp.O_FEUP = this.getValue("txtFEUP").trim();
+//        beanTemp.O_HOUP = this.getValue("txtHOUP").trim();
+//        beanTemp.O_USCR = this.getValue("txtUSCR").trim();
+        beanTemp.O_PRDA = this.getValue("txtFECR").trim();
+//        beanTemp.O_HOCR = this.getValue("txtHOCR").trim();
+//        
+        
+        
+   
+        
+    },
+    
+    
+//    <editor-fold defaultstate="collapsed" desc="Botones">
+
+
+    onSaveClick: function (btn) {
+        var exceptionCode = this.getValue('txtExceptionExterior');
+        var urlAction;
+        var exceptionName;
+        var beanTemp = {};
+
+        // --- NUEVA VALIDACIÓN PARA INDIA (Código 2) ---
+        if (exceptionCode === '2') {
+            var montoManual = this.getCleanNumberValue("txtRecaudacionINR");
+            var montoGrid = this.totalGridTemp || 0; // Recuperamos lo que guardó la lupa
+
+            // Calculamos diferencia absoluta para evitar problemas de decimales
+            var diferencia = Math.abs(montoManual - montoGrid);
+
+            // Si hay diferencia (mayor a 1 centavo) o el monto es 0
+            if (diferencia > 0.01 || montoManual === 0) {
+                Ext.Msg.alert('Descuadre', 
+                    'No se puede guardar. El monto reportado (' + Ext.util.Format.usMoney(montoManual) + 
+                    ') no coincide con la selección de la grilla (' + Ext.util.Format.usMoney(montoGrid) + ').'
+                );
+                return; 
+            }
+        }
+        // ----------------------------------------------
+
+        switch (exceptionCode) {
+            case '1': // ARGENTINA
+                this.llenarDataArgentina(beanTemp);
+                urlAction = '/MaintenanceMPF199insertArgentina';
+                exceptionName = 'Argentina';
+                break;
+
+            case '2': // INDIA
+                this.llenarDataIndia(beanTemp);
+                urlAction = '/MaintenanceMPF199insertIndia';
+                exceptionName = 'India';
+                break;
+
+            default: // ALL
+                this.llenarDataInsert(beanTemp);
+                urlAction = '/MaintenanceMPF199insert';
+                exceptionName = 'All';
+                break;
+        }
+
+        // ... (Resto del código original de confirmación y envío) ...
+        beanTemp.option = 'I'; 
+
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Are you sure to insert data for ' + exceptionName + '?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'yes') {
+                    this.MaintenanceMPF199Generic(beanTemp, urlAction, exceptionName);
+                }
+            }
+        });
+    },
+
+      
+      
+    onUpdateClick: function (btn) {
+//        var msj = this.validateDates();
+
+//        if (msj === '') {
+            Ext.Msg.show(
+                    {
+                        title: '.:PRAXIS:.',
+                        msg: 'Are you sure to Update?',
+                        buttons: Ext.MessageBox.YESNO,
+                        scope: this,
+                        animateTarget: btn,
+                        icon: Ext.MessageBox.QUESTION,
+                        modal: true,
+                        fn: function (btn) {
+                            if (btn === 'yes') {
+                                var beanTemp = {};
+                                this.llenarData(beanTemp);
+                                beanTemp.option = 'U';
+                                beanTemp.beanString = JSON.stringify(beanTemp);
+                                this.MaintenanceMPF199(beanTemp);
+                            }
+                        }
+                    });
+       
+    },
+
+//    onDeleteClick: function (btn) {
+//        Ext.Msg.show({
+//            title: '.:PRAXIS:.',
+//            msg: 'Are you sure to delete ?',
+//            buttons: Ext.MessageBox.YESNO,
+//            scope: this,
+//            icon: Ext.MessageBox.QUESTION,
+//            modal: true,
+//            fn: function (btn) {
+//                if (btn === 'yes') {
+//                    var beanTemp = {};
+//                    beanTemp.option = 'D';
+//                    beanTemp.beanString = JSON.stringify(this.beanResult);
+//                    this.MaintenanceA4169(beanTemp);
+//                }
+//            }
+//        });
+//    },
+    onCancelClick: function (btn) {
+        this.view.close();
+    },
+    
+    MaintenanceMPF199: function (beanTemp) {
+        // Capturamos el contexto del controlador de forma segura
+        var me = this; 
+
+        Ext.getCmp(prototype.id + '-dataEntryComisi').mask('Loading...');
+                
+        Ext.Ajax.request({
+            url: prototype.url + '/MaintenanceMPF223',
+            method: 'POST',
+            timeout: 60000000,
+             params: {
+                beanString: Ext.encode(beanTemp)
+            },
+            success: function (response, opts) {
+                Ext.getCmp(prototype.id + '-dataEntryComisi').unmask('Loading...');
+                var res = Ext.JSON.decode(response.responseText);
+                console.log(res);
+                
+                if (res.success) {
+                    global.Msg({msg: res.Mensaje});
+                    
+                    if (me.p && me.p.parentController) {
+                        me.p.parentController.setGridDataCOMISI();
+                    } else {
+                        Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+                    }
+
+                    Ext.getCmp('BankReconciliationForm-dataEntryComisi').close();
+                    
+                } else {
+                    global.Msg({msg: 'An error occurred'});
+                }
+            }
+        });
+    },
+    MaintenanceMPF199BKP: function (beanTemp) {
+
+    console.log(meDE.p,'meDE.p')
+    console.log(meDE.p.parentController,'meDE.p')
+
+        Ext.getCmp(prototype.id + '-dataEntryComisi').mask('Loading...');
+                
+        Ext.Ajax.request({
+            url: prototype.url + '/MaintenanceMPF223',
+            method: 'POST',
+            timeout: 60000000,
+             params: {
+            beanString: Ext.encode(beanTemp)
+        },
+//            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
+            success: function (response, opts) {
+                Ext.getCmp(prototype.id + '-dataEntryComisi').unmask('Loading...');
+                var res = Ext.JSON.decode(response.responseText);
+                console.log(res);
+                if (res.success) {
+                    global.Msg({msg: res.Mensaje});
+//                    Ext.getCmp(prototype.id + '-dataEntry').unmask();
+                    
+                    Ext.getCmp('BankReconciliationForm-dataEntryComisi').close();
+                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+                    
+                    
+                } else {
+                    global.Msg({msg: 'An error occurred'});
+                }
+            }
+        });
+    },
+    
+    // insert
+    
+    llenarDataArgentina: function (beanTemp) {
+        var radioGroup = Ext.getCmp(prototype.id + '-rdMonedaGroup');
+        var monedaSeleccionada = radioGroup ? radioGroup.getValue().moneda : 'ARS';
+
+        beanTemp.O_MONEDA = monedaSeleccionada;
+        beanTemp.O_RECAUDACION = this.getCleanNumberValue("txtRECAUDACION");
+        beanTemp.O_COMISIONMEP = this.getCleanNumberValue("txtComisionMEP");
+        beanTemp.O_IVA = this.getCleanNumberValue("txtIVA");
+        beanTemp.O_NETORENDIDO = this.getCleanNumberValue("txtNETORENDIDO");
+        beanTemp.O_EXCEPTION_CODE = this.getValue("txtExceptionExterior");
+        if (monedaSeleccionada === 'ARS') {
+            // --- MODO PESOS ---
+            beanTemp.O_TASA = this.getCleanNumberValue("txtTASA");
+            beanTemp.O_RENDICION = this.getCleanNumberValue("txtRendicion");
+            beanTemp.O_PAGOTERCERO = this.getCleanNumberValue("txtPagoTercero");
+            beanTemp.O_EVENTO = 0; 
+
+        } else {
+            beanTemp.O_TASA = 0;
+            beanTemp.O_RENDICION = 0;
+            beanTemp.O_PAGOTERCERO = 0;
+            beanTemp.O_EVENTO = this.getCleanNumberValue("txtMontoExento");
+        }
+    },
+    
+    
+    getCleanNumberValue: function (id) {
+        var val = this.getValue(id);
+        if (typeof val === 'string') {
+            val = val.replace(/,/g, ''); 
+            val = val.replace(/[^0-9.-]/g, ''); 
+        }
+        return val; 
+    },
+    
+    MaintenanceMPF199Generic: function (beanTemp, urlAction, exceptionName) {
+        var finalUrl = (prototype && prototype.url) ? (prototype.url + urlAction) : (CONTEXTPATH + '/BankReconciliation' + urlAction);
+
+        Ext.getCmp(prototype.id + '-dataEntryComisi').mask('Saving data for ' + exceptionName + '...');
+        Ext.Ajax.request({
+            url: finalUrl, 
+            method: 'POST',
+            timeout: 60000000,
+            params: {
+                beanString: Ext.encode(beanTemp)
+            },
+            success: function (response, opts) {
+                Ext.getCmp(prototype.id + '-dataEntryComisi').unmask('Loading...');
+                var res = Ext.JSON.decode(response.responseText);
+                if (res.success) {
+                    global.Msg({msg: res.Mensaje}); 
+                    Ext.getCmp('BankReconciliationForm-dataEntryComisi').close();
+                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+                } else {
+                    global.Msg({msg: 'Error: ' + res.Mensaje}); 
+                }
+            }
+        });
+    },
+    
+    // Agrega esta función utilitaria a tu controlador
+calculateNeto: function () {
+    var me = this;
+    var prototypeId = prototype.id;
+
+    // --- 1. Helper para obtener números limpios ---
+    var getNumericValue = function (id) {
+        var cmp = Ext.getCmp(prototypeId + '-' + id);
+        if (!cmp) return 0; // Seguridad por si el campo no existe
+        
+        var val = cmp.getValue();
+        if (typeof val === 'string') {
+            val = val.replace(/\./g, '').replace(/,/g, '.');
+        }
+        return Ext.Number.parseFloat(val) || 0;
+    };
+
+    // --- 2. Detectar Moneda Seleccionada ---
+    var radioCmp = Ext.getCmp(prototypeId + '-rdMonedaGroup');
+    // Si por alguna razón no está cargado aún, asumimos 'ARS' por defecto
+    var moneda = radioCmp ? radioCmp.getValue().moneda : 'ARS'; 
+
+    // --- 3. Obtener Valores Comunes (Existen en ambos casos) ---
+    var recaudacion = getNumericValue('txtRECAUDACION');
+    var comisionMEP = getNumericValue('txtComisionMEP');
+    var iva = getNumericValue('txtIVA');
+    
+    var descuentos = 0;
+
+    // --- 4. Lógica Condicional ---
+    if (moneda === 'ARS') {
+        var tasa = getNumericValue('txtTASA');
+        var rendicion = getNumericValue('txtRendicion');
+        var pagoTercero = getNumericValue('txtPagoTercero');
+        
+        descuentos = tasa + rendicion + pagoTercero + comisionMEP + iva;
+
+    } else {
+       var montoExento = getNumericValue('txtMontoExento'); 
+    
+        descuentos = comisionMEP + iva;        
+        descuentos = descuentos + montoExento;
+    }
+
+    var netoRendido = recaudacion - descuentos;
+    
+    var formattedNeto = Ext.util.Format.number(netoRendido, '0,000.00');
+    Ext.getCmp(prototypeId + '-txtNETORENDIDO').setValue(formattedNeto);
+},
+    
+    onExceptionSelect: function (combo, record) {
+        var selectedCode = record.get('code'); 
+
+        var pnlRendicion = Ext.getCmp(prototype.id + '-pnlRENDICIONBSP');
+        var pnlPendingFields = Ext.getCmp(prototype.id + '-pnlPENDINGFIELDS'); 
+        var pnlConversionIND = Ext.getCmp(prototype.id + '-pnlConversionIND'); 
+
+        var titleArgentina = Ext.getCmp(prototype.id + '-titleBspArgentina');
+        var titleIndia = Ext.getCmp(prototype.id + '-titleBspIndia'); 
+
+
+
+        // ARGENTINA (Código '1')
+        var isArgentina = (selectedCode === '1');
+        if (pnlRendicion) pnlRendicion.setVisible(isArgentina);
+        if (titleArgentina) titleArgentina.setVisible(isArgentina);
+
+        // INDIA (Código '2')
+        var isIndia = (selectedCode === '2');
+        if (pnlConversionIND) pnlConversionIND.setVisible(isIndia);
+        if (titleIndia) titleIndia.setVisible(isIndia);
+
+        // ALL (Código '')
+        var isAll = (selectedCode === '');
+        if (pnlPendingFields) pnlPendingFields.setVisible(isAll);
+
+        if (!isArgentina && pnlRendicion && pnlRendicion.getForm) {
+            pnlRendicion.getForm().reset();
+        }
+        if (!isIndia && pnlConversionIND && pnlConversionIND.getForm) {
+            pnlConversionIND.getForm().reset();
+        }
+
+    },
+
+    getStoreMontos: function() {
+        if (this.storeMontos) return this.storeMontos;
+
+        this.storeMontos = Ext.create('Ext.data.Store', {
+            fields: [
+                {name: 'SCOUNTRY',  mapping: 'O_SCOUNTRY'},
+                {name: 'SCURRENCY', mapping: 'O_SCURRENCY'},
+                {name: 'ADATE',     mapping: 'O_ADATE'},
+                {name: 'MONTO',     mapping: 'O_NETO'}, 
+                {name: 'STVAL',     mapping: 'O_STVAL'}
+            ],
+            proxy: {
+                type: 'ajax',
+                url: prototype.url + '/listPendingAmounts', 
+                reader: {
+                    type: 'json',
+                    rootProperty: 'data',
+                    successProperty: 'success'
+                },
+                timeout: 60000 
+            },
+            autoLoad: false
+        });
+
+        return this.storeMontos;
+    },
+
+    mostrarVentanaSeleccion: function() {
+    var me = this;
+    var dtField = Ext.getCmp(prototype.id + '-dtValueDate');
+    var valueDateRaw = dtField.getValue();
+
+    if (!valueDateRaw) {
+        Ext.Msg.show({
+            title: 'Atención',
+            msg: 'Por favor, seleccione un <b>Value Date</b> antes de buscar.',
+            buttons: Ext.Msg.OK,
+            icon: Ext.Msg.WARNING
+        });
+        return; 
+    }
+
+    var formattedDate = Ext.Date.format(valueDateRaw, 'Ymd'); 
+
+    var store = me.getStoreMontos();
+    
+    store.removeAll();
+    
+    store.load({
+        params: {
+            adate: formattedDate,
+            scountry: 'IN', 
+            action: 'GET_PENDING' 
+        },
+        callback: function(records, operation, success) {
+            if (!success) {
+                Ext.Msg.alert('Error', 'No se pudieron cargar los datos del servidor.');
+            } else if (records.length === 0) {
+                Ext.toast('No se encontraron registros pendientes para esa fecha.', 'Info');
+            }
+        }
+    });
+
+    // 3. CREAR/MOSTRAR VENTANA 
+    var win = Ext.create('Ext.window.Window', {
+        title: 'Selección de Montos Pendientes (' + Ext.Date.format(valueDateRaw, 'd/m/Y') + ')',
+        width: 600,
+        height: 400,
+        modal: true,
+        layout: 'fit',
+        items: [{
+            xtype: 'grid',
+            store: store, 
+            id: prototype.id + '-gridMontos',
+            selModel: {
+                selType: 'checkboxmodel',
+                mode: 'SIMPLE',
+                listeners: {
+                    selectionchange: function(sm, selections) {
+                        var total = 0;
+                        Ext.each(selections, function(rec) { 
+                            total += parseFloat(rec.get('MONTO')); 
+                        });
+                        
+                        win.down('#displayTotalGrid').setValue(Ext.util.Format.usMoney(total));
+                        win.totalTemp = total;
+                    }
+                }
+            },
+            columns: [
+                { text: 'País', dataIndex: 'SCOUNTRY', width: 60 },
+                { text: 'Moneda', dataIndex: 'SCURRENCY', width: 70 },
+                // Formateamos la fecha visualmente en la grilla
+                { text: 'Fecha', dataIndex: 'ADATE', width: 100, renderer: function(v) { return v; } }, 
+                { text: 'Monto', dataIndex: 'MONTO', flex: 1, renderer: Ext.util.Format.usMoney, align: 'right' },
+                { text: 'Estado', dataIndex: 'STVAL', width: 90 }
+            ],
+            bbar: [
+                '->',
+                {
+                    xtype: 'displayfield',
+                    itemId: 'displayTotalGrid',
+                    fieldLabel: 'Total Seleccionado',
+                    value: '$0.00',
+                    fieldStyle: 'font-weight:bold;color:green;font-size:14px;'
+                },
+                '-',
+                {
+                    text: 'Confirmar',
+                    iconCls: 'fa fa-check', // O tu icono 'prx-icon-save'
+                    handler: function() {
+                        var selectionModel = win.down('grid').getSelectionModel();
+                        var records = selectionModel.getSelection(); // Obtenemos los objetos completos
+
+                        var totalGrid = 0;
+                        Ext.each(records, function(rec) { totalGrid += parseFloat(rec.get('MONTO')); });
+
+                        // Llamamos a la validación pasando TAMBIÉN los registros
+                        me.validarYSetearDatos(totalGrid, records); // <--- CAMBIO AQUÍ
+
+                        win.close();
+                    }
+                }
+            ]
+        }]
+    });
+    
+    win.show();
+},
+
+validarYSetearDatos: function(totalGrid, records) {
+    var cmpSeleccion = Ext.getCmp(prototype.id + '-txtSeleccionados');
+    this.totalGridTemp = totalGrid; 
+    this.selectedRecordsIndia = records; 
+    if (cmpSeleccion) {
+        cmpSeleccion.setValue('Total Seleccionado: ' + Ext.util.Format.usMoney(totalGrid) + ' (' + records.length + ' items)');
+    }
+},
+
+// === NUEVO: Listener para el botón Lupa ===
+onLupaClick: function() {
+    this.mostrarVentanaSeleccion();
+},
+
+// === MODIFICACIÓN IMPORTANTE: llenarDataIndia ===
+llenarDataIndia: function (beanTemp) {
+    beanTemp.O_ADATE = Ext.util.Format.date(this.getValue("dtValueDate"), 'Ymd'); 
+    beanTemp.O_RECAUDACION_INR = this.getCleanNumberValue("txtRecaudacionINR");
+    beanTemp.O_RECAUDACION_USD = this.getCleanNumberValue("txtRecaudacionUSD");
+    beanTemp.O_EXCEPTION_CODE = this.getValue("txtExceptionExterior");
+
+    var registrosSeleccionados = this.selectedRecordsIndia || [];
+    var listaParaJava = [];
+
+    Ext.each(registrosSeleccionados, function(record) {
+        listaParaJava.push({
+            SCOUNTRY:  record.get('SCOUNTRY'),
+            SCURRENCY: record.get('SCURRENCY'),
+            ADATE:     record.get('ADATE'),
+            MONTO:     parseFloat(record.get('MONTO')), 
+            STVAL:     record.get('STVAL')
+        });
+    });
+    beanTemp.listaDetalles = listaParaJava; 
+},
+
+
+
+    DeshabilitarCampoClave: function () {
+//        Ext.getCmp(prototype.id + '-DEtxtUSERNAME').setReadOnly(true);
+//        Ext.getCmp(prototype.id + '-cmbTYPE').setReadOnly(true);
+    },
+
+
+    Habilitarlbl: function () {
+//        Ext.getCmp(prototype.id + '-lblDescripcion').show();
+//        Ext.getCmp(prototype.id + '-txtDESSOU').hide();
+//        Ext.getCmp(prototype.id + '-lbldes2').show();
+    },
+    desHabilitartxt: function () {
+//        if (this.getValue("txtGRUSOR") !== this.bean.GRUSOR) {
+//            Ext.getCmp(prototype.id + '-lbldes').hide();
+//        } else {
+//            Ext.getCmp(prototype.id + '-lbldes').show();
+//        }
+    },
+    Habilitarlbl1: function () {
+//        Ext.getCmp(prototype.id + '-lbldes').hide();
+//        if (this.getValue("txtCODSOUR") == '') {
+//            Ext.getCmp(prototype.id + '-lbldes2').hide();
+//        } else {
+//            Ext.getCmp(prototype.id + '-lbldes2').show();
+//        }
+    },
+    // <editor-fold defaultstate="collapsed" desc="Utilitarios">
+    
+    
+    
+    getValue: function (id) {
+        console.log('VALIDAR ACA',prototype.id + '-' + id);
+        return Ext.getCmp(prototype.id + '-' + id).getValue();
+    },
+    focus: function (id) {
+        Ext.getCmp(prototype.id + '-' + id).focus();
+    },
+    setValue: function (id, txt) {
+        Ext.getCmp(prototype.id + '-' + id).setValue(txt);
+    },
+    onUpperValue: function (field, newValue, oldValue) {
+        field.setValue(newValue.toUpperCase());
+    },
+    onTextKeypress: function (obj, e, eOpts) {
+        if (e.getKey() === e.ENTER) {
+//            this.btnSearch_click();
+        }
+    }
+// </editor-fold>
+});
+    

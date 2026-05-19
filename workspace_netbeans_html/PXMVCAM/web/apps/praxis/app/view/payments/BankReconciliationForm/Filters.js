@@ -561,6 +561,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                         {
                             xtype: 'label',
                             text: 'Doc. Type:',
+                            id: prototype.id + '-nameTDOC',
                             padding: '3 0 0 0',
                             width: 60,
                         },
@@ -693,6 +694,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Filters', {
                         {
                             xtype: 'label',
                             text: 'Status :',
+                            id: prototype.id + '-TXTStatus',
                             padding: '3 0',
                             hidden: false,
                             width: 64,

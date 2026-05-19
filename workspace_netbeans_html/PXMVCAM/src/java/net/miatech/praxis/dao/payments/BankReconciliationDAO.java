@@ -2293,22 +2293,22 @@ public class BankReconciliationDAO {
                 cstmt3.execute();
                 cstmt3.close(); // Cerrar el CallableStatement después de cada ejecución
 
-            } 
-            
+            }
+
             String SQLCLL04 = "{CALL " + session.getMainLibrary() + "MP.MPS594(?,?,?,?)}";
             cnx4 = session.getCNXIBMDB2().getIBMDB2Connection();
-            
+
             cstmt4 = cnx4.prepareCall(SQLCLL04);
-            
+
             cstmt4.setString(1, filter.BANDOC.trim());
             cstmt4.setString(2, filter.DATEC.trim());
             cstmt4.setString(3, filter.TRANC.trim());
             cstmt4.registerOutParameter(4, Types.VARCHAR);
             cstmt4.execute();
             strMsj = cstmt4.getString(4);
-            
+
             cstmt4.close();
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             strMsj = e.getMessage();
@@ -5630,10 +5630,10 @@ public class BankReconciliationDAO {
             if (recordCount > 500) {
                 throw new Exception("EXCEDE_LIMITE|" + recordCount);
             }
-            
+
         } catch (Exception e) {
             if (e.getMessage() != null && e.getMessage().startsWith("EXCEDE_LIMITE")) {
-                throw e; 
+                throw e;
             }
             e.printStackTrace();
         } finally {
@@ -8298,15 +8298,31 @@ public class BankReconciliationDAO {
 
             while (rst != null && rst.next()) {
                 bean = new A2290Filter();
+                bean.RN = rst.getLong("RN");
 
+                bean.CCUST = rst.getString("CCUST");
                 bean.PRDA = rst.getString("PRDA");
-                bean.TINPUT = rst.getString("TINPUT");
-                bean.CONCEPT = rst.getString("CODIGO");
-                bean.SCURRENCY = rst.getString("MONEDA");
-                bean.IMPORTEN = rst.getDouble("IMPORTE");
-                bean.SUM_NETO = rst.getDouble("SUM_IMPORTE");
+                bean.CODPRO = rst.getString("CODPRO");
+                bean.CCUSTPRO = rst.getString("CCUSTPRO");
+                bean.FLIQUIDACI = rst.getString("FLIQUIDACI");
+                bean.LIQUIDACIO = rst.getString("LIQUIDACIO");
+                bean.MERCHAND = rst.getString("MERCHAND");
+                bean.MONEDA = rst.getString("MONEDA");
+                bean.CORRL = rst.getString("CORRL");
+                bean.CBATCH = rst.getString("CBATCH");
+                bean.CODIGO = rst.getString("CODIGO");
+                
                 bean.SCOUNTRY = rst.getString("SCOUNTRY");
                 bean.BANDOC = rst.getString("BANDOC");
+                bean.ADATE = rst.getString("ADATE");
+                bean.ACCCOMP = rst.getString("ACCCOMP");
+                bean.CONCEPT = rst.getString("CODIGO");
+                bean.MONEDAPAGO = rst.getString("MONEDAPAGO");
+                bean.IMPORTEPAG = rst.getDouble("IMPORTEPAG");
+                bean.TINPUT = rst.getString("TINPUT");
+                bean.IMPORTEN = rst.getDouble("IMPORTE");
+                bean.SUM_NETO = rst.getDouble("SUM_IMPORTE");
+                bean.SUM_IMPORTEPAG = rst.getDouble("SUM_IMPORTEPAG");
 
                 bean.O_USCR = rst.getString("USCR");
                 bean.O_FECR = rst.getString("FECR");
@@ -8315,7 +8331,6 @@ public class BankReconciliationDAO {
                 bean.O_FEUP = rst.getString("FEUP");
                 bean.O_HOUP = rst.getString("HOUP");
 
-                // Copiar paginación en cada bean si es necesario
                 bean.page.PAGNUM = filter.page.PAGNUM;
                 bean.page.PAGROW = filter.page.PAGROW;
                 bean.page.TOTPAG = filter.page.TOTPAG;
@@ -9829,57 +9844,58 @@ public class BankReconciliationDAO {
         }
         return result;
     }
-    
 
+    public Map<String, Object> reversaFaseDosParcial(A2290Filter filter) throws Exception {
+        Map<String, Object> result = new HashMap<>();
+        CallableStatement cstmt = null;
+        Connection cnx = null;
 
-    public Map<String, Object> reversaFaseDosParcial(A2290Filter filter) throws Exception {    Map<String, Object> result = new HashMap<>();
-    CallableStatement cstmt = null;
-    Connection cnx = null;
+        String SQL = "{CALL PRAXISMP.MPS536(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 
-    String SQL = "{CALL PRAXISMP.MPS536(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQL);
 
-    try {
-        cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-        cstmt = cnx.prepareCall(SQL);
+            // Registro de parámetros de salida
+            cstmt.registerOutParameter(9, Types.INTEGER);
+            cstmt.registerOutParameter(10, Types.VARCHAR);
 
-        // Registro de parámetros de salida
-        cstmt.registerOutParameter(9, Types.INTEGER);
-        cstmt.registerOutParameter(10, Types.VARCHAR);
+            // Seteo de parámetros de entrada con validación de nulos y trim
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST.trim());
+            cstmt.setString(2, filter.O_ADATE != null ? filter.O_ADATE.trim() : "");
+            cstmt.setString(3, filter.O_SCOUNTRY != null ? filter.O_SCOUNTRY.trim() : "");
+            cstmt.setString(4, filter.O_CBATCH != null ? filter.O_CBATCH.trim() : "");
+            cstmt.setString(5, filter.O_BANDOC != null ? filter.O_BANDOC.trim() : "");
+            cstmt.setString(6, filter.O_DATECI != null ? filter.O_DATECI.trim() : "");
+            cstmt.setString(7, filter.O_TRANCI != null ? filter.O_TRANCI.trim() : "");
+            cstmt.setString(8, session.getUserView().getUserInfo().USR.trim());
 
-        // Seteo de parámetros de entrada con validación de nulos y trim
-        cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST.trim());
-        cstmt.setString(2, filter.O_ADATE != null ? filter.O_ADATE.trim() : "");
-        cstmt.setString(3, filter.O_SCOUNTRY != null ? filter.O_SCOUNTRY.trim() : "");
-        cstmt.setString(4, filter.O_CBATCH != null ? filter.O_CBATCH.trim() : "");
-        cstmt.setString(5, filter.O_BANDOC != null ? filter.O_BANDOC.trim() : "");
-        cstmt.setString(6, filter.O_DATECI != null ? filter.O_DATECI.trim() : "");
-        cstmt.setString(7, filter.O_TRANCI != null ? filter.O_TRANCI.trim() : "");
-        cstmt.setString(8, session.getUserView().getUserInfo().USR.trim());
-        
-        // Inicialización de los INOUT
-        cstmt.setInt(9, -1);
-        cstmt.setString(10, ""); // Importante: no enviar un string largo aquí si el SP lo va a llenar
+            // Inicialización de los INOUT
+            cstmt.setInt(9, -1);
+            cstmt.setString(10, ""); // Importante: no enviar un string largo aquí si el SP lo va a llenar
 
-        cstmt.execute();
+            cstmt.execute();
 
-        int sqlCode = cstmt.getInt(9);
-        String message = cstmt.getString(10);
+            int sqlCode = cstmt.getInt(9);
+            String message = cstmt.getString(10);
 
-        result.put("success", sqlCode == 1);
-        result.put("message", message);
+            result.put("success", sqlCode == 1);
+            result.put("message", message);
 
-    } catch (Exception e) {
-        // Si falla Java, capturamos el error para el front
-        result.put("success", false);
-        result.put("message", "Error Java: " + e.getMessage());
-        logError.error("Error en DAO reversaFaseDos: ", e);
-    } finally {
-        if (cstmt != null) cstmt.close();
-        session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+        } catch (Exception e) {
+            // Si falla Java, capturamos el error para el front
+            result.put("success", false);
+            result.put("message", "Error Java: " + e.getMessage());
+            logError.error("Error en DAO reversaFaseDos: ", e);
+        } finally {
+            if (cstmt != null) {
+                cstmt.close();
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+        }
+        return result;
     }
-    return result;
-}
-    
+
     public double convertAmountUSD(double amount, String currency, String date) throws Exception {
         double converted = 0.0;
         CallableStatement cstmt = null;
@@ -9905,15 +9921,74 @@ public class BankReconciliationDAO {
             }
         } finally {
             if (rst != null) {
-                try { rst.close(); } catch (SQLException e) { }
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                }
             }
             if (cstmt != null) {
-                try { cstmt.close(); } catch (SQLException e) { }
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                }
             }
             if (cnx != null) {
                 session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
             }
         }
         return converted;
+    }
+
+    public String updateMPF223(A2290Filter filter) throws SQLException, Exception {
+        
+        String msgResponse = "";
+        CallableStatement cstmt = null;
+        Connection cnx = null;
+
+        String SQL = "{CALL " + session.getMainLibrary() + "MP.MPS648(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQL);
+
+            cstmt.setString(1, filter.O_CCUST != null ? filter.O_CCUST.trim() : "");
+            cstmt.setString(2, filter.O_PRDA != null ? filter.O_PRDA.trim() : "");
+            cstmt.setString(3, filter.O_CODPRO != null ? filter.O_CODPRO.trim() : "");
+            cstmt.setString(4, filter.O_CCUSTPRO != null ? filter.O_CCUSTPRO.trim() : "");
+            cstmt.setString(5, filter.O_FLIQUIDACI != null ? filter.O_FLIQUIDACI : ""); 
+            cstmt.setString(6, filter.O_LIQUIDACIO != null ? filter.O_LIQUIDACIO : ""); 
+            cstmt.setString(7, filter.O_MERCHAND != null ? filter.O_MERCHAND : "");
+            cstmt.setString(8, filter.O_MONEDA != null ? filter.O_MONEDA.trim() : "");
+            cstmt.setString(9, filter.O_CORRL != null ? filter.O_CORRL.trim() : "");
+            cstmt.setString(10, filter.O_CBATCH != null ? filter.O_CBATCH.trim() : "");
+            cstmt.setString(11, filter.O_CODIGO_OLD != null ? filter.O_CODIGO_OLD.trim() : "");
+
+            // Valores nuevos (SET)
+            cstmt.setString(12, filter.O_CODIGO != null ? filter.O_CODIGO.trim() : "");
+            cstmt.setString(13, filter.O_ACCCOMP != null ? filter.O_ACCCOMP.trim() : "");
+            
+            // Usuario que modifica (sacado de la sesión)
+            cstmt.setString(14, session.getUserView().getUserInfo().USR.trim());
+
+            // Parámetro OUT (Mensaje)
+            cstmt.registerOutParameter(15, Types.VARCHAR);
+
+            cstmt.execute();
+
+            msgResponse = cstmt.getString(15);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            msgResponse = "Exception: " + e.getMessage();
+        } finally {
+            if (cstmt != null) {
+                try { cstmt.close(); } catch (SQLException e) {}
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+        }
+
+        return msgResponse;
     }
 }
