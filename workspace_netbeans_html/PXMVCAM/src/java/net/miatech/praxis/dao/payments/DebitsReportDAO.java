@@ -295,7 +295,7 @@ public class DebitsReportDAO {
             cstmt.setString(1, filter.IN_OPTION.trim());
             cstmt.setString(2, filter.IN_FECHA_FROM.trim());
             cstmt.setString(3, filter.IN_FECHA_TO.trim());
-            cstmt.setString(4, filter.IN_CCUST.trim());
+            cstmt.setString(4, filter.IN_SOCIETY.trim());
             cstmt.setString(5, filter.IN_TDOC.trim());
             cstmt.setString(6, filter.IN_STATUS.trim());
             cstmt.setString(7, filter.IN_SCOUNTRY.trim());
@@ -393,7 +393,7 @@ public class DebitsReportDAO {
             cstmt.setString(1, filter.IN_OPTION.trim());
             cstmt.setString(2, filter.IN_FECHA_FROM.trim());
             cstmt.setString(3, filter.IN_FECHA_TO.trim());
-            cstmt.setString(4, filter.IN_CCUST.trim());
+            cstmt.setString(4, filter.IN_SOCIETY.trim());
             cstmt.setString(5, filter.IN_TDOC.trim());
             cstmt.setString(6, filter.IN_STATUS.trim());
             cstmt.setString(7, filter.IN_SCOUNTRY.trim());
@@ -497,7 +497,7 @@ public class DebitsReportDAO {
             cstmt.setString(1, filter.IN_OPTION.trim());
             cstmt.setString(2, filter.IN_FECHA_FROM.trim());
             cstmt.setString(3, filter.IN_FECHA_TO.trim());
-            cstmt.setString(4, filter.IN_CCUST.trim());
+            cstmt.setString(4, filter.IN_SOCIETY.trim());
             cstmt.setString(5, filter.IN_TDOC.trim());
             cstmt.setString(6, filter.IN_STATUS.trim());
             cstmt.setString(7, filter.IN_SCOUNTRY.trim());
@@ -655,7 +655,7 @@ public class DebitsReportDAO {
                 bean.IDCDEB = rst.getString("IDCDEB").trim();
                 bean.FCONT = rst.getString("FCONT").trim();
                 bean.STATUS_SAP = rst.getString("STATUS_SAP").trim();
-                bean.BPO_COMMENT_DESC = rst.getString("BPO_COMMENT_DESC").trim();
+                bean.BPO_COMMENT_DESC = rst.getString("BPOC").trim();
 
                 bean.page.PAGNUM = filter.page.PAGNUM;
                 bean.page.PAGROW = filter.page.PAGROW;

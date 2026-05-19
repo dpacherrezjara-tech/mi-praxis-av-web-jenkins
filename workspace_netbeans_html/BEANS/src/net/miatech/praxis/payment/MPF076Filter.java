@@ -16,6 +16,7 @@ public class MPF076Filter {
     public String IN_OPTION = "";
     public String IN_FECHA_FROM = "";
     public String IN_FECHA_TO = "";
+    public String IN_SOCIETY = "";
     public String IN_CCUST = "";
     public String IN_TDOC = "";
     public String IN_STATUS = "";
