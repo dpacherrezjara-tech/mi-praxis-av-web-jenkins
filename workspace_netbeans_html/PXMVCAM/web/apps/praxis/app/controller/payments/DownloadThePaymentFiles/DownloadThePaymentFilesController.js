@@ -86,7 +86,7 @@ Ext.define('Ext.Praxis.controller.payments.DownloadThePaymentFiles.DownloadThePa
                 ["SAFE", "SAFETYPAY"],
                 ["CODE", "CODENSA"],
                 ["GYE", "GUAYAQUIL"],
-                ["PACI", "PACIFICAR"],
+                ["PACI", "PACIFICAR"]
             ]
         }));
         CmbTypeprocesa.setValue("");
