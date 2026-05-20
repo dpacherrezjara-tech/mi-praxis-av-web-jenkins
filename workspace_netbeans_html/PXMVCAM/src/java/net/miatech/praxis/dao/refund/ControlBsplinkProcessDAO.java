@@ -4,7 +4,6 @@
  */
 package net.miatech.praxis.dao.refund;
 
-
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import net.miatech.beans.spring.UserView;
 import net.miatech.beans.spring.implement.IServerSession;
-import net.miatech.praxis.payment.filter.MPF116Filter;
 import net.miatech.praxis.refund.filter.A3096Filter;
 import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
@@ -26,7 +24,7 @@ import org.apache.log4j.Logger;
  * @author ftorres
  */
 public class ControlBsplinkProcessDAO {
-        
+
     private IServerSession session;
     private CallableStatement cs = null;
     private CallableStatement cstmt = null;
@@ -35,12 +33,13 @@ public class ControlBsplinkProcessDAO {
     private ResultSet rs01 = null;
     private Connection cnx = null;
     private Statement stmt = null;
-    
+
     private static final Logger logError = Logger.getLogger("errorLog");
-    
-        public ControlBsplinkProcessDAO() {
+
+    public ControlBsplinkProcessDAO() {
     }
-          private void setClose() {
+
+    private void setClose() {
         if (rs01 != null) {
             try {
                 rs01.close();
@@ -65,26 +64,21 @@ public class ControlBsplinkProcessDAO {
         pasarGarbageCollector();
     }
 
-        
-        
-     public static void pasarGarbageCollector() {
+    public static void pasarGarbageCollector() {
         System.gc();
         System.runFinalization();
         System.gc();
     }
-     
-     
-       public ControlBsplinkProcessDAO(IServerSession ss) {
+
+    public ControlBsplinkProcessDAO(IServerSession ss) {
         session = ss;
     }
 
     public void setSession(IServerSession ss) {
         session = ss;
     }
-    
-    
+
     // incia consulta
-    
     public List<A3096Filter> loadRFS0034(A3096Filter filter) {
         cstmt = null;
         rs01 = null;
@@ -92,33 +86,32 @@ public class ControlBsplinkProcessDAO {
         A3096Filter row = null;
         List<A3096Filter> lista = new ArrayList<>();
 
-        int totQTY_TOTAL = 0;
-        int totQTY_AUT_AUD = 0;
-        int totQTY_DEN_AUD = 0;
-        int totQTY_OTR_AUD = 0;
-        int totQTY_TOPROCCES = 0;
-        int totQTY_WRK_PRE_BSP = 0;
-        int totQTY_PEND_LOAD_BSP = 0;
-        int totQTY_SENT_LOAD_BSP = 0;
-        int totQTY_AUTO_LOAD_BSP = 0;
-        int totQTY_PROC_LOAD_BSP = 0;
-        int totQTY_CHNG_LOAD_BSP = 0;
-        int totQTY_ERRO_LOAD_BSP = 0;
-        int totQTY_OTRO_LOAD_BSP = 0;
-        int totQTY_PEND_RSPT_BSPL = 0;
-        int totQTY_AUTO_RSPT_BSPL = 0;
-        int totQTY_REJE_RSPT_BSPL = 0;
-        int totQTY_AVIA_RSPT_BSPL = 0;
-        int totQTY_OTRO_RSPT_BSP = 0;
-        int totQTY_TOLOAD = 0;
-        int totQTY_PEND_STAT_BSPL = 0;
-        int totQTY_BILL_STAT_BSP = 0;
-        int totQTY_REJE_STAT_BSP = 0;
-        int totQTY_MODI_STAT_BSP = 0;
-        int totQTY_OTRO_STAT_BSP = 0;
-        int totQTY_OTRO_STAT_BSP_ERROR = 0;
-        
-        
+//        int totQTY_TOTAL = 0;
+//        int totQTY_AUT_AUD = 0;
+//        int totQTY_DEN_AUD = 0;
+//        int totQTY_OTR_AUD = 0;
+//        int totQTY_TOPROCCES = 0;
+//        int totQTY_WRK_PRE_BSP = 0;
+//        int totQTY_PEND_LOAD_BSP = 0;
+//        int totQTY_SENT_LOAD_BSP = 0;
+//        int totQTY_AUTO_LOAD_BSP = 0;
+//        int totQTY_PROC_LOAD_BSP = 0;
+//        int totQTY_CHNG_LOAD_BSP = 0;
+//        int totQTY_ERRO_LOAD_BSP = 0;
+//        int totQTY_OTRO_LOAD_BSP = 0;
+//        int totQTY_PEND_RSPT_BSPL = 0;
+//        int totQTY_AUTO_RSPT_BSPL = 0;
+//        int totQTY_REJE_RSPT_BSPL = 0;
+//        int totQTY_AVIA_RSPT_BSPL = 0;
+//        int totQTY_OTRO_RSPT_BSP = 0;
+//        int totQTY_TOLOAD = 0;
+//        int totQTY_PEND_STAT_BSPL = 0;
+//        int totQTY_BILL_STAT_BSP = 0;
+//        int totQTY_REJE_STAT_BSP = 0;
+//        int totQTY_MODI_STAT_BSP = 0;
+//        int totQTY_OTRO_STAT_BSP = 0;
+//        int totQTY_OTRO_STAT_BSP_ERROR = 0;
+
         int totAUTORIZADO = 0;
         int totRECHAZADO = 0;
         int totPENDIENTE = 0;
@@ -127,7 +120,8 @@ public class ControlBsplinkProcessDAO {
 
         String SQLCLL01;
         try {
-            SQLCLL01 = "{CALL " + session.getMainLibrary() + ".RFS0034(?,?,?,?,?,?,?)}";
+            SQLCLL01 = "{CALL PRAXISAV.RFS0034(?,?,?,?,?,?,?)}";
+            //SQLCLL01 = "{CALL " + session.getMainLibrary() + ".RFS0034(?,?,?,?,?,?,?)}";
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
             cstmt.registerOutParameter(4, Types.INTEGER);
@@ -161,14 +155,14 @@ public class ControlBsplinkProcessDAO {
             }
 
             rs01.close();
-            
+
             String processed = "";
 
             if (cstmt.getMoreResults()) {
                 rs01 = cstmt.getResultSet();
                 while (rs01.next()) {
                     row = new A3096Filter();
-                    
+
                     processed = rs01.getString("PROCESSED");
                     row.A3096DAUTH = rs01.getString("A3096FCARG");
                     row.A3096RBT1 = rs01.getString("A3096RBT1");
@@ -178,13 +172,13 @@ public class ControlBsplinkProcessDAO {
                     row.QTY_PENDIENTE = rs01.getInt("PENDIENTE");
                     row.QTY_ERROR = rs01.getInt("ERROR");
                     row.QTY_TOTAL_TICKETS = rs01.getInt("TOTAL_TICKETS");
-                    
+
                     if (processed == null || processed.trim().isEmpty() || processed.equalsIgnoreCase("P")) {
                         row.A3096PROCESSED = "P";
                     } else {
-                        row.A3096PROCESSED = "F";   
+                        row.A3096PROCESSED = "F";
                     }
-                    
+
                     row.totAUTORIZADO = totAUTORIZADO;
                     row.totRECHAZADO = totRECHAZADO;
                     row.totPENDIENTE = totPENDIENTE;
@@ -208,9 +202,7 @@ public class ControlBsplinkProcessDAO {
 
         return lista;
     }
-    
-    
-    
+
     public List<A3096Filter> RFS0035(A3096Filter filter) {
         cstmt = null;
         rs01 = null;
@@ -220,7 +212,8 @@ public class ControlBsplinkProcessDAO {
 
         String SQLCLL01;
         try {
-                SQLCLL01 = "{CALL " + session.getMainLibrary() + ".RFS0035(?,?,?,?)}";
+
+            SQLCLL01 = "{CALL PRAXISAV.RFS0035(?,?,?,?)}";
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
@@ -230,7 +223,6 @@ public class ControlBsplinkProcessDAO {
             cstmt.setString(4, filter.IN_SEQ);
 
             cstmt.execute();
-
 
             rs01 = cstmt.getResultSet();
             //Obteniendo los Totales ===========================================
@@ -245,8 +237,7 @@ public class ControlBsplinkProcessDAO {
                 row.IN_FRESB = filter.IN_FRESB;
                 row.IN_STATUS = filter.IN_STATUS;
                 row.A3096NENV = filter.A3096NENV;
-                
-                
+
                 row.RN = rs01.getInt("RN");
                 row.A3096FGRPO = rs01.getString("A3096FGRPO").trim();
                 row.A3096FPROB = rs01.getString("A3096FPROB").trim();
@@ -259,7 +250,7 @@ public class ControlBsplinkProcessDAO {
                 row.A3096ESTAD = rs01.getString("A3096ESTAD").trim();
                 row.A3096FUENT = rs01.getString("A3096FUENT").trim();
                 row.A3096TENVI = rs01.getString("A3096TENVI").trim();
-                
+
                 row.A4547STATU = rs01.getString("A4547STATU").trim();
                 row.A4547FLAG = rs01.getString("A4547FLAG").trim();
                 row.A4547DESCR = rs01.getString("A4547DESCR").trim();
@@ -269,7 +260,6 @@ public class ControlBsplinkProcessDAO {
                     iseq = 0; // o déjalo vacío si tu bean lo permite
                 }
                 row.A4547ISEQ = iseq;
-                
 
                 lista.add(row);
             }
@@ -285,12 +275,4 @@ public class ControlBsplinkProcessDAO {
         return lista;
     }
 
-        
-        
-        
-        
-        
-        
-    
-    
 }

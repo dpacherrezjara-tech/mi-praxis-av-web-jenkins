@@ -7,8 +7,8 @@ Ext.define('Ext.Praxis.controller.refund.ControlBsplinkProcess.ControlBsplinkPro
     bean: '',
     paginActual: '',
     drillDown: [],
-    lstCountry:[],
-    lstBank:[],
+    lstCountry: [],
+    lstBank: [],
     gridActual: '',
     panelActual: '',
     fileName: '',
@@ -16,21 +16,20 @@ Ext.define('Ext.Praxis.controller.refund.ControlBsplinkProcess.ControlBsplinkPro
     searchParams: {},
     paramsDetail: {},
     dataObtain: {},
-    
-    
-    init: function(view) {
+
+    init: function (view) {
         me = this;
         prototype.id = 'ControlBsplinkProcessForm';
         prototype.url = CONTEXTPATH + '/ControlBsplinkProcess';
-//        this.childs = Ext.getCmp(prototype.id + '-panelMain').items.items;
-//        me.panelActual = '-panelGridData';
- //       global.selectedChild(me.childs, prototype.id + me.panelActual);
-        
+        this.childs = Ext.getCmp(prototype.id + '-panelMain').items.items;
+        me.panelActual = '-panelMainAvianca';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+
 
         this.control({
             //   -------------------Eventos Genericos --------------------
             '#ControlBsplinkProcessForm-xpanel': {
-                afterrender: this.xpanel_afterrender            
+                afterrender: this.xpanel_afterrender
             },
             '#ControlBsplinkProcessForm-btnSearch': {
                 click: this.btnSearch_click
@@ -61,99 +60,114 @@ Ext.define('Ext.Praxis.controller.refund.ControlBsplinkProcess.ControlBsplinkPro
             },
             '#ControlBsplinkProcessForm-btn-pag-last': {
                 click: this.pagLast
+            },
+            '#ControlBsplinkProcessForm-cmbDateFromYear': {
+                afterrender: this.afterRenderYear
+            },
+            '#ControlBsplinkProcessForm-cmbDateFromMonth': {
+                afterrender: this.afterRenderMonth,
+                select: this.selectComboFromMonth
+            },
+            '#ControlBsplinkProcessForm-cmbDateToYear': {
+                afterrender: this.afterRenderYear
+            },
+            '#ControlBsplinkProcessForm-cmbDateToMonth': {
+                afterrender: this.afterRenderMonth
+            },
+            '#ControlBsplinkProcessForm-cmbDateFromDay': {
+                afterrender: this.afterRenderDay,
+                select: this.selectComboFromDay
+            },
+            '#ControlBsplinkProcessForm-cmbDateToDay': {
+                afterrender: this.afterRenderDay
             }
             //-----------------Eventos Especificos -------------------    
         });
     },
-    
+
     xpanel_afterrender: function (obj, e) {
-        this.btnSearch_click();  
+        this.setStoreData();
+        this.btnSearch_click();
 //        this.obtainData();
-       
+
+
     },
-    
-    
-    
-    
-    eventKey: function(e, eOpts) {
+
+    afterRenderYear: function (obj) {
+        obj.setValue(me.fecha.getFullYear());
+    },
+    afterRenderMonth: function (obj) {
+        obj.setValue('');
+
+    },
+    selectComboFromMonth: function (obj) {
+        var comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
+        comboToMonth.setValue(obj.getValue());
+    },
+    selectComboFromDay: function (obj) {
+        var comboToDay = Ext.getCmp(prototype.id + '-cmbDateToDay');
+        comboToDay.setValue(obj.getValue());
+    },
+    afterRenderDay: function (obj) {
+        obj.setValue('');
+    },
+
+    setStoreData: function () {
+
+
+        var storeComboDataYear = win.getStoreYear(false);
+        Ext.getCmp(prototype.id + '-cmbDateFromYear').bindStore(storeComboDataYear);
+        Ext.getCmp(prototype.id + '-cmbDateToYear').bindStore(storeComboDataYear);
+        var storeComboDataMonth = win.getStoreMonth(true);
+        Ext.getCmp(prototype.id + '-cmbDateFromMonth').bindStore(storeComboDataMonth);
+        Ext.getCmp(prototype.id + '-cmbDateToMonth').bindStore(storeComboDataMonth);
+        var storeComboDataDay = win.getStoreDays(true);
+        Ext.getCmp(prototype.id + '-cmbDateFromDay').bindStore(storeComboDataDay);
+        Ext.getCmp(prototype.id + '-cmbDateToDay').bindStore(storeComboDataDay);
+
+
+    },
+
+    eventKey: function (e, eOpts) {
         if (eOpts.getKey() === 13) {
             this.btnSearch_click();
         }
     },
-    onUpperValue: function(field, newValue, oldValue) {
+    onUpperValue: function (field, newValue, oldValue) {
         field.setValue(newValue.toUpperCase());
     },
- 
- 
- ////////////////////////////////////////////////////////////////////////////
- ///////////////////OBETENEMOS CBO DE PAISES DEL MASTER/////////////////////////
- ////////////////////////////////////////////////////////////////////////////
-// 
-//    obtainData: function() {
-//
-//        this.dataObtain.COUNTRY = 2;
-//        
-//         Ext.Ajax.request({
-//            url: prototype.urlMaster + '/obtainData',
-//            method: 'POST',
-//            timeout: 60000000,
-//            params: {beanString: JSON.stringify(this.dataObtain)},
-//            success: function (response, options) {
-//                var res = Ext.JSON.decode(response.responseText);
-//                console.log(res, 'res PRUEBA FER');
-//                if (res.success) {
-//                    
-//                    
-//                    me.lstCountry = res.lstCountry;
-//                    
-//                    var storeData3 = Ext.create('Ext.data.Store', {
-//                        data: me.lstCountry,
-//                        autoLoad: true
-//                    });
-//
-//                    Ext.getCmp(prototype.id + '-cmbIN_COUNTRY').bindStore(storeData3);                 
-//                    Ext.getCmp(prototype.id + '-cmbIN_COUNTRY').setValue('');
-//                   
-//                   console.log(res.lstCountry);
-//                    global.clear();
-//
-//                } else
-//                    global.Msg({msg: res.sesion});
-//            }
-//        });
-//      
-//    },
 
-    
-    
-    btnSearch_click: function(obj, e) {
+    btnSearch_click: function (obj, e) {
         this.setFormatParameter();
         this.setGridDataAvianca();
-        
-        
+
+
     },
-    
+
     setFormatParameter: function () {
-        
+
         me.bean = {};
 
         var monthFrom = Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue();
         var monthTo = Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue();
         var dayFrom = Ext.getCmp(prototype.id + '-cmbDateFromDay').getValue();
         var dayTo = Ext.getCmp(prototype.id + '-cmbDateToDay').getValue();
-        monthFrom = monthFrom < 10 && monthFrom !== "" ? "0" + monthFrom : monthFrom;
-        monthTo = monthTo < 10 && monthTo !== "" ? "0" + monthTo : monthTo;
-        dayFrom = dayFrom < 10 && dayFrom !== "" ? "0" + dayFrom : dayFrom;
-        dayTo = dayTo < 10 && dayTo !== "" ? "0" + dayTo : dayTo;
+        monthFrom = monthFrom.toString().length === 1 ? "0" + monthFrom : monthFrom;
+
+        monthTo = monthTo.toString().length === 1 ? "0" + monthTo : monthTo;
+
+        dayFrom = dayFrom.toString().length === 1 ? "0" + dayFrom : dayFrom;
+
+        dayTo = dayTo.toString().length === 1 ? "0" + dayTo : dayTo;
 
         me.bean = {};
         me.bean.IN_DATEFROM = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + "" + monthFrom + ""
                 + dayFrom;
         me.bean.IN_DATETO = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() + "" + monthTo + ""
                 + dayTo;
- 
+
         var beanString = JSON.stringify(me.bean);
-        
+
         var params = {
             beanString: beanString,
             bean: me.bean
@@ -161,22 +175,26 @@ Ext.define('Ext.Praxis.controller.refund.ControlBsplinkProcess.ControlBsplinkPro
         return params;
 
     },
-    
-    
-    
-    
+
     setGridDataAvianca: function () {
 
-        this.showGrid('-panelMainAvianca');
+        //this.showGrid('-panelMainAvianca');
+        me.panelActual = '-panelMainAvianca';
+
+        global.selectedChild(
+                me.childs,
+                prototype.id + me.panelActual
+                );
         var parameters = this.setFormatParameter();
         me.searchParams = parameters.bean;
         console.log(parameters);
-        var storeGridData = Ext.create('Ext.Refund.store.GridData', {
+
+        var storeGridData = Ext.create('Ext.Praxis.store.refund.GridData', {
             proxy: {
                 url: prototype.url + '/searchAvianca'
             }, listeners: {
                 beforeload: function (obj) {
-                     obj.proxy.extraParams = {
+                    obj.proxy.extraParams = {
                         beanString: parameters.beanString
                     };
                 },
@@ -194,7 +212,7 @@ Ext.define('Ext.Praxis.controller.refund.ControlBsplinkProcess.ControlBsplinkPro
         Ext.getCmp(prototype.id + '-gridDataAvianca').bindStore(storeGridData);
         Ext.getCmp(prototype.id + '-gridDataAvianca').setStore(storeGridData);
     },
-   
+
 //
 //    setGridData: function() {
 //        win.lblUser_toolTip("Estructura: MPF116");
@@ -234,24 +252,68 @@ Ext.define('Ext.Praxis.controller.refund.ControlBsplinkProcess.ControlBsplinkPro
 //            Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
 //        }
 //    },
-    
 
 
 
-    validateFields: function() {
+    onClickDetailAvianca: function (IN_A4547FLAG, cmp, cpm2, numRow, numCol, cpm3, rowData) {
+        var params = {
+            A3096DAUTH: rowData.data.A3096DAUTH,
+            IN_A4547FLAG: IN_A4547FLAG,
+            IN_SEQ: rowData.data.A3096RBT1
+        };
+
+        me.searchParams = JSON.stringify(params);
+
+
+        //  PANEL ACTUAL
+        me.drillDown.push(me.panelActual);
+
+        //  DETAIL
+        me.panelActual = '-panelMainAviancaDetail';
+
+        global.selectedChild(
+                me.childs,
+                prototype.id + me.panelActual
+                );
+
+        var storeGridData = Ext.create('Ext.Praxis.store.refund.GridData', {
+            proxy: {
+                url: prototype.url + '/searchStatusBSPLinkAvianca'
+            }, listeners: {
+                beforeload: function (obj) {
+                    obj.proxy.extraParams = {beanString: me.searchParams, dw_excel: false};
+                },
+                load: function (obj) {
+                    if (obj.data.items.length === 0) {
+                        global.Msg({
+                            msg: 'Data not found.'
+                        });
+                    } else {
+                        console.log(obj.data);
+                        //Ext.getCmp(prototype.id + '-lblRowsTotal').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                    }
+                }
+            }
+        });
+        Ext.getCmp(prototype.id + '-gridDataAviancaDetail').bindStore(storeGridData);
+
+
+    },
+
+    validateFields: function () {
         var msj = '';
-        var bean = searchParams.bean;
+        var bean = me.bean;
 
         return msj;
     },
-    btnAdd_click: function() {
+    btnAdd_click: function () {
         this.winDataEntry('I');
     },
-    
+
     ///data entry ingreso ///
-    
-    onEditClick: function(grid, rowIndex, colIndex) {
-        
+
+    onEditClick: function (grid, rowIndex, colIndex) {
+
         var rec = grid.getStore().getAt(rowIndex);
         this.winDataEntry('U', rec);
     },
@@ -272,13 +334,12 @@ Ext.define('Ext.Praxis.controller.refund.ControlBsplinkProcess.ControlBsplinkPro
 //            }
 //        }).show();
 //    },
-    btnBack_click: function(obj, e) {
+    btnBack_click: function (obj, e) {
 
         if (me.drillDown.length > 0) {
             me.panelActual = me.drillDown.pop();
             global.selectedChild(me.childs, prototype.id + me.panelActual);
-            me.setWidthPie();
-
+           
             this.getPaggin();
             if (me.pagginActual !== '') {
                 var pag = Ext.getCmp(prototype.id + me.pagginActual);
@@ -291,19 +352,18 @@ Ext.define('Ext.Praxis.controller.refund.ControlBsplinkProcess.ControlBsplinkPro
             global.showMenu();
         }
     },
-    btnClear_click: function(obj, e) {
+    btnClear_click: function (obj, e) {
+
+        Ext.getCmp(prototype.id + '-cmbDateFromMonth')?.setValue('');
+        Ext.getCmp(prototype.id + '-cmbDateFromDay')?.setValue('');
+        Ext.getCmp(prototype.id + '-cmbDateToMonth')?.setValue('');
+        Ext.getCmp(prototype.id + '-cmbDateToDay')?.setValue('');
+
         
-        Ext.getCmp(prototype.id + '-txtAGENTFILT')?.setValue('');
-        Ext.getCmp(prototype.id + '-cmbIN_COUNTRY')?.setValue('');
-        Ext.getCmp(prototype.id + '-cmbAGROUPD')?.setValue('');
-        
-        this.btnSearch_click(); 
-        
-      
+
     },
-    
-    
-    btnExcel_click: function(obj, e) {
+
+    btnExcel_click: function (obj, e) {
 
         this.setFormatParameter();
         var msj = this.validateFields();
@@ -318,7 +378,7 @@ Ext.define('Ext.Praxis.controller.refund.ControlBsplinkProcess.ControlBsplinkPro
                 scope: this,
                 icon: Ext.MessageBox.QUESTION,
                 modal: true,
-                fn: function(btn) {
+                fn: function (btn) {
                     if (btn === 'ok') {
                         this.exportExcel();
                     }
@@ -326,31 +386,41 @@ Ext.define('Ext.Praxis.controller.refund.ControlBsplinkProcess.ControlBsplinkPro
             });
         }
     },
-    exportExcel: function() {
-        
+    exportExcel: function () {
+
         this.setFormatParameter();
+
         switch (me.panelActual) {
-            case  '-panelGridData':
-                global.getFile(prototype.url + '/getXLSX?beanString=' + encodeURI(searchParams.beanString));
-                console.log('prueba excel');
+
+            case '-panelMainAvianca':
+
+                global.getFile(
+                        prototype.url +
+                        '/getXLSX?beanString=' +
+                        encodeURI(JSON.stringify(me.bean))
+                        );
+
                 break;
+
+            case '-panelMainAviancaDetail':
+
+                global.getFile(
+                        prototype.url +
+                        '/getXLSXDetail?beanString=' +
+                        encodeURI(me.searchParams)
+                        );
+
+                break;
+
             default:
-                global.Msg(
-                        {msg: 'Under Construction'
-                        });
+
+                global.Msg({
+                    msg: 'Under Construction'
+                });
         }
-
     },
-    
-    
-    
 
-    
-    
-    
-    
-  
-    btnFilter_click: function(obj) {
+    btnFilter_click: function (obj) {
         var option = Ext.getCmp(prototype.id + '-contentFilter');
         if (option.isVisible()) {
             option.setVisible(false);
@@ -358,11 +428,11 @@ Ext.define('Ext.Praxis.controller.refund.ControlBsplinkProcess.ControlBsplinkPro
             option.setVisible(true);
         }
     },
-    setWidthPie: function() {
-        var ancho = Ext.getCmp(prototype.id + me.panelActual).getWidth();
-        Ext.getCmp(prototype.id + '-pie').setWidth(ancho);
-    },
-    getPaggin: function() {
+//    setWidthPie: function () {
+//        var ancho = Ext.getCmp(prototype.id + me.panelActual).getWidth();
+//        Ext.getCmp(prototype.id + '-pie').setWidth(ancho);
+//    },
+    getPaggin: function () {
         me.pagginActual = '';
         switch (me.panelActual) {
             case  '-panelGridData':
@@ -370,33 +440,30 @@ Ext.define('Ext.Praxis.controller.refund.ControlBsplinkProcess.ControlBsplinkPro
                 break;
         }
     },
-    
-    
-    
-    
+
     /*     
      * Funciones para la paginacion     
      */
-    pagFirst: function(obj, e) {
+    pagFirst: function (obj, e) {
         this.getPaggin();
         var pag = Ext.getCmp(prototype.id + me.pagginActual);
         pag.moveFirst();
-    }, pagPrevious: function(obj, e) {
+    }, pagPrevious: function (obj, e) {
         this.getPaggin();
         var pag = Ext.getCmp(prototype.id + me.pagginActual);
         pag.movePrevious();
     },
-    pagNext: function(obj, e) {
+    pagNext: function (obj, e) {
         this.getPaggin();
         var pag = Ext.getCmp(prototype.id + me.pagginActual);
         pag.moveNext();
     },
-    pagLast: function(obj, e) {
+    pagLast: function (obj, e) {
         this.getPaggin();
         var pag = Ext.getCmp(prototype.id + me.pagginActual);
         pag.moveLast();
     }
-   
 
-  }
+
+}
 );

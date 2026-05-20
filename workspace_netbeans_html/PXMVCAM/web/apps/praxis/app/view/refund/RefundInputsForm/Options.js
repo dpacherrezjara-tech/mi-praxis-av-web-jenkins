@@ -1,6 +1,6 @@
 
 
-Ext.define('Ext.Praxis.view.refund.ControlBsplinkProcessForm.Options', {
+Ext.define('Ext.Praxis.view.refund.RefundInputsForm.Options', {
     extend: 'Ext.form.Panel',
     alias: 'widget.' + prototype.id + '-options',
     border: false,
@@ -20,34 +20,34 @@ Ext.define('Ext.Praxis.view.refund.ControlBsplinkProcessForm.Options', {
                     xtype: 'toolbar',
                     cls: 'x-toolbar-pag',
                     items: [
-//                        {
-//                            xtype: 'button',
-//                            id: prototype.id + '-btn-pag-first',
-//                            iconCls: 'prx-icon-pagination-first',
-//                            tooltip: 'First Page'
-//
-//                        },
-//                        {
-//                            xtype: 'button',
-//                            id: prototype.id + '-btn-pag-previous',
-//                            iconCls: 'prx-icon-pagination-previous',
-//                            tooltip: 'Previous Page'
-//
-//                        },
-//                        {
-//                            xtype: 'button',
-//                            id: prototype.id + '-btn-pag-next',
-//                            iconCls: 'prx-icon-pagination-next',
-//                            tooltip: 'Next Page'
-//
-//                        },
-//                        {
-//                            xtype: 'button',
-//                            id: prototype.id + '-btn-pag-last',
-//                            iconCls: 'prx-icon-pagination-last',
-//                            tooltip: 'Last Page'
-//
-//                        },
+                        {
+                            xtype: 'button',
+                            id: prototype.id + '-btn-pag-first',
+                            iconCls: 'prx-icon-pagination-first',
+                            tooltip: 'First Page'
+
+                        },
+                        {
+                            xtype: 'button',
+                            id: prototype.id + '-btn-pag-previous',
+                            iconCls: 'prx-icon-pagination-previous',
+                            tooltip: 'Previous Page'
+
+                        },
+                        {
+                            xtype: 'button',
+                            id: prototype.id + '-btn-pag-next',
+                            iconCls: 'prx-icon-pagination-next',
+                            tooltip: 'Next Page'
+
+                        },
+                        {
+                            xtype: 'button',
+                            id: prototype.id + '-btn-pag-last',
+                            iconCls: 'prx-icon-pagination-last',
+                            tooltip: 'Last Page'
+
+                        },
                         {
                             xtype: 'pagingtoolbar',
                             id: prototype.id + '-paggin',
@@ -56,12 +56,11 @@ Ext.define('Ext.Praxis.view.refund.ControlBsplinkProcessForm.Options', {
                             displayInfo: false,
                             hidden: true
                         }
-
                     ]
                 }
             ]
         },
-        {xtype: 'tbspacer', width: 20},
+        {xtype: 'tbspacer', width: 10},
         {
             xtype: 'panel',
             border: true,
@@ -82,7 +81,7 @@ Ext.define('Ext.Praxis.view.refund.ControlBsplinkProcessForm.Options', {
                             tooltip: 'Display filter'
 
                         },
-                        
+
                         {
                             xtype: 'button',
                             id: prototype.id + '-btnExcel',
@@ -95,6 +94,7 @@ Ext.define('Ext.Praxis.view.refund.ControlBsplinkProcessForm.Options', {
                             iconCls: 'prx-icon-clear',
                             tooltip: 'Clear Options'
                         },
+
                         {
                             xtype: 'button',
                             id: prototype.id + '-btnBack',
