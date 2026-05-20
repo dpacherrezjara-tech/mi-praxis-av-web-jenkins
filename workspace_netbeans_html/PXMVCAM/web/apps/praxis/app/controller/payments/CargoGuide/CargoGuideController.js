@@ -254,6 +254,15 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
                             msg: 'Data not found.'
                         });
                     }
+                    var grid = Ext.getCmp(prototype.id + '-gridDataDetail');
+                    var country = (me.bean && me.bean.IN_COUNTRY) || '';
+                    var isHnSv = (country === 'HN' || country === 'SV');
+                    var colCusca = grid.columnManager.getHeaderByDataIndex('CUSCA');
+                    var colCodpse = grid.columnManager.getHeaderByDataIndex('CODPSE');
+                    var colReference = grid.columnManager.getHeaderByDataIndex('REFERENCE');
+                    if (colCusca) { colCusca.setHidden(isHnSv); }
+                    if (colCodpse) { colCodpse.setHidden(isHnSv); }
+                    if (colReference) { colReference.setHidden(!isHnSv); }
                 }
             }
         });
@@ -847,12 +856,46 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
 
     },
     btnRunProcess_click: function () {
-        if (Ext.getCmp(prototype.id + '-runProcess')) {
-            Ext.getCmp(prototype.id + '-runProcess').close();
-        }
-        Ext.create('Ext.Praxis.view.payments.CargoGuideForm.RunProcessForm', {
-            id: prototype.id + '-runProcess'
-        }).show();
+        Ext.Msg.confirm('.:PRAXIS:.', 'Are you sure you want to execute the process?', function (btn) {
+            if (btn !== 'yes') { return; }
+
+            var waitWin = Ext.create('Ext.window.Window', {
+                title: '.:PRAXIS:.',
+                width: 320,
+                modal: true,
+                closable: false,
+                resizable: false,
+                bodyStyle: 'background:#fff; padding:20px; text-align:center;',
+                items: [{
+                    xtype: 'component',
+                    html: '<div style="font-size:13px; font-weight:bold; color:#1565C0; margin-bottom:12px;">Ejecutando conciliación...</div>'
+                       + '<div><img src="resources/img/botones/loading.gif" style="width:40px; height:40px;"/></div>'
+                       + '<div style="font-size:11px; color:#607D8B; margin-top:10px;">Por favor espere, este proceso puede tardar unos minutos.</div>'
+                }]
+            });
+            waitWin.show();
+
+            Ext.Ajax.request({
+                url: prototype.url + '/runProcess',
+                method: 'POST',
+                timeout: 60000000,
+                params: { beanString: '{}' },
+                success: function (response) {
+                    waitWin.close();
+                    var res = Ext.JSON.decode(response.responseText);
+                    Ext.Msg.show({
+                        title: '.:PRAXIS:.',
+                        msg: res.Mensaje || (res.success ? 'Proceso ejecutado correctamente.' : 'Error al ejecutar el proceso.'),
+                        buttons: Ext.MessageBox.OK,
+                        icon: res.success ? Ext.MessageBox.INFO : Ext.MessageBox.ERROR
+                    });
+                },
+                failure: function () {
+                    waitWin.close();
+                    Ext.Msg.alert('.:PRAXIS:.', 'Error de conexión. Por favor intente de nuevo.');
+                }
+            });
+        });
     },
     winDataEntry: function (action, rec) {
         action = action === null || action === undefined ? 'U' : action;

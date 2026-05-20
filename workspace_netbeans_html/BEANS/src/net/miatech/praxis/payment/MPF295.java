@@ -24,6 +24,7 @@ public class MPF295 {
     public String NPAGE = "";
     public String CUSCA = "";
     public String CODPSE = "";
+    public String REFERENCE = "";
     public String SFILE  = "";
     public String BANDOC = "";
     public String TYPE   = "";

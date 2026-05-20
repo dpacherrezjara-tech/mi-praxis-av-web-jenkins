@@ -158,6 +158,12 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Info', {
                                                     return  value;
                                                 }
                                             },
+                                            {text: '<span style="color:white;font-weight:bold;">Reference</span>', dataIndex: 'REFERENCE', width: 120, hidden: true, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
                                             {text: '<span style="color:white;font-weight:bold;">Bandoc</span>', dataIndex: 'BANDOC', width: 90, style: 'padding:2px; background: #6C87A8;border-color:white',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
