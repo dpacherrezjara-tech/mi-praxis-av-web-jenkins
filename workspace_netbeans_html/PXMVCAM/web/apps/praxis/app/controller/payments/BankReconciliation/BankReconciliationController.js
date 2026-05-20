@@ -855,7 +855,7 @@ Ext.util.CSS.createStyleSheet(`
                 if (me.panelActual === '-panelGridDataMPF199' && isChecked) {
 
 
-
+                console.log("ACAAA,ACAAA")
 //             me.obJPADJ.IN_SAGENT = Ext.getCmp(prototype.id + '-txtAGENCY').getValue()|| '';
 //        me.obJPADJ.IN_ADATE = Ext.getCmp(prototype.id + '-txtDATEPICKER').getSubmitValue()|| '';
 //        me.obJPADJ.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getSubmitValue()|| '';
@@ -888,7 +888,17 @@ Ext.util.CSS.createStyleSheet(`
 
                 me.obJPADJ.IN_STATUS = statusValue || '';
                 me.obJPADJ.beanString = JSON.stringify(me.obJPADJ);
-                this.setGridDataMPF199();
+                
+                var currentMode = Ext.getCmp(prototype.id + '-segViewMode').getValue();
+                
+                if (currentMode === 'BSP') {
+                    console.log(me.obJPADJ,'PARAMETROS22222')
+                    this.setGridDataMPF199();
+                } else if (currentMode === 'ARC') {
+                    this.setGridDataCOMISI();
+                }
+                
+//                this.setGridDataMPF199();
         }
         
         else if (me.panelActual === '-panelGridDataCash_Sumary' && isChecked && Ext.getCmp(prototype.id + '-cmbStatus').getValue().length > 0 ) {
