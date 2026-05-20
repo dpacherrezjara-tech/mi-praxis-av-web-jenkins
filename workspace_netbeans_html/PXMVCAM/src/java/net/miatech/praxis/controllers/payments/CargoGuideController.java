@@ -527,9 +527,24 @@ public class CargoGuideController extends BaseController {
             return;
         }
 
+        String country = request.getParameter("country");
+        if (country == null || country.trim().isEmpty()) { country = "CO"; }
+
+        String ruta = this.serverSession.propertySession.get("DB_SERVER_DEFAULT_TYPE").toString();
+        String rutaCarpeta;
+        if ("ATT".equals(ruta)) {
+            rutaCarpeta = "test";
+        } else if ("DEV".equals(ruta)) {
+            rutaCarpeta = "dev";
+        } else if ("PRO".equals(ruta)) {
+            rutaCarpeta = "prod";
+        } else {
+            rutaCarpeta = "";
+        }
+
         String basename = sfile.contains(".") ? sfile.substring(0, sfile.lastIndexOf('.')) : sfile;
         String pdfName = basename + "_LOADED.pdf";
-        String pdfPath = "\\\\10.0.0.87\\av\\CARGA\\dev\\process\\CO\\PDF\\" + pdfName;
+        String pdfPath = "\\\\10.0.0.87\\av\\CARGA\\" + rutaCarpeta + "\\process\\" + country + "\\PDF\\" + pdfName;
 
         java.io.File pdfFile = new java.io.File(pdfPath);
         if (!pdfFile.exists() || !pdfFile.isFile()) {
@@ -639,33 +654,12 @@ public class CargoGuideController extends BaseController {
     String runProcess(HttpServletRequest request) {
         System.out.println("-------------- CargoGuide : runProcess -------------");
         Map<String, Object> map = new HashMap<>();
-        Gson gson = new Gson();
 
         try {
             CargoGuideLogic logic = new CargoGuideLogic();
             logic.setSession(this.serverSession.getServerSession());
 
-            String beanString = request.getParameter("beanString");
-            java.lang.reflect.Type mapStrType = new com.google.gson.reflect.TypeToken<java.util.Map<String, String>>() {
-            }.getType();
-            java.util.Map<String, String> bean = gson.fromJson(beanString, mapStrType);
-
-            String country = bean.get("country");
-            String process = bean.get("process");
-
-            System.out.println("runProcess -> country=" + country + ", process=" + process);
-
-            Map<String, Object> result;
-
-            if ("CO".equals(country) && "FASE1".equals(process)) {
-                result = logic.runMPS556();
-            } else if ("CO".equals(country) && "FASE2".equals(process)) {
-                result = logic.runMPS557();
-            } else {
-                result = new HashMap<>();
-                result.put("success", false);
-                result.put("mensaje", "Process combination not available: " + country + " / " + process);
-            }
+            Map<String, Object> result = logic.runMPS556();
 
             map.put("success", result.get("success"));
             map.put("Mensaje", result.get("mensaje"));

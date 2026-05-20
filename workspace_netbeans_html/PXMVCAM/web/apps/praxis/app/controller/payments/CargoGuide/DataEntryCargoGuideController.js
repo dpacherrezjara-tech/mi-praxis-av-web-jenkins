@@ -54,8 +54,11 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.DataEntryCargoGuideControl
         this.setValue('de-txtNPAGE', this.bean.data.NPAGE);
         this.setValue('de-txtCUSCA', this.bean.data.CUSCA);
         this.setValue('de-txtCODPSE', this.bean.data.CODPSE);
+        this.setValue('de-txtREFERENCE', this.bean.data.REFERENCE || '');
         this.setValue('de-txtBANDOC', this.bean.data.BANDOC);
         this.setValue('de-txtSTATE', this.bean.data.STATE);
+
+        this._applyCountryMode(this.bean.data.SCOUNTRY);
 
         this.setValue('de-txtMONEDA', this.bean.data.SCURRENCY);
 
@@ -126,6 +129,7 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.DataEntryCargoGuideControl
         beanTemp.IN_ADATE =  this.getValue('de-txtADATE');
         beanTemp.IN_CUSCA =  this.getValue('de-txtCUSCA');
         beanTemp.IN_CODPSE = this.getValue('de-txtCODPSE');
+        beanTemp.IN_REFERENCE = this.getValue('de-txtREFERENCE');
         beanTemp.IN_CBATCH = this.bean.data.CBATCH;
         beanTemp.IN_DATEBAT = this.bean.data.DATEBAT;
         beanTemp.IN_STATE = this.getValue('de-txtSTATE');
@@ -178,21 +182,25 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.DataEntryCargoGuideControl
     },
 
     onDownloadPDF: function () {
-        var sfile = (this.bean && this.bean.data) ? (this.bean.data.SFILE || '') : '';
+        var data  = (this.bean && this.bean.data) ? this.bean.data : {};
+        var sfile   = data.SFILE    || '';
+        var country = data.SCOUNTRY || '';
         if (!sfile) {
             Ext.Msg.alert('Warning', 'No file associated with this record (SFILE is empty).');
             return;
         }
-        window.open(prototype.url + '/downloadPDF?sfile=' + encodeURIComponent(sfile) + '&disposition=attachment');
+        window.open(prototype.url + '/downloadPDF?sfile=' + encodeURIComponent(sfile) + '&country=' + encodeURIComponent(country) + '&disposition=attachment');
     },
 
     onPreviewPDF: function () {
-        var sfile = (this.bean && this.bean.data) ? (this.bean.data.SFILE || '') : '';
+        var data  = (this.bean && this.bean.data) ? this.bean.data : {};
+        var sfile   = data.SFILE    || '';
+        var country = data.SCOUNTRY || '';
         if (!sfile) {
             Ext.Msg.alert('Warning', 'No file associated with this record (SFILE is empty).');
             return;
         }
-        var url = prototype.url + '/downloadPDF?sfile=' + encodeURIComponent(sfile) + '&disposition=inline';
+        var url = prototype.url + '/downloadPDF?sfile=' + encodeURIComponent(sfile) + '&country=' + encodeURIComponent(country) + '&disposition=inline';
         Ext.create('Ext.window.Window', {
             title: 'PDF Preview — ' + sfile,
             width: 900,
@@ -397,12 +405,27 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.DataEntryCargoGuideControl
                 cmp.setReadOnly(true);
         });
 
-        // Campos editables en modo Update
-        ['de-txtIMPORTE', 'de-txtCUSCA', 'de-txtCODPSE'].forEach(id => {
-            let cmp = Ext.getCmp(prototype.id + '-' + id);
-            if (cmp)
-                cmp.setReadOnly(false);
+        // Campos editables en modo Update (dependen del país)
+        var country = (this.bean && this.bean.data) ? this.bean.data.SCOUNTRY : '';
+        var isHnSv = (country === 'HN' || country === 'SV');
+        var editableFields = isHnSv
+            ? ['de-txtIMPORTE', 'de-txtREFERENCE']
+            : ['de-txtIMPORTE', 'de-txtCUSCA', 'de-txtCODPSE'];
+        editableFields.forEach(function(id) {
+            var cmp = Ext.getCmp(prototype.id + '-' + id);
+            if (cmp) { cmp.setReadOnly(false); }
         });
+    },
+    _applyCountryMode: function (country) {
+        var isHnSv = (country === 'HN' || country === 'SV');
+        var cmpCusca   = Ext.getCmp(prototype.id + '-de-txtCUSCA');
+        var cmpCodpse  = Ext.getCmp(prototype.id + '-de-txtCODPSE');
+        var cmpRef     = Ext.getCmp(prototype.id + '-de-txtREFERENCE');
+        var cmpSpacer  = Ext.getCmp(prototype.id + '-de-spacerREFERENCE');
+        if (cmpCusca)  { cmpCusca.setVisible(!isHnSv); }
+        if (cmpCodpse) { cmpCodpse.setVisible(!isHnSv); }
+        if (cmpRef)    { cmpRef.setVisible(isHnSv); }
+        if (cmpSpacer) { cmpSpacer.setVisible(isHnSv); }
     },
     Habilitarlbl: function () {
         Ext.getCmp(prototype.id + '-lblDescripcion').show();

@@ -132,6 +132,7 @@ public class CargoGuideDAO {
                 bean.MONTO = rst.getDouble("MONTO");
                 bean.CUSCA = rst.getString("CUSCA").trim();
                 bean.CODPSE = rst.getString("CODPSE").trim();
+                bean.REFERENCE = rst.getString("REFERENCE").trim();
                 bean.SFILE  = rst.getString("SFILE").trim();
                 bean.BANDOC = rst.getString("BANDOC").trim();
                 bean.TYPE   = rst.getString("TYPE").trim();
@@ -189,36 +190,37 @@ public class CargoGuideDAO {
         String SQLCLL = "{CALL " + session.getMainLibrary() + "MP.MPS588(?,?,?,?,?,"
                 + "?,?,?,?,?,"
                 + "?,?,?,?,?,"
-                + "?,?)}";
+                + "?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL);
 
             // --- 1. SETEAMOS LAS LLAVES Y CAMPOS ---
-            cstmt.setString(1, bean.IN_CCUST);
-            cstmt.setString(2, bean.IN_SCOUNTRY);
-            cstmt.setString(3, bean.IN_NPAGE);
-            cstmt.setString(4, bean.IN_PAYDAY);
-            cstmt.setString(5, bean.IN_TYPE);
-            cstmt.setString(6, bean.IN_SEQ);
-            cstmt.setDouble(7, bean.IN_MONTO);
-            cstmt.setString(8, bean.IN_ADATE);
-            cstmt.setString(9, bean.IN_CUSCA);
+            cstmt.setString(1,  bean.IN_CCUST);
+            cstmt.setString(2,  bean.IN_SCOUNTRY);
+            cstmt.setString(3,  bean.IN_NPAGE);
+            cstmt.setString(4,  bean.IN_PAYDAY);
+            cstmt.setString(5,  bean.IN_TYPE);
+            cstmt.setString(6,  bean.IN_SEQ);
+            cstmt.setDouble(7,  bean.IN_MONTO);
+            cstmt.setString(8,  bean.IN_ADATE);
+            cstmt.setString(9,  bean.IN_CUSCA);
             cstmt.setString(10, bean.IN_CODPSE);
-            cstmt.setString(11, bean.IN_CBATCH);
-            cstmt.setString(12, bean.IN_DATEBAT);
-            cstmt.setString(13, bean.IN_STATE);
-            cstmt.setString(14, bean.option);
-            cstmt.setString(15, session.getUserView().getUserInfo().USR);
+            cstmt.setString(11, bean.IN_REFERENCE);
+            cstmt.setString(12, bean.IN_CBATCH);
+            cstmt.setString(13, bean.IN_DATEBAT);
+            cstmt.setString(14, bean.IN_STATE);
+            cstmt.setString(15, bean.option);
+            cstmt.setString(16, session.getUserView().getUserInfo().USR);
 
-            cstmt.registerOutParameter(16, Types.INTEGER);
-            cstmt.registerOutParameter(17, Types.VARCHAR);
+            cstmt.registerOutParameter(17, Types.INTEGER);
+            cstmt.registerOutParameter(18, Types.VARCHAR);
 
             cstmt.execute();
 
-            int outCode = cstmt.getInt(16);
-            String outMensaje = cstmt.getString(17);
+            int outCode = cstmt.getInt(17);
+            String outMensaje = cstmt.getString(18);
 
             response.put("success", (outCode == 1)); 
             response.put("mensaje", outMensaje);

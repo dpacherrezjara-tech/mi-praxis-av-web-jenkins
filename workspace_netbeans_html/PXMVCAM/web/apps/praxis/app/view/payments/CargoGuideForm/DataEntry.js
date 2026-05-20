@@ -58,7 +58,9 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.DataEntry', {
                             {xtype: 'tbspacer', width: 14},
                             {xtype: 'textfield', fieldLabel: 'NPAGE',   id: prototype.id + '-de-txtNPAGE',   width: 290, labelWidth: 72, fieldStyle: 'text-align:center;'},
                             {xtype: 'tbspacer', width: 14},
-                            {xtype: 'textfield', fieldLabel: 'CUSCA',   id: prototype.id + '-de-txtCUSCA',   width: 290, labelWidth: 60, fieldStyle: 'text-align:center;'}
+                            {xtype: 'textfield', fieldLabel: 'CUSCA',   id: prototype.id + '-de-txtCUSCA',   width: 290, labelWidth: 60, fieldStyle: 'text-align:center;'},
+                            {xtype: 'tbspacer', width: 14, id: prototype.id + '-de-spacerREFERENCE', hidden: true},
+                            {xtype: 'textfield', fieldLabel: 'Reference', id: prototype.id + '-de-txtREFERENCE', width: 290, labelWidth: 60, fieldStyle: 'text-align:center;', hidden: true}
                         ]},
                         {items: [
                             {xtype: 'textfield', fieldLabel: 'CODPSE', id: prototype.id + '-de-txtCODPSE', width: 290, labelWidth: 60, fieldStyle: 'text-align:center;'},
