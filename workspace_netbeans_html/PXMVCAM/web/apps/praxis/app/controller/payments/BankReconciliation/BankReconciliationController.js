@@ -863,7 +863,22 @@ Ext.util.CSS.createStyleSheet(`
 //        var statusValue = Ext.getCmp(prototype.id + '-cmbStatus').getValue();
 
 
-        me.obJPADJ.IN_SAGENT = Ext.getCmp(prototype.id + '-txtAGENCY').getValue() || '';
+                        var fromY = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() || '';
+                        var fromM = Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue() || '';
+                        var fromD = Ext.getCmp(prototype.id + '-cmbDateDay').getValue() || '';
+                        var fromDate = fromY + fromM + fromD;
+
+                        var toY = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() || '';
+                        var toM = Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue() || '';
+                        var toD = Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() || '';
+                        var toDate = toY + toM + toD;
+
+                        var finalDateParam = fromDate + '|' + toDate;
+                        
+                        
+
+                me.obJPADJ.IN_SDATE = finalDateParam;
+                me.obJPADJ.IN_SAGENT = Ext.getCmp(prototype.id + '-txtAGENCY').getValue() || '';
                 me.obJPADJ.IN_ADATE = Ext.getCmp(prototype.id + '-txtDATEPICKER').getSubmitValue() || '';
                 me.obJPADJ.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getSubmitValue() || '';
                 me.obJPADJ.IN_SOURCE = Ext.getCmp(prototype.id + '-cmbFuente').getSubmitValue() || '';
@@ -914,12 +929,43 @@ Ext.util.CSS.createStyleSheet(`
                             statusValue = statusValue.length > 0 ? statusValue.join(',') : '';
                         }
                         
-                        me.obJPADJ.IN_SDATE = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue() + Ext.getCmp(prototype.id + '-cmbDateDay').getValue();
-                        me.currentSDate = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue() + Ext.getCmp(prototype.id + '-cmbDateDay').getValue();
+                        var fromY = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() || '';
+                        var fromM = Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue() || '';
+                        var fromD = Ext.getCmp(prototype.id + '-cmbDateDay').getValue() || '';
+                        var fromDate = fromY + fromM + fromD;
+
+                        var toY = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() || '';
+                        var toM = Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue() || '';
+                        var toD = Ext.getCmp(prototype.id + '-cmbDateToDay').getValue() || '';
+                        var toDate = toY + toM + toD;
+
+                        var finalDateParam = fromDate + '|' + toDate;
+                        
+                        me.obJPADJ.IN_SDATE = finalDateParam;
+                        me.currentSDate = finalDateParam;
                         me.obJPADJ.IN_SAGENT =  Ext.getCmp(prototype.id + '-txtAGENCY').getValue() || '';
                         me.obJPADJ.IN_ADATE = '';
 //                        me.obJPADJ.IN_STATUS = statusValue || ''; 
-                        me.obJPADJ.IN_STATUS = statusValue || ''; 
+                       var statusValue = Ext.getCmp(prototype.id + '-cmbStatus').getValue();
+
+                        if (Ext.isArray(statusValue)) {
+                            var tempStatus = statusValue.slice(); 
+
+                            var hasOne = tempStatus.indexOf("1") !== -1;
+                            var hasFive = tempStatus.indexOf("5") !== -1;
+
+                            if (hasOne && !hasFive) {
+                                tempStatus.push("5"); 
+                            } else if (!hasOne && hasFive) {
+                                tempStatus = tempStatus.filter(function(item) {
+                                    return item !== "5"; 
+                                });
+                            }
+
+                            statusValue = tempStatus.length > 0 ? tempStatus.join(',') : '';
+                        } 
+
+                        me.obJPADJ.IN_STATUS = statusValue || '';
                         me.obJPADJ.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getSubmitValue() || '';
                         me.obJPADJ.IN_SOURCE = Ext.getCmp(prototype.id + '-cmbFuente').getSubmitValue() || '';
                         me.obJPADJ.beanString = JSON.stringify(me.obJPADJ);
@@ -4522,7 +4568,7 @@ Ext.util.CSS.createStyleSheet(`
                 } else {
 
                 // 🔹 Mover variables fuera del load para mantener consistencia
-                var groupMap = {};
+                        var groupMap = {};
                         var groupId = 0;
                         var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
                         proxy: {
