@@ -872,6 +872,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
         this.setValue('txtCard22', '');
         this.setValue('txtApproval', '');
         this.setValue('txtFromDate', null);
+        this.setValue('txtToDate', null);
         this.setValue('txtScanPNR', null);
         this.setValue('txtScanSAGENT', null);
 
