@@ -209,16 +209,16 @@ Ext.define('Ext.Praxis.controller.payments.Miscellaneous.DataEntryMiscellaneousC
         
         
 
-        if (TABLA !== "95") {
-            if (DATINI.length === 8 && DATFIN.length === 8) {
-                if (DATFIN < DATINI) {
-                    msj = 'Error in dates';
-                }
-            } 
-            else {
-                msj = 'Error in date lenghts'
-            }
-        }
+//        if (TABLA !== "95") {
+//            if (DATINI.length === 8 && DATFIN.length === 8) {
+//                if (DATFIN < DATINI) {
+//                    msj = 'Error in dates';
+//                }
+//            } 
+//            else {
+//                msj = 'Error in date lenghts'
+//            }
+//        }
 
         return msj;
     },
