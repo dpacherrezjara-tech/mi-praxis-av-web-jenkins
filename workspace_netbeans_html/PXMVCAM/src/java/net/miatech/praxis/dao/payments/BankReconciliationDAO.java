@@ -2243,10 +2243,10 @@ public class BankReconciliationDAO {
                 cstmt2.setString(19, Functions.getFechaActual());
                 cstmt2.setString(20, Functions.getHoraActual());
                 cstmt2.setString(21, filter.strComment.toUpperCase());
-                cstmt2.setString(22, filter.SEQ.trim());
-                cstmt2.setString(23, filter.CORRL.trim());
-                cstmt2.setString(24, filter.CCUST.trim());
-                cstmt2.setString(25, filter.TDOC.trim());
+                cstmt2.setString(22, filterC.SEQ.trim());
+                cstmt2.setString(23, filterC.CORRL.trim());
+                cstmt2.setString(24, filterC.CCUST.trim());
+                cstmt2.setString(25, filterC.TDOC.trim());
 
                 cstmt2.execute();
                 cstmt2.close(); // Cerrar el CallableStatement después de cada ejecución
@@ -2286,29 +2286,29 @@ public class BankReconciliationDAO {
                 cstmt3.setString(22, Functions.getFechaActual());
                 cstmt3.setString(23, Functions.getHoraActual());
                 cstmt3.setString(24, filterA.CCUST.trim());
-                cstmt3.setString(25, filter.SEQ.trim());
-                cstmt3.setString(26, filter.CORRL.trim());
-                cstmt3.setString(27, filter.TDOC.trim());
+                cstmt3.setString(25, filterA.SEQ.trim());
+                cstmt3.setString(26, filterA.CORRL.trim());
+                cstmt3.setString(27, filterA.TDOC.trim());
 
                 cstmt3.execute();
                 cstmt3.close(); // Cerrar el CallableStatement después de cada ejecución
 
-            }
-
+            } 
+            
             String SQLCLL04 = "{CALL " + session.getMainLibrary() + "MP.MPS594(?,?,?,?)}";
             cnx4 = session.getCNXIBMDB2().getIBMDB2Connection();
-
+            
             cstmt4 = cnx4.prepareCall(SQLCLL04);
-
+            
             cstmt4.setString(1, filter.BANDOC.trim());
             cstmt4.setString(2, filter.DATEC.trim());
             cstmt4.setString(3, filter.TRANC.trim());
             cstmt4.registerOutParameter(4, Types.VARCHAR);
             cstmt4.execute();
             strMsj = cstmt4.getString(4);
-
+            
             cstmt4.close();
-
+            
         } catch (Exception e) {
             e.printStackTrace();
             strMsj = e.getMessage();
