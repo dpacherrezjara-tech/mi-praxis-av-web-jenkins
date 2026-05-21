@@ -5,7 +5,6 @@ Ext.define('Ext.Praxis.controller.refund.RefundInputs.RefundInputsController', {
     fecha: new Date(),
     childs: '5',
     bean: '',
-//    beanTicket: {},
     paginActual: '',
     drillDown: [],
     lstCountry: [],
@@ -44,9 +43,7 @@ Ext.define('Ext.Praxis.controller.refund.RefundInputs.RefundInputsController', {
             '#RefundInputsForm-btnFilter': {
                 click: this.btnFilter_click
             },
-            '#RefundInputsForm-btnAdd': {
-                click: this.btnAdd_click
-            },
+
             '#RefundInputsForm-btnBack': {
                 click: this.btnBack_click
             },
@@ -104,21 +101,31 @@ Ext.define('Ext.Praxis.controller.refund.RefundInputs.RefundInputsController', {
 
     btnSearch_click: function (obj, e) {
 
-        this.setFormatParameter();
+        console.log(me.panelActual);
+        if (me.panelActual === '-detailTicket') {
 
-        this.search();
+            var paramsDetail = JSON.parse(me.searchParamsDetail);
 
+            paramsDetail.IN_TICKET =
+                    Ext.getCmp(prototype.id + '-txtTICKET').getValue();
 
+            me.searchParamsDetail =
+                    JSON.stringify(paramsDetail);
+
+            this.obtainData2();
+
+        } else {
+
+            this.setFormatParameter();
+
+            this.search();
+        }
     },
 
     setFormatParameter: function () {
 
         me.bean = {};
-
-        me.bean.IN_YEAR =
-                Ext.getCmp(
-                        prototype.id + '-cmbDateFromYear'
-                        ).getValue();
+        me.bean.IN_YEAR =Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue();
 
         me.searchParams =
                 JSON.stringify(me.bean);
@@ -133,7 +140,6 @@ Ext.define('Ext.Praxis.controller.refund.RefundInputs.RefundInputsController', {
 
         let lstData = [];
         me.drillDown = [];
-        //this.showGrid('-vskMain');
         me.panelActual = '-vskMain';
         var storeGridDatas = Ext.create('Ext.Praxis.store.refund.GridData', {
             proxy: {
@@ -171,17 +177,18 @@ Ext.define('Ext.Praxis.controller.refund.RefundInputs.RefundInputsController', {
         var paramsDetail = {};
 
         paramsDetail.IN_YEAR = processDate;
+        paramsDetail.IN_YEAR = processDate;
+        me.searchParamsDett =
+                JSON.stringify(paramsDetail);
 
         me.searchParams =
                 JSON.stringify(paramsDetail);
-        //this.showGrid('-detailTicket2');
         me.drillDown.push(me.panelActual);
         me.panelActual = '-detailTicket2';
         global.selectedChild(
                 me.childs,
                 prototype.id + me.panelActual
                 );
-        console.log(paramsDetail, 'paramsDetailAAAA');
         this.obtainData();
 
 
@@ -232,24 +239,19 @@ Ext.define('Ext.Praxis.controller.refund.RefundInputs.RefundInputsController', {
         var paramsDetail = {};
 
         paramsDetail.IN_FCARGA = rowData.data.FCARG;
-
         paramsDetail.IN_SEQ = rowData.data.A5003SEQ;
-
         paramsDetail.IN_STATUS = column;
-
         me.searchParamsDetail = JSON.stringify(paramsDetail);
-
         me.drillDown.push(me.panelActual);
-
         me.panelActual = '-detailTicket';
 
 
-        global.selectedChild(me.childs,prototype.id + me.panelActual);
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
         Ext.getCmp(prototype.id + '-boxPag').show();
 
         this.obtainData2();
 
-        //Ext.getCmp(prototype.id + '-txtTICKET').enable();
+        Ext.getCmp(prototype.id + '-txtTICKET').show();
 
     },
 
@@ -287,6 +289,189 @@ Ext.define('Ext.Praxis.controller.refund.RefundInputs.RefundInputsController', {
         Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas12);
     },
 
+    /// CARGA ARCHIVOS
+
+
+    onLoadClick_TktIatas: function () {
+        var msjPregunta = '', msjError = '';
+        msjPregunta = 'Sure to load file?';
+
+        if (msjError === '') {
+            Ext.Msg.show({
+                title: '.:Upload File:.',
+                msg: msjPregunta,
+                buttons: Ext.MessageBox.YESNO,
+                scope: this,
+                icon: Ext.MessageBox.WARNING,
+                modal: true,
+                fn: function (btn) {
+                    if (btn === 'yes') {
+                        this.onFileLoadTktIatas();
+                    }
+                }
+            });
+        }
+    },
+    onFileLoadTktIatas: function () {
+
+        var fileIatas = Ext.getCmp(prototype.id + '-fileIatas').getValue();
+        var fileObj = Ext.getCmp(prototype.id + '-fileIatas').fileInputEl.dom.files[0];
+        this.bean.fileTktIatas = Ext.getCmp(prototype.id + '-fileIatas').fileInputEl.dom.files[0];
+        var me = this;
+
+        if (fileIatas === '') {
+            Ext.MessageBox.alert('PRAXIS', "::: Select only one file. Please :::", function (btn, text) {
+                if (btn === 'ok' || btn === 'cancel')
+                    setTimeout(function () {
+                        Ext.getCmp(agency.id + '-fileIatas').focus();
+                    }.bind(this), 100);
+            }.bind(this));
+            return;
+        }
+
+        var maxSizeMB = 1.5; // cambia este valor según tu necesidad
+        var sizeMB = fileObj.size / (1024 * 1024);
+
+        if (sizeMB > maxSizeMB) {
+            Ext.MessageBox.alert('PRAXIS', 'The file is too large (' + sizeMB.toFixed(2) + ' MB). Max allowed: ' + maxSizeMB + ' MB.');
+            Ext.getCmp(prototype.id + '-fileIatas').fileInputEl.dom.value = '';
+            return;
+        }
+
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            var arrBytes = e.target.result;
+
+            Ext.Ajax.request({
+                url: prototype.url + '/loadIatas',
+                method: 'POST',
+                timeout: 60000000,
+                rawData: arrBytes,
+                headers: {
+                    'Content-Type': 'application/octet-stream'
+                },
+                params: {
+                    filename: fileIatas
+                },
+                beforerequest: Ext.getCmp(prototype.id + '-xpanel').mask('Uploading a file...'),
+                success: function (response) {
+                    Ext.getCmp(prototype.id + '-xpanel').unmask();
+                    var res = Ext.JSON.decode(response.responseText);
+
+                    var mensaje = res.msjResult;
+                    if (res.success) {
+                        global.Msg({msg: mensaje});
+                        me.setFormatParameter();
+                        me.search();
+
+                    } else {
+                        global.Msg({msg: 'Ocurrio un error. (' + mensaje + ')', icon: 0});
+                    }
+//                    this.btnClear_click
+                },
+                failure: function (response) {
+                    console.log(response, 'response');
+
+                    var msg = 'Ocurrió un error inesperado.';
+                    if (response.status === 405) {
+                        msg = 'Error 405: El método HTTP POST no está permitido para esta operación.';
+                    } else if (response.statusText) {
+                        msg = 'Error ' + response.status + ': ' + response.statusText;
+                    }
+
+                    global.Msg({msg: msg, icon: 0});
+                    Ext.getCmp(prototype.id + '-xpanel').unmask();
+                    Ext.getCmp(prototype.id + '-fileIatas').fileInputEl.dom.value = '';
+                }
+
+            });
+
+        }
+        reader.readAsArrayBuffer(this.bean.fileTktIatas);
+    },
+
+    ///
+    /// EXCEL
+
+    goURLpost: function (method, parms, columns) {
+
+        var js_columns = JSON.stringify(columns);
+        var mapForm = document.createElement("form");
+        mapForm.target = "_blank";
+        mapForm.method = "POST"; // or "post" if appropriate
+        mapForm.action = prototype.url + '/' + method + '?dw_excel=true';
+        var mapInput = document.createElement("input");
+        mapInput.type = "text";
+        mapInput.name = "beanString";
+        mapInput.value = parms;
+        mapForm.appendChild(mapInput);
+        var mapInput = document.createElement("input");
+        mapInput.type = "text";
+        mapInput.name = "columns";
+        mapInput.value = js_columns;
+        mapForm.appendChild(mapInput);
+        var mapInput = document.createElement("input");
+        mapInput.type = "text";
+        mapInput.name = "columns";
+        mapInput.value = js_columns;
+        mapForm.appendChild(mapInput);
+        document.body.appendChild(mapForm);
+        mapForm.submit();
+    },
+
+    btnExcel_click: function (obj, e) {
+
+        //this.setFormatParameter();
+        var msj = this.validateFields();
+        if (msj !== '') {
+            global.Msg({msg: msj
+            });
+        } else {
+            Ext.Msg.show({
+                title: '.:PRAXIS:.',
+                msg: 'Download Excel ?',
+                buttons: Ext.MessageBox.OKCANCEL,
+                scope: this,
+                icon: Ext.MessageBox.QUESTION,
+                modal: true,
+                fn: function (btn) {
+                    if (btn === 'ok') {
+                        this.exportExcel();
+                    }
+                }
+            });
+        }
+    },
+
+    exportExcel: function () {
+
+        if (me.panelActual === '-vskMain') {
+
+            me.goURLpost(
+                    'excelTotal',
+                    me.searchParams,
+                    Ext.getCmp(prototype.id + '-gridData').config.columns.items
+                    );
+
+        } else if (me.panelActual === '-detailTicket2') {
+
+            me.goURLpost(
+                    'excelTotalDett',
+                    me.searchParamsDett,
+                    Ext.getCmp(prototype.id + '-gridDataDetailTicketRTS2').config.columns.items
+                    );
+
+        } else if (me.panelActual === '-detailTicket') {
+
+            me.goURLpost(
+                    'searchTktDetailAll',
+                    me.searchParamsDetail,
+                    Ext.getCmp(prototype.id + '-gridDataDetailTicket').config.columns.items
+                    );
+        }
+    },
+
     //////////////////////////////////////////////
 
     validateFields: function () {
@@ -306,23 +491,7 @@ Ext.define('Ext.Praxis.controller.refund.RefundInputs.RefundInputsController', {
         var rec = grid.getStore().getAt(rowIndex);
         this.winDataEntry('U', rec);
     },
-//    winDataEntry: function(action, rec) {
-//        action = action === null || action === undefined ? 'U' : action;
-//        rec = rec === null || rec === undefined ? {} : rec;       
-//        
-//        console.log(rec,'PRUEBA MESAJE');
-//        
-//        Ext.create('Ext.Praxis.view.payments.PaymentScheduleForm.DataEntry', {
-//            id: prototype.id + '-dataEntry',
-//            params: {
-//                action: action,
-//                rec: rec.data,
-//                listaPaises : me.lstCountry,
-//                
-//                lst:me.lst
-//            }
-//        }).show();
-//    },
+
     btnBack_click: function (obj, e) {
 
         if (me.drillDown.length > 0) {
@@ -344,70 +513,13 @@ Ext.define('Ext.Praxis.controller.refund.RefundInputs.RefundInputsController', {
     },
     btnClear_click: function (obj, e) {
 
-        Ext.getCmp(prototype.id + '-cmbDateFromMonth')?.setValue('');
-        Ext.getCmp(prototype.id + '-cmbDateFromDay')?.setValue('');
-        Ext.getCmp(prototype.id + '-cmbDateToMonth')?.setValue('');
-        Ext.getCmp(prototype.id + '-cmbDateToDay')?.setValue('');
+
+        Ext.getCmp(prototype.id + '-txtTICKET')?.setValue('');
 
 
 
-    },
 
-    btnExcel_click: function (obj, e) {
 
-        this.setFormatParameter();
-        var msj = this.validateFields();
-        if (msj !== '') {
-            global.Msg({msg: msj
-            });
-        } else {
-            Ext.Msg.show({
-                title: '.:PRAXIS:.',
-                msg: 'Download Excel ?',
-                buttons: Ext.MessageBox.OKCANCEL,
-                scope: this,
-                icon: Ext.MessageBox.QUESTION,
-                modal: true,
-                fn: function (btn) {
-                    if (btn === 'ok') {
-                        this.exportExcel();
-                    }
-                }
-            });
-        }
-    },
-    exportExcel: function () {
-
-        this.setFormatParameter();
-
-        switch (me.panelActual) {
-
-            case '-panelMainAvianca':
-
-                global.getFile(
-                        prototype.url +
-                        '/getXLSX?beanString=' +
-                        encodeURI(JSON.stringify(me.bean))
-                        );
-
-                break;
-
-            case '-panelMainAviancaDetail':
-
-                global.getFile(
-                        prototype.url +
-                        '/getXLSXDetail?beanString=' +
-                        encodeURI(me.searchParams)
-                        );
-
-                break;
-
-            default:
-
-                global.Msg({
-                    msg: 'Under Construction'
-                });
-        }
     },
 
     btnFilter_click: function (obj) {
@@ -420,18 +532,18 @@ Ext.define('Ext.Praxis.controller.refund.RefundInputs.RefundInputsController', {
     },
     setWidthPie: function () {
 
-    var ancho = Ext.getCmp(
-        prototype.id + me.panelActual
-    ).getWidth();
+        var ancho = Ext.getCmp(
+                prototype.id + me.panelActual
+                ).getWidth();
 
-    var pie = Ext.getCmp(
-        prototype.id + '-pie'
-    );
+        var pie = Ext.getCmp(
+                prototype.id + '-pie'
+                );
 
-    if (pie) {
-        pie.setWidth(ancho);
-    }
-},
+        if (pie) {
+            pie.setWidth(ancho);
+        }
+    },
     getPaggin: function () {
 
         me.pagginActual = '';
@@ -439,17 +551,14 @@ Ext.define('Ext.Praxis.controller.refund.RefundInputs.RefundInputsController', {
         switch (me.panelActual) {
 
             case '-vskMain':
-
                 me.pagginActual = '-paggin';
                 break;
 
             case '-detailTicket2':
-
                 me.pagginActual = '-paggin';
                 break;
 
             case '-detailTicket':
-
                 me.pagginActual = '-paggin';
                 break;
         }

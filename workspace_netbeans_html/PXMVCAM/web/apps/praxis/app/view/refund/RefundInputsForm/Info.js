@@ -361,6 +361,7 @@ Ext.define('Ext.Praxis.view.refund.RefundInputsForm.Info', {
                                         width: 110,
                                         dataIndex: 'TICKET',
                                         align: 'center',
+                                        tdCls: 'x-selectable',
                                         style: 'padding: 6px;background: #6A95AF; border-color:white !important',  // Agregar padding al encabezado de la columna
                                         renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
                                              metaData.style = 'margin-top: 1px;';

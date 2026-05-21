@@ -34,26 +34,15 @@ Ext.define('Ext.Praxis.view.refund.RefundInputsForm.Filters', {
                     enableKeyEvents: true,
                     labelWidth: 35,
                     width: 115,
+                    margin: '0 20 0 0',
                     hidden: false,
                     valueField: 'code',
                     displayField: 'name',
                     enforceMaxLength: true,
-                    style: 'margin-right:10px;',
+                    style: 'margin-right:10px;'
                 },
-                {
-                    fieldLabel: 'Ticket',
-                    xtype: 'textfield',
-                    id: prototype.id + '-txtTICKET',
-                    width: 165,
-                    labelWidth: 45,
-                    maxLength: 13,
-                    maskRe: /^[0-9]$/,
-                    disabled: true,
-                    enforceMaxLength: true, 
-                    style: 'margin-right:10px;',
-                    labelStyle: 'text-align: left; font-size: 14px;',
-                    fieldStyle: 'text-align: left; font-size: 14px;',
-                },
+                
+               
                 {
                         xtype: 'form',
                         id: prototype.id + '-form-Iatas',
@@ -84,11 +73,27 @@ Ext.define('Ext.Praxis.view.refund.RefundInputsForm.Filters', {
                     width: 90,
                     html: '<span style="color:white;font-size:14px;color:white;font-weight:600">Load File</span>',
                     style: 'background:#6A95AF;margin-top:1px',
+                    margin: '0 15 0 0',
                     border: false,
                     listeners: {
                         click: 'onLoadClick_TktIatas'
                     }
-                }
+                },
+                 {
+                    fieldLabel: 'Ticket',
+                    xtype: 'textfield',
+                    id: prototype.id + '-txtTICKET',
+                    width: 165,
+                    labelWidth: 45,
+                    maxLength: 13,
+                    maskRe: /^[0-9]$/,
+                    //disabled: true,
+                    hidden: true,
+                    enforceMaxLength: true, 
+                    style: 'margin-right:10px;',
+                    labelStyle: 'text-align: left; font-size: 14px;',
+                    fieldStyle: 'text-align: left; font-size: 14px;',
+                },
             ]
         }
     ]
