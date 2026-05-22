@@ -77,6 +77,15 @@ Ext.define('Ext.Praxis.controller.payments.BSPFileDownload.BSPFileDownloadContro
             '#BSPFileDownloadForm-cmbDateFromDayARC': {
                 select: this.selectComboFromDayARC
             },
+             '#BSPFileDownloadForm-cmbDateFromYearICCS': {
+                select: this.selectComboFromYearICCS
+            },
+            '#BSPFileDownloadForm-cmbDateFromMonthICCS': {
+                select: this.selectComboFromMonthICCS
+            },
+            '#BSPFileDownloadForm-cmbDateFromDayICCS': {
+                select: this.selectComboFromDayICCS
+            },
         });
         // </editor-fold>
     },
@@ -87,13 +96,10 @@ Ext.define('Ext.Praxis.controller.payments.BSPFileDownload.BSPFileDownloadContro
     obtainData: function () {
         var fechaActual = me.fecha || new Date();
 
-        // Año actual (ya está bien como número)
         var yearActual = fechaActual.getFullYear();
 
-        // Mes actual CONVERTIDO a string de 2 dígitos
         var monthActual = (fechaActual.getMonth() + 1).toString().padStart(2, '0');
 
-        // Bind stores
         Ext.getCmp(prototype.id + '-cmbDateFromYear').bindStore(win.getStoreYear(true));
         Ext.getCmp(prototype.id + '-cmbDateToYear').bindStore(win.getStoreYear(true));
         Ext.getCmp(prototype.id + '-cmbDateFromMonth').bindStore(win.getStoreMonth(true));
@@ -101,7 +107,6 @@ Ext.define('Ext.Praxis.controller.payments.BSPFileDownload.BSPFileDownloadContro
         Ext.getCmp(prototype.id + '-cmbDateFromDay').bindStore(win.getStoreDays(true));
         Ext.getCmp(prototype.id + '-cmbDateToDay').bindStore(win.getStoreDays(true));
 
-        // Asignar valores (año como número, mes como string de 2 dígitos)
         Ext.getCmp(prototype.id + '-cmbDateFromYear').setValue(yearActual);
         Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(yearActual);
         Ext.getCmp(prototype.id + '-cmbDateFromMonth').setValue(monthActual);
@@ -109,7 +114,6 @@ Ext.define('Ext.Praxis.controller.payments.BSPFileDownload.BSPFileDownloadContro
         Ext.getCmp(prototype.id + '-cmbDateFromDay').setValue("");
         Ext.getCmp(prototype.id + '-cmbDateToDay').setValue("");
 
-        // Lo mismo para combos ARC
         Ext.getCmp(prototype.id + '-cmbDateFromYearARC').bindStore(win.getStoreYear(true));
         Ext.getCmp(prototype.id + '-cmbDateToYearARC').bindStore(win.getStoreYear(true));
         Ext.getCmp(prototype.id + '-cmbDateFromMonthARC').bindStore(win.getStoreMonth(true));
@@ -123,6 +127,20 @@ Ext.define('Ext.Praxis.controller.payments.BSPFileDownload.BSPFileDownloadContro
         Ext.getCmp(prototype.id + '-cmbDateToMonthARC').setValue(monthActual);
         Ext.getCmp(prototype.id + '-cmbDateFromDayARC').setValue("");
         Ext.getCmp(prototype.id + '-cmbDateToDayARC').setValue("");
+        
+        Ext.getCmp(prototype.id + '-cmbDateFromYearICCS').bindStore(win.getStoreYear(true));
+        Ext.getCmp(prototype.id + '-cmbDateToYearICCS').bindStore(win.getStoreYear(true));
+        Ext.getCmp(prototype.id + '-cmbDateFromMonthICCS').bindStore(win.getStoreMonth(true));
+        Ext.getCmp(prototype.id + '-cmbDateToMonthICCS').bindStore(win.getStoreMonth(true));
+        Ext.getCmp(prototype.id + '-cmbDateFromDayICCS').bindStore(win.getStoreDays(true));
+        Ext.getCmp(prototype.id + '-cmbDateToDayICCS').bindStore(win.getStoreDays(true));
+
+        Ext.getCmp(prototype.id + '-cmbDateFromYearICCS').setValue(yearActual);
+        Ext.getCmp(prototype.id + '-cmbDateToYearICCS').setValue(yearActual);
+        Ext.getCmp(prototype.id + '-cmbDateFromMonthICCS').setValue(monthActual);
+        Ext.getCmp(prototype.id + '-cmbDateToMonthICCS').setValue(monthActual);
+        Ext.getCmp(prototype.id + '-cmbDateFromDayICCS').setValue("");
+        Ext.getCmp(prototype.id + '-cmbDateToDayICCS').setValue("");
 
         this.paramsObtainData.COUNTRY = 2;
         Ext.Ajax.request({
@@ -165,13 +183,21 @@ Ext.define('Ext.Praxis.controller.payments.BSPFileDownload.BSPFileDownloadContro
         if (selected === 0) {
             Ext.getCmp(prototype.id + '-panelBSP').setVisible(true);
             Ext.getCmp(prototype.id + '-panelARC').setVisible(false);
+            Ext.getCmp(prototype.id + '-panelICCS').setVisible(false);
             this.setFormatParameter();
             this.setGridData();
         } else if (selected === 1) {
             Ext.getCmp(prototype.id + '-panelBSP').setVisible(false);
+            Ext.getCmp(prototype.id + '-panelICCS').setVisible(false);
             Ext.getCmp(prototype.id + '-panelARC').setVisible(true);
             this.setFormatParameterARC();
             this.setGridDataARC();
+        } else {
+            Ext.getCmp(prototype.id + '-panelBSP').setVisible(false);
+            Ext.getCmp(prototype.id + '-panelARC').setVisible(false);
+            Ext.getCmp(prototype.id + '-panelICCS').setVisible(true);
+            this.setFormatParameterICCS();
+            this.setGridDataICCS();
         }
     },
     setFormatParameter: function () {
@@ -380,6 +406,70 @@ Ext.define('Ext.Praxis.controller.payments.BSPFileDownload.BSPFileDownloadContro
 
         global.getFile(url);
     },
+    setFormatParameterICCS: function () {
+        me.bean = {};
+
+        // Settlement From
+        me.bean.IN_FECHA_FROM = me.buildDate(
+                Ext.getCmp(prototype.id + '-cmbDateFromYearICCS').getValue(),
+                Ext.getCmp(prototype.id + '-cmbDateFromMonthICCS').getValue(),
+                Ext.getCmp(prototype.id + '-cmbDateFromDayICCS').getValue()
+                );
+
+        // Settlement To
+        me.bean.IN_FECHA_TO = me.buildDate(
+                Ext.getCmp(prototype.id + '-cmbDateToYearICCS').getValue(),
+                Ext.getCmp(prototype.id + '-cmbDateToMonthICCS').getValue(),
+                Ext.getCmp(prototype.id + '-cmbDateToDayICCS').getValue()
+                );
+
+        // Additional
+        me.bean.IN_SOCIETY = Ext.getCmp(prototype.id + '-typeSocietyICCS').getValue() || '';
+        me.bean.IN_FILE_NAME = Ext.getCmp(prototype.id + '-txtINameFileICCS').getValue() || '';
+        me.bean.IN_OPTION = Ext.getCmp(prototype.id + '-cmbInputDateICCS').getValue() || '';
+
+        var beanString = JSON.stringify(me.bean);
+        searchParams = {
+            bean: me.bean,
+            beanString: beanString
+        };
+
+        console.log(searchParams, 'searchParamsARC');
+    },
+    setGridDataICCS: function () {
+        win.lblUser_toolTip("Estructura: MPF304");
+        me.panelActual = '-panelGridDataICCS';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+        me.setWidthPie();
+
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+            proxy: {
+                url: prototype.url + '/searchICCS'
+            }, listeners: {
+                beforeload: function (obj) {
+                    obj.proxy.extraParams = searchParams;
+                },
+                load: function (obj) {
+                    var pag = Ext.getCmp(prototype.id + '-paggin');
+                    var pagData = pag.getPageData();
+                    Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                    Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                    Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                    if (obj.data.length === 0) {
+                        global.Msg({
+                            msg: 'Data not found.'
+                        });
+                    }
+                }
+            }
+        });
+        global.clear();
+        Ext.getCmp(prototype.id + '-gridDataDetailICCS').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
+
+    },
+    
+    
     btnExcel_click: function (obj, e) {
         Ext.Msg.show({
             title: '.:PRAXIS:.',
@@ -560,6 +650,30 @@ Ext.define('Ext.Praxis.controller.payments.BSPFileDownload.BSPFileDownloadContro
         var comboToDay = Ext.getCmp(prototype.id + '-cmbDateToDayARC');
         comboToDay.setValue(obj.getValue());
     },
+    
+    
+    selectComboFromYearICCS: function (obj) {
+        var comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYearICCS');
+        var storeComboDataYear = win.getStoreYear2(false, obj.getValue());
+        let comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromDayICCS');
+        let comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonthICCS');
+        let comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonthICCS');
+        comboToYear.bindStore(storeComboDataYear);
+        comboToYear.setValue(obj.getValue());
+        if (comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue()) {
+            comboFromMonth.setValue(comboToMonth.getValue())
+        }
+    },
+    selectComboFromMonthICCS: function (obj) {
+        var comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonthICCS');
+        comboToMonth.setValue(obj.getValue());
+    },
+    selectComboFromDayARC: function (obj) {
+        var comboToDay = Ext.getCmp(prototype.id + '-cmbDateToDayICCS');
+        comboToDay.setValue(obj.getValue());
+    },
+    
+    
     getPeriodoYYYYMM: function (strFormatDate) {
         if (!strFormatDate)
             return null;
@@ -627,6 +741,7 @@ Ext.define('Ext.Praxis.controller.payments.BSPFileDownload.BSPFileDownloadContro
 
         global.getFile(url);
     },
+    
     onDownloadAllCSV: function () {
         let me = this;
         let url = null;
@@ -641,6 +756,11 @@ Ext.define('Ext.Praxis.controller.payments.BSPFileDownload.BSPFileDownloadContro
             case '-panelGridDataARC': // ARC
                 console.log('ZIP ARC permitido');
                 url = prototype.url + '/getBulkTXTARC';
+                break;
+
+            case '-panelGridDataICCS': // NUEVO: ICCS
+                console.log('ZIP ICCS permitido');
+                url = prototype.url + '/getBulkCSVIccs';
                 break;
 
             default:
@@ -663,6 +783,7 @@ Ext.define('Ext.Praxis.controller.payments.BSPFileDownload.BSPFileDownloadContro
             beanString: searchParams.beanString
         });
     },
+    
     getFileByPost: function (url, params) {
         var form = document.createElement("form");
         form.setAttribute("method", "POST");
@@ -682,6 +803,64 @@ Ext.define('Ext.Praxis.controller.payments.BSPFileDownload.BSPFileDownloadContro
         document.body.appendChild(form);
         form.submit();
         form.remove();
+    },
+    updateFilesICCS: function () {
+        var me = this;
+        
+        // Bloqueamos la grilla para que el usuario espere (Ajusta el ID si tu grilla se llama distinto)
+        var grid = Ext.getCmp(prototype.id + '-xpanel');
+        if (grid) {
+            grid.mask('Escaneando archivos en red, por favor espere...');
+        }
+
+        Ext.Ajax.request({
+            url: prototype.url + '/scanICCSFiles',
+            method: 'POST',
+            timeout: 600000, 
+            success: function (response, options) {
+                if (grid) {
+                    grid.unmask();
+                }
+                
+                var res = Ext.JSON.decode(response.responseText);
+
+                if (res.success) {
+                    Ext.Msg.alert('Proceso Completado', res.message + '<br><br><b>Archivos nuevos registrados:</b> ' + res.totalProcesados);
+                    
+                    // Opcional: Aquí puedes llamar a tu función de búsqueda para que la grilla se recargue sola
+                    // me.onSearch(); 
+                } else {
+                    // Si el Java mandó success: false por algún catch
+                    Ext.Msg.alert('Atención', res.message);
+                }
+            },
+            failure: function (response, options) {
+                if (grid) {
+                    grid.unmask();
+                }
+                Ext.Msg.alert('Error', 'Ocurrió un problema de comunicación con el servidor.');
+            }
+        });
+    },
+    onDownloadICCS: function (column, e, row, colIndex, x, rowData) {
+        let data = rowData.data;
+        const ccust = data.CCUST;
+        const filename = data.NAMEFILE;
+        const yearFile = data.YEARFILE; 
+
+        if (!ccust || !filename || !yearFile) {
+            Ext.Msg.alert('Error', 'Faltan parámetros para la descarga (Customer, Filename o Year).');
+            return;
+        }
+
+        const url = prototype.url + '/getCSVIccs' 
+                + '?ccust=' + encodeURIComponent(ccust)
+                + '&filename=' + encodeURIComponent(filename)
+                + '&yearFile=' + encodeURIComponent(yearFile);
+
+        console.log('Solicitando:', url);
+
+        global.getFile(url);
     }
 }
 );

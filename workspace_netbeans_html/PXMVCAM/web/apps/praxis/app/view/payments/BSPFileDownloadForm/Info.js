@@ -334,6 +334,121 @@ Ext.define('Ext.Praxis.view.payments.BSPFileDownloadForm.Info', {
                                     }
                                 }
                             ]
+                        },
+                        {
+                            xtype: 'panel',
+                            border: false,
+                            width: 1420,
+                            id: prototype.id + '-panelGridDataICCS',
+                            bodyStyle: 'background-color: #F4F7FD;',
+                            padding: '1',
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridDataDetailICCS',
+                                    height: 543,
+                                    width: 1090,
+                                    hidden: false,
+                                    columnLines: true,
+                                    viewConfig: {
+                                        enableTextSelection: true 
+                                    },
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: true,
+                                            align: 'center'
+
+                                        },
+                                        items: [
+                                            {text: '<span style="color:white;font-weight:bold;">Nbr</span>', dataIndex: 'RN', width: 45,style: 'padding:4px; background: #6C87A8;border-color:white'},
+                                            {text: '<span style="color:white;font-weight:bold;">Customer</span>', dataIndex: 'CCUST', width: 80,style: 'padding:2px; background: #6C87A8;border-color:white',
+                                            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                var data = record.data;
+                                                metaData.style = "text-align:center;";
+                                                
+                                                if (value == 'TA01') {
+                                                    return  '202';
+                                                } else if (value == 'AV01') {
+                                                    return  '134';
+                                                } else if (value == 'LR01') {
+                                                    return  '133';
+                                                } else if (value == '2K01') {
+                                                    return  '547';
+                                                }
+                                                
+                                                return  value;
+                                            }},
+                                             {
+                                                text: '<span style="color:white;font-weight:bold;">Settlement Date</span>',
+                                                dataIndex: 'DATESETT',
+                                                width: 120,
+                                                style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    
+                                                    if (!value || value.length !== 8) return value;
+
+                                                    var year = value.substring(0, 4);
+                                                    var month = value.substring(4, 6);
+                                                    var day = value.substring(6, 8);
+
+                                                    return day + "/" + month + "/" + year;
+                                                }
+                                            },
+                                            {text: '<span style="color:white;font-weight:bold;">File Name</span>', dataIndex: 'NAMEFILE', width: 503,style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    
+                                                    return  value;
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:white;font-weight:bold;">Upload Date</span>',
+                                                dataIndex: 'FECR',
+                                                width: 120,
+                                                style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:white;font-weight:bold;">Upload By</span>',
+                                                dataIndex: 'USCR',
+                                                width: 120,
+                                                style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value ? value.toUpperCase() : '';
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:white;font-weight:bold;">Download File</span>',
+                                                width: 100,
+                                                align: 'center',
+                                                style: 'padding:2px; background: #6C87A8; border-color:white',
+                                                renderer: function (value, metaData, record) {
+                                                    let file = record.get('FILE_NAME'); 
+
+                                                    return `<img src="resources/img/botones/excel-png-office-xlsx-icon-3.png"
+                                                                 style="cursor:pointer; width:18px; height:18px;"
+                                                                >`;
+                                                },
+                                                listeners: {
+                                                    click: 'onDownloadICCS'
+                                                }
+                                            }
+
+                                        ]
+                                    }
+                                }
+                            ]
                         }
                     ]
                 },

@@ -15,8 +15,14 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +35,8 @@ import net.miatech.praxis.payment.MPF218;
 import net.miatech.praxis.payment.MPF218Filter;
 import net.miatech.praxis.payment.MPF221;
 import net.miatech.praxis.payment.MPF221Filter;
+import net.miatech.praxis.payment.MPF304;
+import net.miatech.praxis.payment.MPF304Filter;
 import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
@@ -772,5 +780,320 @@ public class BSPFileDownloadController extends BaseController {
 
         return "UN";
     }
+    
+    private static final String BASE_PATH = "\\\\Px\\av\\Efectivo\\dev\\process\\ICCS";
+    
+    @RequestMapping(value = "scanICCSFiles", method = RequestMethod.POST)
+    public @ResponseBody String scanICCSFiles(ModelMap map) {
+        System.out.println("-------------- ICCS File Scanner -------------");
+        map.put("success", true);
+        int filesProcessed = 0;
 
+        try {
+            BSPFileDownloadLogic logic = new BSPFileDownloadLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            // 1. Obtener el entorno (DEV, ATT, PRO)
+            String environment = this.serverSession
+                    .getPropertySession()
+                    .get("DB_SERVER_DEFAULT_TYPE")
+                    .toString();
+
+            // 2. Obtener la ruta base desde las propiedades
+            String rutaBaseKey = "RUTA_CASH_" + environment + "_FILES";
+            String rutaBase = this.serverSession
+                    .getPropertySession()
+                    .get(rutaBaseKey)
+                    .toString();
+
+            // 3. Armar la ruta final concatenando las carpetas de ICCS
+            // Usamos File.separator para evitar problemas de diagonales en diferentes SO, 
+            // o simplemente agregamos "\\process\\ICCS"
+            String finalBasePath = rutaBase + "\\process\\ICCS";
+            
+            System.out.println("Escaneando ruta: " + finalBasePath);
+
+            File baseDir = new File(finalBasePath);
+            if (!baseDir.exists() || !baseDir.isDirectory()) {
+                throw new Exception("La ruta base no existe: " + finalBasePath);
+            }
+
+            Pattern datePattern = Pattern.compile("(\\d{4}-\\d{2}-\\d{2})");
+            File[] yearDirs = baseDir.listFiles(File::isDirectory);
+
+            if (yearDirs != null) {
+                for (File yearDir : yearDirs) {
+                    // 1. CAPTURAMOS EL AÑO DIRECTO DEL NOMBRE DE LA CARPETA
+                    String yearFile = yearDir.getName(); 
+                    
+                    if (!yearFile.matches("^\\d{4}$")) continue;
+
+                    File[] ccustDirs = yearDir.listFiles(File::isDirectory);
+                    if (ccustDirs == null) continue;
+
+                    for (File ccustDir : ccustDirs) {
+                        String ccust = ccustDir.getName();
+                        File[] csvFiles = ccustDir.listFiles((dir, name) -> name.toLowerCase().endsWith(".csv"));
+                        
+                        if (csvFiles == null) continue;
+
+                        for (File csvFile : csvFiles) {
+                            String fileName = csvFile.getName();
+                            String dateSett = "";
+
+                            Matcher matcher = datePattern.matcher(fileName);
+                            if (matcher.find()) {
+                                dateSett = matcher.group(1).replace("-", ""); 
+                            } else {
+                                continue; 
+                            }
+
+                            Path filePath = csvFile.toPath();
+                            BasicFileAttributes attr = Files.readAttributes(filePath, BasicFileAttributes.class);
+                            
+                            LocalDateTime creationDate = LocalDateTime.ofInstant(attr.creationTime().toInstant(), ZoneId.systemDefault());
+                            String fecr = creationDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+                            String hocr = creationDate.format(DateTimeFormatter.ofPattern("HHmmss"));
+
+                            String owner = Files.getOwner(filePath).getName();
+                            if (owner.contains("\\")) {
+                                owner = owner.substring(owner.indexOf("\\") + 1);
+                            }
+                            owner = owner.length() > 10 ? owner.substring(0, 10) : owner;
+
+                            // 2. ENVIAMOS EL NUEVO PARÁMETRO AL LOGIC
+                            logic.processFileRecord(ccust, dateSett, fileName, yearFile, owner, fecr, hocr);
+                            filesProcessed++;
+                        }
+                    }
+                }
+            }
+            
+            map.put("message", "Escaneo finalizado exitosamente.");
+            map.put("totalProcesados", filesProcessed);
+
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("message", "Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
+        return new Gson().toJson(map);
+    }
+
+    @RequestMapping(value = "searchICCS", method = RequestMethod.POST)
+    public @ResponseBody String searchICCS(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BSPFileDownload : Search ICCS -------------");
+        map.put("success", true);
+        try {
+            List<MPF304> lst = this.getListICCS(request);
+            System.out.println("Total ICCS: " + lst.size());
+            map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+            map.put("data", lst);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("msg", e.getMessage());
+            logError.error("Error en searchICCS", e);
+        }
+        return new Gson().toJson(map);
+    }
+
+    private List<MPF304> getListICCS(HttpServletRequest request) {
+        List<MPF304> lst = new ArrayList<>();
+        MPF304Filter filter = new MPF304Filter();
+        Gson gson = new Gson();
+
+        try {
+            logic = new BSPFileDownloadLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String beanString = request.getParameter("beanString");
+            if (beanString != null && !beanString.isEmpty()) {
+                filter = gson.fromJson(beanString, MPF304Filter.class);
+            }
+
+            filter.page.TOTROW = -1;
+            int limit = request.getParameter("limit") == null ? 20 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            filter.page.PAGROW = limit;
+            filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+
+            lst = logic.loadMPS650(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+    
+    @RequestMapping(value = "getCSVIccs", method = RequestMethod.GET)
+    public @ResponseBody
+    void getCSVIccs(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        System.out.println("-------------- Report : getCSVIccs --------------");
+
+        String environment = this.serverSession
+                .getPropertySession()
+                .get("DB_SERVER_DEFAULT_TYPE")
+                .toString();
+
+        String rutaBaseKey = "RUTA_CASH_" + environment + "_FILES";
+        String rutaBase = this.serverSession
+                .getPropertySession()
+                .get(rutaBaseKey)
+                .toString();
+
+        String ccust = request.getParameter("ccust");
+        String filename = request.getParameter("filename");
+        String yearFile = request.getParameter("yearFile"); 
+
+        System.out.println("Parámetros → ccust=" + ccust + ", filename=" + filename + ", yearFile=" + yearFile);
+
+        if (ccust == null || filename == null || yearFile == null || 
+            ccust.isEmpty() || filename.isEmpty() || yearFile.isEmpty()) {
+            
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("Parámetros obligatorios: ccust, filename y yearFile");
+            return;
+        }
+
+        String folderStr = rutaBase 
+                + File.separator + "process" 
+                + File.separator + "ICCS" 
+                + File.separator + yearFile 
+                + File.separator + ccust;
+
+        Path folderPath = Paths.get(folderStr);
+        System.out.println("Buscando en: " + folderPath);
+
+        Path filePath = folderPath.resolve(filename);
+
+        if (!Files.exists(filePath)) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.getWriter().write("Archivo no encontrado en red: " + filename);
+            return;
+        }
+
+        System.out.println("Archivo encontrado: " + filePath);
+
+        response.setContentType("text/csv");
+        response.setHeader(
+                "Content-Disposition",
+                "attachment; filename=\"" + filename + "\""
+        );
+
+        try (FileInputStream fis = new FileInputStream(filePath.toFile()); 
+             OutputStream out = response.getOutputStream()) {
+
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = fis.read(buffer)) != -1) {
+                out.write(buffer, 0, bytesRead);
+            }
+            out.flush();
+        } catch (Exception e) {
+            System.err.println("Error enviando el archivo al cliente: " + e.getMessage());
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+    }
+ 
+    @RequestMapping(value = "getBulkCSVIccs", method = RequestMethod.POST)
+    public void getBulkCSVIccs(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        System.out.println("-------------- Report : getBulkCSVIccs --------------");
+
+        String beanString = request.getParameter("beanString");
+        if (beanString == null || beanString.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("beanString es obligatorio");
+            return;
+        }
+
+        Gson gson = new Gson();
+        MPF304Filter filter = gson.fromJson(beanString, MPF304Filter.class);
+
+        filter.page.PAGROW = -1;
+        filter.page.PAGNUM = 1;
+
+        BSPFileDownloadLogic logic = new BSPFileDownloadLogic();
+        logic.setSession(this.serverSession.getServerSession());
+        
+        List<MPF304> list = logic.loadMPS650(filter);
+
+        System.out.println("Registros ICCS encontrados para ZIP: " + list.size());
+
+        if (list.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.getWriter().write("No hay archivos ICCS para descargar");
+            return;
+        }
+
+        String environment = this.serverSession
+                .getPropertySession()
+                .get("DB_SERVER_DEFAULT_TYPE")
+                .toString();
+
+        String rutaBaseKey = "RUTA_CASH_" + environment + "_FILES";
+        String rutaBase = this.serverSession
+                .getPropertySession()
+                .get(rutaBaseKey)
+                .toString();
+
+        File tempZip = File.createTempFile("Cash_Files_ICCS_", ".zip");
+        int addedFiles = 0;
+
+        try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(tempZip))) {
+
+            for (MPF304 item : list) {
+                try {
+                    
+                    String year = (item.YEARFILE != null && !item.YEARFILE.isEmpty()) 
+                                  ? item.YEARFILE 
+                                  : item.NAMEFILE.substring(0, 4);
+
+                    // Armamos la ruta exacta para ICCS
+                    String folderStr = rutaBase 
+                            + File.separator + "process" 
+                            + File.separator + "ICCS" 
+                            + File.separator + year 
+                            + File.separator + item.CCUST;
+
+                    Path filePath = Paths.get(folderStr).resolve(item.NAMEFILE);
+
+                    if (!Files.exists(filePath)) {
+                        System.err.println("Archivo ICCS NO encontrado: " + filePath);
+                        continue;
+                    }
+
+                    zos.putNextEntry(new ZipEntry(item.NAMEFILE));
+                    Files.copy(filePath, zos);
+                    zos.closeEntry();
+                    addedFiles++;
+
+                } catch (Exception eFile) {
+                    System.err.println("Error agregando archivo ICCS al ZIP: "
+                            + item.NAMEFILE + " → " + eFile.getMessage());
+                }
+            }
+        }
+
+        System.out.println("Archivos ICCS incluidos en el ZIP: " + addedFiles + " de " + list.size());
+
+        if (addedFiles == 0) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.getWriter().write("No se encontraron archivos físicos de ICCS para descargar");
+            tempZip.delete();
+            return;
+        }
+
+        response.setContentType("application/zip");
+        response.setHeader(
+                "Content-Disposition",
+                "attachment; filename=\"Cash_Files_ICCS.zip\""
+        );
+
+        Files.copy(tempZip.toPath(), response.getOutputStream());
+        response.flushBuffer();
+        tempZip.delete();
+    }
 }
