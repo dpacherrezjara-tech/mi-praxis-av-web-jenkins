@@ -97,7 +97,9 @@ Ext.define('Ext.Praxis.controller.payments.ExecutionSchedule.DataEntryExecutionS
                 {"code": "PBDI", "name": "PB-DINERS"},
                 {"code": "PBPV", "name": "PB-PVA"},
                 {"code": "SAFE", "name": "SAFETYPAY"},
-                {"code": "CODE", "name": "CODENSA"}
+                {"code": "CODE", "name": "CODENSA"},
+                {"code": "GYE", "name": "GUAYAQUIL"},
+                {"code": "PACI", "name": "PACIFICAR"}
             ]
         }));
 

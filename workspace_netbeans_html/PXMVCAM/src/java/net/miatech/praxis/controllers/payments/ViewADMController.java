@@ -2807,7 +2807,7 @@ public class ViewADMController extends BaseController {
         }else{
             typeMovement = "Operaciones Bancarias Ext";
         }
-        String fileNameDownload = String.format("Unpaid Tickets Report - " + filter.SDATE.trim() +  " - " + filter.CCUST.trim() + " - " + filter.SCOUNTRY.trim() + " - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
+        String fileNameDownload = String.format("Unpaid Tickets Report - " + filter.SDATE.trim() +  " - " + filter.CCUST.trim() + " - " + filter.SCOUNTRY.trim() + " - " + filter.CFUENTE.trim() + " - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
         try {
             
             Workbook workbook;

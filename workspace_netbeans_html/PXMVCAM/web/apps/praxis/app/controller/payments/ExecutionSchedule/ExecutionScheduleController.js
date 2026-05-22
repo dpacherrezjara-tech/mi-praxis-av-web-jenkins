@@ -99,7 +99,9 @@ Ext.define('Ext.Praxis.controller.payments.ExecutionSchedule.ExecutionScheduleCo
                 ["PBDI", "PB-DINERS"],
                 ["PBPV", "PB-PVA"],
                 ["SAFE", "SAFETYPAY"],
-                ["CODE", "CODENSA"]
+                ["CODE", "CODENSA"],
+                ["GYE", "GUAYAQUIL"],
+                ["PACI", "PACIFICAR"]
             ]
         }));
         CmbTypeprocesa.setValue("");
@@ -179,7 +181,7 @@ Ext.define('Ext.Praxis.controller.payments.ExecutionSchedule.ExecutionScheduleCo
             }
         });
     },
-    
+
     onRendererColumnOnStatus: function (value, metaData, record, rowIndex, colIndex, store, view) {
         switch (String(record.get('A4718ESTAT'))) {
             case 'P':

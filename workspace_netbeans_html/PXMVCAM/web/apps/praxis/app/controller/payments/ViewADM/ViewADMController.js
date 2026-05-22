@@ -1012,6 +1012,24 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
                             valueField: 'code',
                             value: "134"
                         },
+                        // FUENTE
+                         {
+                            xtype: 'combobox',
+                            fieldLabel: 'Source',
+                            name: 'cfuente',
+                            store: Ext.create('Ext.data.Store', {
+                                fields: ['fuente'],
+                                data: [
+                                    { fuente: 'BSP' },
+                                    { fuente: 'ARC' },
+                                    { fuente: 'AMA' }
+                                ]
+                            }),
+                            queryMode: 'local',
+                            displayField: 'fuente',
+                            valueField: 'fuente',
+                            value: "BSP"
+                        },
                         {
                             xtype: 'combobox',
                             fieldLabel: 'Year',
@@ -1104,9 +1122,10 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
                         beanReportADM.SCOUNTRY = values.country
                         beanReportADM.SCARCOD = values.card
                         beanReportADM.CCUST = values.cliente
-                        console.log('beanReportADM', beanReportADM)
-                        console.log(me.lstCountry, 'me.lstCountry')
-                        console.log(me.lstTarjetas, 'me.lstTarjetas')
+                        beanReportADM.CFUENTE  = values.cfuente 
+                        console.log('beanReportADM', beanReportADM);
+                        console.log(me.lstCountry, 'me.lstCountry');
+                        console.log(me.lstTarjetas, 'me.lstTarjetas');
                         
                         me.paramsReportADM.beanString = JSON.stringify(beanReportADM)
                         global.getFile(prototype.url + '/getXLSXReportADM?beanString=' + encodeURI(me.paramsReportADM.beanString));
@@ -1120,6 +1139,11 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
 //        me.paramsReportADM.beanString = JSON.stringify(beanReportADM)
 //        global.getFile(prototype.url + '/getXLSXReportADM?beanString=' + encodeURI(me.paramsReportADM.beanString));
     },
+    
+    
+    
+    
+    
     btnFilter_click: function (obj) {
         var option = Ext.getCmp(prototype.id + '-contFilter');
         if (option.isVisible()) {
