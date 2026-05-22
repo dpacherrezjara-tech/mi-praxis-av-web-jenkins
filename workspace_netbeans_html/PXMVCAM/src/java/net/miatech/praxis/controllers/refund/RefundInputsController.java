@@ -697,7 +697,6 @@ public class RefundInputsController extends BaseController {
 
             String dirPath = "\\\\Wsavianca\\files\\Carga Web Avianca\\AMADEUS\\LOG PERMISOS";
             
-
             File dir = new File(dirPath);
 
             if (!dir.exists()) {
@@ -1538,7 +1537,8 @@ public class RefundInputsController extends BaseController {
             final String anio = fecha.substring(15, 19);
             final String fechaF = anio + mes + dia;
             
-  
+            
+       
             
             pathLog = "\\\\Wsavianca\\files\\Carga Web Avianca\\AMADEUS\\LOG PERMISOS\\" + fechaF + ".log";
             final File file = new File(pathLog);
