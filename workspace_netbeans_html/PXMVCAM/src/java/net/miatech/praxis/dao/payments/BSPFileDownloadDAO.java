@@ -29,6 +29,8 @@ import net.miatech.praxis.payment.MPF218;
 import net.miatech.praxis.payment.MPF218Filter;
 import net.miatech.praxis.payment.MPF221;
 import net.miatech.praxis.payment.MPF221Filter;
+import net.miatech.praxis.payment.MPF304;
+import net.miatech.praxis.payment.MPF304Filter;
 import net.miatech.praxis.payment.filter.A2280Filter;
 import net.miatech.praxis.payment.filter.A2287Filter;
 import net.miatech.praxis.payment.filter.A2290Filter;
@@ -263,4 +265,124 @@ public class BSPFileDownloadDAO {
         return lstData;
     }
 
+    public void insertFileRecord(String ccust, String dateSett, String fileName,
+            String yearFile, String uscr, String fecr, String hocr) throws Exception {
+
+        CallableStatement cstmt = null;
+        Connection cnx = null;
+        String SQLCLL01 = "{CALL PRAXISMP.MPS649(?,?,?,?,?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, ccust);
+            cstmt.setString(2, dateSett);
+            cstmt.setString(3, fileName);
+            cstmt.setString(4, yearFile); 
+            cstmt.setString(5, uscr);
+            cstmt.setString(6, fecr);
+            cstmt.setString(7, hocr);
+
+            cstmt.execute();
+
+        } catch (Exception e) {
+            System.err.println("Error insertando en BD archivo: " + fileName);
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+            pasarGarbageCollector();
+        }
+    }
+
+    public List<MPF304> loadMPS650(MPF304Filter filter) throws Exception {
+        List<MPF304> lstData = new ArrayList<>(0);
+        MPF304 bean;
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        Connection cnx = null;
+
+        String SQLCLL01 = "{CALL PRAXISMP.MPS650(?,?,?,?,?,?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, filter.IN_FECHA_FROM.trim());
+            cstmt.setString(2, filter.IN_FECHA_TO.trim());
+            cstmt.setString(3, filter.IN_SOCIETY.trim());
+            cstmt.setString(4, filter.IN_FILE_NAME.trim());
+
+            cstmt.registerOutParameter(5, Types.INTEGER);
+            cstmt.registerOutParameter(6, Types.INTEGER);
+            cstmt.registerOutParameter(7, Types.INTEGER);
+            cstmt.registerOutParameter(8, Types.INTEGER);
+
+            cstmt.setInt(5, filter.page.PAGNUM);
+            cstmt.setInt(6, filter.page.PAGROW);
+            cstmt.setInt(7, filter.page.TOTPAG);
+            cstmt.setInt(8, filter.page.TOTROW);
+
+            cstmt.execute();
+
+            filter.page.PAGNUM = cstmt.getInt(5);
+            filter.page.PAGROW = cstmt.getInt(6);
+            filter.page.TOTPAG = cstmt.getInt(7);
+            filter.page.TOTROW = cstmt.getInt(8);
+
+            rst = cstmt.getResultSet();
+            while (rst.next()) {
+                bean = new MPF304();
+                bean.RN = rst.getLong("RN");
+                bean.CCUST = rst.getString("CCUST").trim();
+                bean.DATESETT = rst.getString("DATESETT").trim();
+                bean.NAMEFILE = rst.getString("NAMEFILE").trim();
+                bean.USCR = rst.getString("USCR").trim();
+                bean.FECR = rst.getString("FECR").trim();
+                bean.HOCR = rst.getString("HOCR").trim();
+                bean.YEARFILE = rst.getString("YEARFILE").trim();
+
+                bean.page.PAGNUM = filter.page.PAGNUM;
+                bean.page.PAGROW = filter.page.PAGROW;
+                bean.page.TOTPAG = filter.page.TOTPAG;
+                bean.page.TOTROW = filter.page.TOTROW;
+
+                lstData.add(bean);
+            }
+
+        } catch (Exception e) {
+            logError.error("Error en loadMPS650", e);
+            throw e;
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (Exception e) {
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (Exception e) {
+                }
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+            pasarGarbageCollector();
+        }
+
+        return lstData;
+    }
 }

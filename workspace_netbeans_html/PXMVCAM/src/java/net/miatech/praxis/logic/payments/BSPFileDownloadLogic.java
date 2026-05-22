@@ -16,6 +16,8 @@ import net.miatech.praxis.payment.MPF218;
 import net.miatech.praxis.payment.MPF218Filter;
 import net.miatech.praxis.payment.MPF221;
 import net.miatech.praxis.payment.MPF221Filter;
+import net.miatech.praxis.payment.MPF304;
+import net.miatech.praxis.payment.MPF304Filter;
 import net.miatech.praxis.payment.filter.A2280Filter;
 import net.miatech.praxis.payment.filter.A2354Filter;
 
@@ -34,9 +36,19 @@ public class BSPFileDownloadLogic {
     public List<MPF218> loadMPS415(MPF218Filter filter) throws SQLException, Exception {
         return BSPFileDownloadDAO.loadMPS415(filter);
     }
-    
+
     public List<MPF221> loadMPS446(MPF221Filter filter) throws SQLException, Exception {
         return BSPFileDownloadDAO.loadMPS446(filter);
+    }
+
+    public void processFileRecord(String ccust, String dateSett, String fileName, 
+                                  String yearFile, String uscr, String fecr, String hocr) throws Exception {
+
+        BSPFileDownloadDAO.insertFileRecord(ccust, dateSett, fileName, yearFile, uscr, fecr, hocr);
+    }
+    
+    public List<MPF304> loadMPS650(MPF304Filter filter) throws Exception {
+        return BSPFileDownloadDAO.loadMPS650(filter);
     }
 
 }
