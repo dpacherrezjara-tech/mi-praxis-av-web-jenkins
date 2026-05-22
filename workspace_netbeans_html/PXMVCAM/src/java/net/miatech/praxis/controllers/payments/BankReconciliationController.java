@@ -7775,5 +7775,37 @@ public class BankReconciliationController extends BaseController {
         }
         return new Gson().toJson(map);
     }
+    
+    
+    @RequestMapping(value = "MaintenanceMPF223", method = RequestMethod.POST)
+    public @ResponseBody
+    String MaintenanceMPF223(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- bankreconci : MaintenanceMPF223 (UPDATE) -------------");
+        map.put("success", false);
+        
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String beanString = request.getParameter("beanString");
+            Gson gson = new Gson();
+            
+            A2290Filter filter = gson.fromJson(beanString, A2290Filter.class);
+
+            String resultMsg = logic.updateMPF223(filter);
+
+            if ("OK".equals(resultMsg)) {
+                map.put("success", true);
+                map.put("Mensaje", "Record updated successfully.");
+            } else {
+                map.put("Mensaje", resultMsg);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("Mensaje", "Internal Server Error: " + e.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
 
 }

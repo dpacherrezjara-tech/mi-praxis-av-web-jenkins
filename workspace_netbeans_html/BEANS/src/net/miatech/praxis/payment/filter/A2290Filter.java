@@ -17,7 +17,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * @author claudia
  */
 public class A2290Filter extends A2290 {
-
     //Campos clave originales =======
     public String origSDATE = "";
     public String IN_CCUST = "";
@@ -1064,6 +1063,7 @@ public class A2290Filter extends A2290 {
     public double SVFOPNETR    = 0; 
     public double SVFOPNETRU    = 0; 
     public double SUM_NETO    = 0; 
+    public double SUM_IMPORTEPAG    = 0; 
     public double SUM_PAYAMOU    = 0; 
     public double SUM_USDEQUI    = 0; 
     public double SUM_TKT    = 0; 
@@ -1129,6 +1129,15 @@ public class A2290Filter extends A2290 {
     
     public String O_SCONSOL ="";
     public String O_PRDA ="";
+    public String O_CODPRO ="";
+    public String O_CCUSTPRO ="";
+    public String O_FLIQUIDACI ="";
+    public String O_LIQUIDACIO ="";
+    public String O_MERCHAND ="";
+    public String O_CORRL ="";
+    public String O_CODIGO_OLD ="";
+    public String O_CODIGO ="";
+    public String O_ACCCOMP ="";
     public String O_SCURRENCY ="";
     public double O_NETO =0;
     public double O_ABALANCE =0;

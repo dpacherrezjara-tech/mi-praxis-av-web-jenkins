@@ -6759,9 +6759,18 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 },
                                                 items: [
                                                     {
+                                                        text: 'RN',
+                                                        dataIndex: 'RN',
+                                                        width: 60,
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
                                                         text: 'Source',
                                                         dataIndex: 'TINPUT',
-                                                        width: 150, // Ancho fijo generoso
+                                                        width: 100, 
                                                         renderer: function (value, metaData) {
                                                             metaData.style = "text-align:center;";
                                                             if (value == 'B')
@@ -6775,25 +6784,25 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Date <br> Process',
-                                                        dataIndex: 'PRDA',
-                                                        width: 180,
+                                                        text: 'CCUST',
+                                                        dataIndex: 'CCUST',
+                                                        width: 100,
                                                         renderer: function (value, metaData) {
                                                             metaData.style = "text-align:center;";
                                                             return value;
                                                         }
                                                     },
                                                     {
-                                                        text: 'Concept',
-                                                        dataIndex: 'CONCEPT',
-                                                        flex: 1,
-                                                        renderer: function (value, metaData, record) {
+                                                        text: 'Date <br> Process',
+                                                        dataIndex: 'PRDA',
+                                                        width: 150,
+                                                        renderer: function (value, metaData) {
                                                             metaData.style = "text-align:center;";
                                                             return value;
                                                         }
                                                     },
                                                     {
-                                                        text: 'Country',
+                                                        text: 'SCOUNTRY',
                                                         dataIndex: 'SCOUNTRY',
                                                         width: 120,
                                                         renderer: function (value, metaData) {
@@ -6801,21 +6810,55 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             return value;
                                                         }
                                                     },
-
                                                     {
-                                                        text: 'Currency',
-                                                        dataIndex: 'SCURRENCY',
+                                                        text: 'BANDOC',
+                                                        dataIndex: 'BANDOC',
                                                         width: 120,
                                                         renderer: function (value, metaData) {
                                                             metaData.style = "text-align:center;";
                                                             return value;
                                                         }
                                                     },
-
+                                                    {
+                                                        text: 'ADATE',
+                                                        dataIndex: 'ADATE',
+                                                        width: 120,
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'REFERENCE',
+                                                        dataIndex: 'ACCCOMP',
+                                                        width: 120,
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'CONCEPT',
+                                                        dataIndex: 'CONCEPT',
+                                                        width: 120,
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'MONEDA',
+                                                        dataIndex: 'MONEDA',
+                                                        width: 100,
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            return value;
+                                                        }
+                                                    },
                                                     {
                                                         text: 'Neto',
                                                         dataIndex: 'IMPORTEN',
-                                                        width: 200,
+                                                        width: 150,
                                                         xtype: 'numbercolumn',
                                                         summaryType: 'sum',
                                                         renderer: function (value, metaData) {
@@ -6833,16 +6876,47 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         }
                                                     },
                                                     {
-                                                        text: 'Bandoc',
-                                                        dataIndex: 'BANDOC',
+                                                        text: 'MONEDAPAGO',
+                                                        dataIndex: 'MONEDAPAGO',
                                                         width: 120,
                                                         renderer: function (value, metaData) {
                                                             metaData.style = "text-align:center;";
                                                             return value;
                                                         }
+                                                    },
+                                                    {
+                                                        text: 'IMPORTEPAG',
+                                                        dataIndex: 'IMPORTEPAG',
+                                                        width: 200,
+                                                        xtype: 'numbercolumn',
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:right;";
+                                                            return Ext.util.Format.number(value, '0,000.00');
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var grid = Ext.getCmp(prototype.id + '-gridDataMPF199COMIS');
+                                                            if (!grid || !grid.getStore() || grid.getStore().getCount() === 0)
+                                                                return '';
+
+                                                            var data = grid.getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.SUM_IMPORTEPAG || 0, '0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        sortable: false,
+                                                        xtype: 'actioncolumn',
+                                                        width: 42,
+                                                        text: 'Edit',
+                                                        align: 'center',
+                                                        items: [
+                                                            {
+                                                                iconCls: 'prx-icon-edit',
+                                                                tooltip: 'Edit',
+                                                                handler: 'onEditClickMPF223'
+                                                            }
+                                                        ]
                                                     }
-
-
 
                                                 ]
                                             }
