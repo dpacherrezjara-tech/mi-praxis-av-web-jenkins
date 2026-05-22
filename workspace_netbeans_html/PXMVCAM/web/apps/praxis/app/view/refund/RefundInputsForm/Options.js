@@ -78,7 +78,7 @@ Ext.define('Ext.Praxis.view.refund.RefundInputsForm.Options', {
                             xtype: 'button',
                             id: prototype.id + '-btnFilter',
                             iconCls: 'prx-icon-filter',
-                            tooltip: 'Display filter'
+                            tooltip: 'Display filters'
 
                         },
 
