@@ -496,6 +496,10 @@ Ext.define('Ext.Praxis.controller.refund.RefundInputs.RefundInputsController', {
 
         if (me.drillDown.length > 0) {
             me.panelActual = me.drillDown.pop();
+            if (me.panelActual !== '-detailTicket') {
+                Ext.getCmp(prototype.id + '-txtTICKET').setValue('');
+                Ext.getCmp(prototype.id + '-txtTICKET').hide();
+            }
             global.selectedChild(me.childs, prototype.id + me.panelActual);
             me.setWidthPie();
 
