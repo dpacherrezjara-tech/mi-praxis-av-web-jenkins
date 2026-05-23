@@ -55,7 +55,8 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.DownloadHeadersDataEntr
     },
 
     downloadCashAsExcel: function (rows, fromPeriod, toPeriod) {
-        const columnHeaders = {
+            const columnHeaders = {
+            IDCONT:       'Accounting ID',
             TIPOCON:      'Accounting Type',
             PERIODO:      'Period',
             POSTING_DATE: 'Posting Date',
@@ -66,39 +67,53 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.DownloadHeadersDataEntr
             MONEDA:       'Currency',
             VALOR:        'Amount',
             VALOR_USD:    'Amount USD',
-            CANTIDAD:     'Quantity'
+            CANTIDAD:     'Quantity',
+            RECHAZOS:     'Rejections',
+            STATUS:       'Status'
         };
 
-        // Construir filas con cabeceras formateadas
-        const formattedHeaders = Object.values(columnHeaders);
-        const keys = Object.keys(columnHeaders);
+            const keys = Object.keys(columnHeaders);
+            const headers = Object.values(columnHeaders);
 
-        const csvLines = [];
+            // Construir array de arrays: primera fila = cabeceras, resto = datos
+            const sheetData = [
+                headers,
+                ...rows.map(row => keys.map(key =>
+                    row[key] !== undefined && row[key] !== null ? String(row[key]).trim() : ''
+                ))
+            ];
 
-        // Cabecera
-        csvLines.push(formattedHeaders.map(h => `"${h}"`).join(','));
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(sheetData);
 
-        // Datos
-        rows.forEach(row => {
-            const line = keys.map(key => {
-                const val = row[key] !== undefined && row[key] !== null ? row[key] : '';
-                // Escapar comillas dobles dentro del valor
-                return `"${String(val).replace(/"/g, '""')}"`;
+            // Ancho de columnas automático
+            ws['!cols'] = keys.map((key, i) => ({
+                wch: Math.max(headers[i].length, 15)
+            }));
+
+            // Estilo de cabeceras: fondo rojo, letras blancas en negrita
+            keys.forEach((key, colIdx) => {
+                const cellRef = XLSX.utils.encode_cell({ r: 0, c: colIdx });
+                if (!ws[cellRef]) return;
+                ws[cellRef].s = {
+                    fill: {
+                        patternType: 'solid',
+                        fgColor: { rgb: 'C0392B' }
+                    },
+                    font: {
+                        bold: true,
+                        color: { rgb: 'FFFFFF' }
+                    },
+                    alignment: {
+                        horizontal: 'center'
+                    }
+                };
             });
-            csvLines.push(line.join(','));
-        });
 
-        const csvContent = csvLines.join('\n');
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `HeadersReport_CASH_${fromPeriod}_${toPeriod}.csv`;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        window.URL.revokeObjectURL(url);
-    },
+            XLSX.utils.book_append_sheet(wb, ws, 'Headers CASH');
+
+            XLSX.writeFile(wb, `HeadersReport_CASH_${fromPeriod}_${toPeriod}.xlsx`);
+        },
 
     onCancelClick: function () {
         this.view.close();
