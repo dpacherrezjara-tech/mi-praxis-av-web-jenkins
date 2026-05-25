@@ -81,7 +81,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1055);
             Ext.getCmp(prototype.id + '-panelScanCard').hide();
             Ext.getCmp(prototype.id + '-panelScanCard2').hide();
-            Ext.getCmp(prototype.id + '-panelScanCard3').hide();
+//            Ext.getCmp(prototype.id + '-panelScanCard3').hide();
             Ext.getCmp(prototype.id + '-btn-update').hide();
             this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETOC, '0,000.00'));
             this.setValue('de-txtCOREP', this.beanResult.COREP);
