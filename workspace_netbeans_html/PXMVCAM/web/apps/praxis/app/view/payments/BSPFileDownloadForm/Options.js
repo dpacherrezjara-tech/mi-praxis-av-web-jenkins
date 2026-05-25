@@ -10,7 +10,7 @@ Ext.define('Ext.Praxis.view.payments.BSPFileDownloadForm.Options', {
         {
             xtype: 'segmentedbutton',
             id: prototype.id + '-segViewMode',
-            width: 180,
+            width: 280,
             cls: 'segmode',
             items: [
                 {
@@ -21,6 +21,10 @@ Ext.define('Ext.Praxis.view.payments.BSPFileDownloadForm.Options', {
                 {
                     text: 'ARC Files',
                     itemId: 'detail'
+                },
+                {
+                    text: 'ICCS Files',
+                    itemId: 'iccs'
                 }
             ],
             listeners: {
@@ -99,7 +103,15 @@ Ext.define('Ext.Praxis.view.payments.BSPFileDownloadForm.Options', {
                             id: prototype.id + '-btnFilter',
                             iconCls: 'prx-icon-filter',
                             tooltip: 'Display filter'
-
+                        },
+                        {
+                            xtype: 'button',
+                            id: prototype.id + '-btnUpdateGrid',
+                            icon: 'resources/img/botones/refresh.png',
+                            tooltip: 'Update Files ICCS',
+                            listeners: {
+                                click: 'updateFilesICCS'
+                            }
                         },
 //                        {
 //                            xtype: 'button',

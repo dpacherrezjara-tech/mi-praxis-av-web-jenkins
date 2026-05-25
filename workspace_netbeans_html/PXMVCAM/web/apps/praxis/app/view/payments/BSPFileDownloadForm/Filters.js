@@ -547,6 +547,242 @@ Ext.define('Ext.Praxis.view.payments.BSPFileDownloadForm.Filters', {
                             ]
                         },
                     ]
+                },
+                {
+                    xtype: 'panel',
+                    id: prototype.id + '-panelICCS',
+                    bodyStyle: 'background: transparent',
+                    border: false,
+                    layout: {
+                        type: 'hbox',
+                        align: 'center'
+                    },
+                    items: [
+                        {
+                            xtype: 'fieldset',
+                            id: prototype.id + '-titleFieldsetICCS',
+                            title: '<span style="color:#1A4D8F;font-weight:bold;">SETTLEMENT</span>',
+                            width: 570,
+                            style: 'border: 1px solid #1A4D8F; padding: 8px; margin: 5px;',
+                            layout: 'hbox',
+                            items: [
+                                {
+                                    fieldLabel: 'Search By',
+                                    labelAlign: 'left',
+                                    width: 170,
+                                    labelWidth: 60,
+                                    xtype: 'combo',
+                                    disabled:true,
+                                    id: prototype.id + '-cmbInputDateICCS',
+                                    labelStyle: 'text-align: left; font-size: 12px;',
+                                    fieldStyle: 'text-align: center; font-size: 12px;',
+                                    queryMode: 'local',
+                                    allowBlank: false,
+                                    forceSelection: true,
+                                    selectOnFocus: true,
+                                    caseSensitive: false,
+                                    autoSelect: true,
+                                    editable: true,
+                                    listConfig: {maxHeight: 130},
+                                    typeAhead: true,
+                                    valueField: 'code',
+                                    displayField: 'name',
+                                    enableKeyEvents: true,
+                                    triggerAction: 'all',
+                                    value: 'S',
+                                    store: {
+                                        fields: ['code', 'name'],
+                                        data: [
+                                            {code: 'S', name: 'Settlement'},
+                                            {code: 'U', name: 'Upload'}
+                                        ]
+                                    },
+                                    listeners: {
+                                        change: 'btnSearch_click'
+                                    },
+                                    margin: '0 10 0 0'
+                                },
+                                {
+                                    xtype: 'combo',
+                                    id: prototype.id + '-cmbDateFromYearICCS',
+                                    fieldStyle: 'text-align: left;',
+                                    disabled: false,
+                                    editable: false,
+                                    fieldLabel: 'From',
+                                    width: 95,
+                                    labelWidth: 35,
+                                    labelAlign: 'left',
+                                    queryMode: 'local',
+                                    triggerAction: 'all',
+                                    valueField: 'code',
+                                    displayField: 'name',
+                                    listConfig: {maxHeight: 111, minWidth: 70},
+                                    maxLength: 4,
+                                    enforceMaxLength: true,
+                                    maskRe: /[0-9]/,
+                                    listeners: {
+                                        change: 'selectComboFromYearICCS'
+                                    }
+                                },
+                                {
+                                    xtype: 'combo',
+                                    id: prototype.id + '-cmbDateFromMonthICCS',
+                                    fieldStyle: 'text-align: left;',
+                                    disabled: false,
+                                    editable: false,
+                                    fieldLabel: '',
+                                    width: 48,
+                                    labelWidth: 0,
+                                    labelAlign: 'right',
+                                    queryMode: 'local',
+                                    triggerAction: 'all',
+                                    valueField: 'code', displayField: 'name',
+                                    listConfig: {maxHeight: 111, minWidth: 60},
+                                    maxLength: 3,
+                                    enforceMaxLength: true,
+                                    listeners: {
+                                        change: 'selectComboFromMonthICCS'
+                                    }
+                                },
+                                {
+                                    xtype: 'combo',
+                                    id: prototype.id + '-cmbDateFromDayICCS',
+                                    fieldStyle: 'text-align: left;',
+                                    labelAlign: 'right',
+                                    queryMode: 'local',
+                                    triggerAction: 'all',
+                                    editable: false,
+                                    autoSelect: false,
+                                    enableKeyEvents: true,
+                                    caseSensitive: true,
+                                    valueField: 'code', displayField: 'name',
+                                    emptyText: 'All',
+                                    labelWidth: 0,
+                                    width: 43,
+                                    anchor: '100%',
+                                    listConfig: {maxHeight: 111, minWidth: 60},
+                                    listeners: {
+                                        change: 'selectComboFromDayARC'
+                                    },
+                                    margin: '0 10 0 0'
+                                },
+                                {
+                                    xtype: 'combo',
+                                    id: prototype.id + '-cmbDateToYearICCS',
+                                    fieldStyle: 'text-align: left;',
+                                    disabled: false,
+                                    editable: false,
+                                    fieldLabel: 'To',
+                                    width: 80,
+                                    labelWidth: 20,
+                                    labelAlign: 'left',
+                                    queryMode: 'local',
+                                    triggerAction: 'all',
+                                    valueField: 'code', displayField: 'name',
+                                    listConfig: {maxHeight: 111, minWidth: 70},
+                                    maxLength: 4,
+                                    enforceMaxLength: true,
+                                    maskRe: /[0-9]/
+                                },
+                                {
+                                    xtype: 'combo',
+                                    id: prototype.id + '-cmbDateToMonthICCS',
+                                    fieldStyle: 'text-align: left;',
+                                    disabled: false,
+                                    editable: false,
+                                    fieldLabel: '',
+                                    width: 48,
+                                    labelAlign: 'right',
+                                    queryMode: 'local',
+                                    triggerAction: 'all',
+                                    valueField: 'code', displayField: 'name',
+                                    listConfig: {maxHeight: 111, minWidth: 70},
+                                    maxLength: 3,
+                                    enforceMaxLength: true
+                                },
+                                {
+                                    xtype: 'combo',
+                                    id: prototype.id + '-cmbDateToDayICCS',
+                                    fieldStyle: 'text-align: left;',
+                                    labelAlign: 'right',
+                                    queryMode: 'local',
+                                    triggerAction: 'all',
+                                    editable: false,
+                                    autoSelect: false,
+                                    enableKeyEvents: true,
+                                    caseSensitive: true,
+                                    valueField: 'code', displayField: 'name',
+                                    emptyText: 'All',
+                                    width: 43,
+                                    anchor: '100%',
+                                    listConfig: {maxHeight: 111, minWidth: 60},
+                                    margin: '0 10 0 0'
+                                },
+                            ]
+                        },
+                        {
+                            xtype: 'fieldset',
+                            id: prototype.id + '-titleAditionalSetICCS',
+                            title: '<span style="color:#1A4D8F;font-weight:bold;">ADITIONAL</span>',
+                            width: 390,
+                            style: 'border: 1px solid #1A4D8F; padding: 8px; margin: 5px;',
+                            layout: 'hbox',
+                            items: [
+                                {
+                                    fieldLabel: 'Customer',
+                                    xtype: 'combo',
+                                    width: 150,
+                                    labelWidth: 55,
+                                    labelStyle: 'text-align: left; font-size: 12px;',
+                                    fieldStyle: 'text-align: center; font-size: 12px;',
+                                    disabled: false,
+                                    id: prototype.id + '-typeSocietyICCS',
+                                    queryMode: 'local',
+                                    allowBlank: false,
+                                    forceSelection: true,
+                                    selectOnFocus: true,
+                                    caseSensitive: false,
+                                    autoSelect: true,
+                                    editable: true,
+                                    listConfig: {maxHeight: 130},
+                                    typeAhead: true,
+                                    valueField: 'code',
+                                    displayField: 'name',
+                                    enableKeyEvents: true,
+                                    triggerAction: 'all',
+                                    value: '',
+                                    store: {
+                                        fields: ['code', 'name'],
+                                        data: [
+                                            {code: '133', name: 'LACSA'},
+                                            {code: '134', name: 'AVIANCA'},
+                                            {code: '202', name: 'TACA'},
+                                            {code: '547', name: 'AEROGAL'},
+                                            {code: '', name: 'All'}
+                                        ]
+                                    },
+                                    margin: '0 10 0 0'
+                                },
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-txtINameFileICCS',
+                                    fieldLabel: 'File Name',
+                                    labelStyle: 'text-align: left; font-size: 12px;',
+                                    fieldStyle: 'text-align: center; font-size: 12px;',
+                                    labelWidth: 60,
+                                    enforceMaxLength: true,
+                                    hidden: false,
+                                    maxLength: 300,
+                                    width: 203,
+                                    enableKeyEvents: true,
+                                    margin: '0 10 0 0',
+                                    listeners: {
+                                        keypress: 'eventKey'
+                                    }
+                                }
+                            ]
+                        },
+                    ]
                 }
             ]
         }
