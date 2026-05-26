@@ -3484,7 +3484,7 @@ public class StatementReconciliationsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS589(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS589(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -3512,6 +3512,7 @@ public class StatementReconciliationsDAO {
             cstmt.setString(19, filter.IN_DATECI.trim());
             cstmt.setString(20, filter.IN_TRANCI.trim());
             cstmt.setString(21, filter.IN_FUNDSTRGK.trim());
+            cstmt.setString(22, filter.IN_NEGOC.trim());
             cstmt.execute();
 
             rst = cstmt.getResultSet();
@@ -3547,6 +3548,8 @@ public class StatementReconciliationsDAO {
                 beanTkt.IMPORTEPAG = rst.getDouble("IMPORTEPAG");
                 beanTkt.COMISTOTA = rst.getDouble("COMISTOTA");
                 beanTkt.TDOC = rst.getString("TDOC");
+                beanTkt.NEGOC = rst.getString("NEGOC");
+                beanTkt.descNEGOC = rst.getString("descNEGOC");
                 beanTkt.SEQ = rst.getString("SEQ");
                 beanTkt.descTDOC = hmDescDocType.get(rst.getString("TDOC"));
 
@@ -3950,7 +3953,7 @@ public class StatementReconciliationsDAO {
         A2290Filter objRtn = new A2290Filter();
         CallableStatement cstmt01 = null;
         ResultSet rs01 = null;
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPREVERSA_MPF102_F1_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS598(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {

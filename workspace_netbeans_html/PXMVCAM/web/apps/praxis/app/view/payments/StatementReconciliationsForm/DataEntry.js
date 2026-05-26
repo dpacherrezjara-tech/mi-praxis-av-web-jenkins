@@ -160,7 +160,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                     readOnly: true,
                                                     width: 160
                                                 },
-                                                 {xtype: 'tbspacer', width: 50},
+                                                {xtype: 'tbspacer', width: 50},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Account',
@@ -844,7 +844,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                 {xtype: 'tbspacer', width: 10},
                                                 {
                                                     xtype: 'label',
-                                                    text: 'Sale Date:',
+                                                    text: 'Doc Type:',
                                                     textAlign: 'center',
                                                     style: 'font-weight:bold;color:#0B333C;',
                                                     margin: '4 4 4 4',
@@ -852,54 +852,67 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                 },
                                                 {xtype: 'tbspacer', width: 5},
                                                 {
-                                                    xtype: 'datefield',
-                                                    id: prototype.id + '-txtFromSDATE',
-                                                    fieldStyle: 'text-align:center',
-                                                    format: 'Y/m/d',
-                                                    formatText: '',
-                                                    invalidText: 'Format valid YYYY/MM/DD',
-                                                    minValue: new Date(1990, 00, 01),
-                                                    maskRe: /[0-9/]/,
+                                                    xtype: 'combo',
+                                                    id: prototype.id + '-cmbTDOCSCAN',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    fieldStyle: 'text-align:left;',
+                                                    queryMode: 'local',
+                                                    triggerAction: 'all',
+                                                    valueField: 'value',
+//                                                    margin: '6 0 0 4',
+                                                    displayField: 'description',
+                                                    width: 90,
+                                                    labelWidth: 10,
+                                                    hiddenLabel: false,
                                                     editable: false,
-                                                    enforceMaxLength: true,
-                                                    maxLength: 10,
-                                                    inputAttrTpl: "data-qtip='Format valid YYYY/MM/DD'",
-                                                    width: 90
+                                                    value: 'S',
+                                                    store: {
+                                                        fields: ['value', 'description'],
+                                                        data: [
+                                                            {value: 'S', description: 'Sales'},
+                                                            {value: 'D', description: 'Debits'}
+                                                        ]
+                                                    }
                                                 },
+//                                                {xtype: 'tbspacer', width: 5},
                                                 {
                                                     xtype: 'label',
-                                                    text: 'To:',
+                                                    text: 'Business:',
                                                     textAlign: 'center',
                                                     style: 'font-weight:bold;color:#0B333C;',
                                                     margin: '4 4 4 4',
-                                                    width: 20
+                                                    width: 55
                                                 },
+                                                {xtype: 'tbspacer', width: 5},
                                                 {
-                                                    xtype: 'datefield',
-                                                    id: prototype.id + '-txtToSDATE',
-                                                    fieldStyle: 'text-align:center',
-                                                    format: 'Y/m/d',
-                                                    formatText: '',
-                                                    invalidText: 'Format valid YYYY/MM/DD',
-                                                    minValue: new Date(1990, 00, 01),
-                                                    maskRe: /[0-9/]/,
+                                                    xtype: 'combo',
+                                                    id: prototype.id + '-cmbNegocio',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    fieldStyle: 'text-align:left;',
+                                                    queryMode: 'local',
+                                                    triggerAction: 'all',
+                                                    valueField: 'valor',
+                                                    displayField: 'descripcion',
+                                                    width: 70,
+//                                                    margin: '6 0 0 4',
+                                                    labelWidth: 10,
+                                                    hiddenLabel: true,
                                                     editable: false,
-                                                    enforceMaxLength: true,
-                                                    maxLength: 10,
-                                                    inputAttrTpl: "data-qtip='Format valid YYYY/MM/DD'",
-                                                    width: 90
-                                                },
-                                                {
-                                                    xtype: 'checkboxfield',
-                                                    id: prototype.id01 + '-chkSDATE',
-                                                    checked: true,
-                                                    padding: '0px 0px 0px 5px',
-                                                    //boxLabel: 'Value'
-                                                    listeners: {
-                                                        change: 'cambiaParams'
+                                                    value: '',
+                                                    store: {
+                                                        fields: ['valor', 'descripcion'],
+                                                        data: [
+                                                            {valor: '', descripcion: 'All'},
+                                                            {valor: '1', descripcion: 'Pasaje'},
+                                                            {valor: '2', descripcion: 'Cargo'},
+                                                            {valor: '3', descripcion: 'Correo'},
+                                                            {valor: '4', descripcion: 'Turismo'}
+                                                        ]
                                                     }
                                                 },
-                                                {xtype: 'tbspacer', width: 10},
+
+                                                
+                                                {xtype: 'tbspacer', width: 8},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Card Code:',
@@ -997,49 +1010,17 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                 },
                                             ]
                                         },
-                                        {
-                                            xtype: 'panel',
-                                            id: prototype.id + '-panelScanCard3',
-                                            layout: 'hbox',
-                                            border: false,
-                                            margin: '0 2 0 10',
-                                            bodyStyle: 'background:#;',
-                                            items: [
-                                                {xtype: 'tbspacer', width: 10},
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Doc Type:',
-                                                    textAlign: 'center',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    margin: '6 4 4 4',
-                                                    width: 70
-                                                },
-//                                                {xtype: 'tbspacer', width: 10},
-                                                {
-                                                    xtype: 'combo',
-                                                    id: prototype.id + '-cmbTDOCSCAN',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    fieldStyle: 'text-align:left;',
-                                                    queryMode: 'local',
-                                                    triggerAction: 'all',
-                                                    valueField: 'value',
-                                                    margin: '6 0 0 4',
-                                                    displayField: 'description',
-                                                    width: 90,
-                                                    labelWidth: 10,
-                                                    hiddenLabel: false,
-                                                    editable: false,
-                                                    value: 'S',
-                                                    store: {
-                                                        fields: ['value', 'description'],
-                                                        data: [
-                                                            {value: 'S', description: 'Sales'},
-                                                            {value: 'D', description: 'Debits'}
-                                                        ]
-                                                    }
-                                                },
-                                            ],
-                                        },
+//                                        {
+//                                            xtype: 'panel',
+//                                            id: prototype.id + '-panelScanCard3',
+//                                            layout: 'hbox',
+//                                            border: false,
+//                                            margin: '0 2 0 10',
+//                                            bodyStyle: 'background:#;',
+//                                            items: [
+//                                                
+//                                            ],
+//                                        },
                                         //</editor-fold>
                                         //<editor-fold defaultstate="collapsed" desc="Detail new Setlement">
                                         {xtype: 'tbspacer', height: 5},
@@ -1078,7 +1059,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                                     align: 'center'
                                                                 },
                                                                 items: [
-                                                                    {text: 'Status', dataIndex: 'descSTVAL', width: 105,
+                                                                    {text: 'Status', dataIndex: 'descSTVAL', width: 84,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
                                                                             return value;
@@ -1087,7 +1068,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                                     {
                                                                         text: 'Society',
                                                                         dataIndex: 'CCUST',
-                                                                        width: 70,
+                                                                        width: 57,
                                                                         id: prototype.id + '-intercom',
                                                                         renderer: function (value, metaData, record) {
                                                                             metaData.style = "text-align:center;";
@@ -1095,7 +1076,13 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                                             return value;
                                                                         }
                                                                     },
-                                                                    {text: 'Doc <br>Type', dataIndex: 'descTDOC', width: 65,
+                                                                    {text: 'Doc <br>Type', dataIndex: 'descTDOC', width: 51,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {text: 'Bussines', dataIndex: 'descNEGOC', width: 78,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
                                                                             return value;
@@ -1127,7 +1114,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntry', {
                                                                             return value;
                                                                         }
                                                                     },
-                                                                    {text: 'Terminal', dataIndex: 'TERMI', width: 85,
+                                                                    {text: 'Terminal', dataIndex: 'TERMI', width: 66,
                                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                                             metaData.style = "text-align:center;";
                                                                             metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";

@@ -81,7 +81,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1055);
             Ext.getCmp(prototype.id + '-panelScanCard').hide();
             Ext.getCmp(prototype.id + '-panelScanCard2').hide();
-            Ext.getCmp(prototype.id + '-panelScanCard3').hide();
+//            Ext.getCmp(prototype.id + '-panelScanCard3').hide();
             Ext.getCmp(prototype.id + '-btn-update').hide();
             this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETOC, '0,000.00'));
             this.setValue('de-txtCOREP', this.beanResult.COREP);
@@ -457,11 +457,12 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
 
         this.setValue('txtFromADATE', null);
         this.setValue('txtToADATE', null);
-        this.setValue('txtFromSDATE', null);
-        this.setValue('txtToSDATE', null);
+//        this.setValue('txtFromSDATE', null);
+//        this.setValue('txtToSDATE', null);
         this.setValue('txtACCNUMBER', '');
         this.setValue('txtNETO', '');
         this.setValue('cmbSCARCOD', '');
+        this.setValue('cmbNegocio', '');
 
     },
     selectAdateFiltro: function () {
@@ -509,14 +510,15 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         let chkMERCHANT = Ext.getCmp(prototype.id01 + '-chkMERCHANT').getValue();
         let chkACCNUMBER = Ext.getCmp(prototype.id01 + '-chkACCNUMBER').getValue();
         let chkADATE = Ext.getCmp(prototype.id01 + '-chkADATE').getValue();
-        let chkSDATE = Ext.getCmp(prototype.id01 + '-chkSDATE').getValue();
+//        let chkSDATE = Ext.getCmp(prototype.id01 + '-chkSDATE').getValue();
         var fecha_a_validar = "";
         this.beanScan.IN_FROMADATE = (Ext.getCmp(prototype.id + '-txtFromADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromADATE').getValue(), 'Ymd');
         this.beanScan.IN_TOADATE = (Ext.getCmp(prototype.id + '-txtToADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToADATE').getValue(), 'Ymd');
-        this.beanScan.IN_FROMSDATE = (Ext.getCmp(prototype.id + '-txtFromSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromSDATE').getValue(), 'Ymd');
-        this.beanScan.IN_TOSDATE = (Ext.getCmp(prototype.id + '-txtToSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToSDATE').getValue(), 'Ymd');
+//        this.beanScan.IN_FROMSDATE = (Ext.getCmp(prototype.id + '-txtFromSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromSDATE').getValue(), 'Ymd');
+//        this.beanScan.IN_TOSDATE = (Ext.getCmp(prototype.id + '-txtToSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToSDATE').getValue(), 'Ymd');
         this.beanScan.IN_SCARCOD = Ext.getCmp(prototype.id + '-cmbSCARCOD').getValue();
         this.beanScan.IN_TDOC = Ext.getCmp(prototype.id + '-cmbTDOCSCAN').getValue();
+        this.beanScan.IN_NEGOC = Ext.getCmp(prototype.id + '-cmbNegocio').getValue();
 
         this.beanScan.IN_ACCNUMBER = Ext.getCmp(prototype.id + '-txtACCNUMBER').getValue();
         if (this.beanScan.IN_ACCNUMBER === '') {
@@ -562,11 +564,11 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         if (
                 !this.beanScan.IN_FROMADATE &&
                 !this.beanScan.IN_TOADATE &&
-                !this.beanScan.IN_FROMSDATE &&
-                !this.beanScan.IN_TOSDATE &&
+//                !this.beanScan.IN_FROMSDATE &&
+//                !this.beanScan.IN_TOSDATE &&
                 !this.beanScan.IN_SCARCOD &&
                 !this.beanScan.IN_ACCNUMBER &&
-                !this.beanScan.IN_VALDATE &&
+//                !this.beanScan.IN_VALDATE &&
                 !this.beanScan.IN_strNETO
                 ) {
             global.Msg({msg: 'Fields to Scan must be filled out'});
@@ -631,7 +633,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                             NETO: item.NETO,
                             RED: item.RED,
                             SEQ: item.SEQ,
-                            TDOC: item.TDOC
+                            TDOC: item.TDOC,
+                            descNEGOC: item.descNEGOC
                         })
                     }
 
