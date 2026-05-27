@@ -20,6 +20,7 @@ import net.miatech.beans.spring.UserView;
 import net.miatech.beans.spring.implement.IServerSession;
 import static net.miatech.praxis.dao.payments.BankReconciliationDAO.pasarGarbageCollector;
 import net.miatech.praxis.payment.MPF101;
+import net.miatech.praxis.payment.MPF102Filter;
 import net.miatech.praxis.payment.filter.A2280Filter;
 import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.MPF100Filter;
@@ -1395,6 +1396,14 @@ public class StatementReconciliationsDAO {
                     beanTkt.TRANCI = rst.getString("TRANCI").trim();
                     beanTkt.FSTVAL = rst.getString("STVAL").trim();
                     beanTkt.PENDINGDAYS = rst.getString("PENDINGDAYS").trim();
+                    
+                    beanTkt.TEXTO = rst.getString("TEXTO").trim();
+                    beanTkt.TEXTOLAR = rst.getString("TEXTOLAR").trim();
+                    beanTkt.CCUST = rst.getString("CCUST").trim();
+                    beanTkt.ADATE = rst.getString("ADATE").trim();
+                    beanTkt.SOCIETY = rst.getString("SOCIETY").trim();
+                    beanTkt.CODEBANK = rst.getString("CODEBANK").trim();
+                    beanTkt.BANDOC = rst.getString("BANDOC").trim();
 //                    beanTkt.RED = rst.getString("RED").trim();
 
                     if (filter.IN_DATE.trim().equals("VALDATE")) {
@@ -2743,6 +2752,15 @@ public class StatementReconciliationsDAO {
                     beanTkt.TINPUT = TINPUT;
                     beanTkt.SDATE = rst.getString("SDATE").trim();
 
+                    
+                    beanTkt.TEXTO = rst.getString("TEXTO").trim();
+                    beanTkt.TEXTOLAR = rst.getString("TEXTOLAR").trim();
+                    beanTkt.CCUST = rst.getString("CCUST").trim();
+                    beanTkt.ADATE = rst.getString("ADATE").trim();
+                    beanTkt.SOCIETY = rst.getString("SOCIETY").trim();
+                    beanTkt.CODEBANK = rst.getString("CODEBANK").trim();
+                    beanTkt.BANDOC = rst.getString("BANDOC").trim();
+                    
                     beanTkt.USCR = rst.getString("USCR").trim();
                     beanTkt.FECR = rst.getString("FECR").trim();
                     beanTkt.HOCR = rst.getString("HOCR").trim();
@@ -3484,7 +3502,7 @@ public class StatementReconciliationsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS589(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS589(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -3512,6 +3530,7 @@ public class StatementReconciliationsDAO {
             cstmt.setString(19, filter.IN_DATECI.trim());
             cstmt.setString(20, filter.IN_TRANCI.trim());
             cstmt.setString(21, filter.IN_FUNDSTRGK.trim());
+            cstmt.setString(22, filter.IN_NEGOC.trim());
             cstmt.execute();
 
             rst = cstmt.getResultSet();
@@ -3547,6 +3566,8 @@ public class StatementReconciliationsDAO {
                 beanTkt.IMPORTEPAG = rst.getDouble("IMPORTEPAG");
                 beanTkt.COMISTOTA = rst.getDouble("COMISTOTA");
                 beanTkt.TDOC = rst.getString("TDOC");
+                beanTkt.NEGOC = rst.getString("NEGOC");
+                beanTkt.descNEGOC = rst.getString("descNEGOC");
                 beanTkt.SEQ = rst.getString("SEQ");
                 beanTkt.descTDOC = hmDescDocType.get(rst.getString("TDOC"));
 
@@ -3950,7 +3971,7 @@ public class StatementReconciliationsDAO {
         A2290Filter objRtn = new A2290Filter();
         CallableStatement cstmt01 = null;
         ResultSet rs01 = null;
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPREVERSA_MPF102_F1_V1(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS598(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
@@ -4843,10 +4864,12 @@ public class StatementReconciliationsDAO {
                     beanTkt.strFormatDate = rst.getString("VALDATE").trim();
 
                     if (hmDescEstados.containsKey(rst.getString("STVAL").trim().toUpperCase())) {
-                        beanTkt.STVAL = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
+                        beanTkt.descSTVAL = hmDescEstados.get(rst.getString("STVAL").trim()).toString();
                     } else {
-                        beanTkt.STVAL = rst.getString("STVAL").trim();
+                        beanTkt.descSTVAL = rst.getString("STVAL").trim();
                     }
+                    
+                    beanTkt.STVAL = rst.getString("STVAL").trim();
                     beanTkt.SCOUNTRY = rst.getString("SCOUNTRY").trim();
                     beanTkt.TDOC = rst.getString("TDOC").trim();
                     beanTkt.ADATE = rst.getString("ADATE").trim();
@@ -5267,5 +5290,43 @@ public class StatementReconciliationsDAO {
         }
 
         return result;
+    }
+    
+    public String updateFields102(MPF102Filter bean) throws Exception {
+        CallableStatement cstmt = null;
+        Connection cnx = null;
+        String mensajeRetorno = "";
+        String SQLCLL = "{CALL PRAXISMP.MPS651(?,?,?,?,?,?,?,?,?,?)}"; 
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL);
+
+            cstmt.setString(1, bean.IN_CCUST);
+            cstmt.setString(2, bean.IN_ADATE);
+            cstmt.setString(3, bean.IN_SOCIETY);
+            cstmt.setString(4, bean.IN_CODEBANK);
+            cstmt.setString(5, bean.IN_BANDOC);
+            cstmt.setString(6, bean.IN_ACCOUNT);
+            cstmt.setString(7, bean.IN_TEXTO);
+            cstmt.setString(8, bean.IN_TEXTOLAR);
+            cstmt.setString(9, session.getUserView().getUserInfo().USR);
+            
+            // Parámetro de salida
+            cstmt.registerOutParameter(10, Types.VARCHAR);
+
+            cstmt.execute();
+
+            mensajeRetorno = cstmt.getString(10);
+
+        } catch (Exception e) {
+            System.err.println("Error actualizando MPF102: " + e.getMessage());
+            throw e;
+        } finally {
+            if (cstmt != null) { try { cstmt.close(); } catch (Exception e) {} }
+            if (cnx != null) { session.getCNXIBMDB2().closeIBMDB2Connection(cnx); }
+        }
+        
+        return mensajeRetorno;
     }
 }

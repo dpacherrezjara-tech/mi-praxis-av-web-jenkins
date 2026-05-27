@@ -40,6 +40,7 @@ import net.miatech.praxis.exceptions.SpringException;
 import net.miatech.praxis.logic.payments.LoadConciliationLogic;
 import net.miatech.praxis.logic.payments.StatementReconciliationsLogic;
 import net.miatech.praxis.payment.MPF101;
+import net.miatech.praxis.payment.MPF102Filter;
 import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.MPF100Filter;
 import net.miatech.utils.Functions;
@@ -6159,6 +6160,37 @@ public class StatementReconciliationsController extends BaseController {
             e.printStackTrace();
             throw new SpringException(e);
         }
+    }
+    
+    @RequestMapping(value = "updateFields102", method = RequestMethod.POST)
+    public @ResponseBody String updateFields102(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- MPF102 : updateFields102 -------------");
+        
+        try {
+            String beanString = request.getParameter("beanString");
+            Gson gson = new Gson();
+            MPF102Filter bean = gson.fromJson(beanString, MPF102Filter.class);
+
+            StatementReconciliationsLogic logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String resultMsg = logic.updateFields102(bean);
+
+            if ("OK".equals(resultMsg)) {
+                map.put("success", true);
+                map.put("Mensaje", "Registro actualizado correctamente.");
+            } else {
+                map.put("success", false);
+                map.put("Mensaje", resultMsg);
+            }
+
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("Mensaje", "Error del servidor: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
+        return new Gson().toJson(map);
     }
     
 }

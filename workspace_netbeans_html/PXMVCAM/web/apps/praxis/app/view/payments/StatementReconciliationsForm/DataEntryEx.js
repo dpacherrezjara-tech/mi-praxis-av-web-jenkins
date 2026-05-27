@@ -111,7 +111,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                             margin: '0 2 0 20',
                                             defaults: {
                                                 anchor: '100%',
-                                                width: 1656
+                                                width: 1670
                                             },
                                             items: [
                                                 {xtype: 'tbspacer', width: 7, height: 24},
@@ -164,7 +164,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                     readOnly: true,
                                                     width: 160
                                                 },
-                                                {xtype: 'tbspacer', width: 255},
+                                                {xtype: 'tbspacer', width: 100},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Process Center',
@@ -195,7 +195,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                     readOnly: true,
                                                     width: 170
                                                 },
-                                                {xtype: 'tbspacer', width: 245},
+                                                {xtype: 'tbspacer', width: 100},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Clave 1',
@@ -211,7 +211,23 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                     readOnly: true,
                                                     width: 180
                                                 },
-                                                {xtype: 'tbspacer', width: 10}
+                                                {xtype: 'tbspacer', width: 50},
+                                                 {
+                                                    xtype: 'label',
+                                                    text: 'Texto Largo',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    width: 80
+                                                },
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtTEXTOLAR',
+                                                    maxLength: 400,
+                                                    style: 'font-weight:bold;color:#d5f4d5',
+                                                    enforceMaxLength: true,
+                                                    readOnly: false,
+                                                    width: 160
+                                                },
                                             ]
                                         },
                                         {
@@ -222,7 +238,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                             margin: '0 2 0 20',
                                             defaults: {
                                                 anchor: '100%',
-                                                width: 1656
+                                                width: 1670
                                             },
                                             items: [
                                                 {xtype: 'tbspacer', width: 7, height: 24},
@@ -270,7 +286,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                     readOnly: true,
                                                     width: 160
                                                 },
-                                                {xtype: 'tbspacer', width: 255},
+                                                {xtype: 'tbspacer', width: 100},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Account',
@@ -283,10 +299,10 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                     id: prototype.id + '-de-txtACCOUNT',
                                                     style: 'font-weight:bold;color:#d5f4d5',
                                                     enforceMaxLength: true,
-                                                    readOnly: true,
+                                                    readOnly: false,
                                                     width: 170
                                                 },
-                                                {xtype: 'tbspacer', width: 245},
+                                                {xtype: 'tbspacer', width: 100},
                                                 {
                                                     xtype: 'label',
                                                     text: 'Clave 3',
@@ -302,7 +318,23 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                                                     readOnly: true,
                                                     width: 180
                                                 },
-                                                {xtype: 'tbspacer', width: 10}
+                                                 {xtype: 'tbspacer', width: 50},
+                                                 {
+                                                    xtype: 'label',
+                                                    text: 'Texto',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    width: 30
+                                                },
+                                                {xtype: 'tbspacer', width: 60},
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtTEXTO',
+                                                    style: 'font-weight:bold;color:#d5f4d5',
+                                                    enforceMaxLength: true,
+                                                    readOnly: false,
+                                                    maxLength: 60,
+                                                    width: 160
+                                                },
                                             ]
                                         },
                                         //<editor-fold defaultstate="collapsed" desc="Stattement Information">
@@ -2656,6 +2688,16 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryEx', 
                     iconCls: 'prx-icon-save',
                     listeners: {
                         click: 'onSaveClick'
+                    }
+                },
+                 {
+                    text: 'Update Fields',
+                    xtype: 'button',
+                    id: prototype.id + '-btnRealUpdateEx',
+                    iconCls: 'prx-icon-update',
+                    tooltip: 'Update Fields',
+                    listeners: {
+                        click: 'onUpdateFieldsEx'
                     }
                 },
                 {

@@ -27,6 +27,12 @@ public class MPF102Filter {
     public String IN_HOCR = "";
     public String IN_CODUNI = "";
     public String IN_FORCE = "";
+    public String IN_ADATE = "";
+    public String IN_SOCIETY = "";
+    public String IN_CODEBANK = "";
+    public String IN_ACCOUNT = "";
+    public String IN_TEXTO = "";
+    public String IN_TEXTOLAR = "";
     
 
 }

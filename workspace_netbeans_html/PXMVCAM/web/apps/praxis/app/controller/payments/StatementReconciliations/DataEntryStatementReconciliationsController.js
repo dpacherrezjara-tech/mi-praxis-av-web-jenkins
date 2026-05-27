@@ -15,6 +15,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     beanDetails: {},
     beanScan: {},
     beanAgrupa: {},
+    beanUpdateFields: {},
     lstA1852: {},
     dataObtain: {},
     // </editor-fold>
@@ -81,7 +82,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             Ext.getCmp(prototype.id + '-gridDataInfoScan').setWidth(1055);
             Ext.getCmp(prototype.id + '-panelScanCard').hide();
             Ext.getCmp(prototype.id + '-panelScanCard2').hide();
-            Ext.getCmp(prototype.id + '-panelScanCard3').hide();
+//            Ext.getCmp(prototype.id + '-panelScanCard3').hide();
             Ext.getCmp(prototype.id + '-btn-update').hide();
             this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETOC, '0,000.00'));
             this.setValue('de-txtCOREP', this.beanResult.COREP);
@@ -126,6 +127,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         this.setValue('txtUSUP', this.beanResult.USUP);
         this.setValue('txtFEUP', this.beanResult.FEUP);
         this.setValue('txtHOUP', this.beanResult.HOUP);
+        this.setValue('de-txtTEXTO', meDE.bean.data.TEXTO);
+        this.setValue('de-txtTEXTOLAR', meDE.bean.data.TEXTOLAR);
     },
     //<editor-fold defaultstate="collapsed" desc="llenarData">
     llenarData: function () {
@@ -457,11 +460,12 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
 
         this.setValue('txtFromADATE', null);
         this.setValue('txtToADATE', null);
-        this.setValue('txtFromSDATE', null);
-        this.setValue('txtToSDATE', null);
+//        this.setValue('txtFromSDATE', null);
+//        this.setValue('txtToSDATE', null);
         this.setValue('txtACCNUMBER', '');
         this.setValue('txtNETO', '');
         this.setValue('cmbSCARCOD', '');
+        this.setValue('cmbNegocio', '');
 
     },
     selectAdateFiltro: function () {
@@ -509,14 +513,15 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         let chkMERCHANT = Ext.getCmp(prototype.id01 + '-chkMERCHANT').getValue();
         let chkACCNUMBER = Ext.getCmp(prototype.id01 + '-chkACCNUMBER').getValue();
         let chkADATE = Ext.getCmp(prototype.id01 + '-chkADATE').getValue();
-        let chkSDATE = Ext.getCmp(prototype.id01 + '-chkSDATE').getValue();
+//        let chkSDATE = Ext.getCmp(prototype.id01 + '-chkSDATE').getValue();
         var fecha_a_validar = "";
         this.beanScan.IN_FROMADATE = (Ext.getCmp(prototype.id + '-txtFromADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromADATE').getValue(), 'Ymd');
         this.beanScan.IN_TOADATE = (Ext.getCmp(prototype.id + '-txtToADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToADATE').getValue(), 'Ymd');
-        this.beanScan.IN_FROMSDATE = (Ext.getCmp(prototype.id + '-txtFromSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromSDATE').getValue(), 'Ymd');
-        this.beanScan.IN_TOSDATE = (Ext.getCmp(prototype.id + '-txtToSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToSDATE').getValue(), 'Ymd');
+//        this.beanScan.IN_FROMSDATE = (Ext.getCmp(prototype.id + '-txtFromSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromSDATE').getValue(), 'Ymd');
+//        this.beanScan.IN_TOSDATE = (Ext.getCmp(prototype.id + '-txtToSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToSDATE').getValue(), 'Ymd');
         this.beanScan.IN_SCARCOD = Ext.getCmp(prototype.id + '-cmbSCARCOD').getValue();
         this.beanScan.IN_TDOC = Ext.getCmp(prototype.id + '-cmbTDOCSCAN').getValue();
+        this.beanScan.IN_NEGOC = Ext.getCmp(prototype.id + '-cmbNegocio').getValue();
 
         this.beanScan.IN_ACCNUMBER = Ext.getCmp(prototype.id + '-txtACCNUMBER').getValue();
         if (this.beanScan.IN_ACCNUMBER === '') {
@@ -562,11 +567,11 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
         if (
                 !this.beanScan.IN_FROMADATE &&
                 !this.beanScan.IN_TOADATE &&
-                !this.beanScan.IN_FROMSDATE &&
-                !this.beanScan.IN_TOSDATE &&
+//                !this.beanScan.IN_FROMSDATE &&
+//                !this.beanScan.IN_TOSDATE &&
                 !this.beanScan.IN_SCARCOD &&
                 !this.beanScan.IN_ACCNUMBER &&
-                !this.beanScan.IN_VALDATE &&
+//                !this.beanScan.IN_VALDATE &&
                 !this.beanScan.IN_strNETO
                 ) {
             global.Msg({msg: 'Fields to Scan must be filled out'});
@@ -631,7 +636,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                             NETO: item.NETO,
                             RED: item.RED,
                             SEQ: item.SEQ,
-                            TDOC: item.TDOC
+                            TDOC: item.TDOC,
+                            descNEGOC: item.descNEGOC
                         })
                     }
 
@@ -765,6 +771,78 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
 
         this.view.close();
 
+    },
+    onUpdateFields: function (btn) {
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Are you sure to Update ?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'yes') {
+                    var beanTemp = this.llenarDataField(); 
+                    this.maintenanceBeanFields(beanTemp);
+                }
+            }
+        });
+    },
+    llenarDataField: function () {
+        var bean = {};
+        bean.IN_ACCOUNT = this.getValue("de-txtACCOUNT");
+        bean.IN_TEXTO = this.getValue("de-txtTEXTO");
+        bean.IN_TEXTOLAR = this.getValue("de-txtTEXTOLAR");
+        bean.IN_CCUST = meDE.bean.data.CCUST;
+        bean.IN_ADATE = meDE.bean.data.ADATE;
+        bean.IN_SOCIETY = meDE.bean.data.SOCIETY;
+        bean.IN_CODEBANK = meDE.bean.data.CODEBANK;
+        bean.IN_BANDOC = meDE.bean.data.BANDOC;
+        console.log('Bean a enviar:', bean);
+        return bean;
+    },
+    maintenanceBeanFields: function (beanData) {
+        var beanString = JSON.stringify(beanData);
+
+        Ext.getCmp(prototype.id + '-dataEntry').mask('Updating...');
+
+        Ext.Ajax.request({
+            url: prototype.url + '/updateFields102', 
+            method: 'POST',
+            timeout: 600000,
+            params: {
+                beanString: beanString 
+            },
+            beforerequest: function() {
+                Ext.getCmp(prototype.id + '-dataEntry').mask('Updating...');
+            },
+            success: function (response, opts) {
+                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+                var res = Ext.JSON.decode(response.responseText);
+                console.log('Respuesta DB:', res);
+                
+                if (res.success) {
+                    global.Msg({
+                        msg: res.Mensaje,
+                        icon: 1,
+                        fn: function () {
+                            Ext.getCmp(prototype.id + '-dataEntry').close();
+                            var btnSearch = Ext.getCmp(prototype.id + '-btnSearch');
+                            if(btnSearch) {
+                                btnSearch.fireEvent('click', {});
+                            }
+                        }
+                    });
+                } else {
+                    Ext.Msg.alert('Atención', res.Mensaje || 'Error al actualizar.');
+                }
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+                Ext.Msg.alert('Error', 'Fallo de comunicación con el servidor.');
+            }
+        });
     },
     // </editor-fold>
 
@@ -1023,13 +1101,13 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                         let tolerancia = win.down('#chkTolerance').getValue();
                         let beanTemp = {}
                         beanTemp.option = 'U';
-                        if(tolerancia){
+                        if (tolerancia) {
                             if (Math.abs(diferencia) > 100) {
                                 Ext.Msg.alert('Error', 'Diferencia mayor a la tolerancia');
                                 return false;
                             }
                             this.maintenanceBean(beanTemp);
-                        }else{
+                        } else {
                             this.maintenanceBean(beanTemp);
                         }
                         win.close();
@@ -1083,7 +1161,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             global.Msg({msg: 'The bank account on the Statement is not the same in the Settlement.'});
             return false;
         }
-        this.validateTolerance(ASVFOP,BSVFOP,DIFF);
+        this.validateTolerance(ASVFOP, BSVFOP, DIFF);
     },
     maintenanceBean: function (option) {
 
