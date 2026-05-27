@@ -49,6 +49,13 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
                 Ext.getCmp(prototype.id + '-btn-save').hide();
                 Ext.getCmp(prototype.id + '-btn-delete').hide();
                 Ext.getCmp(prototype.id + '-btn-cancel').show();
+                
+                if (meDE.bean.data.STVAL === "1" || meDE.bean.data.STVAL === "5") {
+                    Ext.getCmp(prototype.id + '-btn-update').hide();
+                } else {
+                    Ext.getCmp(prototype.id + '-btn-update').show(); 
+                }
+                
                 break;
         }
     },

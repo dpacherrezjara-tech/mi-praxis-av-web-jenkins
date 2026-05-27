@@ -37,6 +37,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 Ext.getCmp(prototype.id + '-btn-save').hide();
                 Ext.getCmp(prototype.id + '-btn-delete').hide();
                 Ext.getCmp(prototype.id + '-btn-cancel').show();
+                
                 break;
         }
     },
@@ -126,7 +127,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
     mostrarData: function () {
 
         if (this.beanResult.descSTVAL === 'Match' || this.beanResult.descSTVAL === 'Match Manual') {
-
+            Ext.getCmp(prototype.id + '-btnRealUpdateEx').hide();
             Ext.getCmp(prototype.id + '-MOD').hide();
             Ext.getCmp(prototype.id + '-btnToggleSwitch').hide();
             Ext.getCmp(prototype.id + '-gridColumnDelete').hide();
@@ -184,7 +185,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             }
 
         } else {
-
+            Ext.getCmp(prototype.id + '-btnRealUpdateEx').show(); 
             Ext.getCmp(prototype.id + '-MOD').show();
             Ext.getCmp(prototype.id + '-btnToggleSwitch').show();
             Ext.getCmp(prototype.id + '-btn-update').show();
