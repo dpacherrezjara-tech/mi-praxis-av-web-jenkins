@@ -639,6 +639,13 @@ Ext.define('Ext.Praxis.view.payments.DebitsReportForm.Info', {
                                                     return  value;
                                                 }
                                             },
+                                            {align: 'center', text: '<span style="color:white;font-weight:bold;">Date Update F2</span>', dataIndex: 'LAST_UPDATE', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                    var data = record.data;
+                                                    metaData.style = "text-align:center;";
+                                                    return  value;
+                                                }
+                                            },
                                              {align: 'center', text: '<span style="color:white;font-weight:bold;">Accounting ID DEB</span>', dataIndex: 'IDCDEB', width: 200, style: 'padding:2px; background: #6C87A8;border-color:white',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;

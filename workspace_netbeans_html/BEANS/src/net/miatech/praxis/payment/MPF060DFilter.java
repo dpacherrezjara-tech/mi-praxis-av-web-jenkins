@@ -31,4 +31,5 @@ public class MPF060DFilter {
     public String IN_FASE1 = "";
     public String IN_FASE2 = "";
     public String IN_BPOC = "";
+    public String IN_NETO = "";
 }

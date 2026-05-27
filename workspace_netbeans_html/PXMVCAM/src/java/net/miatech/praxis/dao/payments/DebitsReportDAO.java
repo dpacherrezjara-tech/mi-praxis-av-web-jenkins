@@ -584,17 +584,17 @@ public class DebitsReportDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS644(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS644(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(19, Types.INTEGER);
             cstmt.registerOutParameter(20, Types.INTEGER);
             cstmt.registerOutParameter(21, Types.INTEGER);
             cstmt.registerOutParameter(22, Types.INTEGER);
+            cstmt.registerOutParameter(23, Types.INTEGER);
 
             cstmt.setString(1, filter.IN_OPTION.trim());
             cstmt.setString(2, filter.IN_FECHA_FROM.trim());
@@ -614,18 +614,19 @@ public class DebitsReportDAO {
             cstmt.setString(16, filter.IN_FASE1.trim());
             cstmt.setString(17, filter.IN_FASE2.trim());
             cstmt.setString(18, filter.IN_BPOC.trim());
+            cstmt.setString(19, filter.IN_NETO.trim());
 
-            cstmt.setInt(19, filter.page.PAGNUM);
-            cstmt.setInt(20, filter.page.PAGROW);
-            cstmt.setInt(21, filter.page.TOTPAG);
-            cstmt.setInt(22, filter.page.TOTROW);
+            cstmt.setInt(20, filter.page.PAGNUM);
+            cstmt.setInt(21, filter.page.PAGROW);
+            cstmt.setInt(22, filter.page.TOTPAG);
+            cstmt.setInt(23, filter.page.TOTROW);
 
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(19);
-            filter.page.PAGROW = cstmt.getInt(20);
-            filter.page.TOTPAG = cstmt.getInt(21);
-            filter.page.TOTROW = cstmt.getInt(22);
+            filter.page.PAGNUM = cstmt.getInt(20);
+            filter.page.PAGROW = cstmt.getInt(21);
+            filter.page.TOTPAG = cstmt.getInt(22);
+            filter.page.TOTROW = cstmt.getInt(23);
 
             rst = cstmt.getResultSet();
             while (rst.next()) {
@@ -656,6 +657,7 @@ public class DebitsReportDAO {
                 bean.FCONT = rst.getString("FCONT").trim();
                 bean.STATUS_SAP = rst.getString("STATUS_SAP").trim();
                 bean.BPO_COMMENT_DESC = rst.getString("BPOC").trim();
+                bean.LAST_UPDATE = rst.getString("LAST_UPDATE").trim();
 
                 bean.page.PAGNUM = filter.page.PAGNUM;
                 bean.page.PAGROW = filter.page.PAGROW;
