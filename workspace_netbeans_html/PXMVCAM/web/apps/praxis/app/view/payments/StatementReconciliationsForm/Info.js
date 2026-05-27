@@ -4249,7 +4249,7 @@
                                                 },
                                                 {
                                                     text: '<span style="color:white;font-weight:bold;">Status </span>', style: 'padding:2px; background: #6C87A8;',
-                                                    dataIndex: 'STVAL',
+                                                    dataIndex: 'descSTVAL',
                                                     width: 70,
                                                     renderer: function (value, metaData) {
                                                         metaData.style = "text-align:center;";
@@ -4496,7 +4496,7 @@
                                                 },
                                                 {
                                                     text: '<span style="color:white;font-weight:bold;">Status </span>', style: 'padding:2px; background: #6C87A8;',
-                                                    dataIndex: 'STVAL',
+                                                    dataIndex: 'descSTVAL',
                                                     width: 70,
                                                     renderer: function (value, metaData) {
                                                         metaData.style = "text-align:center;";

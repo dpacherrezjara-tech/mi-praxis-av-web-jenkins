@@ -49,6 +49,13 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
                 Ext.getCmp(prototype.id + '-btn-save').hide();
                 Ext.getCmp(prototype.id + '-btn-delete').hide();
                 Ext.getCmp(prototype.id + '-btn-cancel').show();
+                
+                if (meDE.bean.data.STVAL === "1" || meDE.bean.data.STVAL === "5") {
+                    Ext.getCmp(prototype.id + '-btn-update').hide();
+                } else {
+                    Ext.getCmp(prototype.id + '-btn-update').show(); 
+                }
+                
                 break;
         }
     },
@@ -138,6 +145,10 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
         this.setValue('txtUSUP', this.beanResult.USUP);
         this.setValue('txtFEUP', this.beanResult.FEUP);
         this.setValue('txtHOUP', this.beanResult.HOUP);
+        
+        this.setValue('de-txtTEXTO', meDE.bean.data.TEXTO);
+        this.setValue('de-txtTEXTOLAR', meDE.bean.data.TEXTOLAR);
+        
     },
     //<editor-fold defaultstate="collapsed" desc="llenarData">
     llenarData: function () {
@@ -260,7 +271,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
         } else if ( this.beanScan.IN_STVAL === 'Match Manual' ){
             this.beanScan.IN_STVAL = '5';
         } else {
-            this.beanScan.IN_STVAL = 'P';
+            this.beanScan.IN_STVAL = '3';
         }
         console.log(this.beanScan, 'this.beanScan')
         var beanString = JSON.stringify(this.beanScan);
@@ -1167,8 +1178,82 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
         if (e.getKey() === e.ENTER) {
 //            this.btnSearch_click();
         }
-    }
-// </editor-fold>
+    },
+    
+   
+// </editor-fold>,
 
+ onUpdateFieldsEx: function (btn) {
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Are you sure to Update Fields?',
+            buttons: Ext.MessageBox.YESNO,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'yes') {
+                    var beanTemp = this.llenarDataField(); 
+                    this.maintenanceBeanFields(beanTemp);
+                }
+            }
+        });
+    },
+    llenarDataField: function () {
+        var bean = {};
+        bean.IN_ACCOUNT = this.getValue("de-txtACCOUNTCASH");
+        bean.IN_TEXTO = this.getValue("de-txtTEXTO");
+        bean.IN_TEXTOLAR = this.getValue("de-txtTEXTOLAR");
+        bean.IN_CCUST = meDE.bean.data.CCUST;
+        bean.IN_ADATE = meDE.bean.data.ADATE;
+        bean.IN_SOCIETY = meDE.bean.data.SOCIETY;
+        bean.IN_CODEBANK = meDE.bean.data.CODEBANK;
+        bean.IN_BANDOC = meDE.bean.data.BANDOC;
+        console.log('Bean a enviar:', bean);
+        return bean;
+    },
+    maintenanceBeanFields: function (beanData) {
+        var beanString = JSON.stringify(beanData);
 
+        Ext.getCmp(prototype.id + '-dataEntryCash').mask('Updating...');
+
+        Ext.Ajax.request({
+            url: prototype.url + '/updateFields102', 
+            method: 'POST',
+            timeout: 600000,
+            params: {
+                beanString: beanString 
+            },
+            beforerequest: function() {
+                Ext.getCmp(prototype.id + '-dataEntryCash').mask('Updating...');
+            },
+            success: function (response, opts) {
+                Ext.getCmp(prototype.id + '-dataEntryCash').unmask();
+                var res = Ext.JSON.decode(response.responseText);
+                console.log('Respuesta DB:', res);
+                
+                if (res.success) {
+                    global.Msg({
+                        msg: res.Mensaje,
+                        icon: 1,
+                        fn: function () {
+                            Ext.getCmp(prototype.id + '-dataEntryCash').close();
+                            var btnSearch = Ext.getCmp(prototype.id + '-btnSearch');
+                            if(btnSearch) {
+                                btnSearch.fireEvent('click', {});
+                            }
+                        }
+                    });
+                } else {
+                    Ext.Msg.alert('Atención', res.Mensaje || 'Error al actualizar.');
+                }
+            },
+            failure: function (response, opts) {
+                console.log('server-side failure with status code ' + response.status);
+                Ext.getCmp(prototype.id + '-dataEntryCash').unmask();
+                Ext.Msg.alert('Error', 'Fallo de comunicación con el servidor.');
+            }
+        });
+    },
+    
 });

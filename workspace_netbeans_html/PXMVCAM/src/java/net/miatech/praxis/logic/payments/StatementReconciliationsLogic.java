@@ -13,6 +13,7 @@ import net.miatech.beans.spring.UserView;
 import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.praxis.dao.payments.StatementReconciliationsDAO;
 import net.miatech.praxis.payment.MPF101;
+import net.miatech.praxis.payment.MPF102Filter;
 import net.miatech.praxis.payment.filter.A2280Filter;
 import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.MPF100Filter;
@@ -217,5 +218,9 @@ public class StatementReconciliationsLogic {
     
      public Map<String, Object> executeMPS343(A2290Filter filter) throws SQLException, Exception {
         return StatementReconciliationsDAO.executeMPS343(filter);
+    }
+     
+     public String updateFields102(MPF102Filter bean) throws Exception {
+        return StatementReconciliationsDAO.updateFields102(bean);
     }
 }

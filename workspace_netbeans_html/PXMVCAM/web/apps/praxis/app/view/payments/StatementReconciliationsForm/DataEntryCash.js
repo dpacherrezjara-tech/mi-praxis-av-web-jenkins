@@ -159,7 +159,6 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                     xtype: 'textfield',
                                                     id: prototype.id + '-de-txtACCOUNTCASH',
                                                     enforceMaxLength: true,
-                                                    readOnly: true,
                                                     width: 160
                                                 },
                                                 {xtype: 'tbspacer', width: 50},
@@ -290,7 +289,40 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                     readOnly: true,
                                                     width: 160
                                                 },
-                                                {xtype: 'tbspacer', width: 340},
+                                                {xtype: 'tbspacer', width: 49, height: 24},
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Texto',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    width: 30
+                                                },
+                                                {xtype: 'tbspacer', width: 30},
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtTEXTO',
+                                                    style: 'font-weight:bold;color:#d5f4d5',
+                                                    enforceMaxLength: true,
+                                                    readOnly: false,
+                                                    maxLength: 60,
+                                                    width: 160
+                                                },
+                                                {xtype: 'tbspacer', width: 50},
+                                                 {
+                                                    xtype: 'label',
+                                                    text: 'Texto Largo',
+                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                    width: 80
+                                                },
+                                                {xtype: 'tbspacer', width: 10},
+                                                {
+                                                    xtype: 'textfield',
+                                                    id: prototype.id + '-de-txtTEXTOLAR',
+                                                    maxLength: 400,
+                                                    style: 'font-weight:bold;color:#d5f4d5',
+                                                    enforceMaxLength: true,
+                                                    readOnly: false,
+                                                    width: 160
+                                                },
                                                 {xtype: 'tbspacer', width: 275}
                                             ]
                                         },
@@ -2163,10 +2195,10 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                 {
                     text: 'Update',
                     id: prototype.id + '-btn-update',
-                    hidden: true,
+//                    hidden: true,
                     iconCls: 'prx-icon-update',
                     listeners: {
-                        click: 'onUpdateClick'
+                        click: 'onUpdateFieldsEx'
                     }
                 },
                 {
