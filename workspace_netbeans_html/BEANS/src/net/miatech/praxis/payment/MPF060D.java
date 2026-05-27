@@ -39,4 +39,5 @@ public class MPF060D {
     public String FCONT = "";
     public String STATUS_SAP = "";
     public String BPO_COMMENT_DESC = "";
+    public String LAST_UPDATE = "";
 }

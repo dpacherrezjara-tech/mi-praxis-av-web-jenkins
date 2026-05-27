@@ -442,6 +442,7 @@ Ext.define('Ext.Praxis.controller.payments.DebitsReport.DebitsReportController',
         me.bean.IN_FASE1 = Ext.getCmp(prototype.id + '-cmbF1').getValue() || '';
         me.bean.IN_FASE2 = Ext.getCmp(prototype.id + '-cmbF2').getValue() || '';
         me.bean.IN_BPOC = Ext.getCmp(prototype.id + '-cmbBPOCOMMENT').getValue() || '';
+        me.bean.IN_NETO = Ext.getCmp(prototype.id + '-txtTOTAL').getValue() || '';
 
         var beanString = JSON.stringify(me.bean);
         searchParams = {
