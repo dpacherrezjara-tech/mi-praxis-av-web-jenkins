@@ -274,21 +274,23 @@ Ext.define('Ext.Praxis.controller.refund.ControlBsplinkProcess.ControlBsplinkPro
                     font-size: 14px;
                     font-weight: bold;
                 `
-                        },
-            width: 250,
-            bodyPadding: 10,
+            },
+            width: 340,
+            height: 350,
+            bodyPadding: 15,
             resizable: false,
             closable: true,
             layout: {
                 type: 'vbox',
-                align: 'stretch'
+                align: 'center'
             },
             bodyStyle: 'background-color: #F9FAFB; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);',
             defaults: {
                 labelAlign: 'right',
                 labelWidth: 60,
-                margin: '7 0 10 0',
-                style: 'background-color:white; border-radius:6px;'
+                width: 250,
+                margin: '12 0 12 20',
+                style: 'background-color:white; border-radius:3px;'
             },
             items: [
                 {
@@ -377,9 +379,9 @@ Ext.define('Ext.Praxis.controller.refund.ControlBsplinkProcess.ControlBsplinkPro
 
             fbar: {
                 style: `
-                        background: #5C92CC;
+                        background: #BFD7EE;
                         border-top: 1px solid #B7C9DC;
-                        padding: 14px;
+                        padding: 24px;
                     `,
                 layout: {
                     pack: 'center'
@@ -388,15 +390,15 @@ Ext.define('Ext.Praxis.controller.refund.ControlBsplinkProcess.ControlBsplinkPro
 
                     {
                         text: 'Generate',
-                        iconCls: 'x-fa fa-file-excel',
                         scale: 'medium',
+                        minWidth: 90,
                         style: `
-                                background-color: #1976D2;
-                                color: red;
+                                background: #5B9BD5;
+                                color: white;
                                 font-weight: bold;
-                                border-radius: 6px;
-                                padding: 2px 11px;
-                                border: none;
+                                font-size: 13px;
+                                border-radius: 7px;
+                                border: 1px solid #4A89C2;
                             `,
                         handler: function () {
 
@@ -420,16 +422,17 @@ Ext.define('Ext.Praxis.controller.refund.ControlBsplinkProcess.ControlBsplinkPro
                     },
                     {
                         text: 'Cancel',
-                        iconCls: 'x-fa fa-times',
                         scale: 'medium',
+                        minWidth: 90,
                         style: `
-                                background-color: #90A4AE;
-                                color: red;
+                                background: #ECEFF1;
+                                color: #37474F;
                                 font-weight: bold;
+                                font-size: 12px;
                                 border-radius: 6px;
-                                padding: 2px 11px;
-                                border: none;
-                                margin-left: 10px;
+                                border: 1px solid #B0BEC5;
+                                padding: 4px 10px;
+                                margin-left: 8px;
                             `,
                         handler: function () {
                             win.close();
