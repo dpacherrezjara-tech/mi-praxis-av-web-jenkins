@@ -1245,7 +1245,7 @@ public class DebitsReportController extends BaseController {
                 "Date Create", "Bandoc", "Reference", "Agent", "Merchant", 
                 "Code", "Number", "Author", "Country", "Monto Neto", 
                 "Moneda Local", "Monto Local", "Moneda en Dolares", "Monto en Dolares", 
-                "Type", "F1", "F2", "Accounting ID DEB", "Accounting Date DEB", 
+                "Type", "F1", "F2", "Date Update F2","Accounting ID DEB", "Accounting Date DEB", 
                 "Status Accounting DEB", "BPO Comment"
             };
 
@@ -1298,10 +1298,11 @@ public class DebitsReportController extends BaseController {
                 row.createCell(19).setCellValue(item.DEBTYPE != null ? item.DEBTYPE : "");
                 row.createCell(20).setCellValue(item.FASE1 != null ? item.FASE1 : "");
                 row.createCell(21).setCellValue(item.FASE2 != null ? item.FASE2 : "");
-                row.createCell(22).setCellValue(item.IDCDEB != null ? item.IDCDEB : "");
-                row.createCell(23).setCellValue(item.FCONT != null ? item.FCONT : "");
-                row.createCell(24).setCellValue(item.STATUS_SAP != null ? item.STATUS_SAP : "");
-                row.createCell(25).setCellValue(item.SAUTHOC != null ? item.SAUTHOC : ""); // BPO Comment (Mismo dataIndex en tu JS)
+                row.createCell(22).setCellValue(item.LAST_UPDATE != null ? item.LAST_UPDATE : "");
+                row.createCell(23).setCellValue(item.IDCDEB != null ? item.IDCDEB : "");
+                row.createCell(24).setCellValue(item.FCONT != null ? item.FCONT : "");
+                row.createCell(25).setCellValue(item.STATUS_SAP != null ? item.STATUS_SAP : "");
+                row.createCell(26).setCellValue(item.BPO_COMMENT_DESC != null ? item.BPO_COMMENT_DESC : ""); 
             }
 
             // 3. Forzar descarga

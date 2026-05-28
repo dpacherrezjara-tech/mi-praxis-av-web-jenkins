@@ -633,6 +633,7 @@ Ext.define('Ext.Praxis.view.payments.DebitsReportForm.Filters', {
                                             labelAlign: 'left',
                                             width: 170,
                                             disabled: true,
+                                            hidden: true,
                                             labelWidth: 60,
                                             xtype: 'combo',
                                             id: prototype.id + '-cmbInputDateARC',
@@ -894,7 +895,7 @@ Ext.define('Ext.Praxis.view.payments.DebitsReportForm.Filters', {
                                             autoSelect: true,
                                             editable: true,
                                             labelWidth: 45,
-                                            width: 200,
+                                            width: 150,
                                             typeAhead: true,
                                             valueField: 'A006PAIS',
                                             displayField: 'A006NOMBRE',
@@ -905,12 +906,59 @@ Ext.define('Ext.Praxis.view.payments.DebitsReportForm.Filters', {
                                                 keypress: 'btnSearch_click'
                                             }
                                         },
+                                        
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbBPOCOMMENT',
+                                            fieldLabel: 'BPO Comment',
+                                            labelStyle: 'text-align: left; font-size: 12px;',
+                                            fieldStyle: 'text-align: center; font-size: 12px;',
+                                            store: Ext.create('Ext.data.Store', {
+                                                fields: ['CODE', 'NAME'], 
+                                                data: []
+                                            }),
+                                            width: 200,
+                                            labelWidth: 85,
+                                            emptyText: 'All',
+                                            value: '',
+                                            displayField: 'NAME',
+                                            valueField: 'CODE',
+                                            queryMode: 'local',
+                                            filterPickList: true,
+                                            editable: true,
+                                            multiSelect: false,
+                                            forceSelection: true,
+                                            margin: '0 10 0 0'
+                                        }
                                     ]
                                 },
                                 {
                                     xtype: 'container',
                                     layout: 'hbox',
                                     items: [
+                                        {
+                                            xtype: 'numberfield',
+                                            id: prototype.id + '-txtTOTAL',
+                                            fieldLabel: 'Monto Local',
+                                            labelStyle: 'text-align: left; font-size: 12px;',
+                                            fieldStyle: 'text-align: center; font-size: 12px;',
+                                            labelWidth: 75,
+                                            width: 150,
+                                            margin: '0 10 0 0',
+                                            hideTrigger: true,
+                                            allowExponential: false,
+                                            allowDecimals: true,
+                                            decimalSeparator: '.',
+                                            decimalPrecision: 2,
+                                            minValue: 0,
+                                            allowBlank: true,
+                                            value: null,
+                                            emptyText: '',
+                                            enableKeyEvents: true,
+                                            listeners: {
+                                                keypress: 'eventKey'
+                                            }
+                                        },
                                         {
                                             fieldLabel: 'Bandoc',
                                             labelAlign: 'left',
@@ -1089,29 +1137,6 @@ Ext.define('Ext.Praxis.view.payments.DebitsReportForm.Filters', {
                                             forceSelection: true,
                                             margin: '0 10 0 0'
                                         },
-                                        {
-                                            xtype: 'combo',
-                                            id: prototype.id + '-cmbBPOCOMMENT',
-                                            fieldLabel: 'BPO Comment',
-                                            labelStyle: 'text-align: left; font-size: 12px;',
-                                            fieldStyle: 'text-align: center; font-size: 12px;',
-                                            store: Ext.create('Ext.data.Store', {
-                                                fields: ['CODE', 'NAME'], 
-                                                data: []
-                                            }),
-                                            width: 200,
-                                            labelWidth: 85,
-                                            emptyText: 'All',
-                                            value: '',
-                                            displayField: 'NAME',
-                                            valueField: 'CODE',
-                                            queryMode: 'local',
-                                            filterPickList: true,
-                                            editable: true,
-                                            multiSelect: false,
-                                            forceSelection: true,
-                                            margin: '0 10 0 0'
-                                        }
                                     ]
                                 }
                             ]
