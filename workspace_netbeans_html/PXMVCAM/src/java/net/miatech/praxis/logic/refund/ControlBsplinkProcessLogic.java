@@ -44,6 +44,13 @@ public class ControlBsplinkProcessLogic {
     }
      
      
+     
+       public List<A3096Filter> RFS0036(A3096Filter filter) {
+        return this.ctrlBspLink.RFS0036(filter);
+    }
+     
+     
+     
 
     
     
