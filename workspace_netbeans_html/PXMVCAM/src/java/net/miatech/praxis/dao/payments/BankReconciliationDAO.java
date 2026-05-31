@@ -9682,6 +9682,83 @@ public class BankReconciliationDAO {
 
         return bean;
     }
+    
+    public String CloseTransactionCash(MPF100Filter filter) throws SQLException, Exception {
+
+        MPF100Filter bean = new MPF100Filter();
+        MPF100Filter beanTkt;
+        String strMsj = "";
+        List<MPF100Filter> listaMain = filter.getMainRecords();
+        if (listaMain == null || listaMain.isEmpty()) {
+            throw new Exception("No se encontró información en la lista principal (mainRecords)");
+        }
+
+        MPF100Filter main = listaMain.get(0);
+        HashMap<String, String> hmDescEstados = new HashMap<String, String>();
+        hmDescEstados.put("1", "Match");
+        hmDescEstados.put("3", "Pending");
+        hmDescEstados.put("5", "Match Manual");
+        
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        Connection cnx = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS613(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            
+
+            cstmt = cnx.prepareCall(SQLCLL01);
+            cstmt.setString(1, main.CCUST);
+            cstmt.setString(2, main.CBATCH != null ? main.CBATCH.trim() : "");
+            cstmt.setString(3, main.SAGENT != null ? main.SAGENT.trim() : "");
+            cstmt.setString(4, main.STRDATE != null ? main.STRDATE.trim() : "");
+            cstmt.setString(5, main.ENDDATE != null ? main.ENDDATE.trim() : "");
+            cstmt.setString(6, main.TREG != null ? main.TREG.trim() : "");
+            cstmt.setString(7, main.ADATE != null ? main.ADATE.trim() : "");
+            cstmt.setString(8, main.SCOUNTRY != null ? main.SCOUNTRY.trim() : "");
+            cstmt.setString(9, main.SCURRENCY != null ? main.SCURRENCY.trim() : "");
+            cstmt.setString(10, main.SEQ != null ? main.SEQ.trim() : "");
+            cstmt.setString(11, main.DATECI != null ? main.DATECI.trim() : "");
+            cstmt.setString(12, main.TRANCI != null ? main.TRANCI.trim() : "");
+            cstmt.setString(13, main.DATEC != null ? main.DATEC.trim() : "");
+            cstmt.setString(14, main.TRANC != null ? main.TRANC.trim() : "");
+            cstmt.setString(15, main.BANDOC != null ? main.BANDOC.trim() : "");
+            cstmt.setString(16, filter.ACCNUMA);
+            cstmt.setString(17, filter.INVOICE);
+            cstmt.registerOutParameter(18, Types.VARCHAR);
+
+            cstmt.execute();
+            strMsj = cstmt.getString(18);
+
+            if (rst != null) {
+                rst.close();
+            }
+            if (cstmt != null) {
+                cstmt.close();
+            }
+            
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SQLException("Error al ejecutar conciliación manual: " + e.getMessage(), e);
+        } finally {
+            if (rst != null) try {
+                rst.close();
+            } catch (SQLException ignored) {
+            }
+            if (cstmt != null) try {
+                cstmt.close();
+            } catch (SQLException ignored) {
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+            pasarGarbageCollector();
+        }
+
+        return strMsj;
+    }
 
     public MPF100Filter AssignCashComment(MPF100Filter filter) throws SQLException, Exception {
 

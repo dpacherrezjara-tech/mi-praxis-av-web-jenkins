@@ -1405,6 +1405,121 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         });
 
     },
+    
+    
+    onCloseTransaction: function (element) {
+        var me = this;
+
+        var gridScan = (this.bean.TINPUT == 'I') 
+            ? Ext.getCmp(prototype.id + '-gridDataInfoScanICCS') 
+            : Ext.getCmp(prototype.id + '-gridDataInfoScan');
+
+        var storeScan = gridScan.getStore();
+
+        var seleccionados = storeScan.getRange().filter(function (r) {
+            return r.get('selected') === true;
+        });
+
+        if (seleccionados.length === 0) {
+            Ext.Msg.alert('Aviso', 'Debe seleccionar al menos un registro para conciliar.');
+            return;
+        }
+
+        var win = Ext.create('Ext.window.Window', {
+            title: 'Datos de Ajuste',
+            modal: true,
+            width: 350,
+            layout: 'fit',
+            closable: false, 
+            items: [{
+                xtype: 'form',
+                bodyPadding: 15,
+                border: false,
+                defaults: {
+                    xtype: 'textfield',
+                    anchor: '100%',
+                    allowBlank: false, // Los hace obligatorios
+                    labelWidth: 60
+                },
+                items: [
+                    {
+                        fieldLabel: 'Cuenta',
+                        name: 'cuentaAjuste',
+                        maxLength: 6,
+                        enforceMaxLength: true, 
+                        emptyText: 'Ej: 123456',
+                        maskRe: /[0-9]/ 
+                    },
+                    {
+                        fieldLabel: 'Factura',
+                        name: 'facturaAjuste',
+                        maxLength: 23,
+                        enforceMaxLength: true, 
+                        emptyText: 'Ingrese nro. de factura',
+                        margin: '10 0 0 0' 
+                    }
+                ]
+            }],
+            buttons: [
+                {
+                    text: 'OK',
+                    iconCls: 'prx-icon-save', 
+                    handler: function () {
+                        var form = win.down('form').getForm();
+
+                        if (form.isValid()) {
+                            var values = form.getValues();
+                            var cuentaIngresada = values.cuentaAjuste.trim();
+                            var facturaIngresada = values.facturaAjuste.trim();
+
+                            var beanConciliacion = {
+                                ACCNUMA: cuentaIngresada,   
+                                INVOICE: facturaIngresada, 
+                                mainRecords: seleccionados.map(function (r) {
+                                    return r.getData();
+                                })
+                            };
+
+                            console.log(beanConciliacion, 'beanConciliacion');
+
+                            Ext.Ajax.request({
+                                url: prototype.url + '/CloseTransactionCash',
+                                method: 'POST',
+                                jsonData: beanConciliacion,
+                                timeout: 60000000,
+                                headers: {'Content-Type': 'application/json'},
+                                success: function (response) {
+                                    var res = Ext.JSON.decode(response.responseText);
+                                    if (res.success) {
+                                        global.Msg({msg: res.message});
+                                        Ext.getCmp(prototype.id + '-dataEntryAMDPCASH').close();
+                                    } else {
+                                        global.Msg({msg: res.message || 'Successfully reconciled.'});
+                                    }
+                                },
+                                failure: function (response) {
+                                    Ext.Msg.alert('Error', 'No se pudo procesar la conciliación. Código: ' + response.status);
+                                }
+                            });
+
+                            win.close(); 
+                        } else {
+                            Ext.Msg.alert('Error', 'Por favor, complete todos los campos requeridos.');
+                        }
+                    }
+                },
+                {
+                    text: 'Cancel',
+                    iconCls: 'prx-icon-cancel',
+                    handler: function () {
+                        win.close(); 
+                    }
+                }
+            ]
+        });
+
+        win.show();
+    },
 
     ExportCSV: function () {
         console.log('Descargando CSV...');

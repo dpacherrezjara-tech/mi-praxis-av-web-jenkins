@@ -368,6 +368,10 @@ public class BankReconciliationLogic {
         return bankReconciliationDAO.ConciliationManualCash(filter);
     }
     
+    public String CloseTransactionCash(MPF100Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.CloseTransactionCash(filter);
+    }
+    
     public MPF100Filter AssignCashComment(MPF100Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.AssignCashComment(filter);
     }

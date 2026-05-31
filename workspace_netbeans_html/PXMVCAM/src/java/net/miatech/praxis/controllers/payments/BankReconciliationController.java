@@ -6278,6 +6278,28 @@ public class BankReconciliationController extends BaseController {
 
         return new Gson().toJson(map);
     }
+    
+    @RequestMapping(value = "/CloseTransactionCash", method = RequestMethod.POST)
+    @ResponseBody
+    public String CloseTransactionCash(@RequestBody MPF100Filter filter) {
+        System.out.println("-------------- BankReconciliation : ManualConciliacionCash -------------");
+        String msj = "";
+        ModelMap map = new ModelMap();
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            msj = logic.CloseTransactionCash(filter);
+
+            map.put("success", true);
+            map.put("message", msj);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("success", false);
+            map.put("message", "Error al procesar la conciliación: " + e.getMessage());
+        }
+
+        return new Gson().toJson(map);
+    }
 
     @RequestMapping(value = "/AssignCashComment", method = RequestMethod.POST)
     @ResponseBody
