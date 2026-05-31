@@ -41,6 +41,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
                 Ext.getCmp(prototype.id + '-btn-save').hide();
                 Ext.getCmp(prototype.id + '-btn-delete').hide();
                 Ext.getCmp(prototype.id + '-btn-cancel').show();
+                
+                
                 break;
         }
     },
@@ -84,10 +86,11 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntrySta
             Ext.getCmp(prototype.id + '-panelScanCard2').hide();
 //            Ext.getCmp(prototype.id + '-panelScanCard3').hide();
             Ext.getCmp(prototype.id + '-btn-update').hide();
+            Ext.getCmp(prototype.id + '-btnRealUpdate').hide();
             this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETOC, '0,000.00'));
             this.setValue('de-txtCOREP', this.beanResult.COREP);
         } else {
-
+            Ext.getCmp(prototype.id + '-btnRealUpdate').show(); 
             Ext.getCmp(prototype.id + '-btn-update').show();
             this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETOL, '0,000.00'));
             this.setValue('de-txtCOREP', this.beanResult.COREP);

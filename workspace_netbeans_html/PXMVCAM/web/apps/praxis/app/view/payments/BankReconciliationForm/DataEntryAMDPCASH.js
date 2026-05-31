@@ -2929,6 +2929,14 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                     }
                 },
                 {
+                    text: 'Close Transaction',
+                    id: prototype.id + '-btn-closeTransaction',
+                    iconCls: 'prx-icon-update',
+                    listeners: {
+                        click: 'onCloseTransaction'
+                    }
+                },
+                {
                     text: 'Cancel',
                     id: prototype.id + '-btn-cancel',
                     icon: 'resources/img/botones/restricted_folder_symbol_stop-16.png',
