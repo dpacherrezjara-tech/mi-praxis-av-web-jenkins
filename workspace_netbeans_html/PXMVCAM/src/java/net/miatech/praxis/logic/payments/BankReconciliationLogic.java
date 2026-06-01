@@ -391,4 +391,11 @@ public class BankReconciliationLogic {
         return bankReconciliationDAO.updateMPF223(filter);
     }
     
+    public String executeCreateADM(List<A2290Filter> filters) throws Exception {
+        return bankReconciliationDAO.executeCreateADM(filters);
+    }
+    
+    public List<A2290Filter> loadPX269SQPMPS653(A2290Filter filter) throws Exception {
+        return bankReconciliationDAO.loadPX269SQPMPS653(filter);
+    }
 }

@@ -116,6 +116,8 @@ Ext.util.CSS.createStyleSheet(`
                 searchParamsbeanGraf: {},
                 paramsObtainData: {},
                 paramsDetail: {},
+                storeAdjType: {},
+                storeComent: {},
                 init: function (view) {
                 me = this;
                         prototype.id = 'BankReconciliationForm';
@@ -215,6 +217,9 @@ Ext.util.CSS.createStyleSheet(`
                 Ext.getCmp(prototype.id + '-btnAdd').hide();
                         Ext.getCmp(prototype.id + '-cmbFuente').hide();
                         Ext.getCmp(prototype.id + '-cmbSource').show();
+                        
+                        me.loadWinStores();
+                        
                         $('#BankReconciliationForm-btnToggleSwitchFTGraf').change(function () {
                 me.procesador();
                 });
@@ -4007,6 +4012,9 @@ Ext.util.CSS.createStyleSheet(`
                         });
                 },
                 gridDetMPF101_clickHandler: function (column, e, row, column, x, rowData) {
+                    
+                     Ext.getCmp(prototype.id + '-btnAddAdm').hide();
+                    
                 console.log('gridDetMPF101_clickHandler');
                         me.guardaFiltroMPF100();
                         me.beanDetailTW = x.record.data;
@@ -4116,7 +4124,7 @@ Ext.util.CSS.createStyleSheet(`
                 },
                 btnBackTW_click: function (obj, e) {
 
-
+                Ext.getCmp(prototype.id + '-btnAddAdm').show();
                 this.obtainFields('MPF100', 'back');
                         var gridDataTeleworking = Ext.getCmp(prototype.id + '-gridDataTeleworking');
                         var panelDetailTW = Ext.getCmp(prototype.id + '-panelDetailTW');
@@ -5142,7 +5150,7 @@ Ext.util.CSS.createStyleSheet(`
     var win = Ext.create('Ext.window.Window', {
         title: '<span style="font-weight:bold;">🚀 Selector de Conciliación</span>',
         modal: true,
-        width: 850, // <-- AUMENTÉ ESTO (de 650 a 850) para que quepan bien las 4 tarjetas
+        width: 910, // <-- AUMENTÉ ESTO (de 650 a 850) para que quepan bien las 4 tarjetas
         height: 350,
         layout: { type: 'vbox', align: 'stretch' },
         bodyStyle: 'background-color: #f0f2f5; padding: 20px;',
@@ -5228,10 +5236,726 @@ Ext.util.CSS.createStyleSheet(`
                                 });
                         }
                         });
+                },
+
+
+onAddAddAdmBKP: function () {
+        var me = this; // Guardamos el scope
+        var grid = Ext.getCmp(prototype.id + '-gridDataTeleworking');
+
+        if (grid) {
+            var store = grid.getStore();
+            
+            if (store.getCount() === 0) {
+                Ext.Msg.show({
+                    title: 'Warning',
+                    msg: 'The grid has no records.',
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.WARNING,
+                    modal: true
+                });
+                return; 
+            }
+
+            Ext.Msg.show({
+                title: 'Confirmation',
+                msg: 'Are you sure you want to create an ADM for the tickets?',
+                buttons: Ext.MessageBox.YESNO,
+                scope: this,
+                icon: Ext.MessageBox.QUESTION,
+                modal: true,
+                fn: function (btn) {
+                    if (btn === 'yes') {
+                        // ==========================================
+                        // CREACIÓN DE LA VENTANA DE FORMULARIO
+                        // ==========================================
+                        var winAdm = Ext.create('Ext.window.Window', {
+                            id: prototype.id + '-winCreateADM',
+                            title: '.: Create ADM :.',
+                            width: 800,
+                            height: 200,
+                            layout: 'vbox',
+                            bodyPadding: 15,
+                            modal: true,
+                            resizable: false,
+                            draggable: true,
+                            items: [
+                                // Fila con los combos
+                                {
+                                    xtype: 'container',
+                                    layout: 'hbox',
+                                    width: '100%',
+                                    margin: '10 0 0 0',
+                                    items: [
+                                        // Bloque 1: Adjustment Type
+                                        {
+                                            xtype: 'label',
+                                            text: 'Adjustment Type:',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            margin: '5 0 0 0',
+                                            width: 120
+                                        },
+                                        { xtype: 'tbspacer', width: 10 },
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-win-cmbADJTYPE', 
+                                            store: me.storeAdjType, // Store guardado en memoria
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:left;',
+                                            queryMode: 'local', 
+                                            triggerAction: 'all',
+                                            valueField: 'CODE',
+                                            displayField: 'NAME',
+                                            emptyText: 'Select...', 
+                                            width: 180
+                                        },
+                                        
+                                        { xtype: 'tbspacer', width: 30 }, // Separador central
+                                        
+                                        // Bloque 2: BPO Comment
+                                        {
+                                            xtype: 'label',
+                                            margin: '5 0 0 0',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            text: 'BPO Comment:',
+                                            width: 90
+                                        },
+                                        { xtype: 'tbspacer', width: 5 },
+                                        {
+                                            xtype: 'label',
+                                            text: '(*)',
+                                            margin: '5 2 0 0',
+                                            id: prototype.id + '-win-COMENT_Forced', 
+                                            hidden: false, // Como es obligatorio, mostramos el asterisco rojo
+                                            style: 'font-weight:bold;color:red;',
+                                            width: 20
+                                        },
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-win-cmbCOMENT', 
+                                            store: me.storeComent, // Store guardado en memoria
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:left;',
+                                            queryMode: 'local', 
+                                            triggerAction: 'all',
+                                            valueField: 'CODE',
+                                            displayField: 'NAME',
+                                            emptyText: 'Select...', 
+                                            width: 280 
+                                        }
+                                    ]
+                                }
+                            ],
+                            
+                            // ==========================================
+                            // BARRA DE BOTONES (dockedItems)
+                            // ==========================================
+                            dockedItems: [
+                                {
+                                    xtype: 'toolbar',
+                                    dock: 'bottom',
+                                    ui: 'footer',
+                                    margin: '10 0 10 0',
+                                    layout: {
+                                        pack: 'center'
+                                    },
+                                    defaults: {
+                                        scale: 'medium'
+                                    },
+                                    items: [
+                                        {
+                                            text: 'Create ADM',
+                                            id: prototype.id + '-btn-win-create',
+                                            iconCls: 'prx-icon-save', 
+                                            handler: function(btn) {
+                                                // 1. Obtener valores de los combos
+                                                var cmbAdjType = Ext.getCmp(prototype.id + '-win-cmbADJTYPE').getValue();
+                                                var cmbComent = Ext.getCmp(prototype.id + '-win-cmbCOMENT').getValue();
+
+                                                // ==========================================
+                                                // VALIDACIÓN OBLIGATORIA
+                                                // ==========================================
+                                                if (!cmbAdjType || !cmbComent) {
+                                                    Ext.Msg.alert('Warning', 'Please select both Adjustment Type and BPO Comment.');
+                                                    return;
+                                                }
+
+                                                // 2. Extraer los datos requeridos de la grilla
+                                                var recordsToSend = [];
+
+                                                store.each(function(record) {
+                                                    recordsToSend.push({
+                                                        CCUST_MPF100: record.get('CCUST_MPF100'),
+                                                        CCIA_MPF100: record.get('CCIA_MPF100'),
+                                                        FORMA_MPF100: record.get('FORMA_MPF100'),
+                                                        SERIE_MPF100: record.get('SERIE_MPF100'),
+                                                        TDOC_MPF100: record.get('TDOC_MPF100'),
+                                                        SCARCOD_MPF100: record.get('SCARCOD_MPF100'),
+                                                        SCARDNCOR_MPF100: record.get('SCARDNCOR_MPF100'),
+                                                        SAUTHOC_MPF100: record.get('SAUTHOC_MPF100'),
+                                                        SEQ_MPF100: record.get('SEQ_MPF100'),
+                                                        CORRL_MPF100: record.get('CORRL_MPF100'),
+                                                        ADJTYPE: cmbAdjType,
+                                                        COMENT: cmbComent
+                                                    });
+                                                });
+
+                                                // Convertir arreglo a JSON
+                                                var jsonString = Ext.JSON.encode(recordsToSend);
+
+                                                // ==========================================
+                                                // BLOQUEO DE LA INTERFAZ ANTES DE ENVIAR AJAX
+                                                // ==========================================
+                                                btn.setDisabled(true); // Bloquea el botón clickeado
+                                                winAdm.mask('Processing ADM, please wait...'); // Pone el velo gris en la ventana
+
+                                                // 3. Petición Ajax al Backend
+                                                Ext.Ajax.request({
+                                                    url: prototype.url + '/executeCreateADM', 
+                                                    method: 'POST',
+                                                    timeout: 600000,
+                                                    params: {
+                                                        dataString: jsonString 
+                                                    },
+                                                    success: function (response, opts) {
+                                                        // Liberar interfaz
+                                                        winAdm.unmask();
+                                                        btn.setDisabled(false);
+
+                                                        var res = Ext.JSON.decode(response.responseText);
+                                                        if (res.success) {
+                                                            global.Msg({
+                                                                msg: 'ADM created successfully.',
+                                                                icon: 1,
+                                                                fn: function () {
+                                                                    winAdm.close(); // Cierra la modal al terminar
+                                                                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {}); // Refresca la grilla base
+                                                                }
+                                                            });
+                                                        } else {
+                                                            Ext.Msg.alert('Error', res.Mensaje || 'Error creating ADM.');
+                                                        }
+                                                    },
+                                                    failure: function (response, opts) {
+                                                        // Liberar interfaz en caso de error del servidor
+                                                        winAdm.unmask();
+                                                        btn.setDisabled(false);
+
+                                                        console.log('server-side failure with status code ' + response.status);
+                                                        Ext.Msg.alert('Error', 'Server communication failure.');
+                                                    }
+                                                });
+                                            }
+                                        },
+                                        {
+                                            text: 'Cancel',
+                                            id: prototype.id + '-btn-win-cancel',
+                                            icon: 'resources/img/botones/restricted_folder_symbol_stop-16.png', 
+                                            handler: function() {
+                                                winAdm.close();
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        });
+
+                        winAdm.show();
+                    }
                 }
+            });
+        } else {
+            console.error("No se encontró la grilla '-gridDataTeleworking'");
+        }
+    },
+    onAddAddAdm: function () {
+        var me = this; 
+        var grid = Ext.getCmp(prototype.id + '-gridDataTeleworking');
 
+        if (grid) {
+            var store = grid.getStore();
+            
+            if (store.getCount() === 0) {
+                Ext.Msg.show({
+                    title: 'Warning',
+                    msg: 'The grid has no records.',
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.WARNING,
+                    modal: true
+                });
+                return; 
+            }
 
+            Ext.Msg.show({
+                title: 'Confirmation',
+                msg: 'Are you sure you want to open the panel to select tickets and create ADMs?',
+                buttons: Ext.MessageBox.YESNO,
+                scope: this,
+                icon: Ext.MessageBox.QUESTION,
+                modal: true,
+                fn: function (btn) {
+                    if (btn === 'yes') {
 
+                        // ==========================================
+                        // 1. STORE LOCAL PARA PAGINADO EN JS
+                        // ==========================================
+                        var storeAllTkt = Ext.create('Ext.data.Store', {
+                            pageSize: 50, // Paginado en el cliente de 50 en 50
+                            proxy: {
+                                type: 'memory',
+                                enablePaging: true,
+                                reader: {
+                                    type: 'json'
+                                }
+                            }
+                        });
+
+                        // ==========================================
+                        // 2. CREACIÓN DE LA VENTANA CON GRILLA INCLUIDA
+                        // ==========================================
+                        var winAdm = Ext.create('Ext.window.Window', {
+                            id: prototype.id + '-winCreateADM',
+                            title: '.: Select Tickets and Create ADM :.',
+                            width: 1050,  // Ampliamos un poco más para que entren todas tus columnas cómodamente
+                            height: 550,  
+                            layout: 'vbox',
+                            bodyPadding: 15,
+                            modal: true,
+                            resizable: false,
+                            draggable: true,
+                            items: [
+                                // --- FILA DE COMBOS ---
+                                {
+                                    xtype: 'container',
+                                    layout: 'hbox',
+                                    width: '100%',
+                                    margin: '0 0 15 0', 
+                                    items: [
+                                        {
+                                            xtype: 'label',
+                                            text: 'Adjustment Type:',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            margin: '5 0 0 0',
+                                            width: 120
+                                        },
+                                        { xtype: 'tbspacer', width: 10 },
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-win-cmbADJTYPE', 
+                                            store: me.storeAdjType, 
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:left;',
+                                            queryMode: 'local', 
+                                            triggerAction: 'all',
+                                            valueField: 'CODE',
+                                            displayField: 'NAME',
+                                            emptyText: 'Select...', 
+                                            width: 180
+                                        },
+                                        
+                                        { xtype: 'tbspacer', width: 30 }, 
+                                        
+                                        {
+                                            xtype: 'label',
+                                            margin: '5 0 0 0',
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            text: 'BPO Comment:',
+                                            width: 90
+                                        },
+                                        { xtype: 'tbspacer', width: 5 },
+                                        {
+                                            xtype: 'label',
+                                            text: '(*)',
+                                            margin: '5 2 0 0',
+                                            id: prototype.id + '-win-COMENT_Forced', 
+                                            hidden: false, 
+                                            style: 'font-weight:bold;color:red;',
+                                            width: 20
+                                        },
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-win-cmbCOMENT', 
+                                            store: me.storeComent, 
+                                            style: 'font-weight:bold;color:#0B333C;',
+                                            fieldStyle: 'text-align:left;',
+                                            queryMode: 'local', 
+                                            triggerAction: 'all',
+                                            valueField: 'CODE',
+                                            displayField: 'NAME',
+                                            emptyText: 'Select...', 
+                                            width: 280 
+                                        }
+                                    ]
+                                },
+                                // --- GRILLA CON CHECKBOXES Y COLUMNAS DETALLADAS ---
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-win-gridAllTickets',
+                                    width: '100%',
+                                    flex: 1, 
+                                    store: storeAllTkt,
+                                    columnLines: true,
+                                    selModel: {
+                                        type: 'checkboxmodel',
+                                        checkOnly: true
+                                    },
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: false,
+                                            resizable: true,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            // COLUMNA NUEVA: ROW NUMBER (RN)
+                                            {
+                                                text: 'N°', dataIndex: 'RN', width: 45,
+                                                renderer: function (value, metaData, record) {
+                                                    var data = record.data;
+                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                    metaData.style = "text-align:center;color:" + color + ";font-weight:bold;";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Ticket', width: 130, dataIndex: 'strTicket',
+                                                renderer: function (value, metaData, record) {
+                                                    var data = record.data;
+                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                    metaData.style = 'text-align:center;color:' + color + ';background-color:#CCFFFF;';
+                                                    metaData.tdAttr = 'data-qtip="' + data.strTicket + '"';
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    metaData.unselectableAttr = "unselectable='off'";
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Status', dataIndex: 'STVAL', width: 140,
+                                                renderer: function (value, metaData, record) {
+                                                    var data = record.data;
+                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                    metaData.style = "text-align:left;color:" + color + ";";
+                                                    metaData.tdAttr = 'data-qtip="' + data.STVAL + '"';
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Sales',
+                                                defaults: { menuDisabled: true, sortable: false, align: 'center' },
+                                                columns: [
+                                                    {
+                                                        text: 'Date', dataIndex: 'SDATE', width: 70,
+                                                        renderer: function (value, metaData, record) {
+                                                            var data = record.data;
+                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                            metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                            metaData.tdAttr = 'data-qtip="' + data.SDATE + '"';
+                                                            return value;
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: 'Country',
+                                                defaults: { menuDisabled: true, sortable: false, align: 'center' },
+                                                columns: [
+                                                    {
+                                                        text: 'Code', dataIndex: 'SCOUNTRY', width: 50,
+                                                        renderer: function (value, metaData, record) {
+                                                            var data = record.data;
+                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                            metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                            metaData.tdAttr = 'data-qtip="' + data.SCOUNTRY + '"';
+                                                            return value;
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: 'Credit Card',
+                                                defaults: { menuDisabled: true, sortable: false, align: 'center' },
+                                                columns: [
+                                                    {
+                                                        text: 'Code', dataIndex: 'SCARCOD', width: 45,
+                                                        renderer: function (value, metaData, record) {
+                                                            var data = record.data;
+                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                            metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                            metaData.tdAttr = 'data-qtip="' + data.strDescCard + '"';
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Number', width: 130, dataIndex: 'strSCARDN',
+                                                        renderer: function (value, metaData, record) {
+                                                            var data = record.data;
+                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                            metaData.style = 'text-align:center;color:' + color + ';background-color:#CCFFFF;';
+                                                            metaData.tdAttr = 'data-qtip="' + data.strSCARDN + '"';
+                                                            metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                            metaData.unselectableAttr = "unselectable='off'";
+                                                            return value;
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Author.', dataIndex: 'SAUTHOC', width: 60,
+                                                        renderer: function (value, metaData, record) {
+                                                            var data = record.data;
+                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                            metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                            metaData.tdAttr = 'data-qtip="' + data.SAUTHOC + '"';
+                                                            return value;
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: 'Cur.', dataIndex: 'SCURRENCY', width: 40,
+                                                renderer: function (value, metaData, record) {
+                                                    var data = record.data;
+                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                    metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                    metaData.tdAttr = 'data-qtip="' + data.strMoneda + '"';
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Amount', dataIndex: 'SVFOP', width: 100,
+                                                renderer: function (value, metaData, record) {
+                                                    var data = record.data;
+                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                    metaData.style = "text-align:right;color:" + color + ";background-color:#b2e1ff;";
+                                                    return win.formatDblNumber(value);
+                                                }
+                                            },
+                                            {
+                                                text: 'PNR', dataIndex: 'SPNR', width: 60,
+                                                renderer: function (value, metaData, record) {
+                                                    var data = record.data;
+                                                    var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                    metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                    metaData.tdAttr = 'data-qtip="' + data.SPNR + '"';
+                                                    return value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Agent',
+                                                defaults: { menuDisabled: true, sortable: false, align: 'center' },
+                                                columns: [
+                                                    {
+                                                        text: 'Code', dataIndex: 'SAGENT', width: 65,
+                                                        renderer: function (value, metaData, record) {
+                                                            var data = record.data;
+                                                            var color = data.strPEM === 'SALES' ? '#64418c' : '#244066';
+                                                            metaData.style = "text-align:center;color:" + color + ";background-color:#b2e1ff;";
+                                                            metaData.tdAttr = 'data-qtip="' + data.SAGENT + '"';
+                                                            return value;
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: 'Transaction',
+                                                defaults: { menuDisabled: true, sortable: false, align: 'center' },
+                                                columns: [
+                                                    {
+                                                        text: 'Code', dataIndex: 'TRNCU', width: 55,
+                                                        renderer: function (value, metaData, record) {
+                                                            metaData.style = "text-align:center;";
+                                                            return value;
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: 'Days', dataIndex: 'lngDays', width: 45,
+                                                renderer: function (value, metaData, record) {
+                                                    var data = record.data;
+                                                    var color = Number(data.lngDays) >= 4 ? '#c22428' : '#2BC224';
+                                                    metaData.style = "text-align:center;color:" + color + ";";
+                                                    return value;
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    bbar: {
+                                        xtype: 'pagingtoolbar',
+                                        store: storeAllTkt, 
+                                        displayInfo: true,
+                                        displayMsg: 'Showing {0} - {1} of {2} tickets'
+                                    }
+                                }
+                            ],
+                            
+                            // --- BARRA INFERIOR DE BOTONES ---
+                            dockedItems: [
+                                {
+                                    xtype: 'toolbar',
+                                    dock: 'bottom',
+                                    ui: 'footer',
+                                    margin: '10 0 10 0',
+                                    layout: { pack: 'center' },
+                                    defaults: { scale: 'medium' },
+                                    items: [
+                                        {
+                                            text: 'Create ADM',
+                                            id: prototype.id + '-btn-win-create',
+                                            iconCls: 'prx-icon-save', 
+                                            handler: function(btn) {
+                                                
+                                                var cmbAdjType = Ext.getCmp(prototype.id + '-win-cmbADJTYPE').getValue();
+                                                var cmbComent = Ext.getCmp(prototype.id + '-win-cmbCOMENT').getValue();
+
+                                                if (!cmbAdjType || !cmbComent) {
+                                                    Ext.Msg.alert('Warning', 'Please select both Adjustment Type and BPO Comment.');
+                                                    return;
+                                                }
+
+                                                var winGrid = Ext.getCmp(prototype.id + '-win-gridAllTickets');
+                                                var selectedRecords = winGrid.getSelectionModel().getSelection();
+
+                                                if (selectedRecords.length === 0) {
+                                                    Ext.Msg.alert('Warning', 'Please select at least one ticket from the grid.');
+                                                    return;
+                                                }
+
+                                                var recordsToSend = [];
+
+                                                Ext.Array.each(selectedRecords, function(record) {
+                                                    recordsToSend.push({
+                                                        CCUST_MPF100: record.get('CCUST_MPF100'),
+                                                        CCIA_MPF100: record.get('CCIA_MPF100'),
+                                                        FORMA_MPF100: record.get('FORMA_MPF100'),
+                                                        SERIE_MPF100: record.get('SERIE_MPF100'),
+                                                        TDOC_MPF100: record.get('TDOC_MPF100'),
+                                                        SCARCOD_MPF100: record.get('SCARCOD_MPF100'),
+                                                        SCARDNCOR_MPF100: record.get('SCARDNCOR_MPF100'),
+                                                        SAUTHOC_MPF100: record.get('SAUTHOC_MPF100'),
+                                                        SEQ_MPF100: record.get('SEQ_MPF100'),
+                                                        CORRL_MPF100: record.get('CORRL_MPF100'),
+                                                        ADJTYPE: cmbAdjType,
+                                                        COMENT: cmbComent
+                                                    });
+                                                });
+
+                                                var jsonString = Ext.JSON.encode(recordsToSend);
+
+                                                btn.setDisabled(true); 
+                                                winAdm.mask('Processing ADM, please wait...');
+
+                                                Ext.Ajax.request({
+                                                    url: prototype.url + '/executeCreateADM', 
+                                                    method: 'POST',
+                                                    timeout: 600000,
+                                                    params: { dataString: jsonString },
+                                                    success: function (response, opts) {
+                                                        winAdm.unmask();
+                                                        btn.setDisabled(false);
+
+                                                        var res = Ext.JSON.decode(response.responseText);
+                                                        if (res.success) {
+                                                            global.Msg({
+                                                                msg: 'ADM created successfully.',
+                                                                icon: 1,
+                                                                fn: function () {
+                                                                    winAdm.close(); 
+                                                                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {}); 
+                                                                }
+                                                            });
+                                                        } else {
+                                                            Ext.Msg.alert('Error', res.Mensaje || 'Error creating ADM.');
+                                                        }
+                                                    },
+                                                    failure: function (response, opts) {
+                                                        winAdm.unmask();
+                                                        btn.setDisabled(false);
+                                                        Ext.Msg.alert('Error', 'Server communication failure.');
+                                                    }
+                                                });
+                                            }
+                                        },
+                                        {
+                                            text: 'Cancel',
+                                            id: prototype.id + '-btn-win-cancel',
+                                            icon: 'resources/img/botones/restricted_folder_symbol_stop-16.png', 
+                                            handler: function() {
+                                                winAdm.close();
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        });
+
+                        winAdm.show();
+
+                        // ==========================================
+                        // CARGAR LA GRILLA AL ABRIR LA VENTANA
+                        // ==========================================
+                        winAdm.mask('Loading all records...');
+
+                        Ext.Ajax.request({
+                            url: prototype.url + '/searchAllTeleworking', 
+                            method: 'POST',
+                            timeout: 600000,
+                            params: { 
+                                beanString: Ext.JSON.encode(me.beanTW) 
+                            },
+                            success: function (response) {
+                                winAdm.unmask();
+                                var res = Ext.JSON.decode(response.responseText);
+                                if (res.success || res.data) {
+                                    storeAllTkt.getProxy().setData(res.data);
+                                    storeAllTkt.loadPage(1); 
+                                    Ext.getCmp(prototype.id + '-win-gridAllTickets').getSelectionModel().selectAll();
+                                } else {
+                                    Ext.Msg.alert('Error', 'No data to show.');
+                                }
+                            },
+                            failure: function () {
+                                winAdm.unmask();
+                                Ext.Msg.alert('Error', 'Failed to load tickets.');
+                            }
+                        });
+                    }
+                }
+            });
+        } else {
+            console.error("No se encontró la grilla '-gridDataTeleworking'");
+        }
+    },
+    
+    loadWinStores: function () {
+        var me = this;
+
+        Ext.Ajax.request({
+            url: prototype.urlMaster + '/obtainDataAdjs',
+            method: 'POST',
+            success: function (response) {
+                var res = Ext.JSON.decode(response.responseText);
+                if (res.success) {
+                    me.storeAdjType = Ext.create('Ext.data.Store', {
+                        fields: ['CODE', 'NAME'],
+                        data: res.lstData
+                    });
+                }
+            }
+        });
+
+        Ext.Ajax.request({
+            url: prototype.url + '/obtainMessages',
+            method: 'POST',
+            success: function (response) {
+                var res = Ext.JSON.decode(response.responseText);
+                if (res.success) {
+                    me.storeComent = Ext.create('Ext.data.Store', {
+                        fields: ['CODE', 'NAME'],
+                        data: res.data
+                    });
+                }
+            }
+        });
+    },
 
 
         });

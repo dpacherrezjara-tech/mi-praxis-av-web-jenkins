@@ -1847,7 +1847,7 @@ public class ViewADMDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + ".SQPMPF100ADM_REPORTSAP(?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS655(?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {

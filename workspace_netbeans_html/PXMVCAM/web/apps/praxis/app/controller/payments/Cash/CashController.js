@@ -171,8 +171,14 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
                     win.setValue('cmbCountryCash', '');
                     win.setValue('cmbCountryCredit', '');
 
+                    var allowedCodes = ['All', 'BSP', 'ARC'];
+                    var filteredCfuente = res.lstsCfuenteCash.filter(function(item) {
+                        return allowedCodes.indexOf(item.NAME) !== -1;
+                    });
+                    filteredCfuente.push({CCUST: '', CODE: 'VTA-DIRECTA', NAME: 'VTA-DIRECTA', COUNTRY: '', CURRENC: ''});
+
                     Ext.getCmp(prototype.id + '-cmbCfuenteCash').bindStore(
-                            Ext.create('Ext.data.Store', {data: res.lstsCfuenteCash, autoLoad: true})
+                            Ext.create('Ext.data.Store', {data: filteredCfuente, autoLoad: true})
                             );
 
                     Ext.getCmp(prototype.id + '-cmbCfuenteCredit').bindStore(
