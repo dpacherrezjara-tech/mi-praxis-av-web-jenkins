@@ -7695,6 +7695,26 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                         align: 'center'
                     },
                     items: [
+                                {
+                            xtype: 'container',
+                            width: 1228, 
+                            layout: {
+                                type: 'hbox',
+                                pack: 'end' 
+                            },
+                            margin: '10 0 5 0', 
+                            items: [
+                                {
+                                    xtype: 'button',
+                                    text: 'Add ADM',
+                                    id: prototype.id + '-btnAddAdm',
+                                    iconCls: 'prx-icon-add',
+                                    listeners: {
+                                        click: 'onAddAddAdm'
+                                    }
+                                }
+                            ]
+                        },
                         {
                             xtype: 'grid',
                             id: prototype.id + '-gridDataTeleworking',

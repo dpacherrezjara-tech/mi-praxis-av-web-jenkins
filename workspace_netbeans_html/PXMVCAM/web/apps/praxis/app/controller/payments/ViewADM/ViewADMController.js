@@ -1110,12 +1110,12 @@ Ext.define('Ext.Praxis.controller.payments.ViewADM.ViewADMController', {
                             });
                             return false
                         }
-                        if( values.country == '' ){
-                            global.Msg({
-                                msg: 'Enter the country'
-                            });
-                            return false
-                        }
+//                        if( values.country == '' ){
+//                            global.Msg({
+//                                msg: 'Enter the country'
+//                            });
+//                            return false
+//                        }
                         
                         let periodo = values.year + values.month; 
                         beanReportADM.SDATE = periodo

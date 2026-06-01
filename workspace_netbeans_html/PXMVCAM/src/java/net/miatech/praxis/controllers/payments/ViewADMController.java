@@ -2805,7 +2805,7 @@ public class ViewADMController extends BaseController {
         if(filter.SCOUNTRY.equals("CO")){
             typeMovement = "Operaciones Bancarias CO";
         }else{
-            typeMovement = "Operaciones Bancarias Ext";
+            typeMovement = "Operaciones Bancarias";
         }
         String fileNameDownload = String.format("Unpaid Tickets Report - " + filter.SDATE.trim() +  " - " + filter.CCUST.trim() + " - " + filter.SCOUNTRY.trim() + " - " + filter.CFUENTE.trim() + " - " + Functions.getFechaActual() + ".xlsx", UUID.randomUUID().toString().toLowerCase());
         try {
