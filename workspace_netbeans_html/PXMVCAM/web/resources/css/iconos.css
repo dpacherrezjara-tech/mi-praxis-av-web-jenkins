@@ -7,6 +7,9 @@
 .prx-icon-excel {
   background-image: url("../img/botones/excel.png");
 }
+.prx-icon-excelD { 
+  background-image: url("../img/botones/excel2.png");
+}
 .prx-icon-plainText {
   background-image: url("../img/botones/text.png");
 }

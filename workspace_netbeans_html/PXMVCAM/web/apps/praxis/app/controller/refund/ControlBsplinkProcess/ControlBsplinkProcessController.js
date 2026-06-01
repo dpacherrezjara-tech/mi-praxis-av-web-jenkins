@@ -38,8 +38,13 @@ Ext.define('Ext.Praxis.controller.refund.ControlBsplinkProcess.ControlBsplinkPro
                 click: this.btnClear_click
             },
             '#ControlBsplinkProcessForm-btnExcel': {
-                click: this.btnExcel_click
+                click: this.btnClear_click
             },
+
+            '#ControlBsplinkProcessForm-btnExcelAv': {
+                click: this.imgExcel_clickHandlerAV
+            },
+
             '#ControlBsplinkProcessForm-btnFilter': {
                 click: this.btnFilter_click
             },
@@ -213,48 +218,6 @@ Ext.define('Ext.Praxis.controller.refund.ControlBsplinkProcess.ControlBsplinkPro
         Ext.getCmp(prototype.id + '-gridDataAvianca').setStore(storeGridData);
     },
 
-//
-//    setGridData: function() {
-//        win.lblUser_toolTip("Estructura: MPF116");
-//        me.panelActual = '-panelGridData';
-//        global.selectedChild(me.childs, prototype.id + me.panelActual);
-//        me.setWidthPie();
-//        var msj = this.validateFields();
-//        if (msj !== '') {
-//            global.Msg({msg: msj
-//            });
-//        } else {
-//            var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
-//                proxy: {
-//                    url: prototype.url + '/searchGrid'
-//                }, listeners: {
-//                    beforeload: function(obj) {
-//                        obj.proxy.extraParams =searchParams   ;                                    
-//                        
-//                    },
-//                    load: function(obj) {
-//                        var pag = Ext.getCmp(prototype.id + '-paggin');
-//                        var pagData = pag.getPageData();
-//                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
-//                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
-//                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
-//                        if (obj.data.length === 0) {
-//                            global.Msg({
-//                                msg: 'Data not found.'
-//                            });
-//                        }
-//                    }
-//                }
-//            });
-//            
-//            global.clear();
-//            Ext.getCmp(prototype.id + '-gridPaySchedule').bindStore(storeGridDatas);
-//            Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
-//        }
-//    },
-
-
-
     onClickDetailAvianca: function (IN_A4547FLAG, cmp, cpm2, numRow, numCol, cpm3, rowData) {
         var params = {
             A3096DAUTH: rowData.data.A3096DAUTH,
@@ -300,6 +263,213 @@ Ext.define('Ext.Praxis.controller.refund.ControlBsplinkProcess.ControlBsplinkPro
 
     },
 
+    imgExcel_clickHandlerAV: function (obj, e) {
+        var win = Ext.create('Ext.window.Window', {
+            title: 'Select Date and Sequence',
+            modal: true,
+            header: {
+                style: `
+                    background: #1976D2;
+                    color: white;
+                    font-size: 14px;
+                    font-weight: bold;
+                `
+            },
+            width: 340,
+            height: 350,
+            bodyPadding: 15,
+            resizable: false,
+            closable: true,
+            layout: {
+                type: 'vbox',
+                align: 'center'
+            },
+            bodyStyle: 'background-color: #F9FAFB; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);',
+            defaults: {
+                labelAlign: 'right',
+                labelWidth: 60,
+                width: 250,
+                margin: '12 0 12 20',
+                style: 'background-color:white; border-radius:3px;'
+            },
+            items: [
+                {
+                    xtype: 'combo',
+                    fieldLabel: 'Year',
+                    queryMode: 'local',
+                    editable: false,
+                    valueField: 'code',
+                    displayField: 'name',
+                    store: Ext.create('Ext.data.Store', {
+                        fields: ['code', 'name'],
+                        data: [
+                            {code: '2025', name: '2025'},
+                            {code: '2026', name: '2026'},
+                            {code: '2027', name: '2027'},
+                            {code: '2028', name: '2028'}
+                        ]
+                    }),
+                    value: new Date().getFullYear().toString(),
+                    itemId: 'cmbYear'
+                },
+                {
+                    xtype: 'combo',
+                    fieldLabel: 'Month',
+                    queryMode: 'local',
+                    editable: false,
+                    valueField: 'code',
+                    displayField: 'name',
+                    store: Ext.create('Ext.data.Store', {
+                        fields: ['code', 'name'],
+                        data: [
+                            {code: '01', name: 'January'},
+                            {code: '02', name: 'February'},
+                            {code: '03', name: 'March'},
+                            {code: '04', name: 'April'},
+                            {code: '05', name: 'May'},
+                            {code: '06', name: 'June'},
+                            {code: '07', name: 'July'},
+                            {code: '08', name: 'August'},
+                            {code: '09', name: 'September'},
+                            {code: '10', name: 'October'},
+                            {code: '11', name: 'November'},
+                            {code: '12', name: 'December'}
+                        ]
+                    }),
+                    value: Ext.String.leftPad(new Date().getMonth() + 1, 2, '0'),
+                    itemId: 'cmbMonth'
+                },
+                {
+                    xtype: 'combo',
+                    fieldLabel: 'Day',
+                    queryMode: 'local',
+                    editable: false,
+                    valueField: 'code',
+                    displayField: 'name',
+                    store: Ext.create('Ext.data.Store', {
+                        fields: ['code', 'name'],
+                        data: Array.from({length: 31}, (v, i) => {
+                            const day = String(i + 1).padStart(2, '0');
+                            return {code: day, name: day};
+                        })
+                    }),
+                    value: Ext.String.leftPad(new Date().getDate(), 2, '0'),
+                    itemId: 'cmbDay'
+                },
+                {
+                    xtype: 'combo',
+                    fieldLabel: 'Sequence',
+                    queryMode: 'local',
+                    editable: false,
+                    valueField: 'code',
+                    displayField: 'name',
+                    store: Ext.create('Ext.data.Store', {
+                        fields: ['code', 'name'],
+                        data: Array.from({length: 11}, (v, i) => {
+                            const seq = String(i).padStart(2, '0');
+                            return {code: seq, name: seq};
+                        })
+                    }),
+                    value: '00',
+                    itemId: 'cmbSequence'
+                }
+            ],
+
+            buttonAlign: 'center',
+
+            fbar: {
+                style: `
+                        background: #BFD7EE;
+                        border-top: 1px solid #B7C9DC;
+                        padding: 24px;
+                    `,
+                layout: {
+                    pack: 'center'
+                },
+                items: [
+
+                    {
+                        text: 'Generate',
+                        scale: 'medium',
+                        minWidth: 90,
+                        style: `
+                                background: #5B9BD5;
+                                color: white;
+                                font-weight: bold;
+                                font-size: 13px;
+                                border-radius: 7px;
+                                border: 1px solid #4A89C2;
+                            `,
+                        handler: function () {
+
+                            var year = win.down('#cmbYear').getValue(),
+                                    month = win.down('#cmbMonth').getValue(),
+                                    day = win.down('#cmbDay').getValue(),
+                                    seq = win.down('#cmbSequence').getValue();
+
+                            if (!year || !month || !day || !seq) {
+                                Ext.Msg.alert('Error', 'Please select Year, Month, Day, and Sequence.');
+                                return;
+                            }
+
+                            var fecha = year + month + day;
+
+                            this.btnExcel_clickAVE(fecha, seq);
+
+                            win.close();
+                        },
+                        scope: this
+                    },
+                    {
+                        text: 'Cancel',
+                        scale: 'medium',
+                        minWidth: 90,
+                        style: `
+                                background: #ECEFF1;
+                                color: #37474F;
+                                font-weight: bold;
+                                font-size: 12px;
+                                border-radius: 6px;
+                                border: 1px solid #B0BEC5;
+                                padding: 4px 10px;
+                                margin-left: 8px;
+                            `,
+                        handler: function () {
+                            win.close();
+                        }
+                    }
+
+                ]
+            }
+
+
+        });
+
+        win.show();
+    },
+
+    btnExcel_clickAVE: function (fecha, seq) {
+
+        let aviancaObject = {};
+
+        aviancaObject.FCARGAVIANCA = fecha;
+        aviancaObject.IN_SEQ = seq;
+
+        console.log(aviancaObject);
+        var beanString = JSON.stringify(aviancaObject);
+        var paramDetail = {
+            beanString: beanString
+        };
+
+        var beanString = JSON.stringify(aviancaObject);
+        console.log(beanString, 'PERR');
+        global.getFile(
+                prototype.url +
+                '/excelStatusBSPLinkAviancaToAvianca?beanString=' +
+                encodeURIComponent(beanString)
+                );
+    },
+
     validateFields: function () {
         var msj = '';
         var bean = me.bean;
@@ -317,29 +487,13 @@ Ext.define('Ext.Praxis.controller.refund.ControlBsplinkProcess.ControlBsplinkPro
         var rec = grid.getStore().getAt(rowIndex);
         this.winDataEntry('U', rec);
     },
-//    winDataEntry: function(action, rec) {
-//        action = action === null || action === undefined ? 'U' : action;
-//        rec = rec === null || rec === undefined ? {} : rec;       
-//        
-//        console.log(rec,'PRUEBA MESAJE');
-//        
-//        Ext.create('Ext.Praxis.view.payments.PaymentScheduleForm.DataEntry', {
-//            id: prototype.id + '-dataEntry',
-//            params: {
-//                action: action,
-//                rec: rec.data,
-//                listaPaises : me.lstCountry,
-//                
-//                lst:me.lst
-//            }
-//        }).show();
-//    },
+
     btnBack_click: function (obj, e) {
 
         if (me.drillDown.length > 0) {
             me.panelActual = me.drillDown.pop();
             global.selectedChild(me.childs, prototype.id + me.panelActual);
-           
+
             this.getPaggin();
             if (me.pagginActual !== '') {
                 var pag = Ext.getCmp(prototype.id + me.pagginActual);
@@ -359,7 +513,7 @@ Ext.define('Ext.Praxis.controller.refund.ControlBsplinkProcess.ControlBsplinkPro
         Ext.getCmp(prototype.id + '-cmbDateToMonth')?.setValue('');
         Ext.getCmp(prototype.id + '-cmbDateToDay')?.setValue('');
 
-        
+
 
     },
 

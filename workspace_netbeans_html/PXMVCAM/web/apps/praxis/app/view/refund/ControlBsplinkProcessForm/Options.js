@@ -89,6 +89,14 @@ Ext.define('Ext.Praxis.view.refund.ControlBsplinkProcessForm.Options', {
                             iconCls: 'prx-icon-excel',
                             tooltip: 'Export to Excel'
                         },
+                        
+                          {
+                            xtype: 'button',
+                            id: prototype.id + '-btnExcelAv',
+                            icon:'resources/img/botones/24x24/excel2.png',
+                            
+                            tooltip: 'Export to Excel Avianca'
+                        },
                         {
                             xtype: 'button',
                             id: prototype.id + '-btnClear',
