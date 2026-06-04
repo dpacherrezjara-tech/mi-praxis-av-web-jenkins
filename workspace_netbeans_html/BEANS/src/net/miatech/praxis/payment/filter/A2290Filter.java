@@ -1185,11 +1185,19 @@ public class A2290Filter extends A2290 {
     public String TPERIOD = "";
     
     
+    public String CCUST_MPF100 = "";
+    public String CCIA_MPF100 = "";
+    public String FORMA_MPF100 = "";
+    public String SERIE_MPF100 = "";
+    public String TDOC_MPF100 = "";
+    public String SCARCOD_MPF100 = "";
+    public String SCARDNCOR_MPF100 = "";
+    public String SAUTHOC_MPF100 = "";
+    public String SEQ_MPF100 = "";
+    public String CORRL_MPF100 = "";
+    public String ADJTYPE = "";
+    public String COMENT = "";
     
-    
-    
-    
-    //Update
     public String MENSA = "";       
     public String FECRFILE = "";
     public String CODEPROCESS = "";

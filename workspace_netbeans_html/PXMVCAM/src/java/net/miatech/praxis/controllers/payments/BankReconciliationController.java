@@ -7829,5 +7829,63 @@ public class BankReconciliationController extends BaseController {
         }
         return new Gson().toJson(map);
     }
+    
+    @RequestMapping(value = "executeCreateADM")
+    public @ResponseBody String executeCreateADM(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankReconciliation : executeCreateADM -------------");
+        String msj = "";
+        Gson gson = new Gson();
+        String dataString = "";
+
+        try {
+            dataString = request.getParameter("dataString");
+            System.out.println("JSON recibido en el servidor: " + dataString);
+
+            A2290Filter[] filters = gson.fromJson(dataString, A2290Filter[].class);
+            List<A2290Filter> filterList = Arrays.asList(filters);
+
+            UserView user = this.serverSession.getServerSession().getUserView();
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            
+            msj = logic.executeCreateADM(filterList);
+
+            map.put("success", true);
+            map.put("Mensaje", msj);
+            
+        } catch (Exception ex) {
+            map.put("success", false);
+            map.put("Mensaje", ex.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+    
+    @RequestMapping(value = "/searchAllTeleworking")
+    public @ResponseBody String searchAllTeleworking(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankReconciliation : searchAllTeleworking -------------");
+
+        List<A2290Filter> lst = new ArrayList<>(0);
+        Gson gson = new Gson();
+
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String beanString = request.getParameter("beanString");
+            A2290Filter filter = gson.fromJson(beanString, A2290Filter.class);
+
+            lst = logic.loadPX269SQPMPS653(filter);
+
+            map.put("success", true);
+            map.put("data", lst);
+            map.put("total", lst.size());
+            
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("Mensaje", e.getMessage());
+        }
+
+        return new Gson().toJson(map);
+    }
 
 }
