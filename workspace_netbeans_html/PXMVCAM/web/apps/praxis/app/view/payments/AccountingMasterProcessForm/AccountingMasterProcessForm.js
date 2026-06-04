@@ -11,12 +11,16 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingMaste
         'Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMasterProcessController',
         'Ext.Praxis.view.payments.AccountingMasterProcessForm.Options',
         'Ext.Praxis.view.payments.AccountingMasterProcessForm.Filters',
-        'Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.MainGrid',
+        // Sub-grids — se cargan bajo demanda al abrir los modales de acción
         'Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.ErrorsGrid',
         'Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.SettlementGrid',
         'Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.BandocsGrid',
         'Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.AccountingGrid',
-        'Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.DownloadFilesGrid'
+        'Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.DownloadFilesGrid',
+        // Widget reutilizable — reemplaza MainGrid
+        'Ext.Praxis.view.widgets.StoreProcGrid',
+        // Modal de detalle contable por IDCONT
+        'Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDetailModal'
     ],
     controller: 'AccountingMasterProcessController',
     layout: {

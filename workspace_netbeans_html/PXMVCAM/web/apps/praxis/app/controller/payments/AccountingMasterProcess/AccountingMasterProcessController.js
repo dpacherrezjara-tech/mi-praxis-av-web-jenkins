@@ -1,3 +1,18 @@
+// Controller delegado para las rowActions de la grilla principal.
+// Delega onRowAction al ViewController padre (AccountingMasterProcessController)
+// usando la jerarquía de componentes para no depender de IDs globales.
+Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridRowCtrl', {
+    extend: 'Ext.Base',
+    baseCtrl: null,
+    widgetView: null,
+    onRowAction: function (action, record) {
+        if (action !== 'detail') return;
+        const form = this.widgetView && this.widgetView.up('AccountingMasterProcessForm');
+        if (form) form.getController().onOpenDetailModal(record.getData());
+    },
+    onWidgetReady: function () { }
+});
+
 Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMasterProcessController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.AccountingMasterProcessController',
@@ -5,10 +20,6 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
     procesadores: [],
     request: axios.create({
         baseURL: CONTEXTPATH + '/AccountingReport',
-        timeout: 20000
-    }),
-    miscRequest: axios.create({
-        baseURL: CONTEXTPATH + '/MiscellaneousCatalog',
         timeout: 20000
     }),
     init: function (view) {
@@ -26,44 +37,213 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
         const me = this;
         me.view.mask('Loading...');
         try {
-            const res = await me.miscRequest.get('/loadAccountingProcs');
-
-            const data = res.data;
-            me.procesadores = data.response;
-            const ccust = Ext.getCmp(prototype.id + '-cmbCcust');
-            ccust.fireEvent('change', {});
+            const res = await global.callStoreGet('PRAXISMP', 'SPMDP00002', {});
+            me.procesadores = (res.lstRs && res.lstRs.at(0)) || [];
+            me._refreshProcessors();
         } catch (e) {
             console.error(e);
-            me.notifier.alert('Filters not loaded');
         } finally {
             me.view.unmask();
             me.loadGrid();
         }
+    },
 
+    onChangeProceso: function () {
+        this._refreshProcessors();
     },
-    onChangeTipocon: function () {
-        const ccust = Ext.getCmp(prototype.id + '-cmbCcust');
-        ccust.fireEvent('change', {});
-    },
+
     onChangeCcust: function () {
-        const me = this;
-        const cmbCccust = Ext.getCmp(prototype.id + '-cmbCcust');
-        const tipocon = Ext.getCmp(prototype.id + '-cmbTIPOCON');
-        const cmbProc = Ext.getCmp(prototype.id + '-cmbCODPRO');
-        let data = me.procesadores.filter(x =>
-            x.A4451CCUST === cmbCccust.value && x.A4451CORRL === tipocon.value);
-        global.setComboStore(cmbProc, data, 'A4451KEY2', 'A4451DESC1', '');
+        this._refreshProcessors();
     },
-    loadGrid: async function () {
+
+    onChangeTipocon: function () {
+        this._refreshProcessors();
+    },
+
+    _refreshProcessors: function () {
         const me = this;
-        let params = me.formatParams();
+        const proceso = Ext.getCmp(prototype.id + '-cmbProceso').getValue();
+        const ccust = Ext.getCmp(prototype.id + '-cmbCcust').getValue();
+        const tipocon = Ext.getCmp(prototype.id + '-cmbTIPOCON').getValue();
+        const data = me.procesadores.filter(x =>
+            x.PROC_TYPE.trim() === proceso &&
+            x.CLIENTE.trim() === ccust &&
+            x.ACC_TYPE.trim() === tipocon
+        );
+        global.setComboStore(
+            Ext.getCmp(prototype.id + '-cmbCODPRO'),
+            data, 'PROCESADOR', 'PROC_DESC', ''
+        );
+    },
+    loadGrid: function () {
+        const me = this;
+        const params = me.formatParams();
         const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
+
+        const existingGrid = Ext.getCmp(prototype.id + '-MainGrid-1');
+        if (existingGrid) {
+            // El widget ya existe: solo recarga el store con los nuevos params
+            existingGrid.getController().reload(params);
+            return;
+        }
+
         mainPanel.removeAll();
-        const panelDetail = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.MainGrid', {
+        mainPanel.add({
+            xtype: 'storeprocgrid',
             id: prototype.id + '-MainGrid-1',
-            searchParams: params
+            library: 'PRAXISMP',
+            storeProcedure: 'MPS466',
+            storeParams: params,
+            customController: 'Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridRowCtrl',
+            rowActions: [{ action: 'detail', tooltip: 'Ver Detalle Contable' }],
+            width: prototype.width,
+            height: prototype.height,
+            excelColumns: [
+                { header: 'Cliente', dataIndex: 'CCUST' },
+                { header: 'Procesador', dataIndex: 'CODPRO' },
+                { header: 'Posting Date', dataIndex: 'FCONT' },
+                { header: 'Generation Date', dataIndex: 'FSEND' },
+                { header: 'Generation Hour', dataIndex: 'HCONT' },
+                { header: 'Type', dataIndex: 'TIPOCON' },
+                { header: 'ID', dataIndex: 'IDCONT' },
+                { header: 'Bandocs', dataIndex: 'QTY_SEQ' },
+                { header: 'Initial Date', dataIndex: 'PRDAF' },
+                { header: 'Final Date', dataIndex: 'PRDAT' },
+                { header: 'Accounting Errors', dataIndex: 'QTYERRS' }
+
+            ],
+            // Sin rowActions por ahora — se implementarán en modal
+            gridColumns: {
+                defaults: {
+                    align: 'center',
+                    menuDisabled: true,
+                    sortable: true
+                },
+                items: [
+                    {
+                        text: 'RN',
+                        locked: true,
+                        xtype: 'rownumberer',
+                        width: 40
+                    },
+                    { text: 'Client<br>Code', dataIndex: 'CCUST', width: 50 },
+                    { text: 'Processor', dataIndex: 'CODPRO', width: 180 },
+                    {
+                        text: 'Status', dataIndex: 'STCONT', flex: 1,
+                        renderer: function (value, metaData) {
+                            const opts = {
+                                '0': function () {
+                                    metaData.style = 'background-color:#838187;font-weight:bold';
+                                    return 'Processing 🔃';
+                                },
+                                '2': function () {
+                                    metaData.style = 'background-color:#fdb333;font-weight:bold';
+                                    return 'Accounting Errors 🚫';
+                                },
+                                '8': function () {
+                                    metaData.style = 'background-color:#f7ec35;font-weight:bold';
+                                    return 'No Data ⭕';
+                                },
+                                '4': function () {
+                                    metaData.style = 'background-color:#f7ec35;font-weight:bold';
+                                    return 'Reversed ⛔';
+                                },
+                                '3': function () {
+                                    metaData.style = 'background-color:#8cdfe3;font-weight:bold';
+                                    return 'Ready to Send 🆗';
+                                },
+                                '5': function () {
+                                    metaData.style = 'background-color:#9187e1;font-weight:bold';
+                                    return 'SFTP 🆗';
+                                },
+                                'L': function () {
+                                    metaData.style = 'background-color:#88d556;font-weight:bold';
+                                    return 'Loaded to SAP ☑';
+                                },
+                                '6': function () {
+                                    metaData.style = 'background-color:#88d556;font-weight:bold';
+                                    return 'Partially Rejected ↩️';
+                                },
+                                '9': function () {
+                                    metaData.style = 'background-color:#88d556;font-weight:bold';
+                                    return 'Partially Justified ↩️';
+                                },
+                                'J': function () {
+                                    metaData.style = 'background-color:#f7ec35;color:#ce3232;font-weight:bold';
+                                    return 'Justified ⏺️';
+                                },
+                                'R': function () {
+                                    metaData.style = 'background-color:#f7ec35;color:#ce3232;font-weight:bold';
+                                    return 'Rejected ❌';
+                                },
+                                '7': function () {
+                                    metaData.style = 'background-color:#f7ec35;font-weight:bold';
+                                    return 'Process Error ⚠️';
+                                }
+                            };
+                            return opts[value] ? opts[value]() : value;
+                        }
+                    },
+                    {
+                        text: 'Accounting Information',
+                        defaults: {
+                            menuDisabled: true,
+                            sortable: true,
+                            align: 'center',
+                            renderer: function (value, metaData) {
+                                metaData.style = 'background-color:#B2DAFA';
+                                return value;
+                            }
+                        },
+                        columns: [
+                            { text: 'Posting<br>Date', dataIndex: 'FCONT', width: 90 },
+                            { text: 'Generation<br>Date', dataIndex: 'FSEND', width: 90 },
+                            { text: 'Generation<br>Hour', dataIndex: 'HCONT', width: 80 },
+                            {
+                                text: 'Type', dataIndex: 'TIPOCON', width: 80,
+                                renderer: function (value, metaData) {
+                                    metaData.style = 'background-color:#B2DAFA';
+                                    const opts = {
+                                        'DEB': 'Debits', 'REG': 'Regular',
+                                        'ADJ': 'Adjustment', 'ADM': "ADM's"
+                                    };
+                                    return opts[value] || value;
+                                }
+                            },
+                            { text: 'ID', dataIndex: 'IDCONT', width: 210 },
+                            {
+                                text: 'Deposits', dataIndex: 'QTY_SEQ', width: 80,
+                                renderer: function (value, metaData) {
+                                    metaData.style = 'background-color:#B2DAFA;text-decoration:underline;cursor:pointer;font-weight:bolder;color:#5bc611;';
+                                    return value;
+                                }
+                            },
+                            { text: 'Initial<br>Date', dataIndex: 'PRDAF', width: 90 },
+                            { text: 'Final<br>Date', dataIndex: 'PRDAT', width: 90 },
+                            {
+                                text: 'Accounting<br>Errors', dataIndex: 'QTY_POS', width: 80,
+                                renderer: function (value, metaData) {
+                                    metaData.style = 'text-align:center;background-color:#B2DAFA;text-decoration:underline;cursor:pointer;font-weight:bolder;color:#f71a1a;';
+                                    return value;
+                                }
+                            },
+                            { text: 'Corrl AV Assigned', dataIndex: 'FILENAM', width: 250 }
+                        ]
+                    }
+                ]
+            }
         });
-        mainPanel.add(panelDetail);
+    },
+    onOpenDetailModal: function (rowData) {
+        const winId = prototype.id + '-DetailModal';
+        const existing = Ext.getCmp(winId);
+        if (existing) existing.destroy();
+        Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDetailModal', {
+            id: winId,
+            idcont: rowData.IDCONT,
+            rowData: rowData,
+            onAfterAction: () => this.onReloadGrid()
+        }).show();
     },
     formatParams: function () {
         const formFilters = Ext.getCmp(prototype.id + '-formFilters').getForm();
@@ -89,6 +269,13 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
     //<editor-fold defaultstate="collapsed" desc="Handlers">
     onClickSearchBtn: function () {
         this.loadGrid();
+    },
+    onReloadGrid: function () {
+        // Shortcut: recarga el grid existente sin recrearlo
+        const widget = Ext.getCmp(prototype.id + '-MainGrid-1');
+        if (widget) {
+            widget.getController().reload(this.formatParams());
+        }
     },
     onDisplayFilterBtn: function () {
         const filters = Ext.getCmp(prototype.id + '-contentFilter');
@@ -116,66 +303,66 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
             layout: 'fit',
             modal: true,
             items: [{
-                    xtype: 'form',
-                    bodyPadding: 10,
-                    defaults: {
-                        anchor: '100%',
-                        labelWidth: 100
-                    },
-                    items: [{
-                            xtype: 'filefield',
-                            id: prototype.id + '-fileProvision',
-                            name: 'file',
-                            labelWidth: 50,
-                            fieldLabel: 'File',
-                            buttonText: 'Select File...',
-                            allowBlank: false
-                        },
-                        {
-                            xtype: 'label',
-                            width: '100%',
-                            html: '<b style="color:#c82d2d;font-size:9px;text-align:right;display:block">Required Layout (*): REFER-VALDATE</b>'
-                        }
-                    ]
-                }],
+                xtype: 'form',
+                bodyPadding: 10,
+                defaults: {
+                    anchor: '100%',
+                    labelWidth: 100
+                },
+                items: [{
+                    xtype: 'filefield',
+                    id: prototype.id + '-fileProvision',
+                    name: 'file',
+                    labelWidth: 50,
+                    fieldLabel: 'File',
+                    buttonText: 'Select File...',
+                    allowBlank: false
+                },
+                {
+                    xtype: 'label',
+                    width: '100%',
+                    html: '<b style="color:#c82d2d;font-size:9px;text-align:right;display:block">Required Layout (*): REFER-VALDATE</b>'
+                }
+                ]
+            }],
             buttonAlign: 'center',
             buttons: [{
-                    text: 'Process Provision',
-                    iconCls: 'prx-icon-reload',
-                    scale: 'medium',
-                    handler: function (btn) {
-                        var form = btn.up('window').down('form').getForm();
-                        if (form.isValid()) {
-                            Ext.Msg.show(
-                                    {
-                                        title: '.:PRAXIS:.',
-                                        msg: 'Are you sure to process Provision?',
-                                        buttons: Ext.MessageBox.YESNO,
-                                        scope: this,
-                                        icon: Ext.MessageBox.QUESTION,
-                                        modal: true,
-                                        fn: function (btn) {
-                                            if (btn === 'yes') {
-                                                me.loadProvision();
-                                                /*
-                                                 form.submit({
-                                                 url: CONTEXTPATH + '/AccountingReport/processProvision', // <-- cambiá esto
-                                                 waitMsg: 'Loading File...',
-                                                 success: function (fp, o) {
-                                                 new AWN().success('File Uploaded Successfully');
-                                                 me.downloadResultProvis(o.result);
-                                                 },
-                                                 failure: function (fp, o) {
-                                                 new AWN().alert('Error on load File');
-                                                 }
-                                                 });*/
-                                            }
-                                        }
-                                    });
+                text: 'Process Provision',
+                iconCls: 'prx-icon-reload',
+                scale: 'medium',
+                handler: function (btn) {
+                    var form = btn.up('window').down('form').getForm();
+                    if (form.isValid()) {
+                        Ext.Msg.show(
+                            {
+                                title: '.:PRAXIS:.',
+                                msg: 'Are you sure to process Provision?',
+                                buttons: Ext.MessageBox.YESNO,
+                                scope: this,
+                                icon: Ext.MessageBox.QUESTION,
+                                modal: true,
+                                fn: function (btn) {
+                                    if (btn === 'yes') {
+                                        me.loadProvision();
+                                        /*
+                                         form.submit({
+                                         url: CONTEXTPATH + '/AccountingReport/processProvision', // <-- cambiá esto
+                                         waitMsg: 'Loading File...',
+                                         success: function (fp, o) {
+                                         new AWN().success('File Uploaded Successfully');
+                                         me.downloadResultProvis(o.result);
+                                         },
+                                         failure: function (fp, o) {
+                                         new AWN().alert('Error on load File');
+                                         }
+                                         });*/
+                                    }
+                                }
+                            });
 
-                        }
                     }
-                }]
+                }
+            }]
         });
         winProvis.show();
     },
@@ -184,40 +371,40 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
         const form = Ext.getCmp(prototype.id + '-provisionForm');
         form.setLoading(true);
         const file = Ext.getCmp(prototype.id + '-fileProvision').fileInputEl.dom.files[0];
-//        const userCurrent = document.getElementById("menuUser").textContent;
-//       , IN_USER: userCurrent
+        //        const userCurrent = document.getElementById("menuUser").textContent;
+        //       , IN_USER: userCurrent
         if (file) {
             let nameFile = file.name;
             global.readExcelFile(file, async (json) => {
                 try {
                     json = json.map(x => ({
-                            FILENAM: nameFile,
-                            ...x
-                        }));
+                        FILENAM: nameFile,
+                        ...x
+                    }));
                     const tmp = await global.loadRecordsOnTable('PRAXISMP', 'XTEMPO', json);
-                    
-//                    const res = await global.callStorePost('PRAXISMP', 'SPGCON009', {
-//                        IN_CUUID: tmp.cuuid,
-//                        IN_FUUID: tmp.fuuid,
-//                        IN_USER: userCurrent
-//                    });
-                    
+
+                    //                    const res = await global.callStorePost('PRAXISMP', 'SPGCON009', {
+                    //                        IN_CUUID: tmp.cuuid,
+                    //                        IN_FUUID: tmp.fuuid,
+                    //                        IN_USER: userCurrent
+                    //                    });
+
                     const res = await me.request.post('/executeProvision', {
                         IN_CUUID: tmp.cuuid,
                         IN_FUUID: tmp.fuuid
                     });
-                    console.log("res: ",res);
-                    
+                    console.log("res: ", res);
+
                     const data = res.data;
-                    console.log("data: ",data);
-                    
+                    console.log("data: ", data);
+
                     if (data && data.STATUS === true) {
-                        global.Msg({msg: 'Provision started'});
+                        global.Msg({ msg: 'Provision started' });
                     } else {
-                        global.Msg({msg: 'Provision failed'});
+                        global.Msg({ msg: 'Provision failed' });
                     }
-                    
-//                    me.downloadResultProvis(res.data.lstRs.at(0));
+
+                    //                    me.downloadResultProvis(res.data.lstRs.at(0));
                 } catch (e) {
                     console.error(e);
                 } finally {
@@ -233,21 +420,21 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
     downloadResultProvis: function (result) {
         const me = this;
         Ext.Msg.show(
-                {
-                    title: '.:PRAXIS:.',
-                    msg: 'Download Result?',
-                    buttons: Ext.MessageBox.YESNO,
-                    scope: this,
-                    icon: Ext.MessageBox.QUESTION,
-                    modal: true,
-                    fn: function (btn) {
-                        if (btn === 'yes') {
-                            console.log(result);
-                            //let data = JSON.parse(result);
-                            me.createExcelProvis(result);
-                        }
+            {
+                title: '.:PRAXIS:.',
+                msg: 'Download Result?',
+                buttons: Ext.MessageBox.YESNO,
+                scope: this,
+                icon: Ext.MessageBox.QUESTION,
+                modal: true,
+                fn: function (btn) {
+                    if (btn === 'yes') {
+                        console.log(result);
+                        //let data = JSON.parse(result);
+                        me.createExcelProvis(result);
                     }
-                });
+                }
+            });
     },
     createExcelProvis: async function (data) {
 
@@ -268,18 +455,20 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
     },
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Utilitarios">
-    getCmp: function ( {id}){
+    getCmp: function ({ id }) {
         return Ext.getCmp(prototype.id + id);
     },
-    setComboStore: function ( {cmp, data, valueField, displayField, value}){
+    setComboStore: function ({ cmp, data, valueField, displayField, value }) {
         const me = this;
         cmp.suspendEvents(false);
-        cmp.bindStore(me.createComboStore({data: data
-            , valueField: valueField, displayField: displayField}));
+        cmp.bindStore(me.createComboStore({
+            data: data
+            , valueField: valueField, displayField: displayField
+        }));
         cmp.setValue(value);
         cmp.resumeEvents();
     },
-    createComboStore: function ( {data, valueField, displayField}) {
+    createComboStore: function ({ data, valueField, displayField }) {
         //crea record vacio
         let allRecord = {};
         allRecord[displayField] = 'All';
@@ -293,13 +482,13 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
             }
         });
         //crea Store
-        let store = this.createStore({data: data});
+        let store = this.createStore({ data: data });
         //inserta record vacio
         store.insert(0, allRecord);
         //console.log('store creado',store);
         return store;
     },
-    createArrayStore: function ( {data}){
+    createArrayStore: function ({ data }) {
         const store = new Ext.data.SimpleStore({
             fields: ['code', 'name'],
             data: data.map(x => {
@@ -308,7 +497,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
         });
         return store;
     },
-    createStore: function ( {data}){
+    createStore: function ({ data }) {
         return Ext.create('Ext.data.Store', {
             autoLoad: true,
             data: data,

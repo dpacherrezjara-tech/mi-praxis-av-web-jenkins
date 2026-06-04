@@ -51,6 +51,30 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Filters', {
                                 {
                                     xtype: 'combobox',
                                     labelStyle: 'font-weight:bold;',
+                                    fieldLabel: 'Process',
+                                    id: prototype.id + '-cmbProceso',
+                                    name: 'IN_PROCESO',
+                                    store: Ext.create('Ext.data.SimpleStore', {
+                                        fields: ['code', 'name'],
+                                        data: [
+                                            ['TC', 'Credit Card'],
+                                            ['CASH', 'Cash']
+                                        ]
+                                    }),
+                                    labelWidth: 60,
+                                    width: 190,
+                                    displayField: 'name',
+                                    valueField: 'code',
+                                    queryMode: 'local',
+                                    editable: false,
+                                    value: 'TC',
+                                    listeners: {
+                                        change: 'onChangeProceso'
+                                    }
+                                },
+                                {
+                                    xtype: 'combobox',
+                                    labelStyle: 'font-weight:bold;',
                                     fieldLabel: 'Client',
                                     id: prototype.id + '-cmbCcust',
                                     name: 'IN_CCUST',
@@ -79,7 +103,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Filters', {
                                     labelStyle: 'font-weight:bold;',
                                     fieldLabel: 'Acc. Type',
                                     id: prototype.id + '-cmbTIPOCON',
-                                    name: 'IN_TIPOCON',
+                                    name: 'IN_ACCTYPE',
                                     store: Ext.create('Ext.data.SimpleStore', {
                                         fields: ['code', 'name'],
                                         data: [
@@ -101,8 +125,28 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Filters', {
                                     }
                                 },
                                 {
+                                    xtype: 'combobox',
+                                    fieldLabel: 'Date Col.',
+                                    name: 'IN_TDATE',
+                                    store: Ext.create('Ext.data.SimpleStore', {
+                                        fields: ['code', 'name'],
+                                        data: [
+                                            ['FCONT', 'Posting Date'],
+                                            ['TSCR', 'Creation Date'],
+                                            ['FSEND', 'Send Date']
+                                        ]
+                                    }),
+                                    labelWidth: 65,
+                                    width: 175,
+                                    displayField: 'name',
+                                    valueField: 'code',
+                                    queryMode: 'local',
+                                    editable: false,
+                                    value: 'FCONT'
+                                },
+                                {
                                     xtype: 'datefield',
-                                    name: 'IN_FCONTF',
+                                    name: 'IN_FROM',
                                     fieldLabel: 'From',
                                     format: 'Ymd',
                                     editable: true, // Deshabilita la edición del campo
@@ -115,7 +159,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Filters', {
                                 },
                                 {
                                     xtype: 'datefield',
-                                    name: 'IN_FCONTT',
+                                    name: 'IN_TO',
                                     fieldLabel: 'To',
                                     format: 'Ymd',
                                     editable: true, // Deshabilita la edición del campo
@@ -132,8 +176,8 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Filters', {
                                     name: 'IN_CODPRO',
                                     labelWidth: 80,
                                     width: 300,
-                                    valueField: 'A4451KEY2',
-                                    displayField: 'A4451DESC1',
+                                    valueField: 'PROCESADOR',
+                                    displayField: 'PROC_DESC',
                                     fieldLabel: 'Processor',
                                     queryMode: 'local',
                                     editable: true,
@@ -148,35 +192,23 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Filters', {
                                     triggerAction: 'all',
                                     value: '', // Valor inicial (vacío)
                                     emptyText: '(All)'  // Texto que se muestra cuando no hay selección
-                                },
-                                {
-                                    xtype: 'combobox',
-                                    fieldLabel: 'Status',
-                                    name: 'IN_STCONT',
-                                    store: Ext.create('Ext.data.SimpleStore', {
-                                        fields: ['code', 'name'],
-                                        data: [
-                                            ['', 'All'],
-                                            ['0', 'Processing'],
-                                            ['1', 'Loaded to SAP'],
-                                            ['2', 'Accounting Errors'],
-                                            ['3', 'Ready to Send'],
-                                            ['4', 'Reversed'],
-                                            ['5', 'Sended to AV'],
-                                            ['6', 'Partially Loaded to SAP'],
-                                            ['7', 'Executor Error'],
-                                            ['8', 'No Data'],
-                                            ['9', 'Rejected']
-                                        ]
-                                    }),
-                                    labelWidth: 60,
-                                    width: 210,
-                                    displayField: 'name',
-                                    valueField: 'code',
-                                    queryMode: 'local',
-                                    editable: false,
-                                    value: ''
-                                },
+                                }
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            layout: 'hbox',
+                            border: false,
+                            bodyStyle: 'background: transparent',
+                            defaults: {
+                                fieldStyle: 'text-align: center;',
+                                padding: '5 1 5 1',
+                                anchor: '100%',
+                                hiddenLabel: false,
+                                labelAlign: 'right',
+                                hidden: false
+                            },
+                            items: [
                                 {
                                     xtype: 'textfield',
                                     fieldLabel: 'Accounting ID',
@@ -203,6 +235,34 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Filters', {
                                     listeners: {
                                         specialkey: 'onEnterKeyPress'
                                     }
+                                },
+                                {
+                                    xtype: 'combobox',
+                                    fieldLabel: 'Status',
+                                    name: 'IN_STATUS',
+                                    store: Ext.create('Ext.data.SimpleStore', {
+                                        fields: ['code', 'name'],
+                                        data: [
+                                            ['', 'All'],
+                                            ['0', 'Processing'],
+                                            ['1', 'Loaded to SAP'],
+                                            ['2', 'Accounting Errors'],
+                                            ['3', 'Ready to Send'],
+                                            ['4', 'Reversed'],
+                                            ['5', 'Sended to AV'],
+                                            ['6', 'Partially Loaded to SAP'],
+                                            ['7', 'Executor Error'],
+                                            ['8', 'No Data'],
+                                            ['9', 'Rejected']
+                                        ]
+                                    }),
+                                    labelWidth: 60,
+                                    width: 210,
+                                    displayField: 'name',
+                                    valueField: 'code',
+                                    queryMode: 'local',
+                                    editable: false,
+                                    value: ''
                                 }
                             ]
                         }
