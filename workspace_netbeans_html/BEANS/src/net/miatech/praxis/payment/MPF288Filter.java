@@ -14,4 +14,5 @@ public class MPF288Filter {
     public Pagination page = new Pagination();
     public long RN = 0;
     public String IN_NUMGUIA = "";
+    public String IN_NUMFAC  = "";
 }

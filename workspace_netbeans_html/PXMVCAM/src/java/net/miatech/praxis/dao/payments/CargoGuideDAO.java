@@ -304,6 +304,7 @@ public class CargoGuideDAO {
                 bean.USUP      = rst.getString("USUP").trim();
                 bean.FEUP      = rst.getString("FEUP").trim();
                 bean.HOUP      = rst.getString("HOUP").trim();
+                try { bean.PRDA = rst.getString("PRDA") != null ? rst.getString("PRDA").trim() : ""; } catch (Exception ex) { bean.PRDA = ""; }
 
                 bean.page.PAGNUM = filter.page.PAGNUM;
                 bean.page.PAGROW = filter.page.PAGROW;
@@ -378,6 +379,158 @@ public class CargoGuideDAO {
         }
 
         return response;
+    }
+
+    public List<MPF291> loadMPS609(MPF291Filter filter) throws SQLException, Exception {
+
+        List<MPF291> lstData = new ArrayList<MPF291>(0);
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        Connection cnx = null;
+
+        String SQL = "{CALL " + session.getMainLibrary() + "MP.MPS609(?,?,?,?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQL);
+
+            cstmt.registerOutParameter(3, Types.INTEGER);
+            cstmt.registerOutParameter(4, Types.INTEGER);
+            cstmt.registerOutParameter(5, Types.INTEGER);
+            cstmt.registerOutParameter(6, Types.INTEGER);
+
+            cstmt.setString(1, filter.IN_NUMGUIA != null ? filter.IN_NUMGUIA.trim() : "");
+            cstmt.setString(2, filter.IN_NUMFAC  != null ? filter.IN_NUMFAC.trim()  : "");
+            cstmt.setInt(3, filter.page.PAGNUM);
+            cstmt.setInt(4, filter.page.PAGROW);
+            cstmt.setInt(5, filter.page.TOTPAG);
+            cstmt.setInt(6, filter.page.TOTROW);
+
+            cstmt.execute();
+
+            filter.page.PAGNUM = cstmt.getInt(3);
+            filter.page.PAGROW = cstmt.getInt(4);
+            filter.page.TOTPAG = cstmt.getInt(5);
+            filter.page.TOTROW = cstmt.getInt(6);
+
+            rst = cstmt.getResultSet();
+            while (rst.next()) {
+                MPF291 bean = new MPF291();
+                bean.RN        = rst.getLong("RN");
+                bean.CCUST     = rst.getString("CCUST")     != null ? rst.getString("CCUST").trim()     : "";
+                bean.AWBNO     = rst.getString("AWBNO")     != null ? rst.getString("AWBNO").trim()     : "";
+                bean.NCICLO    = rst.getString("NCICLO")    != null ? rst.getString("NCICLO").trim()    : "";
+                bean.METPAGO   = rst.getString("METPAGO")   != null ? rst.getString("METPAGO").trim()   : "";
+                bean.NPAGPAGO  = rst.getString("NPAGPAGO")  != null ? rst.getString("NPAGPAGO").trim()  : "";
+                bean.SCOUNTRY  = rst.getString("SCOUNTRY")  != null ? rst.getString("SCOUNTRY").trim()  : "";
+                bean.ADATE     = rst.getString("ADATE")     != null ? rst.getString("ADATE").trim()     : "";
+                bean.SFILE     = rst.getString("SFILE")     != null ? rst.getString("SFILE").trim()     : "";
+                bean.NPAGE     = rst.getString("NPAGE")     != null ? rst.getString("NPAGE").trim()     : "";
+                bean.PRDA      = rst.getString("PRDA")      != null ? rst.getString("PRDA").trim()      : "";
+                bean.MONTO     = rst.getDouble("MONTO");
+                bean.REFERENCE = rst.getString("REFERENCE") != null ? rst.getString("REFERENCE").trim() : "";
+                bean.PAYDAY    = rst.getString("PAYDAY")    != null ? rst.getString("PAYDAY").trim()    : "";
+                bean.STVAL     = rst.getString("STVAL")     != null ? rst.getString("STVAL").trim()     : "";
+                bean.BANDOC    = rst.getString("BANDOC")    != null ? rst.getString("BANDOC").trim()    : "";
+                bean.TYPE      = rst.getString("TYPE")      != null ? rst.getString("TYPE").trim()      : "";
+                bean.SEQ       = rst.getString("SEQ")       != null ? rst.getString("SEQ").trim()       : "";
+                bean.CBATCH    = rst.getString("CBATCH")    != null ? rst.getString("CBATCH").trim()    : "";
+                bean.STATE     = rst.getString("STATE")     != null ? rst.getString("STATE").trim()     : "";
+
+                bean.page.PAGNUM = filter.page.PAGNUM;
+                bean.page.PAGROW = filter.page.PAGROW;
+                bean.page.TOTPAG = filter.page.TOTPAG;
+                bean.page.TOTROW = filter.page.TOTROW;
+
+                lstData.add(bean);
+            }
+            rst.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst   != null) { try { rst.close();   } catch (SQLException e) { logError.error("SQLException -> " + e.getMessage(), e); } }
+            if (cstmt != null) { try { cstmt.close(); } catch (SQLException e) { logError.error("SQLException -> " + e.getMessage(), e); } }
+            if (cnx   != null) { session.getCNXIBMDB2().closeIBMDB2Connection(cnx); }
+            pasarGarbageCollector();
+        }
+        return lstData;
+    }
+
+    public List<MPF291> loadMPS573(MPF291Filter filter) throws SQLException, Exception {
+
+        List<MPF291> lstData = new ArrayList<MPF291>(0);
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        Connection cnx = null;
+
+        String SQL = "{CALL " + session.getMainLibrary() + "MP.MPS573(?,?,?,?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQL);
+
+            cstmt.registerOutParameter(3, Types.INTEGER);
+            cstmt.registerOutParameter(4, Types.INTEGER);
+            cstmt.registerOutParameter(5, Types.INTEGER);
+            cstmt.registerOutParameter(6, Types.INTEGER);
+
+            cstmt.setString(1, filter.IN_SFILE.trim());
+            cstmt.setString(2, filter.IN_STVAL.trim());
+            cstmt.setInt(3, filter.page.PAGNUM);
+            cstmt.setInt(4, filter.page.PAGROW);
+            cstmt.setInt(5, filter.page.TOTPAG);
+            cstmt.setInt(6, filter.page.TOTROW);
+
+            cstmt.execute();
+
+            filter.page.PAGNUM = cstmt.getInt(3);
+            filter.page.PAGROW = cstmt.getInt(4);
+            filter.page.TOTPAG = cstmt.getInt(5);
+            filter.page.TOTROW = cstmt.getInt(6);
+
+            rst = cstmt.getResultSet();
+            while (rst.next()) {
+                MPF291 bean = new MPF291();
+                bean.RN        = rst.getLong("RN");
+                bean.CCUST     = rst.getString("CCUST") != null ? rst.getString("CCUST").trim() : "";
+                bean.AWBNO     = rst.getString("AWBNO") != null ? rst.getString("AWBNO").trim() : "";
+                bean.NCICLO    = rst.getString("NCICLO") != null ? rst.getString("NCICLO").trim() : "";
+                bean.METPAGO   = rst.getString("METPAGO") != null ? rst.getString("METPAGO").trim() : "";
+                bean.NPAGPAGO  = rst.getString("NPAGPAGO") != null ? rst.getString("NPAGPAGO").trim() : "";
+                bean.SCOUNTRY  = rst.getString("SCOUNTRY") != null ? rst.getString("SCOUNTRY").trim() : "";
+                bean.ADATE     = rst.getString("ADATE") != null ? rst.getString("ADATE").trim() : "";
+                bean.SFILE     = rst.getString("SFILE") != null ? rst.getString("SFILE").trim() : "";
+                bean.NPAGE     = rst.getString("NPAGE") != null ? rst.getString("NPAGE").trim() : "";
+                bean.PRDA      = rst.getString("PRDA") != null ? rst.getString("PRDA").trim() : "";
+                bean.MONTO     = rst.getDouble("MONTO");
+                bean.REFERENCE = rst.getString("REFERENCE") != null ? rst.getString("REFERENCE").trim() : "";
+                bean.PAYDAY    = rst.getString("PAYDAY") != null ? rst.getString("PAYDAY").trim() : "";
+                bean.STVAL     = rst.getString("STVAL") != null ? rst.getString("STVAL").trim() : "";
+                bean.BANDOC    = rst.getString("BANDOC") != null ? rst.getString("BANDOC").trim() : "";
+                bean.TYPE      = rst.getString("TYPE") != null ? rst.getString("TYPE").trim() : "";
+                bean.SEQ       = rst.getString("SEQ") != null ? rst.getString("SEQ").trim() : "";
+                bean.CBATCH    = rst.getString("CBATCH") != null ? rst.getString("CBATCH").trim() : "";
+                bean.STATE     = rst.getString("STATE") != null ? rst.getString("STATE").trim() : "";
+
+                bean.page.PAGNUM = filter.page.PAGNUM;
+                bean.page.PAGROW = filter.page.PAGROW;
+                bean.page.TOTPAG = filter.page.TOTPAG;
+                bean.page.TOTROW = filter.page.TOTROW;
+
+                lstData.add(bean);
+            }
+            rst.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) { try { rst.close(); } catch (SQLException e) { logError.error("SQLException -> " + e.getMessage(), e); } }
+            if (cstmt != null) { try { cstmt.close(); } catch (SQLException e) { logError.error("SQLException -> " + e.getMessage(), e); } }
+            if (cnx != null) { session.getCNXIBMDB2().closeIBMDB2Connection(cnx); }
+            pasarGarbageCollector();
+        }
+        return lstData;
     }
 
     public List<MPF291> loadMPS602(MPF291Filter filter) throws SQLException, Exception {
@@ -709,30 +862,31 @@ public class CargoGuideDAO {
         ResultSet rst = null;
         Connection cnx = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS605(?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS605(?,?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(2, Types.INTEGER);
             cstmt.registerOutParameter(3, Types.INTEGER);
             cstmt.registerOutParameter(4, Types.INTEGER);
             cstmt.registerOutParameter(5, Types.INTEGER);
+            cstmt.registerOutParameter(6, Types.INTEGER);
 
             cstmt.setString(1, filter.IN_NUMGUIA != null ? filter.IN_NUMGUIA.trim() : "");
-            
-            cstmt.setInt(2, filter.page.PAGNUM);
-            cstmt.setInt(3, filter.page.PAGROW);
-            cstmt.setInt(4, filter.page.TOTPAG);
-            cstmt.setInt(5, filter.page.TOTROW);
+            cstmt.setString(2, filter.IN_NUMFAC  != null ? filter.IN_NUMFAC.trim()  : "");
+
+            cstmt.setInt(3, filter.page.PAGNUM);
+            cstmt.setInt(4, filter.page.PAGROW);
+            cstmt.setInt(5, filter.page.TOTPAG);
+            cstmt.setInt(6, filter.page.TOTROW);
 
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(2);
-            filter.page.PAGROW = cstmt.getInt(3);
-            filter.page.TOTPAG = cstmt.getInt(4);
-            filter.page.TOTROW = cstmt.getInt(5);
+            filter.page.PAGNUM = cstmt.getInt(3);
+            filter.page.PAGROW = cstmt.getInt(4);
+            filter.page.TOTPAG = cstmt.getInt(5);
+            filter.page.TOTROW = cstmt.getInt(6);
 
             rst = cstmt.getResultSet();
             while (rst.next()) {
@@ -796,31 +950,31 @@ public class CargoGuideDAO {
         ResultSet rst = null;
         Connection cnx = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS606(?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS606(?,?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(2, Types.INTEGER);
             cstmt.registerOutParameter(3, Types.INTEGER);
             cstmt.registerOutParameter(4, Types.INTEGER);
             cstmt.registerOutParameter(5, Types.INTEGER);
+            cstmt.registerOutParameter(6, Types.INTEGER);
 
-            // Parámetro IN (Filtro enviado desde ExtJS)
             cstmt.setString(1, filter.IN_NUMGUIA != null ? filter.IN_NUMGUIA.trim() : "");
-            
-            cstmt.setInt(2, filter.page.PAGNUM);
-            cstmt.setInt(3, filter.page.PAGROW);
-            cstmt.setInt(4, filter.page.TOTPAG);
-            cstmt.setInt(5, filter.page.TOTROW);
+            cstmt.setString(2, filter.IN_NUMFAC  != null ? filter.IN_NUMFAC.trim()  : "");
+
+            cstmt.setInt(3, filter.page.PAGNUM);
+            cstmt.setInt(4, filter.page.PAGROW);
+            cstmt.setInt(5, filter.page.TOTPAG);
+            cstmt.setInt(6, filter.page.TOTROW);
 
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(2);
-            filter.page.PAGROW = cstmt.getInt(3);
-            filter.page.TOTPAG = cstmt.getInt(4);
-            filter.page.TOTROW = cstmt.getInt(5);
+            filter.page.PAGNUM = cstmt.getInt(3);
+            filter.page.PAGROW = cstmt.getInt(4);
+            filter.page.TOTPAG = cstmt.getInt(5);
+            filter.page.TOTROW = cstmt.getInt(6);
 
             rst = cstmt.getResultSet();
             while (rst.next()) {
@@ -879,30 +1033,31 @@ public class CargoGuideDAO {
         ResultSet rst = null;
         Connection cnx = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS607(?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS607(?,?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(2, Types.INTEGER);
             cstmt.registerOutParameter(3, Types.INTEGER);
             cstmt.registerOutParameter(4, Types.INTEGER);
             cstmt.registerOutParameter(5, Types.INTEGER);
+            cstmt.registerOutParameter(6, Types.INTEGER);
 
             cstmt.setString(1, filter.IN_NUMGUIA != null ? filter.IN_NUMGUIA.trim() : "");
-            
-            cstmt.setInt(2, filter.page.PAGNUM);
-            cstmt.setInt(3, filter.page.PAGROW);
-            cstmt.setInt(4, filter.page.TOTPAG);
-            cstmt.setInt(5, filter.page.TOTROW);
+            cstmt.setString(2, filter.IN_NUMFAC  != null ? filter.IN_NUMFAC.trim()  : "");
+
+            cstmt.setInt(3, filter.page.PAGNUM);
+            cstmt.setInt(4, filter.page.PAGROW);
+            cstmt.setInt(5, filter.page.TOTPAG);
+            cstmt.setInt(6, filter.page.TOTROW);
 
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(2);
-            filter.page.PAGROW = cstmt.getInt(3);
-            filter.page.TOTPAG = cstmt.getInt(4);
-            filter.page.TOTROW = cstmt.getInt(5);
+            filter.page.PAGNUM = cstmt.getInt(3);
+            filter.page.PAGROW = cstmt.getInt(4);
+            filter.page.TOTPAG = cstmt.getInt(5);
+            filter.page.TOTROW = cstmt.getInt(6);
 
             rst = cstmt.getResultSet();
             while (rst.next()) {
@@ -987,30 +1142,31 @@ public class CargoGuideDAO {
         ResultSet rst = null;
         Connection cnx = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS608(?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS608(?,?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(2, Types.INTEGER);
             cstmt.registerOutParameter(3, Types.INTEGER);
             cstmt.registerOutParameter(4, Types.INTEGER);
             cstmt.registerOutParameter(5, Types.INTEGER);
+            cstmt.registerOutParameter(6, Types.INTEGER);
 
             cstmt.setString(1, filter.IN_NUMGUIA != null ? filter.IN_NUMGUIA.trim() : "");
-            
-            cstmt.setInt(2, filter.page.PAGNUM);
-            cstmt.setInt(3, filter.page.PAGROW);
-            cstmt.setInt(4, filter.page.TOTPAG);
-            cstmt.setInt(5, filter.page.TOTROW);
+            cstmt.setString(2, filter.IN_NUMFAC  != null ? filter.IN_NUMFAC.trim()  : "");
+
+            cstmt.setInt(3, filter.page.PAGNUM);
+            cstmt.setInt(4, filter.page.PAGROW);
+            cstmt.setInt(5, filter.page.TOTPAG);
+            cstmt.setInt(6, filter.page.TOTROW);
 
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(2);
-            filter.page.PAGROW = cstmt.getInt(3);
-            filter.page.TOTPAG = cstmt.getInt(4);
-            filter.page.TOTROW = cstmt.getInt(5);
+            filter.page.PAGNUM = cstmt.getInt(3);
+            filter.page.PAGROW = cstmt.getInt(4);
+            filter.page.TOTPAG = cstmt.getInt(5);
+            filter.page.TOTROW = cstmt.getInt(6);
 
             rst = cstmt.getResultSet();
             while (rst.next()) {

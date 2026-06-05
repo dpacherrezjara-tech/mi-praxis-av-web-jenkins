@@ -51,6 +51,14 @@ public class CargoGuideLogic {
         return CargoGuideDAO.updateMPS588(bean);
     }
 
+    public List<MPF291> loadMPS573(MPF291Filter filter) throws SQLException, Exception {
+        return CargoGuideDAO.loadMPS573(filter);
+    }
+
+    public List<MPF291> loadMPS609(MPF291Filter filter) throws SQLException, Exception {
+        return CargoGuideDAO.loadMPS609(filter);
+    }
+
     public List<MPF291> loadMPS600(MPF291Filter filter) throws SQLException, Exception {
         return CargoGuideDAO.loadMPS600(filter);
     }
