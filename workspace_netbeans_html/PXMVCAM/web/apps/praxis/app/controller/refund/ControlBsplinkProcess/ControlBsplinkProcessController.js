@@ -38,7 +38,7 @@ Ext.define('Ext.Praxis.controller.refund.ControlBsplinkProcess.ControlBsplinkPro
                 click: this.btnClear_click
             },
             '#ControlBsplinkProcessForm-btnExcel': {
-                click: this.btnClear_click
+                click: this.btnExcel_click
             },
 
             '#ControlBsplinkProcessForm-btnExcelAv': {
@@ -93,7 +93,7 @@ Ext.define('Ext.Praxis.controller.refund.ControlBsplinkProcess.ControlBsplinkPro
     xpanel_afterrender: function (obj, e) {
         this.setStoreData();
         this.btnSearch_click();
-//        this.obtainData();
+
 
 
     },
@@ -183,7 +183,6 @@ Ext.define('Ext.Praxis.controller.refund.ControlBsplinkProcess.ControlBsplinkPro
 
     setGridDataAvianca: function () {
 
-        //this.showGrid('-panelMainAvianca');
         me.panelActual = '-panelMainAvianca';
 
         global.selectedChild(
@@ -253,7 +252,7 @@ Ext.define('Ext.Praxis.controller.refund.ControlBsplinkProcess.ControlBsplinkPro
                         });
                     } else {
                         console.log(obj.data);
-                        //Ext.getCmp(prototype.id + '-lblRowsTotal').setText(Ext.util.Format.number(pagData.total, '0,000'));
+
                     }
                 }
             }
@@ -582,10 +581,7 @@ Ext.define('Ext.Praxis.controller.refund.ControlBsplinkProcess.ControlBsplinkPro
             option.setVisible(true);
         }
     },
-//    setWidthPie: function () {
-//        var ancho = Ext.getCmp(prototype.id + me.panelActual).getWidth();
-//        Ext.getCmp(prototype.id + '-pie').setWidth(ancho);
-//    },
+
     getPaggin: function () {
         me.pagginActual = '';
         switch (me.panelActual) {
