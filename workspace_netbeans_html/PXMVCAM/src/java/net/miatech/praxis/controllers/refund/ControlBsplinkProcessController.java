@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.miatech.praxis.classes.CurrentSession;
 import net.miatech.praxis.classes.ExportUtil;
 import net.miatech.praxis.controllers.BaseController;
+import net.miatech.praxis.exceptions.SpringException;
 import net.miatech.praxis.logic.refund.ControlBsplinkProcessLogic;
 import net.miatech.praxis.refund.filter.A3096Filter;
 import net.miatech.praxis.utils.SpringWS;
@@ -622,6 +623,93 @@ public void getXLSXDetail(HttpServletRequest request,
 
     }
 }
+
+
+
+    @RequestMapping(value = "excelStatusBSPLinkAviancaToAvianca")
+    public @ResponseBody void excelStatusBSPLinkAviancaToAvianca(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        System.out.println("-------------- Reporte : excelStatusBSPLinkAviancaToAvianca -------------");
+        Workbook workbook = null;
+        String fileNameDownload = String.format("StatusBsplinkAvianca_%s.xlsx", Functions.getFechaActual());
+        File file = File.createTempFile("statusBsplink", ".xlsx");
+
+        ControlBsplinkProcessLogic logic = new ControlBsplinkProcessLogic();
+        List<A3096Filter> lstData = new ArrayList<>(0);
+        A3096Filter filter = new A3096Filter();
+
+        try {
+            logic.setSession(cs.getServerSession());
+            filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
+
+            // Configuración de paginación (todos los registros)
+            filter.page.PAGROW = -1;
+            filter.page.PAGNUM = 1;
+
+            lstData = logic.RFS0036(filter);
+
+            // Crear el Excel
+            workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Status Report");
+
+            // Estilo para cabecera
+            XSSFCellStyle headerStyle = (XSSFCellStyle) workbook.createCellStyle();
+            Font headerFont = workbook.createFont();
+            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            headerFont.setColor(IndexedColors.BLACK.getIndex());
+            headerStyle.setBorderBottom(CellStyle.BORDER_THIN);
+            headerStyle.setBorderTop(CellStyle.BORDER_THIN);
+            headerStyle.setBorderLeft(CellStyle.BORDER_THIN);
+            headerStyle.setBorderRight(CellStyle.BORDER_THIN);
+            headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(180, 198, 231)));
+            headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            headerStyle.setFont(headerFont);
+
+            // Crear cabecera
+            Row headerRow = sheet.createRow(0);
+            String[] headers = {
+                "Load Date","Ticket", "Refund Number", "Country", "Status", 
+                "Status Descripcion"
+            };
+
+            for (int i = 0; i < headers.length; i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(headers[i]);
+                cell.setCellStyle(headerStyle);
+            }
+
+            // Rellenar filas con data
+            int rowIdx = 1;
+            for (A3096Filter item : lstData) {
+                Row row = sheet.createRow(rowIdx++);
+                row.createCell(0).setCellValue(item.A3096FCARG);
+                row.createCell(1).setCellValue(item.A3096TKT);
+                row.createCell(2).setCellValue(item.A3096IDSOL);
+                row.createCell(3).setCellValue(item.A3096PAIS);
+                row.createCell(4).setCellValue(item.A4547FLAG);
+                row.createCell(5).setCellValue(item.A4547DESCR);
+            }
+
+            // Autoajustar columnas
+            for (int i = 0; i < headers.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            // Configurar response
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+
+            // Escribir el Excel
+            FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
+            workbook.write(response.getOutputStream());
+            fos.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SpringException(e);
+        }
+    }
+
     
     
     

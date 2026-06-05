@@ -274,5 +274,59 @@ public class ControlBsplinkProcessDAO {
 
         return lista;
     }
+    
+    
+    
+    
+    public List<A3096Filter> RFS0036(A3096Filter filter) {
+        cstmt = null;
+        rs01 = null;
+        cnx = null;
+        A3096Filter row = null;
+        List<A3096Filter> lista = new ArrayList<>();
+
+        String SQLCLL01;
+        try {
+        
+            SQLCLL01 = "{CALL PRAXISAV.RFS0036(?,?,?)}";
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.FCARGAVIANCA);
+            cstmt.setString(3, filter.IN_SEQ);
+
+            cstmt.execute();
+
+            rs01 = cstmt.getResultSet();
+            //Obteniendo los Totales ===========================================
+            while (rs01.next()) {
+                row = new A3096Filter();
+                
+                row.A3096FCARG = rs01.getString("A3096FCARG").trim();
+                row.A3096TKT = rs01.getString("A3096TKT").trim();
+                row.A3096IDSOL = rs01.getString("A3096IDSOL").trim();
+                row.A3096PAIS = rs01.getString("A3096PAIS").trim();
+                
+                row.A4547FLAG = rs01.getString("A4547FLAG").trim();
+                row.A4547DESCR = rs01.getString("A4547DESCR").trim();
+
+                lista.add(row);
+            }
+
+            rs01.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            setClose();
+        }
+
+        return lista;
+    }
+    
+    
+    
+    
 
 }
