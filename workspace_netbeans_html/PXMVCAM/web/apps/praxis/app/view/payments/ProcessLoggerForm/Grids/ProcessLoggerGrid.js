@@ -24,7 +24,7 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Grids.ProcessLoggerGrid',
             getClass: function (v, meta, record) {
                 var tipo = (record.get('TIPO') || '').trim();
                 return (tipo === 'F2' || tipo === 'DB' || tipo === 'FO')
-                    ? 'x-fa fa-search-plus'
+                    ? 'prx-icon-detail'
                     : Ext.baseCSSPrefix + 'hidden-display';
             }
         }

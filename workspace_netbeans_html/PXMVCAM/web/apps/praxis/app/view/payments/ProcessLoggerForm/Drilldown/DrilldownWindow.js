@@ -16,7 +16,7 @@
  */
 Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Drilldown.DrilldownWindow', {
     extend: 'Ext.window.Window',
-    alias:  'widget.DrilldownWindow',
+    alias: 'widget.DrilldownWindow',
 
     requires: [
         'Ext.Praxis.controller.payments.ProcessLogger.DrilldownController',
@@ -28,32 +28,29 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Drilldown.DrilldownWindow
 
     controller: 'DrilldownController',
 
-    width:       1200,
-    height:      650,
-    modal:       true,
-    resizable:   true,
-    closable:    true,
-    draggable:   true,
-    maximizable: true,
-    layout:      'border',
-    border:      false,
+    width: 1200,
+    height: 650,
+    modal: true,
+    draggable: true,
+    layout: 'border',
+    border: false,
 
     /** @cfg {Ext.data.Model} parentRecord Registro del Log principal (SPMDP00018) */
     parentRecord: null,
 
     items: [
         {
-            region:    'north',
-            xtype:     'toolbar',
-            itemId:    'breadcrumbBar',
-            border:    false,
-            height:    30,
-            style:     'background-color:#E3EAF9;border-bottom:1px solid #c0cef5;',
-            items:     []
+            region: 'north',
+            xtype: 'toolbar',
+            itemId: 'breadcrumbBar',
+            border: false,
+            height: 30,
+            style: 'background-color:#E3EAF9;border-bottom:1px solid #c0cef5;',
+            items: []
         },
         {
             region: 'center',
-            xtype:  'panel',
+            xtype: 'panel',
             itemId: 'contentArea',
             layout: 'fit',
             border: false

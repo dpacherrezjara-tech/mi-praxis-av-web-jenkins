@@ -12,7 +12,7 @@
  */
 Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Drilldown.NivelDetalleProceso', {
     extend: 'Ext.panel.Panel',
-    alias:  'widget.NivelDetalleProceso',
+    alias: 'widget.NivelDetalleProceso',
 
     requires: [
         'Ext.Praxis.controller.payments.ProcessLogger.NivelDetalleController',
@@ -20,8 +20,8 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Drilldown.NivelDetallePro
     ],
 
     controller: 'NivelDetalleController',
-    border:     false,
-    layout:     'border',
+    border: false,
+    layout: 'border',
 
     parentRecord: null,
 
@@ -32,52 +32,52 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Drilldown.NivelDetallePro
 
             // ── Barra de filtros ──────────────────────────────────────────
             {
-                xtype:     'form',
-                itemId:    'filterFormDetalle',
-                region:    'north',
-                border:    true,
+                xtype: 'form',
+                itemId: 'filterFormDetalle',
+                region: 'north',
+                border: true,
                 bodyStyle: 'background-color:#E3EAF9;padding:4px 8px;',
-                layout:    { type: 'hbox', align: 'middle' },
-                defaults:  { labelAlign: 'right', padding: '0 4px 0 0' },
-                height:    36,
+                layout: { type: 'hbox', align: 'middle' },
+                defaults: { labelAlign: 'right', padding: '0 4px 0 0' },
+                height: 36,
                 items: [
                     {
-                        xtype:      'textfield',
-                        name:       'IN_BANDOC',
+                        xtype: 'textfield',
+                        name: 'IN_BANDOC',
                         fieldLabel: 'Depósito',
                         labelWidth: 70,
-                        width:      200,
-                        listeners:  { specialkey: 'onFilterSpecialKey' }
+                        width: 200,
+                        listeners: { specialkey: 'onFilterSpecialKey' }
                     },
                     {
-                        xtype:      'textfield',
-                        name:       'IN_REFER',
+                        xtype: 'textfield',
+                        name: 'IN_REFER',
                         fieldLabel: 'Referencia',
                         labelWidth: 80,
-                        width:      200,
-                        listeners:  { specialkey: 'onFilterSpecialKey' }
+                        width: 200,
+                        listeners: { specialkey: 'onFilterSpecialKey' }
                     },
                     {
-                        xtype:          'checkbox',
-                        name:           'IN_ERRORS',
-                        boxLabel:       'Solo Errores',
-                        inputValue:     'X',
+                        xtype: 'checkbox',
+                        name: 'IN_ERRORS',
+                        boxLabel: 'Solo Errores',
+                        inputValue: 'X',
                         uncheckedValue: '',
-                        padding:        '0 8px 0 8px'
+                        padding: '0 8px 0 8px'
                     },
                     { xtype: 'tbseparator' },
                     {
-                        xtype:   'button',
-                        text:    'Buscar',
+                        xtype: 'button',
+                        text: 'Buscar',
                         iconCls: 'prx-icon-search',
                         handler: 'onSearch'
                     },
                     {
-                        xtype:   'button',
-                        itemId:  'btnActualizarCodigos',
-                        text:    'Actualizar Códigos',
-                        iconCls: 'x-fa fa-refresh',
-                        margin:  '0 0 0 4',
+                        xtype: 'button',
+                        itemId: 'btnActualizarCodigos',
+                        text: 'Actualizar Códigos',
+                        iconCls: 'prx-icon-edit',
+                        margin: '0 0 0 4',
                         disabled: true,
                         handler: 'onActualizarCodigos'
                     }
@@ -86,27 +86,27 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Drilldown.NivelDetallePro
 
             // ── Grid paginado con checkbox ────────────────────────────────
             {
-                xtype:       'gridpanel',
-                itemId:      'detalleGrid',
-                region:      'center',
-                border:      false,
-                cls:         'praxis-storeprocgrid-grid',
+                xtype: 'gridpanel',
+                itemId: 'detalleGrid',
+                region: 'center',
+                border: false,
+                cls: 'praxis-storeprocgrid-grid',
                 columnLines: true,
                 selModel: {
-                    type:      'checkboxmodel',
-                    mode:      'MULTI',
+                    type: 'checkboxmodel',
+                    mode: 'MULTI',
                     checkOnly: false
                 },
                 viewConfig: {
-                    stripeRows:          true,
+                    stripeRows: true,
                     enableTextSelection: true,
-                    markDirty:           false,
-                    loadMask:            true
+                    markDirty: false,
+                    loadMask: true
                 },
                 columns: {
                     defaults: { align: 'center', menuDisabled: true, sortable: true },
                     items: [
-                        { text: 'Sociedad',   dataIndex: 'SOCIETY',   width: 70 },
+                        { text: 'Sociedad', dataIndex: 'SOCIETY', width: 70 },
                         {
                             text: 'Tipo Doc', dataIndex: 'TDOC', width: 70,
                             renderer: function (val) {
@@ -116,12 +116,12 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Drilldown.NivelDetallePro
                                 return '<span style="background:' + o.c + ';color:#fff;padding:1px 6px;border-radius:3px;font-size:11px;">' + o.l + '</span>';
                             }
                         },
-                        { text: 'Procesador', dataIndex: 'CODPRO',    width: 90 },
-                        { text: 'Cuenta',     dataIndex: 'ACCOUNT',   width: 100 },
-                        { text: 'Doc. SAP',   dataIndex: 'BANDOC',    width: 120 },
-                        { text: 'Referencia', dataIndex: 'REFER',     width: 120 },
-                        { text: 'Val. Date',  dataIndex: 'VALDATE',   width: 80 },
-                        { text: 'Moneda',     dataIndex: 'SCURRENCY', width: 60 },
+                        { text: 'Procesador', dataIndex: 'CODPRO', width: 90 },
+                        { text: 'Cuenta', dataIndex: 'ACCOUNT', width: 100 },
+                        { text: 'Doc. SAP', dataIndex: 'BANDOC', width: 120 },
+                        { text: 'Referencia', dataIndex: 'REFER', width: 120 },
+                        { text: 'Val. Date', dataIndex: 'VALDATE', width: 80 },
+                        { text: 'Moneda', dataIndex: 'SCURRENCY', width: 60 },
                         {
                             text: 'Neto', dataIndex: 'NETO', width: 110, align: 'right',
                             renderer: function (val) {
@@ -131,7 +131,7 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Drilldown.NivelDetallePro
                         {
                             text: 'Errores', dataIndex: 'QTY_ERROR', width: 70,
                             renderer: function (val) {
-                                var qty   = parseInt(val || 0);
+                                var qty = parseInt(val || 0);
                                 var color = qty > 0 ? '#e03131' : '#37b24d';
                                 return '<span style="background:' + color + ';color:#fff;padding:1px 6px;border-radius:3px;font-size:11px;">' + qty + '</span>';
                             }
@@ -139,7 +139,7 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Drilldown.NivelDetallePro
                         {
                             text: 'Pendientes', dataIndex: 'QTY_PENDING', width: 80,
                             renderer: function (val) {
-                                var qty   = parseInt(val || 0);
+                                var qty = parseInt(val || 0);
                                 var color = qty > 0 ? '#e8590c' : '#74b816';
                                 return '<span style="background:' + color + ';color:#fff;padding:1px 6px;border-radius:3px;font-size:11px;">' + qty + '</span>';
                             }
@@ -155,17 +155,17 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Drilldown.NivelDetallePro
                         },
                         { text: 'Códigos', dataIndex: 'CODIGOS', width: 80 },
                         {
-                            xtype:       'actioncolumn',
-                            text:        '',
-                            width:       32,
-                            align:       'center',
+                            xtype: 'actioncolumn',
+                            text: '',
+                            width: 32,
+                            align: 'center',
                             menuDisabled: true,
-                            sortable:    false,
+                            sortable: false,
                             items: [{
                                 tooltip: 'Ver líneas de detalle',
                                 getClass: function (v, meta, record) {
                                     return parseInt(record.get('QTY_ERROR') || 0) > 0
-                                        ? 'x-fa fa-search-plus'
+                                        ? 'prx-icon-detail'
                                         : Ext.baseCSSPrefix + 'hidden-display';
                                 },
                                 handler: function (grid, rowIndex, colIndex, item, e, record) {
@@ -177,12 +177,12 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Drilldown.NivelDetallePro
                     ]
                 },
                 bbar: {
-                    xtype:      'pagingtoolbar',
-                    itemId:     'detalleGridPaging',
+                    xtype: 'pagingtoolbar',
+                    itemId: 'detalleGridPaging',
                     displayInfo: true,
                     displayMsg: 'Registros {0} - {1} de {2}',
-                    emptyMsg:   'Sin registros',
-                    pageSize:   20
+                    emptyMsg: 'Sin registros',
+                    pageSize: 20
                 },
                 listeners: {
                     selectionchange: 'onSelectionChange'
