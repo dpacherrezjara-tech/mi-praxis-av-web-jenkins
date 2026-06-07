@@ -6,6 +6,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.DetailGridRow
         const modalCtrl = this.widgetView && this.widgetView.up('window') && this.widgetView.up('window').getController();
         if (!modalCtrl) return;
         if (action === 'detail') modalCtrl._openDepositDetail(record.getData());
+        if (action === 'edit-status') modalCtrl._openErrStatusEdit(record.getData(), this.widgetView);
         if (action === 'queue') modalCtrl._toggleQueueItem(record, this.widgetView);
     },
     onWidgetReady: function () { }
@@ -17,8 +18,6 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
 
     ADMIN_USERS: ['MPACHECO', 'PLOPEZ', 'MPACHECOT', 'PXAVAPIT', 'PXAVAPI', 'GLADYSAT', 'GLADYSA'],
 
-    _sftpTimer: null,
-    _sftpProgress: 0,
     _monolithReq: null,
 
     init: function () {
@@ -36,13 +35,23 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
         view.setTitle('Accounting Detail: ' + idcont);
         me._applyButtonVisibility(view.rowData || {});
 
-        // Cola para bulk reverse
+        // Cola para bulk reverse (deposits)
         me._reverseQueue = [];
         me._queueSet = {};
 
-        // Mostrar botón bulk-reverse solo a admins (siempre visible para ellos, empieza deshabilitado)
+        // Cola para bulk save errors (interface errors)
+        me._errQueue = [];
+        me._errQueueSet = {};
+        // Cambios individuales pendientes de edit-status (en memoria, sin enviar)
+        me._pendingErrChangesMap = {};
+
+        // Mostrar botones bulk solo a admins (empiezan deshabilitados)
         const bulkBtn = view.down('#btn-bulk-reverse');
         if (bulkBtn) bulkBtn.setVisible(me._isAdmin());
+        const bulkErrBtn = view.down('#btn-bulk-save-errors');
+        if (bulkErrBtn) bulkErrBtn.setVisible(me._isAdmin());
+        const bulkErrRevBtn = view.down('#btn-bulk-reverse-errors');
+        if (bulkErrRevBtn) bulkErrRevBtn.setVisible(me._isAdmin());
 
         // Solo carga el primer tab; los demás cargan al hacer click
         me._loadedTabs = {};
@@ -70,6 +79,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
         try {
             const res = await global.callStoreGet('PRAXISMP', 'MPS261', { IN_IDCONT: String(idcont || '') });
             const row = (res && res.lstRs && res.lstRs[0] && res.lstRs[0][0]) || view.rowData || {};
+            me._liveRow = row;
             me._renderSummary(row);
             me._applyButtonVisibility(row);
         } catch (e) {
@@ -202,49 +212,20 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
     },
 
     // =========================================================================
-    // SFTP hold-to-confirm
+    // SFTP
     // =========================================================================
 
-    onSftpBtnReady: function (btn) {
+    onSftpClick: function () {
         const me = this;
-        const dom = btn.el.dom;
-        dom.style.position = 'relative';
-        dom.style.overflow = 'hidden';
-        const bar = document.createElement('span');
-        bar.id = btn.id + '-sftp-bar';
-        bar.style.cssText = 'position:absolute;bottom:0;left:0;height:3px;width:0%;'
-            + 'background:rgba(255,255,255,0.85);transition:width 15ms linear;';
-        dom.appendChild(bar);
-        btn.el.on('mouseleave', function () { me.onSftpCancel(); });
-    },
-
-    onSftpMouseDown: function (btn) {
-        const me = this;
-        if (me._sftpTimer) return;
-        me._sftpProgress = 0;
-        const barId = btn.id + '-sftp-bar';
-        me._sftpTimer = setInterval(function () {
-            me._sftpProgress = Math.min(me._sftpProgress + (15 / 1500 * 100), 100);
-            const bar = document.getElementById(barId);
-            if (bar) bar.style.width = me._sftpProgress + '%';
-            if (me._sftpProgress >= 100) {
-                me._clearSftpTimer(barId);
-                me._executeSftp();
-            }
-        }, 15);
-    },
-
-    onSftpCancel: function (btn) {
-        const view = this.getView();
-        const sftpBtn = view.down('#btn-sftp');
-        const barId = sftpBtn ? sftpBtn.id + '-sftp-bar' : '';
-        this._clearSftpTimer(barId);
-    },
-
-    _clearSftpTimer: function (barId) {
-        if (this._sftpTimer) { clearInterval(this._sftpTimer); this._sftpTimer = null; }
-        this._sftpProgress = 0;
-        if (barId) { const bar = document.getElementById(barId); if (bar) bar.style.width = '0%'; }
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Are you sure you want to <b>send via SFTP</b> this accounting?<br>'
+                + '<span style="color:#c82d2d;">This action will start the SFTP transfer process.</span>',
+            buttons: Ext.MessageBox.YESNO,
+            icon: Ext.MessageBox.QUESTION,
+            fn: function (btn) { if (btn === 'yes') me._executeSftp(); }
+        });
+        Ext.Msg.toFront();
     },
 
     _executeSftp: async function () {
@@ -423,9 +404,147 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
     // =========================================================================
 
     _openDepositDetail: function (rowData) {
+        const me = this;
+        const view = me.getView();
+        const stcont = String((me._liveRow || view.rowData || {}).STCONT || '');
         Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDepositDetailModal', {
-            rowData: rowData
+            rowData: rowData,
+            stcont: stcont
         }).show();
+    },
+
+    // =========================================================================
+    // Interface Error — single status edit
+    // =========================================================================
+
+    _openErrStatusEdit: function (rowData) {
+        const me = this;
+
+        // Buscar todas las filas del store que comparten BANDOC/DATECI/TRANCI
+        const sameKeyRows = [];
+        const spGrid = me.getView().down('#grid-interrors');
+        const innerGrid = spGrid && spGrid.down('#mainGrid');
+        if (innerGrid && !innerGrid.isDestroyed) {
+            innerGrid.getStore().each(function (r) {
+                if (r.get('BANDOC') === rowData.BANDOC
+                    && r.get('DATECI') === rowData.DATECI
+                    && r.get('TRANCI') === rowData.TRANCI) {
+                    sameKeyRows.push(r.getData());
+                }
+            });
+        }
+        if (!sameKeyRows.length) sameKeyRows.push(rowData);
+
+        const multipleErrors = sameKeyRows.length > 1;
+
+        // Construir el item de visualización de error(es)
+        var errorItem;
+        if (multipleErrors) {
+            const listHtml = '<ul style="margin:4px 0 0 0;padding-left:18px;line-height:1.6;">'
+                + sameKeyRows.map(function (r) {
+                    return '<li><b>' + (r.CERROR || '—') + '</b> — ' + (r.DESCERR || '—') + '</li>';
+                }).join('')
+                + '</ul>';
+            errorItem = {
+                xtype: 'displayfield',
+                fieldLabel: 'Errors (' + sameKeyRows.length + ')',
+                value: listHtml
+            };
+        } else {
+            errorItem = {
+                xtype: 'displayfield',
+                fieldLabel: 'Error',
+                value: '<b>' + (rowData.CERROR || '—') + '</b> — ' + (rowData.DESCERR || '—')
+            };
+        }
+
+        const STATUS_OPTIONS = [
+            ['0', 'Pending'],
+            ['2', 'Reviewed']
+        ];
+
+        const winHeight = multipleErrors ? Math.max(280, 200 + sameKeyRows.length * 20) : 250;
+
+        const win = Ext.create('Ext.window.Window', {
+            title: 'Update Error Status — ' + (rowData.BANDOC || ''),
+            width: 480,
+            height: winHeight,
+            modal: true,
+            resizable: false,
+            layout: 'fit',
+            border: false,
+            items: [{
+                xtype: 'form',
+                bodyPadding: '16 16 8 16',
+                border: false,
+                defaults: { labelWidth: 110, anchor: '100%' },
+                items: [
+                    { xtype: 'displayfield', fieldLabel: 'Bank Doc.', value: rowData.BANDOC || '—' },
+                    { xtype: 'displayfield', fieldLabel: 'Reference', value: rowData.REFER || '—' },
+                    errorItem,
+                    {
+                        xtype: 'combobox',
+                        itemId: 'combo-strev',
+                        fieldLabel: 'New Status',
+                        store: STATUS_OPTIONS,
+                        value: String(rowData.STREV || '0'),
+                        editable: false,
+                        allowBlank: false,
+                        forceSelection: true
+                    }
+                ]
+            }],
+            dockedItems: [{
+                xtype: 'toolbar',
+                dock: 'bottom',
+                ui: 'footer',
+                layout: { pack: 'center' },
+                defaults: { scale: 'medium' },
+                items: [
+                    {
+                        text: 'Add to pending',
+                        itemId: 'btn-save-status',
+                        style: 'color:#1677ff;font-weight:bold;',
+                        handler: function () {
+                            const combo = win.down('#combo-strev');
+                            const newStatus = String(combo.getValue());
+
+                            // Guardar en mapa con key 4-partes (TIPOERR incluido para agrupar en SP)
+                            // _STREV_ORIG guarda el valor original para poder restaurarlo si se quita del modal
+                            sameKeyRows.forEach(function (r) {
+                                const key = [r.BANDOC, r.DATECI, r.TRANCI, r.TIPOERR || ''].join('-');
+                                const updated = Ext.apply({}, r);
+                                updated._STREV_ORIG = String(r.STREV != null ? r.STREV : '0');
+                                updated.STREV = newStatus;
+                                me._pendingErrChangesMap[key] = updated;
+                            });
+
+                            // Actualizar STREV en el store para feedback visual inmediato
+                            // y para que isDisabled de las acciones se re-evalúe correctamente
+                            if (innerGrid && !innerGrid.isDestroyed) {
+                                innerGrid.getStore().each(function (r) {
+                                    if (r.get('BANDOC') === rowData.BANDOC
+                                        && r.get('DATECI') === rowData.DATECI
+                                        && r.get('TRANCI') === rowData.TRANCI) {
+                                        r.set('STREV', newStatus);
+                                        r.commit(); // evitar que quede marcado como dirty
+                                    }
+                                });
+                            }
+
+                            win.destroy();
+                            me._updateBulkSaveErrorsBtn();
+                        }
+                    },
+                    {
+                        text: 'Cancel',
+                        iconCls: 'prx-icon-cancel',
+                        handler: function () { win.destroy(); }
+                    }
+                ]
+            }]
+        });
+        win.show();
     },
 
     // =========================================================================
@@ -435,9 +554,17 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
     _toggleQueueItem: function (record, widgetView) {
         const me = this;
         if (!me._isAdmin()) {
-            new AWN().warning('Solo usuarios administradores pueden usar la reversión masiva.');
+            new AWN().warning('Solo usuarios administradores pueden usar esta acción masiva.');
             return;
         }
+
+        // Delegar según la grilla origen
+        if (widgetView && widgetView.itemId === 'grid-interrors') {
+            me._toggleErrQueueItem(record, widgetView);
+            return;
+        }
+
+        // Cola de deposits (lógica original)
         const stcont = String(record.get('STSAP') || '');
         if (!['P'].includes(stcont)) return;
 
@@ -463,6 +590,32 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
         me._updateBulkReverseBtn();
     },
 
+    _toggleErrQueueItem: function (record, widgetView) {
+        const me = this;
+        if (String(record.get('STREV') || '') !== '0') return;
+
+        const key = [record.get('BANDOC'), record.get('DATECI'), record.get('TRANCI')].join('-');
+
+        if (me._errQueueSet[key]) {
+            delete me._errQueueSet[key];
+            me._errQueue = me._errQueue.filter(function (r) {
+                return [r.BANDOC, r.DATECI, r.TRANCI].join('-') !== key;
+            });
+        } else {
+            me._errQueueSet[key] = true;
+            me._errQueue.push(record.getData());
+        }
+
+        // Refresh fila para actualizar ícono
+        const grid = widgetView && widgetView.down('gridpanel');
+        if (grid && grid.getView && !grid.isDestroyed) {
+            const idx = grid.getStore().indexOf(record);
+            if (idx >= 0) grid.getView().refreshNode(idx);
+        }
+
+        me._updateBulkReverseErrorsBtn();
+    },
+
     _updateBulkReverseBtn: function () {
         const me = this;
         const view = me.getView();
@@ -470,6 +623,26 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
         if (!btn) return;
         const count = me._reverseQueue.length;
         btn.setText('Reverse Selected (' + count + ')');
+        btn.setDisabled(count === 0);
+    },
+
+    _updateBulkSaveErrorsBtn: function () {
+        const me = this;
+        const view = me.getView();
+        const btn = view.down('#btn-bulk-save-errors');
+        if (!btn) return;
+        const count = Object.keys(me._pendingErrChangesMap || {}).length;
+        btn.setText('Mark as Reviewed (' + count + ')');
+        btn.setDisabled(count === 0);
+    },
+
+    _updateBulkReverseErrorsBtn: function () {
+        const me = this;
+        const view = me.getView();
+        const btn = view.down('#btn-bulk-reverse-errors');
+        if (!btn) return;
+        const count = (me._errQueue || []).length;
+        btn.setText('Mark as Reversed (' + count + ')');
         btn.setDisabled(count === 0);
     },
 
@@ -633,6 +806,375 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
             }
         } catch (e) {
             new AWN().alert('Error: ' + (e.message || 'Bulk reversal failed'));
+        } finally {
+            view.unmask();
+        }
+    },
+
+    // =========================================================================
+    // Interface Errors bulk save (SPMDP00009)
+    // =========================================================================
+
+    onBulkSaveErrors: function () {
+        const me = this;
+
+        const allRows = Object.values(me._pendingErrChangesMap || {});
+        const count = allRows.length;
+        if (!count) return;
+
+        const store = Ext.create('Ext.data.Store', {
+            fields: ['BANDOC', 'REFER', 'DATECI', 'TRANCI', 'CERROR', 'DESCERR', 'TIPOERR', 'STREV'],
+            data: allRows
+        });
+
+        const bannerId = Ext.id() + '-err-banner';
+
+        const updateBanner = function () {
+            const n = store.getCount();
+            const el = document.getElementById(bannerId);
+            if (el) {
+                el.innerHTML = n > 0
+                    ? '<b>Confirme los cambios de status para ' + n + ' error(es) de interfaz:</b><br>'
+                    + '<span style="font-size:11px;color:#856404;">Revise la columna <b>New Status</b> antes de confirmar.</span>'
+                    : '<b style="color:#c82d2d;">No quedan errores seleccionados. Cierre esta ventana.</b>';
+            }
+            const confirmBtn = win && win.down('#btn-confirm-save-errors');
+            if (confirmBtn) confirmBtn.setDisabled(n === 0);
+        };
+
+        const STATUS_LABEL = { '0': 'PENDING', '2': 'REVIEWED' };
+
+        var win = Ext.create('Ext.window.Window', {
+            title: '.:PRAXIS:. — Confirm Bulk Status Update',
+            width: 920,
+            height: 420,
+            modal: true,
+            resizable: true,
+            layout: 'fit',
+            border: false,
+            items: [{
+                xtype: 'panel',
+                layout: 'border',
+                border: false,
+                items: [
+                    {
+                        xtype: 'panel',
+                        region: 'north',
+                        height: 52,
+                        border: false,
+                        bodyStyle: 'background:#fff3cd;padding:10px 16px;',
+                        html: '<div id="' + bannerId + '" style="color:#856404;font-size:13px;">'
+                            + '<b>Confirme los cambios de status para ' + count + ' error(es) de interfaz:</b><br>'
+                            + '<span style="font-size:11px;color:#856404;">Revise la columna <b>New Status</b> antes de confirmar.</span>'
+                            + '</div>'
+                    },
+                    {
+                        xtype: 'gridpanel',
+                        region: 'center',
+                        store: store,
+                        border: false,
+                        columnLines: true,
+                        scrollable: true,
+                        viewConfig: { stripeRows: true, markDirty: false },
+                        columns: [
+                            { xtype: 'rownumberer', width: 35 },
+                            { text: 'Bank Doc.', dataIndex: 'BANDOC', width: 120, align: 'center', menuDisabled: true },
+                            { text: 'Reference', dataIndex: 'REFER', width: 130, menuDisabled: true },
+                            { text: 'Date CI', dataIndex: 'DATECI', width: 100, align: 'center', menuDisabled: true },
+                            { text: 'Transaction', dataIndex: 'TRANCI', width: 120, align: 'center', menuDisabled: true },
+                            { text: 'Error Code', dataIndex: 'CERROR', width: 80, align: 'center', menuDisabled: true },
+                            { text: 'Description', dataIndex: 'DESCERR', flex: 1, menuDisabled: true },
+                            {
+                                text: 'New Status', dataIndex: 'STREV', width: 100, align: 'center', menuDisabled: true,
+                                renderer: function (v, meta) {
+                                    if (v === '2') {
+                                        meta.style = 'background-color:#46ECD5;color:white;font-weight:bold;';
+                                        return 'REVIEWED';
+                                    }
+                                    meta.style = 'background-color:red;color:white;font-weight:bold;';
+                                    return STATUS_LABEL[v] || v;
+                                }
+                            },
+                            {
+                                xtype: 'actioncolumn',
+                                width: 40,
+                                align: 'center',
+                                menuDisabled: true,
+                                sortable: false,
+                                items: [{
+                                    iconCls: 'prx-icon-image-trash',
+                                    tooltip: 'Quitar de selección',
+                                    handler: function (_grid, _ri, _ci, _item, _e, record) {
+                                        const bandoc  = record.get('BANDOC');
+                                        const dateci  = record.get('DATECI');
+                                        const tranci  = record.get('TRANCI');
+                                        const tipoerr = record.get('TIPOERR') || '';
+                                        const key = [bandoc, dateci, tranci, tipoerr].join('-');
+                                        const entry = me._pendingErrChangesMap[key];
+                                        const origStrev = entry ? String(entry._STREV_ORIG != null ? entry._STREV_ORIG : '0') : '0';
+                                        delete me._pendingErrChangesMap[key];
+                                        store.remove(record);
+                                        updateBanner();
+                                        me._updateBulkSaveErrorsBtn();
+                                        // Restaurar STREV original en la grilla para las filas de ese TIPOERR
+                                        const spGrid = me.getView().down('#grid-interrors');
+                                        const ig = spGrid && spGrid.down('#mainGrid');
+                                        if (ig && !ig.isDestroyed) {
+                                            ig.getStore().each(function (r) {
+                                                if (r.get('BANDOC') === bandoc
+                                                    && r.get('DATECI') === dateci
+                                                    && r.get('TRANCI') === tranci
+                                                    && (r.get('TIPOERR') || '') === tipoerr) {
+                                                    r.set('STREV', origStrev);
+                                                    r.commit();
+                                                }
+                                            });
+                                        }
+                                    }
+                                }]
+                            }
+                        ]
+                    }
+                ]
+            }],
+            dockedItems: [{
+                xtype: 'toolbar',
+                dock: 'bottom',
+                ui: 'footer',
+                layout: { pack: 'center' },
+                defaults: { scale: 'medium' },
+                items: [
+                    {
+                        text: 'Confirm',
+                        itemId: 'btn-confirm-save-errors',
+                        style: 'color:#1677ff;font-weight:bold;',
+                        handler: function () {
+                            win.destroy();
+                            me._executeBulkSaveErrors();
+                        }
+                    },
+                    {
+                        text: 'Cancel',
+                        iconCls: 'prx-icon-cancel',
+                        handler: function () { win.destroy(); }
+                    }
+                ]
+            }]
+        });
+        win.show();
+        win.toFront();
+    },
+
+    _executeBulkSaveErrors: async function () {
+        const me = this;
+        const view = me.getView();
+        view.mask('Guardando errores de interfaz...');
+        try {
+            const idcont = String(view.idcont || '');
+
+            // Agrupar _pendingErrChangesMap por TIPOERR y enviar a MPS194
+            const groups = {};
+            Ext.Object.each(me._pendingErrChangesMap || {}, function (_key, r) {
+                const t = String(r.TIPOERR || '');
+                if (!groups[t]) groups[t] = [];
+                groups[t].push(r);
+            });
+
+            for (const tipoerr of Object.keys(groups)) {
+                const payloadRows = groups[tipoerr].map(function (r) {
+                    return {
+                        BANDOC: String(r.BANDOC || ''),
+                        DATECI: String(r.DATECI || ''),
+                        TRANCI: String(r.TRANCI || ''),
+                        STREV: String(r.STREV || '2')
+                    };
+                });
+                await global.callStoreGet('PRAXISMP', 'MPS194', {
+                    IN_IDCONT: idcont,
+                    IN_TIPOERR: tipoerr,
+                    IN_PAYLOAD: JSON.stringify(payloadRows)
+                });
+            }
+
+            new AWN().success('Cambios de status guardados correctamente');
+            me._pendingErrChangesMap = {};
+            me._updateBulkSaveErrorsBtn();
+
+            me._loadTab('tab-interrors');
+            if (Ext.isFunction(view.onAfterAction)) view.onAfterAction();
+            await me._fetchLiveRow(view.idcont);
+        } catch (e) {
+            new AWN().alert('Error: ' + (e.message || 'No se pudieron guardar los cambios'));
+        } finally {
+            view.unmask();
+        }
+    },
+
+    // =========================================================================
+    // Interface Errors bulk reverse (STREV = '1')
+    // =========================================================================
+
+    onBulkReverseErrors: function () {
+        const me = this;
+        const sourceRows = (me._errQueue || []).slice();
+        const count = sourceRows.length;
+        if (!count) return;
+
+        const store = Ext.create('Ext.data.Store', {
+            fields: ['BANDOC', 'REFER', 'DATECI', 'TRANCI', 'CERROR', 'DESCERR', 'TIPOERR'],
+            data: sourceRows
+        });
+
+        const bannerId = Ext.id() + '-err-rev-banner';
+
+        const updateBanner = function () {
+            const n = store.getCount();
+            const el = document.getElementById(bannerId);
+            if (el) {
+                el.innerHTML = n > 0
+                    ? '<b>¿Confirma reversar ' + n + ' error(es) de interfaz?</b><br>'
+                    + '<span style="font-size:11px;color:#c82d2d;">Esta acción marcará los errores como REVERSED (STREV=1) en MPS194.</span>'
+                    : '<b style="color:#c82d2d;">No quedan errores seleccionados. Cierre esta ventana.</b>';
+            }
+            const confirmBtn = win && win.down('#btn-confirm-reverse-errors');
+            if (confirmBtn) confirmBtn.setDisabled(n === 0);
+        };
+
+        var win = Ext.create('Ext.window.Window', {
+            title: '.:PRAXIS:. — Confirm Bulk Reverse Errors',
+            width: 900,
+            height: 420,
+            modal: true,
+            resizable: true,
+            layout: 'fit',
+            border: false,
+            items: [{
+                xtype: 'panel',
+                layout: 'border',
+                border: false,
+                items: [
+                    {
+                        xtype: 'panel',
+                        region: 'north',
+                        height: 52,
+                        border: false,
+                        bodyStyle: 'background:#fff3cd;padding:10px 16px;',
+                        html: '<div id="' + bannerId + '" style="color:#856404;font-size:13px;">'
+                            + '<b>¿Confirma reversar ' + count + ' error(es) de interfaz?</b><br>'
+                            + '<span style="font-size:11px;color:#c82d2d;">Esta acción marcará los errores como REVERSED (STREV=1) en MPS194.</span>'
+                            + '</div>'
+                    },
+                    {
+                        xtype: 'gridpanel',
+                        region: 'center',
+                        store: store,
+                        border: false,
+                        columnLines: true,
+                        scrollable: true,
+                        viewConfig: { stripeRows: true, markDirty: false },
+                        columns: [
+                            { xtype: 'rownumberer', width: 35 },
+                            { text: 'Bank Doc.', dataIndex: 'BANDOC', width: 120, align: 'center', menuDisabled: true },
+                            { text: 'Reference', dataIndex: 'REFER', width: 130, menuDisabled: true },
+                            { text: 'Date CI', dataIndex: 'DATECI', width: 100, align: 'center', menuDisabled: true },
+                            { text: 'Transaction', dataIndex: 'TRANCI', width: 120, align: 'center', menuDisabled: true },
+                            { text: 'Error Code', dataIndex: 'CERROR', width: 80, align: 'center', menuDisabled: true },
+                            { text: 'Description', dataIndex: 'DESCERR', flex: 1, menuDisabled: true },
+                            {
+                                xtype: 'actioncolumn',
+                                width: 40,
+                                align: 'center',
+                                menuDisabled: true,
+                                sortable: false,
+                                items: [{
+                                    iconCls: 'prx-icon-image-trash',
+                                    tooltip: 'Quitar de selección',
+                                    handler: function (_grid, _ri, _ci, _item, _e, record) {
+                                        const key = [record.get('BANDOC'), record.get('DATECI'), record.get('TRANCI')].join('-');
+                                        delete me._errQueueSet[key];
+                                        me._errQueue = (me._errQueue || []).filter(function (r) {
+                                            return [r.BANDOC, r.DATECI, r.TRANCI].join('-') !== key;
+                                        });
+                                        store.remove(record);
+                                        updateBanner();
+                                        me._updateBulkReverseErrorsBtn();
+                                        me._refreshQueuedRow(record.get('BANDOC'), record.get('DATECI'), record.get('TRANCI'));
+                                    }
+                                }]
+                            }
+                        ]
+                    }
+                ]
+            }],
+            dockedItems: [{
+                xtype: 'toolbar',
+                dock: 'bottom',
+                ui: 'footer',
+                layout: { pack: 'center' },
+                defaults: { scale: 'medium' },
+                items: [
+                    {
+                        text: 'Confirm Reversal',
+                        itemId: 'btn-confirm-reverse-errors',
+                        style: 'color:#c82d2d;font-weight:bold;',
+                        handler: function () {
+                            win.destroy();
+                            me._executeBulkReverseErrors();
+                        }
+                    },
+                    {
+                        text: 'Cancel',
+                        iconCls: 'prx-icon-cancel',
+                        handler: function () { win.destroy(); }
+                    }
+                ]
+            }]
+        });
+        win.show();
+        win.toFront();
+    },
+
+    _executeBulkReverseErrors: async function () {
+        const me = this;
+        const view = me.getView();
+        view.mask('Reversando errores de interfaz...');
+        try {
+            const idcont = String(view.idcont || '');
+
+            // Agrupar _errQueue por TIPOERR y enviar a MPS194 con STREV='1'
+            const groups = {};
+            (me._errQueue || []).forEach(function (r) {
+                const t = String(r.TIPOERR || '');
+                if (!groups[t]) groups[t] = [];
+                groups[t].push(r);
+            });
+
+            for (const tipoerr of Object.keys(groups)) {
+                const payloadRows = groups[tipoerr].map(function (r) {
+                    return {
+                        BANDOC: String(r.BANDOC || ''),
+                        DATECI: String(r.DATECI || ''),
+                        TRANCI: String(r.TRANCI || ''),
+                        STREV: '1'
+                    };
+                });
+                await global.callStoreGet('PRAXISMP', 'MPS194', {
+                    IN_IDCONT: idcont,
+                    IN_TIPOERR: tipoerr,
+                    IN_PAYLOAD: JSON.stringify(payloadRows)
+                });
+            }
+
+            new AWN().success('Errores de interfaz reversados correctamente');
+            me._errQueue = [];
+            me._errQueueSet = {};
+            me._updateBulkReverseErrorsBtn();
+
+            me._loadTab('tab-interrors');
+            if (Ext.isFunction(view.onAfterAction)) view.onAfterAction();
+            await me._fetchLiveRow(view.idcont);
+        } catch (e) {
+            new AWN().alert('Error: ' + (e.message || 'No se pudieron reversar los errores'));
         } finally {
             view.unmask();
         }

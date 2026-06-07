@@ -99,18 +99,28 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
             width: prototype.width,
             height: prototype.height,
             excelColumns: [
-                { header: 'Cliente', dataIndex: 'CCUST' },
-                { header: 'Procesador', dataIndex: 'CODPRO' },
-                { header: 'Posting Date', dataIndex: 'FCONT' },
-                { header: 'Generation Date', dataIndex: 'FSEND' },
-                { header: 'Generation Hour', dataIndex: 'HCONT' },
-                { header: 'Type', dataIndex: 'TIPOCON' },
+                {
+                    header: 'Type', dataIndex: 'TIPOCON',
+                    formatter: function (v) {
+                        return { DEB: 'Debits', REG: 'Regular', ADJ: 'Adjustment', ADM: "ADM's", SAL: 'Sale W/O Settl', REV: 'Reverse' }[v] || v;
+                    }
+                },
                 { header: 'ID', dataIndex: 'IDCONT' },
-                { header: 'Bandocs', dataIndex: 'QTY_SEQ' },
+                { header: 'Deposits', dataIndex: 'QTY_SEQ' },
+                { header: 'Errors', dataIndex: 'QTY_POS' },
+                {
+                    header: 'Status', dataIndex: 'STCONT',
+                    formatter: function (v) {
+                        return { '0': 'Processing', '1': 'Closed', '2': 'Accounting Errors', '3': 'Ready to Send', '4': 'Reversed', '5': 'SFTP', '7': 'Process Error', '8': 'No Data' }[v] || v;
+                    }
+                },
+                { header: 'Client', dataIndex: 'CCUST' },
+                { header: 'Processor', dataIndex: 'CODPRO' },
+                { header: 'Posting Date', dataIndex: 'FCONT' },
                 { header: 'Initial Date', dataIndex: 'PRDAF' },
                 { header: 'Final Date', dataIndex: 'PRDAT' },
-                { header: 'Accounting Errors', dataIndex: 'QTYERRS' }
-
+                { header: 'Generation Time', dataIndex: 'HCONT' },
+                { header: 'Generation Date', dataIndex: 'FSEND' }
             ],
             // Sin rowActions por ahora — se implementarán en modal
             gridColumns: {
@@ -126,8 +136,35 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
                         xtype: 'rownumberer',
                         width: 40
                     },
-                    { text: 'Client<br>Code', dataIndex: 'CCUST', width: 50 },
-                    { text: 'Processor', dataIndex: 'CODPRO', width: 180 },
+                    {
+                        text: 'Type', dataIndex: 'TIPOCON', width: 100,
+                        renderer: function (value, metaData) {
+                            const opts = {
+                                'DEB': 'Debits',
+                                'REG': 'Regular',
+                                'ADJ': 'Adjustment',
+                                'ADM': "ADM's",
+                                'SAL': "Sale W/O Settl",
+                                'REV': "Reverse"
+                            };
+                            return opts[value] || value;
+                        }
+                    },
+                    { text: 'ID', dataIndex: 'IDCONT', width: 210 },
+                    {
+                        text: 'Deposits', dataIndex: 'QTY_SEQ', width: 80,
+                        renderer: function (value, metaData) {
+                            metaData.style = 'text-decoration:underline;font-weight:bolder;color:#5bc611;';
+                            return value;
+                        }
+                    },
+                    {
+                        text: 'Errors', dataIndex: 'QTY_POS', width: 80,
+                        renderer: function (value, metaData) {
+                            metaData.style = 'text-align:center;text-decoration:underline;font-weight:bolder;color:#f71a1a;';
+                            return value;
+                        }
+                    },
                     {
                         text: 'Status', dataIndex: 'STCONT', flex: 1,
                         renderer: function (value, metaData) {
@@ -136,49 +173,33 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
                                     metaData.style = 'background-color:#838187;font-weight:bold';
                                     return 'Processing 🔃';
                                 },
+                                '1': function () {
+                                    metaData.style = 'background-color:#096404;font-weight:bold';
+                                    return 'Closed 🆗';
+                                },
                                 '2': function () {
                                     metaData.style = 'background-color:#fdb333;font-weight:bold';
                                     return 'Accounting Errors 🚫';
-                                },
-                                '8': function () {
-                                    metaData.style = 'background-color:#f7ec35;font-weight:bold';
-                                    return 'No Data ⭕';
-                                },
-                                '4': function () {
-                                    metaData.style = 'background-color:#f7ec35;font-weight:bold';
-                                    return 'Reversed ⛔';
                                 },
                                 '3': function () {
                                     metaData.style = 'background-color:#8cdfe3;font-weight:bold';
                                     return 'Ready to Send 🆗';
                                 },
+                                '4': function () {
+                                    metaData.style = 'background-color:#f7ec35;font-weight:bold';
+                                    return 'Reversed ⛔';
+                                },
                                 '5': function () {
                                     metaData.style = 'background-color:#9187e1;font-weight:bold';
                                     return 'SFTP 🆗';
                                 },
-                                'L': function () {
-                                    metaData.style = 'background-color:#88d556;font-weight:bold';
-                                    return 'Loaded to SAP ☑';
-                                },
-                                '6': function () {
-                                    metaData.style = 'background-color:#88d556;font-weight:bold';
-                                    return 'Partially Rejected ↩️';
-                                },
-                                '9': function () {
-                                    metaData.style = 'background-color:#88d556;font-weight:bold';
-                                    return 'Partially Justified ↩️';
-                                },
-                                'J': function () {
-                                    metaData.style = 'background-color:#f7ec35;color:#ce3232;font-weight:bold';
-                                    return 'Justified ⏺️';
-                                },
-                                'R': function () {
-                                    metaData.style = 'background-color:#f7ec35;color:#ce3232;font-weight:bold';
-                                    return 'Rejected ❌';
-                                },
                                 '7': function () {
                                     metaData.style = 'background-color:#f7ec35;font-weight:bold';
                                     return 'Process Error ⚠️';
+                                },
+                                '8': function () {
+                                    metaData.style = 'background-color:#f7ec35;font-weight:bold';
+                                    return 'No Data ⭕';
                                 }
                             };
                             return opts[value] ? opts[value]() : value;
@@ -196,38 +217,14 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
                             }
                         },
                         columns: [
-                            { text: 'Posting<br>Date', dataIndex: 'FCONT', width: 90 },
-                            { text: 'Generation<br>Date', dataIndex: 'FSEND', width: 90 },
-                            { text: 'Generation<br>Hour', dataIndex: 'HCONT', width: 80 },
-                            {
-                                text: 'Type', dataIndex: 'TIPOCON', width: 80,
-                                renderer: function (value, metaData) {
-                                    metaData.style = 'background-color:#B2DAFA';
-                                    const opts = {
-                                        'DEB': 'Debits', 'REG': 'Regular',
-                                        'ADJ': 'Adjustment', 'ADM': "ADM's"
-                                    };
-                                    return opts[value] || value;
-                                }
-                            },
-                            { text: 'ID', dataIndex: 'IDCONT', width: 210 },
-                            {
-                                text: 'Deposits', dataIndex: 'QTY_SEQ', width: 80,
-                                renderer: function (value, metaData) {
-                                    metaData.style = 'background-color:#B2DAFA;text-decoration:underline;cursor:pointer;font-weight:bolder;color:#5bc611;';
-                                    return value;
-                                }
-                            },
+                            { text: 'Client Code', dataIndex: 'CCUST', width: 100 },
+                            { text: 'Processor', dataIndex: 'CODPRO', width: 180 },
                             { text: 'Initial<br>Date', dataIndex: 'PRDAF', width: 90 },
                             { text: 'Final<br>Date', dataIndex: 'PRDAT', width: 90 },
-                            {
-                                text: 'Accounting<br>Errors', dataIndex: 'QTY_POS', width: 80,
-                                renderer: function (value, metaData) {
-                                    metaData.style = 'text-align:center;background-color:#B2DAFA;text-decoration:underline;cursor:pointer;font-weight:bolder;color:#f71a1a;';
-                                    return value;
-                                }
-                            },
-                            { text: 'Corrl AV Assigned', dataIndex: 'FILENAM', width: 250 }
+                            { text: 'Posting<br>Date', dataIndex: 'FCONT', width: 90 },
+                            { text: 'Corrl AV Assigned', dataIndex: 'FILENAM', width: 250 },
+                            { text: 'Generation<br>Date', dataIndex: 'FSEND', width: 90 },
+                            { text: 'Generation<br>Hour', dataIndex: 'HCONT', width: 80 },
                         ]
                     }
                 ]

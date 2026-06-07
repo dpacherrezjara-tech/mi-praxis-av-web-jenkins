@@ -6,6 +6,8 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDepos
 
     /** @cfg {Object} rowData  Datos de la fila del depósito / error de interfaz */
     rowData: null,
+    /** @cfg {String} stcont  STCONT del contrato padre — limita la edición */
+    stcont: null,
 
     title: 'Deposit Detail',
     width: 1350,
@@ -34,8 +36,9 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDepos
         me._pendingChangesMap = {};
         me._newRowKeysMap = {};
 
+        const EDITABLE_STCONT = ['2', '3'];
         const user = ((document.getElementById('menuUser') || {}).textContent || '').trim();
-        me._canEdit = me.ADMIN_USERS.includes(user);
+        me._canEdit = me.ADMIN_USERS.includes(user) && EDITABLE_STCONT.includes(String(me.stcont || ''));
 
         // ── Editor factories ─────────────────────────────────────────────────
         const EC = 'praxis-editable-cell';

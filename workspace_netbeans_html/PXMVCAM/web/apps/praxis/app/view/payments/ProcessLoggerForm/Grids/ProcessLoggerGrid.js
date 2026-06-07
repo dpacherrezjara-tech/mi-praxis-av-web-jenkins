@@ -1,83 +1,82 @@
 Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Grids.ProcessLoggerGrid', {
-    extend: 'Ext.grid.Panel',
+    extend: 'Ext.Praxis.view.widgets.StoreProcGrid',
     alias: 'widget.' + prototype.id + '-ProcessLoggerGrid',
+
     requires: [
-        'Ext.Praxis.controller.payments.ProcessLogger.ProcessLoggerGridController'
+        'Ext.Praxis.view.widgets.StoreProcGrid',
+        'Ext.Praxis.controller.payments.ProcessLogger.ProcessLoggerRowController',
+        'Ext.Praxis.view.payments.ProcessLoggerForm.Drilldown.DrilldownWindow'
     ],
-    controller: 'ProcessLoggerGridController',
-    maxHeight: prototype.height,
-    minHeight: 200,
-    height: 'auto',
-    width: 1600,
-    viewConfig: {
-        stripeRows: true,
-        enableTextSelection: true,
-        markDirty: false
-    },
-    columnLines: true,
-    columns: {
+
+    library:        'PRAXISMP',
+    storeProcedure: 'MPS195',
+    pageSize:       15,
+    height:         prototype.height,
+    gridTitle:      '',
+    showExcelButton: true,
+
+    customController: 'Ext.Praxis.controller.payments.ProcessLogger.ProcessLoggerRowController',
+
+    rowActions: [
+        {
+            action: 'drilldown',
+            tooltip: 'Ver detalle',
+            getClass: function (v, meta, record) {
+                var tipo = (record.get('TIPO') || '').trim();
+                return (tipo === 'F2' || tipo === 'DB' || tipo === 'FO')
+                    ? 'x-fa fa-search-plus'
+                    : Ext.baseCSSPrefix + 'hidden-display';
+            }
+        }
+    ],
+
+    gridColumns: {
         defaults: {
             align: 'center',
             menuDisabled: true,
             sortable: true
         },
         items: [
-            //<editor-fold defaultstate="collapsed" desc="Detail Cols">
-            {text: 'ID', dataIndex: 'CUUID', width: 230},
-            {text: 'Process<br>Date', dataIndex: 'FUUID', width: 80},
-            {text: 'Process', dataIndex: 'PROCESO', flex: 1},
-            {text: 'Status', dataIndex: 'STPRO', width: 90,
-                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                    const opts = {
-                        'P': () => {
-                            metaData.tdAttr = `data-qtip="Processing"`;
-                            return '<img src="resources/img/icon/16x16/loading_robot.png"/>';
-                        },
-                        'C': () => {
-                            metaData.tdAttr = `data-qtip="Completed"`;
-                            return '<img src="resources/img/icon/16x16/check.png"/>';
-                        },
-                        'X':() => {
-                            metaData.tdAttr = `data-qtip="Error"`;
-                            return '<img src="resources/img/icon/delete.png"/>';
-                        }
-                    };
-                    return opts[value.trim()]();
+            { xtype: 'rownumberer', width: 40 },
+            { text: 'ID',               dataIndex: 'CUUID',     width: 230, align: 'left' },
+            { text: 'Fecha<br>Proceso', dataIndex: 'FUUID',     width: 85 },
+            { text: 'Proceso',          dataIndex: 'PROCESO',   flex: 1, align: 'left', minWidth: 150 },
+            {
+                text: 'Tipo', dataIndex: 'TIPO', width: 80,
+                renderer: function (val) {
+                    var tipo  = (val || '').trim();
+                    var color = { F2: '#0ca678', DB: '#7048e8', FO: '#e8590c' }[tipo] || '#868e96';
+                    return '<span style="background:' + color + ';color:#fff;padding:1px 7px;border-radius:3px;font-size:11px;">' + (tipo || val) + '</span>';
                 }
             },
-            {text: 'Message', dataIndex: 'MSGPRO', width: 400},
-            {text: 'User<br>Create', dataIndex: 'USCR', width: 100},
-            {text: 'Date<br>Create', dataIndex: 'FECR', width: 80},
-            {text: 'Hour<br>Create', dataIndex: 'HOCR', width: 80},
-            {text: 'User<br>End', dataIndex: 'USTR', width: 100},
-            {text: 'Date<br>End', dataIndex: 'FETR', width: 80},
-            {text: 'Hour<br>End', dataIndex: 'HOTR', width: 80}
-            //</editor-fold>
-        ]
-    },
-    tbar: {
-        layout: {
-            pack: 'end'
-        },
-        defaults: {
-            scale: 'medium'
-        },
-        items: [
             {
-                xtype: 'button',
-                iconCls: 'prx-icon-excel',
-                scale: 'small',
-                tooltip: 'Export to Excel',
-                listeners: {
-                    click: 'downloadExcel'
+                text: 'Errores', dataIndex: 'QTY_ERRORS', width: 80,
+                renderer: function (val) {
+                    var qty   = parseInt(val || 0);
+                    var color = qty > 0 ? '#e03131' : '#37b24d';
+                    return '<span style="background:' + color + ';color:#fff;padding:1px 7px;border-radius:3px;font-size:11px;">' + qty + '</span>';
                 }
-            }
+            },
+            {
+                text: 'Estado', dataIndex: 'STPRO', width: 105,
+                renderer: function (val) {
+                    var s = (val || '').trim();
+                    var m = {
+                        P: { l: 'Pendiente',  c: '#1971c2' },
+                        C: { l: 'Completado', c: '#37b24d' },
+                        X: { l: 'Error',      c: '#e03131' }
+                    };
+                    var o = m[s] || { l: s, c: '#868e96' };
+                    return '<span style="background:' + o.c + ';color:#fff;padding:1px 7px;border-radius:3px;font-size:11px;">' + o.l + '</span>';
+                }
+            },
+            { text: 'Mensaje',        dataIndex: 'MSGPRO', width: 300, align: 'left' },
+            { text: 'Usu.<br>Crea',   dataIndex: 'USCR',   width: 90 },
+            { text: 'Fec.<br>Creac',  dataIndex: 'FECR',   width: 80 },
+            { text: 'Hora<br>Creac',  dataIndex: 'HOCR',   width: 60 },
+            { text: 'Usu.<br>Fin',    dataIndex: 'USTR',   width: 90 },
+            { text: 'Fec.<br>Fin',    dataIndex: 'FETR',   width: 80 },
+            { text: 'Hora<br>Fin',    dataIndex: 'HOTR',   width: 60 }
         ]
-    },
-    bbar: {
-        xtype: 'pagingtoolbar',
-        displayInfo: true
     }
 });
-
-

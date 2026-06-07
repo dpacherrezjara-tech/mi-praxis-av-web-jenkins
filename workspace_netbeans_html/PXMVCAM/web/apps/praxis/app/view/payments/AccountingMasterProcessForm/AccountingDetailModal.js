@@ -79,14 +79,13 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDetai
                                 storeProcedure: 'MPS474',
                                 storeParams: { IN_IDCONT: '' },
                                 autoSearch: false,
-                                height: 540,
                                 gridTitle: 'Deposits',
                                 filterCollapsible: false,
                                 customController: 'Ext.Praxis.controller.payments.AccountingMasterProcess.DetailGridRowCtrl',
                                 rowActions: [
                                     {
                                         action: 'detail',
-                                        icon: 'prx-icon-image-log',
+                                        icon: 'prx-icon-docum',
                                         tooltip: 'Ver Detalle'
                                     },
                                     {
@@ -125,6 +124,20 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDetai
                                         emptyText: 'Bank Doc...',
                                         labelWidth: 75,
                                         width: 220
+                                    }
+                                ],
+                                tbarItems: [
+                                    {
+                                        xtype: 'button',
+                                        text: 'Reverse Selected (0)',
+                                        itemId: 'btn-bulk-reverse',
+                                        hidden: true,
+                                        disabled: true,
+                                        style: 'color:#c82d2d;font-weight:bold;',
+                                        handler: function () {
+                                            const ctrl = Ext.getCmp(DM) && Ext.getCmp(DM).getController();
+                                            if (ctrl) ctrl.onBulkReverse();
+                                        }
                                     }
                                 ],
                                 gridColumns: {
@@ -193,15 +206,27 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDetai
                                 storeProcedure: 'MPS475',
                                 storeParams: { IN_IDCONT: '' },
                                 autoSearch: false,
-                                height: 540,
                                 gridTitle: 'Interface Errors',
                                 filterCollapsible: false,
                                 customController: 'Ext.Praxis.controller.payments.AccountingMasterProcess.DetailGridRowCtrl',
                                 rowActions: [
                                     {
                                         action: 'detail',
-                                        icon: 'prx-icon-image-log',
+                                        icon: 'prx-icon-docum',
                                         tooltip: 'Ver Detalle'
+                                    },
+                                    {
+                                        action: 'edit-status',
+                                        icon: 'prx-icon-prorrate',
+                                        getTip: function (_v, _meta, record) {
+                                            const st = String(record.get('STREV') || '');
+                                            if (st === '1') return 'Reversado — no editable';
+                                            if (st === '2') return 'Revisado — no editable';
+                                            return 'Cambiar status de revisión';
+                                        },
+                                        isDisabled: function (_view, _ri, _ci, _item, record) {
+                                            return String(record.get('STREV') || '') !== '0';
+                                        }
                                     },
                                     {
                                         action: 'queue',
@@ -210,16 +235,18 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDetai
                                             const modal = Ext.getCmp(DM);
                                             if (!modal) return 'Agregar a selección';
                                             const key = [record.get('BANDOC'), record.get('DATECI'), record.get('TRANCI')].join('-');
-                                            return modal.getController()._queueSet && modal.getController()._queueSet[key]
-                                                ? 'En cola para reversa' : 'Agregar a selección';
+                                            return modal.getController()._errQueueSet && modal.getController()._errQueueSet[key]
+                                                ? 'En cola para guardar' : 'Agregar a selección';
                                         },
                                         isDisabled: function (_view, _ri, _ci, _item, record) {
-                                            if (!['1', '2', '3'].includes(String(record.get('STCONT') || ''))) return true;
+                                            if (String(record.get('STREV') || '') !== '0') return true;
                                             const modal = Ext.getCmp(DM);
                                             if (!modal) return false;
                                             const ctrl = modal.getController();
-                                            const key = [record.get('BANDOC'), record.get('DATECI'), record.get('TRANCI')].join('-');
-                                            return !!(ctrl._queueSet && ctrl._queueSet[key]);
+                                            const baseKey = [record.get('BANDOC'), record.get('DATECI'), record.get('TRANCI')].join('-');
+                                            const pendingKey = baseKey + '-' + (record.get('TIPOERR') || '');
+                                            return !!(ctrl._errQueueSet && ctrl._errQueueSet[baseKey])
+                                                || !!(ctrl._pendingErrChangesMap && ctrl._pendingErrChangesMap[pendingKey]);
                                         }
                                     }
                                 ],
@@ -239,6 +266,32 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDetai
                                         emptyText: 'Bank Doc...',
                                         labelWidth: 75,
                                         width: 220
+                                    }
+                                ],
+                                tbarItems: [
+                                    {
+                                        xtype: 'button',
+                                        text: 'Mark as Reviewed (0)',
+                                        itemId: 'btn-bulk-save-errors',
+                                        hidden: true,
+                                        disabled: true,
+                                        style: 'color:#1677ff;font-weight:bold;',
+                                        handler: function () {
+                                            const ctrl = Ext.getCmp(DM) && Ext.getCmp(DM).getController();
+                                            if (ctrl) ctrl.onBulkSaveErrors();
+                                        }
+                                    },
+                                    {
+                                        xtype: 'button',
+                                        text: 'Mark as Reversed (0)',
+                                        itemId: 'btn-bulk-reverse-errors',
+                                        hidden: true,
+                                        disabled: true,
+                                        style: 'color:#c82d2d;font-weight:bold;',
+                                        handler: function () {
+                                            const ctrl = Ext.getCmp(DM) && Ext.getCmp(DM).getController();
+                                            if (ctrl) ctrl.onBulkReverseErrors();
+                                        }
                                     }
                                 ],
                                 gridColumns: {
@@ -344,6 +397,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDetai
                                         menuDisabled: true,
                                         sortable: false,
                                         renderer: function (v, meta, record) {
+                                            console.log(record.get('FILENAM'));
                                             const filename = String(record.get('FILENAM') || 'error.txt').trimEnd();
                                             if (!v) return '—';
                                             const idcont = String(record.get('IDCONT') || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
@@ -374,37 +428,28 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDetai
                 {
                     text: 'Console',
                     itemId: 'btn-console',
-                    iconCls: 'prx-icon-reload',
+                    iconCls: 'prx-icon-image-log',
                     handler: 'onConsoleClick'
                 },
                 {
                     text: 'Download ZIP',
                     itemId: 'btn-download',
                     hidden: true,
+                    iconCls: 'prx-icon-download',
                     handler: 'onDownloadZip'
                 },
                 {
                     text: 'Send SFTP',
                     itemId: 'btn-sftp',
                     hidden: true,
-                    listeners: {
-                        afterrender: 'onSftpBtnReady',
-                        mousedown: 'onSftpMouseDown',
-                        mouseup: 'onSftpCancel'
-                    }
-                },
-                {
-                    text: 'Reverse Selected (0)',
-                    itemId: 'btn-bulk-reverse',
-                    hidden: true,
-                    disabled: true,
-                    style: 'color:#c82d2d;font-weight:bold;',
-                    handler: 'onBulkReverse'
+                    iconCls: 'prx-icon-image-file',
+                    handler: 'onSftpClick'
                 },
                 {
                     text: 'Reverse',
                     itemId: 'btn-reverse',
                     hidden: true,
+                    iconCls: 'prx-icon-reload',
                     style: 'color:#c82d2d;',
                     handler: 'onReverse'
                 },

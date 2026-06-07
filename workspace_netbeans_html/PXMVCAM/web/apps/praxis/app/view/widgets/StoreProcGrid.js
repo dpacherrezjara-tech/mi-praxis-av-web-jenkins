@@ -417,6 +417,10 @@ Ext.define('Ext.Praxis.view.widgets.StoreProcGrid', {
             });
         }
 
+        if (me.tbarItems && me.tbarItems.length) {
+            Ext.each(me.tbarItems, function (item) { items.push(item); });
+        }
+
         return items;
     },
 

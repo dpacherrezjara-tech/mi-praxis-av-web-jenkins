@@ -254,10 +254,14 @@ Ext.define('Ext.Praxis.controller.widgets.StoreProcGridController', {
         // ── Layout explícito ───────────────────────────────────────────────────
         if (view.excelColumns && view.excelColumns.length > 0) {
             return Ext.Array.map(view.excelColumns, function (col) {
-                return {
+                var resolved = {
                     header:    col.header || col.text || col.dataIndex,
                     dataIndex: col.dataIndex
                 };
+                if (typeof col.formatter === 'function') {
+                    resolved.formatter = col.formatter;
+                }
+                return resolved;
             });
         }
 
