@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.miatech.praxis.generics.RecordsFilter;
@@ -27,19 +28,20 @@ import org.springframework.stereotype.Service;
 @Scope("request")
 public class GenericDAO implements GenericLogic {
 
+    private static final Pattern RESULT_SET_PATTERN = Pattern.compile("#result-set-(\\d+)");
+
     @Autowired
     private JdbcUtils jdbcUtils;
 
     @Override
     public Map<String, Object> callStoreProcedure(CallStoreFilter filter) throws Exception {
         Map<String, Object> res = new HashMap<>();
-        Map<String, Object> obj = new HashMap<>();
         Map<String, Object> outVals = new HashMap<>();
+        final Map<String, Object> obj;
         if (filter.getParams().isEmpty()) {
             obj = jdbcUtils.executeSQP(filter.getLibrary(), filter.getProcedure());
         } else {
             MapSqlParameterSource params = new MapSqlParameterSource(filter.getParams());
-            //SqlParameterSource params = 
             obj = jdbcUtils.executeSQP(filter.getLibrary(), filter.getProcedure(), params);
         }
 
@@ -59,12 +61,10 @@ public class GenericDAO implements GenericLogic {
         
         if (!obj.isEmpty()) {
             Map<Integer, List<Map<String, Object>>> sortedResults = new TreeMap<>();
-            // Expresión regular para extraer el número del result-set
-            Pattern pattern = Pattern.compile("#result-set-(\\d+)");
 
             for (Map.Entry<String, Object> entry : obj.entrySet()) {
                 if (entry.getValue() instanceof List) {
-                    Matcher matcher = pattern.matcher(entry.getKey());
+                    Matcher matcher = RESULT_SET_PATTERN.matcher(entry.getKey());
                     if (matcher.matches()) {
                         int key = Integer.parseInt(matcher.group(1)); // Extraemos el número
                         sortedResults.put(key, (List<Map<String, Object>>) entry.getValue());
@@ -112,22 +112,26 @@ public class GenericDAO implements GenericLogic {
     @Async
     @Override
     public Map<String, Object> callStoreProcedureAsync(CallStoreFilter filter) throws Exception {
-        Map<String, Object> res = new HashMap<>();
-        Map<String, Object> obj = new HashMap<>();
-        if (filter.getParams().isEmpty()) {
-            obj = jdbcUtils.executeSQP(filter.getLibrary(), filter.getProcedure());
-        } else {
-            MapSqlParameterSource params = new MapSqlParameterSource(filter.getParams());
-            //SqlParameterSource params = 
-            obj = jdbcUtils.executeSQP(filter.getLibrary(), filter.getProcedure(), params);
-        }
+        List<Map<String, Object>> rows = new ArrayList<>();
+        Map<String, Object>[] outValsRef = new Map[]{new HashMap<>()};
+        callStoreProcedureStream(filter,
+                outVals -> outValsRef[0] = outVals,
+                rows::add);
         List<List<Map<String, Object>>> listaDeResultados = new ArrayList<>();
-        for (Object value : obj.values()) {
-            if (value instanceof List) {
-                listaDeResultados.add((List<Map<String, Object>>) value);
-            }
-        }
+        listaDeResultados.add(rows);
+        Map<String, Object> res = new HashMap<>();
+        res.put("lstVals", outValsRef[0]);
         res.put("lstRs", listaDeResultados);
         return res;
+    }
+
+    @Override
+    public void callStoreProcedureStream(CallStoreFilter filter,
+                                          Consumer<Map<String, Object>> outValsConsumer,
+                                          Consumer<Map<String, Object>> rowConsumer) throws Exception {
+        MapSqlParameterSource params = filter.getParams().isEmpty()
+                ? null
+                : new MapSqlParameterSource(filter.getParams());
+        jdbcUtils.executeSQPStream(filter.getLibrary(), filter.getProcedure(), params, outValsConsumer, rowConsumer);
     }
 }

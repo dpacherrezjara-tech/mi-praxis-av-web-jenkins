@@ -1,8 +1,13 @@
 package net.miatech.praxis.controllers.widgets;
 
 import com.google.gson.Gson;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+import javax.servlet.http.HttpServletResponse;
 import net.miatech.praxis.generics.RecordsFilter;
 import net.miatech.praxis.logic.widgets.GenericLogic;
 import net.miatech.praxis.payment.dto.CallStoreFilter;
@@ -37,10 +42,40 @@ public class GenericController {
     private SpringWS ws;
 
     @RequestMapping(value = "CallStoreGet", method = RequestMethod.POST)
-    public ResponseEntity<?> CallStoreGet(@RequestBody CallStoreFilter params) throws Exception {
+    public void CallStoreGet(@RequestBody CallStoreFilter params, HttpServletResponse response) throws Exception {
         System.out.println("***** Generic - CallStoreGet *****");
         System.out.println("Parameters: " + params.getLibrary() + "." + params.getProcedure());
-        return ResponseUtils.ok(logic.callStoreProcedure(params));
+
+        response.setContentType("application/json;charset=UTF-8");
+        final OutputStreamWriter writer = new OutputStreamWriter(response.getOutputStream(), StandardCharsets.UTF_8);
+        final Gson gson = new Gson();
+        final AtomicBoolean firstRow = new AtomicBoolean(true);
+
+        logic.callStoreProcedureStream(params,
+            outVals -> {
+                try {
+                    writer.write("{\"lstVals\":");
+                    writer.write(gson.toJson(outVals));
+                    writer.write(",\"lstRs\":[[");
+                    writer.flush();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            },
+            row -> {
+                try {
+                    if (!firstRow.getAndSet(false)) {
+                        writer.write(",");
+                    }
+                    writer.write(gson.toJson(row));
+                    writer.flush();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        );
+        writer.write("]]}");
+        writer.flush();
     }
 
     @RequestMapping(value = "CallStorePost", method = RequestMethod.POST)
