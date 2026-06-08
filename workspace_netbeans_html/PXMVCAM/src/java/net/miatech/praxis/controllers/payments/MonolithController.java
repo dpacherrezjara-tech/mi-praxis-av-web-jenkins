@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.InputStream;
+import net.miatech.praxis.classes.CurrentSession;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Controlador proxy hacia el monolito mi-avianca-monolith.
@@ -28,10 +30,19 @@ import java.io.InputStream;
 @RequestMapping("/Monolith")
 @Scope("request")
 public class MonolithController {
-
+    
+    private CurrentSession session;
+    
     private static final Logger log = Logger.getLogger(MonolithController.class);
-    //private static final String BASE_URL = "http://172.31.241.200:8000";
-    private static final String BASE_URL = "http://localhost:8000";
+    private static String BASE_URL;
+    
+    @Autowired
+    public MonolithController(CurrentSession session){
+        this.session = session;
+        String environment = this.session.getPropertySession().get("DB_SERVER_DEFAULT_TYPE").toString();
+        String rutaMonolith = this.session.getPropertySession().get("RUTA_MONOLITH_" + environment).toString();
+        MonolithController.BASE_URL = rutaMonolith;
+    }
 
     // =========================================================================
     // Helpers
