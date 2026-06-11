@@ -13,4 +13,5 @@ import net.miatech.beans.Pagination;
 public class MPF292Filter {
     public Pagination page = new Pagination();
     public String IN_NUMGUIA = "";
+    public String IN_NUMFAC  = "";
 }

@@ -9,6 +9,13 @@ public class MPF291Filter {
     public String IN_CCUST  = "";
     public String IN_SFILE  = "";
 
+    // MPS573 – general search
+    public String IN_STVAL  = "";
+
+    // MPS609 – GUIAS (ARC tab)
+    public String IN_NUMGUIA = "";
+    public String IN_NUMFAC  = "";
+
     // MPS601 – link one MPF291 record to MPF295
     public String IN_AWBNO    = "";
     public String IN_NCICLO   = "";

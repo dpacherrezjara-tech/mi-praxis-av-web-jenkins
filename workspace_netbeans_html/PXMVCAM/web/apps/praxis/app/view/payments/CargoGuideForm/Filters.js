@@ -281,6 +281,72 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Filters', {
                 },
                 {
                     xtype: 'panel',
+                    id: prototype.id + '-panelMPF291',
+                    bodyStyle: 'background: transparent',
+                    border: false,
+                    hidden: true,
+                    layout: {
+                        type: 'hbox',
+                        align: 'center'
+                    },
+                    items: [
+                        {
+                            xtype: 'fieldset',
+                            title: '<span style="color:#1A4D8F;font-weight:bold;">MPF291 FILTERS</span>',
+                            width: 560,
+                            style: 'border: 1px solid #1A4D8F; padding: 8px; margin: 5px;',
+                            layout: 'hbox',
+                            items: [
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-txtSFileMPF291',
+                                    fieldLabel: 'SFILE',
+                                    labelAlign: 'left',
+                                    width: 260,
+                                    labelWidth: 40,
+                                    labelStyle: 'text-align: left; font-size: 12px;',
+                                    fieldStyle: 'text-align: center; font-size: 12px;',
+                                    maxLength: 100,
+                                    enforceMaxLength: true,
+                                    margin: '0 10 0 0',
+                                    listeners: {
+                                        specialkey: 'eventKey'
+                                    }
+                                },
+                                {
+                                    xtype: 'combo',
+                                    id: prototype.id + '-cmbStatusMPF291',
+                                    fieldLabel: 'Status',
+                                    labelStyle: 'text-align: left; font-size: 12px;',
+                                    fieldStyle: 'text-align: center; font-size: 12px;',
+                                    store: new Ext.data.SimpleStore({
+                                        fields: ['value', 'description'],
+                                        data: [
+                                            ["", "All"],
+                                            ["1", "Match"],
+                                            ["3", "Settlement Without Sales"],
+                                            ["5", "Match Manual"]
+                                        ]
+                                    }),
+                                    width: 200,
+                                    labelWidth: 40,
+                                    emptyText: 'All',
+                                    value: '',
+                                    displayField: 'description',
+                                    valueField: 'value',
+                                    queryMode: 'local',
+                                    filterPickList: true,
+                                    editable: true,
+                                    multiSelect: false,
+                                    forceSelection: true,
+                                    margin: '0 10 0 0'
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    xtype: 'panel',
                     id: prototype.id + '-panelARC',
                     bodyStyle: 'background: transparent',
                     border: false,
@@ -293,13 +359,13 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Filters', {
                             xtype: 'fieldset',
                             id: prototype.id + '-titleFieldsetARC',
                             title: '<span style="color:#1A4D8F;font-weight:bold;">FILTERS</span>',
-                            width: 280,
+                            width: 530,
                             style: 'border: 1px solid #1A4D8F; padding: 8px; margin: 5px;',
                             layout: 'hbox',
                             items: [
                                 {
                                     xtype: 'textfield',
-                                    id: prototype.id + '-txtTicket', 
+                                    id: prototype.id + '-txtTicket',
                                     fieldLabel: 'N° Ticket / Guia',
                                     labelAlign: 'left',
                                     width: 240,
@@ -307,8 +373,24 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Filters', {
                                     labelStyle: 'text-align: left; font-size: 12px;',
                                     fieldStyle: 'text-align: center; font-size: 12px;',
                                     allowBlank: false,
-                                    maxLength: 50, 
-                                    enforceMaxLength: true, 
+                                    maxLength: 50,
+                                    enforceMaxLength: true,
+                                    margin: '0 10 0 0',
+                                    listeners: {
+                                        specialkey: 'eventKey'
+                                    }
+                                },
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-txtNumFacARC',
+                                    fieldLabel: 'N° Factura Legal',
+                                    labelAlign: 'left',
+                                    width: 240,
+                                    labelWidth: 95,
+                                    labelStyle: 'text-align: left; font-size: 12px;',
+                                    fieldStyle: 'text-align: center; font-size: 12px;',
+                                    maxLength: 50,
+                                    enforceMaxLength: true,
                                     margin: '0 10 0 0',
                                     listeners: {
                                         specialkey: 'eventKey'
