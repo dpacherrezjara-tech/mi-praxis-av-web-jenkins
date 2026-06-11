@@ -114,6 +114,7 @@ Ext.util.CSS.createStyleSheet(`
                 me: '',
                 searchParams: {},
                 searchParamsbeanGraf: {},
+                searchParamsbeanGrafCASH: {},
                 paramsObtainData: {},
                 paramsDetail: {},
                 storeAdjType: {},
@@ -192,12 +193,32 @@ Ext.util.CSS.createStyleSheet(`
                                 '#BankReconciliationForm-btnBackTW': {
                                 click: this.btnBackTW_click
                                 },
+                                
                                 '#BankReconciliationForm-btnBackGraf': {
                                 click: this.btnDisplay_click
                                 },
+                                
+                                ////CASH
+                                
+                                '#BankReconciliationForm-btnBackGrafCASH': {
+                                click: this.btnDisplayCash_click
+                                },
+                                
+                                /////
+                                
+                                
                                 '#BankReconciliationForm-btnSearchGraf': {
                                 click: this.btnChangeGraf
                                 },
+                                ///CASH 
+                                
+                                '#BankReconciliationForm-btnSearchGrafCASH': {
+                                click: this.btnChangeGrafCASH
+                                },
+                                
+                                
+                                
+                                
                                 '#BankReconciliationForm-cmbDateFromYearGraf': {
                                 select: this.selectComboFromYearGraf
                                 },
@@ -209,6 +230,21 @@ Ext.util.CSS.createStyleSheet(`
                                 },
                                 '#BankReconciliationForm-cmbDateToMonthGraf': {
                                 select: this.selectComboToMonthGraf
+                                },
+                                
+                                // CASH
+                                
+                                '#BankReconciliationForm-cmbDateFromYearGrafCASH': {
+                                    select: this.selectComboFromYearGrafCASH
+                                },
+                                '#BankReconciliationForm-cmbDateToYearGrafCASH': {
+                                    select: this.selectComboToYearGrafCASH
+                                },
+                                '#BankReconciliationForm-cmbDateFromMonthGrafCASH': {
+                                    select: this.selectComboFromMonthGrafCASH
+                                },
+                                '#BankReconciliationForm-cmbDateToMonthGrafCASH': {
+                                    select: this.selectComboToMonthGrafCASH
                                 },
                         });
                 },
@@ -329,7 +365,11 @@ Ext.util.CSS.createStyleSheet(`
                 }
                 this.setStoreData();
                         this.setStoreDataGraf();
+                        this.setStoreDataGrafCASH();
                 },
+                
+                
+                
                 procesador: function () {
                 let proces = Ext.getCmp(prototype.id + '-TESTGraf');
                         if (!proces.isVisible()) {
@@ -353,6 +393,10 @@ Ext.util.CSS.createStyleSheet(`
                 onUpperValue: function (field, newValue, oldValue) {
                 field.setValue(newValue.toUpperCase());
                 },
+                
+                
+                ///HERE
+                
                 btnDisplay_click: function () {
 
                 var option = Ext.getCmp(prototype.id + '-panelGraf');
@@ -379,6 +423,45 @@ Ext.util.CSS.createStyleSheet(`
                 }
 
                 },
+                
+                //// PARA CASH
+                
+                
+                btnDisplayCash_click: function () {
+
+                console.log('ENTRO CASH');
+                        var option = Ext.getCmp(prototype.id + '-panelGrafCASH');
+                        if (option.isVisible()) {
+
+                option.setVisible(false);
+                        Ext.getCmp(prototype.id + '-panelGridDataMain').show();
+                        Ext.getCmp(prototype.id + '-contentFilter').show();
+                        Ext.getCmp(prototype.id + '-contentOptions').show();
+                        Ext.getCmp(prototype.id + '-heigGraf').setHeight(630);
+                        
+                } else {
+
+                Ext.getCmp(prototype.id + '-rbChart_IACASH').items.items[0].setValue(true);
+                        Ext.getCmp(prototype.id + '-rbChart_IACASH').checked = true;
+                        option.setVisible(true);
+                       this.setFormatParameterGrafCASH();
+
+                        Ext.getCmp(prototype.id + '-panelGridDataMain').hide();
+                        Ext.getCmp(prototype.id + '-contentFilter').hide();
+                        Ext.getCmp(prototype.id + '-contentOptions').hide();
+                        Ext.getCmp(prototype.id + '-heigGraf').setHeight(810);
+                        Ext.getCmp(prototype.id + '-rbFaseIICASH').hide();
+                        Ext.getCmp(prototype.id + '-rbFaseICASH').show();
+                        this.searchGrafLiqICASH();
+                        this.searchGrafLiqICASHDOWN();
+                }
+
+                },
+                
+                
+                //HERE 2
+                
+                
                 btnChangeGraf: function () {
 
                 this.setFormatParameterGraf();
@@ -396,6 +479,7 @@ Ext.util.CSS.createStyleSheet(`
                         this.searchGrafLiqI();
                         break;
                         case 'rbF2':
+                            
                         Ext.getCmp(prototype.id + '-rbFaseI').hide();
                         Ext.getCmp(prototype.id + '-rbFaseII').show();
                         this.searchGrafLiqII();
@@ -403,6 +487,42 @@ Ext.util.CSS.createStyleSheet(`
                 }
 
                 },
+                
+                ///////////////////////////
+                /////////////CASH
+            
+                
+                
+                btnChangeGrafCASH: function () {
+
+
+
+                this.setFormatParameterGrafCASH();
+                        Ext.getCmp(prototype.id + '-panelGridDataMain').hide();
+                        Ext.getCmp(prototype.id + '-contentFilter').hide();
+                        Ext.getCmp(prototype.id + '-contentOptions').hide();
+                        Ext.getCmp(prototype.id + '-heigGraf').setHeight(810);
+                        var valueRadio = Ext.getCmp(prototype.id + '-rbChart_IACASH').getValue().rb;
+                        switch (valueRadio) {
+                case 'rbF1':
+                        Ext.getCmp(prototype.id + '-rbFaseICASH').show();
+                        Ext.getCmp(prototype.id + '-rbFaseIICASH').hide();
+                        this.searchGrafLiqICASH();
+                        this.searchGrafLiqICASHDOWN();
+                        break;
+                        case 'rbF2':
+                        Ext.getCmp(prototype.id + '-rbFaseICASH').hide();
+                        Ext.getCmp(prototype.id + '-rbFaseIICASH').show();
+                        this.searchGrafLiqIICASH();
+                        this.searchGrafLiqIICASHDOWN();
+                        break;
+                }
+                },
+                
+                
+                /////////////
+                
+                
                 setFormatParameterGraf: function () {
                 var beanGraf = {};
                         beanGraf.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYearGraf').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonthGraf').getValue();
@@ -425,6 +545,31 @@ Ext.util.CSS.createStyleSheet(`
                                 bean: beanGraf
                         };
                 },
+                
+                
+                ////CASH
+                
+
+                setFormatParameterGrafCASH: function () {
+                    
+                    
+                var beanGraf = {};
+                        beanGraf.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYearGrafCASH').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonthGrafCASH').getValue();
+                        beanGraf.strYearFrom = Ext.getCmp(prototype.id + '-cmbDateFromYearGrafCASH').getValue();
+                        beanGraf.strMonthFrom = Ext.getCmp(prototype.id + '-cmbDateFromMonthGrafCASH').getValue();
+                        beanGraf.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYearGrafCASH').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonthGrafCASH').getValue();
+                        beanGraf.strYearTo = Ext.getCmp(prototype.id + '-cmbDateToYearGrafCASH').getValue();
+                        beanGraf.strMonthTo = Ext.getCmp(prototype.id + '-cmbDateToMonthGrafCASH').getValue();
+                        beanGraf.strFecFiltro = 'SDATE';
+                        var beanStringbeanGrafCASH = JSON.stringify(beanGraf);
+                        searchParamsbeanGrafCASH = {
+                        beanString: beanStringbeanGrafCASH,
+                                bean: beanGraf
+                        };
+                },
+                
+
+                
                 //<editor-fold defaultstate="collapsed" desc="setStoreData">
                 selectComboFromYearGraf: function (obj) {
                 var comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYearGraf');
@@ -438,6 +583,21 @@ Ext.util.CSS.createStyleSheet(`
                 comboFromMonth.setValue(comboToMonth.getValue())
                 }
                 },
+                
+                 selectComboFromYearGrafCASH: function (obj) {
+                var comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYearGrafCASH');
+                        var storeComboDataYear = win.getStoreYear2(false, obj.getValue());
+                        let comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYearGrafCASH');
+                        let comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonthGrafCASH');
+                        let comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonthGrafCASH');
+                        comboToYear.bindStore(storeComboDataYear);
+                        comboToYear.setValue(obj.getValue());
+                        if (comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue()) {
+                comboFromMonth.setValue(comboToMonth.getValue())
+                }
+                },
+                
+  
                 selectComboToYearGraf: function (obj) {
                 let comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYearGraf');
                         let comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYearGraf');
@@ -450,10 +610,34 @@ Ext.util.CSS.createStyleSheet(`
                 comboFromMonth.setValue(comboToMonth.getValue());
                 }
                 },
+    
+                  selectComboToYearGrafCASH: function (obj) {
+                let comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYearGrafCASH');
+                        let comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYearGrafCASH');
+                        let comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonthGrafCASH');
+                        let comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonthGrafCASH');
+                        if (comboToYear.getValue() < comboFromYear.getValue()) {
+                comboFromYear.setValue(comboToYear.getValue());
+                }
+                if (comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue()) {
+                comboFromMonth.setValue(comboToMonth.getValue());
+                }
+                },
+
+                
                 selectComboFromMonthGraf: function (obj) {
                 var comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonthGraf');
                         comboToMonth.setValue(obj.getValue());
                 },
+                
+                     
+                
+                selectComboFromMonthGrafCASH: function (obj) {
+                var comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonthGrafCASH');
+                        comboToMonth.setValue(obj.getValue());
+                },
+                
+
                 selectComboToMonthGraf: function (obj) {
                 var comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYearGraf');
                         var comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYearGraf');
@@ -464,6 +648,20 @@ Ext.util.CSS.createStyleSheet(`
                 }
                 }
                 },
+                
+                 selectComboToMonthGrafCASH: function (obj) {
+                var comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYearGrafCASH');
+                        var comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYearGrafCASH');
+                        var comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonthGrafCASH');
+                        if (comboFromYear.getValue() === comboToYear.getValue()) {
+                if (obj.getValue() < comboFromMonth.getValue()) {
+                comboFromMonth.setValue(obj.getValue());
+                }
+                }
+                },
+                
+
+                
                 selectComboToDayGraf: function (obj) {
 
                 var comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYearGraf');
@@ -486,6 +684,32 @@ Ext.util.CSS.createStyleSheet(`
                         Ext.getCmp(prototype.id + '-cmbDateFromMonthGraf').setValue("");
                         Ext.getCmp(prototype.id + '-cmbDateToMonthGraf').setValue("");
                 },
+                
+                
+                setStoreDataGrafCASH: function () {
+
+                var month = this.fecha.getMonth() + 1;
+                        if (month < 10) {
+                month = '0' + month;
+                }
+
+                Ext.getCmp(prototype.id + '-cmbDateFromYearGrafCASH')
+                        .bindStore(win.getStoreYear(false));
+                        Ext.getCmp(prototype.id + '-cmbDateToYearGrafCASH')
+                        .bindStore(win.getStoreYear(false));
+                        Ext.getCmp(prototype.id + '-cmbDateFromMonthGrafCASH')
+                        .bindStore(win.getStoreMonth(true));
+                        Ext.getCmp(prototype.id + '-cmbDateToMonthGrafCASH')
+                        .bindStore(win.getStoreMonth(true));
+                        Ext.getCmp(prototype.id + '-cmbDateFromYearGrafCASH')
+                        .setValue(this.fecha.getFullYear());
+                        Ext.getCmp(prototype.id + '-cmbDateToYearGrafCASH')
+                        .setValue(this.fecha.getFullYear());
+                        Ext.getCmp(prototype.id + '-cmbDateFromMonthGrafCASH')
+                        .setValue("");
+                        Ext.getCmp(prototype.id + '-cmbDateToMonthGrafCASH')
+                        .setValue("");
+                        },
                 //</editor-fold>
                 selectComboFromYear: function (obj) {
                 var comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYear');
@@ -1226,6 +1450,8 @@ Ext.util.CSS.createStyleSheet(`
                 }
                 this.btnSearch_click();
                 },
+                
+                
                 isVerifyMultiSelect: function (element){
                 let comboBox = element.getValue();
                         if (comboBox.length > 1){
@@ -1238,6 +1464,8 @@ Ext.util.CSS.createStyleSheet(`
                 let comboBox = element.getValue();
                         return comboBox.join('|');
                 },
+                
+                
                 setFormatParameter: function () {
                 var bean = {};
                         bean.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue();
@@ -1257,6 +1485,34 @@ Ext.util.CSS.createStyleSheet(`
                                 bean: bean
                         };
                 },
+                
+//                
+//                
+//                // SETFORMATPARAMETRER CASH
+//                
+//                  setFormatParameterCASH: function () {
+//                var bean = {};
+//                        bean.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYearCASH').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonthCASH').getValue();
+//                        bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYearCASH').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonthCASH').getValue();
+//                        bean.IN_CARDN1 = Ext.getCmp(prototype.id + '-txtCard1CASH').getValue();
+//                        bean.IN_CARDN2 = Ext.getCmp(prototype.id + '-txtCard2CASH').getValue();
+//                        bean.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
+//                        bean.strFecFiltro = Ext.getCmp(prototype.id + '-cmbFecFiltro').getValue();
+//                        bean.IN_TDOC = this.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbTDOC'));
+//                        console.log(Ext.getCmp(prototype.id + '-cmbTDOC').getValue(), 'combo multiple')
+//
+//
+//
+//                        var beanString = JSON.stringify(bean);
+//                        searchParams = {
+//                        beanString: beanString,
+//                                bean: bean
+//                        };
+//                },
+                
+                
+                ///////
+                
                 searchDebits: function (beanDebits) {
                 win.lblUser_toolTip("Estructura: MPF111");
                         if (me.panelActual !== '-boxDebitsData') {
@@ -1853,6 +2109,8 @@ Ext.util.CSS.createStyleSheet(`
 //            Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
                 }
                 },
+                
+                
                 searchGrafLiqI: function (obj, val) {
                 win.lblUser_toolTip("Estructura: MPF107");
                         if (me.panelActual !== '-panelGraf') {
@@ -1898,6 +2156,103 @@ Ext.util.CSS.createStyleSheet(`
                         Ext.getCmp(prototype.id + '-displayGrafSaleI').bindStore(storeGridDatas);
                 }
                 },
+                
+                
+                
+                ////////////    CASH LIQI  I GRILLA ARRIBA
+                /////////////////////
+                
+                
+                
+                searchGrafLiqICASH: function (obj, val) {
+                win.lblUser_toolTip("Estructura: MPF102 CASH");
+                        if (me.panelActual !== '-panelGrafCASH') {
+                me.panelActual = '-panelGrafCASH';
+                }
+                global.selectedChild(me.childs, prototype.id + me.panelActual);
+                        var msj = this.validateFields();
+                        if (msj !== '') {
+                global.Msg({msg: msj
+                });
+                } else {
+
+                var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
+                proxy: {
+                url: prototype.url + '/searchGrafCASH'
+                }, listeners: {
+                beforeload: function (obj) {
+                obj.proxy.extraParams = searchParamsbeanGrafCASH;
+                        Ext.getCmp(prototype.id + '-panelGrafCASH').mask('Loading...');
+                },
+                        load: function (obj) {
+                        Ext.getCmp(prototype.id + '-panelGrafCASH').unmask();
+                                if (obj.data.length === 0) {
+                        global.Msg({
+                        msg: 'Data not found.'
+                        });
+                        } else {
+                        var obj = obj.data.items[0].data;
+                        }
+                        }
+                }
+                });
+                        global.clear();
+                        Ext.getCmp(prototype.id + '-gridDataGrafLiqICASH').bindStore(storeGridDatas);
+                        Ext.getCmp(prototype.id + '-displayGrafLiqICASH').bindStore(storeGridDatas);
+
+                }
+                },
+                
+                     
+                ////////////    CASH LIQI  I GRILLA ABAJO
+                /////////////////////
+                
+                
+                
+                searchGrafLiqICASHDOWN: function (obj, val) {
+                win.lblUser_toolTip("Estructura: MPF190 CASH");
+                        if (me.panelActual !== '-panelGrafCASH') {
+                me.panelActual = '-panelGrafCASH';
+                }
+                global.selectedChild(me.childs, prototype.id + me.panelActual);
+                        var msj = this.validateFields();
+                        if (msj !== '') {
+                global.Msg({msg: msj
+                });
+                } else {
+
+                var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
+                proxy: {
+                url: prototype.url + '/searchGrafCASHDOWN'
+                }, listeners: {
+                beforeload: function (obj) {
+                obj.proxy.extraParams = searchParamsbeanGrafCASH;
+                        Ext.getCmp(prototype.id + '-panelGrafCASH').mask('Loading...');
+                },
+                        load: function (obj) {
+                        Ext.getCmp(prototype.id + '-panelGrafCASH').unmask();
+                                if (obj.data.length === 0) {
+                        global.Msg({
+                        msg: 'Data not found.'
+                        });
+                        } else {
+                        var obj = obj.data.items[0].data;
+                        }
+                        }
+                }
+                });
+                        global.clear();
+
+                        Ext.getCmp(prototype.id + '-gridDataGrafSaleICASH').bindStore(storeGridDatas);
+                        Ext.getCmp(prototype.id + '-displayGrafSaleICASH').bindStore(storeGridDatas);
+                }
+                },
+
+                
+                
+                ////////////////////
+                
+                
                 searchGrafLiqII: function (obj, val) {
                 win.lblUser_toolTip("Estructura: MPF107");
                         if (me.panelActual !== '-panelGraf') {
@@ -1943,6 +2298,116 @@ Ext.util.CSS.createStyleSheet(`
                         Ext.getCmp(prototype.id + '-displayGrafSaleII').bindStore(storeGridDatas);
                 }
                 },
+                
+                
+                
+                ////////////////////
+                /////////////////CASH FASE 2 UP 
+                
+                
+                searchGrafLiqIICASH: function (obj, val) {
+                win.lblUser_toolTip("Estructura: MPF191");
+                        if (me.panelActual !== '-panelGrafCASH') {
+                me.panelActual = '-panelGrafCASH';
+                }
+                global.selectedChild(me.childs, prototype.id + me.panelActual);
+                        this.setFormatParameter();
+                        var msj = this.validateFields();
+                        if (msj !== '') {
+                global.Msg({msg: msj
+                });
+                } else {
+
+                var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
+                proxy: {
+                url: prototype.url + '/searchMainCASHUP'
+                }, listeners: {
+                beforeload: function (obj) {
+                obj.proxy.extraParams = searchParamsbeanGrafCASH;
+                        Ext.getCmp(prototype.id + '-panelGrafCASH').mask('Loading...');
+                },
+                        load: function (obj) {
+                        Ext.getCmp(prototype.id + '-panelGrafCASH').unmask();
+                                
+                                if (obj.data.length === 0) {
+                        global.Msg({
+                        msg: 'Data not found.'
+                        });
+                        } else {
+                        var obj = obj.data.items[0].data;
+                        }
+                        }
+                }
+                });
+                        global.clear();
+                        Ext.getCmp(prototype.id + '-gridDataGrafLiqIICASH').bindStore(storeGridDatas);
+                        Ext.getCmp(prototype.id + '-displayGrafLiqIICASH').bindStore(storeGridDatas);
+                        //Ext.getCmp(prototype.id + '-gridDataGrafSaleII').bindStore(storeGridDatas);
+                        //Ext.getCmp(prototype.id + '-displayGrafSaleII').bindStore(storeGridDatas);
+                }
+                },
+                
+                
+                
+                
+                ////////////////////
+                /////////////////CASH FASE 2 DOWN
+                
+                
+                searchGrafLiqIICASHDOWN: function (obj, val) {
+                win.lblUser_toolTip("Estructura: MPF300");
+                        if (me.panelActual !== '-panelGrafCASH') {
+                me.panelActual = '-panelGrafCASH';
+                }
+                global.selectedChild(me.childs, prototype.id + me.panelActual);
+                        this.setFormatParameter();
+                        var msj = this.validateFields();
+                        if (msj !== '') {
+                global.Msg({msg: msj
+                });
+                } else {
+
+                var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
+                proxy: {
+                url: prototype.url + '/searchMainCASHDOWN'
+                }, listeners: {
+                beforeload: function (obj) {
+                obj.proxy.extraParams = searchParamsbeanGrafCASH;
+                        Ext.getCmp(prototype.id + '-panelGrafCASH').mask('Loading...');
+                },
+                        load: function (obj) {
+                        Ext.getCmp(prototype.id + '-panelGrafCASH').unmask();
+                                
+                                if (obj.data.length === 0) {
+                        global.Msg({
+                        msg: 'Data not found.'
+                        });
+                        } else {
+                        var obj = obj.data.items[0].data;
+                        }
+                        }
+                }
+                });
+                        global.clear();
+                        
+                        Ext.getCmp(prototype.id + '-gridDataGrafSaleIICASH').bindStore(storeGridDatas);
+                        Ext.getCmp(prototype.id + '-displayGrafSaleIICASH').bindStore(storeGridDatas);
+                }
+                },
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                ////////////////
+                
+                
+                
+                
                 //<editor-fold defaultstate="collapsed" desc="onGridCountry">
                 onGridCountry: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
                 me.drillDown.push(me.panelActual);

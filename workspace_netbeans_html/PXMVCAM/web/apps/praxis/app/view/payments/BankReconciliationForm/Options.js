@@ -329,11 +329,28 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Options', {
                             xtype:'button',
                             id: prototype.id+'-btnDisplay',
                             icon: 'resources/img/botones/FalseChart.png',
-                            tooltip: 'Display Charts',
+                            tooltip: 'Display Charts ',
                             listeners: {
                                 click: 'btnDisplay_click'
                             }
                         },
+                        
+                        //DISPLAY PARA CASH
+                        
+                        {
+                            xtype:'button',
+                            id: prototype.id+'-btnDisplayCash',
+                            icon: 'resources/img/botones/chart.png',
+                            tooltip: 'Display Charts CASH',
+                            listeners: {
+                                click: 'btnDisplayCash_click'
+                            }
+                        },
+                        //
+                        
+                        
+                        
+                        
                         {
                             xtype: 'button',
                             id: prototype.id + '-btnExcel',
