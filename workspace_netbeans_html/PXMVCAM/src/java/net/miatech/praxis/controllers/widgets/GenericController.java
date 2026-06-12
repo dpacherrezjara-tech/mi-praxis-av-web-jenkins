@@ -109,7 +109,7 @@ public class GenericController {
     public ResponseEntity<?> CallStorePaggin(
             @PathVariable String library,
             @PathVariable String procedure,
-            @RequestParam Map<String, Object> params) throws Exception {
+            @RequestParam Map<String, Object> params) {
         System.out.println("***** Generic - CallStorePaggin *****");
         CallStorePaggin filter = new CallStorePaggin();
         filter.setLibrary(library);
@@ -117,7 +117,12 @@ public class GenericController {
         filter.setParams(params);
 
         System.out.println("Parameters: " + library + "." + procedure);
-        return new ResponseEntity(logic.callStoreProcedurePaggin(filter), HttpStatus.OK);
+        try {
+            return new ResponseEntity(logic.callStoreProcedurePaggin(filter), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println("Error in CallStorePaggin: " + e.getMessage());
+            return new ResponseEntity(new CallStorePaggin(), HttpStatus.OK);
+        }
     }
 
     @RequestMapping(value = "CallAPIPost/{service}/{path}", method = RequestMethod.POST)

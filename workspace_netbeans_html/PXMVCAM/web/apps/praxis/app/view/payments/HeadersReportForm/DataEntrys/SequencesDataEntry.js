@@ -4,7 +4,8 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
     extend: 'Ext.window.Window',
     alias: 'widget.SequencesDataEntry',
     requires: [
-        'Ext.Praxis.controller.payments.HeadersReport.SequencesDataEntryController'
+        'Ext.Praxis.controller.payments.HeadersReport.SequencesDataEntryController',
+        'Ext.Praxis.view.widgets.StoreProcGrid'
     ],
     controller: 'SequencesDataEntryController',
     title: 'Sequences Maintenance - Form',
@@ -401,77 +402,57 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                             id: prototype.idDEsequence + '-tabSequences',
                                             items: [
                                                 {
-                                                    xtype: 'grid',
+                                                    xtype: 'storeprocgrid',
+                                                    id: prototype.idDEsequence + '-seqStoreProcGrid',
+                                                    library: 'PRAXISMP',
+                                                    storeProcedure: 'MPS577',
+                                                    autoSearch: false,
+                                                    memoryPaging: true,
+                                                    showExcelButton: true,
+                                                    showEmptyMsg: false,
+                                                    excelTitle: 'Sequences',
+                                                    height: 300,
                                                     border: false,
-                                                    id: prototype.idDEsequence + '-gridSequences',
-                                                    emptyText: 'No documents available',
-                                                    tbar: {
-                                                        xtype: 'panel',
-                                                        id: prototype.idDEsequence + '-boxSequences',
-                                                        layout: {
-                                                            type: 'hbox',
-                                                            pack: 'end'
+                                                    filterItems: [
+                                                        {
+                                                            xtype: 'textfield',
+                                                            fieldLabel: 'Reference',
+                                                            name: 'IN_REFER',
+                                                            labelWidth: 70,
+                                                            width: 200,
+                                                            maxLength: 30
                                                         },
-                                                        width: '100%',
-                                                        items: [
-                                                            {
-                                                                xtype: 'textfield',
-                                                                margin: '2 5 2 5',
-                                                                labelStyle: 'text-align:left;font-weight: bolder;',
-                                                                fieldStyle: 'text-align:center;',
-                                                                editable: true,
-                                                                fieldLabel: 'Reference',
-                                                                labelWidth: 70,
-                                                                width: 200,
-                                                                maxLength: 30,
-                                                                listeners: {
-                                                                    change: 'onChangeReference'
-                                                                }
-                                                            },
-                                                            {
-                                                                xtype: 'textfield',
-                                                                margin: '2 5 2 5',
-                                                                labelStyle: 'text-align:left;font-weight: bolder;',
-                                                                fieldStyle: 'text-align:center;',
-                                                                editable: true,
-                                                                fieldLabel: 'Bank Doc.',
-                                                                labelWidth: 80,
-                                                                width: 190,
-                                                                maxLength: 10,
-                                                                listeners: {
-                                                                    change: 'onChangeBandoc'
-                                                                }
-                                                            },
-                                                            {
-                                                                xtype: 'button',
-                                                                margin: '2 5 2 5',
-                                                                scale: 'small',
-                                                                text: 'Reject XLSX',
-                                                                id: prototype.idDEsequence + '-btn-rej-excel',
-                                                                iconCls: 'prx-icon-excel',
-                                                                listeners: {
-                                                                    click: 'onRejectByExcel'
-                                                                }
-                                                            },
-                                                            {
-                                                                xtype: 'button',
-                                                                margin: '2 5 2 5',
-                                                                scale: 'small',
-                                                                text: 'Reject All',
-                                                                id: prototype.idDEsequence + '-btn-rejectAll',
-                                                                iconCls: 'prx-icon-incomplete',
-                                                                listeners: {
-                                                                    click: 'onRejectAll'
-                                                                }
+                                                        {
+                                                            xtype: 'textfield',
+                                                            fieldLabel: 'Bank Doc.',
+                                                            name: 'IN_BANDOC',
+                                                            labelWidth: 80,
+                                                            width: 190,
+                                                            maxLength: 10
+                                                        }
+                                                    ],
+                                                    tbarItems: [
+                                                        {
+                                                            xtype: 'button',
+                                                            text: 'Reject XLSX',
+                                                            id: prototype.idDEsequence + '-btn-rej-excel',
+                                                            iconCls: 'prx-icon-excel',
+                                                            handler: function (btn) {
+                                                                btn.up('window').getController().onRejectByExcel();
                                                             }
-                                                        ]
-                                                    },
-                                                    columns: {
-                                                        defaults: {
-                                                            align: 'center',
-                                                            menuDisabled: true,
-                                                            sortable: true
                                                         },
+                                                        {
+                                                            xtype: 'button',
+                                                            text: 'Reject All',
+                                                            id: prototype.idDEsequence + '-btn-rejectAll',
+                                                            iconCls: 'prx-icon-incomplete',
+                                                            handler: function (btn) {
+                                                                btn.up('window').getController().onRejectAll(btn);
+                                                            }
+                                                        }
+                                                    ],
+                                                    gridColumns: {
+                                                        defaults: { align: 'center', menuDisabled: true, sortable: true },
                                                         items: [
                                                             { text: 'Processor', dataIndex: 'CODPRO', width: 80 },
                                                             { text: 'Bank Doc.', dataIndex: 'BANDOC', width: 120 },
@@ -488,15 +469,13 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                                                     {
                                                                         iconCls: 'prx-icon-image-trash',
                                                                         tooltip: 'Reject',
-                                                                        handler: 'onRejectRec'
+                                                                        handler: function (grid, _rowIndex, _colIndex, _item, _e, record) {
+                                                                            grid.up('window').getController().onRejectRec(record);
+                                                                        }
                                                                     }
                                                                 ]
                                                             }
                                                         ]
-                                                    },
-                                                    bbar: {
-                                                        xtype: 'pagingtoolbar',
-                                                        displayInfo: true
                                                     }
                                                 }
                                             ]
@@ -507,16 +486,19 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                             id: prototype.idDEsequence + '-tabRejections',
                                             items: [
                                                 {
-                                                    xtype: 'grid',
+                                                    xtype: 'storeprocgrid',
+                                                    id: prototype.idDEsequence + '-rejStoreProcGrid',
+                                                    library: 'PRAXISMP',
+                                                    storeProcedure: 'MPS578',
+                                                    autoSearch: false,
+                                                    memoryPaging: true,
+                                                    showExcelButton: true,
+                                                    showEmptyMsg: false,
+                                                    excelTitle: 'Rejections',
+                                                    height: 300,
                                                     border: false,
-                                                    id: prototype.idDEsequence + '-gridRejections',
-                                                    emptyText: 'No documents available',
-                                                    columns: {
-                                                        defaults: {
-                                                            align: 'center',
-                                                            menuDisabled: true,
-                                                            sortable: true
-                                                        },
+                                                    gridColumns: {
+                                                        defaults: { align: 'center', menuDisabled: true, sortable: true },
                                                         items: [
                                                             { text: 'Processor', dataIndex: 'CODPRO', width: 80 },
                                                             { text: 'Reference', dataIndex: 'REFER', width: 130 },
@@ -533,19 +515,58 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                                                                     {
                                                                         iconCls: 'prx-icon-image-trash',
                                                                         tooltip: 'Cancel Rejection',
-                                                                        handler: 'onCancelRejectRec'
+                                                                        handler: function (grid, _rowIndex, _colIndex, _item, _e, record) {
+                                                                            grid.up('window').getController().onCancelRejectRec(record);
+                                                                        }
                                                                     }
                                                                 ]
                                                             }
                                                         ]
-                                                    },
-                                                    bbar: {
-                                                        xtype: 'pagingtoolbar',
-                                                        displayInfo: true
                                                     }
                                                 }
                                             ]
                                         },
+                                        {
+                                            title: 'Received Files',
+                                            itemId: '3',
+                                            id: prototype.idDEsequence + '-tabReceivedFiles',
+                                            items: [
+                                                {
+                                                    xtype: 'storeprocgrid',
+                                                    id: prototype.idDEsequence + '-receivedFilesGrid',
+                                                    library: 'PRAXISMP',
+                                                    storeProcedure: 'MPS507',
+                                                    autoSearch: false,
+                                                    showExcelButton: true,
+                                                    showEmptyMsg: false,
+                                                    excelTitle: 'Received Files',
+                                                    pageSize: 10,
+                                                    height: 300,
+                                                    border: false,
+                                                    gridColumns: {
+                                                        defaults: { align: 'center', menuDisabled: true, sortable: true },
+                                                        items: [
+                                                            { text: 'File Name', dataIndex: 'FILENAM', flex: 1, align: 'left' },
+                                                            {
+                                                                text: 'Origin', dataIndex: 'STCAR', width: 130,
+                                                                renderer: function (v) {
+                                                                    return { I: 'Integrator SAP', W: 'Web Manual' }[v] || v || '';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: 'Status', dataIndex: 'STPRO', width: 120,
+                                                                renderer: function (v) {
+                                                                    return { S: 'SFTP', P: 'Pending Send' }[v] || v || '';
+                                                                }
+                                                            },
+                                                            { text: 'File ID', dataIndex: 'FILEID', width: 130 },
+                                                            { text: 'File Type', dataIndex: 'FILETYPE', width: 110 },
+                                                            { text: 'Rows', dataIndex: 'QTYROWS', width: 80 }
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        }
                                     ]
                                 }
                             ]
@@ -562,59 +583,38 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.SequencesDataE
                     },
                     items: [
                         {
-                            xtype: 'panel',
-                            width: '100%',
-                            margin: '2 2 2 2',
+                            xtype: 'storeprocgrid',
+                            id: prototype.idDEsequence + '-newFileSPG',
+                            library: 'PRAXISMP',
+                            storeProcedure: 'MPS579',
+                            autoSearch: false,
+                            memoryPaging: true,
+                            showExcelButton: false,
+                            showEmptyMsg: false,
+                            height: 200,
                             border: false,
-                            layout: {
-                                type: 'vbox',
-                                align: 'center'
-                            },
-                            items: [
-                                {
-                                    xtype: 'grid',
-                                    width: '100%',
-                                    border: false,
-                                    id: prototype.idDEsequence + '-newFileGrid',
-                                    emptyText: 'No documents available',
-                                    columns: {
-                                        defaults: {
-                                            align: 'center',
-                                            menuDisabled: true,
-                                            sortable: true
-                                        },
-                                        items: [
-                                            { text: 'New Header', dataIndex: 'HEADER', width: 150 },
-                                            { text: 'New File Name', dataIndex: 'FILENAM', flex: 1 },
-                                            {
-                                                text: 'Origin', dataIndex: 'STCAR', width: 100,
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    const opts = {
-                                                        'I': 'Integrator SAP',
-                                                        'W': 'Web Manual'
-                                                    };
-                                                    return opts[value] || 'Other';
-                                                }
-
-                                            },
-                                            {
-                                                text: 'Status', dataIndex: 'STPRO', width: 100,
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    const opts = {
-                                                        'S': 'SFTP',
-                                                        'P': 'Pending Send'
-                                                    };
-                                                    return opts[value] || 'Error';
-                                                }
-
-                                            }
-                                        ]
+                            gridColumns: {
+                                defaults: { align: 'center', menuDisabled: true, sortable: true },
+                                items: [
+                                    { text: 'New Header', dataIndex: 'HEADER', width: 150 },
+                                    { text: 'New File Name', dataIndex: 'FILENAM', flex: 1 },
+                                    {
+                                        text: 'Origin', dataIndex: 'STCAR', width: 100,
+                                        renderer: function (v) {
+                                            return { I: 'Integrator SAP', W: 'Web Manual' }[v] || 'Other';
+                                        }
+                                    },
+                                    {
+                                        text: 'Status', dataIndex: 'STPRO', width: 100,
+                                        renderer: function (v) {
+                                            return { S: 'SFTP', P: 'Pending Send' }[v] || 'Error';
+                                        }
                                     }
-                                }
-                            ]
+                                ]
+                            }
                         }
                     ]
-                }
+                },
             ]
         }
     ],

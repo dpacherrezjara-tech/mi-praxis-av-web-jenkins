@@ -172,6 +172,9 @@ Ext.define('Ext.Praxis.view.widgets.StoreProcGrid', {
     /** @cfg {Boolean} showExcelButton Muestra botón de descarga Excel */
     showExcelButton: true,
 
+    /** @cfg {Boolean} showEmptyMsg Muestra el mensaje "No records found" cuando el grid no tiene datos */
+    showEmptyMsg: true,
+
     /**
      * @cfg {Array} excelColumns
      * Layout de columnas para la descarga Excel.
@@ -310,7 +313,8 @@ Ext.define('Ext.Praxis.view.widgets.StoreProcGrid', {
                 loadMask: true,
                 stripeRows: true,
                 enableTextSelection: true,
-                markDirty: false
+                markDirty: false,
+                emptyText: me.showEmptyMsg ? 'No data to display' : ''
             },
             columnLines: true,
             tbar: {
@@ -328,7 +332,7 @@ Ext.define('Ext.Praxis.view.widgets.StoreProcGrid', {
                 itemId: 'pagingBar',
                 displayInfo: true,
                 displayMsg: 'Records {0} - {1} of {2}',
-                emptyMsg: 'No records found',
+                emptyMsg: me.showEmptyMsg ? 'No records found' : '',
                 pageSize: me.pageSize
             },
             listeners: {

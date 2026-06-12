@@ -81,10 +81,10 @@ Ext.define('Ext.Praxis.controller.widgets.StoreProcGridController', {
             // are not lost when the grid also has filterItems.
             var initParams = Ext.apply(Ext.apply({}, view.storeParams || {}), me.getFilterParams());
             me._buildStore(initParams);
-        } else if (!hasFilter) {
+        } else if (!hasFilter && view.autoSearch !== false) {
             me._buildStore(view.storeParams || {});
         }
-        // Si hay filterItems pero autoSearch === false, espera que el usuario presione Search
+        // autoSearch === false detiene la carga automática sin importar si hay filterItems o no
 
         // Notificar al controller custom
         if (me.customCtrl && Ext.isFunction(me.customCtrl.onWidgetReady)) {

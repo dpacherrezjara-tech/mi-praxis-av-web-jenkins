@@ -57,10 +57,12 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Grids.SequencesGrid', {
                 text: 'Acc.<br>Period', dataIndex: 'FCONT', width: 80,
                 renderer: function (v) { return v ? v.slice(0, 6) : v; }
             },
-            { text: 'Date<br>Send',       dataIndex: 'FSEND',          width: 80  },
-            { text: 'Praxis ID',          dataIndex: 'IDCONT',         width: 200 },
-            { text: 'Qty.<br>Sequence',   dataIndex: 'TOT_SECUENCIAS', width: 100 },
-            { text: 'Rej.<br>Sequence',   dataIndex: 'REJ_SECUENCIAS', width: 100 }
+            { text: 'Date<br>Send', dataIndex: 'DATETIME_SEND', width: 120 },
+            { text: 'Date<br>Received', dataIndex: 'DATETIME_SAP', width: 120 },
+            { text: 'Qty<br>Responses', dataIndex: 'QTY_SAP', width: 80 },
+            { text: 'Praxis ID', dataIndex: 'IDCONT', width: 200 },
+            { text: 'Qty.<br>Sequence', dataIndex: 'TOT_SECUENCIAS', width: 100 },
+            { text: 'Rej.<br>Sequence', dataIndex: 'REJ_SECUENCIAS', width: 100 }
         ]
     }
 });
