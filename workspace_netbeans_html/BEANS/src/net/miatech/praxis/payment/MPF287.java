@@ -40,7 +40,8 @@ public class MPF287 {
     public double TOTAL_AMTMANUAL = 0;
     public double TOTAL_AMTPEND   = 0;
 
-    // ── MPS658 detail fields ─────────────────────────────────────────────────
+    // ── MPS658 / MPS662 detail fields ────────────────────────────────────────
+    public String NOMBRE1      = "";
     public String SDATE        = "";
     public String SCURRENCY    = "";
     public String SCOUNTRY     = "";

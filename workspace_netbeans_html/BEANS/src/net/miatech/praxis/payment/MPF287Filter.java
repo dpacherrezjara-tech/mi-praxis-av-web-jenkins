@@ -22,5 +22,6 @@ public class MPF287Filter {
     public String IN_SCURRENCY  = "";
     public String IN_STVAL      = "";
     public String IN_BANDOC     = "";
+    public String IN_NOMBRE1    = "";
 
 }

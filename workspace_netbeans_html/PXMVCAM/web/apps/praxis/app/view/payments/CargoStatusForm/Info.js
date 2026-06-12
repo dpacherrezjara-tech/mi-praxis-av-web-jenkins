@@ -534,7 +534,7 @@ Ext.define('Ext.Praxis.view.payments.CargoStatusForm.Info', {
                                                             return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                            var store = Ext.getCmp(prototype.id + '-gridBoxDetBank').getStore();
+                                                            var store = Ext.getCmp(prototype.id + '-gridBoxDetCartera').getStore();
                                                             var items = store.getData().items;
 
                                                             var data = items[items.length - 1].data;
@@ -552,7 +552,7 @@ Ext.define('Ext.Praxis.view.payments.CargoStatusForm.Info', {
                                                             return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                            var store = Ext.getCmp(prototype.id + '-gridBoxDetBank').getStore();
+                                                            var store = Ext.getCmp(prototype.id + '-gridBoxDetCartera').getStore();
                                                             var items = store.getData().items;
 
                                                             var data = items[items.length - 1].data;
@@ -852,7 +852,7 @@ Ext.define('Ext.Praxis.view.payments.CargoStatusForm.Info', {
                                 {
                                     xtype: 'treepanel',
                                     id: prototype.id + '-treeDataDetailARC',
-                                    width: 2532,
+                                    width: 2085,
                                     hidden: false,
                                     columnLines: true,
                                     useArrows: true,
@@ -869,7 +869,7 @@ Ext.define('Ext.Praxis.view.payments.CargoStatusForm.Info', {
                                                 align: 'center',
                                                 width: 100,
                                                 renderer: function (value, metaData) {
-                                                    metaData.style = "text-align:center; color:#057ECB; text-decoration: underline; cursor: pointer;";
+                                                    metaData.style = "text-align:center; ";
                                                     return '<b>' + (value || '') + '</b>';
                                                 },
                                             },
@@ -878,11 +878,13 @@ Ext.define('Ext.Praxis.view.payments.CargoStatusForm.Info', {
                                                 dataIndex: 'NOMBRE1',
                                                 style: 'background:#c9daf5;color:black !important',
                                                 align: 'center',
-                                                width: 120,
+                                                width: 70,
                                                 renderer: function (value, metaData) {
-                                                    metaData.style = "text-align:left;";
-                                                    return value || '';
-                                                }
+                                                    metaData.style = "text-align:center; color:#057ECB; text-decoration: underline; cursor: pointer;";
+
+                                                    return '<b>' + (value || 'Group') + '</b>';
+                                                },
+                                                listeners: {click: 'onGridDetCarteraChargue'}
                                             },
                                             {
                                                 text: '<span style="color:black;font-weight:bold;">Bank Statement Reconciliation</span>',
@@ -893,14 +895,14 @@ Ext.define('Ext.Praxis.view.payments.CargoStatusForm.Info', {
                                                         style: 'background:#F9D88C;color:black !important',
                                                         columns: [
                                                             {
-                                                                text: '<span style="color:black;font-weight:bold;">Cantidad</span>',
-                                                                dataIndex: 'VL_QTY_TOTAL', width: 100, align: 'center',
+                                                                text: '<span style="color:black;font-weight:bold;">Qty</span>',
+                                                                dataIndex: 'VL_QTY_TOTAL', width: 60, align: 'center',
                                                                 style: 'background:#F9D88C;color:black !important',
                                                                 renderer: function (value, metaData) {
                                                                     metaData.style = "text-align:right; color:#057ECB; text-decoration: underline; cursor: pointer;";
                                                                     return '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
                                                                 },
-                                                                listeners: {click: 'onGridDetBankChargue'}
+                                                                listeners: {click: 'onGridDetCarteraChargue'}
                                                             },
                                                             {
                                                                 text: '<span style="color:black;font-weight:bold;">Monto USD</span>',
@@ -919,13 +921,13 @@ Ext.define('Ext.Praxis.view.payments.CargoStatusForm.Info', {
                                                         columns: [
                                                             {
                                                                 text: '<span style="color:black;font-weight:bold;">Auto</span>',
-                                                                dataIndex: 'VL_QTY_MATCH', width: 100, align: 'center',
+                                                                dataIndex: 'VL_QTY_MATCH', width: 60, align: 'center',
                                                                 style: 'background:#D1FBD2;color:black !important',
                                                                 renderer: function (value, metaData) {
                                                                     metaData.style = "text-align:right; color:#057ECB; text-decoration: underline; cursor: pointer;";
                                                                     return '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
                                                                 },
-                                                                listeners: {click: 'onGridDetBankChargue'}
+                                                               listeners: {click: 'onGridDetCarteraChargue'}
                                                             },
                                                             {
                                                                 text: '<span style="color:black;font-weight:bold;">%</span>',
@@ -938,13 +940,13 @@ Ext.define('Ext.Praxis.view.payments.CargoStatusForm.Info', {
                                                             },
                                                             {
                                                                 text: '<span style="color:black;font-weight:bold;">Manual</span>',
-                                                                dataIndex: 'VL_QTY_MANUAL', width: 100, align: 'center',
+                                                                dataIndex: 'VL_QTY_MANUAL', width: 60, align: 'center',
                                                                 style: 'background:#D1FBD2;color:black !important',
                                                                 renderer: function (value, metaData) {
                                                                     metaData.style = "text-align:right; color:#057ECB; text-decoration: underline; cursor: pointer;";
                                                                     return '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
                                                                 },
-                                                                listeners: {click: 'onGridDetBankChargue'}
+                                                                listeners: {click: 'onGridDetCarteraChargue'}
                                                             },
                                                             {
                                                                 text: '<span style="color:black;font-weight:bold;">Monto USD</span>',
@@ -963,12 +965,13 @@ Ext.define('Ext.Praxis.view.payments.CargoStatusForm.Info', {
                                                         columns: [
                                                             {
                                                                 text: '<span style="color:black;font-weight:bold;"> Pago</span>',
-                                                                dataIndex: 'VL_QTY_FALTA_PAGO', width: 120, align: 'center',
+                                                                dataIndex: 'VL_QTY_FALTA_PAGO', width: 60, align: 'center',
                                                                 style: 'background:#FFA8A8;color:black !important',
                                                                 renderer: function (value, metaData) {
-                                                                    metaData.style = "text-align:right;";
+                                                                    metaData.style = "text-align:right; color:#057ECB; text-decoration: underline; cursor: pointer;";
                                                                     return '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
-                                                                }
+                                                                },
+                                                                listeners: {click: 'onGridDetCarteraChargue'}
                                                             },
                                                             {
                                                                 text: '<span style="color:black;font-weight:bold;">Monto USD</span>',
@@ -987,12 +990,13 @@ Ext.define('Ext.Praxis.view.payments.CargoStatusForm.Info', {
                                                         columns: [
                                                             {
                                                                 text: '<span style="color:black;font-weight:bold;">Factura</span>',
-                                                                dataIndex: 'VL_QTY_FALTA_FACTURA', width: 120, align: 'center',
+                                                                dataIndex: 'VL_QTY_FALTA_FACTURA', width: 60, align: 'center',
                                                                 style: 'background:#FFA8A8;color:black !important',
                                                                 renderer: function (value, metaData) {
-                                                                    metaData.style = "text-align:right;";
+                                                                    metaData.style = "text-align:right; color:#057ECB; text-decoration: underline; cursor: pointer;";
                                                                     return '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
-                                                                }
+                                                                },
+                                                                listeners: {click: 'onGridDetCarteraChargue'}
                                                             },
                                                             {
                                                                 text: '<span style="color:black;font-weight:bold;">Monto USD</span>',
@@ -1011,12 +1015,13 @@ Ext.define('Ext.Praxis.view.payments.CargoStatusForm.Info', {
                                                         columns: [
                                                             {
                                                                 text: '<span style="color:black;font-weight:bold;"> Pendiente</span>',
-                                                                dataIndex: 'VL_QTY_FACTURA_PENDIENTE', width: 120, align: 'center',
+                                                                dataIndex: 'VL_QTY_FACTURA_PENDIENTE', width: 70, align: 'center',
                                                                 style: 'background:#FFA8A8;color:black !important',
                                                                 renderer: function (value, metaData) {
-                                                                    metaData.style = "text-align:right;";
+                                                                    metaData.style = "text-align:right; color:#057ECB; text-decoration: underline; cursor: pointer;";
                                                                     return '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
-                                                                }
+                                                                },
+                                                                listeners: {click: 'onGridDetCarteraChargue'}
                                                             },
                                                             {
                                                                 text: '<span style="color:black;font-weight:bold;">Monto USD</span>',
@@ -1035,12 +1040,13 @@ Ext.define('Ext.Praxis.view.payments.CargoStatusForm.Info', {
                                                         columns: [
                                                             {
                                                                 text: '<span style="color:black;font-weight:bold;"> Pago</span>',
-                                                                dataIndex: 'VL_QTY_PENDIENTE_PAGO', width: 120, align: 'center',
+                                                                dataIndex: 'VL_QTY_PENDIENTE_PAGO', width: 60, align: 'center',
                                                                 style: 'background:#FFA8A8;color:black !important',
                                                                 renderer: function (value, metaData) {
-                                                                    metaData.style = "text-align:right;";
+                                                                    metaData.style = "text-align:right; color:#057ECB; text-decoration: underline; cursor: pointer;";
                                                                     return '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
-                                                                }
+                                                                },
+                                                                listeners: {click: 'onGridDetCarteraChargue'}
                                                             },
                                                             {
                                                                 text: '<span style="color:black;font-weight:bold;">Monto USD</span>',
@@ -1059,12 +1065,13 @@ Ext.define('Ext.Praxis.view.payments.CargoStatusForm.Info', {
                                                         columns: [
                                                             {
                                                                 text: '<span style="color:black;font-weight:bold;"> en Libera</span>',
-                                                                dataIndex: 'VL_QTY_NO_ESTA_EN_LIBERA', width: 120, align: 'center',
+                                                                dataIndex: 'VL_QTY_NO_ESTA_EN_LIBERA', width: 70, align: 'center',
                                                                 style: 'background:#FFA8A8;color:black !important',
                                                                 renderer: function (value, metaData) {
-                                                                    metaData.style = "text-align:right;";
+                                                                    metaData.style = "text-align:right; color:#057ECB; text-decoration: underline; cursor: pointer;";
                                                                     return '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
-                                                                }
+                                                                },
+                                                                listeners: {click: 'onGridDetCarteraChargue'}
                                                             },
                                                             {
                                                                 text: '<span style="color:black;font-weight:bold;">Monto USD</span>',
@@ -1086,9 +1093,10 @@ Ext.define('Ext.Praxis.view.payments.CargoStatusForm.Info', {
                                                                 dataIndex: 'VL_QTY_FALTA_PAGO_DIFERENCIA_EN_LIBERA', width: 130, align: 'center',
                                                                 style: 'background:#FFA8A8;color:black !important',
                                                                 renderer: function (value, metaData) {
-                                                                    metaData.style = "text-align:right;";
+                                                                    metaData.style = "text-align:right; color:#057ECB; text-decoration: underline; cursor: pointer;";
                                                                     return '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
-                                                                }
+                                                                },
+                                                                listeners: {click: 'onGridDetCarteraChargue'}
                                                             },
                                                             {
                                                                 text: '<span style="color:black;font-weight:bold;">Monto USD</span>',
@@ -1112,7 +1120,8 @@ Ext.define('Ext.Praxis.view.payments.CargoStatusForm.Info', {
                                                                 renderer: function (value, metaData) {
                                                                     metaData.style = "text-align:right; color:#057ECB; text-decoration: underline; cursor: pointer;";
                                                                     return '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
-                                                                }
+                                                                },
+                                                                listeners: {click: 'onGridDetCarteraChargue'}
                                                             },
                                                             {
                                                                 text: '<span style="color:black;font-weight:bold;">Monto USD</span>',
@@ -1134,32 +1143,36 @@ Ext.define('Ext.Praxis.view.payments.CargoStatusForm.Info', {
                                     xtype: 'panel',
                                     id: prototype.id + '-fakeSummaryARC',
                                     border: false,
-                                    width: 2530,
+                                    width: 2085,
                                     bodyStyle: 'background:#c9daf5; border-top: 1px solid #b0c4e0;',
                                     layout: {type: 'hbox', align: 'middle'},
                                     defaults: {xtype: 'label', border: false},
                                     items: [
-                                        {text: 'TOTAL', width: 220, style: 'text-align:center; font-weight:bold; color:black; font-size:11px; padding:3px 6px; background:#c9daf5;'},
-                                        {id: prototype.id + '-sum-ARCQTOTAL',           width: 100, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#F9D88C;', text: '0'},
-                                        {id: prototype.id + '-sum-ARCAMTTOTAL',         width: 120, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#F9D88C;', text: '0'},
-                                        {id: prototype.id + '-sum-ARCQMATCH',           width: 100, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#D1FBD2;', text: '0'},
-                                        {id: prototype.id + '-sum-ARCPCT',              width: 70,  style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#D1FBD2;', text: '0 %'},
-                                        {id: prototype.id + '-sum-ARCQMANUAL',          width: 100, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#D1FBD2;', text: '0'},
-                                        {id: prototype.id + '-sum-ARCAMTMATCH',         width: 120, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#D1FBD2;', text: '0'},
-                                        {id: prototype.id + '-sum-ARCFALTAPAGO',        width: 120, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#FFA8A8;', text: '0'},
-                                        {id: prototype.id + '-sum-ARCAMTFALTAPAGO',     width: 120, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#FFA8A8;', text: '0'},
-                                        {id: prototype.id + '-sum-ARCFALTAFACT',        width: 120, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#FFA8A8;', text: '0'},
-                                        {id: prototype.id + '-sum-ARCAMTFALTAFACT',     width: 120, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#FFA8A8;', text: '0'},
-                                        {id: prototype.id + '-sum-ARCFACTPEND',         width: 120, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#FFA8A8;', text: '0'},
-                                        {id: prototype.id + '-sum-ARCAMTFACTPEND',      width: 120, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#FFA8A8;', text: '0'},
-                                        {id: prototype.id + '-sum-ARCPENDPAGO',         width: 120, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#FFA8A8;', text: '0'},
-                                        {id: prototype.id + '-sum-ARCAMTPENDPAGO',      width: 120, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#FFA8A8;', text: '0'},
-                                        {id: prototype.id + '-sum-ARCNOLIB',            width: 120, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#FFA8A8;', text: '0'},
-                                        {id: prototype.id + '-sum-ARCAMTNOLIB',         width: 120, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#FFA8A8;', text: '0'},
-                                        {id: prototype.id + '-sum-ARCFALTAPAGODIF',     width: 130, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#FFA8A8;', text: '0'},
-                                        {id: prototype.id + '-sum-ARCAMTFALTAPAGODIF',  width: 130, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#FFA8A8;', text: '0'},
-                                        {id: prototype.id + '-sum-ARCMATCHOBS',         width: 120, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#D1FBD2;', text: '0'},
-                                        {id: prototype.id + '-sum-ARCAMTMATCHOBS',      width: 120, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#D1FBD2;', text: '0'}
+                                        {text: 'TOTAL', width: 171, style: 'text-align:center; font-weight:bold; color:black; font-size:11px; padding:3px 6px; background:#c9daf5;'},
+                                        {id: prototype.id + '-sum-ARCQTOTAL',        width: 60, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#F9D88C;', text: '0'},
+                                        {id: prototype.id + '-sum-ARCAMTTOTAL',      width: 120, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#F9D88C;', text: '0'},
+                                        {id: prototype.id + '-sum-ARCQMATCH',        width: 60, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#D1FBD2;', text: '0'},
+                                        {id: prototype.id + '-sum-ARCPCT',           width:  70, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#D1FBD2;', text: '0 %'},
+                                        {id: prototype.id + '-sum-ARCQMANUAL',       width: 60, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#D1FBD2;', text: '0'},
+                                        {id: prototype.id + '-sum-ARCAMTMATCH',      width: 120, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#D1FBD2;', text: '0'},
+                                        {id: prototype.id + '-sum-ARCFALTAPAGO',     width: 60, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#FFA8A8;', text: '0'},
+                                        {id: prototype.id + '-sum-ARCAMTFALTAPAGO',  width: 120, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#FFA8A8;', text: '0'},
+                                        {id: prototype.id + '-sum-ARCFALTAFACT',     width: 60, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#FFA8A8;', text: '0'},
+                                        {id: prototype.id + '-sum-ARCAMTFALTAFACT',  width: 120, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#FFA8A8;', text: '0'},
+                                        
+                                        {id: prototype.id + '-sum-ARCFACTPEND',      width: 70, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#FFA8A8;', text: '0'},
+                                        {id: prototype.id + '-sum-ARCAMTFACTPEND',   width: 60, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#FFA8A8;', text: '0'},
+                                        
+                                        {id: prototype.id + '-sum-ARCPENDPAGO',      width: 120, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#FFA8A8;', text: '0'},
+                                        {id: prototype.id + '-sum-ARCAMTPENDPAGO',   width: 120, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#FFA8A8;', text: '0'},
+                                        
+                                        {id: prototype.id + '-sum-ARCNOLIB',         width: 70, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#FFA8A8;', text: '0'},
+                                        {id: prototype.id + '-sum-ARCAMTNOLIB',      width: 120, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#FFA8A8;', text: '0'},
+                                       
+                                        {id: prototype.id + '-sum-ARCFALTAPAGODIF',  width: 130, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#FFA8A8;', text: '0'},
+                                        {id: prototype.id + '-sum-ARCAMTFALTAPAGODIF', width: 130, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#FFA8A8;', text: '0'},
+                                        {id: prototype.id + '-sum-ARCMATCHOBS',      width: 120, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#D1FBD2;', text: '0'},
+                                        {id: prototype.id + '-sum-ARCAMTMATCHOBS',   width: 120, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 4px; background:#D1FBD2;', text: '0'}
                                     ]
                                 },
                                 {
@@ -1257,6 +1270,239 @@ Ext.define('Ext.Praxis.view.payments.CargoStatusForm.Info', {
                                                     '</div>'
                                         }
                                     ]
+                                }
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            border: false,
+                            width: 1152,
+                            id: prototype.id + '-boxDetCartera',
+                            bodyStyle: 'background-color: #F4F7FD;',
+                            padding: '1',
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridBoxDetCartera',
+                                    width: 1155,
+                                    columnLines: true,
+                                    features: [{
+                                            ftype: 'summary'
+                                        }],
+                                    viewConfig: {enableTextSelection: true},
+                                    columns: {
+                                        defaults: {menuDisabled: true, sortable: true, align: 'center'},
+                                        items: [
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Detail</span>',
+                                                style: 'background:#c9daf5;color:black !important',
+                                                columns: [
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">RN</span>',
+                                                        dataIndex: 'RN',
+                                                        style: 'background:#c9daf5;color:black !important',
+                                                        align: 'center',
+                                                        width: 50,
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            return '<b>' + value + '</b>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            metaData.style = "background:#c9daf5;color:black !important;text-align:center;";
+                                                            return '<b></b>';
+                                                        },
+                                                    },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Country</span>',
+                                                        dataIndex: 'SCOUNTRY',
+                                                        style: 'background:#c9daf5;color:black !important',
+                                                        align: 'center',
+                                                        width: 80,
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            metaData.style = "background:#c9daf5;color:black !important;text-align:center;";
+                                                            return '<b></b>';
+                                                        },
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            return '<b>' + value + '</b>';
+                                                        },
+                                                    },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Doctype</span>',
+                                                        dataIndex: 'descTDOC',
+                                                        style: 'background:#c9daf5;color:black !important',
+                                                        align: 'center',
+                                                        width: 80,
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            metaData.style = "background:#c9daf5;color:black !important;text-align:center;";
+                                                            return '<b></b>';
+                                                        },
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            return '<b>' + value + '</b>';
+                                                        },
+                                                    },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Status</span>',
+                                                        dataIndex: 'descSTVAL',
+                                                        style: 'background:#c9daf5;color:black !important',
+                                                        align: 'center',
+                                                        width: 160,
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            metaData.style = "background:#c9daf5;color:black !important;text-align:center;";
+                                                            return '<b></b>';
+                                                        },
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            return '<b>' + value + '</b>';
+                                                        },
+                                                    },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Merchant</span>',
+                                                        dataIndex: 'MERCHAND',
+                                                        style: 'background:#c9daf5;color:black !important',
+                                                        align: 'center',
+                                                        width: 100,
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            metaData.style = "background:#c9daf5;color:black !important;text-align:center;";
+                                                            return '<b></b>';
+                                                        },
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            return '<b>' + value + '</b>';
+                                                        },
+                                                    },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Bandoc</span>',
+                                                        dataIndex: 'BANDOC',
+                                                        style: 'background:#c9daf5;color:black !important',
+                                                        align: 'center',
+                                                        width: 100,
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            metaData.style = "background:#c9daf5;color:black !important;text-align:center;";
+                                                            return '<b></b>';
+                                                        },
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            return '<b>' + value + '</b>';
+                                                        },
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Conciliacion - Fase I</span>',
+                                                style: 'background:#c9daf5;color:black !important',
+                                                columns: [
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Abono Date</span>',
+                                                        dataIndex: 'VALDATE',
+                                                        style: 'background:#c9daf5;color:black !important',
+                                                        align: 'center',
+                                                        width: 100,
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            return '<b>' + value + '</b>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            metaData.style = "background:#c9daf5;color:black !important;text-align:center;";
+                                                            return '<b></b>';
+                                                        },
+                                                    },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Currency</span>',
+                                                        dataIndex: 'SCURRENCY',
+                                                        style: 'background:#c9daf5;color:black !important',
+                                                        align: 'center',
+                                                        width: 80,
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            return '<b>' + value + '</b>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            metaData.style = "background:#c9daf5;color:black !important;text-align:center;";
+                                                            return '<b></b>';
+                                                        },
+                                                    },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Neto EECC</span>',
+                                                        dataIndex: 'NETO', width: 120, align: 'center',
+                                                        style: 'background:#c9daf5;color:black !important',
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:right";
+                                                            return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var store = Ext.getCmp(prototype.id + '-gridBoxDetCartera').getStore();
+                                                            var items = store.getData().items;
+
+                                                            var data = items[items.length - 1].data;
+
+                                                            metaData.style = 'text-align:right; background:#c9daf5;color:black !important ';
+                                                            return '<b>' + Ext.util.Format.number(data.SUM_NETO, '0,000.00') + '</b>';
+                                                        },
+                                                    },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Neto Settlement</span>',
+                                                        dataIndex: 'NETOC', width: 120, align: 'center',
+                                                        style: 'background:#c9daf5;color:black !important',
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:right";
+                                                            return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var store = Ext.getCmp(prototype.id + '-gridBoxDetCartera').getStore();
+                                                            var items = store.getData().items;
+
+                                                            var data = items[items.length - 1].data;
+
+                                                            metaData.style = 'text-align:right; background:#c9daf5;color:black !important ';
+                                                            return '<b>' + Ext.util.Format.number(data.SUM_NETOC, '0,000.00') + '</b>';
+                                                        },
+                                                    },
+                                                ]
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Qty</span>',
+                                                style: 'background:#c9daf5;color:black !important',
+                                                columns: [
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Sett.</span>',
+                                                        dataIndex: 'QTYTRAN1',
+                                                        style: 'background:#c9daf5;color:black !important',
+                                                        align: 'center',
+                                                        width: 80,
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:right;";
+                                                            return '<b>' + value + '</b>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            metaData.style = "background:#c9daf5;color:black !important;text-align:center;";
+                                                            return '<b></b>';
+                                                        },
+                                                    },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Pen. Days</span>',
+                                                        dataIndex: 'PENDINGDAYS',
+                                                        style: 'background:#c9daf5;color:black !important',
+                                                        align: 'center',
+                                                        width: 80,
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center;";
+                                                            return '<b>' + value + '</b>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            metaData.style = "background:#c9daf5;color:black !important;text-align:center;";
+                                                            return '<b></b>';
+                                                        },
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
                                 }
                             ]
                         },

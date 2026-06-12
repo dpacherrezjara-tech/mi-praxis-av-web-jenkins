@@ -580,6 +580,142 @@ public class CargoStatusDAO {
         return lstData;
     }
 
+    public List<MPF287> loadMPS662(MPF287Filter filter) throws Exception {
+
+        List<MPF287> lstData = new ArrayList<>();
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        HashMap<String, String> hmPaymet = new HashMap<>();
+        hmPaymet.put("E", "Payment");
+        hmPaymet.put("T", "Invoice");
+        Connection cnx = null;
+
+        HashMap<String, String> hmDescEstados = new HashMap<String, String>();
+        hmDescEstados.put("1", "MATCH");
+        hmDescEstados.put("2", "FALTA PAGO");
+        hmDescEstados.put("3", "FALTA FACTURA");
+        hmDescEstados.put("4", "FACTURA PENDIENTE");
+        hmDescEstados.put("5", "PENDIENTE PAGO");
+        hmDescEstados.put("6", "NO ESTA EN LIBERA");
+        hmDescEstados.put("7", "FALTA PAGO/DIFERENCIA EN LIBERA");
+        hmDescEstados.put("8", "MATCH CON OBSERVACIONES");
+
+        // MPS662: 8 IN + 4 INOUT paginacion = 12 params
+        String SQLCLL = "{CALL PRAXISMP.MPS662(?,?,?,?,?,?,?,?,?,?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL);
+
+            cstmt.setString(1, filter.IN_CCUST      == null ? "" : filter.IN_CCUST.trim());
+            cstmt.setString(2, filter.IN_SEARCH      == null ? "" : filter.IN_SEARCH.trim());
+            cstmt.setString(3, filter.IN_FECHA_FROM  == null ? "" : filter.IN_FECHA_FROM.trim());
+            cstmt.setString(4, filter.IN_FECHA_TO    == null ? "" : filter.IN_FECHA_TO.trim());
+            cstmt.setString(5, filter.IN_COUNTRY     == null ? "" : filter.IN_COUNTRY.trim());
+            cstmt.setString(6, filter.IN_SCURRENCY   == null ? "" : filter.IN_SCURRENCY.trim());
+            cstmt.setString(7, filter.IN_STVAL       == null ? "" : filter.IN_STVAL.trim());
+            cstmt.setString(8, filter.IN_NOMBRE1     == null ? "" : filter.IN_NOMBRE1.trim());
+
+            cstmt.registerOutParameter(9,  Types.INTEGER);
+            cstmt.registerOutParameter(10, Types.INTEGER);
+            cstmt.registerOutParameter(11, Types.INTEGER);
+            cstmt.registerOutParameter(12, Types.INTEGER);
+
+            cstmt.setInt(9,  filter.page.PAGNUM);
+            cstmt.setInt(10, filter.page.PAGROW);
+            cstmt.setInt(11, filter.page.TOTPAG);
+            cstmt.setInt(12, filter.page.TOTROW);
+
+            cstmt.execute();
+
+            filter.page.PAGNUM = cstmt.getInt(9);
+            filter.page.PAGROW = cstmt.getInt(10);
+            filter.page.TOTPAG = cstmt.getInt(11);
+            filter.page.TOTROW = cstmt.getInt(12);
+
+            double sumNeto = 0, sumNetoc = 0, sumLoc = 0;
+            long   sumQ1   = 0, sumQ3    = 0, sumQT  = 0;
+
+            // RS1: summary totals by currency
+            rst = cstmt.getResultSet();
+            while (rst != null && rst.next()) {
+                sumNeto  += rst.getDouble("NETO");
+                sumNetoc += rst.getDouble("NETOC");
+                sumLoc   += rst.getDouble("LOCAMOUNT2");
+                sumQ1    += rst.getLong("QTYTRAN1");
+                sumQ3    += rst.getLong("QTYTRAN3");
+                sumQT    += rst.getLong("QTYTRAS");
+            }
+            if (rst != null) rst.close();
+
+            // RS2: detail rows
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+                while (rst != null && rst.next()) {
+                    MPF287 bean = new MPF287();
+
+                    bean.RN           = rst.getLong("RN");
+                    bean.ADATE        = safeStr(rst, "ADATE");
+                    bean.SDATE        = safeStr(rst, "SDATE");
+                    bean.strFormatDate = Functions.getMonthConvert(bean.ADATE);
+                    bean.SCURRENCY    = safeStr(rst, "SCURRENCY");
+                    bean.SCOUNTRY     = safeStr(rst, "SCOUNTRY");
+                    bean.FECR         = safeStr(rst, "FECR");
+                    bean.NOMBRE1      = safeStr(rst, "NOMBRE1");
+
+                    String stval = safeStr(rst, "STVAL").trim();
+                    bean.STVAL     = stval;
+                    bean.descSTVAL = hmDescEstados.containsKey(stval) ? hmDescEstados.get(stval) : stval;
+                    String paymet  = safeStr(rst, "PAYMET").trim().toUpperCase();
+                    bean.descTDOC  = hmPaymet.containsKey(paymet) ? hmPaymet.get(paymet) : paymet;
+
+                    bean.NETO       = rst.getDouble("NETOLOC");
+                    bean.NETOC      = 0;
+                    bean.LOCAMOUNT2 = rst.getDouble("IMPORTLOC2");
+                    bean.QTYTRAN1   = 0;
+                    bean.QTYTRAN3   = 0;
+                    bean.QTYTRAS    = 0;
+
+                    bean.BANCODE    = safeStr(rst, "BANCODE");
+                    bean.SAGENT     = safeStr(rst, "SAGENT");
+                    bean.SCARDN     = safeStr(rst, "SCARDN");
+                    bean.SAUTHOC    = safeStr(rst, "SAUTHOC");
+                    bean.RED        = safeStr(rst, "RED");
+                    bean.PENDINGDAYS = rst.getLong("PENDINGDAYS");
+
+                    bean.MERCHAND   = safeStr(rst, "NOMBRE1");
+                    bean.BANDOC     = safeStr(rst, "BANDOCCAR");
+                    bean.VALDATE    = safeStr(rst, "ADATE");
+
+                    bean.SUM_NETO       = sumNeto;
+                    bean.SUM_NETOC      = sumNetoc;
+                    bean.SUM_LOCAMOUNT2 = sumLoc;
+                    bean.SUM_QTYTRAN1   = sumQ1;
+                    bean.SUM_QTYTRAN3   = sumQ3;
+                    bean.SUM_QTYTRAS    = sumQT;
+
+                    bean.page.PAGNUM = filter.page.PAGNUM;
+                    bean.page.PAGROW = filter.page.PAGROW;
+                    bean.page.TOTPAG = filter.page.TOTPAG;
+                    bean.page.TOTROW = filter.page.TOTROW;
+
+                    lstData.add(bean);
+                }
+                if (rst != null) rst.close();
+            }
+
+        } catch (Exception e) {
+            logError.error("Error en loadMPS662", e);
+            throw e;
+        } finally {
+            if (cstmt != null) { try { cstmt.close(); } catch (Exception ignore) {} }
+            if (cnx   != null) { session.getCNXIBMDB2().closeIBMDB2Connection(cnx); }
+            pasarGarbageCollector();
+        }
+        return lstData;
+    }
+
     public List<Map<String, String>> loadMPS660(MPF287Filter filter) throws Exception {
         List<Map<String, String>> lstData = new ArrayList<>();
         CallableStatement cstmt = null;
@@ -636,6 +772,7 @@ public class CargoStatusDAO {
                 row.put("MONSUC2",    safeStr(rst, "MONSUC2"));
                 row.put("DIFF",       safeStr(rst, "DIFF"));
                 row.put("POR_DIF",    safeStr(rst, "POR_DIF"));
+                row.put("COMENTARIO", safeStr(rst, "COMENTARIO"));
                 lstData.add(row);
             }
         } catch (Exception e) {

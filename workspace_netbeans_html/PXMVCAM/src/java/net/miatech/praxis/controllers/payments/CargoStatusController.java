@@ -483,7 +483,6 @@ public class CargoStatusController extends BaseController {
         }
     }
 
-    // ── Helpers para getXLSXARC ──────────────────────────────────────────────
     private String safeGet(Map<String, String> m, String key) {
         String v = m.get(key); return v == null ? "" : v;
     }
@@ -842,6 +841,59 @@ public class CargoStatusController extends BaseController {
         return new Gson().toJson(map);
     }
 
+    @RequestMapping(value = "searchDetCarteraChargue")
+    public @ResponseBody
+    String searchDetCarteraChargue(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- CargoStatus : searchDetCarteraChargue -------------");
+        map.put("success", true);
+        try {
+            List<MPF287> lst = this.getListDetCarteraChargue(request, false);
+            map.put("data",  lst);
+            map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("msg", e.getMessage());
+            logError.error("Error en searchDetCarteraChargue", e);
+        }
+        return new Gson().toJson(map);
+    }
+
+    public List<MPF287> getListDetCarteraChargue(HttpServletRequest request, Boolean bExcel) {
+
+        List<MPF287> lst = new ArrayList<>(0);
+        MPF287Filter filter;
+        Gson gson = new Gson();
+        String beanString;
+
+        try {
+            logic = new CargoStatusLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, MPF287Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START  = 0;
+            filter.page.LIMIT  = 0;
+
+            int limit = request.getParameter("limit") == null ? -1  : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0   : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadMPS662(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+
     public List<MPF287> getListDetBankChargue(HttpServletRequest request, Boolean bExcel) {
 
         List<MPF287> lst = new ArrayList<>(0);
@@ -1164,7 +1216,12 @@ public class CargoStatusController extends BaseController {
         String fileNameDownload = "Reporte_Cruces - " + Functions.getFechaActual() + ".xlsx";
 
         try {
+            System.out.println("-------------- CargoStatus : getXLSXCartera -------------");
+
+            long t0 = System.currentTimeMillis();
             List<Map<String, String>> listaData = this.getListCartera(request);
+            long t1 = System.currentTimeMillis();
+            System.out.println("-------------- getXLSXCartera : DB query (getListCartera) -> " + (t1 - t0) + " ms | rows=" + listaData.size() + " -------------");
 
             SXSSFWorkbook workbook = new SXSSFWorkbook(100);
             Sheet sheet = workbook.createSheet("Cartera");
@@ -1227,7 +1284,7 @@ public class CargoStatusController extends BaseController {
                 "Vencimiento neto", "Condiciones de pago", "Indicador CME",
                 "Clave contabiliz.", "Importe neto local", "Moneda local",
                 "Importe en moneda local", "Z_Moneda sucursal", "Importe en ML2",
-                "Mon.local 2", "Dif.", "Porcentaje Diferencia"
+                "Mon.local 2", "Dif.", "Porcentaje Diferencia", "Comentario"
             };
 
             // Keys matching DAO map population order
@@ -1239,7 +1296,7 @@ public class CargoStatusController extends BaseController {
                 "PAYMET", "FCONT", "CLSDOC", "FECBASE", "DELAYDAY",
                 "FECVENC", "CONPAY", "CME", "CLAVECONT", "NETOLOC_2",
                 "MONLOC", "IMPORTELOC", "MONSUC", "IMPORTLOC2", "MONSUC2",
-                "DIFF", "POR_DIF"
+                "DIFF", "POR_DIF", "COMENTARIO"
             };
 
             // Columns that hold numeric/decimal values (0-based indices)
@@ -1264,6 +1321,7 @@ public class CargoStatusController extends BaseController {
             sheet.setColumnWidth(13, 6500);  // Referencia Cliente
             sheet.setColumnWidth(21, 6000);  // Texto
             sheet.setColumnWidth(26, 7000);  // Demora tras vencimiento neto
+            sheet.setColumnWidth(39, 8000);  // Comentario
 
             // Equivalencias STATUS (col index 16 = STVAL)
             Map<String, String> hmStatus = new java.util.HashMap<>();
@@ -1277,6 +1335,7 @@ public class CargoStatusController extends BaseController {
             hmStatus.put("8", "MATCH CON OBSERVACIONES");
 
             // Data rows
+            long t2 = System.currentTimeMillis();
             int rowIdx = 1;
             for (Map<String, String> item : listaData) {
                 Row row = sheet.createRow(rowIdx++);
@@ -1313,6 +1372,9 @@ public class CargoStatusController extends BaseController {
                 }
             }
 
+            long t3 = System.currentTimeMillis();
+            System.out.println("-------------- getXLSXCartera : Excel render (POI write rows) -> " + (t3 - t2) + " ms -------------");
+
             response.setContentType(
                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             );
@@ -1323,6 +1385,9 @@ public class CargoStatusController extends BaseController {
 
             workbook.write(response.getOutputStream());
             workbook.dispose();
+
+            long t4 = System.currentTimeMillis();
+            System.out.println("-------------- getXLSXCartera : TOTAL -> " + (t4 - t0) + " ms -------------");
 
         } catch (Exception e) {
             throw new SpringException(e);

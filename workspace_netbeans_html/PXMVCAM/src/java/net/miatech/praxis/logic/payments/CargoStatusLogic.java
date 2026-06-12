@@ -71,4 +71,8 @@ public class CargoStatusLogic {
         return CargoStatusDAO.loadMPS661(filter);
     }
 
+    public List<MPF287> loadMPS662(MPF287Filter filter) throws Exception {
+        return CargoStatusDAO.loadMPS662(filter);
+    }
+
 }

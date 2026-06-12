@@ -72,6 +72,15 @@ Ext.define('Ext.Praxis.controller.payments.CargoStatus.CargoStatusController', {
             '#CargoStatusForm-cmbDateFromDay': {
                 select: this.selectComboFromDay
             },
+            '#CargoStatusForm-cmbDateToYear': {
+                select: function (obj) { Ext.getCmp(prototype.id + '-cmbDateToYearARC').setValue(obj.getValue()); Ext.getCmp(prototype.id + '-cmbDateToYearICCS').setValue(obj.getValue()); }
+            },
+            '#CargoStatusForm-cmbDateToMonth': {
+                select: function (obj) { Ext.getCmp(prototype.id + '-cmbDateToMonthARC').setValue(obj.getValue()); Ext.getCmp(prototype.id + '-cmbDateToMonthICCS').setValue(obj.getValue()); }
+            },
+            '#CargoStatusForm-cmbDateToDay': {
+                select: function (obj) { Ext.getCmp(prototype.id + '-cmbDateToDayARC').setValue(obj.getValue()); Ext.getCmp(prototype.id + '-cmbDateToDayICCS').setValue(obj.getValue()); }
+            },
             '#CargoStatusForm-cmbDateFromYearARC': {
                 select: this.selectComboFromYearARC
             },
@@ -81,6 +90,15 @@ Ext.define('Ext.Praxis.controller.payments.CargoStatus.CargoStatusController', {
             '#CargoStatusForm-cmbDateFromDayARC': {
                 select: this.selectComboFromDayARC
             },
+            '#CargoStatusForm-cmbDateToYearARC': {
+                select: function (obj) { Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(obj.getValue()); Ext.getCmp(prototype.id + '-cmbDateToYearICCS').setValue(obj.getValue()); }
+            },
+            '#CargoStatusForm-cmbDateToMonthARC': {
+                select: function (obj) { Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue(obj.getValue()); Ext.getCmp(prototype.id + '-cmbDateToMonthICCS').setValue(obj.getValue()); }
+            },
+            '#CargoStatusForm-cmbDateToDayARC': {
+                select: function (obj) { Ext.getCmp(prototype.id + '-cmbDateToDay').setValue(obj.getValue()); Ext.getCmp(prototype.id + '-cmbDateToDayICCS').setValue(obj.getValue()); }
+            },
             '#CargoStatusForm-cmbDateFromYearICCS': {
                 select: this.selectComboFromYearICCS
             },
@@ -89,6 +107,15 @@ Ext.define('Ext.Praxis.controller.payments.CargoStatus.CargoStatusController', {
             },
             '#CargoStatusForm-cmbDateFromDayICCS': {
                 select: this.selectComboFromDayICCS
+            },
+            '#CargoStatusForm-cmbDateToYearICCS': {
+                select: function (obj) { Ext.getCmp(prototype.id + '-cmbDateToYear').setValue(obj.getValue()); Ext.getCmp(prototype.id + '-cmbDateToYearARC').setValue(obj.getValue()); }
+            },
+            '#CargoStatusForm-cmbDateToMonthICCS': {
+                select: function (obj) { Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue(obj.getValue()); Ext.getCmp(prototype.id + '-cmbDateToMonthARC').setValue(obj.getValue()); }
+            },
+            '#CargoStatusForm-cmbDateToDayICCS': {
+                select: function (obj) { Ext.getCmp(prototype.id + '-cmbDateToDay').setValue(obj.getValue()); Ext.getCmp(prototype.id + '-cmbDateToDayARC').setValue(obj.getValue()); }
             },
             '#CargoStatusForm-btnGenerarCartera': {
                 click: this.btnGenerarCartera_click
@@ -368,37 +395,6 @@ Ext.define('Ext.Praxis.controller.payments.CargoStatus.CargoStatusController', {
         Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
         this.getPaggin();
     },
-    setFormatParameterDetBank: function () {
-        me.bean = {};
-
-        // Fecha con día incluido (habilitado solo en Detail)
-        me.bean.IN_FECHA_FROM = me.buildDate(
-                Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue(),
-                Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue(),
-                Ext.getCmp(prototype.id + '-cmbDateFromDay').getValue()
-                );
-
-        me.bean.IN_FECHA_TO = me.buildDate(
-                Ext.getCmp(prototype.id + '-cmbDateToYear').getValue(),
-                Ext.getCmp(prototype.id + '-cmbDateToMonth').getValue(),
-                Ext.getCmp(prototype.id + '-cmbDateToDay').getValue()
-                );
-
-        me.bean.IN_CCUST     = Ext.getCmp(prototype.id + '-typeSociety').getValue()   || '';
-        me.bean.IN_COUNTRY   = Ext.getCmp(prototype.id + '-cmbCountry').getValue()    || '';
-        me.bean.IN_SCURRENCY = Ext.getCmp(prototype.id + '-cmbCurrency').getValue()   || '';
-        me.bean.IN_SEARCH    = Ext.getCmp(prototype.id + '-cmbInputDate').getValue()  || '';
-        me.bean.IN_STVAL     = Ext.getCmp(prototype.id + '-cmbStatusCash').getValue() || '';
-        me.bean.IN_BANDOC    = Ext.getCmp(prototype.id + '-txtBANDOCCash').getValue() || '';
-
-        var beanString = JSON.stringify(me.bean);
-        searchParams = {
-            bean: me.bean,
-            beanString: beanString
-        };
-
-        console.log(searchParams, 'searchParams [DetBank]');
-    },
     setGridDataDetBank: function () {
         me.detBankMode = 'statement';
         win.lblUser_toolTip("Estructura: MPS659");
@@ -562,8 +558,10 @@ Ext.define('Ext.Praxis.controller.payments.CargoStatus.CargoStatusController', {
                             var V_AMTFPEND = 0, V_AMTPP = 0, V_AMTNL = 0, V_AMTFPD = 0, V_AMTMO = 0;
                             var children = [];
 
+                            var parentADATE = '';
                             Ext.Array.each(lstData, function (det) {
                                 if (det.strFormatDate !== mes) { return; }
+                                if (!parentADATE && det.ADATE) { parentADATE = det.ADATE.substring(0, 6); }
                                 var dqTotal   = parseInt(det.VL_QTY_TOTAL)  || 0;
                                 var dqMatch   = parseInt(det.VL_QTY_MATCH)  || 0;
                                 var dqManual  = parseInt(det.VL_QTY_MANUAL) || 0;
@@ -587,7 +585,7 @@ Ext.define('Ext.Praxis.controller.payments.CargoStatus.CargoStatusController', {
                                 V_AMTFPD    += parseFloat(det.VL_AMT_FALTA_PAGO_DIFERENCIA_EN_LIBERA) || 0;
                                 V_AMTMO     += parseFloat(det.VL_AMT_MATCH_CON_OBSERVACIONES)         || 0;
                                 children.push({
-                                    strFormatDate: '', NOMBRE1: det.NOMBRE1,
+                                    strFormatDate: '', NOMBRE1: det.NOMBRE1, ADATE: det.ADATE,
                                     VL_QTY_TOTAL: dqTotal, VL_QTY_MATCH: dqMatch, VL_QTY_MANUAL: dqManual,
                                     PCT_PROCESADO: dqTotal > 0 ? ((dqMatch + dqManual) * 100 / dqTotal) : 0,
                                     VL_QTY_PEND: dqPend,
@@ -612,7 +610,7 @@ Ext.define('Ext.Praxis.controller.payments.CargoStatus.CargoStatusController', {
                             });
 
                             dataRoot.children.push({
-                                strFormatDate: mes, NOMBRE1: '',
+                                strFormatDate: mes, NOMBRE1: '', ADATE: parentADATE,
                                 VL_QTY_TOTAL: V_QTOTAL, VL_QTY_MATCH: V_QMATCH, VL_QTY_MANUAL: V_QMANUAL,
                                 PCT_PROCESADO: V_QTOTAL > 0 ? ((V_QMATCH + V_QMANUAL) * 100 / V_QTOTAL) : 0,
                                 VL_QTY_PEND: V_QPEND,
@@ -964,6 +962,11 @@ Ext.define('Ext.Praxis.controller.payments.CargoStatus.CargoStatusController', {
                 me.pagginActual = '-paggin12';
                 Ext.getCmp(prototype.id + '-panelHeight').setHeight(650);
                 break;
+            case  '-boxDetCartera':
+                Ext.getCmp(prototype.id + '-pie').setVisible(true);
+                me.pagginActual = '-paggin12';
+                Ext.getCmp(prototype.id + '-panelHeight').setHeight(650);
+                break;
         }
     },
     // <editor-fold defaultstate="collapsed" desc="Funciones para la paginacion ">
@@ -1020,16 +1023,19 @@ Ext.define('Ext.Praxis.controller.payments.CargoStatus.CargoStatusController', {
         comboToYear.bindStore(storeComboDataYear);
         comboToYear.setValue(obj.getValue());
         if (comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue()) {
-            comboFromMonth.setValue(comboToMonth.getValue())
+            comboFromMonth.setValue(comboToMonth.getValue());
         }
+        me.syncDateFilters('');
     },
     selectComboFromMonth: function (obj) {
         var comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonth');
         comboToMonth.setValue(obj.getValue());
+        me.syncDateFilters('');
     },
     selectComboFromDay: function (obj) {
         var comboToDay = Ext.getCmp(prototype.id + '-cmbDateToDay');
         comboToDay.setValue(obj.getValue());
+        me.syncDateFilters('');
     },
     selectComboFromYearARC: function (obj) {
         var comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYearARC');
@@ -1040,16 +1046,19 @@ Ext.define('Ext.Praxis.controller.payments.CargoStatus.CargoStatusController', {
         comboToYear.bindStore(storeComboDataYear);
         comboToYear.setValue(obj.getValue());
         if (comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue()) {
-            comboFromMonth.setValue(comboToMonth.getValue())
+            comboFromMonth.setValue(comboToMonth.getValue());
         }
+        me.syncDateFilters('ARC');
     },
     selectComboFromMonthARC: function (obj) {
         var comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonthARC');
         comboToMonth.setValue(obj.getValue());
+        me.syncDateFilters('ARC');
     },
     selectComboFromDayARC: function (obj) {
         var comboToDay = Ext.getCmp(prototype.id + '-cmbDateToDayARC');
         comboToDay.setValue(obj.getValue());
+        me.syncDateFilters('ARC');
     },
 
     selectComboFromYearICCS: function (obj) {
@@ -1061,16 +1070,37 @@ Ext.define('Ext.Praxis.controller.payments.CargoStatus.CargoStatusController', {
         comboToYear.bindStore(storeComboDataYear);
         comboToYear.setValue(obj.getValue());
         if (comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue()) {
-            comboFromMonth.setValue(comboToMonth.getValue())
+            comboFromMonth.setValue(comboToMonth.getValue());
         }
+        me.syncDateFilters('ICCS');
     },
     selectComboFromMonthICCS: function (obj) {
         var comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonthICCS');
         comboToMonth.setValue(obj.getValue());
+        me.syncDateFilters('ICCS');
     },
-    selectComboFromDayARC: function (obj) {
+    selectComboFromDayICCS: function (obj) {
         var comboToDay = Ext.getCmp(prototype.id + '-cmbDateToDayICCS');
         comboToDay.setValue(obj.getValue());
+        me.syncDateFilters('ICCS');
+    },
+    syncDateFilters: function (source) {
+        var groups = ['', 'ARC', 'ICCS'];
+        var fromYear  = Ext.getCmp(prototype.id + '-cmbDateFromYear'  + source).getValue();
+        var fromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonth' + source).getValue();
+        var fromDay   = Ext.getCmp(prototype.id + '-cmbDateFromDay'   + source).getValue();
+        var toYear    = Ext.getCmp(prototype.id + '-cmbDateToYear'    + source).getValue();
+        var toMonth   = Ext.getCmp(prototype.id + '-cmbDateToMonth'   + source).getValue();
+        var toDay     = Ext.getCmp(prototype.id + '-cmbDateToDay'     + source).getValue();
+        Ext.Array.each(groups, function (g) {
+            if (g === source) { return; }
+            Ext.getCmp(prototype.id + '-cmbDateFromYear'  + g).setValue(fromYear);
+            Ext.getCmp(prototype.id + '-cmbDateFromMonth' + g).setValue(fromMonth);
+            Ext.getCmp(prototype.id + '-cmbDateFromDay'   + g).setValue(fromDay);
+            Ext.getCmp(prototype.id + '-cmbDateToYear'    + g).setValue(toYear);
+            Ext.getCmp(prototype.id + '-cmbDateToMonth'   + g).setValue(toMonth);
+            Ext.getCmp(prototype.id + '-cmbDateToDay'     + g).setValue(toDay);
+        });
     },
 
     getPeriodoYYYYMM: function (strFormatDate) {
@@ -1337,9 +1367,87 @@ Ext.define('Ext.Praxis.controller.payments.CargoStatus.CargoStatusController', {
         Ext.getCmp(prototype.id + '-gridBoxDetBank').bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-paggin12').bindStore(storeGridDatas);
         this.getPaggin();
-    }
+    },
 
+    onGridDetCarteraChargue: function (column, e, row, colIndex, x, rowData) {
+        me.beanDet = {};
+        var data = rowData.data;
+        var isLeaf = data.leaf === true;
 
+        var stVal = '';
+        switch (colIndex) {
+            case 4:  stVal = '1'; break; // Auto   -> Match
+            case 6:  stVal = '1'; break; // Manual -> Match
+            case 8:  stVal = '2'; break; // Falta Pago
+            case 10: stVal = '3'; break; // Falta Factura
+            case 12: stVal = '4'; break; // Factura Pendiente
+            case 14: stVal = '5'; break; // Pendiente Pago
+            case 16: stVal = '6'; break; // No Esta en Libera
+            case 18: stVal = '7'; break; // Falta Pago / Dif en Libera
+            case 20: stVal = '8'; break; // Match con Observaciones
+            default: stVal = ''; break;  // Total o NOMBRE1 -> todos
+        }
+
+        // padre -> mes completo sin filtro de aerolinea
+        // hijo  -> mes del padre + filtro por NOMBRE1
+        var adate   = data.ADATE || '';
+        var nombre1 = isLeaf ? (data.NOMBRE1 || '') : '';
+
+        me.drillDown.push(me.panelActual);
+        me.panelActual = '-boxDetCartera';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+
+        me.beanDet.IN_CCUST       = Ext.getCmp(prototype.id + '-typeSocietyARC').getValue() || '';
+        me.beanDet.IN_STVAL       = stVal;
+        me.beanDet.IN_SEARCH      = Ext.getCmp(prototype.id + '-cmbInputDateARC').getValue() || '';
+        me.beanDet.IN_FECHA_FROM  = adate;
+        me.beanDet.IN_FECHA_TO    = adate;
+        me.beanDet.IN_COUNTRY     = Ext.getCmp(prototype.id + '-cmbCountryARC').getValue() || '';
+        me.beanDet.IN_SCURRENCY   = Ext.getCmp(prototype.id + '-cmbCurrencyARC').getValue() || '';
+        me.beanDet.IN_NOMBRE1     = nombre1;
+        me.paramsDetailCartera    = { beanString: JSON.stringify(me.beanDet) };
+        this.setGridDetCarteraChargue();
+    },
+    setGridDetCarteraChargue: function () {
+        win.lblUser_toolTip("Estructura: MPF288");
+
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+            proxy: {
+                url: prototype.url + '/searchDetCarteraChargue'
+            },
+            listeners: {
+                beforeload: function (obj) {
+                    obj.proxy.extraParams = me.paramsDetailCartera;
+                },
+                load: function (obj) {
+                    var pag = Ext.getCmp(prototype.id + '-paggin12');
+                    if (pag) {
+                        var pagData = pag.getPageData();
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                    }
+                    if (obj.data.length === 0) {
+                        global.Msg({ msg: 'Data not found.' });
+                    } else {
+                        var detGrid = Ext.getCmp(prototype.id + '-gridBoxDetCartera');
+                        var titulo = me.beanDet.IN_NOMBRE1
+                            ? me.beanDet.IN_FECHA_FROM + ' | ' + me.beanDet.IN_NOMBRE1
+                            : me.beanDet.IN_FECHA_FROM;
+                        detGrid.setTitle('<center style="font-size:12px;color:black;font-weight:bold;">' + titulo + '</center>');
+                        if (detGrid.header) {
+                            var headerEl = detGrid.header.getEl();
+                            if (headerEl) { headerEl.setStyle('background-color', '#c9daf5'); }
+                        }
+                    }
+                }
+            }
+        });
+        global.clear();
+        Ext.getCmp(prototype.id + '-gridBoxDetCartera').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin12').bindStore(storeGridDatas);
+        this.getPaggin();
+    },
 
 
 
