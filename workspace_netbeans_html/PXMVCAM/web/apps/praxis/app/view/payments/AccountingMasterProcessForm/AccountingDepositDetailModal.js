@@ -359,7 +359,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDepos
                 };
             });
 
-            await global.callStoreGet('PRAXISMP', 'SPMDP00008', {
+            await global.callStoreGet('PRAXISMP', 'MPS535', {
                 IN_IDCONT: String(row.IDCONT || ''),
                 IN_BANDOC: String(row.BANDOC || ''),
                 IN_DATECI: String(row.DATECI || ''),
@@ -385,7 +385,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDepos
     _loadData: async function () {
         const me = this;
         const row = me.rowData || {};
-        const sp = String(row.STREV || '') === '1' ? 'SPMDP00006' : 'SPMDP00007';
+        const sp = String(row.STREV || '') === '1' ? 'MPS533' : 'MPS534';
         const grid = me.down('#grid-deposit-detail');
         if (!grid) return;
 

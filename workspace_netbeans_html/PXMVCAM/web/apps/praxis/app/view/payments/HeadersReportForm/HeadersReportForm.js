@@ -11,10 +11,13 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.HeadersReportForm', {
         'Ext.Praxis.controller.payments.HeadersReport.HeadersReportController',
         'Ext.Praxis.view.payments.HeadersReportForm.Options',
         'Ext.Praxis.view.payments.HeadersReportForm.Filters',
-        'Ext.Praxis.view.payments.HeadersReportForm.Grids.HeadersGrid',
+        'Ext.Praxis.view.payments.HeadersReportForm.FiltersIntegrator',
         'Ext.Praxis.view.payments.HeadersReportForm.Grids.DayPilotPanel',
+        'Ext.Praxis.view.widgets.StoreProcGrid',
+        'Ext.Praxis.view.payments.HeadersReportForm.Grids.HeadersGrid',
         'Ext.Praxis.view.payments.HeadersReportForm.Grids.SequencesGrid',
-        'Ext.Praxis.view.payments.HeadersReportForm.FiltersIntegrator'
+        'Ext.Praxis.view.payments.HeadersReportForm.Grids.HeaderIntegratorGrid',
+        'Ext.Praxis.view.payments.HeadersReportForm.DataEntrys.IntegratorDetailModal'
     ],
     controller: 'HeadersReportController',
     layout: {

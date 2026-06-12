@@ -77,7 +77,10 @@ Ext.define('Ext.Praxis.controller.widgets.StoreProcGridController', {
         var hasFilter = view.filterItems && view.filterItems.length > 0;
 
         if (hasFilter && view.autoSearch) {
-            me._buildStore(me.getFilterParams());
+            // Merge storeParams + filter-form values so fixed params (e.g. IN_FILEID, IN_MODE)
+            // are not lost when the grid also has filterItems.
+            var initParams = Ext.apply(Ext.apply({}, view.storeParams || {}), me.getFilterParams());
+            me._buildStore(initParams);
         } else if (!hasFilter) {
             me._buildStore(view.storeParams || {});
         }
@@ -95,12 +98,19 @@ Ext.define('Ext.Praxis.controller.widgets.StoreProcGridController', {
 
     /**
      * @private
-     * Construye el store paginado y lo enlaza al grid y al paging toolbar.
+     * Construye el store y lo enlaza al grid y al paging toolbar.
+     * Si view.memoryPaging === true, delega en _buildMemoryStore (client-side paging).
      * @param {Object} params
      */
     _buildStore: function (params) {
         var me   = this;
         var view = me.getView();
+
+        if (view.memoryPaging) {
+            me._buildMemoryStore(params);
+            return;
+        }
+
         var grid = view.down('gridpanel');
 
         if (!grid) { return; }
@@ -126,6 +136,90 @@ Ext.define('Ext.Praxis.controller.widgets.StoreProcGridController', {
                 grid.updateLayout();
             }
         });
+    },
+
+    /**
+     * @private
+     * Carga TODOS los registros del SP en una sola llamada (limit=-1) y pagina
+     * client-side usando Ext.data.proxy.Memory con enablePaging:true.
+     * @param {Object} params
+     */
+    _buildMemoryStore: function (params) {
+        var me   = this;
+        var view = me.getView();
+        var grid = view.down('gridpanel');
+
+        if (!grid) { return; }
+
+        var library   = view.library;
+        var procedure = view.storeProcedure;
+
+        if (!library || !procedure) {
+            Ext.log.warn('[StoreProcGridController] Faltan configs "library" o "storeProcedure".');
+            return;
+        }
+
+        view.setLoading(true);
+
+        var fetchParams = Ext.apply({}, params, { start: 0, limit: -1 });
+
+        var request = axios.create({
+            baseURL: CONTEXTPATH + '/Generic',
+            timeout: 600000
+        });
+
+        request.get('CallStorePaggin/' + library + '/' + procedure, { params: fetchParams })
+            .then(function (res) {
+                view._allData = (res.data && res.data.response) ? res.data.response : [];
+                me._applyMemoryFilter({});
+            })
+            .catch(function () {
+                global.Msg({ msg: 'Data not Found' });
+            })
+            .finally(function () {
+                if (!view.isDestroyed) {
+                    view.setLoading(false);
+                }
+            });
+    },
+
+    /**
+     * @private
+     * Filtra view._allData por coincidencia parcial (case-insensitive) sobre cada
+     * valor no-vacío de filterValues, mapeando IN_XXX → campo XXX del registro.
+     * Crea un store de memoria nuevo y recarga desde la página 1.
+     * @param {Object} filterValues  { IN_SEQ: '123', IN_CERROR: '', ... }
+     */
+    _applyMemoryFilter: function (filterValues) {
+        var me   = this;
+        var view = me.getView();
+        var grid = view.down('gridpanel');
+        if (!grid || !view._allData) { return; }
+
+        var data = view._allData.filter(function (row) {
+            for (var key in filterValues) {
+                if (!filterValues.hasOwnProperty(key)) { continue; }
+                var term = String(filterValues[key] || '').trim();
+                if (!term) { continue; }
+                var field = key.replace(/^IN_/, '');
+                var cell  = String(row[field] !== undefined ? row[field] : '').toLowerCase();
+                if (cell.indexOf(term.toLowerCase()) === -1) { return false; }
+            }
+            return true;
+        });
+
+        var store = Ext.create('Ext.data.Store', {
+            pageSize: view.pageSize || 20,
+            data: data,
+            proxy: { type: 'memory', enablePaging: true, reader: { type: 'json' } }
+        });
+
+        grid.setStore(store);
+        store.loadPage(1);
+
+        var pagingBar = view.down('pagingtoolbar');
+        if (pagingBar) { pagingBar.setStore(store); }
+        if (!grid.isDestroyed) { grid.updateLayout(); }
     },
 
     /**
@@ -164,7 +258,13 @@ Ext.define('Ext.Praxis.controller.widgets.StoreProcGridController', {
      * También puede ser llamado desde el Enter en un campo (searchOnEnter).
      */
     onSearchClick: function () {
-        this.reload();
+        var me   = this;
+        var view = me.getView();
+        if (view.memoryPaging && view._allData) {
+            me._applyMemoryFilter(me.getFilterParams());
+            return;
+        }
+        me.reload();
     },
 
     /**
@@ -177,6 +277,10 @@ Ext.define('Ext.Praxis.controller.widgets.StoreProcGridController', {
         var filterForm = view.down('#filterForm');
         if (filterForm) {
             filterForm.reset();
+            if (view.memoryPaging && view._allData) {
+                me._applyMemoryFilter({});
+                return;
+            }
             if (view.autoSearch) {
                 me.reload();
             }
@@ -227,6 +331,13 @@ Ext.define('Ext.Praxis.controller.widgets.StoreProcGridController', {
             params = Ext.apply({}, view.storeParams || {});
         }
 
+        var now    = new Date();
+        var pad    = function (n) { return String(n).padStart(2, '0'); };
+        var dateStr = now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate());
+        var timeStr = pad(now.getHours()) + '-' + pad(now.getMinutes()) + '-' + pad(now.getSeconds());
+        var moduleName = view.excelTitle || view.gridTitle || view.storeProcedure;
+        var fileName = moduleName + ' ' + dateStr + ' ' + timeStr;
+
         Ext.getBody().mask('Generating Excel...');
 
         global.exportExcelFromStore(
@@ -234,7 +345,7 @@ Ext.define('Ext.Praxis.controller.widgets.StoreProcGridController', {
             view.storeProcedure,
             params,
             me._resolveExcelColumns(),
-            view.gridTitle || view.storeProcedure
+            fileName
         ).finally(function () {
             Ext.getBody().unmask();
         });
@@ -244,9 +355,11 @@ Ext.define('Ext.Praxis.controller.widgets.StoreProcGridController', {
      * @private
      * Resuelve las columnas para el Excel.
      * Prioridad: view.excelColumns → derivado de view.gridColumns.
-     * Normaliza ambas fuentes al formato { header, dataIndex }.
+     * Normaliza al formato { header, dataIndex, formatter? }.
+     * - Recursa en columnas agrupadas (col.columns).
+     * - Envuelve col.renderer como formatter, stripeando HTML para texto plano.
      *
-     * @returns {Array} [{header, dataIndex}, ...]
+     * @returns {Array} [{header, dataIndex, formatter?}, ...]
      */
     _resolveExcelColumns: function () {
         var view = this.getView();
@@ -268,18 +381,40 @@ Ext.define('Ext.Praxis.controller.widgets.StoreProcGridController', {
         // ── Derivado de gridColumns ────────────────────────────────────────────
         var src     = view.gridColumns;
         var rawCols = Ext.isArray(src) ? src : (src ? (src.items || []) : []);
-        var columns = [];
 
-        Ext.each(rawCols, function (col) {
-            if (col.dataIndex && col.xtype !== 'actioncolumn') {
-                columns.push({
-                    header:    col.text || col.dataIndex,
-                    dataIndex: col.dataIndex
-                });
-            }
-        });
+        var stripHtml = function (str) {
+            return String(str || '').replace(/<[^>]+>/g, '').trim();
+        };
 
-        return columns;
+        var flatten = function (cols) {
+            var result = [];
+            Ext.each(cols, function (col) {
+                // Grouped column — recurse
+                if (col.columns && col.columns.length) {
+                    result = result.concat(flatten(col.columns));
+                    return;
+                }
+                if (!col.dataIndex || col.xtype === 'actioncolumn') { return; }
+
+                var entry = { header: col.text || col.dataIndex, dataIndex: col.dataIndex };
+
+                if (typeof col.renderer === 'function') {
+                    // IIFE to capture renderer in closure
+                    entry.formatter = (function (renderer) {
+                        return function (val, row) {
+                            var rendered = renderer(val, {}, row);
+                            var text = stripHtml(rendered !== undefined && rendered !== null ? rendered : val);
+                            return text !== '' ? text : String(val !== null && val !== undefined ? val : '');
+                        };
+                    })(col.renderer);
+                }
+
+                result.push(entry);
+            });
+            return result;
+        };
+
+        return flatten(rawCols);
     },
 
     // ─────────────────────────────────────────────────────────────────────────

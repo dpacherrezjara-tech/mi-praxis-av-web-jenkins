@@ -37,7 +37,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
         const me = this;
         me.view.mask('Loading...');
         try {
-            const res = await global.callStoreGet('PRAXISMP', 'SPMDP00002', {});
+            const res = await global.callStoreGet('PRAXISMP', 'MPS124', {});
             me.procesadores = (res.lstRs && res.lstRs.at(0)) || [];
             me._refreshProcessors();
         } catch (e) {

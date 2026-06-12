@@ -166,6 +166,9 @@ Ext.define('Ext.Praxis.view.widgets.StoreProcGrid', {
     /** @cfg {String} gridTitle Título del panel contenedor */
     gridTitle: '',
 
+    /** @cfg {String} excelTitle Nombre del módulo en el archivo Excel descargado. Si se omite usa gridTitle, luego storeProcedure. */
+    excelTitle: '',
+
     /** @cfg {Boolean} showExcelButton Muestra botón de descarga Excel */
     showExcelButton: true,
 
@@ -183,6 +186,13 @@ Ext.define('Ext.Praxis.view.widgets.StoreProcGrid', {
      *   ]
      */
     excelColumns: null,
+
+    /**
+     * @cfg {Boolean} memoryPaging
+     * Si true, carga todos los registros de una vez y pagina en memoria (client-side).
+     * Útil cuando el SP no soporta paginación server-side (devuelve todo el resultado).
+     */
+    memoryPaging: false,
 
     // ─────────────────────────────────────────────────────────────────────────
     // Defaults del panel
