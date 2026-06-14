@@ -51,7 +51,21 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDetai
                     height: 72,
                     border: false,
                     bodyStyle: 'background:#2c3e50;padding:10px 16px;overflow:hidden;',
-                    html: '<div id="' + DM + '-summaryContent" style="color:#fff;font-size:12px;">Loading...</div>'
+                    html: '<div id="' + DM + '-summaryContent" style="color:#fff;font-size:12px;">Loading...</div>',
+                    dockedItems: [{
+                        xtype: 'toolbar',
+                        dock: 'right',
+                        border: false,
+                        style: 'background:#2c3e50;padding:0 8px;',
+                        layout: { type: 'vbox', pack: 'center', align: 'center' },
+                        items: [{
+                            text: 'Console',
+                            itemId: 'btn-console',
+                            iconCls: 'prx-icon-image-log',
+                            style: 'background:#fff;color:#2c3e50;font-weight:bold;',
+                            handler: 'onConsoleClick'
+                        }]
+                    }]
                 },
 
                 // ── Tab panel ─────────────────────────────────────────────────
@@ -339,6 +353,17 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDetai
                                     fields: ['CORRL', 'FILENAM', 'FILESZ', 'STSAP', 'IDCONT'],
                                     data: []
                                 },
+                                tbar: [
+                                    '->',
+                                    {
+                                        text: 'Close Interfaces',
+                                        itemId: 'btn-close-interfaces',
+                                        hidden: true,
+                                        iconCls: 'prx-icon-complete',
+                                        style: 'color:#c82d2d;font-weight:bold;',
+                                        handler: 'onCloseInterfacesClick'
+                                    }
+                                ],
                                 columns: [
                                     { xtype: 'rownumberer', width: 40 },
                                     { text: 'Seq.', dataIndex: 'CORRL', width: 60, align: 'center', menuDisabled: true, sortable: false },
@@ -420,17 +445,12 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDetai
             xtype: 'toolbar',
             dock: 'bottom',
             ui: 'footer',
-            border: false,
-            margin: '5 0 5 0',
+            border: true,
+            margin: '0',
+            style: 'background:#2c3e50;border-top:2px solid #4a6278;',
             layout: { pack: 'center' },
             defaults: { scale: 'medium' },
             items: [
-                {
-                    text: 'Console',
-                    itemId: 'btn-console',
-                    iconCls: 'prx-icon-image-log',
-                    handler: 'onConsoleClick'
-                },
                 {
                     text: 'Download ZIP',
                     itemId: 'btn-download',
@@ -442,7 +462,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDetai
                     text: 'Send SFTP',
                     itemId: 'btn-sftp',
                     hidden: true,
-                    iconCls: 'prx-icon-image-file',
+                    iconCls: 'prx-icon-process-send',
                     handler: 'onSftpClick'
                 },
                 {

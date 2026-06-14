@@ -100,7 +100,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
             '5': { label: 'SFTP 🆗', color: '#9187e1', dark: false },
             'L': { label: 'Loaded to SAP ☑', color: '#88d556', dark: true },
             '6': { label: 'Partially Rejected ↩️', color: '#88d556', dark: true },
-            '9': { label: 'Partially Justified ↩️', color: '#88d556', dark: true },
+            '9': { label: 'Closed by User 🔒', color: '#88d556', dark: true },
             'J': { label: 'Justified ⏺️', color: '#f7ec35', dark: true },
             'R': { label: 'Rejected ❌', color: '#f7ec35', dark: true },
             '7': { label: 'Process Error ⚠️', color: '#f7ec35', dark: true }
@@ -190,6 +190,9 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
                     grid.unmask();
                     grid.getStore().loadData(data);
                 }
+                const closeBtn = view.down('#btn-close-interfaces');
+                const stcont = String((me._liveRow || view.rowData || {}).STCONT || '');
+                if (closeBtn) closeBtn.setVisible(data.length > 0 && stcont === '3');
             } catch (e) {
                 console.error('[AccountingDetailModal] Files load error:', e);
                 if (grid && !grid.isDestroyed) grid.unmask();
@@ -223,7 +226,19 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
                 + '<span style="color:#c82d2d;">This action will start the SFTP transfer process.</span>',
             buttons: Ext.MessageBox.YESNO,
             icon: Ext.MessageBox.QUESTION,
-            fn: function (btn) { if (btn === 'yes') me._executeSftp(); }
+            fn: function (btn) {
+                if (btn === 'yes') {
+                    Ext.Msg.show({
+                        title: '.:PRAXIS:. — Confirm SFTP',
+                        msg: '<b>Confirm again:</b> Send this accounting via SFTP?<br>'
+                            + '<span style="color:#c82d2d;">⚠️ This will initiate the file transfer. This action cannot be undone.</span>',
+                        buttons: Ext.MessageBox.YESNO,
+                        icon: Ext.MessageBox.WARNING,
+                        fn: function (btn2) { if (btn2 === 'yes') me._executeSftp(); }
+                    });
+                    Ext.Msg.toFront();
+                }
+            }
         });
         Ext.Msg.toFront();
     },
@@ -1175,6 +1190,47 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
             await me._fetchLiveRow(view.idcont);
         } catch (e) {
             new AWN().alert('Error: ' + (e.message || 'No se pudieron reversar los errores'));
+        } finally {
+            view.unmask();
+        }
+    },
+
+    // =========================================================================
+    // Close Interfaces (MPS213)
+    // =========================================================================
+
+    onCloseInterfacesClick: function () {
+        const me = this;
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Are you sure you want to <b>close the interfaces</b> for this accounting?<br>'
+                + '<span style="color:#c82d2d;">This action will close all interface files and cannot be undone.</span>',
+            buttons: Ext.MessageBox.YESNO,
+            icon: Ext.MessageBox.QUESTION,
+            fn: function (btn) { if (btn === 'yes') me._executeCloseInterfaces(); }
+        });
+        Ext.Msg.toFront();
+    },
+
+    _executeCloseInterfaces: async function () {
+        const me = this;
+        const view = me.getView();
+        view.mask('Closing interfaces...');
+        try {
+            await global.callStoreGet('PRAXISMP', 'MPS213', {
+                IN_IDCONT: String(view.idcont || ''),
+                IN_MESSAGE: 'Close Interfaces'
+            });
+            new AWN().success('Interfaces closed successfully');
+            if (Ext.isFunction(view.onAfterAction)) view.onAfterAction();
+            const wasLoaded = Object.keys(me._loadedTabs);
+            me._loadedTabs = {};
+            me._loadTab('tab-deposits');
+            if (wasLoaded.indexOf('tab-interrors') >= 0) me._loadTab('tab-interrors');
+            me._loadTab('tab-files');
+            await me._fetchLiveRow(view.idcont);
+        } catch (e) {
+            new AWN().alert('Error: ' + (e.message || 'Could not close interfaces'));
         } finally {
             view.unmask();
         }

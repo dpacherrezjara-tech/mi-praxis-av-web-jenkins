@@ -151,7 +151,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Grids.MainGrid'
                                 },
                                 '9': ()=>{
                                     metaData.style = "background-color:#88d556;font-weight:bold";
-                                    return 'Partially Justified ↩️';
+                                    return 'Closed by User 🔒';
                                 },
                                 'J': ()=>{
                                     metaData.style = "background-color:#f7ec35;color:#ce3232;font-weight:bold";

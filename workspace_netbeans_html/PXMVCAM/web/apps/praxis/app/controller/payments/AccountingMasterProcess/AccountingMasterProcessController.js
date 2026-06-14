@@ -173,9 +173,9 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
                                     metaData.style = 'background-color:#838187;font-weight:bold';
                                     return 'Processing 🔃';
                                 },
-                                '1': function () {
-                                    metaData.style = 'background-color:#096404;font-weight:bold';
-                                    return 'Closed 🆗';
+                                '9': function () {
+                                    metaData.style = 'background-color:#096404;font-weight:bold;color:white';
+                                    return 'Closed by User 🔒';
                                 },
                                 '2': function () {
                                     metaData.style = 'background-color:#fdb333;font-weight:bold';

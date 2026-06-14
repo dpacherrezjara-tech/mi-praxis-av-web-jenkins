@@ -399,10 +399,18 @@ Ext.define('Ext.Praxis.view.widgets.StoreProcGrid', {
                 actionItems.push(item);
             });
 
+            if (!window._spgActionColStyleInjected) {
+                window._spgActionColStyleInjected = true;
+                var styleEl = document.createElement('style');
+                styleEl.textContent = '.spg-action-cell .x-action-col-icon { margin: 0 5px !important; }';
+                document.head.appendChild(styleEl);
+            }
+
             columns.push({
                 xtype: 'actioncolumn',
+                tdCls: 'spg-action-cell',
                 text: 'Actions',
-                width: (me.rowActions.length * 30) + 30,
+                width: (me.rowActions.length * 30) + ((me.rowActions.length - 1) * 10) + 30,
                 align: 'center',
                 menuDisabled: true,
                 sortable: false,

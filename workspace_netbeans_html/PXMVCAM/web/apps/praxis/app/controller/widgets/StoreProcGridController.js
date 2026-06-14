@@ -338,7 +338,8 @@ Ext.define('Ext.Praxis.controller.widgets.StoreProcGridController', {
         var moduleName = view.excelTitle || view.gridTitle || view.storeProcedure;
         var fileName = moduleName + ' ' + dateStr + ' ' + timeStr;
 
-        Ext.getBody().mask('Generating Excel...');
+        var maskTarget = view.up('window') || Ext.getBody();
+        maskTarget.mask('Generating Excel...');
 
         global.exportExcelFromStore(
             view.library,
@@ -347,7 +348,7 @@ Ext.define('Ext.Praxis.controller.widgets.StoreProcGridController', {
             me._resolveExcelColumns(),
             fileName
         ).finally(function () {
-            Ext.getBody().unmask();
+            maskTarget.unmask();
         });
     },
 
