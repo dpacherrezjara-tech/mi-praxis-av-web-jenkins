@@ -8880,7 +8880,7 @@ public class BankReconciliationDAO {
             while (rst != null && rst.next()) {
                 bean = new A2290Filter();
 
-                // === MAPEO EXACTO DEL SP ===
+                
                 bean.O_INVOICE = rst.getString("INVOICE");
                 bean.O_ADATE = rst.getString("ADATE");
                 bean.O_CONCEPT = rst.getString("CONCEPT");

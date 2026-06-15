@@ -3751,6 +3751,7 @@ Ext.util.CSS.createStyleSheet(`
                         Ext.getCmp(prototype.id + '-txtDATEPICKER').setValue('');
                         Ext.getCmp(prototype.id + '-txtInvoiceFilter').setValue('');
                 },
+                
                 btnExcel_click: function (obj, e) {
 
                 this.setFormatParameter();
@@ -3820,10 +3821,27 @@ Ext.util.CSS.createStyleSheet(`
                         global.getFileExcelPost('searchDetByStval_DEBITS', me.paramsDetail.beanString, Ext.getCmp(prototype.id + '-gridDataDetalle_DEBITS').config.columns.items);
 //                    global.getFile(prototype.url + '/getXLSXDetByStval_DEBITS?beanString=' + encodeURI(me.paramsDetail.beanString));
                         break;
-                        //MPF199aa
+                        //MPF199aa.+- AJUSTEST / COMISION / CARTERA
+
                         case '-panelGridDataMPF199':
-                        global.getFile(prototype.url + '/panelGridDataMPF199?beanString=' + encodeURI(me.obJPADJ.beanString));
+
+                            if (me.currentMode === 'ARC') {
+                                global.getFile(prototype.url + '/searchListMPF223XLSX?beanString=' + encodeURI(me.obJPADJ.beanString));
+                            } else if (me.currentMode === 'CARTERA') {
+                                global.getFile(prototype.url + '/searchListCarteraXLSX?' + Ext.Object.toQueryString(me.filtroCartera));
+                           
+                            } else {
+
+                                global.getFile(prototype.url + '/panelGridDataMPF199?beanString=' + encodeURI(me.obJPADJ.beanString)
+                            );
+
+                        }
+
                         break;
+
+
+
+
                         case '-panelGridDataMainCASH':
                         global.getFile(prototype.url + '/getXLSXDetMainCash?beanString=' + encodeURI(searchParams.beanString));
 //                    global.getFileExcelPost('searchMainCash', searchParams.beanString, Ext.getCmp(prototype.id + '-gridDataMainCASH').config.columns.items);
@@ -4975,16 +4993,19 @@ Ext.util.CSS.createStyleSheet(`
                         var cardContainer = Ext.getCmp(prototype.id + '-cardContainer');
                         var txtInvoice = Ext.getCmp(prototype.id + '-txtInvoiceFilter');
                         if (mode === 'BSP') {
+                             me.currentMode = 'BSP';
                 // 1. Mostrar Grilla BSP
                 cardContainer.getLayout().setActiveItem(0);
                         win.lblUser_toolTip("Estructura: BSP Files (Ajustes)");
                         if (txtInvoice) {txtInvoice.setVisible(false);
                         txtInvoice.reset();
                 }
-                // 2. Cargar Data BSP (Llama a tu función original)
+                // 2. Cargar Data BSP 
                 me.setGridDataMPF199();
                 } else if (mode === 'ARC') {
+                    me.currentMode = 'ARC';
                 // 1. Mostrar Grilla ARC
+                //me.panelActual = '-gridDataMPF199COMIS';
                 cardContainer.getLayout().setActiveItem(1);
                         win.lblUser_toolTip("Estructura: ARC Files (Comisiones)");
                         if (txtInvoice) {txtInvoice.setVisible(false);
@@ -4993,6 +5014,7 @@ Ext.util.CSS.createStyleSheet(`
                 // 2. Cargar Data ARC (Nueva función)
                 me.setGridDataCOMISI();
                 } else if (mode === 'CARTERA') {
+                    me.currentMode = 'CARTERA';
                 // 3. Mostrar Grilla FACTURACION DETALLE
                 cardContainer.getLayout().setActiveItem(2);
                         win.lblUser_toolTip("Estructura: Cartera factura (detalle y facturas)");
@@ -5040,7 +5062,7 @@ Ext.util.CSS.createStyleSheet(`
                 global.Msg({ msg: msj });
                 } else {
 
-                // 🔹 Mover variables fuera del load para mantener consistencia
+                //  Mover variables fuera del load para mantener consistencia
                         var groupMap = {};
                         var groupId = 0;
                         var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
@@ -5089,7 +5111,7 @@ Ext.util.CSS.createStyleSheet(`
                                                 console.warn(`[NO BLOQUE] Registro ${idx} sin clave válida → O_DATEA='${datea}' | O_TRANA='${trana}'`);
                                                 }
                                                 });
-                                                // 2️⃣ Asignar colores por grupo
+                                                // 2️⃣ Asignar colores por grup
                                                 Ext.Object.each(groupMap, function (key, groupRecords) {
                                                 if (key === '' || !groupRecords || groupRecords.length === 0) return;
                                                         console.log(`[🎨 GRUPO ${groupId}] Clave=${key} → ${groupRecords.length} registros`);
@@ -5254,7 +5276,7 @@ Ext.util.CSS.createStyleSheet(`
 
 
 
- //////////////////////////7
+                //////////////////////////7
                 //////////////////////////7
 
                 onGridDayCash: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
