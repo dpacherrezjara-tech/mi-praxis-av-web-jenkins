@@ -113,7 +113,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDetai
                                                 ? 'En cola para reversa' : 'Agregar a selección';
                                         },
                                         isDisabled: function (_view, _ri, _ci, _item, record) {
-                                            if (!['P'].includes(String(record.get('STSAP') || ''))) return true;
+                                            if (!['P', 'Y'].includes(String(record.get('STSAP') || ''))) return true;
                                             const modal = Ext.getCmp(DM);
                                             if (!modal) return false;
                                             const ctrl = modal.getController();
@@ -194,6 +194,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDetai
 
                                                 const opts = {
                                                     'P': () => { meta.style = 'background-color:#FBE164;color:black;font-weight:bold;'; return 'PENDING'; },
+                                                    'Y': () => { meta.style = 'background-color:#45F451;color:black;font-weight:bold;'; return 'READY'; },
                                                     'S': () => { meta.style = 'background-color:#92E8DF;color:black;font-weight:bold;'; return 'SENDED'; },
                                                     'L': () => { meta.style = 'background-color:#31D492;color:white;font-weight:bold;'; return 'LOADED'; },
                                                     'C': () => { meta.style = 'background-color:#F6CFFF;color:white;font-weight:bold;'; return 'CLOSED'; }

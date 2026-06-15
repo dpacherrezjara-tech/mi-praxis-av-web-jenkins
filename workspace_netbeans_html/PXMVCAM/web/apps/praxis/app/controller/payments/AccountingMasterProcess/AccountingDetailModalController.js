@@ -581,7 +581,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
 
         // Cola de deposits (lógica original)
         const stcont = String(record.get('STSAP') || '');
-        if (!['P'].includes(stcont)) return;
+        if (!['P', 'Y'].includes(stcont)) return;
 
         const key = [record.get('BANDOC'), record.get('DATECI'), record.get('TRANCI')].join('-');
 
@@ -806,16 +806,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
             const d = res.data;
             if (d && d.success) {
                 new AWN().success(d.message || 'Bulk reversal started');
-                me._reverseQueue = [];
-                me._queueSet = {};
-                me._updateBulkReverseBtn(); // resetea texto y deshabilita
-                // Reload tabs que ya fueron visitados
-                const wasLoaded = Object.keys(me._loadedTabs);
-                me._loadedTabs = {};
-                me._loadTab('tab-deposits');
-                if (wasLoaded.indexOf('tab-interrors') >= 0) me._loadTab('tab-interrors');
-                // Notificar al padre para que recargue la grilla principal
-                if (Ext.isFunction(view.onAfterAction)) view.onAfterAction();
+                me._afterAction();
             } else {
                 new AWN().alert((d && d.message) || 'Bulk reversal failed');
             }
@@ -920,9 +911,9 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
                                     iconCls: 'prx-icon-image-trash',
                                     tooltip: 'Quitar de selección',
                                     handler: function (_grid, _ri, _ci, _item, _e, record) {
-                                        const bandoc  = record.get('BANDOC');
-                                        const dateci  = record.get('DATECI');
-                                        const tranci  = record.get('TRANCI');
+                                        const bandoc = record.get('BANDOC');
+                                        const dateci = record.get('DATECI');
+                                        const tranci = record.get('TRANCI');
                                         const tipoerr = record.get('TIPOERR') || '';
                                         const key = [bandoc, dateci, tranci, tipoerr].join('-');
                                         const entry = me._pendingErrChangesMap[key];
@@ -1196,7 +1187,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
     },
 
     // =========================================================================
-    // Close Interfaces (MPS213)
+    // Close Interfaces (MPS214)
     // =========================================================================
 
     onCloseInterfacesClick: function () {
@@ -1217,7 +1208,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
         const view = me.getView();
         view.mask('Closing interfaces...');
         try {
-            await global.callStoreGet('PRAXISMP', 'MPS213', {
+            await global.callStoreGet('PRAXISMP', 'MPS214', {
                 IN_IDCONT: String(view.idcont || ''),
                 IN_MESSAGE: 'Close Interfaces'
             });

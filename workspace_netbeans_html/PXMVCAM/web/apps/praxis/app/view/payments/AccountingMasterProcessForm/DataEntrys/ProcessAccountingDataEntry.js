@@ -255,7 +255,8 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.Proc
                             selModel: { type: 'checkboxmodel', mode: 'MULTI' },
                             viewConfig: { stripeRows: true, markDirty: false, enableTextSelection: true },
                             store: Ext.create('Ext.data.Store', {
-                                fields: ['BANDOC', 'DATECI', 'TRANCI', 'TIPOCON', 'PROCESO', 'NEGOC'],
+                                fields: ['BANDOC', 'DATECI', 'TRANCI', 'TIPOCON', 'PROCESO', 'NEGOC',
+                                         'DATEC', 'TRANC', 'CODPRO'],
                                 data: []
                             }),
                             tbar: [
@@ -267,12 +268,13 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.Proc
                             listeners: { selectionchange: 'onSelectionChange' },
                             columns: [
                                 { xtype: 'rownumberer', width: 40 },
-                                { text: 'Bank Doc.', dataIndex: 'BANDOC', flex: 1, align: 'center', menuDisabled: true },
-                                { text: 'Date CI', dataIndex: 'DATECI', width: 100, align: 'center', menuDisabled: true },
-                                { text: 'Transaction', dataIndex: 'TRANCI', width: 100, align: 'center', menuDisabled: true },
-                                { text: 'Type', dataIndex: 'TIPOCON', width: 80, align: 'center', menuDisabled: true },
+                                // Columnas modo estándar (BANDOC / DATECI / TRANCI)
+                                { text: 'Bank Doc.', dataIndex: 'BANDOC', flex: 1, align: 'center', menuDisabled: true, itemId: 'col-bandoc' },
+                                { text: 'Date CI', dataIndex: 'DATECI', width: 100, align: 'center', menuDisabled: true, itemId: 'col-dateci' },
+                                { text: 'Transaction', dataIndex: 'TRANCI', width: 100, align: 'center', menuDisabled: true, itemId: 'col-tranci' },
+                                { text: 'Type', dataIndex: 'TIPOCON', width: 80, align: 'center', menuDisabled: true, itemId: 'col-tipocon' },
                                 {
-                                    text: 'Process', dataIndex: 'PROCESO', width: 110, align: 'center', menuDisabled: true,
+                                    text: 'Process', dataIndex: 'PROCESO', width: 110, align: 'center', menuDisabled: true, itemId: 'col-proceso',
                                     renderer: function (v, meta) {
                                         const val = (v || '').trim();
                                         if (val === 'TC') {
@@ -287,11 +289,15 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.Proc
                                     }
                                 },
                                 {
-                                    text: 'Business', dataIndex: 'NEGOC', width: 80, align: 'center', menuDisabled: true,
+                                    text: 'Business', dataIndex: 'NEGOC', width: 80, align: 'center', menuDisabled: true, itemId: 'col-negoc',
                                     renderer: function (v) {
                                         return { '1': 'PAX', '2': 'CGO', '3': 'COR' }[v] || (v || '');
                                     }
-                                }
+                                },
+                                // Columnas modo AB/VN/BM (ocultas por defecto)
+                                { text: 'Date C', dataIndex: 'DATEC', width: 100, align: 'center', menuDisabled: true, hidden: true, itemId: 'col-datec' },
+                                { text: 'Tran. C', dataIndex: 'TRANC', width: 100, align: 'center', menuDisabled: true, hidden: true, itemId: 'col-tranc' },
+                                { text: 'Processor', dataIndex: 'CODPRO', width: 80, align: 'center', menuDisabled: true, hidden: true, itemId: 'col-codpro-grid' }
                             ]
                         }
                     ]

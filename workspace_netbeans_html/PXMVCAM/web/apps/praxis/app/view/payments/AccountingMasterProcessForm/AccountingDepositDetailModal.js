@@ -281,45 +281,74 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDepos
         btn.setDisabled(count === 0);
     },
 
-    // Añade una fila nueva por cada grupo SEQ presente en _masterData.
+    // Clona la fila seleccionada, calcula el siguiente A4545ITEM para esa SEQ
+    // e inserta la nueva fila justo después del último row con la misma secuencia.
     _handleAddRows: function () {
         const me = this;
         if (!me._masterData || !me._masterData.length) return;
 
-        const groups = {};
-        me._masterData.forEach(function (d) {
-            const seq = String(d.A4545SEQ || '');
-            if (!seq) return;
-            if (!groups[seq]) groups[seq] = [];
-            groups[seq].push(d);
-        });
+        // 1. Verificar que hay una fila seleccionada
+        const grid = me.down('#grid-deposit-detail');
+        if (!grid) return;
 
-        let added = 0;
-        Ext.Object.each(groups, function (_seq, rows) {
-            let maxItem = 0;
-            rows.forEach(function (d) {
+        const selected = grid.getSelectionModel().getSelection();
+        if (!selected || !selected.length) {
+            new AWN().warning('Seleccione una fila para clonar.');
+            return;
+        }
+
+        const selectedRecord = selected[0];
+        const selectedSeq = String(selectedRecord.get('A4545SEQ') || '');
+        const selectedItem = String(selectedRecord.get('A4545ITEM') || '');
+
+        if (!selectedSeq) {
+            new AWN().warning('La fila seleccionada no tiene una secuencia válida.');
+            return;
+        }
+
+        // 2. Calcular el ITEM máximo de esa SEQ en _masterData
+        let maxItem = 0;
+        me._masterData.forEach(function (d) {
+            if (String(d.A4545SEQ || '') === selectedSeq) {
                 const n = Number(d.A4545ITEM || 0);
                 if (n > maxItem) maxItem = n;
-            });
-
-            const newData = Ext.apply({}, rows[0]);
-            delete newData.id; // evitar conflicto de ids internos de ExtJS
-            newData.A4545ITEM = maxItem + 1;
-            newData.A4545USRUP = '';
-            newData.A4545TSUP = '';
-            newData.A4545MODIF = 'I';
-
-            const key = String(newData.A4545SEQ) + '-' + String(newData.A4545ITEM);
-            me._newRowKeysMap[key] = true;
-            me._pendingChangesMap[key] = Ext.apply({}, newData);
-            me._masterData.push(newData);
-            added++;
+            }
         });
 
-        if (!added) return;
+        // 3. Encontrar el índice de la última fila con esa SEQ (posición de inserción)
+        let insertIdx = -1;
+        me._masterData.forEach(function (d, i) {
+            if (String(d.A4545SEQ || '') === selectedSeq) {
+                insertIdx = i;
+            }
+        });
 
-        const lastPage = Math.ceil(me._masterData.length / me._PAGE_SIZE) || 1;
-        me._reloadStore(lastPage);
+        if (insertIdx < 0) return;
+
+        // 4. Clonar desde _masterData (fuente de verdad, no desde el record del store)
+        const sourceData = me._masterData.find(function (d) {
+            return String(d.A4545SEQ) === selectedSeq && String(d.A4545ITEM) === selectedItem;
+        }) || me._masterData[insertIdx];
+
+        const newData = Ext.apply({}, sourceData);
+        delete newData.id;
+        newData.A4545ITEM = maxItem + 1;
+        newData.A4545USRUP = '';
+        newData.A4545TSUP = '';
+        newData.A4545MODIF = 'I';
+
+        // 5. Registrar en los mapas de estado
+        const key = selectedSeq + '-' + String(newData.A4545ITEM);
+        me._newRowKeysMap[key] = true;
+        me._pendingChangesMap[key] = Ext.apply({}, newData);
+
+        // 6. Insertar en la posición correcta (después del último row de esa SEQ)
+        me._masterData.splice(insertIdx + 1, 0, newData);
+
+        // 7. Navegar a la página que contiene la nueva fila
+        const newRowIdx = insertIdx + 1;
+        const targetPage = Math.ceil((newRowIdx + 1) / me._PAGE_SIZE) || 1;
+        me._reloadStore(targetPage);
         me._updateSaveBtn();
     },
 
@@ -371,7 +400,23 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDepos
             new AWN().success('Cambios guardados correctamente');
             me._pendingChangesMap = {};
             me._newRowKeysMap = {};
+            me._updateSaveBtn();
             me._loadData();
+
+            // Recargar el modal padre (todos los tabs ya visitados + resumen + grid principal)
+            const parentModal = Ext.ComponentQuery.query('AccountingDetailModal')[0];
+            if (parentModal && !parentModal.isDestroyed) {
+                const ctrl = parentModal.getController();
+                if (ctrl) {
+                    const loadedIds = Object.keys(ctrl._loadedTabs || {});
+                    ctrl._loadedTabs = {};
+                    loadedIds.forEach(function (tabId) { ctrl._loadTab(tabId); });
+                    if (typeof ctrl._fetchLiveRow === 'function') {
+                        ctrl._fetchLiveRow(parentModal.idcont);
+                    }
+                }
+                if (Ext.isFunction(parentModal.onAfterAction)) parentModal.onAfterAction();
+            }
         } catch (e) {
             new AWN().alert('Error al guardar: ' + (e.message || 'No se pudieron guardar los cambios'));
             me._updateSaveBtn();

@@ -7,6 +7,9 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.ProcessAccoun
         timeout: 60000
     }),
 
+    // Procesadores que usan DATEC/TRANC en lugar de BANDOC/DATECI/TRANCI
+    _SPECIAL_CODPROS: ['AB', 'VN', 'BM'],
+
     // Opciones de Acc. Type según proceso (mirrors RunModal)
     _ACC_TYPE_TC: [
         ['REG', 'Regular'], ['DEB', 'Débito'], ['ADJ', 'Ajustes'],
@@ -235,6 +238,20 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.ProcessAccoun
         // Cargar grilla — defer selectAll para que el view procese los records primero
         const grid = view.down('#grid-pending');
         grid.getStore().loadData(records);
+
+        // Alternar columnas según si el procesador usa DATEC/TRANC (AB, VN, BM)
+        const isSpecial = me._SPECIAL_CODPROS.indexOf((payload.CODPRO || '').trim().toUpperCase()) !== -1;
+        // Solo se ocultan los campos de identificación del doc; TIPOCON, PROCESO y NEGOC permanecen visibles
+        const normalCols = ['col-bandoc', 'col-dateci', 'col-tranci'];
+        const specialCols = ['col-datec', 'col-tranc', 'col-codpro-grid'];
+        normalCols.forEach(function (id) {
+            const col = grid.down('[itemId=' + id + ']');
+            if (col) { isSpecial ? col.hide() : col.show(); }
+        });
+        specialCols.forEach(function (id) {
+            const col = grid.down('[itemId=' + id + ']');
+            if (col) { isSpecial ? col.show() : col.hide(); }
+        });
         Ext.defer(function () {
             if (grid && !grid.isDestroyed) {
                 grid.getSelectionModel().selectAll();

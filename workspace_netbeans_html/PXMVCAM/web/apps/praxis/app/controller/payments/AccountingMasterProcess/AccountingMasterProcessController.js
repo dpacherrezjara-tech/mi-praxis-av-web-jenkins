@@ -6,9 +6,10 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridRowCt
     baseCtrl: null,
     widgetView: null,
     onRowAction: function (action, record) {
-        if (action !== 'detail') return;
         const form = this.widgetView && this.widgetView.up('AccountingMasterProcessForm');
-        if (form) form.getController().onOpenDetailModal(record.getData());
+        if (!form) return;
+        if (action === 'detail')  form.getController().onOpenDetailModal(record.getData());
+        if (action === 'console') form.getController().onOpenConsole(record.getData());
     },
     onWidgetReady: function () { }
 });
@@ -95,7 +96,16 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
             storeProcedure: 'MPS466',
             storeParams: params,
             customController: 'Ext.Praxis.controller.payments.AccountingMasterProcess.MainGridRowCtrl',
-            rowActions: [{ action: 'detail', tooltip: 'Ver Detalle Contable' }],
+            rowActions: [
+                {
+                    action: 'detail',
+                    tooltip: 'Ver Detalle Contable',
+                    isDisabled: function (_view, _ri, _ci, _item, record) {
+                        return String(record.get('STCONT') || '') === '0';
+                    }
+                },
+                { action: 'console', icon: 'prx-icon-image-log', tooltip: 'Ver Consola' }
+            ],
             width: prototype.width,
             height: prototype.height,
             excelColumns: [
@@ -231,6 +241,51 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
             }
         });
     },
+    onOpenConsole: async function (rowData) {
+        const me = this;
+        const idcont = String(rowData.IDCONT || '');
+        const view = me.getView();
+        view.mask('Loading console...');
+        let data = [];
+        try {
+            const res = await global.callStoreGet('PRAXISMP', 'MPS471', { IN_IDCONT: idcont });
+            data = (res && res.lstRs && res.lstRs[0]) || [];
+        } catch (e) {
+            console.error('[AccountingMasterProcess] Console load error:', e);
+        } finally {
+            view.unmask();
+        }
+        const win = Ext.create('Ext.window.Window', {
+            title: 'Console — ' + idcont,
+            width: 720,
+            height: 420,
+            modal: true,
+            layout: 'fit',
+            items: [{
+                xtype: 'gridpanel',
+                store: Ext.create('Ext.data.Store', { fields: ['MENSAJE', 'USUP', 'TSUP'], data: data }),
+                border: false,
+                columnLines: true,
+                scrollable: true,
+                viewConfig: { stripeRows: true, enableTextSelection: true, markDirty: false },
+                columns: [
+                    { xtype: 'rownumberer', width: 40 },
+                    { text: 'Message',  dataIndex: 'MENSAJE', flex: 1,   menuDisabled: true },
+                    { text: 'User',     dataIndex: 'USUP',    width: 110, menuDisabled: true, align: 'center' },
+                    { text: 'DateTime', dataIndex: 'TSUP',    width: 155, menuDisabled: true, align: 'center' }
+                ]
+            }],
+            dockedItems: [{
+                xtype: 'toolbar',
+                dock: 'bottom',
+                ui: 'footer',
+                layout: { pack: 'center' },
+                defaults: { scale: 'medium' },
+                items: [{ text: 'Close', iconCls: 'prx-icon-cancel', handler: function () { win.destroy(); } }]
+            }]
+        });
+        win.show();
+    },
     onOpenDetailModal: function (rowData) {
         const winId = prototype.id + '-DetailModal';
         const existing = Ext.getCmp(winId);
@@ -251,7 +306,8 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
         const me = this;
         const dataEntry = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.ProcessAccountingDataEntry', {
             id: prototype.id + '-ProcessAccountingDataEntry-1',
-            procesadores: me.procesadores
+            procesadores: me.procesadores,
+            onAfterAction: function () { me.onReloadGrid(); }
         });
         dataEntry.show();
     },
