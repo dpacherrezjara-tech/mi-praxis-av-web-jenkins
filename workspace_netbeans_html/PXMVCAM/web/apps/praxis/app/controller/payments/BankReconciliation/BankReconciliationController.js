@@ -5216,12 +5216,13 @@ Ext.util.CSS.createStyleSheet(`
                         model: remoteStore.getModel(),
                                 data: []
                         });
+                        
                         var grid = Ext.getCmp(prototype.id + '-gridDataMPF199CARTERA');
                         grid.bindStore(localStore);
                         remoteStore.load({
 
                         params: me.filtroCartera,
-                                callback: function (records, op, success) {
+                            callback: function (records, op, success) {
 
                                 if (!success || !records || records.length === 0) {
                                 global.Msg({ msg: 'Data not found.' });
@@ -5229,48 +5230,48 @@ Ext.util.CSS.createStyleSheet(`
                                 }
 
                                 var newData = [];
-                                        var currentInvoice = null;
-                                        var header = null;
-                                        Ext.Array.each(records, function (rec) {
+                                var currentInvoice = null;
+                                var header = null;
+                                Ext.Array.each(records, function (rec) {
 
-                                        var invoice = rec.get('O_INVOICE');
-                                                var status = rec.get('O_STVAL'); // 3 = Pending
+//                                var invoice = rec.get('O_INVOICE');
+//                                var status = rec.get('O_STVAL'); // 3 = Pending
 
-                                                // CABECERA
-                                                if (invoice !== currentInvoice) {
+                                        // CABECERA
+//                                if (invoice !== currentInvoice) {
+//
+//                                    header = {
+//                                    O_INVOICE: invoice,
+//                                        O_TINPUT:rec.get('O_TINPUT'),
+//                                        O_ADATE: 'Settlement Date',
+//                                        O_STRDATE: 'From Date',
+//                                        O_ENDDATE: 'To Date',
+//                                        O_CONCEPT: 'INVOICE',
+//                                        O_STVAL: '0', // Match 
+//                                        O_SCOUNTRY: rec.get('O_SCOUNTRY'),
+//                                        O_SCURRENCY: rec.get('O_SCURRENCY'),
+//                                        O_BANDOC: rec.get('O_BANDOC'),
+//                                        O_NETO: rec.get('O_NETO'),
+//                                        O_APAYMENT: '0',
+//                                        O_ABALANCE: rec.get('O_NETO'),
+//                                        _isHeader: true
+//                                    };
+//                                    newData.push(header);
+//                                    currentInvoice = invoice;
+//                                }
 
-                                        header = {
-                                        O_INVOICE: invoice,
-                                                O_TINPUT:rec.get('O_TINPUT'),
-                                                O_ADATE: 'Settlement Date',
-                                                O_STRDATE: 'From Date',
-                                                O_ENDDATE: 'To Date',
-                                                O_CONCEPT: 'INVOICE',
-                                                O_STVAL: '0', // Match 
-                                                O_SCOUNTRY: rec.get('O_SCOUNTRY'),
-                                                O_SCURRENCY: rec.get('O_SCURRENCY'),
-                                                O_BANDOC: rec.get('O_BANDOC'),
-                                                O_NETO: rec.get('O_NETO'),
-                                                O_APAYMENT: '0',
-                                                O_ABALANCE: rec.get('O_NETO'),
-                                                _isHeader: true
-                                        };
-                                                newData.push(header);
-                                                currentInvoice = invoice;
-                                        }
+                                //  Si hay Pending -cabecera Pending
+//                                if (status === '3' || status === 3) {
+//                                header.O_STVAL = '3';
+//                                }
 
-                                        //  Si hay Pending -cabecera Pending
-                                        if (status === '3' || status === 3) {
-                                        header.O_STVAL = '3';
-                                        }
-
-                                        // DETALLE
-                                        newData.push(Ext.apply({}, rec.getData(), {
-                                        _isHeader: false
-                                        }));
-                                        });
-                                        localStore.loadData(newData);
-                                }
+                                // DETALLE
+                                newData.push(Ext.apply({}, rec.getData(), {
+                                _isHeader: false
+                                }));
+                                });
+                                localStore.loadData(newData);
+                            }
                         });
                 },
 

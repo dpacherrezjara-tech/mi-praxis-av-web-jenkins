@@ -7993,7 +7993,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 getRowClass: function (record) {
 
                                                     // CABECERA
-                                                    if (record.get('_isHeader')) {
+                                                    if (record.get('O_SEQ') === '0001') {
                                                         return 'row-header-invoice';
                                                     }
 
@@ -8019,7 +8019,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                             metaData.tdCls = "x-grid-cell x-grid-td x-selectable";
                                                             metaData.unselectableAttr = "unselectable='off'";
 
-                                                            if (record.get('_isHeader')) {
+                                                            if (record.get('O_SEQ') === '0001' ) {
                                                                 metaData.style += 'font-weight:bold;'; // SOLO negrita
                                                                 return '🧾 ' + value;
                                                             }
@@ -8091,12 +8091,13 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         dataIndex: 'O_CONCEPT',
                                                         width: 170,
                                                         renderer: function (value, metaData, record) {
-
+                                                            console.log(record.get('O_SEQ'), 'gaaaa')
                                                             // Factura (cabecera)
-                                                            if (record.get('_isHeader')) {
+                                                            if (record.get('O_SEQ') === '0001' ) {
                                                                 metaData.style = 'font-weight:bold;color:#2c3e50;';
                                                                 return '🧾 INVOICE';
                                                             }
+                                                            
 
                                                             // Pagos
                                                             if (value === 'P') {
@@ -8148,9 +8149,9 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         width: 112,
                                                         align: 'right',
                                                         renderer: function (value, metaData, record) {
-                                                            if (!record.get('_isHeader')) {
-                                                                return '';
-                                                            }
+//                                                            if (!record.get('_isHeader')) {
+//                                                                return '';
+//                                                            }
                                                             return Ext.util.Format.number(value, '0,000.00');
                                                         }
 

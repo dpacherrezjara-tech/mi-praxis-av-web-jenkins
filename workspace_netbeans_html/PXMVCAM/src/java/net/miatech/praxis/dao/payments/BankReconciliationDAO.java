@@ -8895,6 +8895,7 @@ public class BankReconciliationDAO {
                 bean.O_TINPUT = rst.getString("TINPUT");
                 bean.O_STRDATE = rst.getString("STRDATE");
                 bean.O_ENDDATE = rst.getString("ENDDATE");
+                bean.O_SEQ = rst.getString("SEQ");
 
                 listaData.add(bean);
 
