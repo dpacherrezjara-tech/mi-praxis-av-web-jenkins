@@ -6019,12 +6019,14 @@ public class BankReconciliationController extends BaseController {
             filter.IN_ADATE_TO = request.getParameter("IN_ADATE_TO") != null ? request.getParameter("IN_ADATE_TO") : "";
             filter.IN_INVOICE = request.getParameter("IN_INVOICE");
             filter.IN_FUENTE = request.getParameter("IN_FUENTE");
+            filter.IN_COUNTRY = request.getParameter("IN_COUNTRY");
 
             System.out.println("STATUS = " + filter.IN_STATUS);
             System.out.println("FROM   = " + filter.IN_ADATE_FROM);
             System.out.println("TO     = " + filter.IN_ADATE_TO);
             System.out.println("INVOICE     = " + filter.IN_INVOICE);
-            System.out.println("INVOICE     = " + filter.IN_FUENTE);
+            System.out.println("FUENTE     = " + filter.IN_FUENTE);
+            System.out.println("COUNTRY     = " + filter.IN_COUNTRY);
 
             lst = logic.loadLISTAR_CARTERAMPF199(filter);
         } catch (Exception e) {
@@ -6967,7 +6969,7 @@ public class BankReconciliationController extends BaseController {
                 rcel23.setCellValue(listaData.get(vi).O_ENDDATE);
                 rcel24.setCellValue(listaData.get(vi).O_REFERENCE);
                 rcel25.setCellValue(listaData.get(vi).O_BANDOC);
-                rcel26.setCellValue(listaData.get(vi).O_BANDOC);
+                rcel26.setCellValue(listaData.get(vi).O_INVOICE);
 
                 iter.next();
                 ++vi;

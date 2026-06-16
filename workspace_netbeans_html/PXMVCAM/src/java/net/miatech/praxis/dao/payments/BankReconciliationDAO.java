@@ -8837,7 +8837,7 @@ public class BankReconciliationDAO {
         List<A2290Filter> listaData = new ArrayList<>();
         A2290Filter bean;
 
-        String SQL = "{CALL PRAXISMP.MPS477(?, ?, ?, ?, ?, ?)}";
+        String SQL = "{CALL PRAXISMP.MPS477(?, ?, ?, ?, ?, ?, ?)}";
 
         CallableStatement cstmt = null;
         ResultSet rst = null;
@@ -8859,14 +8859,8 @@ public class BankReconciliationDAO {
             cstmt.setString(4, filter.IN_ADATE_TO);
             cstmt.setString(5, filter.IN_INVOICE);
             cstmt.setString(6, filter.IN_FUENTE);
-//            cstmt.setString(4, filter.IN_ADATE);
-//            cstmt.setString(5, filter.IN_STATUS);
-//            cstmt.setString(6, filter.IN_COUNTRY);
-//            cstmt.setString(7, filter.IN_SOURCE);
-//            cstmt.setInt(8, filter.page.PAGNUM);
-//            cstmt.setInt(9, filter.page.PAGROW);
-//            cstmt.setInt(10, filter.page.TOTPAG);
-//            cstmt.setInt(11, filter.page.TOTROW);
+            cstmt.setString(7, filter.IN_COUNTRY);
+
 
             cstmt.execute();
 

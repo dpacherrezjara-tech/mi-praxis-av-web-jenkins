@@ -1054,6 +1054,7 @@ Ext.util.CSS.createStyleSheet(`
                                 statusValue = statusValue.length > 0 ? statusValue.join(',') : '';
                             }
                             var fuente = Ext.getCmp(prototype.id + '-cmbFuente').getValue();
+                            var pais = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
                             var fy = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() || '';
                             var fm = Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue() || '';
                             var ty = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() || '';
@@ -1064,7 +1065,8 @@ Ext.util.CSS.createStyleSheet(`
                                     IN_ADATE_FROM: (fy && fm) ? fy + fm : '',
                                     IN_ADATE_TO: (ty && tm) ? ty + tm : '',
                                     IN_INVOICE: invoice,
-                                    IN_FUENTE: fuente
+                                    IN_FUENTE: fuente,
+                                    IN_COUNTRY: pais
                             };
                             console.log("FILTRO CARTERA", me.filtroCartera);
                             this.setGridDataCartera();
@@ -5234,36 +5236,8 @@ Ext.util.CSS.createStyleSheet(`
                                 var header = null;
                                 Ext.Array.each(records, function (rec) {
 
-//                                var invoice = rec.get('O_INVOICE');
-//                                var status = rec.get('O_STVAL'); // 3 = Pending
 
-                                        // CABECERA
-//                                if (invoice !== currentInvoice) {
-//
-//                                    header = {
-//                                    O_INVOICE: invoice,
-//                                        O_TINPUT:rec.get('O_TINPUT'),
-//                                        O_ADATE: 'Settlement Date',
-//                                        O_STRDATE: 'From Date',
-//                                        O_ENDDATE: 'To Date',
-//                                        O_CONCEPT: 'INVOICE',
-//                                        O_STVAL: '0', // Match 
-//                                        O_SCOUNTRY: rec.get('O_SCOUNTRY'),
-//                                        O_SCURRENCY: rec.get('O_SCURRENCY'),
-//                                        O_BANDOC: rec.get('O_BANDOC'),
-//                                        O_NETO: rec.get('O_NETO'),
-//                                        O_APAYMENT: '0',
-//                                        O_ABALANCE: rec.get('O_NETO'),
-//                                        _isHeader: true
-//                                    };
-//                                    newData.push(header);
-//                                    currentInvoice = invoice;
-//                                }
 
-                                //  Si hay Pending -cabecera Pending
-//                                if (status === '3' || status === 3) {
-//                                header.O_STVAL = '3';
-//                                }
 
                                 // DETALLE
                                 newData.push(Ext.apply({}, rec.getData(), {
