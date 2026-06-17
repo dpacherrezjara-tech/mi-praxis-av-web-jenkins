@@ -38,6 +38,35 @@ public class BankReconciliationLogic {
     public List<A2290Filter> loadPX287SQP00838(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX287SQP00838(filter);
     }
+    
+    // CASH
+    
+     public List<A2290Filter> loadMPS629(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadMPS629(filter);
+    }
+     
+     
+    // CASH
+    
+      public List<A2290Filter> loadMPS628(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadMPS628(filter);
+    }
+    
+    
+    ///
+            
+             public List<A2290Filter> loadMPS626(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadMPS626(filter);
+    }
+             
+                     
+             public List<A2290Filter> loadMPS627(A2290Filter filter) throws SQLException, Exception {
+        return bankReconciliationDAO.loadMPS627(filter);
+    }
+    
+    
+    
+    
 
     public List<A2290Filter> loadPX269SQP00698Country(A2290Filter filter) throws SQLException, Exception {
         return bankReconciliationDAO.loadPX269SQP00698Country(filter);

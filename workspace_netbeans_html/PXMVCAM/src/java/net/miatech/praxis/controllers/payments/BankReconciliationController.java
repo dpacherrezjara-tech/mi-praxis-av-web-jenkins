@@ -182,6 +182,110 @@ public class BankReconciliationController extends BaseController {
         return lst;
     }
 
+    //GRILLA FASE 2 UP
+    @RequestMapping(value = "searchMainCASHUP")
+    public @ResponseBody
+    String searchMainCASHUP(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankReconciliation : searchMainCASHUP-------------");
+
+        map.put("success", true);
+
+        List<A2290Filter> lst = this.getListMainCASHUP(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<A2290Filter> getListMainCASHUP(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2290Filter> lst = new ArrayList<>(0);
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadMPS626(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+
+    ///
+    //GRILLA FASE 2 DOWN
+    @RequestMapping(value = "searchMainCASHDOWN")
+    public @ResponseBody
+    String searchMainCASHDOWN(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankReconciliation : searchMainCASHDOWN-------------");
+
+        map.put("success", true);
+
+        List<A2290Filter> lst = this.getListMainCASHDOWN(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<A2290Filter> getListMainCASHDOWN(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2290Filter> lst = new ArrayList<>(0);
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+
+            lst = logic.loadMPS627(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+
+    ///
     @RequestMapping(value = "searchGraf")
     public @ResponseBody
     String search(ModelMap map, HttpServletRequest request) {
@@ -230,6 +334,106 @@ public class BankReconciliationController extends BaseController {
         return lst;
     }
 
+    /// CASH LIQ I
+    @RequestMapping(value = "searchGrafCASH")
+    public @ResponseBody
+    String searchGrafCASH(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- StatementReconciliations : searchGrafCASH-------------");
+
+        map.put("success", true);
+        List<A2290Filter> lst = this.getListCASH(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<A2290Filter> getListCASH(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2290Filter> lst = new ArrayList<>(0);
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+            lst = logic.loadMPS629(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+
+    ////
+    /// CASH LIQ I DOWN
+    @RequestMapping(value = "searchGrafCASHDOWN")
+    public @ResponseBody
+    String searchGrafCASHDOWN(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- StatementReconciliations : searchGrafCASHDOWN-------------");
+
+        map.put("success", true);
+        List<A2290Filter> lst = this.getListCASHDOWN(request, false);
+        System.out.println("Total : " + lst.size());
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    public List<A2290Filter> getListCASHDOWN(HttpServletRequest request, Boolean bExcel) {
+
+        List<A2290Filter> lst = new ArrayList<>(0);
+        A2290Filter filter = new A2290Filter();
+        Gson gson = new Gson();
+        String beanString = "";
+
+        try {
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            beanString = request.getParameter("beanString");
+            filter = gson.fromJson(beanString, A2290Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            if (!bExcel) {
+                filter.page.PAGROW = 20;
+                start = (start != 0 ? start : 0);
+                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+            } else {
+                filter.page.PAGROW = -1;
+                filter.page.PAGNUM = 1;
+            }
+            lst = logic.loadMPS628(filter);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return lst;
+    }
+
+    ////
     @RequestMapping(value = "searchCountry")
     public @ResponseBody
     String searchCountry(ModelMap map, HttpServletRequest request) {
@@ -3818,26 +4022,27 @@ public class BankReconciliationController extends BaseController {
     }
 
     @RequestMapping(value = "searchBeanAMDP_SCAN")
-    public @ResponseBody String searchBeanAMDP_SCAN(ModelMap map, HttpServletRequest request) {
+    public @ResponseBody
+    String searchBeanAMDP_SCAN(ModelMap map, HttpServletRequest request) {
         System.out.println("-------------- BankReconciliation : searchBeanAMDP_SCAN-------------");
 
         try {
             List<A2290Filter> lst = this.getListAMDP_SCAN(request, false);
-            
+
             map.put("success", true);
             map.put("excede", false); // <= 500: No excede
             map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
             map.put("data", lst);
-            
+
         } catch (Exception e) {
             if (e.getMessage() != null && e.getMessage().startsWith("EXCEDE_LIMITE")) {
                 String[] partes = e.getMessage().split("\\|");
                 String totalRegistros = partes.length > 1 ? partes[1] : "+500";
-                
+
                 map.put("success", true);
                 map.put("excede", true); // > 500: Excede
                 map.put("count", totalRegistros);
-                map.put("data", new ArrayList<>()); 
+                map.put("data", new ArrayList<>());
             } else {
                 map.put("success", false);
                 map.put("Mensaje", "Ocurrió un error en el servidor al buscar.");
@@ -3864,7 +4069,7 @@ public class BankReconciliationController extends BaseController {
         } catch (Exception e) {
             // Dejamos subir el error de límite
             if (e.getMessage() != null && e.getMessage().startsWith("EXCEDE_LIMITE")) {
-                throw e; 
+                throw e;
             }
             throw new SpringException(e);
         }
@@ -3892,7 +4097,7 @@ public class BankReconciliationController extends BaseController {
                 map.put("success", true);
                 map.put("excede", true);
                 map.put("count", totalRegistros);
-                map.put("data", new ArrayList<>()); 
+                map.put("data", new ArrayList<>());
             } else {
                 map.put("success", false);
                 map.put("Mensaje", "Ocurrió un error en el servidor al buscar pendientes.");
@@ -4165,8 +4370,8 @@ public class BankReconciliationController extends BaseController {
             throw new SpringException(e);
         }
     }
-    
-     @RequestMapping(value = "getXLSXScanSearch")
+
+    @RequestMapping(value = "getXLSXScanSearch")
     public @ResponseBody
     void getXLSXScanSearch(HttpServletRequest request, HttpServletResponse response) throws Exception {
         System.out.println("Report : getXLSXScan");
@@ -4260,7 +4465,7 @@ public class BankReconciliationController extends BaseController {
             CH1_10.setCellValue("INVOICE");
             CH1_11.setCellValue("SOURCE");
             CH1_12.setCellValue("PAYMENT TYPE");
-            
+
             CH1_0.setCellStyle(headerStyle);
             CH1_1.setCellStyle(headerStyle);
             CH1_2.setCellStyle(headerStyle);
@@ -4292,9 +4497,7 @@ public class BankReconciliationController extends BaseController {
             ++vj;
             //============================================
 
-            
             //============================================
-
             while (iter.hasNext()) {
                 row1 = sheet.createRow(vj);
                 Cell rcell0 = row1.createCell(0);
@@ -4324,7 +4527,6 @@ public class BankReconciliationController extends BaseController {
                 rcel20.setCellValue(listaData.get(vi).INVOICE);
                 rcel21.setCellValue(listaData.get(vi).CFUENTE);
                 rcel22.setCellValue(listaData.get(vi).SPAYMENT);
-                
 
                 iter.next();
                 ++vi;
@@ -4332,7 +4534,6 @@ public class BankReconciliationController extends BaseController {
             }
 
             // ======  Nivel de TOTALES ==========
-           
             sheet.autoSizeColumn(0, true);
             sheet.autoSizeColumn(1, true);
             sheet.autoSizeColumn(2, true);
@@ -4346,7 +4547,6 @@ public class BankReconciliationController extends BaseController {
             sheet.autoSizeColumn(10, true);
             sheet.autoSizeColumn(11, true);
             sheet.autoSizeColumn(12, true);
-            
 
             //============================================
             response.setContentType("application/vnd.openxml");
@@ -4360,7 +4560,7 @@ public class BankReconciliationController extends BaseController {
             throw new SpringException(e);
         }
     }
-    
+
     //////////////
     ////////////////
     @RequestMapping(value = "searchBeanDebits_SCAN_PENDING")
@@ -5583,7 +5783,6 @@ public class BankReconciliationController extends BaseController {
         return new Gson().toJson(map);
     }
 
-    /* New Locura */
     @RequestMapping(value = "searchMainCash")
     public @ResponseBody
     String searchMainCash(ModelMap map, HttpServletRequest request) {
@@ -6278,7 +6477,7 @@ public class BankReconciliationController extends BaseController {
 
         return new Gson().toJson(map);
     }
-    
+
     @RequestMapping(value = "/CloseTransactionCash", method = RequestMethod.POST)
     @ResponseBody
     public String CloseTransactionCash(@RequestBody MPF100Filter filter) {
@@ -6909,7 +7108,6 @@ public class BankReconciliationController extends BaseController {
     }
 
     /* ==== Helpers ==== */
-
     private void createHeaderCell(HSSFRow row, int col, String value, HSSFCellStyle style) {
         HSSFCell cell = row.createCell((short) col);
         cell.setCellValue(value);
@@ -7740,14 +7938,9 @@ public class BankReconciliationController extends BaseController {
         return gson.toJson(map);
     }
 
-    
-
-
-
- 
-    
     @RequestMapping(value = "reversaCashBSP_Parcial")
-    public @ResponseBody String reversaCashBSP_Parcial(HttpServletRequest request) {
+    public @ResponseBody
+    String reversaCashBSP_Parcial(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         Gson gson = new Gson();
         try {
@@ -7757,7 +7950,7 @@ public class BankReconciliationController extends BaseController {
             String beanString = request.getParameter("beanString");
             A2290Filter filter = gson.fromJson(beanString, A2290Filter.class);
 
-            map = logic.reversaFaseDosMapParcial(filter); 
+            map = logic.reversaFaseDosMapParcial(filter);
 
         } catch (Exception ex) {
             map.put("success", false);
@@ -7765,13 +7958,10 @@ public class BankReconciliationController extends BaseController {
         }
         return gson.toJson(map);
     }
-    
-    
-    
-    
-    
+
     @RequestMapping(value = "convertAmountToUSD_AMDP")
-    public @ResponseBody String convertAmountToUSD_AMDP(HttpServletRequest request) {
+    public @ResponseBody
+    String convertAmountToUSD_AMDP(HttpServletRequest request) {
         System.out.println("-------------- BankReconciliation : convertAmountToUSD_AMDP -------------");
         Map<String, Object> map = new HashMap<>();
 
@@ -7789,7 +7979,7 @@ public class BankReconciliationController extends BaseController {
 
             map.put("success", true);
             map.put("convertedAmount", convertedAmount);
-            
+
         } catch (Exception e) {
             map.put("success", false);
             map.put("Mensaje", "Error al convertir la moneda: " + e.getMessage());
@@ -7797,21 +7987,20 @@ public class BankReconciliationController extends BaseController {
         }
         return new Gson().toJson(map);
     }
-    
-    
+
     @RequestMapping(value = "MaintenanceMPF223", method = RequestMethod.POST)
     public @ResponseBody
     String MaintenanceMPF223(ModelMap map, HttpServletRequest request) {
         System.out.println("-------------- bankreconci : MaintenanceMPF223 (UPDATE) -------------");
         map.put("success", false);
-        
+
         try {
             logic = new BankReconciliationLogic();
             logic.setSession(this.serverSession.getServerSession());
 
             String beanString = request.getParameter("beanString");
             Gson gson = new Gson();
-            
+
             A2290Filter filter = gson.fromJson(beanString, A2290Filter.class);
 
             String resultMsg = logic.updateMPF223(filter);
@@ -7829,9 +8018,10 @@ public class BankReconciliationController extends BaseController {
         }
         return new Gson().toJson(map);
     }
-    
+
     @RequestMapping(value = "executeCreateADM")
-    public @ResponseBody String executeCreateADM(ModelMap map, HttpServletRequest request) {
+    public @ResponseBody
+    String executeCreateADM(ModelMap map, HttpServletRequest request) {
         System.out.println("-------------- BankReconciliation : executeCreateADM -------------");
         String msj = "";
         Gson gson = new Gson();
@@ -7847,21 +8037,22 @@ public class BankReconciliationController extends BaseController {
             UserView user = this.serverSession.getServerSession().getUserView();
             logic = new BankReconciliationLogic();
             logic.setSession(this.serverSession.getServerSession());
-            
+
             msj = logic.executeCreateADM(filterList);
 
             map.put("success", true);
             map.put("Mensaje", msj);
-            
+
         } catch (Exception ex) {
             map.put("success", false);
             map.put("Mensaje", ex.getMessage());
         }
         return new Gson().toJson(map);
     }
-    
+
     @RequestMapping(value = "/searchAllTeleworking")
-    public @ResponseBody String searchAllTeleworking(ModelMap map, HttpServletRequest request) {
+    public @ResponseBody
+    String searchAllTeleworking(ModelMap map, HttpServletRequest request) {
         System.out.println("-------------- BankReconciliation : searchAllTeleworking -------------");
 
         List<A2290Filter> lst = new ArrayList<>(0);
@@ -7879,7 +8070,7 @@ public class BankReconciliationController extends BaseController {
             map.put("success", true);
             map.put("data", lst);
             map.put("total", lst.size());
-            
+
         } catch (Exception e) {
             map.put("success", false);
             map.put("Mensaje", e.getMessage());
