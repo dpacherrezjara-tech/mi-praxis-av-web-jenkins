@@ -257,9 +257,28 @@ public class ReportsDAO {
                     bean.SAUTHOC = rst.getString("SAUTHOC").trim();
                     bean.FTRAN = rst.getString("FTRAN").trim();
                     bean.MERCHAND = rst.getString("MERCHNC").trim();
-                    bean.TOTAL = rst.getDouble("TOTAL");
-                    bean.NETO = rst.getDouble("NETO");
-                    bean.SVFOP = rst.getDouble("SVFOP");
+                    
+                    
+                    double valTotal = rst.getDouble("TOTAL");
+                    double valNeto = rst.getDouble("NETO");
+                    double valSvfop = rst.getDouble("SVFOP");
+
+                    boolean isExcel = (filter.page.PAGROW == -1);
+
+                    if (isExcel) {
+                        String stvalchg = rst.getString("STVALCHG");
+                        boolean isEmptyStvalchg = (stvalchg == null || stvalchg.trim().isEmpty());
+                        int signo = isEmptyStvalchg ? -1 : 1;
+
+                        bean.TOTAL = Math.abs(valTotal) * signo;
+                        bean.NETO = Math.abs(valNeto) * signo;
+                        bean.SVFOP = Math.abs(valSvfop) * signo;
+                    } else {
+                        bean.TOTAL = valTotal;
+                        bean.NETO = valNeto;
+                        bean.SVFOP = valSvfop;
+                    }
+                    
                     bean.SCURRENCY = rst.getString("SCURRENCY").trim();
                     bean.TYPE = rst.getString("TYPE").trim();
                     bean.STVAL = rst.getString("STVAL").trim();
