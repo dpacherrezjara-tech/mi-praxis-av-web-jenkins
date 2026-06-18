@@ -194,6 +194,8 @@ public class ReportsDAO {
         double totTOTAL = 0, totNETO = 0,totSVFOP = 0;
         CallableStatement cstmt = null;
         ResultSet rst = null;
+        
+        boolean isExcel = (filter.page.PAGROW == -1);
 
         String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS367(?,?,?,?,?,?,?,?,?,?,?,?)}";
 
@@ -263,7 +265,6 @@ public class ReportsDAO {
                     double valNeto = rst.getDouble("NETO");
                     double valSvfop = rst.getDouble("SVFOP");
 
-                    boolean isExcel = (filter.page.PAGROW == -1);
 
                     if (isExcel) {
                         String stvalchg = rst.getString("STVALCHG");
