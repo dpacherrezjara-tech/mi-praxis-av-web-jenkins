@@ -51,7 +51,9 @@ Ext.define('Ext.Praxis.controller.payments.TAXMerchantCatalog.TAXMerchantCatalog
             IN_CUENTA: '',
             IN_TIPOCB: '',
             IN_TIPOML: '',
-            IN_TEXTML: ''
+            IN_TEXTML: '',
+            IN_IATAVTA_OLD: '',
+            IN_MERCHANT_OLD: ''
                 }
 
             const res = await global.callStoreGet('PRAXISMP', 'MPS276', params);
