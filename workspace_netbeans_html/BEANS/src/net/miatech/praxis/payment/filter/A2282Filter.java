@@ -35,6 +35,7 @@ public class A2282Filter extends A2282 {
      public double QTYTRAN1 = 0; 
      public double QTYDOC = 0; 
      public double SVFOPS = 0; 
+     public double SVFOPV = 0; 
      public double SVFOPT = 0; 
      public double SVFOPA = 0; 
      public double TOTALSVFOP = 0; 
@@ -72,6 +73,7 @@ public class A2282Filter extends A2282 {
      public String TRANCS = "";
      public String DATECI = "";
      public String TRANCI = "";
+     public String DESCERR = "";
      public String DATECT = "";
      public String TRANCT = "";
      public String ADJUST = "";
