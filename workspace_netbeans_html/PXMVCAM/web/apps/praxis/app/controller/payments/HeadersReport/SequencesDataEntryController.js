@@ -72,8 +72,9 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.SequencesDataEntryContr
         }
     },
 
-    changeView: function (stsap) {
+    changeView: async function (stsap) {
         const me = this;
+        const username = document.getElementById('menuUser').innerText.trim();
         const seqSPG = Ext.getCmp(prototype.idDEsequence + '-seqStoreProcGrid');
         const filterForm = seqSPG ? seqSPG.down('#filterForm') : null;
         const btnRej = Ext.getCmp(prototype.idDEsequence + '-btnRejectRec');
@@ -85,8 +86,6 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.SequencesDataEntryContr
         const cbkReject = Ext.getCmp(prototype.idDEsequence + '-chk-reject');
         const newFileBox = Ext.getCmp(prototype.idDEsequence + '-newFileBox');
         const reverseFile = Ext.getCmp(prototype.idDEsequence + '-btn-rejsuc');
-
-        let username = document.getElementById('menuUser').innerText;
 
         if (filterForm) filterForm.hide();
         if (btnRej) btnRej.hide();
@@ -109,8 +108,8 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.SequencesDataEntryContr
         }
 
         if (stsap === '2') {
-            if (username === 'MPACHECO' || username === 'MPACHECOT'
-                    || username === 'PXAVAPIT' || username === 'AALVAREZT') {
+            const isAdmin = await global.isAdminUserContable(username);
+            if (isAdmin) {
                 reverseFile.show();
             }
         }

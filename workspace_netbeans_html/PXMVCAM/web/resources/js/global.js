@@ -2072,6 +2072,26 @@ var LarSyrExt = function () {
         console.error("Error exportando Excel:", e);
     } 
     };
+    
+    
+    this._adminUsersConta = null;
+
+    this.loadAdminUsersContable = async function () {
+        if (global._adminUsersConta) return global._adminUsersConta; // cache
+        try {
+            const res = await global.callStoreGet('PRAXISMP', 'MPS670');
+            global._adminUsersConta = (res.lstRs[0] || []).map(r => r.USERNAME.trim());
+        } catch (e) {
+            console.error('Error loading admin users:', e);
+            global._adminUsersConta = [];
+        }
+        return global._adminUsersConta;
+    };
+
+    this.isAdminUserContable = async function (username) {
+        const admins = await global.loadAdminUsersContable();
+        return admins.includes(username);
+    };
 
 };
 

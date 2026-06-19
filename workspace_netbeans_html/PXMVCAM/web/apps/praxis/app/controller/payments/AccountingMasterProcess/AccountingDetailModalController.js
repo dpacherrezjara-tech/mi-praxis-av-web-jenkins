@@ -15,9 +15,6 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.DetailGridRow
 Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDetailModalController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.AccountingDetailModalController',
-
-    ADMIN_USERS: ['MPACHECO', 'PLOPEZ', 'MPACHECOT', 'PXAVAPIT', 'PXAVAPI', 'GLADYSAT', 'GLADYSA'],
-
     _monolithReq: null,
 
     init: function () {
@@ -31,7 +28,8 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
         const me = this;
         const view = me.getView();
         const idcont = view.idcont;
-
+        const admin = await me._isAdmin();
+        
         view.setTitle('Accounting Detail: ' + idcont);
         me._applyButtonVisibility(view.rowData || {});
 
@@ -47,11 +45,11 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
 
         // Mostrar botones bulk solo a admins (empiezan deshabilitados)
         const bulkBtn = view.down('#btn-bulk-reverse');
-        if (bulkBtn) bulkBtn.setVisible(me._isAdmin());
+        if (bulkBtn) bulkBtn.setVisible(admin);
         const bulkErrBtn = view.down('#btn-bulk-save-errors');
-        if (bulkErrBtn) bulkErrBtn.setVisible(me._isAdmin());
+        if (bulkErrBtn) bulkErrBtn.setVisible(admin);
         const bulkErrRevBtn = view.down('#btn-bulk-reverse-errors');
-        if (bulkErrRevBtn) bulkErrRevBtn.setVisible(me._isAdmin());
+        if (bulkErrRevBtn) bulkErrRevBtn.setVisible(admin);
 
         // Solo carga el primer tab; los demás cargan al hacer click
         me._loadedTabs = {};
@@ -68,8 +66,8 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
         return ((document.getElementById('menuUser') || {}).textContent || '').trim();
     },
 
-    _isAdmin: function () {
-        return this.ADMIN_USERS.includes(this._getUser());
+    _isAdmin: async function () {
+        return await global.isAdminUserContable(this._getUser());
     },
 
     _fetchLiveRow: async function (idcont) {
@@ -147,11 +145,11 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
         if (el) el.innerHTML = html;
     },
 
-    _applyButtonVisibility: function (row) {
+    _applyButtonVisibility: async function (row) {
         const me = this;
         const view = me.getView();
         const st = String(row.STCONT || '');
-        const admin = me._isAdmin();
+        const admin = await me._isAdmin();
 
         const set = function (itemId, visible) {
             const btn = view.down('#' + itemId);
@@ -566,9 +564,10 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
     // Bulk reverse queue
     // =========================================================================
 
-    _toggleQueueItem: function (record, widgetView) {
+    _toggleQueueItem: async function (record, widgetView) {
         const me = this;
-        if (!me._isAdmin()) {
+        const admin = await me._isAdmin();
+        if (!admin) {
             new AWN().warning('Solo usuarios administradores pueden usar esta acción masiva.');
             return;
         }
