@@ -23,36 +23,15 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Filters', {
                 labelAlign: 'right',
             },
             items: [
-                {
-                    xtype: 'label',
-                    html: '<strong style="color:#000;">Sale Date</strong>',
-                    align: 'left',
-                    fieldStyle: 'text-align: left;',
-                    padding: '8px 30px 0px 10px',
-                    hidden: false
-                },
-//                {
-//                    xtype: 'combo',
-//                    id: prototype.id + '-cmbDateFromYear',
-//                    fieldLabel: 'From',
-//                    labelAlign: 'right',
-//                    queryMode: 'local',
-//                    editable: false,
-//                    triggerAction: 'all',
-//                    autoSelect: false,
-//                    enableKeyEvents: true,
-//                    caseSensitive: true,
-//                    hidden: false,
-//                    valueField: 'code',
-//                    displayField: 'name',
-//                    emptyText: 'All',
-//                    labelWidth: 50,
-//                    width: 140,
-//                    anchor: '100%'
-//                },
-                
-                
-                                        {
+                        {
+                            xtype: 'label',
+                            html: '<strong style="color:#000;">Sale Date</strong>',
+                            align: 'left',
+                            fieldStyle: 'text-align: left;',
+                            padding: '8px 30px 0px 10px',
+                            hidden: false
+                        },
+                        {
                             xtype: 'combo',
                             id: prototype.id + '-cmbDateFromYear',
                             fieldStyle: 'text-align: left;',
@@ -77,35 +56,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Filters', {
                         
                         {xtype: 'tbspacer', width: 10},
                 
-                
-                
-                
-                
-                
-                
-                
-                
-//                {
-//                    xtype: 'combo',
-//                    id: prototype.id + '-cmbDateFromMonth',
-//                    labelAlign: 'right',
-//                    queryMode: 'local',
-//                    triggerAction: 'all',
-//                    editable: false,
-//                    autoSelect: false,
-//                    enableKeyEvents: true,
-//                    caseSensitive: true,
-//                    hidden: false,
-//                    valueField: 'code',
-//                    displayField: 'name',
-//                    emptyText: 'All',
-//                    width: 70,
-//                    anchor: '100%'
-//                },
-                
-                
-                
-                                        {
+                        {
                             xtype: 'combo',
                             id: prototype.id + '-cmbDateFromMonth',
                             fieldStyle: 'text-align: left;',
@@ -126,38 +77,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Filters', {
                             }
                         },
                         {xtype: 'tbspacer', width: 10},
-                        
-                        
-                        
-                
-                
-                
-                
-                
-                
-//                {
-//                    xtype: 'combo',
-//                    id: prototype.id + '-cmbDateFromDay',
-//                    queryMode: 'local',
-//                    triggerAction: 'all',
-//                    editable: false,
-//                    autoSelect: true,
-//                    enableKeyEvents: true,
-//                    forceSelection: true,
-//                    caseSensitive: false,
-//                    valueField: 'code', displayField: 'name',
-//                    emptyText: 'All',
-//                    width: 60,
-//                    typeAhead: true,                            
-//                    listeners: {
-//                        change: 'onFromDayChange',                                
-//                        keypress: 'onTextKeypress'
-//                    }
-//                },
-//                
-                
-                
-                                        {
+                        {
                             xtype: 'combo',
                             id: prototype.id + '-cmbDateFromDay',
                             labelAlign: 'right',
@@ -182,34 +102,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Filters', {
                         },
                         {xtype: 'tbspacer', width: 15},
                 
-                
-                
-                
-                
-                
-//                {
-//                    xtype: 'combo',
-//                    id: prototype.id + '-cmbDateToYear',
-//                    fieldLabel: 'To',
-//                    labelAlign: 'right',
-//                    queryMode: 'local',
-//                    editable: false,
-//                    triggerAction: 'all',
-//                    autoSelect: false,
-//                    enableKeyEvents: true,
-//                    caseSensitive: true,
-//                    hidden: false,
-//                    valueField: 'code',
-//                    displayField: 'name',
-//                    emptyText: 'All',
-//                    labelWidth: 50,
-//                    width: 140,
-//                    anchor: '100%'
-//                },
-                
-                
-                
-                                        {
+                        {
                             xtype: 'combo',
                             id: prototype.id + '-cmbDateToYear',
                             fieldStyle: 'text-align: left;',
@@ -229,32 +122,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Filters', {
                         },
                         {xtype: 'tbspacer', width: 10},
                 
-                
-                
-                
-                
-                
-                
-//                {
-//                    xtype: 'combo',
-//                    id: prototype.id + '-cmbDateToMonth',
-//                    labelAlign: 'right',
-//                    queryMode: 'local',
-//                    triggerAction: 'all',
-//                    editable: false,
-//                    autoSelect: false,
-//                    enableKeyEvents: true,
-//                    caseSensitive: true,
-//                    hidden: false,
-//                    valueField: 'code',
-//                    displayField: 'name',
-//                    emptyText: 'All',
-//                    width: 70,
-//                    anchor: '100%'
-//                },
-                
-                
-                                        {
+                        {
                             xtype: 'combo',
                             id: prototype.id + '-cmbDateToMonth',
                             fieldStyle: 'text-align: left;',
@@ -272,38 +140,8 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Filters', {
                             enforceMaxLength: true
                         },
                         {xtype: 'tbspacer', width: 10},
-                
-                
-                
-                
-                
-                
-//                
-//                {
-//                    xtype: 'combo',
-//                    id: prototype.id + '-cmbDateToDay',
-//                    queryMode: 'local',
-//                    triggerAction: 'all',
-//                    editable: false,
-//                    autoSelect: true,
-//                    enableKeyEvents: true,
-//                    forceSelection: true,
-//                    caseSensitive: false,
-//                    valueField: 'code', displayField: 'name',
-//                    emptyText: 'All',
-//                    width: 60,
-//                    typeAhead: true,
-//                    listeners: {
-//                        change: 'onToDayChange',
-//                        keypress: 'onTextKeypress'
-//                    }
-//                },
-                
-                
-                
-                
-                
-                                        {
+
+                        {
                             xtype: 'combo',
                             id: prototype.id + '-cmbDateToDay',
                             labelAlign: 'right',
@@ -327,281 +165,123 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Filters', {
                         },
                         //</editor-fold>
                         {xtype: 'tbspacer', width: 15},
-                
-                
-                
-                
-                
-                
-                
-                
-//                {
-//                    xtype: 'combo',
-//                    fieldLabel: 'Periodo',
-//                    id: prototype.id+'-cmbPERNUM',
-//                    queryMode: 'local',
-//                    editable: true,
-//                    selectOnFocus: true,
-//                    valueField: 'code',
-//                    displayField: 'name',
-//                    labelWidth: 110,
-//                    width: 170,
-//                    listConfig: {minWidth: 20},
-//                },
-//                {
-//                    xtype: 'combo',
-//                    fieldLabel: 'Processing Ind',
-//                    id: prototype.id+'-cmbPROCIND',
-//                    queryMode: 'local',
-//                    editable: true,
-//                    selectOnFocus: true,
-//                    valueField: 'code',
-//                    displayField: 'name',
-//                    labelWidth: 170,
-//                    width: 230,
-//                    listConfig: {minWidth: 170},
-//                },
-//                {
-//                    xtype: 'combo',
-//                    fieldLabel: 'Credit Card Code',
-//                    id: prototype.id+'-cmbCode',   
-//                    queryMode: 'local',
-//                    valueField: 'CODE',
-//                    displayField: 'NAME',
-//                    width: 300,
-//                    labelWidth: 170,
-//                    selectOnFocus: true,
-//                    fieldStyle: 'text-align: left;',
-//                    listConfig: {minWidth: 170}
-//                },
 
-                {
-                    xtype: 'textfield',
-                    fieldLabel: 'Refer:',
-                    id: prototype.id+'-txtReferTur',                                   
-                    maskRe: /[0-9]/,
-                    enforceMaxLength: true,
-                    maxLength:8,
-                    labelWidth: 70,
-                    width: 180,
-                    enableKeyEvents: true,
-                    listeners: {
-                        keypress: 'eventKey'
-                    },
-                    margin: '0 0 0 5'
-                },
+                        {
+                            xtype: 'textfield',
+                            fieldLabel: 'Refer:',
+                            id: prototype.id+'-txtReferTur',                                   
+                            maskRe: /[0-9]/,
+                            enforceMaxLength: true,
+                            maxLength:8,
+                            labelWidth: 70,
+                            width: 180,
+                            enableKeyEvents: true,
+                            listeners: {
+                                keypress: 'eventKey'
+                            },
+                            margin: '0 0 0 5'
+                        },
 
+                        {
+                            xtype: 'textfield',
+                            fieldLabel: 'Agent:',
+                            id: prototype.id+'-txtAGENTE',                                   
+                            maskRe: /[0-9]/,
+                            enforceMaxLength: true,
+                            maxLength:8,
+                            labelWidth: 70,
+                            width: 180,
+                            enableKeyEvents: true,
+                            listeners: {
+                                keypress: 'eventKey'
+                            },
+                            margin: '0 0 0 5'
+                        },
 
+                        {
+                            xtype: 'combo',
+                            fieldLabel: 'Status: ',
+                            id: prototype.id + '-cmbStatus',
+                            labelWidth: 70,
+                            width: 180,
 
+        //                            fieldLabel: 'Doc',
+                            store: new Ext.data.SimpleStore({
+                                fields: ['value', 'description'],
+                                data: [
+        //                            ["", "All"],["72", "Match"], ["73", "Surpluses"], ["74", "Shortages"]
+                                    ["", "All"],["3", "Pending"], ["1", "Match"]
+                                ]
+                            }),
+        //                    width: 100,
+                            emptyText: 'All',
+                            value: '',
+                            displayField: 'description',
+                            valueField: 'value',
+                            queryMode: 'local',
+        //                    filterPickList: true,
+                            editable: true,
+        //                    multiSelect: true,
+                            forceSelection: true,
 
+                        },
+                        {xtype: 'tbspacer', width: 20},
+                        {
+                            xtype: 'combo',
+                            fieldLabel: 'Comments: ',
+                            id: prototype.id + '-cmbComment',
+                            labelWidth: 70,
+                            width: 180,
 
-                {
-                    xtype: 'textfield',
-                    fieldLabel: 'Agent:',
-                    id: prototype.id+'-txtAGENTE',                                   
-                    maskRe: /[0-9]/,
-                    enforceMaxLength: true,
-                    maxLength:8,
-                    labelWidth: 70,
-                    width: 180,
-                    enableKeyEvents: true,
-                    listeners: {
-                        keypress: 'eventKey'
-                    },
-                    margin: '0 0 0 5'
-                },
-                
-//                
-//                     {
-//                    xtype: 'textfield',
-//                    fieldLabel: 'sssss:',
-//                  
-//                },
-                
-                
-                
-                
-//                                {
-//                    xtype: 'label',
-//                    text: 'Status :',
-//                    padding: '3 0',
-//                    hidden: false,
-//                    width: 64,
-//                    autoEl: {
-//                        tag: 'label',
-//                        'data-qtip': 'Status'
-//                    },
-//                    margin: '0 0 0 18'
-//                },
-                
-                {
-                    xtype: 'combo',
-                    fieldLabel: 'Status: ',
-                    id: prototype.id + '-cmbStatus',
-                    labelWidth: 70,
-                    width: 180,
-                    
-//                            fieldLabel: 'Doc',
-                    store: new Ext.data.SimpleStore({
-                        fields: ['value', 'description'],
-                        data: [
-//                            ["", "All"],["72", "Match"], ["73", "Surpluses"], ["74", "Shortages"]
-                            ["", "All"],["3", "Pending"], ["1", "Match"]
-                        ]
-                    }),
-//                    width: 100,
-                    emptyText: 'All',
-                    value: '',
-                    displayField: 'description',
-                    valueField: 'value',
-                    queryMode: 'local',
-//                    filterPickList: true,
-                    editable: true,
-//                    multiSelect: true,
-                    forceSelection: true,
+        //                            fieldLabel: 'Doc',
+                            store: new Ext.data.SimpleStore({
+                                fields: ['value', 'description'],
+                                data: [
+                                    ["", "All"],["72", "Match"], ["73", "Surpluses"], ["74", "Shortages"]
+                                ]
+                            }),
+        //                    width: 100,
+                            emptyText: 'All',
+                            value: '',
+                            displayField: 'description',
+                            valueField: 'value',
+                            queryMode: 'local',
+        //                    filterPickList: true,
+                            editable: true,
+        //                    multiSelect: true,
+                            forceSelection: true,
 
-                },
-                {xtype: 'tbspacer', width: 20},
-                {
-                    xtype: 'combo',
-                    fieldLabel: 'Comments: ',
-                    id: prototype.id + '-cmbComment',
-                    labelWidth: 70,
-                    width: 180,
-                    
-//                            fieldLabel: 'Doc',
-                    store: new Ext.data.SimpleStore({
-                        fields: ['value', 'description'],
-                        data: [
-                            ["", "All"],["72", "Match"], ["73", "Surpluses"], ["74", "Shortages"]
-                        ]
-                    }),
-//                    width: 100,
-                    emptyText: 'All',
-                    value: '',
-                    displayField: 'description',
-                    valueField: 'value',
-                    queryMode: 'local',
-//                    filterPickList: true,
-                    editable: true,
-//                    multiSelect: true,
-                    forceSelection: true,
-
-                },
-                {xtype: 'tbspacer', width: 30},
-
-
-
-
-
+                        },
+                        {
+                            xtype: 'radiogroup',
+                            id: prototype.id + '-rgConsulta',
+                            fieldLabel: 'View',
+                            labelWidth: 60,
+                            width: 220,
+                            items: [
+                                {
+                                    boxLabel: 'Detail',
+                                    name: 'opcionConsulta',
+                                    inputValue: '1',
+                                    checked: true, // Seleccionado por defecto
+                                    margin: '0 10 0 0' // Separación entre los radios
+                                },
+                                {
+                                    boxLabel: 'Report',
+                                    name: 'opcionConsulta',
+                                    inputValue: '2'
+                                }
+                            ],
+                            listeners: {
+                                change: 'onSwitchView'
+                            }
+                        },
+                        {xtype: 'tbspacer', width: 30},
 
 
             ]
         },
         
-        
-        
-//        {   
-//            xtype: 'form',
-//            border: false,
-//            bodyStyle: 'background: transparent',
-//            margin: '10px 2px 10px 10px',
-//            layout: 'column',
-//            defaults:  {
-////                labelStyle: 'font-weight:bold;',
-//                fieldStyle: 'text-align: center;',
-//                anchor: '100%',
-//                hiddenLabel: false,
-//                labelAlign: 'right',
-//                xtype: 'textfield',
-//                hidden: false,
-//                selectOnFocus: true
-//            },
-//            items: [ 
-//                {
-//                    xtype: 'label',
-//                    html: '<strong style="color:#000;">Search by</strong>',
-//                    align: 'left',
-//                    fieldStyle: 'text-align: left;',
-////                    padding: '8px 92px 0px 5px',
-//                    hidden: false,
-//                    margin: '4px 89px 4px 8px'
-//                },
-//                {
-//                    xtype: 'combo',
-////                    fieldLabel: '',
-//                    id: prototype.id+'-cmbTRANSTYPE',
-//                    queryMode: 'local',
-//                    editable: false,
-//                    selectOnFocus: false,
-//                    valueField: 'code',
-//                    displayField: 'name',
-//                    width: 73
-//                },
-//                {
-//                    xtype: 'textfield',
-//                    fieldLabel: 'Agente:',
-//                    id: prototype.id+'-txtAGENTE',                                   
-//                    maskRe: /[0-9]/,
-//                    enforceMaxLength: true,
-//                    maxLength:8,
-//                    labelWidth: 120,
-//                    width: 230,
-//                    enableKeyEvents: true,
-//                    listeners: {
-//                        keypress: 'eventKey'
-//                    },
-//                    margin: '0 0 0 78'
-//                },
-//                {
-//                    xtype: 'textfield',
-//                    fieldLabel: 'Sales Date:',
-//                    id: prototype.id+'-txtDate',                                   
-//                    allowBlank: true,
-//                    maskRe: /[0-8]/,
-//                    enforceMaxLength: true,
-//                    maxLength:13,
-//                    labelWidth: 145,
-//                    width: 287,
-//                    enableKeyEvents: true,    
-//                    
-//                },
-//                {
-//                    xtype: 'label',
-//                    text: 'Status :',
-//                    padding: '3 0',
-//                    hidden: false,
-//                    width: 64,
-//                    autoEl: {
-//                        tag: 'label',
-//                        'data-qtip': 'Status'
-//                    },
-//                    margin: '0 0 0 78'
-//                },
-//                {
-//                    xtype: 'combo',
-//                    id: prototype.id + '-cmbStatus',
-////                            fieldLabel: 'Doc',
-//                    store: new Ext.data.SimpleStore({
-//                        fields: ['value', 'description'],
-//                        data: [
-//                            ["", "All"],["72", "Match"], ["73", "Surpluses"], ["74", "Shortages"]
-//                        ]
-//                    }),
-//                    width: 100,
-//                    emptyText: 'All',
-//                    value: '',
-//                    displayField: 'description',
-//                    valueField: 'value',
-//                    queryMode: 'local',
-////                    filterPickList: true,
-//                    editable: true,
-////                    multiSelect: true,
-//                    forceSelection: true,
-//
-//                },
-//            ]
-//        } 
 
     ]
 });

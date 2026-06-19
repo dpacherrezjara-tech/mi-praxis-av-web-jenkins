@@ -377,6 +377,7 @@ public class InputsDAO {
                     String[] fields = objRtn.strFormatDate4.split("\\.");
                     objRtn.strFormatDate4 = fields[1];
                 }
+                objRtn.strDescripcion2 = rs01.getString("DESCERROR");
                 objRtn.flagError = rs01.getString("FERROR");
                 if(rs01.getString("FERROR").trim().equals("D")){
                     objRtn.strDescripcion1 = "Duplicated Record";

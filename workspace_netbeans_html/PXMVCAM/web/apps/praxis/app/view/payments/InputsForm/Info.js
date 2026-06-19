@@ -502,7 +502,14 @@ Ext.define('Ext.Praxis.view.payments.InputsForm.Info', {
                                                     border: true
                                                 },
                                                 columns: [
-                                                    {text: 'Error', dataIndex: 'flagError', width: 60}
+                                                    {text: 'Error', dataIndex: 'flagError', width: 60,
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            var data = record.data;
+//                                                            metaData.style = "text-align:left;";
+                                                            metaData.tdAttr = 'data-qtip="' + data.strDescripcion2 + '"';
+                                                            return value;
+                                                        }
+                                                    }
                                                 ]
                                             },
                                             {text: 'Processing',

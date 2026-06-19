@@ -140,45 +140,6 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.TourismConciliati
         }
     },
 
-//    BuscarTKT_keyDownHandler: function (e, eOpts) {
-//        var ticket = Ext.getCmp(prototype.id + '-txtTKT').getValue();
-//        
-//        switch (eOpts.getKey()) {
-//            case  13:
-//                if (ticket.trim().length === 13) {
-//                    me.beanTKT.IN_TKT = ticket
-//                    var beanString = JSON.stringify(me.beanTKT);
-//                    me.paramsTKT = {
-//                        beanString: beanString,
-//                    };
-//                    this.setGridDataTKT();
-//                } else {
-//                    global.Msg({
-//                        msg: 'Ticket number must contain 13 digits.'
-//                    });
-//                }
-//                
-//                if(ticket.trim() !== ''){
-//                    this.DeshabilitarCampo();
-//                }
-//                break;
-//            case 8:
-//                this.HabilitarCampo();
-//                break;
-//            case 32:
-//                this.HabilitarCampo();
-//                break;
-//            case 46:
-//                this.HabilitarCampo();
-//                break;
-//        }
-//        
-//        if(ticket.trim() === ''){
-//            this.HabilitarCampo();
-//	} 
-//        
-//    },
-
     obtainData: function () {
 
         var storeComboDataYear = win.getStoreYear(false);
@@ -299,15 +260,24 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.TourismConciliati
     },
 
     btnSearch_click: function (obj, e) {
-
-
         this.setFormatParameter();
-        this.setGridData();
-
+        var radioGroup = Ext.getCmp(prototype.id + '-rgConsulta');
+        var opcion = radioGroup.getValue().opcionConsulta;
+        console.log(opcion,'opcion')
+        if(opcion === '1'){
+            this.setGridData();
+        }else{
+            this.setReportData();
+        }
+    },
+    
+    onSwitchView: function (obj, e) {
+        console.log('wdf')
+        this.btnSearch_click();
     },
 
     setGridData: function () {
-        win.lblUser_toolTip("Estructura: A2282");
+        win.lblUser_toolTip("Estructura: MPF147");
         me.panelActual = '-boxMainData';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
 //        me.setWidthPie();
@@ -353,6 +323,54 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.TourismConciliati
             Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
         }
     },
+    
+    setReportData: function () {
+        win.lblUser_toolTip("Estructura: MPF147");
+        me.panelActual = '-boxReportData';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+//        me.setWidthPie();
+        var msj = this.validateFields();
+        if (msj !== '') {
+            global.Msg({msg: msj
+            });
+        } else {
+
+
+            console.log(searchParams, "prueba parametros");
+            var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+                proxy: {
+                    url: prototype.url + '/searchReport'
+                }, listeners: {
+                    beforeload: function (obj) {
+                        Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
+                        obj.proxy.extraParams = searchParams;
+                    },
+                    load: function (obj) {
+                        Ext.getCmp(prototype.id + '-contentInfo').unmask();
+                        var pag = Ext.getCmp(prototype.id + '-paggin2');
+                        var pagData = pag.getPageData();
+                        Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                        Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+
+                        if (obj.data.length === 0) {
+//                            Ext.getCmp(prototype.id + '-TOTdblAmount').setText('');
+                            global.Msg({
+                                msg: 'Data not found.'
+                            });
+                        } else {
+                            var data = obj.data.items[0].data;
+//                            Ext.getCmp(prototype.id + '-TOTdblAmount').setText(Ext.util.Format.number(data.TOTdblAmount, '0,000'));
+                        }
+                        me.setWidthPie();
+                    }
+                }
+            });
+            global.clear();
+            Ext.getCmp(prototype.id + '-gridReportData').bindStore(storeGridDatas);
+            Ext.getCmp(prototype.id + '-paggin2').bindStore(storeGridDatas);
+        }
+    },
 
     onEditClick: function (grid, rowIndex, colIndex, item, e, record, actionItem) {
         item.disable();
@@ -370,35 +388,6 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.TourismConciliati
         setTimeout(function () {
             item.enable();
         }, 1000);
-    },
-
-    setGridDataTKT: function () {
-        win.lblUser_toolTip("Estructura: A2282");
-        me.panelActual = '-boxTKT';
-        global.selectedChild(me.childs, prototype.id + me.panelActual);
-        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
-            proxy: {
-                url: prototype.url + '/searchTKT'
-            }, listeners: {
-                beforeload: function (obj) {
-                    Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...');
-                    obj.proxy.extraParams = me.paramsTKT;
-                },
-                load: function (obj) {
-                    Ext.getCmp(prototype.id + '-contentInfo').unmask();
-                    if (obj.data.length === 0) {
-                        global.Msg({
-                            msg: 'Data not found.'
-                        });
-                    } else {
-                        var data = obj.data.items[0].data;
-//                            console.log(data);
-                    }
-                }
-            }
-        });
-        global.clear();
-        Ext.getCmp(prototype.id + '-gridTKT').bindStore(storeGridDatas);
     },
 
     validateFields: function () {
@@ -469,6 +458,9 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.TourismConciliati
             case  '-boxMainData':
                 global.getFile(prototype.url + '/getXLSX?beanString=' + encodeURI(searchParams.beanString));
                 break;
+            case  '-boxReportData':
+                global.getFile(prototype.url + '/getReportXLSX?beanString=' + encodeURI(searchParams.beanString));
+                break;
         }
     },
 
@@ -493,7 +485,7 @@ Ext.define('Ext.Praxis.controller.payments.TourismConciliation.TourismConciliati
             case  '-boxMainData':
                 me.pagginActual = '-paggin';
                 break;
-            case '-boxTKT':
+            case '-boxReportData':
                 me.pagginActual = '-paggin2';
                 break;
         }

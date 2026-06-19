@@ -50,111 +50,205 @@ public class TourismConciliationDAO {
     }
     
     public List<A2282Filter> loadMPF146SQP00905(A2282Filter filter) throws SQLException, Exception {
-    List<A2282Filter> list = new ArrayList<>();
-    A2282Filter objRtn;
-    CallableStatement cstmt = null;
-    ResultSet rs01 = null;
-    double dblAmount = 0;
+        List<A2282Filter> list = new ArrayList<>();
+        A2282Filter objRtn;
+        CallableStatement cstmt = null;
+        ResultSet rs01 = null;
+        double dblAmount = 0;
 
-    String SQLCLL01 = "{CALL PRAXISMP.MPS227(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
-    Connection cnx = null;
+        String SQLCLL01 = "{CALL PRAXISMP.MPS227(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        Connection cnx = null;
 
-    try {
-        cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-        cstmt = cnx.prepareCall(SQLCLL01);
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
 
-        cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
-        cstmt.setString(2, Functions.getFechaActual().substring(0, 4));
-        cstmt.setString(3, filter.IN_DATE_FROM.trim());
-        cstmt.setString(4, filter.IN_DATE_TO.trim());
-        cstmt.setString(5, filter.SDATE.trim());
-        cstmt.setString(6, filter.SAGENT.trim());
-        cstmt.setString(7, filter.REFER.trim());
-        cstmt.setString(8, filter.STVAL.trim());
-        cstmt.setString(9, filter.CERROR.trim());
-//        cstmt.setString(7, filter.CERROR.trim());
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, Functions.getFechaActual().substring(0, 4));
+            cstmt.setString(3, filter.IN_DATE_FROM.trim());
+            cstmt.setString(4, filter.IN_DATE_TO.trim());
+            cstmt.setString(5, filter.SDATE.trim());
+            cstmt.setString(6, filter.SAGENT.trim());
+            cstmt.setString(7, filter.REFER.trim());
+            cstmt.setString(8, filter.STVAL.trim());
+            cstmt.setString(9, filter.CERROR.trim());
+    //        cstmt.setString(7, filter.CERROR.trim());
 
-        cstmt.registerOutParameter(10, Types.INTEGER);
-        cstmt.registerOutParameter(11, Types.INTEGER);
-        cstmt.registerOutParameter(12, Types.INTEGER);
-        cstmt.registerOutParameter(13, Types.INTEGER);
+            cstmt.registerOutParameter(10, Types.INTEGER);
+            cstmt.registerOutParameter(11, Types.INTEGER);
+            cstmt.registerOutParameter(12, Types.INTEGER);
+            cstmt.registerOutParameter(13, Types.INTEGER);
 
-        cstmt.setInt(10, filter.page.PAGNUM);
-        cstmt.setInt(11, filter.page.PAGROW);
-        cstmt.setInt(12, filter.page.TOTPAG);
-        cstmt.setInt(13, filter.page.TOTROW);
+            cstmt.setInt(10, filter.page.PAGNUM);
+            cstmt.setInt(11, filter.page.PAGROW);
+            cstmt.setInt(12, filter.page.TOTPAG);
+            cstmt.setInt(13, filter.page.TOTROW);
 
-        cstmt.execute();
+            cstmt.execute();
 
-        filter.page.PAGNUM = cstmt.getInt(10);
-        filter.page.PAGROW = cstmt.getInt(11);
-        filter.page.TOTPAG = cstmt.getInt(12);
-        filter.page.TOTROW = cstmt.getInt(13);
+            filter.page.PAGNUM = cstmt.getInt(10);
+            filter.page.PAGROW = cstmt.getInt(11);
+            filter.page.TOTPAG = cstmt.getInt(12);
+            filter.page.TOTROW = cstmt.getInt(13);
 
-        rs01 = cstmt.getResultSet();
-        if (rs01.next()) {
-            dblAmount = rs01.getDouble("AMOUNT");
-        }
-
-        if (cstmt.getMoreResults()) {
             rs01 = cstmt.getResultSet();
-            while (rs01.next()) {
-                objRtn = new A2282Filter();
-                objRtn.CCUST = rs01.getString("CCUST").trim();
-                objRtn.SDATE = rs01.getString("SDATE").trim();
-                objRtn.SAGENT = rs01.getString("SAGENT").trim();
-                objRtn.SAGENT_DESC = rs01.getString("SAGENT_DESC").trim();
-                
-                objRtn.STVAL = rs01.getString("STVAL").trim();
-                objRtn.SVFOPS = rs01.getDouble("SVFOP");
-                objRtn.QTYTRAN1 = rs01.getDouble("QTYTRAN1");
-                objRtn.QTYDOC = rs01.getDouble("QTYDOC");
-                objRtn.REFER = rs01.getString("REFERTUR").trim();
-                objRtn.DATEC = rs01.getString("DATEC").trim();
-                objRtn.TRANC = rs01.getString("TRANC").trim();
-                objRtn.DATCO = rs01.getString("DATCO").trim();
-                objRtn.FREGLA = rs01.getString("FREGLA").trim();
-                objRtn.TDOC = rs01.getString("TDOC").trim();
-                objRtn.CERROR = rs01.getString("ERROR_DESC").trim();
-                
-                
-                objRtn.FECR = rs01.getString("FECR").trim();
-                objRtn.HOCR = rs01.getString("HOCR").trim();
-                objRtn.USUP = rs01.getString("USUP").trim();
-                objRtn.USCR = rs01.getString("USCR").trim();
-                objRtn.FEUP = rs01.getString("FEUP").trim();
-                objRtn.HOUP = rs01.getString("HOUP").trim();
-                
-//                objRtn.SVFOPA = rs01.getDouble("MONTOADJUST");
-                objRtn.TOTALSVFOP = objRtn.SVFOPS + objRtn.SVFOPA;
-                objRtn.TOTdblAmount = dblAmount;
-
-                objRtn.page.PAGNUM = filter.page.PAGNUM;
-                objRtn.page.PAGROW = filter.page.PAGROW;
-                objRtn.page.TOTPAG = filter.page.TOTPAG;
-                objRtn.page.TOTROW = filter.page.TOTROW;
-
-                list.add(objRtn);              
+            if (rs01.next()) {
+                dblAmount = rs01.getDouble("AMOUNT");
             }
-        }
-        
-    } 
-    
-    
-    catch (Exception e) {
+
+            if (cstmt.getMoreResults()) {
+                rs01 = cstmt.getResultSet();
+                while (rs01.next()) {
+                    objRtn = new A2282Filter();
+                    objRtn.CCUST = rs01.getString("CCUST").trim();
+                    objRtn.SDATE = rs01.getString("SDATE").trim();
+                    objRtn.SAGENT = rs01.getString("SAGENT").trim();
+                    objRtn.SAGENT_DESC = rs01.getString("SAGENT_DESC").trim();
+
+                    objRtn.STVAL = rs01.getString("STVAL").trim();
+                    objRtn.SVFOPS = rs01.getDouble("SVFOP");
+                    objRtn.QTYTRAN1 = rs01.getDouble("QTYTRAN1");
+                    objRtn.QTYDOC = rs01.getDouble("QTYDOC");
+                    objRtn.REFER = rs01.getString("REFERTUR").trim();
+                    objRtn.DATEC = rs01.getString("DATEC").trim();
+                    objRtn.TRANC = rs01.getString("TRANC").trim();
+                    objRtn.DATCO = rs01.getString("DATCO").trim();
+                    objRtn.FREGLA = rs01.getString("FREGLA").trim();
+                    objRtn.TDOC = rs01.getString("TDOC").trim();
+                    objRtn.CERROR = rs01.getString("ERROR_DESC").trim();
+
+
+                    objRtn.FECR = rs01.getString("FECR").trim();
+                    objRtn.HOCR = rs01.getString("HOCR").trim();
+                    objRtn.USUP = rs01.getString("USUP").trim();
+                    objRtn.USCR = rs01.getString("USCR").trim();
+                    objRtn.FEUP = rs01.getString("FEUP").trim();
+                    objRtn.HOUP = rs01.getString("HOUP").trim();
+
+    //                objRtn.SVFOPA = rs01.getDouble("MONTOADJUST");
+                    objRtn.TOTALSVFOP = objRtn.SVFOPS + objRtn.SVFOPA;
+                    objRtn.TOTdblAmount = dblAmount;
+
+                    objRtn.page.PAGNUM = filter.page.PAGNUM;
+                    objRtn.page.PAGROW = filter.page.PAGROW;
+                    objRtn.page.TOTPAG = filter.page.TOTPAG;
+                    objRtn.page.TOTROW = filter.page.TOTROW;
+
+                    list.add(objRtn);              
+                }
+            }
+
+        } 
+
+
+        catch (Exception e) {
             e.printStackTrace();
         }
     
     
-    finally {
-        if (rs01 != null) try { rs01.close(); } catch (SQLException e) { logError.error("Error cerrando rs01", e); }
-        if (cstmt != null) try { cstmt.close(); } catch (SQLException e) { logError.error("Error cerrando cstmt", e); }
-        session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
-        pasarGarbageCollector();
-    }
+        finally {
+            if (rs01 != null) try { rs01.close(); } catch (SQLException e) { logError.error("Error cerrando rs01", e); }
+            if (cstmt != null) try { cstmt.close(); } catch (SQLException e) { logError.error("Error cerrando cstmt", e); }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
 
-    return list;
-}
+        return list;
+    }
+    
+        public List<A2282Filter> loadReportMPF147(A2282Filter filter) throws SQLException, Exception {
+        List<A2282Filter> list = new ArrayList<>();
+        A2282Filter objRtn;
+        CallableStatement cstmt = null;
+        ResultSet rs01 = null;
+        double dblAmount = 0;
+
+        String SQLCLL01 = "{CALL PRAXISMP.MPS664(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        Connection cnx = null;
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, Functions.getFechaActual().substring(0, 4));
+            cstmt.setString(3, filter.IN_DATE_FROM.trim());
+            cstmt.setString(4, filter.IN_DATE_TO.trim());
+            cstmt.setString(5, filter.SDATE.trim());
+            cstmt.setString(6, filter.SAGENT.trim());
+            cstmt.setString(7, filter.REFER.trim());
+            cstmt.setString(8, filter.STVAL.trim());
+            cstmt.setString(9, filter.CERROR.trim());
+    //        cstmt.setString(7, filter.CERROR.trim());
+
+            cstmt.registerOutParameter(10, Types.INTEGER);
+            cstmt.registerOutParameter(11, Types.INTEGER);
+            cstmt.registerOutParameter(12, Types.INTEGER);
+            cstmt.registerOutParameter(13, Types.INTEGER);
+
+            cstmt.setInt(10, filter.page.PAGNUM);
+            cstmt.setInt(11, filter.page.PAGROW);
+            cstmt.setInt(12, filter.page.TOTPAG);
+            cstmt.setInt(13, filter.page.TOTROW);
+
+            cstmt.execute();
+
+            filter.page.PAGNUM = cstmt.getInt(10);
+            filter.page.PAGROW = cstmt.getInt(11);
+            filter.page.TOTPAG = cstmt.getInt(12);
+            filter.page.TOTROW = cstmt.getInt(13);
+
+            rs01 = cstmt.getResultSet();
+//            if (rs01.next()) {
+//                dblAmount = rs01.getDouble("AMOUNT");
+//            }
+
+//            if (cstmt.getMoreResults()) {
+//                rs01 = cstmt.getResultSet();
+                while (rs01.next()) {
+                    objRtn = new A2282Filter();
+                    objRtn.CCUST = rs01.getString("CCUST").trim();
+                    objRtn.SDATE = rs01.getString("SDATE").trim();
+                    objRtn.SAGENT = rs01.getString("SAGENT").trim();
+                    objRtn.BANDOC = rs01.getString("BANDOC").trim();
+                    objRtn.IDCONT = rs01.getString("IDCONT").trim();
+                    objRtn.VALDATE = rs01.getString("VALDATE").trim();
+                    objRtn.STCON = rs01.getString("STCON").trim();
+                    objRtn.STVALSALE = rs01.getString("STVALSALE").trim();
+                    objRtn.STVALSAP = rs01.getString("STVALSAP").trim();
+                    objRtn.SVFOPS = rs01.getDouble("SVFOPS");
+                    objRtn.SVFOPV = rs01.getDouble("SVFOPV");
+                    objRtn.DATECI = rs01.getString("DATECI").trim();
+                    objRtn.TRANCI = rs01.getString("TRANCI").trim();
+                    objRtn.DESCERR = rs01.getString("DESCERR").trim();
+
+                    objRtn.page.PAGNUM = filter.page.PAGNUM;
+                    objRtn.page.PAGROW = filter.page.PAGROW;
+                    objRtn.page.TOTPAG = filter.page.TOTPAG;
+                    objRtn.page.TOTROW = filter.page.TOTROW;
+
+                    list.add(objRtn);              
+                }
+//            }
+
+        } 
+
+
+        catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        finally {
+            if (rs01 != null) try { rs01.close(); } catch (SQLException e) { logError.error("Error cerrando rs01", e); }
+            if (cstmt != null) try { cstmt.close(); } catch (SQLException e) { logError.error("Error cerrando cstmt", e); }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return list;
+    }
+   
     
     public List<A2282Filter> loadPX268SQP00907(A2282Filter filter) throws SQLException, Exception {
 
