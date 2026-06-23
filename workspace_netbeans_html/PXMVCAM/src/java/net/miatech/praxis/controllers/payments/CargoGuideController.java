@@ -207,6 +207,43 @@ public class CargoGuideController extends BaseController {
         }
     }
 
+    @RequestMapping(value = "searchMPF291All")
+    public @ResponseBody
+    String searchMPF291All(HttpServletRequest request) {
+        System.out.println("-------------- CargoGuide : searchMPF291All (MPS573) -------------");
+        Map<String, Object> map = new HashMap<>();
+        Gson gson = new Gson();
+
+        try {
+            CargoGuideLogic logic = new CargoGuideLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String beanString = request.getParameter("beanString");
+            MPF291Filter filter = gson.fromJson(beanString, MPF291Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START  = 0;
+            filter.page.LIMIT  = 0;
+
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
+            filter.page.PAGROW = 20;
+            filter.page.PAGNUM = (start != 0 ? (start / filter.page.PAGROW) + 1 : 1);
+
+            List<MPF291> lst = logic.loadMPS573(filter);
+
+            map.put("success", true);
+            map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+            map.put("data", lst);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("success", false);
+            map.put("data", new ArrayList<>());
+            map.put("total", 0);
+        }
+
+        return new Gson().toJson(map);
+    }
+
     @RequestMapping(value = "searchMPF291")
     public @ResponseBody
     String searchMPF291(HttpServletRequest request) {
@@ -1374,6 +1411,43 @@ public class CargoGuideController extends BaseController {
         return new Gson().toJson(map);
     }
     
+    @RequestMapping(value = "searchARCGuias")
+    public @ResponseBody
+    String searchARCGuias(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- CargoGuide : searchARCGuias (MPS609) -------------");
+        Map<String, Object> resultMap = new HashMap<>();
+        Gson gson = new Gson();
+
+        try {
+            CargoGuideLogic logic = new CargoGuideLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String beanString = request.getParameter("beanString");
+            MPF291Filter filter = gson.fromJson(beanString, MPF291Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START  = 0;
+            filter.page.LIMIT  = 0;
+
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
+            filter.page.PAGROW = 20;
+            filter.page.PAGNUM = (start != 0 ? (start / filter.page.PAGROW) + 1 : 1);
+
+            List<MPF291> lst = logic.loadMPS609(filter);
+
+            resultMap.put("success", true);
+            resultMap.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+            resultMap.put("data", lst);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultMap.put("success", false);
+            resultMap.put("data", new ArrayList<>());
+            resultMap.put("total", 0);
+        }
+
+        return new Gson().toJson(resultMap);
+    }
+
     @RequestMapping(value = "searchARCDaily")
     public @ResponseBody
     String searchARCDaily(ModelMap map, HttpServletRequest request) {

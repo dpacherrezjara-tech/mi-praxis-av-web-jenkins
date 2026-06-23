@@ -365,6 +365,465 @@ public class BankReconciliationDAO {
         return lstTkts;
     }
 
+    //////////////////////
+    ///////CASH  LIQ I 
+    public List<A2290Filter> loadMPS629(A2290Filter filter)
+            throws SQLException, Exception {
+
+        List<A2290Filter> lstTkts = new ArrayList<>();
+        A2290Filter beanTkt;
+
+        long lngTotQMATCH = 0;
+        long lngTotQMANUAL = 0;
+        long lngTotQPEND = 0;
+        long lngTotTOTALE = 0;
+
+        filter.strYearFrom = Functions.fillZeros(4, filter.strYearFrom).replace("00", "");
+        filter.strMonthFrom = Functions.fillZeros(2, filter.strMonthFrom).replace("00", "");
+        filter.strYearTo = Functions.fillZeros(4, filter.strYearTo).replace("00", "");
+        filter.strMonthTo = Functions.fillZeros(2, filter.strMonthTo).replace("00", "");
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL PRAXISMP.MPS629(?,?,?)}";
+
+        Connection cnx = null;
+
+        try {
+
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.strYearFrom + filter.strMonthFrom);
+            cstmt.setString(3, filter.strYearTo + filter.strMonthTo);
+
+            cstmt.execute();
+
+            /*
+         * RESULTSET 1
+         * TOTALES
+             */
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+
+                lngTotQMATCH = rst.getLong("QMATCH");
+                lngTotQMANUAL = rst.getLong("QMANUAL");
+                lngTotQPEND = rst.getLong("QPEND");
+                lngTotTOTALE = rst.getLong("TOTALE");
+            }
+
+            rst.close();
+
+            /*
+         * RESULTSET 2
+         * DETALLE
+             */
+            if (cstmt.getMoreResults()) {
+
+                rst = cstmt.getResultSet();
+
+                while (rst.next()) {
+
+                    beanTkt = new A2290Filter();
+                    beanTkt.SDATE = rst.getString("DATE").trim();
+                    beanTkt.strFormatDate = Functions.getMonthConvert(beanTkt.SDATE);
+                    beanTkt.lngQMATCH = rst.getLong("QMATCH");
+                    beanTkt.lngQMANUAL = rst.getLong("QMANUAL");
+                    beanTkt.lngQPEND = rst.getLong("QPEND");
+                    beanTkt.lngTOTALE = rst.getLong("TOTALE");
+                    beanTkt.lngQSALES = beanTkt.lngTOTALE;
+
+                    beanTkt.lngQMATCHPercent
+                            = beanTkt.lngTOTALE > 0
+                                    ? (beanTkt.lngQMATCH * 100.0)
+                                    / beanTkt.lngTOTALE
+                                    : 0.00;
+
+                    /*
+                 * Totales para la fila TOTAL
+                     */
+                    beanTkt.lngTotQMATCH = lngTotQMATCH;
+                    beanTkt.lngTotQMANUAL = lngTotQMANUAL;
+                    beanTkt.lngTotQPEND = lngTotQPEND;
+                    beanTkt.lngTotTOTALE = lngTotTOTALE;
+
+                    beanTkt.lngTotQMATCHPercent
+                            = lngTotTOTALE > 0
+                                    ? (lngTotQMATCH * 100.0)
+                                    / lngTotTOTALE
+                                    : 0.00;
+                    beanTkt.lngTotQSALES = lngTotTOTALE;
+
+                    lstTkts.add(beanTkt);
+                }
+
+                rst.close();
+            }
+
+        } finally {
+
+            if (rst != null) {
+                rst.close();
+            }
+
+            if (cstmt != null) {
+                cstmt.close();
+            }
+
+            session.getCNXIBMDB2()
+                    .closeIBMDB2Connection(cnx);
+        }
+
+        return lstTkts;
+    }
+
+    //////////////////////
+    ///////CASH  LIQ I DOWN
+    public List<A2290Filter> loadMPS628(A2290Filter filter)
+            throws SQLException, Exception {
+
+        List<A2290Filter> lstTkts = new ArrayList<>();
+        A2290Filter beanTkt;
+
+        long lngTotQTMATCH = 0;
+        long lngTotQTMANUAL = 0;
+        long lngTotQTPEND = 0;
+        long lngTotTOTALL = 0;
+
+        filter.strYearFrom = Functions.fillZeros(4, filter.strYearFrom).replace("00", "");
+        filter.strMonthFrom = Functions.fillZeros(2, filter.strMonthFrom).replace("00", "");
+        filter.strYearTo = Functions.fillZeros(4, filter.strYearTo).replace("00", "");
+        filter.strMonthTo = Functions.fillZeros(2, filter.strMonthTo).replace("00", "");
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL PRAXISMP.MPS628(?,?,?)}";
+
+        Connection cnx = null;
+
+        try {
+
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.strYearFrom + filter.strMonthFrom);
+            cstmt.setString(3, filter.strYearTo + filter.strMonthTo);
+
+            cstmt.execute();
+
+            /*
+         * RESULTSET 1
+         * TOTALES
+             */
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+
+                lngTotQTMATCH = rst.getLong("QMATCH");
+                lngTotQTMANUAL = rst.getLong("QMANUAL");
+                lngTotQTPEND = rst.getLong("QPEND");
+                lngTotTOTALL = rst.getLong("TOTALE");
+            }
+
+            rst.close();
+
+            /*
+         * RESULTSET 2
+         * DETALLE
+             */
+            if (cstmt.getMoreResults()) {
+
+                rst = cstmt.getResultSet();
+
+                while (rst.next()) {
+
+                    beanTkt = new A2290Filter();
+                    beanTkt.SDATE = rst.getString("DATE").trim();
+                    beanTkt.strFormatDate = Functions.getMonthConvert(beanTkt.SDATE);
+                    beanTkt.lngQTMATCH = rst.getLong("QMATCH");
+                    beanTkt.lngQTMANUAL = rst.getLong("QMANUAL");
+                    beanTkt.lngQTPEND = rst.getLong("QPEND");
+                    beanTkt.lngTOTALL = rst.getLong("TOTALE");
+                    //beanTkt.lngQSALES = beanTkt.lngTOTALL;
+
+                    /*
+                 * Totales para la fila TOTAL
+                     */
+                    beanTkt.lngTotQTMATCH = lngTotQTMATCH;
+                    beanTkt.lngTotQTMANUAL = lngTotQTMANUAL;
+                    beanTkt.lngTotQTPEND = lngTotQTPEND;
+                    beanTkt.lngTotTOTALL = lngTotTOTALL;
+
+                    beanTkt.lngQTMATCHPercent
+                            = beanTkt.lngTOTALL > 0
+                                    ? (beanTkt.lngQTMATCH * 100.0)
+                                    / beanTkt.lngTOTALL
+                                    : 0.00;
+
+                    beanTkt.lngTotQTMATCHPercent
+                            = lngTotTOTALL > 0
+                                    ? (lngTotQTMATCH * 100.0) / lngTotTOTALL
+                                    : 0.00;
+
+                    lstTkts.add(beanTkt);
+                }
+
+                rst.close();
+            }
+
+        } finally {
+
+            if (rst != null) {
+                rst.close();
+            }
+
+            if (cstmt != null) {
+                cstmt.close();
+            }
+
+            session.getCNXIBMDB2()
+                    .closeIBMDB2Connection(cnx);
+        }
+
+        return lstTkts;
+    }
+
+    ///////////
+    //////////////////////
+    ///////CASH  LIQ II
+    public List<A2290Filter> loadMPS626(A2290Filter filter)
+            throws SQLException, Exception {
+
+        List<A2290Filter> lstTkts = new ArrayList<>();
+        A2290Filter beanTkt;
+
+        long lngTotQMATCH = 0;
+        long lngTotQMANUAL = 0;
+        long lngTotQPEND = 0;
+        long lngTotTOTALE = 0;
+
+        filter.strYearFrom = Functions.fillZeros(4, filter.strYearFrom).replace("00", "");
+        filter.strMonthFrom = Functions.fillZeros(2, filter.strMonthFrom).replace("00", "");
+        filter.strYearTo = Functions.fillZeros(4, filter.strYearTo).replace("00", "");
+        filter.strMonthTo = Functions.fillZeros(2, filter.strMonthTo).replace("00", "");
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL PRAXISMP.MPS626(?,?,?)}";
+
+        Connection cnx = null;
+
+        try {
+
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.strYearFrom + filter.strMonthFrom);
+            cstmt.setString(3, filter.strYearTo + filter.strMonthTo);
+
+            cstmt.execute();
+
+            /*
+         * RESULTSET 1
+         * TOTALES
+             */
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+
+                lngTotQMATCH = rst.getLong("QMATCH");
+                lngTotQMANUAL = rst.getLong("QMANUAL");
+                lngTotQPEND = rst.getLong("QPEND");
+                lngTotTOTALE = rst.getLong("TOTALE");
+            }
+
+            rst.close();
+
+            /*
+         * RESULTSET 2
+         * DETALLE
+             */
+            if (cstmt.getMoreResults()) {
+
+                rst = cstmt.getResultSet();
+
+                while (rst.next()) {
+
+                    beanTkt = new A2290Filter();
+                    beanTkt.SDATE = rst.getString("DATE").trim();
+                    beanTkt.strFormatDate = Functions.getMonthConvert(beanTkt.SDATE);
+                    beanTkt.lngQMATCH = rst.getLong("QMATCH");
+                    beanTkt.lngQMANUAL = rst.getLong("QMANUAL");
+                    beanTkt.lngQPEND = rst.getLong("QPEND");
+                    beanTkt.lngTOTALE = rst.getLong("TOTALE");
+                    beanTkt.lngQSALES = beanTkt.lngTOTALE;
+
+                    beanTkt.lngQMATCHPercent
+                            = beanTkt.lngTOTALE > 0
+                                    ? (beanTkt.lngQMATCH * 100.0)
+                                    / beanTkt.lngTOTALE
+                                    : 0.00;
+
+                    /*
+                 * Totales para la fila TOTAL
+                     */
+                    beanTkt.lngTotQMATCH = lngTotQMATCH;
+                    beanTkt.lngTotQMANUAL = lngTotQMANUAL;
+                    beanTkt.lngTotQPEND = lngTotQPEND;
+                    beanTkt.lngTotTOTALE = lngTotTOTALE;
+
+                    beanTkt.lngTotQMATCHPercent
+                            = lngTotTOTALE > 0
+                                    ? (lngTotQMATCH * 100.0)
+                                    / lngTotTOTALE
+                                    : 0.00;
+                    beanTkt.lngTotQSALES = lngTotTOTALE;
+
+                    lstTkts.add(beanTkt);
+                }
+
+                rst.close();
+            }
+
+        } finally {
+
+            if (rst != null) {
+                rst.close();
+            }
+
+            if (cstmt != null) {
+                cstmt.close();
+            }
+
+            session.getCNXIBMDB2()
+                    .closeIBMDB2Connection(cnx);
+        }
+
+        return lstTkts;
+    }
+
+    ///
+    //////////////////////
+    //CASH  LIQ II DOWN
+    public List<A2290Filter> loadMPS627(A2290Filter filter)
+            throws SQLException, Exception {
+
+        List<A2290Filter> lstTkts = new ArrayList<>();
+        A2290Filter beanTkt;
+
+        long lngTotQTMATCH = 0;
+        long lngTotQTMANUAL = 0;
+        long lngTotQTPEND = 0;
+        long lngTotTOTALL = 0;
+
+        filter.strYearFrom = Functions.fillZeros(4, filter.strYearFrom).replace("00", "");
+        filter.strMonthFrom = Functions.fillZeros(2, filter.strMonthFrom).replace("00", "");
+        filter.strYearTo = Functions.fillZeros(4, filter.strYearTo).replace("00", "");
+        filter.strMonthTo = Functions.fillZeros(2, filter.strMonthTo).replace("00", "");
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL PRAXISMP.MPS627(?,?,?)}";
+
+        Connection cnx = null;
+
+        try {
+
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(2, filter.strYearFrom + filter.strMonthFrom);
+            cstmt.setString(3, filter.strYearTo + filter.strMonthTo);
+
+            cstmt.execute();
+
+            /*
+         * RESULTSET 1
+         * TOTALES
+             */
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+
+                lngTotQTMATCH = rst.getLong("QMATCH");
+                lngTotQTMANUAL = rst.getLong("QMANUAL");
+                lngTotQTPEND = rst.getLong("QPEND");
+                lngTotTOTALL = rst.getLong("TOTALE");
+            }
+
+            rst.close();
+
+            /*
+         * RESULTSET 2
+         * DETALLE
+             */
+            if (cstmt.getMoreResults()) {
+
+                rst = cstmt.getResultSet();
+
+                while (rst.next()) {
+
+                    beanTkt = new A2290Filter();
+                    beanTkt.SDATE = rst.getString("DATE").trim();
+                    beanTkt.strFormatDate = Functions.getMonthConvert(beanTkt.SDATE);
+                    beanTkt.lngQTMATCH = rst.getLong("QMATCH");
+                    beanTkt.lngQTMANUAL = rst.getLong("QMANUAL");
+                    beanTkt.lngQTPEND = rst.getLong("QPEND");
+                    beanTkt.lngTOTALL = rst.getLong("TOTALE");
+                    //beanTkt.lngQSALES = beanTkt.lngTOTALL;
+
+                    /*
+                 * Totales para la fila TOTAL
+                     */
+                    beanTkt.lngTotQTMATCH = lngTotQTMATCH;
+                    beanTkt.lngTotQTMANUAL = lngTotQTMANUAL;
+                    beanTkt.lngTotQTPEND = lngTotQTPEND;
+                    beanTkt.lngTotTOTALL = lngTotTOTALL;
+
+                    beanTkt.lngQTMATCHPercent
+                            = beanTkt.lngTOTALL > 0
+                                    ? (beanTkt.lngQTMATCH * 100.0)
+                                    / beanTkt.lngTOTALL
+                                    : 0.00;
+
+                    beanTkt.lngTotQTMATCHPercent
+                            = lngTotTOTALL > 0
+                                    ? (lngTotQTMATCH * 100.0) / lngTotTOTALL
+                                    : 0.00;
+
+                    lstTkts.add(beanTkt);
+                }
+
+                rst.close();
+            }
+
+        } finally {
+
+            if (rst != null) {
+                rst.close();
+            }
+
+            if (cstmt != null) {
+                cstmt.close();
+            }
+
+            session.getCNXIBMDB2()
+                    .closeIBMDB2Connection(cnx);
+        }
+
+        return lstTkts;
+    }
+
+    ///////////
     public List<A2290Filter> loadPX269SQP00698Country(A2290Filter filter) throws SQLException, Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
@@ -2293,22 +2752,22 @@ public class BankReconciliationDAO {
                 cstmt3.execute();
                 cstmt3.close(); // Cerrar el CallableStatement después de cada ejecución
 
-            } 
-            
+            }
+
             String SQLCLL04 = "{CALL " + session.getMainLibrary() + "MP.MPS594(?,?,?,?)}";
             cnx4 = session.getCNXIBMDB2().getIBMDB2Connection();
-            
+
             cstmt4 = cnx4.prepareCall(SQLCLL04);
-            
+
             cstmt4.setString(1, filter.BANDOC.trim());
             cstmt4.setString(2, filter.DATEC.trim());
             cstmt4.setString(3, filter.TRANC.trim());
             cstmt4.registerOutParameter(4, Types.VARCHAR);
             cstmt4.execute();
             strMsj = cstmt4.getString(4);
-            
+
             cstmt4.close();
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             strMsj = e.getMessage();
@@ -7497,7 +7956,7 @@ public class BankReconciliationDAO {
                     } else if (rst.getString("FLAGC").trim().equals("C")) {
                         beanTkt.strFlagStat = "CNJ";
                     }
-                    
+
                     beanTkt.CCUST_MPF100 = rst.getString("CCUST").trim();
                     beanTkt.CCIA_MPF100 = rst.getString("CCIA").trim();
                     beanTkt.FORMA_MPF100 = rst.getString("FORMA").trim();
@@ -7508,8 +7967,7 @@ public class BankReconciliationDAO {
                     beanTkt.SAUTHOC_MPF100 = rst.getString("SAUTHOC").trim();
                     beanTkt.SEQ_MPF100 = rst.getString("SEQ").trim();
                     beanTkt.CORRL_MPF100 = rst.getString("CORRL").trim();
-                           
-                    
+
                     beanTkt.page.PAGNUM = filter.page.PAGNUM;
                     beanTkt.page.PAGROW = filter.page.PAGROW;
                     beanTkt.page.TOTPAG = filter.page.TOTPAG;
@@ -8323,7 +8781,7 @@ public class BankReconciliationDAO {
                 bean.CORRL = rst.getString("CORRL");
                 bean.CBATCH = rst.getString("CBATCH");
                 bean.CODIGO = rst.getString("CODIGO");
-                
+
                 bean.SCOUNTRY = rst.getString("SCOUNTRY");
                 bean.BANDOC = rst.getString("BANDOC");
                 bean.ADATE = rst.getString("ADATE");
@@ -9694,7 +10152,7 @@ public class BankReconciliationDAO {
 
         return bean;
     }
-    
+
     public String CloseTransactionCash(MPF100Filter filter) throws SQLException, Exception {
 
         MPF100Filter bean = new MPF100Filter();
@@ -9710,7 +10168,7 @@ public class BankReconciliationDAO {
         hmDescEstados.put("1", "Match");
         hmDescEstados.put("3", "Pending");
         hmDescEstados.put("5", "Match Manual");
-        
+
         CallableStatement cstmt = null;
         ResultSet rst = null;
         Connection cnx = null;
@@ -9718,7 +10176,6 @@ public class BankReconciliationDAO {
         String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS613(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-            
 
             cstmt = cnx.prepareCall(SQLCLL01);
             cstmt.setString(1, main.CCUST);
@@ -9749,7 +10206,6 @@ public class BankReconciliationDAO {
             if (cstmt != null) {
                 cstmt.close();
             }
-            
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -10029,7 +10485,7 @@ public class BankReconciliationDAO {
     }
 
     public String updateMPF223(A2290Filter filter) throws SQLException, Exception {
-        
+
         String msgResponse = "";
         CallableStatement cstmt = null;
         Connection cnx = null;
@@ -10044,8 +10500,8 @@ public class BankReconciliationDAO {
             cstmt.setString(2, filter.O_PRDA != null ? filter.O_PRDA.trim() : "");
             cstmt.setString(3, filter.O_CODPRO != null ? filter.O_CODPRO.trim() : "");
             cstmt.setString(4, filter.O_CCUSTPRO != null ? filter.O_CCUSTPRO.trim() : "");
-            cstmt.setString(5, filter.O_FLIQUIDACI != null ? filter.O_FLIQUIDACI : ""); 
-            cstmt.setString(6, filter.O_LIQUIDACIO != null ? filter.O_LIQUIDACIO : ""); 
+            cstmt.setString(5, filter.O_FLIQUIDACI != null ? filter.O_FLIQUIDACI : "");
+            cstmt.setString(6, filter.O_LIQUIDACIO != null ? filter.O_LIQUIDACIO : "");
             cstmt.setString(7, filter.O_MERCHAND != null ? filter.O_MERCHAND : "");
             cstmt.setString(8, filter.O_MONEDA != null ? filter.O_MONEDA.trim() : "");
             cstmt.setString(9, filter.O_CORRL != null ? filter.O_CORRL.trim() : "");
@@ -10055,7 +10511,7 @@ public class BankReconciliationDAO {
             // Valores nuevos (SET)
             cstmt.setString(12, filter.O_CODIGO != null ? filter.O_CODIGO.trim() : "");
             cstmt.setString(13, filter.O_ACCCOMP != null ? filter.O_ACCCOMP.trim() : "");
-            
+
             // Usuario que modifica (sacado de la sesión)
             cstmt.setString(14, session.getUserView().getUserInfo().USR.trim());
 
@@ -10071,7 +10527,10 @@ public class BankReconciliationDAO {
             msgResponse = "Exception: " + e.getMessage();
         } finally {
             if (cstmt != null) {
-                try { cstmt.close(); } catch (SQLException e) {}
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                }
             }
             if (cnx != null) {
                 session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
@@ -10080,7 +10539,7 @@ public class BankReconciliationDAO {
 
         return msgResponse;
     }
-    
+
     public String executeCreateADM(List<A2290Filter> filters) throws Exception {
         String strMsj = "ADM created successfully.";
         CallableStatement cstmt = null;
@@ -10088,7 +10547,7 @@ public class BankReconciliationDAO {
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-            
+
             String SQLCLL = "{CALL " + session.getMainLibrary() + "MP.MPS652(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
             for (int i = 0; i < filters.size(); i++) {
@@ -10126,7 +10585,7 @@ public class BankReconciliationDAO {
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw e; 
+            throw e;
         } finally {
             if (cstmt != null) {
                 try {
@@ -10143,13 +10602,13 @@ public class BankReconciliationDAO {
 
         return strMsj;
     }
-    
+
     public List<A2290Filter> loadPX269SQPMPS653(A2290Filter filter) throws Exception {
 
         List<A2290Filter> lstTkts = new ArrayList<A2290Filter>(0);
         A2290Filter beanTkt;
         double dblTotSVFOP = 0, dblTotAVFOP = 0;
-        
+
         String tipFecha = "Sales";
         if (filter.IN_TDOC.trim().equals("R")) {
             tipFecha = "Refund";
@@ -10199,7 +10658,7 @@ public class BankReconciliationDAO {
 
                 while (rst.next()) {
                     beanTkt = new A2290Filter();
-                    
+
                     // Capturar el Row Number generado en SQL
                     beanTkt.RN = rst.getLong("RN");
 
@@ -10240,7 +10699,7 @@ public class BankReconciliationDAO {
                     beanTkt.SCARCOD = rst.getString("SCARCOD").trim();
                     beanTkt.STCNTR = rst.getString("STCNTR").trim();
                     beanTkt.SCURRENCY = rst.getString("SCURRENCY").trim();
-                    
+
                     if (rst.getString("MONEDAS").trim().length() > 3) {
                         beanTkt.strMoneda = rst.getString("MONEDAS").trim().substring(3);
                     } else {
@@ -10284,7 +10743,8 @@ public class BankReconciliationDAO {
                         } else if (!beanTkt.SDATE.trim().equals("")) {
                             beanTkt.lngDays = Functions.diferenciaDiasEntreSistema(beanTkt.SDATE);
                         }
-                    } catch (Exception e) {}
+                    } catch (Exception e) {
+                    }
 
                     beanTkt.dblTotSVFOP = dblTotSVFOP;
                     beanTkt.dblTotAVFOP = dblTotAVFOP;
@@ -10299,10 +10759,16 @@ public class BankReconciliationDAO {
             throw e;
         } finally {
             if (rst != null) {
-                try { rst.close(); } catch (SQLException e) { }
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                }
             }
             if (cstmt != null) {
-                try { cstmt.close(); } catch (SQLException e) { }
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                }
             }
             if (cnx != null) {
                 session.getCNXIBMDB2().closeIBMDB2Connection(cnx);

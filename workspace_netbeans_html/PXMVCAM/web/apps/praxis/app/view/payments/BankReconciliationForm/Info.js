@@ -417,6 +417,14 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                 },
                             ]
                         },
+                        
+                        
+                        
+                        
+                        ///////
+                        ///DISPLAYCHART CC 
+                        ////////
+                        
                         {
                             xtype: 'panel',
                             id: prototype.id + '-panelGraf',
@@ -581,9 +589,13 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                             id: prototype.id + '-btnBackGraf',
                                             iconCls: 'prx-icon-back',
                                             tooltip: 'Back'
-                                        },
+                                        }
                                     ]
                                 },
+                                
+                                
+                                ////
+                                //FASE I DESDE DISPLAYCHART
                                 {
                                     xtype: 'panel',
                                     bodyStyle: 'background-color: #E3EAEF;',
@@ -598,6 +610,8 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                         align: 'center'
                                     },
                                     items: [
+                                        
+                                        //PANEL1 LIQUI
                                         {
                                             xtype: 'panel',
                                             bodyStyle: 'background-color: #E3EAEF;',
@@ -686,6 +700,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                                                     return '<b>' + Ext.util.Format.number(data.lngTotQMANUAL, '0,000') + '<b>';
                                                                                 }
                                                                             },
+                                                                            //HIDE
                                                                             {
                                                                                 text: 'Diff', dataIndex: 'lngQDIFF', width: 100, align: 'center', menuDisabled: true, hidden: true, //flex: 1
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
@@ -734,6 +749,8 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                         ]
                                                     }
                                                 },
+                                                
+                                                // GRAFICOS
                                                 {
                                                     xtype: 'cartesian',
                                                     id: prototype.id + '-displayGrafLiqI',
@@ -791,6 +808,9 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 }
                                             ]
                                         },
+                                        
+                                        
+                                        // 2DO PANEL SALE
                                         {
                                             xtype: 'panel',
                                             bodyStyle: 'background-color: #E3EAEF;',
@@ -924,12 +944,14 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                                             metaData.style = 'text-align:right; margin-right:3px;';
                                                                             return '<b>' + Ext.util.Format.number(data.lngTotTOTALL, '0,000') + '<b>';
                                                                         }
-                                                                    },
+                                                                    }
                                                                 ]
-                                                            },
+                                                            }
                                                         ]
                                                     }
                                                 },
+                                                
+                                                //2DO GRAFICO
                                                 {
                                                     xtype: 'cartesian',
                                                     id: prototype.id + '-displayGrafSaleI',
@@ -984,11 +1006,17 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                                 }
                                                             }
                                                         }]
-                                                },
+                                                }
                                             ]
-                                        },
+                                        }
                                     ]
                                 },
+                                
+                                //////
+                                
+                                //////FASE II
+                                
+                                
                                 {
                                     xtype: 'panel',
                                     bodyStyle: 'background-color: #E3EAEF;',
@@ -1015,6 +1043,8 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 align: 'center'
                                             },
                                             items: [
+                                                
+                                                //PANEL 1 DE LIQ
                                                 {
                                                     xtype: 'grid',
                                                     id: prototype.id + '-gridDataGrafLiqII',
@@ -1091,6 +1121,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                                                     return '<b>' + Ext.util.Format.number(data.lngTotQMANUAL, '0,000') + '<b>';
                                                                                 }
                                                                             },
+                                                                            //HIDE
                                                                             {
                                                                                 text: 'Diff', dataIndex: 'lngQDIFF', width: 100, align: 'center', menuDisabled: true, hidden: true, //flex: 1
                                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
@@ -1135,10 +1166,12 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                                         }
                                                                     },
                                                                 ]
-                                                            },
+                                                            }
                                                         ]
                                                     }
                                                 },
+                                                
+                                                ///GRAFICO PANEL 1
                                                 {
                                                     xtype: 'cartesian',
                                                     id: prototype.id + '-displayGrafLiqII',
@@ -1208,6 +1241,8 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 align: 'center'
                                             },
                                             items: [
+                                                
+                                                //PANEL 2 GRILLA II
                                                 {
                                                     xtype: 'grid',
                                                     id: prototype.id + '-gridDataGrafSaleII',
@@ -1329,12 +1364,14 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                                             metaData.style = 'text-align:right; margin-right:3px;';
                                                                             return '<b>' + Ext.util.Format.number(data.lngTotQTICKET, '0,000') + '<b>';
                                                                         }
-                                                                    },
+                                                                    }
                                                                 ]
-                                                            },
+                                                            }
                                                         ]
                                                     }
                                                 },
+                                                
+                                                //GRAFICO II PANEL
                                                 {
                                                     xtype: 'cartesian',
                                                     id: prototype.id + '-displayGrafSaleII',
@@ -1396,6 +1433,1023 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                 },
                             ]
                         },
+                        
+                        
+                        
+                        /////////////////////////////
+                        /////////////////////7
+                        /// TERMINA
+                        
+                        
+                        ////////////////////////////////////////////
+                        ////////////////////////////////////////////
+                        ////////////
+                        ///DISPLAYCHART  PARA CASH
+                        ////////
+                        
+                        {
+                        
+                            xtype: 'panel',
+                            id: prototype.id + '-panelGrafCASH',
+                            bodyStyle: 'background-color: #E3EAEF;',
+                            border: false,
+                            height: 'auto',
+                            width: 1500,
+                            margin: '0 0 0 0 ',
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'panel',
+                                    bodyStyle: 'background-color: #E3EAEF;',
+                                    border: false,
+                                    height: 'auto',
+                                    width: 1500,
+                                    margin: '10 0 0 0 ',
+                                    layout: {
+                                        type: 'hbox',
+                                        align: 'center'
+                                    },
+                                    items: [
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbDateFromYearGrafCASH',
+                                            fieldStyle: 'text-align: left;',
+                                            disabled: false,
+                                            editable: false,
+                                            fieldLabel: 'From',
+                                            width: 120,
+                                            labelWidth: 45,
+                                            labelAlign: 'right',
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            valueField: 'code',
+                                            displayField: 'name',
+                                            maxLength: 4,
+                                            enforceMaxLength: true,
+                                            maskRe: /[0-9]/,
+                                            listeners: {
+                                                change: 'cbxDateFromYear_changeHandlerGraf'
+                                            }
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbDateFromMonthGrafCASH',
+                                            fieldStyle: 'text-align: left;',
+                                            disabled: false,
+                                            editable: false,
+                                            fieldLabel: '',
+                                            width: 65,
+                                            labelWidth: 0,
+                                            labelAlign: 'right',
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            valueField: 'code', displayField: 'name',
+                                            listConfig: {minWidth: 60},
+                                            maxLength: 3,
+                                            enforceMaxLength: true,
+                                            listeners: {
+                                                change: 'cbxDateFromMonth_changeHandlerGraf'
+                                            }
+                                        },
+                                        {xtype: 'tbspacer', width: 20},
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbDateToYearGrafCASH',
+                                            fieldStyle: 'text-align: left;',
+                                            disabled: false,
+                                            editable: false,
+                                            fieldLabel: 'To',
+                                            width: 106,
+                                            labelWidth: 31,
+                                            labelAlign: 'left',
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            valueField: 'code', displayField: 'name',
+                                            listConfig: {maxHeight: 111, minWidth: 70},
+                                            maxLength: 4,
+                                            enforceMaxLength: true,
+                                            maskRe: /[0-9]/
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbDateToMonthGrafCASH',
+                                            fieldStyle: 'text-align: left;',
+                                            disabled: false,
+                                            editable: false,
+                                            fieldLabel: '',
+                                            width: 65,
+                                            labelAlign: 'right',
+                                            queryMode: 'local',
+                                            triggerAction: 'all',
+                                            valueField: 'code', displayField: 'name',
+                                            listConfig: {minWidth: 60},
+                                            maxLength: 3,
+                                            enforceMaxLength: true
+                                        },
+                                        {xtype: 'tbspacer', width: 20},
+                                        {
+                                            xtype: 'radiogroup',
+                                            id: prototype.id + '-rbChart_IACASH',
+                                            fieldLabel: '',
+                                            horizontal: true,
+                                            items: [
+                                                {boxLabel: '<strong >Fase I</strong>', name: 'rb', inputValue: 'rbF1', width: 100},
+                                                {boxLabel: '<strong >Fase II</strong>', name: 'rb', inputValue: 'rbF2', width: 100, checked: true}
+                                            ],
+                                            listeners: {
+                                                change: 'btnChangeGrafCASH'
+                                            }
+                                        },
+                                        {xtype: 'tbspacer', width: 20},
+                                        
+                                        {
+                                            xtype: 'label',
+                                            text: ' ',
+                                            margin: '13 0 0 0',
+                                            id: prototype.id + '-TESTGrafCASH',
+                                            hidden: true,
+                                            width: 1
+                                        },
+                                        {xtype: 'tbspacer', width: 20},
+                                        {
+                                            xtype: 'button',
+                                            id: prototype.id + '-btnSearchGrafCASH',
+                                            iconCls: 'prx-icon-search',
+                                            tooltip: 'Search'
+                                        },
+                                        {xtype: 'tbspacer', width: 20},
+                                        {
+                                            xtype: 'button',
+                                            id: prototype.id + '-btnBackGrafCASH',
+                                            iconCls: 'prx-icon-back',
+                                            tooltip: 'Back'
+                                        }
+                                    ]
+                                },
+                                
+                                
+                                ////
+                                //FASE I DESDE DISPLAYCHART
+                                {
+                                    xtype: 'panel',
+                                    bodyStyle: 'background-color: #E3EAEF;',
+                                    border: false,
+                                    height: 'auto',
+                                    hidden: true,
+                                    width: 1442,
+                                    margin: '10 0 0 0 ',
+                                    id: prototype.id + '-rbFaseICASH',
+                                    layout: {
+                                        type: 'vbox',
+                                        align: 'center'
+                                    },
+                                    items: [
+                                        
+                                        //PANEL1 LIQUI
+                                        {
+                                            xtype: 'panel',
+                                            bodyStyle: 'background-color: #E3EAEF;',
+                                            border: false,
+                                            height: 'auto',
+                                            width: 1442,
+                                            margin: '10 0 0 0 ',
+                                            layout: {
+                                                type: 'hbox',
+                                                align: 'center'
+                                            },
+                                            items: [
+                                                {
+                                                    xtype: 'grid',
+                                                    id: prototype.id + '-gridDataGrafLiqICASH',
+                                                    width: 542,
+                                                    columnLines: true,
+                                                    features: [{
+                                                            ftype: 'summary'
+                                                        }],
+                                                    columns: {
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        items: [
+                                                            {
+                                                                text: 'Payment',
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Date', dataIndex: 'strFormatDate', width: 80, align: 'center', sortable: false, menuDisabled: true, //flex: 1
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "color:#057ECB;text-align:center;";
+                                                                            value = '<b>' + value + '</b>';
+                                                                            return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            var data = Ext.getCmp(prototype.id + '-gridDataGrafLiqICASH').getStore().getData().items[0].data;
+                                                                            metaData.style = 'text-align:center; margin-right:3px ';
+                                                                            return '<b>' + 'Total' + '<b>';
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                text: 'Statement Reconciliation',
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Match', menuDisabled: true,
+                                                                        columns: [
+                                                                            {
+                                                                                text: 'Auto', dataIndex: 'lngQMATCH', width: 100, align: 'center', menuDisabled: true,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;background-color:#b5d0f9";
+                                                                                    return Ext.util.Format.number(value, '0,000');
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataGrafLiqICASH').getStore().getData().items[0].data;
+                                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQMATCH, '0,000') + '<b>';
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                text: '%', dataIndex: 'lngQMATCHPercent', width: 60, align: 'center', menuDisabled: true,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:center";
+                                                                                    value = Ext.util.Format.number(value, '0,000.00') + '%';
+                                                                                    return value;
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataGrafLiqICASH').getStore().getData().items[0].data;
+                                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQMATCHPercent, '0,000.00') + '%<b>';
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                text: 'Manual', dataIndex: 'lngQMANUAL', width: 100, align: 'center', menuDisabled: true, //flex: 1
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;";
+                                                                                    return Ext.util.Format.number(value, '0,000');
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataGrafLiqICASH').getStore().getData().items[0].data;
+                                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQMANUAL, '0,000') + '<b>';
+                                                                                }
+                                                                            },
+                                                                            //HIDE
+                                                                            {
+                                                                                text: 'Diff', dataIndex: 'lngQDIFF', width: 100, align: 'center', menuDisabled: true, hidden: true, //flex: 1
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;";
+                                                                                    return Ext.util.Format.number(value, '0,000');
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataGrafLiqICASH').getStore().getData().items[0].data;
+                                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQDIFF, '0,000') + '<b>';
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    {
+                                                                        text: 'Statement', menuDisabled: true,
+                                                                        columns: [
+                                                                            {
+                                                                                text: 'w/o Sett.', dataIndex: 'lngQPEND', width: 100, align: 'center', menuDisabled: true, //flex: 1
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;background-color:#d5f4d5";
+                                                                                    return Ext.util.Format.number(value, '0,000');
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataGrafLiqICASH').getStore().getData().items[0].data;
+                                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQPEND, '0,000') + '<b>';
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    {
+                                                                        text: 'Total', dataIndex: 'lngTOTALE', width: 100, align: 'center', menuDisabled: true,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right";
+                                                                            return Ext.util.Format.number(value, '0,000');
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            var data = Ext.getCmp(prototype.id + '-gridDataGrafLiqICASH').getStore().getData().items[0].data;
+                                                                            metaData.style = 'text-align:right; margin-right:3px';
+                                                                            return '<b>' + Ext.util.Format.number(data.lngTotQSALES, '0,000') + '<b>';
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                
+                                                // GRAFICOS
+                                                {
+                                                    xtype: 'cartesian',
+                                                    id: prototype.id + '-displayGrafLiqICASH',
+                                                    width: 900,
+                                                    border: false,
+                                                    height: 300,
+                                                    background: '#E0F8F7',
+                                                    captions: {
+                                                        title: {
+                                                            alignTo: 'chart'
+                                                        }
+                                                    },
+                                                    animation: {
+                                                        duration: 200
+                                                    },
+                                                    interactions: ['itemhighlight'],
+                                                    axes: [{
+                                                            type: 'numeric3d',
+                                                            position: 'left',
+                                                            fields: ['lngQMATCH', 'lngQPEND'],
+                                                            grid: true,
+                                                            title: '',
+                                                            renderer: function (obj, value) {
+                                                                return Ext.util.Format.number(value);
+                                                            }
+                                                        },
+                                                        {
+                                                            type: 'category3d',
+                                                            position: 'bottom',
+                                                            grid: true,
+                                                            title: {
+                                                                translationX: -30
+                                                            }
+                                                        }],
+                                                    series: [{
+                                                            type: 'bar3d',
+                                                            stacked: false,
+                                                            xField: 'strFormatDate',
+                                                            yField: ['lngQMATCH', 'lngQPEND'],
+                                                            colors: ['#2ca7d8', '#5dd92d'],
+                                                            highlight: true,
+                                                            style: {
+                                                                inGroupGapWidth: -7,
+                                                                minGapWidth: 2,
+                                                                maxBarWidth: 900
+                                                            },
+                                                            tooltip: {
+                                                                trackMouse: true,
+                                                                height: 28,
+                                                                renderer: function (toolTip, record, ctx) {
+                                                                    toolTip.setHtml('Amount' + ' : ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+                                                                }
+                                                            }
+                                                        }]
+                                                }
+                                            ]
+                                        },
+                                        
+                                        
+                                        // 2DO PANEL SALE
+                                        {
+                                            xtype: 'panel',
+                                            bodyStyle: 'background-color: #E3EAEF;',
+                                            border: false,
+                                            height: 'auto',
+                                            width: 1442,
+                                            margin: '10 0 0 0 ',
+                                            layout: {
+                                                type: 'hbox',
+                                                align: 'center'
+                                            },
+                                            items: [
+                                                {
+                                                    xtype: 'grid',
+                                                    id: prototype.id + '-gridDataGrafSaleICASH',
+                                                    width: 542,
+                                                    columnLines: true,
+                                                    features: [{
+                                                            ftype: 'summary'
+                                                        }],
+                                                    columns: {
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        items: [
+                                                            {
+                                                                text: 'Payment',
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Date', dataIndex: 'strFormatDate', width: 80, align: 'center', sortable: false, menuDisabled: true,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "color:#057ECB;text-align:center;";
+                                                                            value = '<b>' + value + '</b>';
+                                                                            return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            var data = Ext.getCmp(prototype.id + '-gridDataGrafSaleICASH').getStore().getData().items[0].data;
+                                                                            metaData.style = 'text-align:center; margin-right:3px ';
+                                                                            return '<b>' + 'Total' + '<b>';
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                text: 'Settlement Reconciliation',
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: false,
+                                                                    align: 'center'
+                                                                },
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Match',
+                                                                        defaults: {
+                                                                            menuDisabled: true,
+                                                                            sortable: false,
+                                                                            align: 'center'
+                                                                        },
+                                                                        columns: [
+                                                                            {
+                                                                                text: 'Automatic', dataIndex: 'lngQTMATCH', width: 100,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;background-color:#b5d0f9";
+                                                                                    return Ext.util.Format.number(value, '0,000');
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    metaData.style = "text-align:right;";
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataGrafSaleICASH').getStore().getData().items[0].data;
+                                                                                    return Ext.util.Format.number(data.lngTotQTMATCH, '0,000');
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                text: '%', dataIndex: 'lngQTMATCHPercent', width: 60, align: 'center', menuDisabled: true,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:center";
+                                                                                    value = Ext.util.Format.number(value, '0,000.00') + '%';
+                                                                                    return value;
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataGrafSaleICASH').getStore().getData().items[0].data;
+                                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQTMATCHPercent, '0,000.00') + '%<b>';
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                text: 'Manual', dataIndex: 'lngQTMANUAL', width: 100,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;";
+                                                                                    return Ext.util.Format.number(value, '0,000');
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    metaData.style = "text-align:right;";
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataGrafSaleICASH').getStore().getData().items[0].data;
+                                                                                    return Ext.util.Format.number(data.lngTotQTMANUAL, '0,000');
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    {
+                                                                        text: 'Settlement',
+                                                                        defaults: {
+                                                                            menuDisabled: true,
+                                                                            sortable: false,
+                                                                            align: 'center'
+                                                                        },
+                                                                        columns: [
+                                                                            {
+                                                                                text: 'w/o State.', dataIndex: 'lngQTPEND', width: 100,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;background-color:#d5f4d5";
+                                                                                    return Ext.util.Format.number(value, '0,000');
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    metaData.style = "text-align:right;";
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataGrafSaleICASH').getStore().getData().items[0].data;
+                                                                                    return Ext.util.Format.number(data.lngTotQTPEND, '0,000');
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    {
+                                                                        text: 'Total', dataIndex: 'lngTOTALL', width: 100, align: 'center', menuDisabled: true,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right";
+                                                                            return Ext.util.Format.number(value, '0,000');
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            var data = Ext.getCmp(prototype.id + '-gridDataGrafSaleICASH').getStore().getData().items[0].data;
+                                                                            metaData.style = 'text-align:right; margin-right:3px;';
+                                                                            return '<b>' + Ext.util.Format.number(data.lngTotTOTALL, '0,000') + '<b>';
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                
+                                                //2DO GRAFICO
+                                                {
+                                                    xtype: 'cartesian',
+                                                    id: prototype.id + '-displayGrafSaleICASH',
+                                                    width: 900,
+                                                    border: false,
+                                                    height: 300,
+                                                    background: '#E0F8F7',
+                                                    captions: {
+                                                        title: {
+                                                            alignTo: 'chart'
+                                                        }
+                                                    },
+                                                    animation: {
+                                                        duration: 200
+                                                    },
+                                                    interactions: ['itemhighlight'],
+                                                    axes: [{
+                                                            type: 'numeric3d',
+                                                            position: 'left',
+                                                            fields: ['lngQTMATCH', 'lngQTPEND'],
+                                                            grid: true,
+                                                            title: '',
+                                                            renderer: function (obj, value) {
+                                                                return Ext.util.Format.number(value);
+                                                            }
+                                                        },
+                                                        {
+                                                            type: 'category3d',
+                                                            position: 'bottom',
+                                                            grid: true,
+                                                            title: {
+                                                                translationX: -30
+                                                            }
+                                                        }],
+                                                    series: [{
+                                                            type: 'bar3d',
+                                                            stacked: false,
+                                                            xField: 'strFormatDate',
+                                                            yField: ['lngQTMATCH', 'lngQTPEND'],
+                                                            colors: ['#2ca7d8', '#5dd92d'],
+                                                            highlight: true,
+                                                            style: {
+                                                                inGroupGapWidth: -7,
+                                                                minGapWidth: 2,
+                                                                maxBarWidth: 900
+                                                            },
+                                                            tooltip: {
+                                                                trackMouse: true,
+                                                                height: 28,
+                                                                renderer: function (toolTip, record, ctx) {
+                                                                    toolTip.setHtml('Amount' + ' : ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+                                                                }
+                                                            }
+                                                        }]
+                                                }
+                                            ]
+                                        },
+                                    ]
+                                },
+                                
+                                //////
+                                
+                                //////FASE II  1GRILLA
+                                
+                                
+                                {
+                                    xtype: 'panel',
+                                    bodyStyle: 'background-color: #E3EAEF;',
+                                    border: false,
+                                    height: 'auto',
+                                    hidden: true,
+                                    width: 1442,
+                                    margin: '10 0 0 0 ',
+                                    id: prototype.id + '-rbFaseIICASH',
+                                    layout: {
+                                        type: 'vbox',
+                                        align: 'center'
+                                    },
+                                    items: [
+                                        {
+                                            xtype: 'panel',
+                                            bodyStyle: 'background-color: #E3EAEF;',
+                                            border: false,
+                                            height: 'auto',
+                                            width: 1442,
+                                            margin: '10 0 0 0 ',
+                                            layout: {
+                                                type: 'hbox',
+                                                align: 'center'
+                                            },
+                                            items: [
+                                                
+                                                //PANEL 1 DE LIQ
+                                                {
+                                                    xtype: 'grid',
+                                                    id: prototype.id + '-gridDataGrafLiqIICASH',
+                                                    width: 542,
+                                                    columnLines: true,
+                                                    features: [{
+                                                            ftype: 'summary'
+                                                        }],
+                                                    columns: {
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        items: [
+                                                            {
+                                                                text: 'Sales',
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Date', dataIndex: 'strFormatDate', width: 80, align: 'center', sortable: false, menuDisabled: true, //flex: 1
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "color:#057ECB;text-align:center;";
+                                                                            value = '<b>' + value + '</b>';
+                                                                            return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            var data = Ext.getCmp(prototype.id + '-gridDataGrafLiqIICASH').getStore().getData().items[0].data;
+                                                                            metaData.style = 'text-align:center; margin-right:3px ';
+                                                                            return '<b>' + 'Total' + '<b>';
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                text: 'Settlement Reconciliation',
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Match', menuDisabled: true,
+                                                                        columns: [
+                                                                            {
+                                                                                text: 'Auto', dataIndex: 'lngQMATCH', width: 100, align: 'center', menuDisabled: true,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;background-color:#b5d0f9";
+                                                                                    return Ext.util.Format.number(value, '0,000');
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataGrafLiqIICASH').getStore().getData().items[0].data;
+                                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQMATCH, '0,000') + '<b>';
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                text: '%', dataIndex: 'lngQMATCHPercent', width: 60, align: 'center', menuDisabled: true,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:center";
+                                                                                    value = Ext.util.Format.number(value, '0,000.00') + '%';
+                                                                                    return value;
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataGrafLiqIICASH').getStore().getData().items[0].data;
+                                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQMATCHPercent, '0,000.00') + '%<b>';
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                text: 'Manual', dataIndex: 'lngQMANUAL', width: 100, align: 'center', menuDisabled: true, //flex: 1
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;";
+                                                                                    return Ext.util.Format.number(value, '0,000');
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataGrafLiqIICASH').getStore().getData().items[0].data;
+                                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQMANUAL, '0,000') + '<b>';
+                                                                                }
+                                                                            },
+                                                                            //HIDE
+                                                                            {
+                                                                                text: 'Diff', dataIndex: 'lngQDIFF', width: 100, align: 'center', menuDisabled: true, hidden: true, //flex: 1
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;";
+                                                                                    return Ext.util.Format.number(value, '0,000');
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataGrafLiqIICASH').getStore().getData().items[0].data;
+                                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQDIFF, '0,000') + '<b>';
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    {
+                                                                        text: 'Settlement', menuDisabled: true,
+                                                                        columns: [
+                                                                            {
+                                                                                text: 'w/o Sales', dataIndex: 'lngQPEND', width: 100, align: 'center', menuDisabled: true, //flex: 1
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;background-color:#d5f4d5";
+                                                                                    return Ext.util.Format.number(value, '0,000');
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataGrafLiqIICASH').getStore().getData().items[0].data;
+                                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                                    return '<b>' + Ext.util.Format.number(data.lngTotQPEND, '0,000') + '<b>';
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    {
+                                                                        text: 'Total', dataIndex: 'lngQSALES', width: 100, align: 'center', menuDisabled: true,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right";
+                                                                            return Ext.util.Format.number(value, '0,000');
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            var data = Ext.getCmp(prototype.id + '-gridDataGrafLiqIICASH').getStore().getData().items[0].data;
+                                                                            metaData.style = 'text-align:right; margin-right:3px';
+                                                                            return '<b>' + Ext.util.Format.number(data.lngTotQSALES, '0,000') + '<b>';
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                
+                                                ///GRAFICO PANEL 1
+                                                {
+                                                    xtype: 'cartesian',
+                                                    id: prototype.id + '-displayGrafLiqIICASH',
+                                                    width: 900,
+                                                    border: false,
+                                                    height: 300,
+                                                    background: '#E0F8F7',
+                                                    captions: {
+                                                        title: {
+                                                            alignTo: 'chart'
+                                                        }
+                                                    },
+                                                    animation: {
+                                                        duration: 200
+                                                    },
+                                                    interactions: ['itemhighlight'],
+                                                    axes: [{
+                                                            type: 'numeric3d',
+                                                            position: 'left',
+                                                            fields: ['lngQMATCH', 'lngQPEND'],
+                                                            grid: true,
+                                                            title: '',
+                                                            renderer: function (obj, value) {
+                                                                return Ext.util.Format.number(value);
+                                                            }
+                                                        },
+                                                        {
+                                                            type: 'category3d',
+                                                            position: 'bottom',
+                                                            grid: true,
+                                                            title: {
+                                                                translationX: -30
+                                                            }
+                                                        }],
+                                                    series: [{
+                                                            type: 'bar3d',
+                                                            stacked: false,
+                                                            xField: 'strFormatDate',
+                                                            yField: ['lngQMATCH', 'lngQPEND'],
+                                                            colors: ['#2ca7d8', '#5dd92d'],
+                                                            highlight: true,
+                                                            style: {
+                                                                inGroupGapWidth: -7,
+                                                                minGapWidth: 2,
+                                                                maxBarWidth: 900
+                                                            },
+                                                            tooltip: {
+                                                                trackMouse: true,
+                                                                height: 28,
+                                                                renderer: function (toolTip, record, ctx) {
+                                                                    toolTip.setHtml('Amount' + ' : ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+                                                                }
+                                                            }
+                                                        }]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            xtype: 'panel',
+                                            bodyStyle: 'background-color: #E3EAEF;',
+                                            border: false,
+                                            height: 'auto',
+                                            width: 1442,
+                                            margin: '10 0 0 0 ',
+                                            layout: {
+                                                type: 'hbox',
+                                                align: 'center'
+                                            },
+                                            items: [
+                                                
+                                                //PANEL 2 GRILLA II
+                                                {
+                                                    xtype: 'grid',
+                                                    id: prototype.id + '-gridDataGrafSaleIICASH',
+                                                    width: 542,
+                                                    columnLines: true,
+                                                    features: [{
+                                                            ftype: 'summary'
+                                                        }],
+                                                    columns: {
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: false,
+                                                            align: 'center'
+                                                        },
+                                                        items: [
+                                                            {
+                                                                text: 'Sales',
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Date', dataIndex: 'strFormatDate', width: 80, align: 'center', sortable: false, menuDisabled: true,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "color:#057ECB;text-align:center;";
+                                                                            value = '<b>' + value + '</b>';
+                                                                            return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            var data = Ext.getCmp(prototype.id + '-gridDataGrafSaleIICASH').getStore().getData().items[0].data;
+                                                                            metaData.style = 'text-align:center; margin-right:3px ';
+                                                                            return '<b>' + 'Total' + '<b>';
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                text: 'Sales Reconciliation',
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: false,
+                                                                    align: 'center'
+                                                                },
+                                                                columns: [
+                                                                    {
+                                                                        text: 'Match',
+                                                                        defaults: {
+                                                                            menuDisabled: true,
+                                                                            sortable: false,
+                                                                            align: 'center'
+                                                                        },
+                                                                        columns: [
+                                                                            {
+                                                                                text: 'Automatic', dataIndex: 'lngQTMATCH', width: 100,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;background-color:#b5d0f9";
+                                                                                    return Ext.util.Format.number(value, '0,000');
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    metaData.style = "text-align:right;";
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataGrafSaleIICASH').getStore().getData().items[0].data;
+                                                                                    return Ext.util.Format.number(data.lngTotQTMATCH, '0,000');
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                text: '%', dataIndex: 'lngQTMATCHPercent', width: 60, align: 'center', menuDisabled: true,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:center";
+                                                                                    value = Ext.util.Format.number(value, '0,000.00') + '%';
+                                                                                    return value;
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataGrafSaleIICASH').getStore().getData().items[0].data;
+                                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                                    return '<b>' +
+                                                                                            Ext.util.Format.number(data.lngTotQTMATCHPercent, '0,000.00')
+                                                                                            + '%<b>';
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                text: 'Manual', dataIndex: 'lngQTMANUAL', width: 100,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;";
+                                                                                    return Ext.util.Format.number(value, '0,000');
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    metaData.style = "text-align:right;";
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataGrafSaleIICASH').getStore().getData().items[0].data;
+                                                                                    return Ext.util.Format.number(data.lngTotQTMANUAL, '0,000');
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    {
+                                                                        text: 'Sales',
+                                                                        defaults: {
+                                                                            menuDisabled: true,
+                                                                            sortable: false,
+                                                                            align: 'center'
+                                                                        },
+                                                                        columns: [
+                                                                            {
+                                                                                text: 'w/o Reconcili.', dataIndex: 'lngQTPEND', width: 100,
+                                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                                    metaData.style = "text-align:right;background-color:#d5f4d5";
+                                                                                    return Ext.util.Format.number(value, '0,000');
+                                                                                },
+                                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                                    metaData.style = "text-align:right;";
+                                                                                    var data = Ext.getCmp(prototype.id + '-gridDataGrafSaleIICASH').getStore().getData().items[0].data;
+                                                                                    return Ext.util.Format.number(data.lngTotQTPEND, '0,000');
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    {
+                                                                        text: 'Total', dataIndex: 'lngTOTALL', width: 100, align: 'center', menuDisabled: true,
+                                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                            metaData.style = "text-align:right";
+                                                                            return Ext.util.Format.number(value, '0,000');
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                            var data = Ext.getCmp(prototype.id + '-gridDataGrafSaleIICASH').getStore().getData().items[0].data;
+                                                                            metaData.style = 'text-align:right; margin-right:3px;';
+                                                                            return '<b>' + Ext.util.Format.number(data.lngTotTOTALL, '0,000') + '<b>';
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+                                                        ]
+                                                    }
+                                                },
+                                                
+                                                //GRAFICO II PANEL
+                                                {
+                                                    xtype: 'cartesian',
+                                                    id: prototype.id + '-displayGrafSaleIICASH',
+                                                    width: 900,
+                                                    border: false,
+                                                    height: 300,
+                                                    background: '#E0F8F7',
+                                                    captions: {
+                                                        title: {
+                                                            alignTo: 'chart'
+                                                        }
+                                                    },
+                                                    animation: {
+                                                        duration: 200
+                                                    },
+                                                    interactions: ['itemhighlight'],
+                                                    axes: [{
+                                                            type: 'numeric3d',
+                                                            position: 'left',
+                                                            fields: ['lngQTMATCH', 'lngQTPEND'],
+                                                            grid: true,
+                                                            title: '',
+                                                            renderer: function (obj, value) {
+                                                                return Ext.util.Format.number(value);
+                                                            }
+                                                        },
+                                                        {
+                                                            type: 'category3d',
+                                                            position: 'bottom',
+                                                            grid: true,
+                                                            title: {
+                                                                translationX: -30
+                                                            }
+                                                        }],
+                                                    series: [{
+                                                            type: 'bar3d',
+                                                            stacked: false,
+                                                            xField: 'strFormatDate',
+                                                            yField: ['lngQTMATCH', 'lngQTPEND'],
+                                                            colors: ['#2ca7d8', '#5dd92d'],
+                                                            highlight: true,
+                                                            style: {
+                                                                inGroupGapWidth: -7,
+                                                                minGapWidth: 2,
+                                                                maxBarWidth: 900
+                                                            },
+                                                            tooltip: {
+                                                                trackMouse: true,
+                                                                height: 28,
+                                                                renderer: function (toolTip, record, ctx) {
+                                                                    toolTip.setHtml('Amount' + ' : ' + '<b>' + Ext.util.Format.number(record.get(ctx.field), '0,000') + '</b>');
+                                                                }
+                                                            }
+                                                        }]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        //////////////////
+                        /// TERMINA
+                        //////////////////////////
+                        
+                        
+                        
                         {
                             xtype: 'panel',
                             id: prototype.id + '-boxDebitsData',

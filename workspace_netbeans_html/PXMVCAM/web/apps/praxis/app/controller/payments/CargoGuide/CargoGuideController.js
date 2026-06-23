@@ -186,11 +186,13 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
         if (selected === 0) {
             Ext.getCmp(prototype.id + '-panelBSP').setVisible(true);
             Ext.getCmp(prototype.id + '-panelARC').setVisible(false);
+            Ext.getCmp(prototype.id + '-panelMPF291').setVisible(false);
             this.setFormatParameter();
             this.setGridData();
         } else if (selected === 1) {
             Ext.getCmp(prototype.id + '-panelBSP').setVisible(false);
             Ext.getCmp(prototype.id + '-panelARC').setVisible(true);
+            Ext.getCmp(prototype.id + '-panelMPF291').setVisible(false);
 
             let ticketValue = Ext.getCmp(prototype.id + '-txtTicket').getValue();
 
@@ -200,6 +202,19 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
 
             this.setFormatParameterARC();
             this.setGridDataARC();
+        } else if (selected === 2) {
+            Ext.getCmp(prototype.id + '-panelBSP').setVisible(false);
+            Ext.getCmp(prototype.id + '-panelARC').setVisible(false);
+            Ext.getCmp(prototype.id + '-panelMPF291').setVisible(true);
+
+            let sfileValue = Ext.getCmp(prototype.id + '-txtSFileMPF291').getValue();
+
+            if (!sfileValue || sfileValue.trim() === '') {
+                return;
+            }
+
+            this.setFormatParameterMPF291();
+            this.setGridDataMPF291();
         }
     },
     setFormatParameter: function () {
@@ -234,6 +249,7 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
         win.lblUser_toolTip("Estructura: MPF295");
         me.panelActual = '-panelGridDataDetail';
         global.selectedChild(me.childs, prototype.id + me.panelActual);
+        Ext.getCmp(prototype.id + '-panelGridDataMPF291').setVisible(false);
         me.setWidthPie();
 
         var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
@@ -271,6 +287,58 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
         Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
 
     },
+    setFormatParameterMPF291: function () {
+        me.bean = {};
+        me.bean.IN_SFILE = Ext.getCmp(prototype.id + '-txtSFileMPF291').getValue() || '';
+        me.bean.IN_CCUST = '';
+        me.bean.IN_STVAL = Ext.getCmp(prototype.id + '-cmbStatusMPF291').getValue() || '';
+
+        var beanString = JSON.stringify(me.bean);
+        searchParams = {
+            bean: me.bean,
+            beanString: beanString
+        };
+        console.log(searchParams, 'searchParamsMPF291');
+    },
+    setGridDataMPF291: function () {
+        win.lblUser_toolTip("Estructura: MPF291");
+        me.panelActual = '-panelGridDataMPF291';
+
+        // Mostrar el panel MPF291 y ocultar los otros explicitamente
+        Ext.getCmp(prototype.id + '-panelGridDataDetail').setVisible(false);
+        Ext.getCmp(prototype.id + '-panelGridDataARC').setVisible(false);
+        Ext.getCmp(prototype.id + '-panelGridDataMPF291').setVisible(true);
+
+        // Forzar layout para que el grid tenga dimensiones correctas antes de cargar datos
+        Ext.getCmp(prototype.id + '-panelMain').updateLayout();
+        me.setWidthPie();
+
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+            proxy: {
+                url: prototype.url + '/searchMPF291All'
+            },
+            listeners: {
+                beforeload: function (obj) {
+                    obj.proxy.extraParams = searchParams;
+                },
+                load: function (obj) {
+                    var pag = Ext.getCmp(prototype.id + '-paggin');
+                    var pagData = pag.getPageData();
+                    Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                    Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                    Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+                    if (obj.data.length === 0) {
+                        global.Msg({ msg: 'Data not found.' });
+                    }
+                }
+            }
+        });
+
+        global.clear();
+        Ext.getCmp(prototype.id + '-gridDataMPF291').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
+        this.getPaggin();
+    },
     setFormatParameterARC: function () {
         me.bean = {};
 
@@ -291,6 +359,7 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
         me.bean.IN_FILE_NAME = Ext.getCmp(prototype.id + '-txtINameFileARC').getValue() || '';
         me.bean.IN_OPTION = Ext.getCmp(prototype.id + '-cmbInputDateARC').getValue() || '';
         me.bean.IN_NUMGUIA = Ext.getCmp(prototype.id + '-txtTicket').getValue() || '';
+        me.bean.IN_NUMFAC  = Ext.getCmp(prototype.id + '-txtNumFacARC').getValue() || '';
 
         var beanString = JSON.stringify(me.bean);
         searchParams = {
@@ -302,6 +371,7 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
     },
     setGridDataARC: function () {
         var me = this;
+        Ext.getCmp(prototype.id + '-panelGridDataMPF291').setVisible(false);
 
         var tabPanel = Ext.getCmp(prototype.id + '-mainTabPanelARC');
         var activeTabTitle = tabPanel.getActiveTab().title;
@@ -330,6 +400,11 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
                 currentUrl = prototype.url + '/searchARCPse';
                 currentGridId = prototype.id + '-gridPseARC';
                 toolTipStruct = "Estructura: MPF_PSE";
+                break;
+            case '5. GUIAS':
+                currentUrl = prototype.url + '/searchARCGuias';
+                currentGridId = prototype.id + '-gridGuiasARC';
+                toolTipStruct = "Estructura: MPF291";
                 break;
         }
 
@@ -501,6 +576,10 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
                 }
                 break;
 
+            case '-panelGridDataMPF291':
+                global.Msg({msg: 'Excel export not available for MPF291 view.'});
+                break;
+
             default:
                 global.Msg({msg: 'Under Construction'});
         }
@@ -570,6 +649,10 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
                 me.pagginActual = '-paggin';
                 Ext.getCmp(prototype.id + '-pie').setVisible(true);
                 Ext.getCmp(prototype.id + '-panelHeight').setHeight(670);
+                break;
+            case '-panelGridDataMPF291':
+                me.pagginActual = '-paggin';
+                Ext.getCmp(prototype.id + '-pie').setVisible(true);
                 break;
         }
     },

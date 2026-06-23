@@ -443,6 +443,59 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Info', {
                                                     }
                                                 }
                                             ]
+                                        },
+                                        // PESTAÑA 5: GUIAS
+                                        {
+                                            title: '5. GUIAS',
+                                            layout: 'fit',
+                                            items: [
+                                                {
+                                                    xtype: 'grid',
+                                                    id: prototype.id + '-gridGuiasARC',
+                                                    columnLines: true,
+                                                    viewConfig: {
+                                                        enableTextSelection: true
+                                                    },
+                                                    columns: {
+                                                        defaults: {
+                                                            menuDisabled: true,
+                                                            sortable: true,
+                                                            align: 'center'
+                                                        },
+                                                        items: [
+                                                            {text: '<span style="color:white;font-weight:bold;">Nbr</span>', dataIndex: 'RN', width: 45, style: 'padding:4px; background: #6C87A8;border-color:white'},
+                                                            {text: '<span style="color:white;font-weight:bold;">Customer</span>', dataIndex: 'CCUST', width: 75, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                                            {text: '<span style="color:white;font-weight:bold;">AWB No</span>', dataIndex: 'AWBNO', width: 110, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                                            {text: '<span style="color:white;font-weight:bold;">Cycle</span>', dataIndex: 'NCICLO', width: 65, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                                            {text: '<span style="color:white;font-weight:bold;">Pay<br>Method</span>', dataIndex: 'METPAGO', width: 65, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                                renderer: function (value, metaData) {
+                                                                    metaData.style = "text-align:center;";
+                                                                    if (value === 'P') { return 'PSE'; }
+                                                                    else if (value === 'B') { return 'DAVIVIENDA'; }
+                                                                    else if (value === 'N') { return 'NEQUI'; }
+                                                                    else if (value === 'O') { return 'OTROS'; }
+                                                                    return value;
+                                                                }
+                                                            },
+                                                            {text: '<span style="color:white;font-weight:bold;">Country</span>', dataIndex: 'SCOUNTRY', width: 65, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                                            {text: '<span style="color:white;font-weight:bold;">Abono<br>Date</span>', dataIndex: 'ADATE', width: 75, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                                            {text: '<span style="color:white;font-weight:bold;">File (SFILE)</span>', dataIndex: 'SFILE', width: 140, style: 'padding:2px; background: #6C87A8;border-color:white', align: 'left'},
+                                                            {text: '<span style="color:white;font-weight:bold;">Page<br>Nbr</span>', dataIndex: 'NPAGE', width: 60, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                                            {text: '<span style="color:white;font-weight:bold;">PRDA</span>', dataIndex: 'PRDA', width: 75, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                                            {text: '<span style="color:white;font-weight:bold;">Pay Day</span>', dataIndex: 'PAYDAY', width: 75, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                                            {text: '<span style="color:white;font-weight:bold;">Status</span>', dataIndex: 'STVAL', width: 65, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                                            {text: '<span style="color:white;font-weight:bold;">Reference</span>', dataIndex: 'REFERENCE', width: 120, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                                            {text: '<span style="color:white;font-weight:bold;">Bandoc</span>', dataIndex: 'BANDOC', width: 90, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                                            {text: '<span style="color:white;font-weight:bold;">Monto</span>', dataIndex: 'MONTO', width: 100, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                                renderer: function (value, metaData) {
+                                                                    metaData.style = "text-align:right;";
+                                                                    return Ext.util.Format.number(value, '0,000.00');
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ]
                                         }
                                     ]
                                 }
@@ -450,6 +503,71 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Info', {
                         }
                     ]
                 },
+                {
+                    xtype: 'panel',
+                    border: false,
+                    width: 1380,
+                    id: prototype.id + '-panelGridDataMPF291',
+                    bodyStyle: 'background-color: #F4F7FD;',
+                    padding: '1',
+                    hidden: true,
+                    layout: {
+                        type: 'vbox',
+                        align: 'center'
+                    },
+                    items: [
+                        {
+                            xtype: 'grid',
+                            id: prototype.id + '-gridDataMPF291',
+                            height: 543,
+                            width: 1350,
+                            columnLines: true,
+                            viewConfig: {
+                                enableTextSelection: true
+                            },
+                            columns: {
+                                defaults: {
+                                    menuDisabled: true,
+                                    sortable: true,
+                                    align: 'center'
+                                },
+                                items: [
+                                    {text: '<span style="color:white;font-weight:bold;">Nbr</span>', dataIndex: 'RN', width: 45, style: 'padding:4px; background: #6C87A8;border-color:white'},
+                                    {text: '<span style="color:white;font-weight:bold;">Status</span>', dataIndex: 'STVAL', width: 65, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                    {text: '<span style="color:white;font-weight:bold;">Customer</span>', dataIndex: 'CCUST', width: 80, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                    {text: '<span style="color:white;font-weight:bold;">AWB No</span>', dataIndex: 'AWBNO', width: 110, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                    {text: '<span style="color:white;font-weight:bold;">Cycle</span>', dataIndex: 'NCICLO', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                    {text: '<span style="color:white;font-weight:bold;">Payment<br>Method</span>', dataIndex: 'METPAGO', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                        renderer: function (value, metaData) {
+                                            metaData.style = "text-align:center;";
+                                            if (value === 'P') { return 'PSE'; }
+                                            else if (value === 'B') { return 'DAVIVIENDA'; }
+                                            else if (value === 'N') { return 'NEQUI'; }
+                                            else if (value === 'O') { return 'OTROS'; }
+                                            return value;
+                                        }
+                                    },
+                                    {text: '<span style="color:white;font-weight:bold;">Country</span>', dataIndex: 'SCOUNTRY', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                    {text: '<span style="color:white;font-weight:bold;">Abono<br>Date</span>', dataIndex: 'ADATE', width: 80, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                    {text: '<span style="color:white;font-weight:bold;">File (SFILE)</span>', dataIndex: 'SFILE', width: 140, style: 'padding:2px; background: #6C87A8;border-color:white', align: 'left'},
+                                    {text: '<span style="color:white;font-weight:bold;">Page<br>Number</span>', dataIndex: 'NPAGE', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                    {text: '<span style="color:white;font-weight:bold;">PRDA</span>', dataIndex: 'PRDA', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                    {text: '<span style="color:white;font-weight:bold;">Pay Day</span>', dataIndex: 'PAYDAY', width: 80, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                    {
+                                        text: '<span style="color:white;font-weight:bold;">Monto</span>',
+                                        dataIndex: 'MONTO',
+                                        width: 100,
+                                        style: 'padding:2px; background: #6C87A8;border-color:white',
+                                        renderer: function (value, metaData) {
+                                            metaData.style = "text-align:right;";
+                                            return Ext.util.Format.number(value, '0,000.00');
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
             ]
         },
         {
