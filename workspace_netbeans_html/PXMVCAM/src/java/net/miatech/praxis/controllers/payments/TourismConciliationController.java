@@ -626,6 +626,7 @@ public class TourismConciliationController extends BaseController {
             Cell CH1_7 = row1.createCell(7);
             Cell CH1_8 = row1.createCell(8);
             Cell CH1_9 = row1.createCell(9);
+            Cell CH1_10 = row1.createCell(10);
 
             CH1_0.setCellValue("Agent");
             CH1_1.setCellValue("Sales Date");
@@ -634,9 +635,10 @@ public class TourismConciliationController extends BaseController {
             CH1_4.setCellValue("Value Date");
             CH1_5.setCellValue("Amount Sett.");
             CH1_6.setCellValue("Amount Sales");
-            CH1_7.setCellValue("Sale Status");
-            CH1_8.setCellValue("SAP status");
-            CH1_9.setCellValue("Error description");
+            CH1_7.setCellValue("Amount Total");
+            CH1_8.setCellValue("Sale Status");
+            CH1_9.setCellValue("SAP status");
+            CH1_10.setCellValue("Error description");
             
             CH1_0.setCellStyle(headerStyle);
             CH1_1.setCellStyle(headerStyle);
@@ -648,6 +650,7 @@ public class TourismConciliationController extends BaseController {
             CH1_7.setCellStyle(headerStyle);
             CH1_8.setCellStyle(headerStyle);
             CH1_9.setCellStyle(headerStyle);
+            CH1_10.setCellStyle(headerStyle);
 
             //CellRangeAddress(int firstRow, int lastRow, int firstCol, int lastCol)
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
@@ -660,6 +663,7 @@ public class TourismConciliationController extends BaseController {
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 7, 7));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 8, 8));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 9, 9));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 10, 10));
     
             ++vj;
             //============================================
@@ -676,6 +680,7 @@ public class TourismConciliationController extends BaseController {
                 Cell rcell7 = row1.createCell(7);
                 Cell rcell8 = row1.createCell(8);
                 Cell rcell9 = row1.createCell(9);
+                Cell rcell10 = row1.createCell(10);
 
                 String varStatus = "";
                 String varStatusSAP = "";
@@ -705,9 +710,10 @@ public class TourismConciliationController extends BaseController {
                 rcell4.setCellValue(listaData.get(vi).VALDATE);
                 rcell5.setCellValue(listaData.get(vi).SVFOPS);
                 rcell6.setCellValue(listaData.get(vi).SVFOPV);
-                rcell7.setCellValue(varStatus);
-                rcell8.setCellValue(varStatusSAP);
-                rcell9.setCellValue(listaData.get(vi).DESCERR);
+                rcell7.setCellValue(listaData.get(vi).SVFOPTOTAL);
+                rcell8.setCellValue(varStatus);
+                rcell9.setCellValue(varStatusSAP);
+                rcell10.setCellValue(listaData.get(vi).DESCERR);
        
                 iter.next();
                 ++vi;
@@ -724,6 +730,7 @@ public class TourismConciliationController extends BaseController {
             sheet.autoSizeColumn(7, true);
             sheet.autoSizeColumn(8, true);
             sheet.autoSizeColumn(9, true);
+            sheet.autoSizeColumn(10, true);
 
         
 

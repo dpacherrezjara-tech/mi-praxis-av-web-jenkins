@@ -19,7 +19,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
             defaults: {
                 bodyStyle: 'background: transparent;',
                 border: false,
-                width: 1350,
+                width: 1482,
                 height: 'auto',
                 align: 'center'
             },
@@ -222,7 +222,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                             bodyStyle: 'background-color: #E3EAEF;',
                             border: true,
                             height: 'auto',
-                            width: 1350,
+                            width: 1482,
                             layout: {
                                 type: 'vbox',
                                 align: 'center'
@@ -231,7 +231,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridReportData',
-                                    width: 1350,
+                                    width: 1482,
                                     columnLines: true,
                                     menuDisabled: true,
                                     viewConfig: {
@@ -295,6 +295,17 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                                             {
                                                 text: 'Amount Sales',
                                                 dataIndex: 'SVFOPV',
+                                                width: 132,
+                                                editor: {xtype: 'textfield', editable: false},
+                                                renderer: function (value, metaData, record) {
+                                                    metaData.style = "text-align:center;";
+
+                                                    return Ext.util.Format.number(value, '0,000.00');
+                                                }
+                                            },
+                                            {
+                                                text: 'Amount Total',
+                                                dataIndex: 'SVFOPTOTAL',
                                                 width: 132,
                                                 editor: {xtype: 'textfield', editable: false},
                                                 renderer: function (value, metaData, record) {
