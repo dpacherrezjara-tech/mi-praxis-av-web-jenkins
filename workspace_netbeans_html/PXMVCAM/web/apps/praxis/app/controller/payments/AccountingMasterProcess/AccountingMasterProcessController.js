@@ -313,11 +313,11 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingMas
     },
     onSapClick: function () {
         const me = this;
-        const dataEntry = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.SapLoadDataEntry', {
-            id: prototype.id + '-SapLoadDataEntry-1',
-            procesadores: me.procesadores
+        const modal = Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.MassReversalDataEntry', {
+            id: prototype.id + '-MassReversalDataEntry-1',
+            onAfterAction: function () { me.onReloadGrid(); }
         });
-        dataEntry.show();
+        modal.show();
     },
     //<editor-fold defaultstate="collapsed" desc="Handlers">
     onClickSearchBtn: function () {

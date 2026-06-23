@@ -162,8 +162,8 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDetai
                                         { text: 'Reference', dataIndex: 'REFER', flex: 1, renderer: centerCell },
                                         { text: 'Value Date', dataIndex: 'VALDATE', width: 100, renderer: centerCell },
                                         { text: 'Date CI', dataIndex: 'DATECI', width: 100, renderer: centerCell },
-                                        { text: 'Transaction', dataIndex: 'TRANCI', width: 120, renderer: centerCell },
-                                        { text: 'Type', dataIndex: 'TIPOCON', width: 80, renderer: centerCell },
+                                        { text: 'Transaction', dataIndex: 'TRANCI', width: 100, renderer: centerCell },
+                                        { text: 'Type', dataIndex: 'TIPOCON', width: 70, renderer: centerCell },
                                         {
                                             text: 'Process', dataIndex: 'PROCESO', flex: 1, renderer: function (v, meta) {
                                                 const opts = {
@@ -187,6 +187,17 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDetai
                                                     '3': 'COR'
                                                 }
                                                 return opts[v] ? opts[v] : v;
+                                            }
+                                        },
+                                        {
+                                            text: 'Alt. Rows', dataIndex: 'ALT_ROWS', width: 70,
+                                            renderer: function (v) {
+                                                const num = Number(v) || 0;
+                                                const color = num > 0 ? '#ca8a04' : '#0284c7';
+                                                const bg = num > 0 ? '#fefce8' : '#e0f2fe';
+                                                const border = num > 0 ? '#fde047' : '#7dd3fc';
+                                                return '<span style="background:' + bg + ';color:' + color + ';border:1px solid ' + border + ';' +
+                                                    'border-radius:10px;padding:1px 9px;font-size:11px;font-weight:600;">' + num + '</span>';
                                             }
                                         },
                                         {

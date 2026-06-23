@@ -85,7 +85,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.FiltersIntegrator', {
                                     labelWidth: 90,
                                     width: 280,
                                     name: 'IN_FILENAME',
-                                    maxLength: 120,
+                                    maxLength: 200,
                                     enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
                                     listeners: {
                                         specialkey: 'onEnterKeyPress'
@@ -138,13 +138,24 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.FiltersIntegrator', {
                                     labelWidth: 90,
                                     width: 280,
                                     name: 'IN_FILEREF',
-                                    maxLength: 120,
+                                    maxLength: 200,
                                     enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
                                     listeners: {
                                         specialkey: 'onEnterKeyPress'
                                     }
                                 },
-
+                                {
+                                    xtype: 'textfield',
+                                    fieldLabel: 'Header Text',
+                                    labelWidth: 100,
+                                    width: 280,
+                                    name: 'IN_HEADER',
+                                    maxLength: 20,
+                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
+                                    listeners: {
+                                        specialkey: 'onEnterKeyPress'
+                                    }
+                                },
                             ]
                         }
                     ]

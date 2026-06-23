@@ -51,6 +51,7 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Grids.HeaderIntegratorGri
                 }
             },
             { text: 'File Name', dataIndex: 'FILENAME', flex: 1 },
+            { text: 'File Ref', dataIndex: 'FILEREF', flex: 1 },
             { text: 'Corrl', dataIndex: 'CORRL', width: 50 },
             { text: 'Header Text', dataIndex: 'HEADER', width: 180 },
             { text: 'Qty Rows', dataIndex: 'QTYROWS', width: 100 }
