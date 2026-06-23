@@ -7250,6 +7250,8 @@ public class BankReconciliationController extends BaseController {
             filter.IN_ADATE_TO = request.getParameter("IN_ADATE_TO") != null ? request.getParameter("IN_ADATE_TO") : "";
             filter.IN_INVOICE = request.getParameter("IN_INVOICE") != null ? request.getParameter("IN_INVOICE") : "";
             filter.IN_FUENTE = request.getParameter("IN_FUENTE") != null ? request.getParameter("IN_FUENTE") : "";
+            filter.IN_COUNTRY = request.getParameter("IN_COUNTRY") != null ? request.getParameter("IN_COUNTRY") : "";
+            
 
             filter.page.PAGROW = -1;
             filter.page.PAGNUM = 1;
