@@ -218,6 +218,7 @@ public class TourismConciliationDAO {
                     objRtn.STVALSAP = rs01.getString("STVALSAP").trim();
                     objRtn.SVFOPS = rs01.getDouble("SVFOPS");
                     objRtn.SVFOPV = rs01.getDouble("SVFOPV");
+                    objRtn.SVFOPTOTAL = rs01.getDouble("SVFOPTOTAL");
                     objRtn.DATECI = rs01.getString("DATECI").trim();
                     objRtn.TRANCI = rs01.getString("TRANCI").trim();
                     objRtn.DESCERR = rs01.getString("DESCERR").trim();
