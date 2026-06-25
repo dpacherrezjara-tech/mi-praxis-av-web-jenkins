@@ -19,7 +19,7 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
             defaults: {
                 bodyStyle: 'background: transparent;',
                 border: false,
-                width: 1080,
+                width: 1482,
                 height: 'auto',
                 align: 'center'
             },
@@ -216,7 +216,184 @@ Ext.define('Ext.Praxis.view.payments.TourismConciliationForm.Info', {
                                 }
                             ]
                         },
+                        {
+                            xtype: 'panel',
+                            id: prototype.id + '-boxReportData',
+                            bodyStyle: 'background-color: #E3EAEF;',
+                            border: true,
+                            height: 'auto',
+                            width: 1482,
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridReportData',
+                                    width: 1482,
+                                    columnLines: true,
+                                    menuDisabled: true,
+                                    viewConfig: {
+                                        forceFit: false
+                                    },
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: false,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {text: 'Agent', dataIndex: 'SAGENT', width: 105,
+                                                renderer: function (value, metaData, record) {
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return  value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Sales Date',
+                                                dataIndex: 'SDATE',
+                                                width: 105,
+                                                menudisabled: false,
+                                                listeners: {
+                                                    click: 'detailMPF100'
+                                                },
+                                                renderer: function (value, metaData, record) {
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return  value;
+                                                }
+                                            },
+                                            {text: 'Bandoc', dataIndex: 'BANDOC', width: 105,
+                                                renderer: function (value, metaData, record) {
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return  value;
+                                                }
+                                            },
+                                            {text: 'id Contab.', dataIndex: 'IDCONT', width: 200,
+                                                renderer: function (value, metaData, record) {
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return  value;
+                                                }
+                                            },
+                                            {text: 'Value Date', dataIndex: 'VALDATE', width: 105,
+                                                renderer: function (value, metaData, record) {
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    return  value;
+                                                }
+                                            },
+                                            {
+                                                text: 'Amount Sett.',
+                                                dataIndex: 'SVFOPS',
+                                                width: 132,
+                                                editor: {xtype: 'textfield', editable: false},
+                                                renderer: function (value, metaData, record) {
+                                                    metaData.style = "text-align:center;";
 
+                                                    return Ext.util.Format.number(value, '0,000.00');
+                                                }
+                                            },
+                                            {
+                                                text: 'Amount Sales',
+                                                dataIndex: 'SVFOPV',
+                                                width: 132,
+                                                editor: {xtype: 'textfield', editable: false},
+                                                renderer: function (value, metaData, record) {
+                                                    metaData.style = "text-align:center;";
+
+                                                    return Ext.util.Format.number(value, '0,000.00');
+                                                }
+                                            },
+                                            {
+                                                text: 'Amount Total',
+                                                dataIndex: 'SVFOPTOTAL',
+                                                width: 132,
+                                                editor: {xtype: 'textfield', editable: false},
+                                                renderer: function (value, metaData, record) {
+                                                    metaData.style = "text-align:center;";
+
+                                                    return Ext.util.Format.number(value, '0,000.00');
+                                                }
+                                            },
+                                            {
+                                                text: 'Sale status',
+                                                dataIndex: 'STVALSALE',
+                                                width: 105,
+                                                editor: {xtype: 'textfield', editable: false},
+                                                renderer: function (value, metaData, record) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    
+                                                    if (record.data.STVALSALE === '1') {
+                                                        value = 'Match';
+                                                    } else if (record.data.STVALSALE === '5') {
+                                                        value = 'Match manual.';
+                                                    } else {
+                                                        value = 'Pendiente';
+                                                    }
+                                                    return value;
+                                                }
+                                            },
+                                             {
+                                                text: 'SAP status',
+                                                dataIndex: 'STVALSAP',
+                                                width: 105,
+                                                editor: {xtype: 'textfield', editable: false},
+                                                renderer: function (value, metaData, record) {
+                                                    metaData.style = "text-align:center;";
+                                                    metaData.tdCls = "x-grid-cell x-grid-td x-grid-cell-actioncolumn-1609 x-grid-cell-last x-selectable";
+                                                    
+                                                    if (record.data.STVALSAP === 'L') {
+                                                        value = 'Cargado';
+                                                    } else if (record.data.STVALSAP === 'P') {
+                                                        value = 'Generado/Pendiente de enviar';
+                                                    } else if (record.data.STVALSAP === 'S') {
+                                                        value = 'Enviado';
+                                                    } else{
+                                                        value = record.data.STVALSAP;
+                                                    }
+                                                    return value;
+                                                }
+                                            },
+                                            {text: 'Error descrip.', dataIndex: 'DESCERR', width: 250}
+                                        ]
+                                    }
+                                },
+//                                {
+//                                    xtype: 'panel',
+//                                    id: prototype.id + '-panelDataSummary2',
+//                                    width: 965,
+//                                    align: 'center',
+//                                    margin: '0 0 0 40',
+//                                    layout: {
+//                                        type: 'hbox',
+//                                        align: 'center'
+//                                    },
+//                                    defaults: {
+//                                        xtype: 'label',
+//                                        align: 'center',
+//                                        html: '&nbsp;',
+//                                        height: 25,
+////                                        padding: '5 5 5 0',
+//                                        padding: '5 5 5 40',
+//                                        style: 'background:#A0BFD3;color:#244066;text-align:right;font-weight:bold;border: 0.3px #4A6371 solid;font-size:10px'
+//                                    },
+//                                    items: [
+//                                        {width: 105}, // Sales Date
+//                                        {width: 105}, // Agent
+//                                        
+//                                        {width: 105}, // Status
+//                                        {
+//                                            width: 132,
+//                                            id: prototype.id + '-TOTdblAmount'
+//                                        },
+//                                        {width: 105}, // Document
+//                                        {width: 135}, // Invoice
+//                                        {width: 175}, // CERROR
+//                                        {width: 100}   // View column
+//                                    ]
+//                                }
+                            ]
+                        },
                         {
                             xtype: 'panel',
                             id: prototype.id + '-pie',

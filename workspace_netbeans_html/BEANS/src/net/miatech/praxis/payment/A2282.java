@@ -31,6 +31,10 @@ public class A2282 {
     public String LCCBREF = "";
     public String MERCHANTNU = "";
     public String PERIOD = "";
+    public String IDCONT = "";
+    public String STCON = "";
+    public String STVALSALE = "";
+    public String STVALSAP = "";
     //Variables del Sistema
     public String USCR = "";
     public String FECR = "";
