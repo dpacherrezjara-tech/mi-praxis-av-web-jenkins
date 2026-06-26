@@ -106,5 +106,13 @@ public class CargoGuideLogic {
     public List<MPF293> loadMPS608(MPF293Filter filter) throws SQLException, Exception {
         return CargoGuideDAO.loadMPS608(filter);
     }
-    
+
+    public List<MPF295> loadMPS717(String srepid) throws Exception {
+        return CargoGuideDAO.loadMPS717(srepid);
+    }
+
+    public Map<String, Object> executeMPS716(String dateFrom, String dateTo, String country) throws Exception {
+        return CargoGuideDAO.executeMPS716(dateFrom, dateTo, country);
+    }
+
 }

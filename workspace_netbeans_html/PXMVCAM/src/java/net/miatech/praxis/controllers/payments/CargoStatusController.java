@@ -1195,20 +1195,6 @@ public class CargoStatusController extends BaseController {
         }
     }
 
-    public List<Map<String, String>> getListCartera(HttpServletRequest request) {
-        List<Map<String, String>> lst = new ArrayList<>(0);
-        try {
-            logic = new CargoStatusLogic();
-            logic.setSession(this.serverSession.getServerSession());
-            String beanString = request.getParameter("beanString");
-            MPF287Filter filter = new Gson().fromJson(beanString, MPF287Filter.class);
-            lst = logic.loadMPS660(filter);
-        } catch (Exception e) {
-            throw new SpringException(e);
-        }
-        return lst;
-    }
-
     @RequestMapping(value = "getXLSXCartera")
     public @ResponseBody
     void getXLSXCartera(HttpServletRequest request, HttpServletResponse response) {
@@ -1219,9 +1205,13 @@ public class CargoStatusController extends BaseController {
             System.out.println("-------------- CargoStatus : getXLSXCartera -------------");
 
             long t0 = System.currentTimeMillis();
-            List<Map<String, String>> listaData = this.getListCartera(request);
+            logic = new CargoStatusLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            String beanString = request.getParameter("beanString");
+            MPF287Filter filter = new Gson().fromJson(beanString, MPF287Filter.class);
+            List<Map<String, String>> listaData = logic.loadMPS660(filter);
             long t1 = System.currentTimeMillis();
-            System.out.println("-------------- getXLSXCartera : DB query (getListCartera) -> " + (t1 - t0) + " ms | rows=" + listaData.size() + " -------------");
+            System.out.println("-------------- getXLSXCartera : DB query (MPS660) -> " + (t1 - t0) + " ms | rows=" + listaData.size() + " -------------");
 
             SXSSFWorkbook workbook = new SXSSFWorkbook(100);
             Sheet sheet = workbook.createSheet("Cartera");

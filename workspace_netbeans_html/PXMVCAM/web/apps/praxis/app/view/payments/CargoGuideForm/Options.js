@@ -142,12 +142,12 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Options', {
                             iconCls: 'prx-icon-excel',
                             tooltip: 'Export to Excel'
                         },
-                        {
-                            xtype: 'button',
-                            id: prototype.id + '-btnGenerarCartera',
-                             icon: 'resources/img/botones/account.png',
-                            tooltip: 'Generar Excel de Cartera (MPS603)'
-                        },
+//                        {
+//                            xtype: 'button',
+//                            id: prototype.id + '-btnGenerarCartera',
+//                             icon: 'resources/img/botones/account.png',
+//                            tooltip: 'Generar Excel de Cartera (MPS603)'
+//                        },
                         {
                             xtype: 'button',
                             id: prototype.id + '-btnClear',

@@ -1230,4 +1230,109 @@ public class CargoGuideDAO {
 
         return lstData;
     }
+
+    public List<MPF295> loadMPS717(String srepid) throws Exception {
+        List<MPF295> lstData = new ArrayList<>(0);
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        Connection cnx = null;
+
+        String SQLCLL = "{CALL " + session.getMainLibrary() + "MP.MPS717(?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL);
+            cstmt.setString(1, srepid);
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+            while (rst.next()) {
+                MPF295 bean = new MPF295();
+                bean.RN            = rst.getLong("RN");
+                bean.SOCIETY_T1    = rst.getString("SOCIETY_T1").trim();
+                bean.SCOUNTRY_T1   = rst.getString("SCOUNTRY_T1").trim();
+                bean.BENCENC_T1    = rst.getString("BENCENC_T1").trim();
+                bean.ACCOUNT_T1    = rst.getString("ACCOUNT_T1").trim();
+                bean.ASSIGNMEN_T1  = rst.getString("ASSIGNMEN_T1").trim();
+                bean.REFER_T1      = rst.getString("REFER_T1").trim();
+                bean.CLAVE1_T1     = rst.getString("CLAVE1_T1").trim();
+                bean.TXTCABDOC_T1  = rst.getString("TXTCABDOC_T1").trim();
+                bean.BANDOC_T1     = rst.getString("BANDOC_T1").trim();
+                bean.CLAVE3_T1     = rst.getString("CLAVE3_T1").trim();
+                bean.CLASEDOC_T1   = rst.getString("CLASEDOC_T1").trim();
+                bean.DOCDATE_T1    = rst.getString("DOCDATE_T1").trim();
+                bean.CLAVECONT_T1  = rst.getString("CLAVECONT_T1").trim();
+                bean.SCURRENCY_T1  = rst.getString("SCURRENCY_T1").trim();
+                bean.NETO_T1       = rst.getDouble("NETO_T1");
+                bean.LOCAMOUNT2_T1 = rst.getDouble("LOCAMOUNT2_T1");
+                bean.LOCRENCY2_T1  = rst.getString("LOCRENCY2_T1").trim();
+                bean.TEXTO_T1      = rst.getString("TEXTO_T1").trim();
+                bean.SOCIETY_T2    = rst.getString("SOCIETY_T2").trim();
+                bean.ACCOUNT_T2    = rst.getString("ACCOUNT_T2").trim();
+                bean.FECBASE_T2    = rst.getString("FECBASE_T2").trim();
+                bean.BANDOCCAR_T2  = rst.getString("BANDOCCAR_T2").trim();
+                bean.NUMLEG_T2     = rst.getString("NUMLEG_T2").trim();
+                bean.FCONT_T2      = rst.getString("FCONT_T2").trim();
+                bean.IMPORTLOC2_T2 = rst.getDouble("IMPORTLOC2_T2");
+                bean.MONSUC2_T2    = rst.getString("MONSUC2_T2").trim();
+                bean.TEXTO_T2      = rst.getString("TEXTO_T2").trim();
+                bean.CLAVREF1_T2   = rst.getString("CLAVREF1_T2").trim();
+                bean.CLAVREF3_T2   = rst.getString("CLAVREF3_T2").trim();
+                bean.CENBEN_T2     = rst.getString("CENBEN_T2").trim();
+                bean.SCOUNTRY_T2   = rst.getString("SCOUNTRY_T2").trim();
+                bean.DIFERENCIA    = rst.getDouble("DIFERENCIA");
+                bean.NAMEFILE      = rst.getString("NAMEFILE").trim();
+                lstData.add(bean);
+            }
+
+        } catch (Exception e) {
+            logError.error("loadMPS717 -> " + e.getMessage(), e);
+            throw e;
+        } finally {
+            if (rst   != null) { try { rst.close();   } catch (SQLException e) {} }
+            if (cstmt != null) { try { cstmt.close(); } catch (SQLException e) {} }
+            if (cnx   != null) { session.getCNXIBMDB2().closeIBMDB2Connection(cnx); }
+        }
+
+        return lstData;
+    }
+
+    public Map<String, Object> executeMPS716(String dateFrom, String dateTo, String country) throws Exception {
+        Map<String, Object> result = new HashMap<>();
+        CallableStatement cstmt = null;
+        Connection cnx = null;
+
+        String SQLCLL = "{CALL " + session.getMainLibrary() + "MP.MPS716(?,?,?,?,?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL);
+
+            cstmt.setString(1, dateFrom);
+            cstmt.setString(2, dateTo);
+            cstmt.setString(3, country);
+            cstmt.setString(4, session.getUserView().getUserInfo().USR);
+            cstmt.registerOutParameter(5, Types.VARCHAR);
+            cstmt.registerOutParameter(6, Types.INTEGER);
+            cstmt.registerOutParameter(7, Types.VARCHAR);
+
+            cstmt.execute();
+
+            result.put("OUT_SREPID",  cstmt.getString(5));
+            result.put("OUT_CODE",    cstmt.getInt(6));
+            result.put("OUT_MESSAGE", cstmt.getString(7));
+            result.put("success", cstmt.getInt(6) == 1);
+
+        } catch (Exception e) {
+            logError.error("executeMPS716 -> " + e.getMessage(), e);
+            result.put("success", false);
+            result.put("OUT_CODE", -99);
+            result.put("OUT_MESSAGE", e.getMessage());
+        } finally {
+            if (cstmt != null) { try { cstmt.close(); } catch (SQLException e) {} }
+            if (cnx != null) { session.getCNXIBMDB2().closeIBMDB2Connection(cnx); }
+        }
+
+        return result;
+    }
 }

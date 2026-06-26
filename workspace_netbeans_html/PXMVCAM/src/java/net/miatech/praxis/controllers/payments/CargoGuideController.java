@@ -1375,11 +1375,19 @@ public class CargoGuideController extends BaseController {
 
             OutputStream out = response.getOutputStream();
             workbook.write(out);
-            workbook.dispose(); 
+            workbook.dispose();
             out.flush();
             out.close();
 
             System.out.println("-------------- Excel exportado correctamente -------------");
+
+            // Marcar registros en MPF287 e insertar en MPF305 via MPS716
+            Map<String, Object> mps716Result = logic.executeMPS716(
+                filter.IN_FECHA_FROM, filter.IN_FECHA_TO, filter.IN_COUNTRY
+            );
+            System.out.println("MPS716 -> Code: " + mps716Result.get("OUT_CODE")
+                    + " | SREPID: " + mps716Result.get("OUT_SREPID")
+                    + " | Msg: "    + mps716Result.get("OUT_MESSAGE"));
 
         } catch (Exception e) {
             e.printStackTrace();
