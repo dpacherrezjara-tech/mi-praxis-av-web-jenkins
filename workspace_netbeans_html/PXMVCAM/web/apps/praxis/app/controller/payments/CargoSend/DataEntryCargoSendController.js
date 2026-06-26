@@ -119,7 +119,7 @@ Ext.define('Ext.Praxis.controller.payments.CargoSend.DataEntryCargoSendControlle
                         IN_FECHA_TO:   dateTo,
                         IN_COUNTRY:    country
                     });
-                    urlExport = CONTEXTPATH + '/CargoGuide/exportExcel?beanString=' + encodeURIComponent(beanString);
+                    urlExport = prototype.url + '/exportExcel?beanString=' + encodeURIComponent(beanString);
                 }
 
                 window.open(urlExport, '_blank');
