@@ -61,8 +61,8 @@ public class CargoSendLogic {
         return CargoSendDAO.executeMPS718(srepid, stval);
     }
 
-    public Map<String, Object> executeMPS719(String dateFrom, String dateTo) throws Exception {
-        return CargoSendDAO.executeMPS719(dateFrom, dateTo);
+    public Map<String, Object> executeMPS719(String dateFrom, String dateTo, String ccust) throws Exception {
+        return CargoSendDAO.executeMPS719(dateFrom, dateTo, ccust);
     }
 
     public List<Map<String, String>> loadMPS750(String srepid) throws Exception {

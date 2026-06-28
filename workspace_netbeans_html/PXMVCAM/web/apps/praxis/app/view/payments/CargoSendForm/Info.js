@@ -105,7 +105,7 @@ Ext.define('Ext.Praxis.view.payments.CargoSendForm.Info', {
                                                     return  value;
                                                 }
                                             },
-                                            {text: '<span style="color:white;font-weight:bold;">File Name</span>', dataIndex: 'NAMEFILE', width: 400, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                            {text: '<span style="color:white;font-weight:bold;">File Name</span>', dataIndex: 'NAMEFILE', width: 200, style: 'padding:2px; background: #6C87A8;border-color:white',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     var data = record.data;
                                                     metaData.style = "text-align:center;";
@@ -141,6 +141,26 @@ Ext.define('Ext.Praxis.view.payments.CargoSendForm.Info', {
                                                 }
                                             },
                                             
+                                            {
+                                                text: '<span style="color:white;font-weight:bold;">Sent By</span>',
+                                                dataIndex: 'USUPSEND',
+                                                width: 100,
+                                                style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value ? value.toUpperCase() : '';
+                                                }
+                                            },
+                                            {
+                                                text: '<span style="color:white;font-weight:bold;">Sent Date</span>',
+                                                dataIndex: 'FEUPSEND',
+                                                width: 100,
+                                                style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value || '';
+                                                }
+                                            },
                                             {
                                                 text: '<span style="color:white;font-weight:bold;">Edit</span>',
                                                 width: 50,

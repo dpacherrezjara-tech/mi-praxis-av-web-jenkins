@@ -11,4 +11,5 @@ public class MPF305Filter {
     public String IN_STVAL      = "";
     public String IN_TYPEDOC    = "";
     public String IN_COUNTRY    = "";
+    public String IN_OPTION     = "C";
 }

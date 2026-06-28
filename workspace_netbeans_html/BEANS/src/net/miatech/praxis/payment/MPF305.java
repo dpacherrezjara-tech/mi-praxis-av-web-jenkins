@@ -17,4 +17,6 @@ public class MPF305 {
     public String FECR       = "";
     public String HOCR       = "";
     public String USCR       = "";
+    public String USUPSEND   = "";
+    public String FEUPSEND   = "";
 }

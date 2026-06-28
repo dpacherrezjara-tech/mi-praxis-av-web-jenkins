@@ -722,7 +722,7 @@ public class CargoGuideDAO {
             cstmt.registerOutParameter(7, Types.INTEGER);
             cstmt.registerOutParameter(8, Types.INTEGER);
 
-            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt.setString(1, filter.IN_CCUST.trim());
             cstmt.setString(2, filter.IN_FECHA_FROM.trim());
             cstmt.setString(3, filter.IN_FECHA_TO.trim());
             cstmt.setString(4, filter.IN_COUNTRY.trim());
@@ -783,7 +783,8 @@ public class CargoGuideDAO {
                 bean.COMENTARIO         = rst.getString("COMENTARIO") != null ? rst.getString("COMENTARIO").trim() : "";
                 bean.FECHA_ENVIO_VB     = rst.getString("FECHA_ENVIO_VB") != null ? rst.getString("FECHA_ENVIO_VB").trim() : "";
                 bean.FECHA_COMPENSACION = rst.getString("FECHA_COMPENSACION") != null ? rst.getString("FECHA_COMPENSACION").trim() : "";
-                bean.NAMEFILE = rst.getString("NAMEFILE") != null ? rst.getString("NAMEFILE").trim() : "";
+                bean.NAMEFILE     = rst.getString("NAMEFILE") != null ? rst.getString("NAMEFILE").trim() : "";
+                bean.IS_PENDIENTE = rst.getInt("IS_PENDIENTE");
 
                 bean.page.PAGNUM = filter.page.PAGNUM;
                 bean.page.PAGROW = filter.page.PAGROW;

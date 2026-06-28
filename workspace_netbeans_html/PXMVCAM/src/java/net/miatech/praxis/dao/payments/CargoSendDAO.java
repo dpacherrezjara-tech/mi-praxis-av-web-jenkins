@@ -320,7 +320,7 @@ public class CargoSendDAO {
         ResultSet rst = null;
         Connection cnx = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS715(?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS715(?,?,?,?,?,?,?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -332,23 +332,24 @@ public class CargoSendDAO {
             cstmt.setString(4, filter.IN_STVAL   == null ? "" : filter.IN_STVAL.trim());
             cstmt.setString(5, filter.IN_TYPEDOC == null ? "" : filter.IN_TYPEDOC.trim());
             cstmt.setString(6, filter.IN_COUNTRY == null ? "" : filter.IN_COUNTRY.trim());
+            cstmt.setString(7, filter.IN_OPTION  == null || filter.IN_OPTION.trim().isEmpty() ? "C" : filter.IN_OPTION.trim());
 
-            cstmt.registerOutParameter(7,  Types.INTEGER);
             cstmt.registerOutParameter(8,  Types.INTEGER);
             cstmt.registerOutParameter(9,  Types.INTEGER);
             cstmt.registerOutParameter(10, Types.INTEGER);
+            cstmt.registerOutParameter(11, Types.INTEGER);
 
-            cstmt.setInt(7,  filter.page.PAGNUM);
-            cstmt.setInt(8,  filter.page.PAGROW);
-            cstmt.setInt(9,  filter.page.TOTPAG);
-            cstmt.setInt(10, filter.page.TOTROW);
+            cstmt.setInt(8,  filter.page.PAGNUM);
+            cstmt.setInt(9,  filter.page.PAGROW);
+            cstmt.setInt(10, filter.page.TOTPAG);
+            cstmt.setInt(11, filter.page.TOTROW);
 
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(7);
-            filter.page.PAGROW = cstmt.getInt(8);
-            filter.page.TOTPAG = cstmt.getInt(9);
-            filter.page.TOTROW = cstmt.getInt(10);
+            filter.page.PAGNUM = cstmt.getInt(8);
+            filter.page.PAGROW = cstmt.getInt(9);
+            filter.page.TOTPAG = cstmt.getInt(10);
+            filter.page.TOTROW = cstmt.getInt(11);
 
             rst = cstmt.getResultSet();
             while (rst.next()) {
@@ -365,6 +366,8 @@ public class CargoSendDAO {
                 bean.FECR      = rst.getString("FECR").trim();
                 bean.HOCR      = rst.getString("HOCR").trim();
                 bean.USCR      = rst.getString("USCR").trim();
+                bean.USUPSEND  = rst.getString("USUPSEND") != null ? rst.getString("USUPSEND").trim() : "";
+                bean.FEUPSEND  = rst.getString("FEUPSEND") != null ? rst.getString("FEUPSEND").trim() : "";
 
                 bean.page.PAGNUM = filter.page.PAGNUM;
                 bean.page.PAGROW = filter.page.PAGROW;
@@ -505,12 +508,12 @@ public class CargoSendDAO {
         return result;
     }
 
-    public Map<String, Object> executeMPS719(String dateFrom, String dateTo) throws Exception {
+    public Map<String, Object> executeMPS719(String dateFrom, String dateTo, String ccust) throws Exception {
         Map<String, Object> result = new HashMap<>();
         CallableStatement cstmt = null;
         Connection cnx = null;
 
-        String SQLCLL = "{CALL " + session.getMainLibrary() + "MP.MPS719(?,?,?,?,?,?)}";
+        String SQLCLL = "{CALL " + session.getMainLibrary() + "MP.MPS719(?,?,?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -518,17 +521,18 @@ public class CargoSendDAO {
 
             cstmt.setString(1, dateFrom);
             cstmt.setString(2, dateTo);
-            cstmt.setString(3, session.getUserView().getUserInfo().USR);
-            cstmt.registerOutParameter(4, Types.VARCHAR);
-            cstmt.registerOutParameter(5, Types.INTEGER);
-            cstmt.registerOutParameter(6, Types.VARCHAR);
+            cstmt.setString(3, ccust);
+            cstmt.setString(4, session.getUserView().getUserInfo().USR);
+            cstmt.registerOutParameter(5, Types.VARCHAR);
+            cstmt.registerOutParameter(6, Types.INTEGER);
+            cstmt.registerOutParameter(7, Types.VARCHAR);
 
             cstmt.execute();
 
-            result.put("OUT_SREPID",  cstmt.getString(4));
-            result.put("OUT_CODE",    cstmt.getInt(5));
-            result.put("OUT_MESSAGE", cstmt.getString(6));
-            result.put("success",     cstmt.getInt(5) == 1);
+            result.put("OUT_SREPID",  cstmt.getString(5));
+            result.put("OUT_CODE",    cstmt.getInt(6));
+            result.put("OUT_MESSAGE", cstmt.getString(7));
+            result.put("success",     cstmt.getInt(6) == 1);
 
         } catch (Exception e) {
             logError.error("executeMPS719 -> " + e.getMessage(), e);

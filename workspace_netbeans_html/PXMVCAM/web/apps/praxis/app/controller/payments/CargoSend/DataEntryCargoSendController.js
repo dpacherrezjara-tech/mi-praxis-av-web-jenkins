@@ -110,14 +110,17 @@ Ext.define('Ext.Praxis.controller.payments.CargoSend.DataEntryCargoSendControlle
                 if (reportType === 'PSE') {
                     var beanString = JSON.stringify({
                         IN_FECHA_FROM: dateFrom,
-                        IN_FECHA_TO:   dateTo
+                        IN_FECHA_TO:   dateTo,
+                        IN_CCUST:   "729",
                     });
+                    console.log(beanString,'beanString')
                     urlExport = prototype.url + '/exportExcelPSE?beanString=' + encodeURIComponent(beanString);
                 } else {
                     var beanString = JSON.stringify({
                         IN_FECHA_FROM: dateFrom,
                         IN_FECHA_TO:   dateTo,
-                        IN_COUNTRY:    country
+                        IN_COUNTRY:    country,
+                        IN_CCUST:   "729",
                     });
                     urlExport = prototype.url + '/exportExcel?beanString=' + encodeURIComponent(beanString);
                 }

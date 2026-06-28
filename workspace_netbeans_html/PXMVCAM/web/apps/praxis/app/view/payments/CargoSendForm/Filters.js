@@ -49,22 +49,22 @@ Ext.define('Ext.Praxis.view.payments.CargoSendForm.Filters', {
                                     allowBlank: false,
                                     forceSelection: true,
                                     selectOnFocus: true,
-                                    disabled: true,
+                                    disabled: false,
                                     caseSensitive: false,
                                     autoSelect: true,
-                                    editable: true,
+                                    editable: false,
                                     listConfig: {maxHeight: 130},
-                                    typeAhead: true,
+                                    typeAhead: false,
                                     valueField: 'code',
                                     displayField: 'name',
                                     enableKeyEvents: true,
                                     triggerAction: 'all',
-                                    value: 'S',
+                                    value: 'C',
                                     store: {
                                         fields: ['code', 'name'],
                                         data: [
-                                            {code: 'S', name: 'Date Create'},
-                                            {code: 'U', name: 'Upload'}
+                                            {code: 'C', name: 'Date Create'},
+                                            {code: 'S', name: 'Date Sent'}
                                         ]
                                     },
                                     listeners: {
