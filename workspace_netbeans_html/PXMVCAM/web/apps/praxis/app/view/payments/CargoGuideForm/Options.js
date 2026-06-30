@@ -10,13 +10,13 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Options', {
         {
             xtype: 'segmentedbutton',
             id: prototype.id + '-segViewMode',
-            width: 300,
+            width: 220,
             cls: 'segmode',
             items: [
                 {
                     text: 'Detail',
                     itemId: 'detail',
-                    pressed: true
+                    hidden: true
                 },
                 {
                     text: 'Search Guide',
@@ -24,7 +24,13 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Options', {
                 },
                 {
                     text: 'MPF291',
-                    itemId: 'mpf291'
+                    itemId: 'mpf291',
+                    hidden: true
+                },
+                {
+                    text: 'Dashboard',
+                    itemId: 'dasboard',
+                    pressed: true
                 }
             ],
             listeners: {

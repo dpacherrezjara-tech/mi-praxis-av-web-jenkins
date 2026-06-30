@@ -207,6 +207,120 @@ public class CargoGuideController extends BaseController {
         }
     }
 
+    @RequestMapping(value = "searchSaleDetail")
+    public @ResponseBody
+    String searchSaleDetail(HttpServletRequest request) {
+        System.out.println("-------------- CargoGuide : searchSaleDetail (MPS573) -------------");
+        Map<String, Object> map = new HashMap<>();
+        Gson gson = new Gson();
+        try {
+            CargoGuideLogic logic = new CargoGuideLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            String beanString = request.getParameter("beanString");
+            MPF291Filter filter = gson.fromJson(beanString, MPF291Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START  = 0;
+            filter.page.LIMIT  = 0;
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start"));
+            filter.page.PAGROW = 20;
+            filter.page.PAGNUM = (start != 0 ? (start / filter.page.PAGROW) + 1 : 1);
+            List<MPF291> lst = logic.loadMPS573(filter);
+            map.put("success", true);
+            map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+            map.put("data", lst);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("success", false);
+            map.put("data", new ArrayList<>());
+            map.put("total", 0);
+        }
+        return new Gson().toJson(map);
+    }
+
+    @RequestMapping(value = "getXLSXMPF291")
+    public @ResponseBody
+    void getXLSXMPF291(HttpServletRequest request, HttpServletResponse response) {
+
+        String fileNameDownload = "Cargo Guide Sales - " + Functions.getFechaActual() + ".xlsx";
+
+        try {
+            CargoGuideLogic logic = new CargoGuideLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String beanString = request.getParameter("beanString");
+            MPF291Filter filter = new Gson().fromJson(beanString, MPF291Filter.class);
+            filter.page.PAGNUM = 1;
+            filter.page.PAGROW = 0;   // 0 = sin límite de filas en MPS573
+            filter.page.TOTPAG = 0;
+            filter.page.TOTROW = -1;
+
+            List<MPF291> listaData = logic.loadMPS573(filter);
+
+            SXSSFWorkbook workbook = new SXSSFWorkbook(100);
+            Sheet sheet = workbook.createSheet("Sales Detail");
+
+            CellStyle headerStyle = workbook.createCellStyle();
+            Font headerFont = workbook.createFont();
+            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            headerFont.setColor(IndexedColors.WHITE.getIndex());
+            headerStyle.setFont(headerFont);
+            headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            headerStyle.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.getIndex());
+            headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            CellStyle amountStyle = workbook.createCellStyle();
+            DataFormat fmt = workbook.createDataFormat();
+            amountStyle.setDataFormat(fmt.getFormat("#,##0.00"));
+
+            Row header = sheet.createRow(0);
+            String[] columns = {
+                "Nbr", "Status", "Customer", "AWB No", "Cycle", "Payment Method",
+                "Country", "Abono Date", "SFILE", "Page Number", "PRDA", "Pay Day", "Amount"
+            };
+            int[] widths = {2000, 2500, 3000, 4000, 2500, 4500, 2500, 3500, 8000, 3500, 3500, 3500, 4500};
+            for (int i = 0; i < columns.length; i++) {
+                Cell cell = header.createCell(i);
+                cell.setCellValue(columns[i]);
+                cell.setCellStyle(headerStyle);
+                sheet.setColumnWidth(i, widths[i]);
+            }
+
+            int rowIdx = 1;
+            for (MPF291 item : listaData) {
+                Row row = sheet.createRow(rowIdx++);
+                row.createCell(0).setCellValue(item.RN);
+                row.createCell(1).setCellValue(item.STVAL  != null ? item.STVAL  : "");
+                row.createCell(2).setCellValue(item.CCUST  != null ? item.CCUST  : "");
+                row.createCell(3).setCellValue(item.AWBNO  != null ? item.AWBNO  : "");
+                row.createCell(4).setCellValue(item.NCICLO != null ? item.NCICLO : "");
+                String metpago = item.METPAGO != null ? item.METPAGO : "";
+                if ("P".equals(metpago))      metpago = "PSE";
+                else if ("B".equals(metpago)) metpago = "DAVIVIENDA";
+                else if ("N".equals(metpago)) metpago = "NEQUI";
+                else if ("O".equals(metpago)) metpago = "OTROS";
+                row.createCell(5).setCellValue(metpago);
+                row.createCell(6).setCellValue(item.SCOUNTRY != null ? item.SCOUNTRY : "");
+                row.createCell(7).setCellValue(item.ADATE    != null ? item.ADATE    : "");
+                row.createCell(8).setCellValue(item.SFILE    != null ? item.SFILE    : "");
+                row.createCell(9).setCellValue(item.NPAGE    != null ? item.NPAGE    : "");
+                row.createCell(10).setCellValue(item.PRDA    != null ? item.PRDA     : "");
+                row.createCell(11).setCellValue(item.PAYDAY  != null ? item.PAYDAY   : "");
+                Cell amountCell = row.createCell(12);
+                amountCell.setCellValue(item.MONTO);
+                amountCell.setCellStyle(amountStyle);
+            }
+
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+            workbook.write(response.getOutputStream());
+            workbook.dispose();
+
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+    }
+
     @RequestMapping(value = "searchMPF291All")
     public @ResponseBody
     String searchMPF291All(HttpServletRequest request) {
@@ -2006,5 +2120,139 @@ public class CargoGuideController extends BaseController {
         } catch (Exception e) {
             throw new SpringException(e);
         }
+    }
+
+    @RequestMapping(value = "searchSettDetail")
+    public @ResponseBody
+    String searchSettDetail(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- CargoGuide : searchSettDetail (MPS587) -------------");
+        map.put("success", true);
+        List<MPF295> lst = this.getList(request, false);
+        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    @RequestMapping(value = "searchDashboard")
+    public @ResponseBody
+    String searchDashboard(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- CargoGuide : searchDashboard (MPS751) -------------");
+        map.put("success", true);
+        List<Map<String, Object>> lst = new ArrayList<>();
+        try {
+            logic = new CargoGuideLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String beanString = request.getParameter("beanString");
+            MPF295Filter filter = new Gson().fromJson(beanString, MPF295Filter.class);
+
+            lst = logic.loadMPS751(filter);
+        } catch (Exception e) {
+            logError.error("searchDashboard -> " + e.getMessage(), e);
+            map.put("success", false);
+        }
+        map.put("total", lst.size());
+        map.put("data", lst);
+        return new Gson().toJson(map);
+    }
+
+    @RequestMapping(value = "getXLSXDashboard")
+    public @ResponseBody
+    void getXLSXDashboard(HttpServletRequest request, HttpServletResponse response) {
+
+        String fileNameDownload = "Cargo Guide Dashboard - " + Functions.getFechaActual() + ".xlsx";
+
+        try {
+            logic = new CargoGuideLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String beanString = request.getParameter("beanString");
+            MPF295Filter filter = new Gson().fromJson(beanString, MPF295Filter.class);
+
+            List<Map<String, Object>> listaData = logic.loadMPS751(filter);
+
+            SXSSFWorkbook workbook = new SXSSFWorkbook(100);
+            Sheet sheet = workbook.createSheet("Dashboard");
+
+            CellStyle headerStyle = workbook.createCellStyle();
+            Font headerFont = workbook.createFont();
+            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            headerFont.setColor(IndexedColors.WHITE.getIndex());
+            headerStyle.setFont(headerFont);
+            headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            headerStyle.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.getIndex());
+            headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            CellStyle numStyle = workbook.createCellStyle();
+            DataFormat fmt = workbook.createDataFormat();
+            numStyle.setDataFormat(fmt.getFormat("#,##0"));
+
+            CellStyle pctStyle = workbook.createCellStyle();
+            pctStyle.setDataFormat(fmt.getFormat("0.00\"%\""));
+            pctStyle.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
+            pctStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            Row header = sheet.createRow(0);
+            String[] columns = {
+                "Period",
+                "Sett Total", "Sett Auto", "Sett Match %", "Sett Manual", "Sett W/O Sales",
+                "Sales Total", "Sales Auto", "Sales Match %", "Sales Manual", "Sales W/O Reconcili."
+            };
+            for (int i = 0; i < columns.length; i++) {
+                Cell cell = header.createCell(i);
+                cell.setCellValue(columns[i]);
+                cell.setCellStyle(headerStyle);
+                sheet.setColumnWidth(i, i == 0 ? 4500 : 4200);
+            }
+
+            int rowIdx = 1;
+            for (Map<String, Object> item : listaData) {
+                String adate = item.get("ADATE") != null ? item.get("ADATE").toString() : "";
+                if (adate.isEmpty()) continue;
+                Row row = sheet.createRow(rowIdx++);
+                row.createCell(0).setCellValue(item.get("strFormatDate") != null ? item.get("strFormatDate").toString() : adate);
+                setCellLong(row, 1, item.get("VL_QTY_TOTAL_SETT"),        numStyle);
+                setCellLong(row, 2, item.get("VL_QTY_MATCH_AUTO_SETT"),    numStyle);
+                setCellDouble(row, 3, item.get("PCT_SETT"), pctStyle);
+                setCellLong(row, 4, item.get("VL_QTY_MATCH_MANUAL_SETT"),  numStyle);
+                setCellLong(row, 5, item.get("VL_QTY_PENDING_MANUAL_SETT"),numStyle);
+                setCellLong(row, 6, item.get("VL_QTY_TOTAL_SALE"),         numStyle);
+                setCellLong(row, 7, item.get("VL_QTY_MATCH_AUTO_SALE"),    numStyle);
+                setCellDouble(row, 8, item.get("PCT_SALE"), pctStyle);
+                setCellLong(row, 9, item.get("VL_QTY_MATCH_MANUAL_SALE"),  numStyle);
+                setCellLong(row, 10, item.get("VL_QTY_PENDING_MANUAL_SALE"),numStyle);
+            }
+
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+            workbook.write(response.getOutputStream());
+            workbook.dispose();
+
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+    }
+
+    private void setCellLong(Row row, int col, Object val, CellStyle style) {
+        Cell cell = row.createCell(col);
+        if (val != null) {
+            try { cell.setCellValue(Long.parseLong(val.toString().trim())); }
+            catch (NumberFormatException e) { cell.setCellValue(0); }
+        } else {
+            cell.setCellValue(0);
+        }
+        cell.setCellStyle(style);
+    }
+
+    private void setCellDouble(Row row, int col, Object val, CellStyle style) {
+        Cell cell = row.createCell(col);
+        if (val != null) {
+            try { cell.setCellValue(Double.parseDouble(val.toString().trim())); }
+            catch (NumberFormatException e) { cell.setCellValue(0.0); }
+        } else {
+            cell.setCellValue(0.0);
+        }
+        cell.setCellStyle(style);
     }
 }
