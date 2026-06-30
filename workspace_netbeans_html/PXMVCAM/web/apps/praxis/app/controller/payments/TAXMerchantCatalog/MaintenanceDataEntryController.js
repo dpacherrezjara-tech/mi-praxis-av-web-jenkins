@@ -74,6 +74,7 @@ Ext.define('Ext.Praxis.controller.payments.TAXMerchantCatalog.MaintenanceDataEnt
             
     },
     onSaveRecord: function (btn) {
+       // console.log("Click Save");
         Ext.Msg.show(
                 {
                     title: '.:PRAXIS:.',
@@ -84,6 +85,7 @@ Ext.define('Ext.Praxis.controller.payments.TAXMerchantCatalog.MaintenanceDataEnt
                     icon: Ext.MessageBox.QUESTION,
                     modal: true,
                     fn: function (btn) {
+                     //   console.log("btn", btn);
                         if (btn === 'yes') {
                             this.maintenance(this.view.option);
                         }
@@ -91,21 +93,25 @@ Ext.define('Ext.Praxis.controller.payments.TAXMerchantCatalog.MaintenanceDataEnt
                 });
     },
     maintenance: async function (option) {
+       // console.log("1. Entró a maintenance", option);
         const me = this;
         me.view.setLoading(true);
         try {
+           // console.log("2. Antes de formatParams");
             me.view.setLoading(true);
             const params = me.formatParams(option)
+            //console.log("3. Params:", params);
+            
+           // console.log("4. Antes de callStoreGet");
             const res = await global.callStoreGet('PRAXISMP', 'MPS276', params);
-//            console.log("res", res)
-//            if (res.status === 201) {
-//                me.notifier.success('Succesfully Save');
-//            } else {
-//                me.notifier.alert('Error on Save');
-//            }
+           // console.log("5. Respuesta:", res);
+            me.notifier.success('Succesfully Save');
+
         } catch (e) {
-            global.Msg({msg: 'Error on load information'});
+          //  console.error("ERROR:", e);
+            me.notifier.alert('Error on Save');
         } finally {
+           // console.log("6. finally");
             me.view.setLoading(false);
             me.view.reloadGrid();
             me.view.close();
@@ -115,7 +121,7 @@ Ext.define('Ext.Praxis.controller.payments.TAXMerchantCatalog.MaintenanceDataEnt
     const form = Ext.getCmp(prototype.idDE + '-mainForm').getForm();
     const values = form.getValues();
     const me = this;
-    const original = this.view.searchParams;
+    const original = this.view.searchParams || {};
     
     const params = {
         IN_TYPE: option,
@@ -141,8 +147,8 @@ Ext.define('Ext.Praxis.controller.payments.TAXMerchantCatalog.MaintenanceDataEnt
         IN_TIPOCB: values.IN_TYPE_CB || '',
         IN_TIPOML: values.IN_TYPE_MEMOLINE || '',
         IN_TEXTML: values.IN_MEMOLINE || '',
-        IN_IATAVTA_OLD: original.IN_SALE_AGENT || '',
-        IN_MERCHANT_OLD: original.IN_MERCHANT || ''
+        IN_IATAVTA_OLD: option === 'U' ? original.IN_SALE_AGENT || '' : '',
+        IN_MERCHANT_OLD: option === 'U' ? original.IN_MERCHANT || '' : ''
         
     };
 //    console.log("📤 Params enviados al backend:", params);
