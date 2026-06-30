@@ -79,6 +79,7 @@ Ext.define('Ext.Praxis.controller.payments.TAXMerchantCatalog.TAXMerchantCatalog
                     me.view.setStore(storeSettl);
                     
                 } else {
+                    me.view.getStore().removeAll();
                     global.Msg({ msg: 'No Data' });
                 }
                 
