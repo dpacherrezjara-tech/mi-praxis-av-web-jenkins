@@ -257,6 +257,7 @@ items: [
                     {
                         name: 'IN_CHANNEL',
                         fieldLabel: 'Channel',
+                        id: prototype.idDE + '-channel',
                         maxLength: 40,
                         allowBlank: false,
                         listeners: {

@@ -1054,6 +1054,7 @@ Ext.util.CSS.createStyleSheet(`
                                 statusValue = statusValue.length > 0 ? statusValue.join(',') : '';
                             }
                             var fuente = Ext.getCmp(prototype.id + '-cmbFuente').getValue();
+                            var pais = Ext.getCmp(prototype.id + '-cmbCountry').getValue();
                             var fy = Ext.getCmp(prototype.id + '-cmbDateFromYear').getValue() || '';
                             var fm = Ext.getCmp(prototype.id + '-cmbDateFromMonth').getValue() || '';
                             var ty = Ext.getCmp(prototype.id + '-cmbDateToYear').getValue() || '';
@@ -1064,7 +1065,8 @@ Ext.util.CSS.createStyleSheet(`
                                     IN_ADATE_FROM: (fy && fm) ? fy + fm : '',
                                     IN_ADATE_TO: (ty && tm) ? ty + tm : '',
                                     IN_INVOICE: invoice,
-                                    IN_FUENTE: fuente
+                                    IN_FUENTE: fuente,
+                                    IN_COUNTRY: pais
                             };
                             console.log("FILTRO CARTERA", me.filtroCartera);
                             this.setGridDataCartera();
@@ -3751,6 +3753,7 @@ Ext.util.CSS.createStyleSheet(`
                         Ext.getCmp(prototype.id + '-txtDATEPICKER').setValue('');
                         Ext.getCmp(prototype.id + '-txtInvoiceFilter').setValue('');
                 },
+                
                 btnExcel_click: function (obj, e) {
 
                 this.setFormatParameter();
@@ -3820,10 +3823,27 @@ Ext.util.CSS.createStyleSheet(`
                         global.getFileExcelPost('searchDetByStval_DEBITS', me.paramsDetail.beanString, Ext.getCmp(prototype.id + '-gridDataDetalle_DEBITS').config.columns.items);
 //                    global.getFile(prototype.url + '/getXLSXDetByStval_DEBITS?beanString=' + encodeURI(me.paramsDetail.beanString));
                         break;
-                        //MPF199aa
+                        //MPF199aa.+- AJUSTEST / COMISION / CARTERA
+
                         case '-panelGridDataMPF199':
-                        global.getFile(prototype.url + '/panelGridDataMPF199?beanString=' + encodeURI(me.obJPADJ.beanString));
+
+                            if (me.currentMode === 'ARC') {
+                                global.getFile(prototype.url + '/searchListMPF223XLSX?beanString=' + encodeURI(me.obJPADJ.beanString));
+                            } else if (me.currentMode === 'CARTERA') {
+                                global.getFile(prototype.url + '/searchListCarteraXLSX?' + Ext.Object.toQueryString(me.filtroCartera));
+                           
+                            } else {
+
+                                global.getFile(prototype.url + '/panelGridDataMPF199?beanString=' + encodeURI(me.obJPADJ.beanString)
+                            );
+
+                        }
+
                         break;
+
+
+
+
                         case '-panelGridDataMainCASH':
                         global.getFile(prototype.url + '/getXLSXDetMainCash?beanString=' + encodeURI(searchParams.beanString));
 //                    global.getFileExcelPost('searchMainCash', searchParams.beanString, Ext.getCmp(prototype.id + '-gridDataMainCASH').config.columns.items);
@@ -4975,16 +4995,19 @@ Ext.util.CSS.createStyleSheet(`
                         var cardContainer = Ext.getCmp(prototype.id + '-cardContainer');
                         var txtInvoice = Ext.getCmp(prototype.id + '-txtInvoiceFilter');
                         if (mode === 'BSP') {
+                             me.currentMode = 'BSP';
                 // 1. Mostrar Grilla BSP
                 cardContainer.getLayout().setActiveItem(0);
                         win.lblUser_toolTip("Estructura: BSP Files (Ajustes)");
                         if (txtInvoice) {txtInvoice.setVisible(false);
                         txtInvoice.reset();
                 }
-                // 2. Cargar Data BSP (Llama a tu función original)
+                // 2. Cargar Data BSP 
                 me.setGridDataMPF199();
                 } else if (mode === 'ARC') {
+                    me.currentMode = 'ARC';
                 // 1. Mostrar Grilla ARC
+                //me.panelActual = '-gridDataMPF199COMIS';
                 cardContainer.getLayout().setActiveItem(1);
                         win.lblUser_toolTip("Estructura: ARC Files (Comisiones)");
                         if (txtInvoice) {txtInvoice.setVisible(false);
@@ -4993,6 +5016,7 @@ Ext.util.CSS.createStyleSheet(`
                 // 2. Cargar Data ARC (Nueva función)
                 me.setGridDataCOMISI();
                 } else if (mode === 'CARTERA') {
+                    me.currentMode = 'CARTERA';
                 // 3. Mostrar Grilla FACTURACION DETALLE
                 cardContainer.getLayout().setActiveItem(2);
                         win.lblUser_toolTip("Estructura: Cartera factura (detalle y facturas)");
@@ -5040,7 +5064,7 @@ Ext.util.CSS.createStyleSheet(`
                 global.Msg({ msg: msj });
                 } else {
 
-                // 🔹 Mover variables fuera del load para mantener consistencia
+                //  Mover variables fuera del load para mantener consistencia
                         var groupMap = {};
                         var groupId = 0;
                         var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
@@ -5089,7 +5113,7 @@ Ext.util.CSS.createStyleSheet(`
                                                 console.warn(`[NO BLOQUE] Registro ${idx} sin clave válida → O_DATEA='${datea}' | O_TRANA='${trana}'`);
                                                 }
                                                 });
-                                                // 2️⃣ Asignar colores por grupo
+                                                // 2️⃣ Asignar colores por grup
                                                 Ext.Object.each(groupMap, function (key, groupRecords) {
                                                 if (key === '' || !groupRecords || groupRecords.length === 0) return;
                                                         console.log(`[🎨 GRUPO ${groupId}] Clave=${key} → ${groupRecords.length} registros`);
@@ -5194,12 +5218,13 @@ Ext.util.CSS.createStyleSheet(`
                         model: remoteStore.getModel(),
                                 data: []
                         });
+                        
                         var grid = Ext.getCmp(prototype.id + '-gridDataMPF199CARTERA');
                         grid.bindStore(localStore);
                         remoteStore.load({
 
                         params: me.filtroCartera,
-                                callback: function (records, op, success) {
+                            callback: function (records, op, success) {
 
                                 if (!success || !records || records.length === 0) {
                                 global.Msg({ msg: 'Data not found.' });
@@ -5207,54 +5232,26 @@ Ext.util.CSS.createStyleSheet(`
                                 }
 
                                 var newData = [];
-                                        var currentInvoice = null;
-                                        var header = null;
-                                        Ext.Array.each(records, function (rec) {
+                                var currentInvoice = null;
+                                var header = null;
+                                Ext.Array.each(records, function (rec) {
 
-                                        var invoice = rec.get('O_INVOICE');
-                                                var status = rec.get('O_STVAL'); // 3 = Pending
 
-                                                // CABECERA
-                                                if (invoice !== currentInvoice) {
 
-                                        header = {
-                                        O_INVOICE: invoice,
-                                                O_TINPUT:rec.get('O_TINPUT'),
-                                                O_ADATE: 'Settlement Date',
-                                                O_STRDATE: 'From Date',
-                                                O_ENDDATE: 'To Date',
-                                                O_CONCEPT: 'INVOICE',
-                                                O_STVAL: '0', // Match 
-                                                O_SCOUNTRY: rec.get('O_SCOUNTRY'),
-                                                O_SCURRENCY: rec.get('O_SCURRENCY'),
-                                                O_BANDOC: rec.get('O_BANDOC'),
-                                                O_NETO: rec.get('O_NETO'),
-                                                O_APAYMENT: '0',
-                                                O_ABALANCE: rec.get('O_NETO'),
-                                                _isHeader: true
-                                        };
-                                                newData.push(header);
-                                                currentInvoice = invoice;
-                                        }
 
-                                        //  Si hay Pending -cabecera Pending
-                                        if (status === '3' || status === 3) {
-                                        header.O_STVAL = '3';
-                                        }
-
-                                        // DETALLE
-                                        newData.push(Ext.apply({}, rec.getData(), {
-                                        _isHeader: false
-                                        }));
-                                        });
-                                        localStore.loadData(newData);
-                                }
+                                // DETALLE
+                                newData.push(Ext.apply({}, rec.getData(), {
+                                _isHeader: false
+                                }));
+                                });
+                                localStore.loadData(newData);
+                            }
                         });
                 },
 
 
 
- //////////////////////////7
+                //////////////////////////7
                 //////////////////////////7
 
                 onGridDayCash: function (obj, metaData, rowNum, columnNum, obj2, rowData) {

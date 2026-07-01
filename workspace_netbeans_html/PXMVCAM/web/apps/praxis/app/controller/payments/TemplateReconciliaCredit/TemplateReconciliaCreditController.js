@@ -1821,13 +1821,16 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
     searchDiscountsWMH: function () {
         let me = this;
         let helpActivado = Ext.getCmp(prototype.id + '-chkMarkhELP')?.getValue() || false;
+        let getProcess = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
 
         if (helpActivado) {
-            let hayCheck = me.allSettlementRecords.some(r => me.checkStateWMHSettlements.get(r.RN) === true);
+            if (getProcess !== 'BD') {
+                let hayCheck = me.allSettlementRecords.some(r => me.checkStateWMHSettlements.get(r.RN) === true);
 
-            if (!hayCheck) {
-                global.Msg({msg: 'Seleccione las liquidaciones primero.'});
-                return;
+                if (!hayCheck) {
+                    global.Msg({msg: 'Seleccione las liquidaciones primero.'});
+                    return;
+                }
             }
 
             this.fetchDiscountsWMHHelp();
@@ -2677,22 +2680,35 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
 
         const hayDatosReales = tieneDepositos || tieneLiquidaciones || tieneDescuentos;
 
+        let getProcess = Ext.getCmp(prototype.id + '-cmbProcessor').getValue();
+        const esBancard = getProcess === 'BD';
+        // Bancard sin liquidaciones marcadas concilia directo Deposito vs Descuento;
+        // si hay liquidaciones seleccionadas (caso excepcional), usa la fórmula completa igual que el resto.
+        const esBancardSinLiquidacion = esBancard && !tieneLiquidaciones;
+
         let calculo = 0;
         let porcentaje = 0;
         let totalImplicado = 0;
         let formattedPercent = '0.00%';
 
         if (hayDatosReales) {
-            calculo = Math.abs(
-                    totalDeposito
-                    - (Math.abs(totalTotal) - Math.abs(totalComision) - Math.abs(totalDescuento))
+            if (esBancardSinLiquidacion) {
+                calculo = Math.abs(totalDeposito - Math.abs(totalDescuento));
 
-                    );
+                totalImplicado = Math.abs(totalDeposito)
+                        + Math.abs(totalDescuento);
+            } else {
+                calculo = Math.abs(
+                        totalDeposito
+                        - (Math.abs(totalTotal) - Math.abs(totalComision) - Math.abs(totalDescuento))
 
-            totalImplicado = Math.abs(totalDeposito)
-                    + Math.abs(totalTotal)
-                    + Math.abs(totalComision)
-                    + Math.abs(totalDescuento);
+                        );
+
+                totalImplicado = Math.abs(totalDeposito)
+                        + Math.abs(totalTotal)
+                        + Math.abs(totalComision)
+                        + Math.abs(totalDescuento);
+            }
 
             if (totalImplicado > 0) {
                 porcentaje = ((totalImplicado - calculo) / totalImplicado) * 100;
@@ -3149,6 +3165,7 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
         let getForce = checkBox ? "Y" : "";
         console.log(getForce, 'getForce')
         const esVenta = ["VN", "BM", "AB"].includes(getProcess);
+        const esBancard = getProcess === 'BD';
 
         let hayCheckBandoc = me.allBandocRecords.some(r => me.checkStateWMHBandoc.get(r.RN) === true);
         let hayCheckSettlement = me.allSettlementRecords.some(r => me.checkStateWMHSettlements.get(r.RN) === true);
@@ -3161,7 +3178,9 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
             return;
         }
 
-        if (!esVenta) {
+        // Bancard puede conciliar solo con Deposito vs Descuento, sin liquidaciones.
+        // Para el resto de procesadores (no venta) se sigue exigiendo la selección normal.
+        if (!esVenta && !esBancard) {
             if (!hayCheckSettlement) {
                 global.Msg({msg: 'No ha seleccionado liquidaciones.'});
                 return;
