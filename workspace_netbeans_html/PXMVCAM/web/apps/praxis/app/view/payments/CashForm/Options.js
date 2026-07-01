@@ -140,6 +140,16 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Options', {
 //                                click: 'btnDisplay_click'
 //                            }
 //                        },
+
+                        {
+                            xtype: 'button',
+                            id: prototype.id + '-btnUpdateGrid',
+                            icon: 'resources/img/botones/refresh.png',
+                            tooltip: 'Generate Summary Sales CC and CA',
+                            listeners: {
+                                click: 'updateSummarySales'
+                            }
+                        },
                         {
                             xtype: 'button',
                             id: prototype.id + '-btnExcel',
@@ -151,15 +161,6 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Options', {
                             id: prototype.id + '-btnClear',
                             iconCls: 'prx-icon-clear',
                             tooltip: 'Clear Options'
-                        },
-                        {
-                            xtype: 'button',
-                            id: prototype.id + '-btnUpdateGrid',
-                            icon: 'resources/img/botones/refresh.png',
-                            tooltip: 'Generate Summary Sales CC and CA',
-                            listeners: {
-                                click: 'updateSummarySales'
-                            }
                         },
 //                        {
 //                            xtype: 'button',

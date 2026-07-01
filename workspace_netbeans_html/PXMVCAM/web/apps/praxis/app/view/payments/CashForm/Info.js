@@ -245,7 +245,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                         {
                                             xtype: 'cartesian',
                                             id: prototype.id + '-displayBarSM',
-                                            width: 1100,
+                                            width: 980,
                                             height: 260,
                                             insetPadding: 10,
                                             border: false,
@@ -304,6 +304,13 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                 align: 'center'
                             },
                             items: [
+                                {
+                                    xtype: 'label',
+                                    id: prototype.id + '-lblContextDetailSourceCash',
+                                    width: 792,
+                                    text: '',
+                                    style: 'display:block;text-align:center;font-weight:bold;font-size:13px;color:#1a4d8f;padding:4px 0;'
+                                },
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetailSourceCash',
@@ -540,6 +547,13 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                             },
                             items: [
                                 {
+                                    xtype: 'label',
+                                    id: prototype.id + '-lblContextPrincipalSourceCash',
+                                    width: 1243,
+                                    text: '',
+                                    style: 'display:block;text-align:center;font-weight:bold;font-size:13px;color:#1a4d8f;padding:4px 0;'
+                                },
+                                {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetailPrincipalSourceCash',
                                     minHeight: 200,
@@ -672,6 +686,13 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                 align: 'center'
                             },
                             items: [
+                                {
+                                    xtype: 'label',
+                                    id: prototype.id + '-lblContextPrincipalCash',
+                                    width: 1242,
+                                    text: '',
+                                    style: 'display:block;text-align:center;font-weight:bold;font-size:13px;color:#1a4d8f;padding:4px 0;'
+                                },
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetailPrincipalCash',
@@ -1070,7 +1091,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                                                     return value;
                                                                 },
                                                                 listeners: {
-                                                                    click: 'onGridDataDetailPrincipal',
+                                                                    click: 'onGridDataDetailPrincipalCredit',
                                                                     args: ['']
                                                                 }
                                                             }
@@ -1089,7 +1110,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                                                     return value;
                                                                 },
                                                                 listeners: {
-                                                                    click: 'onGridDataDetailPrincipal',
+                                                                    click: 'onGridDataDetailPrincipalCredit',
                                                                     args: ['C']
                                                                 }
                                                             },
@@ -1154,7 +1175,7 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                         {
                                             xtype: 'cartesian',
                                             id: prototype.id + '-displayBarSMCredit',
-                                            width: 1100,
+                                            width: 980,
                                             height: 260,
                                             insetPadding: 10,
                                             border: false,
@@ -1213,6 +1234,13 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                 align: 'center'
                             },
                             items: [
+                                {
+                                    xtype: 'label',
+                                    id: prototype.id + '-lblContextDetailSourceCredit',
+                                    width: 792,
+                                    text: '',
+                                    style: 'display:block;text-align:center;font-weight:bold;font-size:13px;color:#1a4d8f;padding:4px 0;'
+                                },
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetailSourceCredit',
@@ -1449,6 +1477,13 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                             },
                             items: [
                                 {
+                                    xtype: 'label',
+                                    id: prototype.id + '-lblContextPrincipalSourceCredit',
+                                    width: 1243,
+                                    text: '',
+                                    style: 'display:block;text-align:center;font-weight:bold;font-size:13px;color:#1a4d8f;padding:4px 0;'
+                                },
+                                {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetailPrincipalSourceCredit',
                                     minHeight: 200,
@@ -1581,6 +1616,13 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                 align: 'center'
                             },
                             items: [
+                                {
+                                    xtype: 'label',
+                                    id: prototype.id + '-lblContextPrincipalCredit',
+                                    width: 1242,
+                                    text: '',
+                                    style: 'display:block;text-align:center;font-weight:bold;font-size:13px;color:#1a4d8f;padding:4px 0;'
+                                },
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetailPrincipalCredit',
