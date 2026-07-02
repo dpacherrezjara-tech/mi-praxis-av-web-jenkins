@@ -1,4 +1,4 @@
-Ext.define('Ext.Praxis.view.payments.CargoStatusForm.Options', {
+Ext.define('Ext.Praxis.view.payments.CargoSendForm.Options', {
     extend: 'Ext.form.Panel',
     alias: 'widget.' + prototype.id + '-options',
     border: false,
@@ -10,17 +10,18 @@ Ext.define('Ext.Praxis.view.payments.CargoStatusForm.Options', {
         {
             xtype: 'segmentedbutton',
             id: prototype.id + '-segViewMode',
-            width: 170,
+            width: 180,
             cls: 'segmode',
             items: [
                 {
-                    text: 'Statement',
+                    text: 'Detail',
                     itemId: 'dashboard',
                     pressed: true
                 },
                 {
-                    text: 'Cartera',
-                    itemId: 'detail'
+                    text: 'Dashboard',
+                    itemId: 'detail',
+                    disabled: true
                 },
 //                {
 //                    text: 'ICCS Files',
@@ -78,14 +79,6 @@ Ext.define('Ext.Praxis.view.payments.CargoStatusForm.Options', {
                             border: false,
                             displayInfo: false,
                             hidden: true
-                        },
-                         {
-                            xtype: 'pagingtoolbar',
-                            id: prototype.id + '-paggin12',
-                            pageSize: 10,
-                            border: false,
-                            displayInfo: false,
-                            hidden: true
                         }
 
                     ]
@@ -136,16 +129,16 @@ Ext.define('Ext.Praxis.view.payments.CargoStatusForm.Options', {
 //                        },
                         {
                             xtype: 'button',
+                            id: prototype.id + '-btnGenerateReport',
+                            icon: 'resources/img/botones/log.png',
+                            tooltip: 'Generate Report Send'
+                        },
+                        {
+                            xtype: 'button',
                             id: prototype.id + '-btnExcel',
                             iconCls: 'prx-icon-excel',
                             tooltip: 'Export to Excel'
                         },
-//                        {
-//                            xtype: 'button',
-//                            id: prototype.id + '-btnGenerarCartera',
-//                             icon: 'resources/img/botones/account.png',
-//                            tooltip: 'Generar Excel de Cartera (MPS603)'
-//                        },
                         {
                             xtype: 'button',
                             id: prototype.id + '-btnClear',

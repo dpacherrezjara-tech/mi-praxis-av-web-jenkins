@@ -10,7 +10,12 @@ public class MPF291Filter {
     public String IN_SFILE  = "";
 
     // MPS573 – general search
-    public String IN_STVAL  = "";
+    public String IN_STVAL      = "";
+    public String IN_FECHA_FROM = "";
+    public String IN_FECHA_TO   = "";
+    public String IN_OPTION     = "";
+    public String IN_SCURRENCY  = "";
+    public String IN_COUNTRY    = "";
 
     // MPS609 – GUIAS (ARC tab)
     public String IN_NUMGUIA = "";
