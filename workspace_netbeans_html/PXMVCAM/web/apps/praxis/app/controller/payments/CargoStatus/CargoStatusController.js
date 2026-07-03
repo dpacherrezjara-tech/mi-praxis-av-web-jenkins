@@ -152,6 +152,25 @@ Ext.define('Ext.Praxis.controller.payments.CargoStatus.CargoStatusController', {
             me.btnSearch_click();
         });
 
+        $('#' + prototype.id + '-btnToggleSwitchCashCDARC').on('change', 'input.toggle-input', function () {
+            var isDetail = $(this).is(':checked');
+
+            // Day combos: solo habilitados en Detail
+            var cmbFromDay = Ext.getCmp(prototype.id + '-cmbDateFromDayARC');
+            var cmbToDay   = Ext.getCmp(prototype.id + '-cmbDateToDayARC');
+            if (isDetail) {
+                cmbFromDay.setDisabled(false);
+                cmbToDay.setDisabled(false);
+            } else {
+                cmbFromDay.setValue('');
+                cmbFromDay.setDisabled(true);
+                cmbToDay.setValue('');
+                cmbToDay.setDisabled(true);
+            }
+
+            me.btnSearch_click();
+        });
+
     },
     obtainData: function () {
         var fechaActual = me.fecha || new Date();
@@ -470,8 +489,8 @@ Ext.define('Ext.Praxis.controller.payments.CargoStatus.CargoStatusController', {
         // Aliases usados por MPF287Filter (para endpoint searchCartera / MPS661)
         me.bean.IN_CCUST    = me.bean.IN_SOCIETY;
         me.bean.IN_SEARCH   = me.bean.IN_OPTION;
-        me.bean.IN_COUNTRY  = '';
-        me.bean.IN_SCURRENCY = '';
+        me.bean.IN_COUNTRY  = Ext.getCmp(prototype.id + '-cmbCountryARC').getValue() || '';
+        me.bean.IN_SCURRENCY = Ext.getCmp(prototype.id + '-cmbCurrencyARC').getValue() || '';
 
         var beanString = JSON.stringify(me.bean);
         searchParams = {
@@ -496,6 +515,8 @@ Ext.define('Ext.Praxis.controller.payments.CargoStatus.CargoStatusController', {
                     obj.proxy.extraParams = searchParams;
                 },
                 load: function (obj) {
+                    Ext.getCmp(prototype.id + '-panelGridDataARC').unmask();
+
                     if (obj.data.length === 0) {
                         global.Msg({msg: 'Data not found.'});
                         var sumIds = ['ARCQTOTAL','ARCQMATCH','ARCPCT','ARCQMANUAL',
@@ -648,6 +669,7 @@ Ext.define('Ext.Praxis.controller.payments.CargoStatus.CargoStatusController', {
             }
         });
         global.clear();
+        Ext.getCmp(prototype.id + '-panelGridDataARC').mask('Loading...');
         storeGridDatas.load();
           this.getPaggin();
     },
