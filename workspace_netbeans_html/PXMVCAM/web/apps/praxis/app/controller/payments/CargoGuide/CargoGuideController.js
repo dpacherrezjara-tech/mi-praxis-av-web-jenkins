@@ -868,7 +868,7 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
         this.getPaggin();
     },
     onDashboardSaleClick: function (column, e, row, colIndex, x, rowData) {
-        var stvalMap = { 6: '1', 7: '5', 8: '3' };
+        var stvalMap = { 7: '1', 9: '5', 10: '3' };
         var stval = stvalMap[colIndex] !== undefined ? stvalMap[colIndex] : '';
         var periodo = rowData.data.ADATE;
         if (!periodo) { return; }
