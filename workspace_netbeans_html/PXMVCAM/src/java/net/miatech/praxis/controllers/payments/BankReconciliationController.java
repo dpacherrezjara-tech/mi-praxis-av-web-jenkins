@@ -6543,6 +6543,13 @@ public class BankReconciliationController extends BaseController {
         String ccust = request.getParameter("ccust");
         String cycle = request.getParameter("cycle");
 
+        System.out.println("getCSV - country: " + country);
+        System.out.println("getCSV - date: " + date);
+        System.out.println("getCSV - fuente: " + fuente);
+        System.out.println("getCSV - dateArc: " + dateArc);
+        System.out.println("getCSV - ccust: " + ccust);
+        System.out.println("getCSV - cycle: " + cycle);
+
         if (country == null || date == null || country.isEmpty() || date.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().write("Parámetros 'country' y 'date' son obligatorios");
@@ -6564,13 +6571,16 @@ public class BankReconciliationController extends BaseController {
 
         System.out.println("esta es mi ruta " + ruta);
 
+        // Año tomado de 'date' (formato YYYYMMDD)
+        String anio = date.length() >= 4 ? date.substring(0, 4) : "2025";
+
         // Determinar carpeta y extensión según fuente
         String carpetaInsumo = "";
         String extension = "";
         String rutaFolder = "";
         if ("A".equals(fuente)) {
-            carpetaInsumo = "ARC-IMG";
-            extension = "*.png";
+            carpetaInsumo = "ARC";
+            extension = "*.txt";
         } else if ("B".equals(fuente)) {
             carpetaInsumo = "BSP";
             extension = "*.csv";
@@ -6582,14 +6592,14 @@ public class BankReconciliationController extends BaseController {
         if (fuente.equals("I")) {
             rutaFolder = "\\\\10.0.0.87\\av\\Efectivo\\"
                     + rutaCarpeta + "\\process\\"
-                    + carpetaInsumo + "\\2025\\"
+                    + carpetaInsumo + "\\" + anio + "\\"
                     + ccust;
 
         } else {
             rutaFolder = "\\\\10.0.0.87\\av\\Efectivo\\"
                     + rutaCarpeta + "\\process\\"
                     + carpetaInsumo + "\\"
-                    + country + "\\2025";
+                    + country + "\\" + anio;
         }
         Path folderPath = Paths.get(rutaFolder);
 
@@ -6601,6 +6611,7 @@ public class BankReconciliationController extends BaseController {
 
             for (Path path : stream) {
                 String fileName = path.getFileName().toString();
+                System.out.println("fileName: " + fileName);
 
                 if ("B".equals(fuente)) {
                     // BSP: CO*20250731*.csv

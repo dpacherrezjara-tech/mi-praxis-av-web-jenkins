@@ -28,6 +28,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         this.p = this.view.params;
         this.actionCode = this.p.action;
         this.bean = this.p.beanCons;
+        this.bean_scan = {};
         console.log(this.p.beanCons, "PROBANDO")
         this.lstCard = this.p.lstCard;
         this.lstBank = this.p.lstBank;
@@ -35,6 +36,10 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
         this.lstAdjustment = [];
     },
     afterRender: function () {
+
+        // Forzar store nueva y vacia en el grid de Conciliacion al abrir la ventana
+        let storeInicialConciliacion = Ext.create('Ext.data.Store', {data: []});
+        Ext.getCmp(prototype.id + '-gridDataInfoScanConciliacion').bindStore(storeInicialConciliacion);
 
         console.log(this.bean, "Esto es todo lo que traigo")
 
@@ -54,7 +59,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
 //                } else
 //                    global.Msg({msg: res.sesion});
 //            }
-//            
+//
 //        });
 
         this.obtainData();
@@ -332,6 +337,7 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
             autoLoad: true
         });
         Ext.getCmp(prototype.id + '-gridDataInfoScanConciliacion').bindStore(storeDataClear);
+
         this.calcularSumAmount();
         this.calcularMontos();
     },
@@ -1255,8 +1261,6 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPCASHB
                     let existingKeys = {};
                     store.each(function (record) {
                         let key = record.get('CCUST') + '#' + record.get('TKT') + '#' + record.get('TDOC') + '#' + record.get('SCARDNCOR') + '#' + record.get('SAUTHOC') + '#' + record.get('SEQ') + '#' + record.get('CORRL');
-                        console.log(key, "Clave compuesta");
-                        console.log("Entro a este For");
                         existingKeys[key] = true;
                     });
 
