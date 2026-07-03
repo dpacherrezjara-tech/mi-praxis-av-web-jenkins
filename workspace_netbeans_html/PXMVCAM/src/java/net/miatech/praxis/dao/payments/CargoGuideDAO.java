@@ -464,36 +464,30 @@ public class CargoGuideDAO {
         ResultSet rst = null;
         Connection cnx = null;
 
-        String SQL = "{CALL " + session.getMainLibrary() + "MP.MPS573(?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQL = "{CALL " + session.getMainLibrary() + "MP.MPS573(?,?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQL);
 
-            cstmt.registerOutParameter(9,  Types.INTEGER);
-            cstmt.registerOutParameter(10, Types.INTEGER);
-            cstmt.registerOutParameter(11, Types.INTEGER);
-            cstmt.registerOutParameter(12, Types.INTEGER);
+            cstmt.registerOutParameter(3, Types.INTEGER);
+            cstmt.registerOutParameter(4, Types.INTEGER);
+            cstmt.registerOutParameter(5, Types.INTEGER);
+            cstmt.registerOutParameter(6, Types.INTEGER);
 
-            cstmt.setString(1, filter.IN_CCUST      != null ? filter.IN_CCUST.trim()      : session.getUserView().getCustomerInfo().CCUST);
-            cstmt.setString(2, filter.IN_FECHA_FROM  != null ? filter.IN_FECHA_FROM.trim()  : "");
-            cstmt.setString(3, filter.IN_FECHA_TO    != null ? filter.IN_FECHA_TO.trim()    : "");
-            cstmt.setString(4, filter.IN_OPTION      != null ? filter.IN_OPTION.trim()      : "P");
-            cstmt.setString(5, filter.IN_SCURRENCY   != null ? filter.IN_SCURRENCY.trim()   : "");
-            cstmt.setString(6, filter.IN_COUNTRY     != null ? filter.IN_COUNTRY.trim()     : "");
-            cstmt.setString(7, filter.IN_STVAL       != null ? filter.IN_STVAL.trim()       : "");
-            cstmt.setString(8, filter.IN_SFILE       != null ? filter.IN_SFILE.trim()       : "");
-            cstmt.setInt(9,  filter.page.PAGNUM);
-            cstmt.setInt(10, filter.page.PAGROW);
-            cstmt.setInt(11, filter.page.TOTPAG);
-            cstmt.setInt(12, filter.page.TOTROW);
+            cstmt.setString(1, filter.IN_SFILE.trim());
+            cstmt.setString(2, filter.IN_STVAL.trim());
+            cstmt.setInt(3, filter.page.PAGNUM);
+            cstmt.setInt(4, filter.page.PAGROW);
+            cstmt.setInt(5, filter.page.TOTPAG);
+            cstmt.setInt(6, filter.page.TOTROW);
 
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(9);
-            filter.page.PAGROW = cstmt.getInt(10);
-            filter.page.TOTPAG = cstmt.getInt(11);
-            filter.page.TOTROW = cstmt.getInt(12);
+            filter.page.PAGNUM = cstmt.getInt(3);
+            filter.page.PAGROW = cstmt.getInt(4);
+            filter.page.TOTPAG = cstmt.getInt(5);
+            filter.page.TOTROW = cstmt.getInt(6);
 
             rst = cstmt.getResultSet();
             while (rst.next()) {
@@ -660,102 +654,6 @@ public class CargoGuideDAO {
         return lstData;
     }
 
-    public List<Map<String, Object>> loadMPS751(MPF295Filter filter) throws SQLException, Exception {
-
-        List<Map<String, Object>> lstData = new ArrayList<Map<String, Object>>();
-        CallableStatement cstmt = null;
-        ResultSet rst = null;
-        Connection cnx = null;
-
-        String SQL = "{CALL " + session.getMainLibrary() + "MP.MPS751(?,?,?,?,?)}";
-
-        try {
-            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-            cstmt = cnx.prepareCall(SQL);
-            cstmt.setString(1, filter.IN_CCUST   != null ? filter.IN_CCUST.trim()      : "");
-            cstmt.setString(2, filter.IN_OPTION   != null ? filter.IN_OPTION.trim()     : "P");
-            cstmt.setString(3, filter.IN_FECHA_FROM != null ? filter.IN_FECHA_FROM.trim() : "");
-            cstmt.setString(4, filter.IN_FECHA_TO   != null ? filter.IN_FECHA_TO.trim()   : "");
-            cstmt.setString(5, filter.IN_SCOUNTRY  != null ? filter.IN_SCOUNTRY.trim()  : "");
-            cstmt.execute();
-
-            rst = cstmt.getResultSet();
-            java.sql.ResultSetMetaData meta = rst.getMetaData();
-            int colCount = meta.getColumnCount();
-
-            long totalQTotalSett    = 0, totalQMatchAutoSett = 0, totalQMatchManualSett = 0, totalQPendingSett = 0;
-            long totalQTotalSale    = 0, totalQMatchAutoSale = 0, totalQMatchManualSale = 0, totalQPendingSale = 0;
-
-            while (rst.next()) {
-                Map<String, Object> row = new java.util.LinkedHashMap<String, Object>();
-                for (int i = 1; i <= colCount; i++) {
-                    Object val = rst.getObject(i);
-                    if (val instanceof String) val = ((String) val).trim();
-                    row.put(meta.getColumnName(i), val);
-                }
-                String adate = row.get("ADATE") != null ? row.get("ADATE").toString() : "";
-                row.put("strFormatDate", Functions.getMonthConvert(adate));
-
-                long qTotalSett       = parseLong(row.get("VL_QTY_TOTAL_SETT"));
-                long qMatchAutoSett   = parseLong(row.get("VL_QTY_MATCH_AUTO_SETT"));
-                long qMatchManualSett = parseLong(row.get("VL_QTY_MATCH_MANUAL_SETT"));
-                long qPendingSett     = parseLong(row.get("VL_QTY_PENDING_MANUAL_SETT"));
-                long qTotalSale       = parseLong(row.get("VL_QTY_TOTAL_SALE"));
-                long qMatchAutoSale   = parseLong(row.get("VL_QTY_MATCH_AUTO_SALE"));
-                long qMatchManualSale = parseLong(row.get("VL_QTY_MATCH_MANUAL_SALE"));
-                long qPendingSale     = parseLong(row.get("VL_QTY_PENDING_MANUAL_SALE"));
-
-                totalQTotalSett       += qTotalSett;
-                totalQMatchAutoSett   += qMatchAutoSett;
-                totalQMatchManualSett += qMatchManualSett;
-                totalQPendingSett     += qPendingSett;
-                totalQTotalSale       += qTotalSale;
-                totalQMatchAutoSale   += qMatchAutoSale;
-                totalQMatchManualSale += qMatchManualSale;
-                totalQPendingSale     += qPendingSale;
-
-                double pctSett = (qTotalSett > 0) ? ((qMatchAutoSett + qMatchManualSett) * 100.0 / qTotalSett) : 0;
-                double pctSale = (qTotalSale > 0) ? ((qMatchAutoSale + qMatchManualSale) * 100.0 / qTotalSale) : 0;
-                double totalPctSett = (totalQTotalSett > 0) ? ((totalQMatchAutoSett + totalQMatchManualSett) * 100.0 / totalQTotalSett) : 0;
-                double totalPctSale = (totalQTotalSale > 0) ? ((totalQMatchAutoSale + totalQMatchManualSale) * 100.0 / totalQTotalSale) : 0;
-
-                row.put("PCT_SETT", pctSett);
-                row.put("PCT_SALE", pctSale);
-                row.put("TOTAL_QTY_TOTAL_SETT",          String.valueOf(totalQTotalSett));
-                row.put("TOTAL_QTY_MATCH_AUTO_SETT",     String.valueOf(totalQMatchAutoSett));
-                row.put("TOTAL_QTY_MATCH_MANUAL_SETT",   String.valueOf(totalQMatchManualSett));
-                row.put("TOTAL_QTY_PENDING_MANUAL_SETT", String.valueOf(totalQPendingSett));
-                row.put("TOTAL_QTY_TOTAL_SALE",          String.valueOf(totalQTotalSale));
-                row.put("TOTAL_QTY_MATCH_AUTO_SALE",     String.valueOf(totalQMatchAutoSale));
-                row.put("TOTAL_QTY_MATCH_MANUAL_SALE",   String.valueOf(totalQMatchManualSale));
-                row.put("TOTAL_QTY_PENDING_MANUAL_SALE", String.valueOf(totalQPendingSale));
-                row.put("TOTAL_PCT_SETT", totalPctSett);
-                row.put("TOTAL_PCT_SALE", totalPctSale);
-
-                lstData.add(row);
-            }
-            rst.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (rst != null) {
-                try { rst.close(); } catch (SQLException e) {
-                    logError.error("SQLException -> " + e.getMessage(), e);
-                }
-            }
-            if (cstmt != null) {
-                try { cstmt.close(); } catch (SQLException e) {
-                    logError.error("SQLException -> " + e.getMessage(), e);
-                }
-            }
-            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
-            pasarGarbageCollector();
-        }
-
-        return lstData;
-    }
-
     public Map<String, Object> runMPS556() throws Exception {
         return executeRunProc("MPS556");
     }
@@ -824,7 +722,7 @@ public class CargoGuideDAO {
             cstmt.registerOutParameter(7, Types.INTEGER);
             cstmt.registerOutParameter(8, Types.INTEGER);
 
-            cstmt.setString(1, filter.IN_CCUST.trim());
+            cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_FECHA_FROM.trim());
             cstmt.setString(3, filter.IN_FECHA_TO.trim());
             cstmt.setString(4, filter.IN_COUNTRY.trim());
@@ -885,8 +783,7 @@ public class CargoGuideDAO {
                 bean.COMENTARIO         = rst.getString("COMENTARIO") != null ? rst.getString("COMENTARIO").trim() : "";
                 bean.FECHA_ENVIO_VB     = rst.getString("FECHA_ENVIO_VB") != null ? rst.getString("FECHA_ENVIO_VB").trim() : "";
                 bean.FECHA_COMPENSACION = rst.getString("FECHA_COMPENSACION") != null ? rst.getString("FECHA_COMPENSACION").trim() : "";
-                bean.NAMEFILE     = rst.getString("NAMEFILE") != null ? rst.getString("NAMEFILE").trim() : "";
-                bean.IS_PENDIENTE = rst.getInt("IS_PENDIENTE");
+                bean.NAMEFILE = rst.getString("NAMEFILE") != null ? rst.getString("NAMEFILE").trim() : "";
 
                 bean.page.PAGNUM = filter.page.PAGNUM;
                 bean.page.PAGROW = filter.page.PAGROW;
@@ -1332,115 +1229,5 @@ public class CargoGuideDAO {
         }
 
         return lstData;
-    }
-
-    public List<MPF295> loadMPS717(String srepid) throws Exception {
-        List<MPF295> lstData = new ArrayList<>(0);
-        CallableStatement cstmt = null;
-        ResultSet rst = null;
-        Connection cnx = null;
-
-        String SQLCLL = "{CALL " + session.getMainLibrary() + "MP.MPS717(?)}";
-
-        try {
-            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-            cstmt = cnx.prepareCall(SQLCLL);
-            cstmt.setString(1, srepid);
-            cstmt.execute();
-
-            rst = cstmt.getResultSet();
-            while (rst.next()) {
-                MPF295 bean = new MPF295();
-                bean.RN            = rst.getLong("RN");
-                bean.SOCIETY_T1    = rst.getString("SOCIETY_T1").trim();
-                bean.SCOUNTRY_T1   = rst.getString("SCOUNTRY_T1").trim();
-                bean.BENCENC_T1    = rst.getString("BENCENC_T1").trim();
-                bean.ACCOUNT_T1    = rst.getString("ACCOUNT_T1").trim();
-                bean.ASSIGNMEN_T1  = rst.getString("ASSIGNMEN_T1").trim();
-                bean.REFER_T1      = rst.getString("REFER_T1").trim();
-                bean.CLAVE1_T1     = rst.getString("CLAVE1_T1").trim();
-                bean.TXTCABDOC_T1  = rst.getString("TXTCABDOC_T1").trim();
-                bean.BANDOC_T1     = rst.getString("BANDOC_T1").trim();
-                bean.CLAVE3_T1     = rst.getString("CLAVE3_T1").trim();
-                bean.CLASEDOC_T1   = rst.getString("CLASEDOC_T1").trim();
-                bean.DOCDATE_T1    = rst.getString("DOCDATE_T1").trim();
-                bean.CLAVECONT_T1  = rst.getString("CLAVECONT_T1").trim();
-                bean.SCURRENCY_T1  = rst.getString("SCURRENCY_T1").trim();
-                bean.NETO_T1       = rst.getDouble("NETO_T1");
-                bean.LOCAMOUNT2_T1 = rst.getDouble("LOCAMOUNT2_T1");
-                bean.LOCRENCY2_T1  = rst.getString("LOCRENCY2_T1").trim();
-                bean.TEXTO_T1      = rst.getString("TEXTO_T1").trim();
-                bean.SOCIETY_T2    = rst.getString("SOCIETY_T2").trim();
-                bean.ACCOUNT_T2    = rst.getString("ACCOUNT_T2").trim();
-                bean.FECBASE_T2    = rst.getString("FECBASE_T2").trim();
-                bean.BANDOCCAR_T2  = rst.getString("BANDOCCAR_T2").trim();
-                bean.NUMLEG_T2     = rst.getString("NUMLEG_T2").trim();
-                bean.FCONT_T2      = rst.getString("FCONT_T2").trim();
-                bean.IMPORTLOC2_T2 = rst.getDouble("IMPORTLOC2_T2");
-                bean.MONSUC2_T2    = rst.getString("MONSUC2_T2").trim();
-                bean.TEXTO_T2      = rst.getString("TEXTO_T2").trim();
-                bean.CLAVREF1_T2   = rst.getString("CLAVREF1_T2").trim();
-                bean.CLAVREF3_T2   = rst.getString("CLAVREF3_T2").trim();
-                bean.CENBEN_T2     = rst.getString("CENBEN_T2").trim();
-                bean.SCOUNTRY_T2   = rst.getString("SCOUNTRY_T2").trim();
-                bean.DIFERENCIA    = rst.getDouble("DIFERENCIA");
-                bean.NAMEFILE      = rst.getString("NAMEFILE").trim();
-                lstData.add(bean);
-            }
-
-        } catch (Exception e) {
-            logError.error("loadMPS717 -> " + e.getMessage(), e);
-            throw e;
-        } finally {
-            if (rst   != null) { try { rst.close();   } catch (SQLException e) {} }
-            if (cstmt != null) { try { cstmt.close(); } catch (SQLException e) {} }
-            if (cnx   != null) { session.getCNXIBMDB2().closeIBMDB2Connection(cnx); }
-        }
-
-        return lstData;
-    }
-
-    public Map<String, Object> executeMPS716(String dateFrom, String dateTo, String country) throws Exception {
-        Map<String, Object> result = new HashMap<>();
-        CallableStatement cstmt = null;
-        Connection cnx = null;
-
-        String SQLCLL = "{CALL " + session.getMainLibrary() + "MP.MPS716(?,?,?,?,?,?,?)}";
-
-        try {
-            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-            cstmt = cnx.prepareCall(SQLCLL);
-
-            cstmt.setString(1, dateFrom);
-            cstmt.setString(2, dateTo);
-            cstmt.setString(3, country);
-            cstmt.setString(4, session.getUserView().getUserInfo().USR);
-            cstmt.registerOutParameter(5, Types.VARCHAR);
-            cstmt.registerOutParameter(6, Types.INTEGER);
-            cstmt.registerOutParameter(7, Types.VARCHAR);
-
-            cstmt.execute();
-
-            result.put("OUT_SREPID",  cstmt.getString(5));
-            result.put("OUT_CODE",    cstmt.getInt(6));
-            result.put("OUT_MESSAGE", cstmt.getString(7));
-            result.put("success", cstmt.getInt(6) == 1);
-
-        } catch (Exception e) {
-            logError.error("executeMPS716 -> " + e.getMessage(), e);
-            result.put("success", false);
-            result.put("OUT_CODE", -99);
-            result.put("OUT_MESSAGE", e.getMessage());
-        } finally {
-            if (cstmt != null) { try { cstmt.close(); } catch (SQLException e) {} }
-            if (cnx != null) { session.getCNXIBMDB2().closeIBMDB2Connection(cnx); }
-        }
-
-        return result;
-    }
-
-    private long parseLong(Object val) {
-        try { return val == null ? 0L : Long.parseLong(val.toString().trim()); }
-        catch (NumberFormatException e) { return 0L; }
     }
 }

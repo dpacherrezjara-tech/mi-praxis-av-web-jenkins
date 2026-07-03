@@ -7,23 +7,14 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.DataEntry', {
     controller: 'DataEntryCargoGuideController',
     title: 'Cargo Guide — Data Entry',
     header: true,
-    height: 560,
-    width: 990,
+    height: 530,
+    width: 960,
     resizable: true,
-    maximizable: true,
-    layout: {type: 'hbox', align: 'stretch'},
+    layout: {type: 'vbox', align: 'stretch'},
     modal: true,
     border: false,
     defaults: {border: false},
     items: [
-        // ══ LEFT: data form + linked records ══════════════════════════════
-        {
-            xtype: 'container',
-            id: prototype.id + '-de-leftPane',
-            width: 972,
-            layout: {type: 'vbox', align: 'stretch'},
-            defaults: {border: false},
-            items: [
         // ── Detail + Amount form ──────────────────────────────────────────
         {
             xtype: 'form',
@@ -127,7 +118,7 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.DataEntry', {
                         {
                             xtype: 'button',
                             id: prototype.id + '-de-btnPreviewPDF',
-                            text: '&#9974;&nbsp;Full Screen',
+                            text: '&#128196;&nbsp;Preview PDF',
                             hidden: true,
                             style: 'background:#1976D2;border:1px solid #1565C0;color:#fff;border-radius:3px;font-weight:bold;',
                             scale: 'medium',
@@ -207,166 +198,6 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.DataEntry', {
                         style: 'line-height:24px;padding-left:4px;'
                     }]
                 }]
-            }]
-        },
-        // ── BANK RECONCILIATION — manual scan ─────────────────────────────
-        {
-            xtype: 'panel',
-            id: prototype.id + '-de-panelScan',
-            flex: 1,
-            hidden: true,
-            border: false,
-            layout: {type: 'vbox', align: 'stretch'},
-            margin: '8 12 0 12',
-            items: [
-                {
-                    xtype: 'container',
-                    html: '<div style="background:linear-gradient(90deg,#2E7D32,#43A047);color:#fff;font-size:11px;font-weight:bold;letter-spacing:2px;padding:5px 14px;border-radius:4px 4px 0 0;">&#128269;&nbsp;BANK RECONCILIATION — MANUAL SCAN</div>'
-                },
-                {
-                    xtype: 'container',
-                    style: 'background:#fff;border:1px solid #C8E6C9;border-top:none;border-radius:0 0 4px 4px;box-shadow:0 1px 3px rgba(0,0,0,.07);',
-                    padding: '8 10 8 10',
-                    items: [
-                        {
-                            xtype: 'container',
-                            layout: {type: 'hbox', align: 'middle'},
-                            margin: '0 0 6 0',
-                            defaults: {labelStyle: 'font-weight:bold;color:#2E7D32;font-size:11px;'},
-                            items: [
-                                {
-                                    xtype: 'combobox',
-                                    fieldLabel: 'Bank',
-                                    id: prototype.id + '-de-scanBANK',
-                                    width: 320, labelWidth: 60,
-                                    editable: false,
-                                    queryMode: 'local',
-                                    displayField: 'name',
-                                    valueField: 'code',
-                                    emptyText: 'Select bank...',
-                                    store: {
-                                        fields: ['code', 'name'],
-                                        data: [
-                                            {code: '',    name: 'All banks'},
-                                            {code: 'BCO', name: 'BANCOLOMBIA'},
-                                            {code: 'DAV', name: 'DAVIVIENDA'},
-                                            {code: 'BBV', name: 'BBVA'}
-                                        ]
-                                    }
-                                },
-                                {xtype: 'tbspacer', width: 14},
-                                {xtype: 'textfield',   fieldLabel: 'ADATE',  id: prototype.id + '-de-scanADATE',  width: 230, labelWidth: 60, fieldStyle: 'text-align:center;'},
-                                {xtype: 'tbspacer', width: 14},
-                                {xtype: 'numberfield', fieldLabel: 'Amount', id: prototype.id + '-de-scanMONTO',  width: 230, labelWidth: 60, hideTrigger: true, decimalPrecision: 2, allowDecimals: true, fieldStyle: 'text-align:right;'}
-                            ]
-                        },
-                        {
-                            xtype: 'container',
-                            layout: {type: 'hbox', align: 'middle'},
-                            defaults: {labelStyle: 'font-weight:bold;color:#2E7D32;font-size:11px;'},
-                            items: [
-                                {xtype: 'textfield', fieldLabel: 'Reference', id: prototype.id + '-de-scanREFERENCE', width: 320, labelWidth: 60},
-                                {xtype: 'tbspacer', width: 14},
-                                {xtype: 'textfield', fieldLabel: 'Text',      id: prototype.id + '-de-scanTEXTO',     width: 230, labelWidth: 60},
-                                {xtype: 'tbspacer', width: 14},
-                                {xtype: 'textfield', fieldLabel: 'BANDOC',    id: prototype.id + '-de-scanBANDOC',    width: 230, labelWidth: 60, fieldStyle: 'text-align:center;'},
-                                {xtype: 'container', flex: 1},
-                                {
-                                    xtype: 'button',
-                                    text: '&#128269;&nbsp;Scan',
-                                    id: prototype.id + '-de-btnScan',
-                                    scale: 'medium',
-                                    style: 'background:#2E7D32;border:1px solid #1B5E20;color:#fff;border-radius:3px;font-weight:bold;',
-                                    listeners: {click: 'onScanSearch'}
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    xtype: 'grid',
-                    id: prototype.id + '-de-gridScan',
-                    flex: 1,
-                    margin: '8 0 0 0',
-                    border: false,
-                    selModel: {selType: 'checkboxmodel', mode: 'SINGLE'},
-                    viewConfig: {stripeRows: true, emptyText: '<div style="padding:18px;color:#90A4AE;text-align:center;">Use the filters above and press <b>Scan</b> to find bank movements to reconcile.</div>'},
-                    columns: [
-                        {text: 'Bank',      dataIndex: 'BANK',      width: 120},
-                        {text: 'ADATE',     dataIndex: 'ADATE',     width: 90,  align: 'center'},
-                        {text: 'Amount',    dataIndex: 'MONTO',     width: 120, align: 'right',
-                            renderer: function (v, m) { m.style = 'text-align:right;font-weight:bold;color:#2E7D32;'; return Ext.util.Format.number(v, '0,000.00'); }},
-                        {text: 'Reference', dataIndex: 'REFERENCE', width: 130},
-                        {text: 'Text',      dataIndex: 'TEXTO',     flex: 1},
-                        {text: 'BANDOC',    dataIndex: 'BANDOC',    width: 100, align: 'center'},
-                        {text: 'State',     dataIndex: 'STATE',     width: 60,  align: 'center'}
-                    ],
-                    store: {
-                        fields: ['BANK', 'ADATE', 'MONTO', 'REFERENCE', 'TEXTO', 'BANDOC', 'STATE'],
-                        data: []
-                    },
-                    dockedItems: [{
-                        xtype: 'toolbar',
-                        dock: 'top',
-                        style: 'background:#E8F5E9;border-bottom:2px solid #2E7D32;',
-                        items: [
-                            {xtype: 'label', html: '<b style="color:#2E7D32;font-size:12px;letter-spacing:1px;">BANK MOVEMENTS</b>', style: 'line-height:24px;padding-left:4px;'},
-                            '->',
-                            {
-                                xtype: 'button',
-                                text: '&#10003;&nbsp;Reconcile Manually',
-                                id: prototype.id + '-de-btnReconcile',
-                                scale: 'small',
-                                style: 'background:#1B5E20;border:1px solid #145017;color:#fff;border-radius:3px;font-weight:bold;',
-                                listeners: {click: 'onReconcileManual'}
-                            }
-                        ]
-                    }]
-                }
-            ]
-        }
-            ]
-        },
-        // ══ RIGHT: live PDF preview (auto-loaded on edit) ═════════════════
-        {
-            xtype: 'panel',
-            id: prototype.id + '-de-pdfPane',
-            flex: 1,
-            hidden: true,
-            border: false,
-            bodyStyle: 'background:#37474F;',
-            layout: 'fit',
-            margin: '8 8 8 0',
-            dockedItems: [{
-                xtype: 'toolbar',
-                dock: 'top',
-                style: 'background:linear-gradient(90deg,#1565C0,#1976D2);',
-                items: [
-                    {
-                        xtype: 'component',
-                        id: prototype.id + '-de-pdfTitle',
-                        html: '<b style="color:#fff;font-size:12px;letter-spacing:1px;">&#128196;&nbsp;PDF PREVIEW</b>',
-                        style: 'line-height:24px;padding-left:4px;'
-                    },
-                    '->',
-                    {
-                        xtype: 'button',
-                        text: '&#8635;&nbsp;Reload',
-                        scale: 'small',
-                        style: 'background:#fff;border:1px solid #1565C0;color:#1565C0;border-radius:3px;font-weight:bold;',
-                        listeners: {click: 'loadPdfPreview'}
-                    }
-                ]
-            }],
-            items: [{
-                xtype: 'component',
-                id: prototype.id + '-de-pdfFrame',
-                autoEl: {
-                    tag: 'iframe',
-                    src: 'about:blank',
-                    frameborder: '0',
-                    style: 'width:100%;height:100%;border:none;background:#fff;'
-                }
             }]
         }
     ],

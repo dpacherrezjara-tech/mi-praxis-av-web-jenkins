@@ -10,13 +10,13 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Options', {
         {
             xtype: 'segmentedbutton',
             id: prototype.id + '-segViewMode',
-            width: 220,
+            width: 300,
             cls: 'segmode',
             items: [
                 {
                     text: 'Detail',
                     itemId: 'detail',
-                    hidden: true
+                    pressed: true
                 },
                 {
                     text: 'Search Guide',
@@ -24,13 +24,7 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Options', {
                 },
                 {
                     text: 'MPF291',
-                    itemId: 'mpf291',
-                    hidden: true
-                },
-                {
-                    text: 'Dashboard',
-                    itemId: 'dasboard',
-                    pressed: true
+                    itemId: 'mpf291'
                 }
             ],
             listeners: {
@@ -148,12 +142,12 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Options', {
                             iconCls: 'prx-icon-excel',
                             tooltip: 'Export to Excel'
                         },
-//                        {
-//                            xtype: 'button',
-//                            id: prototype.id + '-btnGenerarCartera',
-//                             icon: 'resources/img/botones/account.png',
-//                            tooltip: 'Generar Excel de Cartera (MPS603)'
-//                        },
+                        {
+                            xtype: 'button',
+                            id: prototype.id + '-btnGenerarCartera',
+                             icon: 'resources/img/botones/account.png',
+                            tooltip: 'Generar Excel de Cartera (MPS603)'
+                        },
                         {
                             xtype: 'button',
                             id: prototype.id + '-btnClear',
