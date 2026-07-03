@@ -39,6 +39,8 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.DataEntryCargoGuideControl
                 Ext.getCmp(prototype.id + '-btn-save').hide();
                 Ext.getCmp(prototype.id + '-btn-update').show();
                 Ext.getCmp(prototype.id + '-btn-cancel').show();
+                this.showPdfSideBySide();
+                Ext.getCmp(prototype.id + '-de-panelScan').show();
                 break;
         }
     },
@@ -169,16 +171,88 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.DataEntryCargoGuideControl
                 // -------------------------
                 
                 panel.setVisible(records.length > 0);
-                if (records.length > 0) {
-                    win.setHeight(820);
-                    win.center();
-                }
+                win.center();
             },
             failure: function () {
                 win.unmask();
                 Ext.Msg.alert('Error', 'Could not load linked MPF291 records.');
             }
         });
+    },
+
+    // Enlarge the window and show the PDF preview pane next to the data form.
+    showPdfSideBySide: function () {
+        var win = this.view;
+        var vw  = Ext.Element.getViewportWidth();
+        var vh  = Ext.Element.getViewportHeight();
+        win.setWidth(Math.min(1640, vw - 40));
+        win.setHeight(Math.min(900, vh - 40));
+        this.loadPdfPreview();
+        win.center();
+    },
+
+    // VISUAL ONLY (backend pending): load demo bank movements into the scan grid.
+    onScanSearch: function () {
+        var grid = Ext.getCmp(prototype.id + '-de-gridScan');
+        var demo = [
+            {BANK: 'BANCOLOMBIA', ADATE: '20260612', MONTO: 1250.00, REFERENCE: 'REF-00123', TEXTO: 'TRANSFER AWB 045-12345678', BANDOC: 'D-9981', STATE: 'P'},
+            {BANK: 'DAVIVIENDA',  ADATE: '20260612', MONTO: 980.50,  REFERENCE: 'REF-00124', TEXTO: 'PAGO CARGA',               BANDOC: 'D-9982', STATE: 'P'},
+            {BANK: 'BBVA',        ADATE: '20260613', MONTO: 1250.00, REFERENCE: 'REF-00125', TEXTO: 'ABONO CLIENTE',            BANDOC: 'D-9983', STATE: 'P'}
+        ];
+        grid.getStore().loadData(demo);
+    },
+
+    // VISUAL ONLY (backend pending): confirm the movement selected for manual reconciliation.
+    onReconcileManual: function () {
+        var grid = Ext.getCmp(prototype.id + '-de-gridScan');
+        var sel  = grid.getSelectionModel().getSelection();
+        if (!sel || sel.length === 0) {
+            Ext.Msg.alert('Reconcile', 'Select a bank movement to reconcile with.');
+            return;
+        }
+        var r = sel[0].data;
+        Ext.Msg.alert('Reconcile (preview)',
+            'Manual reconciliation (visual only — backend pending).<br><br>'
+            + '<b>Bank:</b> '      + (r.BANK || '') + '<br>'
+            + '<b>Amount:</b> '    + Ext.util.Format.number(r.MONTO, '0,000.00') + '<br>'
+            + '<b>Reference:</b> ' + (r.REFERENCE || '') + '<br>'
+            + '<b>BANDOC:</b> '    + (r.BANDOC || ''));
+    },
+
+    // Load (or reload) the current record's PDF into the embedded preview pane.
+    loadPdfPreview: function () {
+        var data    = (this.bean && this.bean.data) ? this.bean.data : {};
+        var sfile   = data.SFILE    || '';
+        var country = data.SCOUNTRY || '';
+        var pane    = Ext.getCmp(prototype.id + '-de-pdfPane');
+        var frame   = Ext.getCmp(prototype.id + '-de-pdfFrame');
+        var title   = Ext.getCmp(prototype.id + '-de-pdfTitle');
+
+        if (pane) { pane.show(); }
+        var dom = (frame && frame.getEl()) ? frame.getEl().dom : null;
+
+        if (!sfile) {
+            if (title) { title.update('<b style="color:#fff;font-size:12px;letter-spacing:1px;">&#128196;&nbsp;PDF PREVIEW</b>'); }
+            if (dom) {
+                dom.removeAttribute('src');
+                dom.srcdoc = '<div style="font-family:Segoe UI,Arial;color:#90A4AE;text-align:center;margin-top:60px;font-size:14px;">No PDF associated with this record (SFILE is empty).</div>';
+            }
+            return;
+        }
+
+        // Jump straight to the record's page (NPAGE) using the PDF viewer #page anchor.
+        var npage = parseInt(data.NPAGE, 10);
+        var pageHash = (!isNaN(npage) && npage > 0) ? ('#page=' + npage) : '';
+
+        if (title) {
+            title.update('<b style="color:#fff;font-size:12px;letter-spacing:1px;">&#128196;&nbsp;' + Ext.String.htmlEncode(sfile)
+                + (pageHash ? ' &mdash; Page ' + npage : '') + '</b>');
+        }
+        var url = prototype.url + '/downloadPDF?sfile=' + encodeURIComponent(sfile) + '&country=' + encodeURIComponent(country) + '&disposition=inline' + pageHash;
+        if (dom) {
+            dom.removeAttribute('srcdoc');
+            dom.src = url;
+        }
     },
 
     onDownloadPDF: function () {
@@ -200,9 +274,11 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.DataEntryCargoGuideControl
             Ext.Msg.alert('Warning', 'No file associated with this record (SFILE is empty).');
             return;
         }
-        var url = prototype.url + '/downloadPDF?sfile=' + encodeURIComponent(sfile) + '&country=' + encodeURIComponent(country) + '&disposition=inline';
+        var npage = parseInt(data.NPAGE, 10);
+        var pageHash = (!isNaN(npage) && npage > 0) ? ('#page=' + npage) : '';
+        var url = prototype.url + '/downloadPDF?sfile=' + encodeURIComponent(sfile) + '&country=' + encodeURIComponent(country) + '&disposition=inline' + pageHash;
         Ext.create('Ext.window.Window', {
-            title: 'PDF Preview — ' + sfile,
+            title: 'PDF Preview — ' + sfile + (pageHash ? ' (Page ' + npage + ')' : ''),
             width: 900,
             height: 700,
             modal: true,
