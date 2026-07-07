@@ -1,4 +1,4 @@
-Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Options', {
+Ext.define('Ext.Praxis.view.payments.CargoSendForm.Options', {
     extend: 'Ext.form.Panel',
     alias: 'widget.' + prototype.id + '-options',
     border: false,
@@ -10,28 +10,23 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Options', {
         {
             xtype: 'segmentedbutton',
             id: prototype.id + '-segViewMode',
-            width: 220,
+            width: 180,
             cls: 'segmode',
             items: [
                 {
                     text: 'Detail',
-                    itemId: 'detail',
-                    hidden: true
-                },
-                {
-                    text: 'Search Guide',
-                    itemId: 'dashboard'
-                },
-                {
-                    text: 'MPF291',
-                    itemId: 'mpf291',
-                    hidden: true
+                    itemId: 'dashboard',
+                    pressed: true
                 },
                 {
                     text: 'Dashboard',
-                    itemId: 'dasboard',
-                    pressed: true
-                }
+                    itemId: 'detail',
+                    disabled: true
+                },
+//                {
+//                    text: 'ICCS Files',
+//                    itemId: 'iccs'
+//                }
             ],
             listeners: {
                 change: 'btnSearch_click'
@@ -98,23 +93,6 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Options', {
                 {
                     xtype: 'toolbar',
                     items: [
-                        {xtype: 'tbseparator'},
-                        {
-                            xtype: 'button',
-                            id: prototype.id + '-btnRunProcess',
-                            iconCls: 'prx-icon-process',
-                            text: 'Run Process',
-                            tooltip: 'Execute a process (FASE 1 / FASE 2 / FASE GENERAL)'
-                        },
-                        {xtype: 'tbseparator'},
-                        {
-                            xtype: 'button',
-                            id: prototype.id + '-btnLinkMPF291',
-                            iconCls: 'prx-icon-update',
-                            text: 'Match Detail',
-                            tooltip: 'Link MPF291 detail records to the selected MPF295 header'
-                        },
-                        {xtype: 'tbseparator'},
                         {
                             xtype: 'button',
                             id: prototype.id + '-btnSearch',
@@ -126,21 +104,34 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Options', {
                             id: prototype.id + '-btnFilter',
                             iconCls: 'prx-icon-filter',
                             tooltip: 'Display filter'
-
                         },
+//                        {
+//                            xtype: 'button',
+//                            id: prototype.id + '-btnUpdateGrid',
+//                            icon: 'resources/img/botones/refresh.png',
+//                            tooltip: 'Update Files ICCS',
+//                            listeners: {
+//                                click: 'updateFilesICCS'
+//                            }
+//                        },
 //                        {
 //                            xtype: 'button',
 //                            id: prototype.id + '-btnAdd',
 //                            iconCls: 'prx-icon-add',
 //                            tooltip: 'New'
 //                        },
+//                        {
+//                            xtype:'button',
+//                            id: prototype.id + '-btnDownloadZip',
+//                            icon: 'resources/img/botones/download.png',
+//                            tooltip: 'Download Files in a ZIP',
+//                            listeners: { click: 'onDownloadAllCSV' }
+//                        },
                         {
-                            xtype:'button',
-                            id: prototype.id + '-btnDownloadZip',
-                            icon: 'resources/img/botones/download.png',
-                            tooltip: 'Download Files in a ZIP',
-                            hidden: true,
-                            listeners: { click: 'onDownloadAllCSV' }
+                            xtype: 'button',
+                            id: prototype.id + '-btnGenerateReport',
+                            icon: 'resources/img/botones/log.png',
+                            tooltip: 'Generate Report Send'
                         },
                         {
                             xtype: 'button',
@@ -148,12 +139,6 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Options', {
                             iconCls: 'prx-icon-excel',
                             tooltip: 'Export to Excel'
                         },
-//                        {
-//                            xtype: 'button',
-//                            id: prototype.id + '-btnGenerarCartera',
-//                             icon: 'resources/img/botones/account.png',
-//                            tooltip: 'Generar Excel de Cartera (MPS603)'
-//                        },
                         {
                             xtype: 'button',
                             id: prototype.id + '-btnClear',

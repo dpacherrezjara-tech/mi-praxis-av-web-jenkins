@@ -80,4 +80,5 @@ public class MPF295 {
     public double DIFERENCIA = 0;
     
     public double MONTO = 0;
+    public int IS_PENDIENTE = 0;
 }

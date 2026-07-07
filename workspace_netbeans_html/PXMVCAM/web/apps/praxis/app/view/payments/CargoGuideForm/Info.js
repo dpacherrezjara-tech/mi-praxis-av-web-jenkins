@@ -37,6 +37,458 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Info', {
                             xtype: 'panel',
                             border: false,
                             width: 1400,
+                            id: prototype.id + '-panelGridDataDashboard',
+                            bodyStyle: 'background-color: #F4F7FD;',
+                            padding: '1',
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridDataDashboard',
+                                    width: 945,
+                                    columnLines: true,
+                                    features: [{ftype: 'summary'}],
+                                    viewConfig: {enableTextSelection: true},
+                                    columns: {
+                                        defaults: {menuDisabled: true, sortable: true, align: 'center'},
+                                        items: [
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Payment</span>',
+                                                style: 'background:#c9daf5;color:black !important',
+                                                columns: [
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Date</span>',
+                                                        dataIndex: 'strFormatDate',
+                                                        style: 'background:#c9daf5;color:black !important',
+                                                        align: 'center',
+                                                        width: 110,
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            metaData.style = "background:#c9daf5;color:black !important;text-align:center;";
+                                                            return '<b>TOTAL</b>';
+                                                        },
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:center; color:#057ECB; text-decoration: underline; cursor: pointer;";
+                                                            return '<b>' + value + '</b>';
+                                                        },
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Settlement Reconciliation</span>',
+                                                style: 'background:#c9daf5;color:black !important',
+                                                columns: [
+
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Total</span>',
+                                                        dataIndex: 'VL_QTY_TOTAL_SETT', width: 80, align: 'center',
+                                                        style: 'background:#F9D88C;color:black !important',
+                                                        stval: '',
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:right; color:#057ECB; text-decoration:underline; cursor:pointer;";
+                                                            return '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var store = Ext.getCmp(prototype.id + '-gridDataDashboard').getStore();
+                                                            var items = store.getData().items;
+                                                            var data = items[items.length - 1].data;
+                                                            metaData.style = 'text-align:right; background:#F9D88C;color:black !important';
+                                                            return '<b>' + Ext.util.Format.number(data.TOTAL_QTY_TOTAL_SETT, '0,000') + '</b>';
+                                                        },
+                                                        listeners: { click: 'onDashboardSettClick' }
+                                                    },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Match</span>',
+                                                        style: 'background:#D1FBD2;color:black !important',
+                                                        columns: [
+                                                            {
+                                                                text: '<span style="color:black;font-weight:bold;">Auto</span>',
+                                                                dataIndex: 'VL_QTY_MATCH_AUTO_SETT', width: 80, align: 'center',
+                                                                style: 'background:#D1FBD2;color:black !important',
+                                                                stval: '1',
+                                                                renderer: function (value, metaData) {
+                                                                    metaData.style = "text-align:right; color:#057ECB; text-decoration:underline; cursor:pointer;";
+                                                                    return '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var store = Ext.getCmp(prototype.id + '-gridDataDashboard').getStore();
+                                                                    var items = store.getData().items;
+                                                                    var data = items[items.length - 1].data;
+                                                                    metaData.style = 'text-align:right; background:#D1FBD2;color:black !important';
+                                                                    return '<b>' + Ext.util.Format.number(data.TOTAL_QTY_MATCH_AUTO_SETT, '0,000') + '</b>';
+                                                                },
+                                                                listeners: { click: 'onDashboardSettClick' }
+                                                            },
+                                                            {
+                                                                text: '<span style="color:black;font-weight:bold;">%</span>',
+                                                                dataIndex: 'PCT_SETT', width: 70, align: 'center',
+                                                                style: 'background:#D1FBD2;color:black !important',
+                                                                renderer: function (v, meta) {
+                                                                    meta.style = "text-align:right;";
+                                                                    return '<b>' + Ext.util.Format.number(v, '0.00') + ' %</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData) {
+                                                                    var store = Ext.getCmp(prototype.id + '-gridDataDashboard').getStore();
+                                                                    var items = store.getData().items;
+                                                                    var data = items[items.length - 1].data;
+                                                                    metaData.style = 'text-align:right; background:#D1FBD2;color:black !important';
+                                                                    return '<b>' + Ext.util.Format.number(data.TOTAL_PCT_SETT, '0.00') + ' %</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: '<span style="color:black;font-weight:bold;">Manual</span>',
+                                                                dataIndex: 'VL_QTY_MATCH_MANUAL_SETT', width: 80, align: 'center',
+                                                                style: 'background:#D1FBD2;color:black !important',
+                                                                stval: '5',
+                                                                renderer: function (value, metaData) {
+                                                                    metaData.style = "text-align:right; color:#057ECB; text-decoration:underline; cursor:pointer;";
+                                                                    return '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var store = Ext.getCmp(prototype.id + '-gridDataDashboard').getStore();
+                                                                    var items = store.getData().items;
+                                                                    var data = items[items.length - 1].data;
+                                                                    metaData.style = 'text-align:right; background:#D1FBD2;color:black !important';
+                                                                    return '<b>' + Ext.util.Format.number(data.TOTAL_QTY_MATCH_MANUAL_SETT, '0,000') + '</b>';
+                                                                },
+                                                                listeners: { click: 'onDashboardSettClick' }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Settlement</span>',
+                                                        style: 'background:#FFA8A8;color:black !important',
+                                                        columns: [
+                                                            {
+                                                                text: '<span style="color:black;font-weight:bold;">W/O Sales</span>',
+                                                                dataIndex: 'VL_QTY_PENDING_MANUAL_SETT', width: 100, align: 'center',
+                                                                style: 'background:#FFA8A8;color:black !important',
+                                                                stval: '3',
+                                                                renderer: function (value, metaData) {
+                                                                    metaData.style = "text-align:right; color:#057ECB; text-decoration:underline; cursor:pointer;";
+                                                                    return '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var store = Ext.getCmp(prototype.id + '-gridDataDashboard').getStore();
+                                                                    var items = store.getData().items;
+                                                                    var data = items[items.length - 1].data;
+                                                                    metaData.style = 'text-align:right; background:#FFA8A8;color:black !important';
+                                                                    return '<b>' + Ext.util.Format.number(data.TOTAL_QTY_PENDING_MANUAL_SETT, '0,000') + '</b>';
+                                                                },
+                                                                listeners: { click: 'onDashboardSettClick' }
+                                                            }
+                                                        ]
+                                                    },
+                                                ]
+                                            },
+                                            {
+                                                text: '<span style="color:black;font-weight:bold;">Sales Reconciliation</span>',
+                                                style: 'background:#c9daf5;color:black !important',
+                                                columns: [
+
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Total</span>',
+                                                        dataIndex: 'VL_QTY_TOTAL_SALE', width: 80, align: 'center',
+                                                        style: 'background:#F9D88C;color:black !important',
+                                                        renderer: function (value, metaData) {
+                                                            metaData.style = "text-align:right; color:#057ECB; text-decoration:underline; cursor:pointer;";
+                                                            return '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var store = Ext.getCmp(prototype.id + '-gridDataDashboard').getStore();
+                                                            var items = store.getData().items;
+                                                            var data = items[items.length - 1].data;
+                                                            metaData.style = 'text-align:right; background:#F9D88C;color:black !important';
+                                                            return '<b>' + Ext.util.Format.number(data.TOTAL_QTY_TOTAL_SALE, '0,000') + '</b>';
+                                                        },
+                                                        listeners: { click: 'onDashboardSaleClick' }
+                                                    },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Match</span>',
+                                                        style: 'background:#D1FBD2;color:black !important',
+                                                        columns: [
+                                                            {
+                                                                text: '<span style="color:black;font-weight:bold;">Auto</span>',
+                                                                dataIndex: 'VL_QTY_MATCH_AUTO_SALE', width: 80, align: 'center',
+                                                                style: 'background:#D1FBD2;color:black !important',
+                                                                renderer: function (value, metaData) {
+                                                                    metaData.style = "text-align:right; color:#057ECB; text-decoration:underline; cursor:pointer;";
+                                                                    return '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var store = Ext.getCmp(prototype.id + '-gridDataDashboard').getStore();
+                                                                    var items = store.getData().items;
+                                                                    var data = items[items.length - 1].data;
+                                                                    metaData.style = 'text-align:right; background:#D1FBD2;color:black !important';
+                                                                    return '<b>' + Ext.util.Format.number(data.TOTAL_QTY_MATCH_AUTO_SALE, '0,000') + '</b>';
+                                                                },
+                                                                listeners: { click: 'onDashboardSaleClick' }
+                                                            },
+                                                            {
+                                                                text: '<span style="color:black;font-weight:bold;">%</span>',
+                                                                dataIndex: 'PCT_SALE', width: 70, align: 'center',
+                                                                style: 'background:#D1FBD2;color:black !important',
+                                                                renderer: function (v, meta) {
+                                                                    meta.style = "text-align:right;";
+                                                                    return '<b>' + Ext.util.Format.number(v, '0.00') + ' %</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData) {
+                                                                    var store = Ext.getCmp(prototype.id + '-gridDataDashboard').getStore();
+                                                                    var items = store.getData().items;
+                                                                    var data = items[items.length - 1].data;
+                                                                    metaData.style = 'text-align:right; background:#D1FBD2;color:black !important';
+                                                                    return '<b>' + Ext.util.Format.number(data.TOTAL_PCT_SALE, '0.00') + ' %</b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: '<span style="color:black;font-weight:bold;">Manual</span>',
+                                                                dataIndex: 'VL_QTY_MATCH_MANUAL_SALE', width: 80, align: 'center',
+                                                                style: 'background:#D1FBD2;color:black !important',
+                                                                renderer: function (value, metaData) {
+                                                                    metaData.style = "text-align:right; color:#057ECB; text-decoration:underline; cursor:pointer;";
+                                                                    return '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var store = Ext.getCmp(prototype.id + '-gridDataDashboard').getStore();
+                                                                    var items = store.getData().items;
+                                                                    var data = items[items.length - 1].data;
+                                                                    metaData.style = 'text-align:right; background:#D1FBD2;color:black !important';
+                                                                    return '<b>' + Ext.util.Format.number(data.TOTAL_QTY_MATCH_MANUAL_SALE, '0,000') + '</b>';
+                                                                },
+                                                                listeners: { click: 'onDashboardSaleClick' }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Sales</span>',
+                                                        style: 'background:#FFA8A8;color:black !important',
+                                                        columns: [
+                                                            {
+                                                                text: '<span style="color:black;font-weight:bold;">W/O Reconcili.</span>',
+                                                                dataIndex: 'VL_QTY_PENDING_MANUAL_SALE', width: 110, align: 'center',
+                                                                style: 'background:#FFA8A8;color:black !important',
+                                                                renderer: function (value, metaData) {
+                                                                    metaData.style = "text-align:right; color:#057ECB; text-decoration:underline; cursor:pointer;";
+                                                                    return '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var store = Ext.getCmp(prototype.id + '-gridDataDashboard').getStore();
+                                                                    var items = store.getData().items;
+                                                                    var data = items[items.length - 1].data;
+                                                                    metaData.style = 'text-align:right; background:#FFA8A8;color:black !important';
+                                                                    return '<b>' + Ext.util.Format.number(data.TOTAL_QTY_PENDING_MANUAL_SALE, '0,000') + '</b>';
+                                                                },
+                                                                listeners: { click: 'onDashboardSaleClick' }
+                                                            }
+                                                        ]
+                                                    },
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    xtype: 'panel',
+                                    id: prototype.id + '-dashboardDashboard',
+                                    border: false,
+                                    width: 1200,
+                                    margin: '15 0 8 0',
+                                    bodyStyle: 'background: transparent;',
+                                    layout: {type: 'hbox', align: 'stretch', pack: 'center'},
+                                    items: [
+                                        {
+                                            xtype: 'panel',
+                                            flex: 1,
+                                            border: true,
+                                            title: 'Settlement Reconciliation',
+                                            titleAlign: 'center',
+                                            header: {
+                                                style: 'background:#c9daf5; color:#1a4d8f; font-weight:bold; font-size:12px;'
+                                            },
+                                            bodyStyle: 'background: transparent;',
+                                            layout: {type: 'vbox', align: 'stretch'},
+                                            items: [
+                                                {
+                                                    xtype: 'cartesian',
+                                                    id: prototype.id + '-chartDashboard',
+                                                    height: 240,
+                                                    border: false,
+                                                    style: 'background: transparent;',
+                                                    colors: ['#F9D88C', '#D1FBD2', '#FFA8A8'],
+                                                    store: {
+                                                        fields: ['mes', 'totalSett', 'matchSett', 'pendSett'],
+                                                        data: []
+                                                    },
+                                                    axes: [
+                                                        {
+                                                            type: 'numeric',
+                                                            position: 'left',
+                                                            renderer: function (axis, label) {
+                                                                return Ext.util.Format.number(label, '0,000');
+                                                            }
+                                                        },
+                                                        {type: 'category', position: 'bottom'}
+                                                    ],
+                                                    series: [{
+                                                            type: 'bar',
+                                                            xField: 'mes',
+                                                            yField: ['totalSett', 'matchSett', 'pendSett'],
+                                                            stacked: false,
+                                                            title: ['Total', 'Match', 'Pending'],
+                                                            tooltip: {
+                                                                trackMouse: true,
+                                                                renderer: function (tooltip, record, item) {
+                                                                    var labels = {totalSett: 'Total', matchSett: 'Match', pendSett: 'Pending'};
+                                                                    tooltip.setHtml((labels[item.field] || item.field) + ': ' + Ext.util.Format.number(record.get(item.field), '0,000'));
+                                                                }
+                                                            }
+                                                        }],
+                                                    legend: {docked: 'bottom'}
+                                                },
+                                                {
+                                                    xtype: 'panel',
+                                                    border: false,
+                                                    margin: '8 0 0 0',
+                                                    bodyStyle: 'background: transparent;',
+                                                    layout: {type: 'hbox', align: 'stretch', pack: 'center'},
+                                                    defaults: {border: false, margin: '0 4 0 4'},
+                                                    items: [
+                                                        {
+                                                            xtype: 'panel',
+                                                            id: prototype.id + '-dashTotalSettDashboard',
+                                                            flex: 1,
+                                                            bodyStyle: 'border-radius:8px; padding:10px 14px; background:#F9D88C;',
+                                                            html: '<div style="text-align:center;">' +
+                                                                    '<div style="font-size:11px;font-weight:bold;color:#7a6000;text-transform:uppercase;letter-spacing:1px;">Total Liq.</div>' +
+                                                                    '<div id="' + prototype.id + '-dashTotalSettVal" style="font-size:22px;font-weight:bold;color:#7a6000;margin-top:4px;">0</div>' +
+                                                                    '</div>'
+                                                        },
+                                                        {
+                                                            xtype: 'panel',
+                                                            id: prototype.id + '-dashMatchSettDashboard',
+                                                            flex: 1,
+                                                            bodyStyle: 'border-radius:8px; padding:10px 14px; background:#D1FBD2;',
+                                                            html: '<div style="text-align:center;">' +
+                                                                    '<div style="font-size:11px;font-weight:bold;color:#1a5e1a;text-transform:uppercase;letter-spacing:1px;">Match Liq.</div>' +
+                                                                    '<div id="' + prototype.id + '-dashMatchSettVal" style="font-size:22px;font-weight:bold;color:#1a5e1a;margin-top:4px;">0</div>' +
+                                                                    '</div>'
+                                                        },
+                                                        {
+                                                            xtype: 'panel',
+                                                            id: prototype.id + '-dashPendSettDashboard',
+                                                            flex: 1,
+                                                            bodyStyle: 'border-radius:8px; padding:10px 14px; background:#FFA8A8;',
+                                                            html: '<div style="text-align:center;">' +
+                                                                    '<div style="font-size:11px;font-weight:bold;color:#7a0000;text-transform:uppercase;letter-spacing:1px;">Pend. Liq.</div>' +
+                                                                    '<div id="' + prototype.id + '-dashPendSettVal" style="font-size:22px;font-weight:bold;color:#7a0000;margin-top:4px;">0</div>' +
+                                                                    '</div>'
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {xtype: 'tbspacer', width: 10},
+                                        {
+                                            xtype: 'panel',
+                                            flex: 1,
+                                            border: true,
+                                            title: 'Sales Reconciliation',
+                                            titleAlign: 'center',
+                                            header: {
+                                                style: 'background:#c9daf5; color:#1a4d8f; font-weight:bold; font-size:12px;'
+                                            },
+                                            bodyStyle: 'background: transparent;',
+                                            layout: {type: 'vbox', align: 'stretch'},
+                                            items: [
+                                                {
+                                                    xtype: 'cartesian',
+                                                    id: prototype.id + '-chartDashboardSale',
+                                                    height: 240,
+                                                    border: true,
+                                                    style: 'background: transparent;',
+                                                    colors: ['#F9D88C', '#D1FBD2', '#FFA8A8'],
+                                                    store: {
+                                                        fields: ['mes', 'totalSale', 'matchSale', 'pendSale'],
+                                                        data: []
+                                                    },
+                                                    axes: [
+                                                        {
+                                                            type: 'numeric',
+                                                            position: 'left',
+                                                            renderer: function (axis, label) {
+                                                                return Ext.util.Format.number(label, '0,000');
+                                                            }
+                                                        },
+                                                        {type: 'category', position: 'bottom'}
+                                                    ],
+                                                    series: [{
+                                                            type: 'bar',
+                                                            xField: 'mes',
+                                                            yField: ['totalSale', 'matchSale', 'pendSale'],
+                                                            stacked: false,
+                                                            title: ['Total', 'Match', 'Pending'],
+                                                            tooltip: {
+                                                                trackMouse: true,
+                                                                renderer: function (tooltip, record, item) {
+                                                                    var labels = {totalSale: 'Total', matchSale: 'Match', pendSale: 'Pending'};
+                                                                    tooltip.setHtml((labels[item.field] || item.field) + ': ' + Ext.util.Format.number(record.get(item.field), '0,000'));
+                                                                }
+                                                            }
+                                                        }],
+                                                    legend: {docked: 'bottom'}
+                                                },
+                                                {
+                                                    xtype: 'panel',
+                                                    border: false,
+                                                    margin: '8 0 0 0',
+                                                    bodyStyle: 'background: transparent;',
+                                                    layout: {type: 'hbox', align: 'stretch', pack: 'center'},
+                                                    defaults: {border: false, margin: '0 4 0 4'},
+                                                    items: [
+                                                        {
+                                                            xtype: 'panel',
+                                                            id: prototype.id + '-dashTotalSaleDashboard',
+                                                            flex: 1,
+                                                            bodyStyle: 'border-radius:8px; padding:10px 14px; background:#c9daf5;',
+                                                            html: '<div style="text-align:center;">' +
+                                                                    '<div style="font-size:11px;font-weight:bold;color:#1a3d6b;text-transform:uppercase;letter-spacing:1px;">Total Tickets</div>' +
+                                                                    '<div id="' + prototype.id + '-dashTotalSaleVal" style="font-size:22px;font-weight:bold;color:#1a3d6b;margin-top:4px;">0</div>' +
+                                                                    '</div>'
+                                                        },
+                                                        {
+                                                            xtype: 'panel',
+                                                            id: prototype.id + '-dashMatchSaleDashboard',
+                                                            flex: 1,
+                                                            bodyStyle: 'border-radius:8px; padding:10px 14px; background:#D1FBD2;',
+                                                            html: '<div style="text-align:center;">' +
+                                                                    '<div style="font-size:11px;font-weight:bold;color:#1a5e1a;text-transform:uppercase;letter-spacing:1px;">Match Tickets</div>' +
+                                                                    '<div id="' + prototype.id + '-dashMatchSaleVal" style="font-size:22px;font-weight:bold;color:#1a5e1a;margin-top:4px;">0</div>' +
+                                                                    '</div>'
+                                                        },
+                                                        {
+                                                            xtype: 'panel',
+                                                            id: prototype.id + '-dashPendSaleDashboard',
+                                                            flex: 1,
+                                                            bodyStyle: 'border-radius:8px; padding:10px 14px; background:#FFA8A8;',
+                                                            html: '<div style="text-align:center;">' +
+                                                                    '<div style="font-size:11px;font-weight:bold;color:#7a0000;text-transform:uppercase;letter-spacing:1px;">Pend. Tickets</div>' +
+                                                                    '<div id="' + prototype.id + '-dashPendSaleVal" style="font-size:22px;font-weight:bold;color:#7a0000;margin-top:4px;">0</div>' +
+                                                                    '</div>'
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            border: false,
+                            width: 1400,
                             id: prototype.id + '-panelGridDataDetail',
                             bodyStyle: 'background-color: #F4F7FD;',
                             padding: '1',
@@ -48,7 +500,7 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Info', {
                                 {
                                     xtype: 'grid',
                                     id: prototype.id + '-gridDataDetail',
-                                    height: 543,
+                                    height: 558,
                                     width: 1028,
                                     hidden: false,
                                     columnLines: true,
@@ -470,10 +922,15 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Info', {
                                                             {text: '<span style="color:white;font-weight:bold;">Pay<br>Method</span>', dataIndex: 'METPAGO', width: 65, style: 'padding:2px; background: #6C87A8;border-color:white',
                                                                 renderer: function (value, metaData) {
                                                                     metaData.style = "text-align:center;";
-                                                                    if (value === 'P') { return 'PSE'; }
-                                                                    else if (value === 'B') { return 'DAVIVIENDA'; }
-                                                                    else if (value === 'N') { return 'NEQUI'; }
-                                                                    else if (value === 'O') { return 'OTROS'; }
+                                                                    if (value === 'P') {
+                                                                        return 'PSE';
+                                                                    } else if (value === 'B') {
+                                                                        return 'DAVIVIENDA';
+                                                                    } else if (value === 'N') {
+                                                                        return 'NEQUI';
+                                                                    } else if (value === 'O') {
+                                                                        return 'OTROS';
+                                                                    }
                                                                     return value;
                                                                 }
                                                             },
@@ -519,8 +976,8 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Info', {
                         {
                             xtype: 'grid',
                             id: prototype.id + '-gridDataMPF291',
-                            height: 543,
-                            width: 1350,
+                            height: 520,
+                            width: 1215,
                             columnLines: true,
                             viewConfig: {
                                 enableTextSelection: true
@@ -537,22 +994,27 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Info', {
                                     {text: '<span style="color:white;font-weight:bold;">Customer</span>', dataIndex: 'CCUST', width: 80, style: 'padding:2px; background: #6C87A8;border-color:white'},
                                     {text: '<span style="color:white;font-weight:bold;">AWB No</span>', dataIndex: 'AWBNO', width: 110, style: 'padding:2px; background: #6C87A8;border-color:white'},
                                     {text: '<span style="color:white;font-weight:bold;">Cycle</span>', dataIndex: 'NCICLO', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white'},
-                                    {text: '<span style="color:white;font-weight:bold;">Payment<br>Method</span>', dataIndex: 'METPAGO', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                    {text: '<span style="color:white;font-weight:bold;">Payment Method</span>', dataIndex: 'METPAGO', width: 100, style: 'padding:2px; background: #6C87A8;border-color:white',
                                         renderer: function (value, metaData) {
                                             metaData.style = "text-align:center;";
-                                            if (value === 'P') { return 'PSE'; }
-                                            else if (value === 'B') { return 'DAVIVIENDA'; }
-                                            else if (value === 'N') { return 'NEQUI'; }
-                                            else if (value === 'O') { return 'OTROS'; }
+                                            if (value === 'P') {
+                                                return 'PSE';
+                                            } else if (value === 'B') {
+                                                return 'DAVIVIENDA';
+                                            } else if (value === 'N') {
+                                                return 'NEQUI';
+                                            } else if (value === 'O') {
+                                                return 'OTROS';
+                                            }
                                             return value;
                                         }
                                     },
                                     {text: '<span style="color:white;font-weight:bold;">Country</span>', dataIndex: 'SCOUNTRY', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white'},
-                                    {text: '<span style="color:white;font-weight:bold;">Abono<br>Date</span>', dataIndex: 'ADATE', width: 80, style: 'padding:2px; background: #6C87A8;border-color:white'},
-                                    {text: '<span style="color:white;font-weight:bold;">File (SFILE)</span>', dataIndex: 'SFILE', width: 140, style: 'padding:2px; background: #6C87A8;border-color:white', align: 'left'},
+                                    {text: '<span style="color:white;font-weight:bold;">Abono Date</span>', dataIndex: 'ADATE', width: 100, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                    {text: '<span style="color:white;font-weight:bold;">File (SFILE)</span>', dataIndex: 'SFILE', width: 220, style: 'padding:2px; background: #6C87A8;border-color:white', align: 'center'},
                                     {text: '<span style="color:white;font-weight:bold;">Page<br>Number</span>', dataIndex: 'NPAGE', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white'},
-                                    {text: '<span style="color:white;font-weight:bold;">PRDA</span>', dataIndex: 'PRDA', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white'},
-                                    {text: '<span style="color:white;font-weight:bold;">Pay Day</span>', dataIndex: 'PAYDAY', width: 80, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                    {text: '<span style="color:white;font-weight:bold;">PRDA</span>', dataIndex: 'PRDA', width: 90, style: 'padding:2px; background: #6C87A8;border-color:white'},
+                                    {text: '<span style="color:white;font-weight:bold;">Pay Day</span>', dataIndex: 'PAYDAY', width: 90, style: 'padding:2px; background: #6C87A8;border-color:white'},
                                     {
                                         text: '<span style="color:white;font-weight:bold;">Monto</span>',
                                         dataIndex: 'MONTO',
