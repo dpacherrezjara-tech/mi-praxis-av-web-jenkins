@@ -95,30 +95,24 @@ Ext.define('Ext.Praxis.view.payments.EmailControlForm.DataEntry', {
                                     text: 'Process',
                                     style: 'font-weight:bold;color:#4F4F4F;'
                                 },
-                                {
-                                    xtype: 'combo',
-                                    id: prototype.id + '-cmbPROCESSDE',
-                                    allowBlank: false,
-                                    blankText: 'Process is required.',
-                                    width: 180,
-                                    queryMode: 'local',
-                                    forceSelection: true,
-                                    editable: false,
-                                    valueField: 'value',
-                                    displayField: 'text',
-                                    emptyText: 'Select...',
-                                    store: {
-                                        fields: ['value', 'text'],
-                                        data: [
-                                            {value: 'WEBOPERATIVA', text: 'Web Operativa'},
-                                            {value: 'NUVEI', text: 'Nuvei'},
-                                            {value: 'REEMBOLSOS', text: 'Reembolsos'},
-                                            {value: 'ACREDITACIONES', text: 'Acreditaciones'},
-                                            {value: 'CONTRACARGO', text: 'Contracargo'},
-                                            {value: 'CARGA', text: 'Carga'}
-                                        ]
-                                    }
+                             {
+                                xtype: 'combo',
+                                id: prototype.id + '-cmbPROCESSDE',
+                                allowBlank: false,
+                                blankText: 'Process is required.',
+                                width: 180,
+                                queryMode: 'local',
+                                forceSelection: true,
+                                editable: false,
+                                valueField: 'PROCESS',
+                                displayField: 'PROCESS',
+                                emptyText: 'Select...',
+                                store: Ext.create('Ext.data.Store', {
+                                    fields: ['PROCESS']
+                                })
                                 },
+                                
+                                
 
                                 {
                                     xtype: 'label',
@@ -170,7 +164,8 @@ Ext.define('Ext.Praxis.view.payments.EmailControlForm.DataEntry', {
                                         data: [
                                             {value: 'BPO', text: 'BPO'},
                                             {value: 'DEV', text: 'Developer'},
-                                            {value: 'MGR', text: 'Manager'}
+                                            {value: 'COM', text: 'Comercial'},
+                                            {value: 'AV', text: 'Avianca'}
                                         ]
                                     }
                                 },

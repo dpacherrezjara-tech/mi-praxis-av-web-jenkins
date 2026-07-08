@@ -353,5 +353,65 @@ public class EmailControlDAO {
 
     
     
+    ////////////////combo process ///
+    
+        public List<MPF248Filter> searchProcessList(MPF248Filter filter) throws SQLException, Exception {
+
+        List<MPF248Filter> lstProcess = new ArrayList<>();
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+
+        String SQLCLL01 = "{CALL PRAXISMP.MPS639()}";
+
+        Connection cnx = null;
+
+        try {
+
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            while (rst.next()) {
+
+                MPF248Filter item = new MPF248Filter();
+
+                item.PROCESS = rst.getString("PROCESS").trim();
+
+                lstProcess.add(item);
+            }
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        } finally {
+
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                }
+            }
+
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                }
+            }
+
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+        }
+
+        return lstProcess;
+    }
+    
+    
     
 }

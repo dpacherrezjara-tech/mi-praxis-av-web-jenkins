@@ -72,6 +72,8 @@ Ext.define('Ext.Praxis.controller.payments.EmailControl.EmailControlController',
 
     },
 
+    //
+
     eventKey: function (e, eOpts) {
         if (eOpts.getKey() === 13) {
             this.btnSearch_click();
@@ -265,7 +267,7 @@ Ext.define('Ext.Praxis.controller.payments.EmailControl.EmailControlController',
 
     MaintenanceMPF248: function (beanTemp) {
 
-    var me = this;
+        var me = this;
 
         Ext.Ajax.request({
             url: prototype.url + '/mantenimiento',
@@ -333,7 +335,7 @@ Ext.define('Ext.Praxis.controller.payments.EmailControl.EmailControlController',
             params: {
                 action: action,
                 rec: rec.data,
-          
+
                 lst: me.lst
             }
         }).show();

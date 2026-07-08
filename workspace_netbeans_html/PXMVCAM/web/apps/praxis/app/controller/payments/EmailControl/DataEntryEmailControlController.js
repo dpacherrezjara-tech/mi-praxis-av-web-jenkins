@@ -42,24 +42,8 @@ Ext.define('Ext.Praxis.controller.payments.EmailControl.DataEntryEmailControlCon
     },
 
     afterRender: function () {
-        
-       
 
-
-        ////////////////////////////////////////////////////////////////////////////
-        ///////////////////OBETENEMOS EL CBO REUTILZANDO LA LISTA/////////////////////////
-        ///////////////////////SOLO SE USA CUANDO ES ALGO QUE NO PUEDE CAMBIAR COMO PAISES//////
-
-//        var obtenerLista = Ext.create('Ext.data.Store', {
-//            data: this.lstCountry,
-//            autoLoad: true
-//        });
-////
-//        Ext.getCmp(prototype.id + '-de-cmbSCOUNTRY').bindStore(obtenerLista);
-//        Ext.getCmp(prototype.id + '-de-cmbSCOUNTRY').setValue('');
-
-
-
+        this.obtainData();
 
 
         switch (this.actionCode) {
@@ -82,6 +66,34 @@ Ext.define('Ext.Praxis.controller.payments.EmailControl.DataEntryEmailControlCon
                 break;
         }
     },
+
+    obtainData: function () {
+
+        Ext.Ajax.request({
+            url: prototype.url + '/getPROCESS',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: JSON.stringify(this.dataObtain)},
+            success: function (response) {
+                var res = Ext.JSON.decode(response.responseText);
+                var lstProcess = res.listaProcess;
+
+                var storeDataProcess = Ext.create('Ext.data.Store', {
+                    fields: ['PROCESS'],
+                    data: lstProcess,
+                    autoLoad: true
+                });
+
+                Ext.getCmp(prototype.id + '-cmbPROCESSDE').bindStore(storeDataProcess);
+
+                console.log("Procesos cargados TEST:", storeDataProcess.getData().items);
+
+                // Ext.getCmp(prototype.id + '-cmbPROCESSDE').setValue('');
+
+            }
+        });
+    },
+
     mostrarData: function () {
 
 
@@ -124,7 +136,6 @@ Ext.define('Ext.Praxis.controller.payments.EmailControl.DataEntryEmailControlCon
         }
 
 
-        //beanTemp.TRAN = this.bean.TRAN || '';
 
         beanTemp.PROCESS = this.getValue("cmbPROCESSDE");
         beanTemp.STATUS = this.getValue("cmbSTATUSDE");
@@ -136,7 +147,6 @@ Ext.define('Ext.Praxis.controller.payments.EmailControl.DataEntryEmailControlCon
 
     },
 
-    // <editor-fold defaultstate="collapsed" desc="Botones">
     onSaveClick: function (btn) {
         Ext.Msg.show({
             title: '.:PRAXIS:.',
@@ -161,7 +171,6 @@ Ext.define('Ext.Praxis.controller.payments.EmailControl.DataEntryEmailControlCon
             }
         });
     },
-
 
     validateData: function (bean) {
 
@@ -193,11 +202,9 @@ Ext.define('Ext.Praxis.controller.payments.EmailControl.DataEntryEmailControlCon
         return '';
     },
 
-
     onUpdateClick: function (btn) {
-//        var msj = this.validateDates();
 
-//        if (msj === '') {
+
         Ext.Msg.show(
                 {
                     title: '.:PRAXIS:.',
@@ -211,30 +218,14 @@ Ext.define('Ext.Praxis.controller.payments.EmailControl.DataEntryEmailControlCon
                         if (btn === 'yes') {
                             var beanTemp = {};
                             this.llenarData(beanTemp);
+
                             beanTemp.IN_OPTION = 'U';
-//                                beanTemp.beanString = JSON.stringify(beanTemp);
                             this.MaintenanceMPF248(beanTemp);
                         }
                     }
                 });
 
     },
-//    validateDates: function () {
-//        var DATINI = this.getValue("de-txtINI");
-//        var DATFIN = this.getValue("de-txtFIN");
-//        var msj = '';
-//
-//        if (DATINI.length === 8 && DATFIN.length === 8) {
-//            if (DATFIN < DATINI) {
-//                msj = 'Error in dates';
-//            }
-//        } else {
-//            msj = 'Error in date lenghts'
-//        }
-//
-//        return msj;
-//    },
-
 
     onCancelClick: function (btn) {
         this.view.close();
@@ -242,7 +233,11 @@ Ext.define('Ext.Praxis.controller.payments.EmailControl.DataEntryEmailControlCon
 
     MaintenanceMPF248: function (beanTemp) {
 
+        console.log("ENTRO A MaintenanceMPF248");
+
         Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...');
+
+
 
         Ext.Ajax.request({
             url: prototype.url + '/mantenimiento',
@@ -251,10 +246,13 @@ Ext.define('Ext.Praxis.controller.payments.EmailControl.DataEntryEmailControlCon
             params: {
                 beanString: Ext.encode(beanTemp)
             },
-//            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
-            success: function (response, opts) {
+
+            success: function (response) {
+                console.log(response.responseText);
 
                 var res = Ext.JSON.decode(response.responseText);
+
+                console.log(res);
 
                 if (res.success) {
 
@@ -265,8 +263,8 @@ Ext.define('Ext.Praxis.controller.payments.EmailControl.DataEntryEmailControlCon
                     }
 
                     Ext.getCmp(prototype.id + '-gridEmailControlDetail')
-                        .getStore()
-                        .reload();
+                            .getStore()
+                            .reload();
 
                 } else {
                     global.Msg({msg: 'An error occurred'});

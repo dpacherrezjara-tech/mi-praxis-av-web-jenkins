@@ -53,6 +53,12 @@ public class EmailControlLogic {
       public String mantenimientoMPF248(MPF248Filter filter) throws SQLException, Exception {
         return eCo.mantenimientoMPF248(filter);
     }
+      
+      
+        public List<MPF248Filter> searchProcessList(MPF248Filter filter) throws SQLException, Exception {
+        return eCo.searchProcessList(filter);
+    }
+      
     
     
     
