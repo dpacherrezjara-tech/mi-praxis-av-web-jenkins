@@ -126,8 +126,7 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         Ext.getCmp(prototype.id + '-cmbDateFromMonthCash').setValue('01');
         Ext.getCmp(prototype.id + '-cmbDateFromDayCash').setValue('');
 
-//        Ext.getCmp(prototype.id + '-cmbDateFromYearCredit').setValue(this.fecha.getFullYear());
-        Ext.getCmp(prototype.id + '-cmbDateFromYearCredit').setValue('2025');
+        Ext.getCmp(prototype.id + '-cmbDateFromYearCredit').setValue(this.fecha.getFullYear());
         Ext.getCmp(prototype.id + '-cmbDateFromMonthCredit').setValue('01');
         Ext.getCmp(prototype.id + '-cmbDateFromDayCredit').setValue('');
 
@@ -143,8 +142,7 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         Ext.getCmp(prototype.id + '-cmbDateToMonthCash').setValue('12');
         Ext.getCmp(prototype.id + '-cmbDateToDayCash').setValue('');
 
-        Ext.getCmp(prototype.id + '-cmbDateToYearCredit').setValue('2025');
-//        Ext.getCmp(prototype.id + '-cmbDateToYearCredit').setValue(this.fecha.getFullYear());
+        Ext.getCmp(prototype.id + '-cmbDateToYearCredit').setValue(this.fecha.getFullYear());
         Ext.getCmp(prototype.id + '-cmbDateToMonthCredit').setValue('12');
         Ext.getCmp(prototype.id + '-cmbDateToDayCredit').setValue('');
 
@@ -490,10 +488,15 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         let fecha = this.getPeriodoYYYYMM(rowPadre.strFormatDate);
         me.bean = {};
 
+        const societyNamesCash = {'133': 'LACSA', '134': 'AVIANCA', '202': 'TACA', '547': 'AEROGAL'};
+
+        let societyLabel;
         if (esPadre) {
             me.bean.IN_SOCIETY = "";
+            societyLabel = 'AV GROUP';
         } else {
             me.bean.IN_SOCIETY = rowPadre.CCUST;
+            societyLabel = societyNamesCash[rowPadre.CCUST] || rowPadre.CCUST;
         }
 
         me.bean.IN_FECHA_FROM = fecha;
@@ -503,6 +506,12 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         me.bean.IN_TREG = Ext.getCmp(prototype.id + '-cmbInputDateCash').getValue();
         me.IN_SOCIETY_CASH = me.bean.IN_SOCIETY;
         me.paramsDetailSource.beanString = JSON.stringify(me.bean);
+
+        let lblContext = Ext.getCmp(prototype.id + '-lblContextDetailSourceCash');
+        if (lblContext) {
+            lblContext.setText(societyLabel + '  —  ' + rowPadre.strFormatDate);
+        }
+
         console.log(me.bean, 'searchParams');
         this.setGridDataDetailSource();
     },
@@ -596,6 +605,9 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         let rowPadre = rowData.record.data;
         me.bean = {};
 
+        const societyNamesCash = {'133': 'LACSA', '134': 'AVIANCA', '202': 'TACA', '547': 'AEROGAL'};
+        const accountLabelsCash = {'': 'Tickets W/O Settlement', 'C': 'Tickets Pending Accounted'};
+
         me.bean.IN_SOCIETY = me.IN_SOCIETY_CASH;
         me.bean.IN_FECHA_FROM = rowPadre.SDATE;
         me.bean.IN_FECHA_TO = rowPadre.SDATE;
@@ -605,6 +617,14 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         me.bean.IN_TREG = Ext.getCmp(prototype.id + '-cmbInputDateCash').getValue();
 
         me.paramsDetailSource.beanString = JSON.stringify(me.bean);
+
+        let lblContext = Ext.getCmp(prototype.id + '-lblContextPrincipalSourceCash');
+        if (lblContext) {
+            let societyLabel = societyNamesCash[me.IN_SOCIETY_CASH] || 'AV GROUP';
+            let tipoBajada = accountLabelsCash[IN_ACCOUNT] || '';
+            lblContext.setText(societyLabel + '  —  ' + rowPadre.SDATE + '  —  ' + tipoBajada);
+        }
+
         console.log(me.bean, 'searchParamsDetailPrincipal');
         this.setGridDataDetailPrincipalSource();
     },
@@ -652,10 +672,16 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         let fecha = this.getPeriodoYYYYMM(rowPadre.strFormatDate);
         me.bean = {};
 
+        const societyNamesCash = {'133': 'LACSA', '134': 'AVIANCA', '202': 'TACA', '547': 'AEROGAL'};
+        const accountLabelsCash = {'': 'Tickets W/O Settlement', 'C': 'Tickets Pending Accounted'};
+
+        let societyLabel;
         if (esPadre) {
             me.bean.IN_SOCIETY = "";
+            societyLabel = 'AV GROUP';
         } else {
             me.bean.IN_SOCIETY = rowPadre.CCUST;
+            societyLabel = societyNamesCash[rowPadre.CCUST] || rowPadre.CCUST;
         }
 
         me.bean.IN_FECHA_FROM = fecha;
@@ -666,6 +692,13 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         me.bean.IN_TREG = Ext.getCmp(prototype.id + '-cmbInputDateCash').getValue();
 
         me.paramsDetailSource.beanString = JSON.stringify(me.bean);
+
+        let lblContext = Ext.getCmp(prototype.id + '-lblContextPrincipalCash');
+        if (lblContext) {
+            let tipoBajada = accountLabelsCash[IN_ACCOUNT] || '';
+            lblContext.setText(societyLabel + '  —  ' + rowPadre.strFormatDate + '  —  ' + tipoBajada);
+        }
+
         console.log(me.bean, 'searchParamsDetailPrincipal');
         this.setGridDataDetailPrincipal();
     },
@@ -1025,10 +1058,15 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         let fecha = this.getPeriodoYYYYMM(rowPadre.strFormatDate);
         me.bean = {};
 
+        const societyNamesCredit = {'133': 'LACSA', '134': 'AVIANCA', '202': 'TACA', '547': 'AEROGAL'};
+
+        let societyLabel;
         if (esPadre) {
             me.bean.IN_SOCIETY = "";
+            societyLabel = 'AV GROUP';
         } else {
             me.bean.IN_SOCIETY = rowPadre.CCUST;
+            societyLabel = societyNamesCredit[rowPadre.CCUST] || rowPadre.CCUST;
         }
 
         me.bean.IN_FECHA_FROM = fecha;
@@ -1038,6 +1076,12 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         me.bean.IN_TREG = Ext.getCmp(prototype.id + '-cmbInputDateCredit').getValue();
         me.IN_SOCIETY_CREDIT = me.bean.IN_SOCIETY;
         me.paramsDetailSource.beanString = JSON.stringify(me.bean);
+
+        let lblContext = Ext.getCmp(prototype.id + '-lblContextDetailSourceCredit');
+        if (lblContext) {
+            lblContext.setText(societyLabel + '  —  ' + rowPadre.strFormatDate);
+        }
+
         console.log(me.bean, 'searchParams');
         this.setGridDataDetailSourceCredito();
     },
@@ -1131,6 +1175,9 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         let rowPadre = rowData.record.data;
         me.bean = {};
 
+        const societyNamesCredit = {'133': 'LACSA', '134': 'AVIANCA', '202': 'TACA', '547': 'AEROGAL'};
+        const accountLabelsCredit = {'': 'Tickets W/O Settlement', 'C': 'Tickets Pending Accounted'};
+
         me.bean.IN_SOCIETY = me.IN_SOCIETY_CREDIT;
         me.bean.IN_FECHA_FROM = rowPadre.SDATE;
         me.bean.IN_FECHA_TO = rowPadre.SDATE;
@@ -1140,6 +1187,14 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         me.bean.IN_TREG = Ext.getCmp(prototype.id + '-cmbInputDateCredit').getValue();
 
         me.paramsDetailSource.beanString = JSON.stringify(me.bean);
+
+        let lblContext = Ext.getCmp(prototype.id + '-lblContextPrincipalSourceCredit');
+        if (lblContext) {
+            let societyLabel = societyNamesCredit[me.IN_SOCIETY_CREDIT] || 'AV GROUP';
+            let tipoBajada = accountLabelsCredit[IN_ACCOUNT] || '';
+            lblContext.setText(societyLabel + '  —  ' + rowPadre.SDATE + '  —  ' + tipoBajada);
+        }
+
         console.log(me.bean, 'searchParamsDetailPrincipal');
         this.setGridDataDetailPrincipalSourceCredit();
     },
@@ -1187,10 +1242,16 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         let fecha = this.getPeriodoYYYYMM(rowPadre.strFormatDate);
         me.bean = {};
 
+        const societyNamesCredit = {'133': 'LACSA', '134': 'AVIANCA', '202': 'TACA', '547': 'AEROGAL'};
+        const accountLabelsCredit = {'': 'Tickets W/O Settlement', 'C': 'Tickets Pending Accounted'};
+
+        let societyLabel;
         if (esPadre) {
             me.bean.IN_SOCIETY = "";
+            societyLabel = 'AV GROUP';
         } else {
             me.bean.IN_SOCIETY = rowPadre.CCUST;
+            societyLabel = societyNamesCredit[rowPadre.CCUST] || rowPadre.CCUST;
         }
 
         me.bean.IN_FECHA_FROM = fecha;
@@ -1201,6 +1262,13 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         me.bean.IN_TREG = Ext.getCmp(prototype.id + '-cmbInputDateCredit').getValue();
 
         me.paramsDetailSource.beanString = JSON.stringify(me.bean);
+
+        let lblContext = Ext.getCmp(prototype.id + '-lblContextPrincipalCredit');
+        if (lblContext) {
+            let tipoBajada = accountLabelsCredit[IN_ACCOUNT] || '';
+            lblContext.setText(societyLabel + '  —  ' + rowPadre.strFormatDate + '  —  ' + tipoBajada);
+        }
+
         console.log(me.bean, 'searchParamsDetailPrincipal');
         this.setGridDataDetailPrincipalCredit();
     },
@@ -1215,7 +1283,7 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         console.log(me.panelActual, 'me.panelActual');
         var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
             proxy: {
-                url: prototype.url + '/searchDataDetailPrincipal'
+                url: prototype.url + '/searchDataDetailPrincipalCredit'
             }, listeners: {
                 beforeload: function (obj) {
                     obj.proxy.extraParams = me.paramsDetailSource;
@@ -1367,15 +1435,19 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         me.pagginActual = '';
         var panel = Ext.getCmp(prototype.id + '-panelHeight');
         switch (me.panelActual) {
+            case  '-panelGridDataDetailCash':
+                Ext.getCmp(prototype.id + '-pie').setVisible(false);
+                panel.setHeight(740);
+                break;
             case  '-panelGridDataDetailPrincipalCash':
                 me.pagginActual = '-paggin';
                 Ext.getCmp(prototype.id + '-pie').setVisible(true);
-                panel.setHeight(580);
+                panel.setHeight(600);
                 break;
             case  '-panelGridDataDetailPrincipalSourceCash':
                 me.pagginActual = '-paggin3';
                 Ext.getCmp(prototype.id + '-pie').setVisible(true);
-                panel.setHeight(580);
+                panel.setHeight(600);
                 break;
             case  '-panelGridDataDetailSecundary':
                 me.pagginActual = '-paggin2';
@@ -1384,15 +1456,19 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
                 break;
 
 
+            case  '-panelGridDataDetailCredit':
+                Ext.getCmp(prototype.id + '-pie').setVisible(false);
+                panel.setHeight(740);
+                break;
             case  '-panelGridDataDetailPrincipalSourceCredit':
                 me.pagginActual = '-paggin3';
                 Ext.getCmp(prototype.id + '-pie').setVisible(true);
-                panel.setHeight(580);
+                panel.setHeight(600);
                 break;
             case  '-panelGridDataDetailPrincipalCredit':
                 me.pagginActual = '-paggin';
                 Ext.getCmp(prototype.id + '-pie').setVisible(true);
-                panel.setHeight(580);
+                panel.setHeight(600);
                 break;
             case  '-panelGridDataDetailSecundaryCredit':
                 me.pagginActual = '-paggin2';
@@ -1464,6 +1540,21 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
 
     // <editor-fold defaultstate="collapsed" desc="Actualizar Sumario">
     updateSummarySales: function () {
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Are you sure you want to update the sales summary?',
+            buttons: Ext.MessageBox.OKCANCEL,
+            scope: this,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn === 'ok') {
+                    this.executeUpdateSummarySales();
+                }
+            }
+        });
+    },
+    executeUpdateSummarySales: function () {
 
         Ext.getCmp(prototype.id + '-boxConsultas').mask('Updating sales summary...');
 
