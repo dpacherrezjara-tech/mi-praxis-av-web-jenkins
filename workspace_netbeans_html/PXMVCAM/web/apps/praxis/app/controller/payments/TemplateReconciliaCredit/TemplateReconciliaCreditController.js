@@ -988,17 +988,30 @@ Ext.define('Ext.Praxis.controller.payments.TemplateReconciliaCredit.TemplateReco
             });
         }
 
-        let calculo = Math.abs(totalDeposito - (Math.abs(totalTotal) - Math.abs(totalComision) - Math.abs(totalDescuento)));
+        let getProcessReview = Ext.getCmp(prototype.id + '-cmbProcessorReview').getValue();
+        const esBancardReview = getProcessReview === 'BD';
+        const tieneLiquidacionesReview = me.allSettlementRecordsReview.some(r => me.checkStateSettlementsReview.get(r.RN) === true);
+        const esBancardSinLiquidacionReview = esBancardReview && !tieneLiquidacionesReview;
+
+        let calculo, totalImplicado;
+        if (esBancardSinLiquidacionReview) {
+            calculo = Math.abs(totalDeposito - Math.abs(totalDescuento));
+
+            totalImplicado = Math.abs(totalDeposito)
+                    + Math.abs(totalDescuento);
+        } else {
+            calculo = Math.abs(totalDeposito - (Math.abs(totalTotal) - Math.abs(totalComision) - Math.abs(totalDescuento)));
+
+            totalImplicado = Math.abs(totalDeposito)
+                    + Math.abs(totalVentas)
+                    + Math.abs(totalComision)
+                    + Math.abs(totalDescuento);
+        }
 
         console.log(totalDeposito, 'totalDeposito')
         console.log(totalTotal, 'totalTotal')
         console.log(totalComision, 'totalComision')
         console.log(totalDescuento, 'totalDescuento')
-
-        let totalImplicado = Math.abs(totalDeposito)
-                + Math.abs(totalVentas)
-                + Math.abs(totalComision)
-                + Math.abs(totalDescuento);
 
         let porcentaje = 0;
         if (totalImplicado > 0) {
