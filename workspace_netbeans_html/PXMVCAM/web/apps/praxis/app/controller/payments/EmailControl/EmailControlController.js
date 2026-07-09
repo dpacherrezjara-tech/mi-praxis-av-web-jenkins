@@ -327,8 +327,7 @@ Ext.define('Ext.Praxis.controller.payments.EmailControl.EmailControlController',
         action = action === null || action === undefined ? 'U' : action;
         rec = rec === null || rec === undefined ? {} : rec;
 
-        console.log(rec, 'PRUEBA MESAJE');
-        console.log(rec, data);
+        console.log('PRUEBA MESAJE');
 
         Ext.create('Ext.Praxis.view.payments.EmailControlForm.DataEntry', {
             id: prototype.id + '-dataEntry',
