@@ -255,7 +255,7 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.DataEntry', {
                                     }
                                 },
                                 {xtype: 'tbspacer', width: 14},
-                                {xtype: 'textfield',   fieldLabel: 'ADATE',  id: prototype.id + '-de-scanADATE',  width: 230, labelWidth: 60, fieldStyle: 'text-align:center;'},
+                                {xtype: 'textfield',   fieldLabel: 'ADATE',  id: prototype.id + '-de-scanADATE',  width: 230, labelWidth: 60, fieldStyle: 'text-align:center;', maxLength: 8, enforceMaxLength: true, maskRe: /[0-9]/},
                                 {xtype: 'tbspacer', width: 14},
                                 {xtype: 'numberfield', fieldLabel: 'Amount', id: prototype.id + '-de-scanMONTO',  width: 230, labelWidth: 60, hideTrigger: true, decimalPrecision: 2, allowDecimals: true, fieldStyle: 'text-align:right;'}
                             ]
@@ -265,11 +265,11 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.DataEntry', {
                             layout: {type: 'hbox', align: 'middle'},
                             defaults: {labelStyle: 'font-weight:bold;color:#2E7D32;font-size:11px;'},
                             items: [
-                                {xtype: 'textfield', fieldLabel: 'Reference', id: prototype.id + '-de-scanREFERENCE', width: 320, labelWidth: 60},
+                                {xtype: 'textfield', fieldLabel: 'Reference', id: prototype.id + '-de-scanREFERENCE', width: 320, labelWidth: 60, maxLength: 20, enforceMaxLength: true},
                                 {xtype: 'tbspacer', width: 14},
-                                {xtype: 'textfield', fieldLabel: 'Text',      id: prototype.id + '-de-scanTEXTO',     width: 230, labelWidth: 60},
+                                {xtype: 'textfield', fieldLabel: 'Text',      id: prototype.id + '-de-scanTEXTO',     width: 230, labelWidth: 60, maxLength: 60, enforceMaxLength: true},
                                 {xtype: 'tbspacer', width: 14},
-                                {xtype: 'textfield', fieldLabel: 'BANDOC',    id: prototype.id + '-de-scanBANDOC',    width: 230, labelWidth: 60, fieldStyle: 'text-align:center;'},
+                                {xtype: 'textfield', fieldLabel: 'BANDOC',    id: prototype.id + '-de-scanBANDOC',    width: 230, labelWidth: 60, fieldStyle: 'text-align:center;', maxLength: 10, enforceMaxLength: true},
                                 {xtype: 'container', flex: 1},
                                 {
                                     xtype: 'button',

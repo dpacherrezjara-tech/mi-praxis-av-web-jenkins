@@ -191,15 +191,57 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.DataEntryCargoGuideControl
         win.center();
     },
 
-    // VISUAL ONLY (backend pending): load demo bank movements into the scan grid.
+    // Arma el objeto de filtros del scan (Bank queda fuera por ahora) y lo envía al endpoint.
     onScanSearch: function () {
         var grid = Ext.getCmp(prototype.id + '-de-gridScan');
-        var demo = [
-            {BANK: 'BANCOLOMBIA', ADATE: '20260612', MONTO: 1250.00, REFERENCE: 'REF-00123', TEXTO: 'TRANSFER AWB 045-12345678', BANDOC: 'D-9981', STATE: 'P'},
-            {BANK: 'DAVIVIENDA',  ADATE: '20260612', MONTO: 980.50,  REFERENCE: 'REF-00124', TEXTO: 'PAGO CARGA',               BANDOC: 'D-9982', STATE: 'P'},
-            {BANK: 'BBVA',        ADATE: '20260613', MONTO: 1250.00, REFERENCE: 'REF-00125', TEXTO: 'ABONO CLIENTE',            BANDOC: 'D-9983', STATE: 'P'}
-        ];
-        grid.getStore().loadData(demo);
+
+        var adate = (Ext.getCmp(prototype.id + '-de-scanADATE').getValue() || '').trim();
+        if (adate && !/^\d+$/.test(adate)) {
+            Ext.Msg.alert('Scan', 'ADATE debe contener solo números.');
+            return;
+        }
+        adate = adate.substring(0, 8);
+
+        // MONTO va como texto: solo dígitos, punto decimal y signo negativo (no se castea a Number).
+        var montoVal = Ext.getCmp(prototype.id + '-de-scanMONTO').getValue();
+        var monto = (montoVal === null || montoVal === undefined) ? '' : String(montoVal).replace(/[^0-9.\-]/g, '');
+
+        var reference = (Ext.getCmp(prototype.id + '-de-scanREFERENCE').getValue() || '').trim().substring(0, 20);
+        var texto     = (Ext.getCmp(prototype.id + '-de-scanTEXTO').getValue()     || '').trim().substring(0, 60);
+        var bandoc    = (Ext.getCmp(prototype.id + '-de-scanBANDOC').getValue()    || '').trim().substring(0, 10);
+
+        var bean = {
+            IN_ADATE:     adate,
+            IN_MONTO:     monto,
+            IN_REFERENCE: reference,
+            IN_TEXTO:     texto,
+            IN_BANDOC:    bandoc
+        };
+
+        var beanString = JSON.stringify(bean);
+        meDE.scanParams = {bean: bean, beanString: beanString};
+        console.log('onScanSearch -> params enviados:', bean);
+        console.log('onScanSearch -> beanString:', beanString);
+
+        grid.mask('Scanning...');
+        Ext.Ajax.request({
+            url: prototype.url + '/scanBankMovements',
+            method: 'POST',
+            timeout: 60000,
+            params: {beanString: beanString},
+            success: function (response) {
+                grid.unmask();
+                var res = Ext.JSON.decode(response.responseText);
+                grid.getStore().loadData(res.data || []);
+                if (!res.data || res.data.length === 0) {
+                    global.Msg({msg: 'Data not found.'});
+                }
+            },
+            failure: function () {
+                grid.unmask();
+                Ext.Msg.alert('Error', 'No se pudo conectar con el servidor.');
+            }
+        });
     },
 
     // VISUAL ONLY (backend pending): confirm the movement selected for manual reconciliation.
