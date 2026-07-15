@@ -2605,7 +2605,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.DataEntryAMDPCASH', 
                                                             return Ext.util.Format.number(amount, '0,000.00');
                                                         },
                                                         summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                            let grid = Ext.getCmp(prototype.id + '-gridDataInfoScanAgent');
+                                                            let grid = Ext.getCmp(prototype.id + '-gridDataInfoScanConciliacion');
                                                             let store = grid.getStore();
 
                                                             let total = 0;

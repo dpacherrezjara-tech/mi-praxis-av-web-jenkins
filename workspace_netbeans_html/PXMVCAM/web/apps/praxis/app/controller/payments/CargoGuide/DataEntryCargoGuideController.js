@@ -46,28 +46,31 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.DataEntryCargoGuideControl
     },
     mostrarData: function () {
 
-        this.setValue('de-txtRN', this.bean.data.RN);
-        this.setValue('de-txtCCUST', this.bean.data.CCUST);
         this.setValue('de-txtADATE', this.bean.data.ADATE);
         this.setValue('de-txtPAYDATE', this.bean.data.PAYDAY);
-        this.setValue('de-txtCOUNTRY', this.bean.data.SCOUNTRY);
         this.setValue('de-txtNCICLO', this.bean.data.NCICLO);
-        this.setValue('de-txtMETPAGO', this.bean.data.METPAGO);
         this.setValue('de-txtNPAGE', this.bean.data.NPAGE);
-        this.setValue('de-txtCUSCA', this.bean.data.CUSCA);
-        this.setValue('de-txtCODPSE', this.bean.data.CODPSE);
-        this.setValue('de-txtREFERENCE', this.bean.data.REFERENCE || '');
-        this.setValue('de-txtBANDOC', this.bean.data.BANDOC);
+        this.setValue('de-txtMETPAGO', this.bean.data.METPAGO);
         this.setValue('de-txtSTATE', this.bean.data.STATE);
+        this.setValue('de-txtREFERENCE', this.bean.data.REFERENCE || '');
+        this.setValue('de-txtSFILE', this.bean.data.SFILE || '');
 
-        this._applyCountryMode(this.bean.data.SCOUNTRY);
+        var cmbStval = Ext.getCmp(prototype.id + '-de-cmbSTVAL');
+        if (cmbStval) {
+            cmbStval.setValue(this.bean.data.STVAL || '');
+        }
+
+        var saldo = this.bean.data.SALDO;
+        if (saldo !== null && saldo !== undefined) {
+            this.setValue('de-txtSALDO', saldo);
+        }
 
         this.setValue('de-txtMONEDA', this.bean.data.SCURRENCY);
 
         let importe = this.bean.data.MONTO;
-        
+
         if (importe !== null && importe !== undefined) {
-            this.setValue('de-txtIMPORTE', importe); 
+            this.setValue('de-txtIMPORTE', importe);
         }
 
         // AUDIT INFORMATION
@@ -129,12 +132,17 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.DataEntryCargoGuideControl
         beanTemp.IN_SEQ = this.bean.data.SEQ;
         beanTemp.IN_MONTO =  this.getValue('de-txtIMPORTE');
         beanTemp.IN_ADATE =  this.getValue('de-txtADATE');
-        beanTemp.IN_CUSCA =  this.getValue('de-txtCUSCA');
-        beanTemp.IN_CODPSE = this.getValue('de-txtCODPSE');
+        // CUSCA/CODPSE ya no se editan desde este formulario; se reenvían tal cual venían.
+        beanTemp.IN_CUSCA = this.bean.data.CUSCA || '';
+        beanTemp.IN_CODPSE = this.bean.data.CODPSE || '';
         beanTemp.IN_REFERENCE = this.getValue('de-txtREFERENCE');
         beanTemp.IN_CBATCH = this.bean.data.CBATCH;
         beanTemp.IN_DATEBAT = this.bean.data.DATEBAT;
         beanTemp.IN_STATE = this.getValue('de-txtSTATE');
+
+        var cmbStval = Ext.getCmp(prototype.id + '-de-cmbSTVAL');
+        beanTemp.IN_STVAL = cmbStval ? (cmbStval.getValue() || '') : (this.bean.data.STVAL || '');
+        beanTemp.IN_SALDO = this.getValue('de-txtSALDO');
 
         console.log(beanTemp);
 
@@ -191,18 +199,62 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.DataEntryCargoGuideControl
         win.center();
     },
 
-    // VISUAL ONLY (backend pending): load demo bank movements into the scan grid.
+    // Arma el objeto de filtros del scan (Source queda fijo en "Extractos" por ahora) y lo envía al endpoint MPS734.
     onScanSearch: function () {
         var grid = Ext.getCmp(prototype.id + '-de-gridScan');
-        var demo = [
-            {BANK: 'BANCOLOMBIA', ADATE: '20260612', MONTO: 1250.00, REFERENCE: 'REF-00123', TEXTO: 'TRANSFER AWB 045-12345678', BANDOC: 'D-9981', STATE: 'P'},
-            {BANK: 'DAVIVIENDA',  ADATE: '20260612', MONTO: 980.50,  REFERENCE: 'REF-00124', TEXTO: 'PAGO CARGA',               BANDOC: 'D-9982', STATE: 'P'},
-            {BANK: 'BBVA',        ADATE: '20260613', MONTO: 1250.00, REFERENCE: 'REF-00125', TEXTO: 'ABONO CLIENTE',            BANDOC: 'D-9983', STATE: 'P'}
-        ];
-        grid.getStore().loadData(demo);
+
+        var adate = (Ext.getCmp(prototype.id + '-de-scanADATE').getValue() || '').trim();
+        if (adate && !/^\d+$/.test(adate)) {
+            Ext.Msg.alert('Scan', 'ADATE debe contener solo números.');
+            return;
+        }
+        adate = adate.substring(0, 8);
+
+        // MONTO va como texto: solo dígitos, punto decimal y signo negativo (no se castea a Number).
+        var montoVal = Ext.getCmp(prototype.id + '-de-scanMONTO').getValue();
+        var monto = (montoVal === null || montoVal === undefined) ? '' : String(montoVal).replace(/[^0-9.\-]/g, '');
+
+        var account   = (Ext.getCmp(prototype.id + '-de-scanACCOUNT').getValue()    || '').trim().substring(0, 6);
+        var texto     = (Ext.getCmp(prototype.id + '-de-scanTEXTO').getValue()     || '').trim().substring(0, 60);
+        var bandoc    = (Ext.getCmp(prototype.id + '-de-scanBANDOC').getValue()    || '').trim().substring(0, 10);
+        var stval     = (Ext.getCmp(prototype.id + '-de-scanSTVAL').getValue()     || '').trim();
+
+        var bean = {
+            IN_ADATE:   adate,
+            IN_MONTO:   monto,
+            IN_ACCOUNT: account,
+            IN_TEXTO:   texto,
+            IN_BANDOC:  bandoc,
+            IN_STVAL:   stval
+        };
+
+        var beanString = JSON.stringify(bean);
+        meDE.scanParams = {bean: bean, beanString: beanString};
+        console.log('onScanSearch -> params enviados:', bean);
+        console.log('onScanSearch -> beanString:', beanString);
+
+        grid.mask('Scanning...');
+        Ext.Ajax.request({
+            url: prototype.url + '/scanBankMovements',
+            method: 'POST',
+            timeout: 60000,
+            params: {beanString: beanString},
+            success: function (response) {
+                grid.unmask();
+                var res = Ext.JSON.decode(response.responseText);
+                grid.getStore().loadData(res.data || []);
+                if (!res.data || res.data.length === 0) {
+                    global.Msg({msg: 'Data not found.'});
+                }
+            },
+            failure: function () {
+                grid.unmask();
+                Ext.Msg.alert('Error', 'No se pudo conectar con el servidor.');
+            }
+        });
     },
 
-    // VISUAL ONLY (backend pending): confirm the movement selected for manual reconciliation.
+    // Reconcile the current MPF295 payment against the selected MPF287 bank movement (MPS735).
     onReconcileManual: function () {
         var grid = Ext.getCmp(prototype.id + '-de-gridScan');
         var sel  = grid.getSelectionModel().getSelection();
@@ -210,13 +262,64 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.DataEntryCargoGuideControl
             Ext.Msg.alert('Reconcile', 'Select a bank movement to reconcile with.');
             return;
         }
-        var r = sel[0].data;
-        Ext.Msg.alert('Reconcile (preview)',
-            'Manual reconciliation (visual only — backend pending).<br><br>'
-            + '<b>Bank:</b> '      + (r.BANK || '') + '<br>'
-            + '<b>Amount:</b> '    + Ext.util.Format.number(r.MONTO, '0,000.00') + '<br>'
-            + '<b>Reference:</b> ' + (r.REFERENCE || '') + '<br>'
-            + '<b>BANDOC:</b> '    + (r.BANDOC || ''));
+        var r    = sel[0].data;
+        var pago = this.bean.data;
+
+        var montoPago      = parseFloat(pago.MONTO) || 0;
+        var montoExtracto  = parseFloat(r.NETO) || 0;
+
+        // Misma regla que el match automático: los montos deben coincidir en valor absoluto.
+        if (Math.abs(Math.abs(montoPago) - Math.abs(montoExtracto)) > 0.01) {
+            Ext.Msg.alert('Reconcile', 'Conciliación manual no procede porque el monto es distinto.');
+            return;
+        }
+
+        var payload = {
+            IN_SFILE:    pago.SFILE    || '',
+            IN_SCOUNTRY: pago.SCOUNTRY || '',
+            IN_NPAGE:    pago.NPAGE    || '',
+            IN_SEQ:      pago.SEQ      || '',
+            IN_MONTO:    montoPago,
+            IN_BANDOC:   r.BANDOC || '',
+            IN_ADATE:    r.ADATE  || '',
+            IN_TEXTO:    r.TEXTO  || '',
+            IN_NETO:     montoExtracto
+        };
+
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: 'Are you sure to reconcile this payment with BANDOC ' + (r.BANDOC || '') + '?',
+            buttons: Ext.MessageBox.YESNO,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            scope: this,
+            fn: function (btn) {
+                if (btn !== 'yes') {
+                    return;
+                }
+
+                grid.mask('Reconciling...');
+                Ext.Ajax.request({
+                    url: prototype.url + '/reconcileManual',
+                    method: 'POST',
+                    timeout: 60000,
+                    params: {beanString: JSON.stringify(payload)},
+                    success: function (response) {
+                        grid.unmask();
+                        var res = Ext.JSON.decode(response.responseText);
+                        global.Msg({msg: res.Mensaje});
+                        if (res.success) {
+                            Ext.getCmp(prototype.id + '-dataEntry').close();
+                            Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click');
+                        }
+                    },
+                    failure: function () {
+                        grid.unmask();
+                        Ext.Msg.alert('Error', 'No se pudo conectar con el servidor.');
+                    }
+                });
+            }
+        });
     },
 
     // Load (or reload) the current record's PDF into the embedded preview pane.
@@ -455,17 +558,17 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.DataEntryCargoGuideControl
         }
         return msjResult;
     },
+    // Detail quedó reducido a 9 campos: STVAL, ADATE, SALDO y STATE son
+    // editables (no se deshabilitan); PAYDAY, Cycle, NPAGE, METPAGO y SFILE
+    // son de solo lectura.
     DeshabilitarCampoClave: function () {
 
         let camposDeshabilitar = [
-            'de-txtRN',
-            'de-txtCCUST',
             'de-txtPAYDATE',
-            'de-txtCOUNTRY',
             'de-txtNCICLO',
             'de-txtMETPAGO',
             'de-txtNPAGE',
-            'de-txtBANDOC',
+            'de-txtSFILE',
             'de-txtMONEDA',
             'de-txtUSCR',
             'de-txtFECR',
@@ -480,28 +583,6 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.DataEntryCargoGuideControl
             if (cmp)
                 cmp.setReadOnly(true);
         });
-
-        // Campos editables en modo Update (dependen del país)
-        var country = (this.bean && this.bean.data) ? this.bean.data.SCOUNTRY : '';
-        var isHnSv = (country === 'HN' || country === 'SV');
-        var editableFields = isHnSv
-            ? ['de-txtIMPORTE', 'de-txtREFERENCE']
-            : ['de-txtIMPORTE', 'de-txtCUSCA', 'de-txtCODPSE'];
-        editableFields.forEach(function(id) {
-            var cmp = Ext.getCmp(prototype.id + '-' + id);
-            if (cmp) { cmp.setReadOnly(false); }
-        });
-    },
-    _applyCountryMode: function (country) {
-        var isHnSv = (country === 'HN' || country === 'SV');
-        var cmpCusca   = Ext.getCmp(prototype.id + '-de-txtCUSCA');
-        var cmpCodpse  = Ext.getCmp(prototype.id + '-de-txtCODPSE');
-        var cmpRef     = Ext.getCmp(prototype.id + '-de-txtREFERENCE');
-        var cmpSpacer  = Ext.getCmp(prototype.id + '-de-spacerREFERENCE');
-        if (cmpCusca)  { cmpCusca.setVisible(!isHnSv); }
-        if (cmpCodpse) { cmpCodpse.setVisible(!isHnSv); }
-        if (cmpRef)    { cmpRef.setVisible(isHnSv); }
-        if (cmpSpacer) { cmpSpacer.setVisible(isHnSv); }
     },
     Habilitarlbl: function () {
         Ext.getCmp(prototype.id + '-lblDescripcion').show();

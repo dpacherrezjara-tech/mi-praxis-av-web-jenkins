@@ -17,10 +17,13 @@ import net.miatech.praxis.payment.MPF218;
 import net.miatech.praxis.payment.MPF218Filter;
 import net.miatech.praxis.payment.MPF221;
 import net.miatech.praxis.payment.MPF221Filter;
+import net.miatech.praxis.payment.MPF287Mov;
+import net.miatech.praxis.payment.MPF287MovFilter;
 import net.miatech.praxis.payment.MPF288;
 import net.miatech.praxis.payment.MPF288Filter;
 import net.miatech.praxis.payment.MPF291;
 import net.miatech.praxis.payment.MPF291Filter;
+import net.miatech.praxis.payment.MPF295ReconcilePayload;
 import net.miatech.praxis.payment.MPF292;
 import net.miatech.praxis.payment.MPF292Filter;
 import net.miatech.praxis.payment.MPF293;
@@ -70,6 +73,14 @@ public class CargoGuideLogic {
 
     public Map<String, Object> updateMPS601(MPF291Filter bean) throws SQLException, Exception {
         return CargoGuideDAO.updateMPS601(bean);
+    }
+
+    public List<MPF287Mov> loadMPS734(MPF287MovFilter filter) throws SQLException, Exception {
+        return CargoGuideDAO.loadMPS734(filter);
+    }
+
+    public Map<String, Object> updateMPS735(MPF295ReconcilePayload bean) throws SQLException, Exception {
+        return CargoGuideDAO.updateMPS735(bean);
     }
 
     public List<Map<String, Object>> loadMPS603(String country, String sfile) throws SQLException, Exception {

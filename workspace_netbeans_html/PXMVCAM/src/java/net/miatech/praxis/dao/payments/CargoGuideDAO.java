@@ -30,10 +30,13 @@ import net.miatech.praxis.payment.MPF218;
 import net.miatech.praxis.payment.MPF218Filter;
 import net.miatech.praxis.payment.MPF221;
 import net.miatech.praxis.payment.MPF221Filter;
+import net.miatech.praxis.payment.MPF287Mov;
+import net.miatech.praxis.payment.MPF287MovFilter;
 import net.miatech.praxis.payment.MPF288;
 import net.miatech.praxis.payment.MPF288Filter;
 import net.miatech.praxis.payment.MPF291;
 import net.miatech.praxis.payment.MPF291Filter;
+import net.miatech.praxis.payment.MPF295ReconcilePayload;
 import net.miatech.praxis.payment.MPF292;
 import net.miatech.praxis.payment.MPF292Filter;
 import net.miatech.praxis.payment.MPF293;
@@ -86,17 +89,21 @@ public class CargoGuideDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS587(?,?,?,?,?,?,?,?,?,?,?)}";
+        // NOTA: IN_BANDOC/IN_MONTO (posiciones 8/9) y FUENTEMON (SELECT) son nuevos;
+        // MPS587 debe actualizarse en BD para aceptar estos 2 IN adicionales antes de
+        // la paginación y para incluir FUENTEMON en su SELECT. Mientras tanto la lectura
+        // de FUENTEMON es defensiva para no romper el search.
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS587(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(8, Types.INTEGER);
-            cstmt.registerOutParameter(9, Types.INTEGER);
             cstmt.registerOutParameter(10, Types.INTEGER);
             cstmt.registerOutParameter(11, Types.INTEGER);
+            cstmt.registerOutParameter(12, Types.INTEGER);
+            cstmt.registerOutParameter(13, Types.INTEGER);
 
             cstmt.setString(1, session.getUserView().getCustomerInfo().CCUST);
             cstmt.setString(2, filter.IN_FECHA_FROM.trim());
@@ -105,17 +112,19 @@ public class CargoGuideDAO {
             cstmt.setString(5, filter.IN_SCURRENCY.trim());
             cstmt.setString(6, filter.IN_COUNTRY.trim());
             cstmt.setString(7, filter.IN_STVAL.trim());
-            cstmt.setInt(8, filter.page.PAGNUM);
-            cstmt.setInt(9, filter.page.PAGROW);
-            cstmt.setInt(10, filter.page.TOTPAG);
-            cstmt.setInt(11, filter.page.TOTROW);
+            cstmt.setString(8, filter.IN_BANDOC != null ? filter.IN_BANDOC.trim() : "");
+            cstmt.setDouble(9, filter.IN_MONTO);
+            cstmt.setInt(10, filter.page.PAGNUM);
+            cstmt.setInt(11, filter.page.PAGROW);
+            cstmt.setInt(12, filter.page.TOTPAG);
+            cstmt.setInt(13, filter.page.TOTROW);
 
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(8);
-            filter.page.PAGROW = cstmt.getInt(9);
-            filter.page.TOTPAG = cstmt.getInt(10);
-            filter.page.TOTROW = cstmt.getInt(11);
+            filter.page.PAGNUM = cstmt.getInt(10);
+            filter.page.PAGROW = cstmt.getInt(11);
+            filter.page.TOTPAG = cstmt.getInt(12);
+            filter.page.TOTROW = cstmt.getInt(13);
 
             rst = cstmt.getResultSet();
             while (rst.next()) {
@@ -140,7 +149,12 @@ public class CargoGuideDAO {
                 bean.CBATCH = rst.getString("CBATCH").trim();
                 bean.DATEBAT = rst.getString("DATEBAT").trim();
                 bean.STATE = rst.getString("STATE").trim();
-                
+                // STVAL/SALDO: columnas nuevas, requieren que MPS587 las agregue a su
+                // SELECT. Defensivo para no romper el search mientras no se actualice el SP.
+                try { bean.STVAL = rst.getString("STVAL") != null ? rst.getString("STVAL").trim() : ""; } catch (Exception ex) { bean.STVAL = ""; }
+                try { bean.SALDO = rst.getDouble("SALDO"); } catch (Exception ex) { bean.SALDO = 0; }
+                try { bean.FUENTEMON = rst.getString("FUENTEMON") != null ? rst.getString("FUENTEMON").trim() : ""; } catch (Exception ex) { bean.FUENTEMON = ""; }
+
                 bean.USCR = rst.getString("USCR").trim();
                 bean.FECR = rst.getString("FECR").trim();
                 bean.HOCR = rst.getString("HOCR").trim();
@@ -187,10 +201,13 @@ public class CargoGuideDAO {
         CallableStatement cstmt = null;
         Connection cnx = null;
 
+        // NOTA: MPS588 debe actualizarse para aceptar IN_STVAL/IN_SALDO en las
+        // posiciones 15/16 (antes de option/USR) y hacer SET STVAL=IN_STVAL,
+        // SALDO=IN_SALDO en su UPDATE.
         String SQLCLL = "{CALL " + session.getMainLibrary() + "MP.MPS588(?,?,?,?,?,"
                 + "?,?,?,?,?,"
                 + "?,?,?,?,?,"
-                + "?,?,?)}";
+                + "?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -211,16 +228,18 @@ public class CargoGuideDAO {
             cstmt.setString(12, bean.IN_CBATCH);
             cstmt.setString(13, bean.IN_DATEBAT);
             cstmt.setString(14, bean.IN_STATE);
-            cstmt.setString(15, bean.option);
-            cstmt.setString(16, session.getUserView().getUserInfo().USR);
+            cstmt.setString(15, bean.IN_STVAL);
+            cstmt.setDouble(16, bean.IN_SALDO);
+            cstmt.setString(17, bean.option);
+            cstmt.setString(18, session.getUserView().getUserInfo().USR);
 
-            cstmt.registerOutParameter(17, Types.INTEGER);
-            cstmt.registerOutParameter(18, Types.VARCHAR);
+            cstmt.registerOutParameter(19, Types.INTEGER);
+            cstmt.registerOutParameter(20, Types.VARCHAR);
 
             cstmt.execute();
 
-            int outCode = cstmt.getInt(17);
-            String outMensaje = cstmt.getString(18);
+            int outCode = cstmt.getInt(19);
+            String outMensaje = cstmt.getString(20);
 
             response.put("success", (outCode == 1)); 
             response.put("mensaje", outMensaje);
@@ -335,6 +354,85 @@ public class CargoGuideDAO {
         return lstData;
     }
 
+    public List<MPF287Mov> loadMPS734(MPF287MovFilter filter) throws SQLException, Exception {
+
+        List<MPF287Mov> lstData = new ArrayList<MPF287Mov>(0);
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        Connection cnx = null;
+
+        String SQL = "{CALL " + session.getMainLibrary() + "MP.MPS734(?,?,?,?,?,?,?,?,?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQL);
+
+            cstmt.registerOutParameter(8, Types.INTEGER);
+            cstmt.registerOutParameter(9, Types.INTEGER);
+            cstmt.registerOutParameter(10, Types.INTEGER);
+            cstmt.registerOutParameter(11, Types.INTEGER);
+
+            cstmt.setString(1, filter.IN_CCUST.trim());
+            cstmt.setString(2, filter.IN_ADATE.trim());
+            cstmt.setString(3, filter.IN_MONTO.trim());
+            cstmt.setString(4, filter.IN_ACCOUNT.trim());
+            cstmt.setString(5, filter.IN_TEXTO.trim());
+            cstmt.setString(6, filter.IN_BANDOC.trim());
+            cstmt.setString(7, filter.IN_STVAL.trim());
+            cstmt.setInt(8, filter.page.PAGNUM);
+            cstmt.setInt(9, filter.page.PAGROW);
+            cstmt.setInt(10, filter.page.TOTPAG);
+            cstmt.setInt(11, filter.page.TOTROW);
+
+            cstmt.execute();
+
+            filter.page.PAGNUM = cstmt.getInt(8);
+            filter.page.PAGROW = cstmt.getInt(9);
+            filter.page.TOTPAG = cstmt.getInt(10);
+            filter.page.TOTROW = cstmt.getInt(11);
+
+            rst = cstmt.getResultSet();
+            while (rst.next()) {
+                MPF287Mov bean = new MPF287Mov();
+                bean.RN       = rst.getLong("RN");
+                bean.CCUST    = rst.getString("CCUST").trim();
+                bean.STVAL    = rst.getString("STVAL").trim();
+                bean.ACCOUNT  = rst.getString("ACCOUNT").trim();
+                bean.BANDOC   = rst.getString("BANDOC").trim();
+                bean.ADATE    = rst.getString("ADATE").trim();
+                bean.NETO     = rst.getDouble("NETO");
+                bean.TEXTO    = rst.getString("TEXTO").trim();
+                bean.TEXTOLAR = rst.getString("TEXTOLAR") != null ? rst.getString("TEXTOLAR").trim() : "";
+
+                bean.page.PAGNUM = filter.page.PAGNUM;
+                bean.page.PAGROW = filter.page.PAGROW;
+                bean.page.TOTPAG = filter.page.TOTPAG;
+                bean.page.TOTROW = filter.page.TOTROW;
+
+                lstData.add(bean);
+            }
+            rst.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) {
+                try { rst.close(); } catch (SQLException e) {
+                    logError.error("SQLException -> " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try { cstmt.close(); } catch (SQLException e) {
+                    logError.error("SQLException -> " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return lstData;
+    }
+
     public Map<String, Object> updateMPS601(MPF291Filter bean) throws SQLException, Exception {
         Map<String, Object> response = new HashMap<>();
         CallableStatement cstmt = null;
@@ -379,6 +477,62 @@ public class CargoGuideDAO {
         }
 
         return response;
+    }
+
+    public Map<String, Object> updateMPS735(MPF295ReconcilePayload bean) throws SQLException, Exception {
+        Map<String, Object> result = new HashMap<>();
+        CallableStatement cstmt = null;
+        Connection cnx = null;
+
+        // 11 IN + 2 INOUT (OUT_CODE, OUT_MESSAGE)
+        String SQL = "{CALL " + session.getMainLibrary() + "MP.MPS735(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQL);
+
+            cstmt.setString(1,  bean.IN_CCUST);
+            cstmt.setString(2,  bean.IN_SFILE);
+            cstmt.setString(3,  bean.IN_SCOUNTRY);
+            cstmt.setString(4,  bean.IN_NPAGE);
+            cstmt.setString(5,  bean.IN_SEQ);
+            cstmt.setDouble(6,  bean.IN_MONTO);
+            cstmt.setString(7,  bean.IN_BANDOC);
+            cstmt.setString(8,  bean.IN_ADATE);
+            cstmt.setString(9,  bean.IN_TEXTO);
+            cstmt.setDouble(10, bean.IN_NETO);
+            cstmt.setString(11, session.getUserView().getUserInfo().USR);
+
+            // Valores iniciales de los INOUT antes de registrarlos
+            cstmt.setInt(12, 0);
+            cstmt.setString(13, "");
+
+            cstmt.registerOutParameter(12, Types.INTEGER); // OUT_CODE
+            cstmt.registerOutParameter(13, Types.VARCHAR); // OUT_MESSAGE
+
+            cstmt.execute();
+
+            int outCode = cstmt.getInt(12);
+            String outMensaje = cstmt.getString(13);
+
+            result.put("success", (outCode == 1));
+            result.put("mensaje", outMensaje);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("success", false);
+            result.put("mensaje", "Error en BD: " + e.getMessage());
+        } finally {
+            if (cstmt != null) {
+                try { cstmt.close(); } catch (SQLException e) {
+                    logError.error("SQLException -> " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+
+        return result;
     }
 
     public List<MPF291> loadMPS609(MPF291Filter filter) throws SQLException, Exception {
