@@ -1593,7 +1593,7 @@ public class CargoSendController extends BaseController {
             "Vencimiento neto", "Condiciones de pago", "Indicador CME",
             "Clave contabiliz.", "Importe neto local", "Moneda local",
             "Importe en moneda local", "Z_Moneda sucursal", "Importe en ML2",
-            "Mon.local 2", "Dif.", "Porcentaje Diferencia", "Comentario"
+            "Mon.local 2", "Dif.", "Porcentaje Diferencia", "Comentario","Fecha Match"
         };
 
         String[] keys = {
@@ -1604,7 +1604,7 @@ public class CargoSendController extends BaseController {
             "PAYMET", "FCONT", "CLSDOC", "FECBASE", "DELAYDAY",
             "FECVENC", "CONPAY", "CME", "CLAVECONT", "NETOLOC_2",
             "MONLOC", "IMPORTELOC", "MONSUC", "IMPORTLOC2", "MONSUC2",
-            "DIFF", "POR_DIF", "COMENTARIO"
+            "DIFF", "POR_DIF", "COMENTARIO","FECSELEC"
         };
 
         java.util.Set<Integer> numericCols = new java.util.HashSet<>(

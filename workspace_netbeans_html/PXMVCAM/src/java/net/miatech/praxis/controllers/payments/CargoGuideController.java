@@ -19,6 +19,9 @@ import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.dao.master.MasterDAO;
 import net.miatech.praxis.exceptions.SpringException;
 import net.miatech.praxis.logic.payments.CargoGuideLogic;
+import net.miatech.praxis.payment.MPF287Mov;
+import net.miatech.praxis.payment.MPF287MovFilter;
+import net.miatech.praxis.payment.MPF295ReconcilePayload;
 import net.miatech.praxis.payment.MPF288;
 import net.miatech.praxis.payment.MPF288Filter;
 import net.miatech.praxis.payment.MPF291;
@@ -392,6 +395,73 @@ public class CargoGuideController extends BaseController {
             map.put("success", false);
             map.put("data", new ArrayList<>());
             map.put("total", 0);
+        }
+
+        return new Gson().toJson(map);
+    }
+
+    @RequestMapping(value = "scanBankMovements")
+    public @ResponseBody
+    String scanBankMovements(HttpServletRequest request) {
+        System.out.println("-------------- CargoGuide : scanBankMovements (MPS734) -------------");
+        Map<String, Object> map = new HashMap<>();
+        Gson gson = new Gson();
+
+        try {
+            CargoGuideLogic logic = new CargoGuideLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String beanString = request.getParameter("beanString");
+            MPF287MovFilter filter = gson.fromJson(beanString, MPF287MovFilter.class);
+
+            // El scope de cliente se toma de la sesion, no del cliente (no confiar en el front para esto).
+            filter.IN_CCUST = this.serverSession.getServerSession().getUserView().getCustomerInfo().CCUST;
+
+            filter.page.PAGNUM = 1;
+            filter.page.PAGROW = 200;
+
+            List<MPF287Mov> lst = logic.loadMPS734(filter);
+
+            map.put("success", true);
+            map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+            map.put("data", lst);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("success", false);
+            map.put("data", new ArrayList<>());
+            map.put("total", 0);
+        }
+
+        return new Gson().toJson(map);
+    }
+
+    @RequestMapping(value = "reconcileManual", method = RequestMethod.POST)
+    public @ResponseBody
+    String reconcileManual(HttpServletRequest request) {
+        System.out.println("-------------- CargoGuide : reconcileManual (MPS735) -------------");
+        Map<String, Object> map = new HashMap<>();
+        Gson gson = new Gson();
+
+        try {
+            CargoGuideLogic logic = new CargoGuideLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String beanString = request.getParameter("beanString");
+            MPF295ReconcilePayload payload = gson.fromJson(beanString, MPF295ReconcilePayload.class);
+
+            // El scope de cliente se toma de la sesion, no del cliente (no confiar en el front para esto).
+            payload.IN_CCUST = this.serverSession.getServerSession().getUserView().getCustomerInfo().CCUST;
+
+            Map<String, Object> res = logic.updateMPS735(payload);
+
+            map.put("success", res.get("success"));
+            map.put("Mensaje", res.get("mensaje"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("success", false);
+            map.put("Mensaje", "Error en el servidor: " + e.getMessage());
         }
 
         return new Gson().toJson(map);

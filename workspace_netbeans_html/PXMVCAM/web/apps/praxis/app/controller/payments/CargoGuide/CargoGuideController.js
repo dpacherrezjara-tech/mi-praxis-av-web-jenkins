@@ -296,6 +296,8 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
         me.bean.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue() || '';
         me.bean.IN_STVAL = Ext.getCmp(prototype.id + '-cmbStatus').getValue() || '';
         me.bean.IN_OPTION = Ext.getCmp(prototype.id + '-cmbInputDate').getValue() || '';
+        me.bean.IN_BANDOC = Ext.getCmp(prototype.id + '-txtBandoc').getValue() || '';
+        me.bean.IN_MONTO = Ext.getCmp(prototype.id + '-txtMonto').getValue() || 0;
 
         var beanString = JSON.stringify(me.bean);
         searchParams = {
@@ -330,15 +332,6 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
                             msg: 'Data not found.'
                         });
                     }
-                    var grid = Ext.getCmp(prototype.id + '-gridDataDetail');
-                    var country = (me.bean && me.bean.IN_COUNTRY) || '';
-                    var isHnSv = (country === 'HN' || country === 'SV');
-                    var colCusca = grid.columnManager.getHeaderByDataIndex('CUSCA');
-                    var colCodpse = grid.columnManager.getHeaderByDataIndex('CODPSE');
-                    var colReference = grid.columnManager.getHeaderByDataIndex('REFERENCE');
-                    if (colCusca) { colCusca.setHidden(isHnSv); }
-                    if (colCodpse) { colCodpse.setHidden(isHnSv); }
-                    if (colReference) { colReference.setHidden(!isHnSv); }
                 }
             }
         });

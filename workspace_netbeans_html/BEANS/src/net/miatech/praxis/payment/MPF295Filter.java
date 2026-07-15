@@ -35,6 +35,8 @@ public class MPF295Filter {
     public String IN_AWBNO = "";
     public String IN_SFILE = "";
     public String IN_STATE = "";
+    public String IN_BANDOC = "";
     public String option  = "";
     public double IN_MONTO  = 0;
+    public double IN_SALDO  = 0;
 }
