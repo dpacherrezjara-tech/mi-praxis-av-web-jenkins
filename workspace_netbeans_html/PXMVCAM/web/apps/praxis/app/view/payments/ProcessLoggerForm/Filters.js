@@ -51,46 +51,49 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.Filters', {
                                 {
                                     xtype: 'datefield',
                                     name: 'IN_FUUID',
-                                    fieldLabel: 'From',
+                                    fieldLabel: 'Fecha',
                                     format: 'Ymd',
-                                    editable: true, // Deshabilita la edición del campo
+                                    editable: true,
                                     labelWidth: 50,
                                     width: 150,
                                     value: new Date()
                                 },
                                 {
-                                  xtype:'textfield',
-                                  name: 'IN_CUUID',
-                                  width: 280,
-                                  labelWidth: 100,
-                                  fieldLabel: 'ID',
-                                  maxLenght: 32,
-                                  enforceMaxLenght: true
-                                },
-                                {
-                                  xtype:'textfield',
-                                  name: 'IN_PROCESO',
-                                  width: 280,
-                                  labelWidth: 100,
-                                  fieldLabel: 'Process Name',
-                                  maxLenght: 60,
-                                  enforceMaxLenght: true
+                                    xtype: 'combobox',
+                                    fieldLabel: 'Tipo',
+                                    name: 'IN_TIPO',
+                                    store: Ext.create('Ext.data.SimpleStore', {
+                                        fields: ['code', 'name'],
+                                        data: [
+                                            ['', 'Todos'],
+                                            ['F2', 'Fase 2'],
+                                            ['DB', 'Débitos'],
+                                            ['FO', 'Conciliación Operativa']
+                                        ]
+                                    }),
+                                    labelWidth: 50,
+                                    width: 220,
+                                    displayField: 'name',
+                                    valueField: 'code',
+                                    queryMode: 'local',
+                                    editable: false,
+                                    value: ''
                                 },
                                 {
                                     xtype: 'combobox',
-                                    fieldLabel: 'Status',
+                                    fieldLabel: 'Estado',
                                     name: 'IN_STPRO',
                                     store: Ext.create('Ext.data.SimpleStore', {
                                         fields: ['code', 'name'],
                                         data: [
-                                            ['', 'All'],
-                                            ['P', 'Processing'],
-                                            ['C', 'Completed'],
+                                            ['', 'Todos'],
+                                            ['P', 'Pendiente'],
+                                            ['C', 'Completado'],
                                             ['X', 'Error']
                                         ]
                                     }),
-                                    labelWidth: 80,
-                                    width: 210,
+                                    labelWidth: 55,
+                                    width: 200,
                                     displayField: 'name',
                                     valueField: 'code',
                                     queryMode: 'local',

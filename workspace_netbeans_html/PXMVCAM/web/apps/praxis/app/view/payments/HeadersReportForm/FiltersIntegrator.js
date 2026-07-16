@@ -58,12 +58,12 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.FiltersIntegrator', {
                                     labelWidth: 50,
                                     width: 140,
                                     name: 'IN_DATEF',
-//                                    value: new Date(anioActual, mesActual, 1),
-//                                    listeners: {
-//                                        change: 'onChangeDateSTBtn'
-//                                    },
-                                  id: prototype.id + '-datefieldFromST',
-                                  value: new Date()
+                                    //                                    value: new Date(anioActual, mesActual, 1),
+                                    //                                    listeners: {
+                                    //                                        change: 'onChangeDateSTBtn'
+                                    //                                    },
+                                    id: prototype.id + '-datefieldFromST',
+                                    value: new Date()
                                 },
                                 {
                                     xtype: 'datefield',
@@ -72,10 +72,10 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.FiltersIntegrator', {
                                     labelWidth: 30,
                                     width: 120,
                                     name: 'IN_DATET',
-//                                    value: new Date(anioActual, mesActual, 1),
-//                                    listeners: {
-//                                        change: 'onChangeDateSTBtn'
-//                                    },
+                                    //                                    value: new Date(anioActual, mesActual, 1),
+                                    //                                    listeners: {
+                                    //                                        change: 'onChangeDateSTBtn'
+                                    //                                    },
                                     id: prototype.id + '-datefieldToST',
                                     value: new Date()
                                 },
@@ -85,11 +85,32 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.FiltersIntegrator', {
                                     labelWidth: 90,
                                     width: 280,
                                     name: 'IN_FILENAME',
-                                    maxLength: 20,
+                                    maxLength: 200,
                                     enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
                                     listeners: {
                                         specialkey: 'onEnterKeyPress'
                                     }
+                                },
+                                {
+                                    xtype: 'combobox',
+                                    fieldLabel: 'File Type',
+                                    name: 'IN_FILETYPE',
+                                    store: Ext.create('Ext.data.SimpleStore', {
+                                        fields: ['code', 'name'],
+                                        data: [
+                                            ['', 'All'],
+                                            ['ReportSAP', 'Report SAP'],
+                                            ['REJECTED', 'Rejected'],
+                                            ['SUCCESS', 'Success']
+                                        ]
+                                    }),
+                                    labelWidth: 60,
+                                    width: 210,
+                                    displayField: 'name',
+                                    valueField: 'code',
+                                    queryMode: 'local',
+                                    editable: false,
+                                    value: ''
                                 },
                                 {
                                     xtype: 'combobox',
@@ -99,10 +120,8 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.FiltersIntegrator', {
                                         fields: ['code', 'name'],
                                         data: [
                                             ['', 'All'],
-                                            ['L', 'Loaded'],
-                                            ['F', 'Formatted'],
-                                            ['P', 'Processed'],
-                                            ['E', 'Error'],
+                                            ['1', 'Found'],
+                                            ['0', 'Not Found']
                                         ]
                                     }),
                                     labelWidth: 60,
@@ -119,13 +138,24 @@ Ext.define('Ext.Praxis.view.payments.HeadersReportForm.FiltersIntegrator', {
                                     labelWidth: 90,
                                     width: 280,
                                     name: 'IN_FILEREF',
+                                    maxLength: 200,
+                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
+                                    listeners: {
+                                        specialkey: 'onEnterKeyPress'
+                                    }
+                                },
+                                {
+                                    xtype: 'textfield',
+                                    fieldLabel: 'Header Text',
+                                    labelWidth: 100,
+                                    width: 280,
+                                    name: 'IN_HEADER',
                                     maxLength: 20,
                                     enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
                                     listeners: {
                                         specialkey: 'onEnterKeyPress'
                                     }
                                 },
-
                             ]
                         }
                     ]

@@ -7,39 +7,52 @@ Ext.define('Ext.Praxis.controller.payments.ReverseAccounting.ReverseAccountingCo
         baseURL: CONTEXTPATH + '/ReverseAccounting',
         timeout: 200000
     }),
-    miscRequest: axios.create({
-        baseURL: CONTEXTPATH + '/MiscellaneousCatalog',
-        timeout: 200000
-    }),
-    init: function (view) {
+    init: function () {
     },
     afterRender: async function () {
         await this.loadFilters();
-        this.loadGrid();
     },
-    loadFilters: async function(){
+    loadFilters: async function () {
         const me = this;
         me.view.setLoading(true);
-        const misc = await global.callStoreGet('PRAXISMP','SPMC001',{});
-        global.setComboStore(Ext.getCmp(prototype.id + '-cmbCODPRO'),misc.lstRs.at(0),'CODE','NAME','');
-        me.view.setLoading(false);
-      //PRAXISMP.SPMC001  
+        try {
+            const res = await global.callStoreGet('PRAXISMP', 'MPS124', {});
+            me.procesadores = (res.lstRs && res.lstRs.at(0)) || [];
+            me._refreshProcessors();
+        } catch (e) {
+            console.error(e);
+        } finally {
+            me.view.setLoading(false);
+        }
+    },
+    _refreshProcessors: function () {
+        const me = this;
+        const proceso = Ext.getCmp(prototype.id + '-cmbPROCESO').getValue();
+        const acctype = Ext.getCmp(prototype.id + '-cmbACCTYPE').getValue();
+        const data = me.procesadores.filter(x =>
+            x.PROC_TYPE.trim() === proceso &&
+            x.ACC_TYPE.trim()  === acctype
+        );
+        global.setComboStore(Ext.getCmp(prototype.id + '-cmbCODPRO'), data, 'PROCESADOR', 'PROC_DESC', '');
+    },
+    onChangeProceso: function () {
+        this._refreshProcessors();
+    },
+    onChangeAccType: function () {
+        this._refreshProcessors();
     },
     formatParams: function () {
         const formFilters = Ext.getCmp(prototype.id + '-formFilters').getForm();
         console.log('Search Params: ', formFilters.getValues());
         return formFilters.getValues();
     },
-    loadGrid: async function () {
+    loadGrid: function () {
         const me = this;
         let params = me.formatParams();
-        const mainPanel = Ext.getCmp(prototype.id + '-mainContent');
-        mainPanel.removeAll();
-        const panelDetail = Ext.create('Ext.Praxis.view.payments.ReverseAccountingForm.Grids.ReverseAccountingGrid', {
-            id: prototype.id + '-ReverseAccountingGrid-1',
-            searchParams: params
-        });
-        mainPanel.add(panelDetail);
+        const grid = Ext.getCmp(prototype.id + '-mainGrid');
+        if (grid) {
+            grid.getController().reload(params);
+        }
     },
     //<editor-fold defaultstate="collapsed" desc="Handlers">
     onClickSearchBtn: function () {
@@ -63,13 +76,12 @@ Ext.define('Ext.Praxis.controller.payments.ReverseAccounting.ReverseAccountingCo
         const formFilters = Ext.getCmp(prototype.id + '-formFilters').getForm();
         formFilters.reset();
     },
-    onEnterKeyPress: function (field, e) {
+    onEnterKeyPress: function (_field, e) {
         if (e.getKey() === e.ENTER) {
             this.onClickSearchBtn();
         }
     },
     onClickProcessBtn: function () {
-        const me = this;
         const newWindow = Ext.create('Ext.Praxis.view.payments.ReverseAccountingForm.DataEntrys.ProcessDataEntry', {
             id: prototype.idEntry + '-ProcessDataEntry',
         });

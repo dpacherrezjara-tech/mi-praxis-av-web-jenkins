@@ -57,47 +57,49 @@ Ext.define('Ext.Praxis.controller.payments.HeadersReport.HeadersReportController
     },
     onClickSearchBtn: function () {
         const me = this;
-
-        const params = me.formatParams();
         const rb = Ext.getCmp(prototype.id + '-viewOption').getValue().opcion;
 
-        // Si estamos en Headers
         if (rb === '1') {
+            const params = me.formatParams();
             const headersContainer = Ext.getCmp(prototype.id + '-HeadersGrid');
             headersContainer.removeAll();
-            const grid = Ext.create('Ext.Praxis.view.payments.HeadersReportForm.Grids.HeadersGrid', {
+            headersContainer.add(Ext.create('Ext.Praxis.view.payments.HeadersReportForm.Grids.HeadersGrid', {
                 id: prototype.id + '-HeadersGridCmp',
-                searchParams: params,
+                storeParams: params,
+                height: prototype.height,
+                width: prototype.width,
                 filters: me.filters
-            });
-            headersContainer.add(grid);
+            }));
         }
 
-        // Si estamos en Sequence
         if (rb === '2') {
+            const params = me.formatParams();
+            // MPS307 espera fechas en formato YYMM (4 chars), no YYYYMM (6)
+            if (params.IN_DATEF && params.IN_DATEF.length === 6) params.IN_DATEF = params.IN_DATEF.slice(2);
+            if (params.IN_DATET && params.IN_DATET.length === 6) params.IN_DATET = params.IN_DATET.slice(2);
             const sequenceContainer = Ext.getCmp(prototype.id + '-SequencesGrid');
             sequenceContainer.removeAll();
-            const grid = Ext.create('Ext.Praxis.view.payments.HeadersReportForm.Grids.SequencesGrid', {
+            sequenceContainer.add(Ext.create('Ext.Praxis.view.payments.HeadersReportForm.Grids.SequencesGrid', {
                 id: prototype.id + '-SequencesGridCmp',
-                searchParams: params,
+                storeParams: params,
+                height: prototype.height,
+                width: prototype.width,
                 filters: me.filters
-            });
-            sequenceContainer.add(grid);
+            }));
         }
 
-        // Si estamos en Integrador
         if (rb === '3') {
-            let params = me.formatParamsIntegrator();
+            const integrParams = me.formatParamsIntegrator();
             const integradorContainer = Ext.getCmp(prototype.id + '-contentIntegrator');
             integradorContainer.removeAll();
-            const panelDetail = Ext.create('Ext.Praxis.view.payments.HeadersReportForm.Grids.HeaderIntegratorGrid', {
+            integradorContainer.add(Ext.create('Ext.Praxis.view.payments.HeadersReportForm.Grids.HeaderIntegratorGrid', {
                 id: prototype.id + '-HeaderIntegratorGrid-1',
-                searchParams: params,
+                storeParams: Ext.apply(integrParams, { IN_FILEID: '', IN_MODE: 'M' }),
+                height: prototype.height,
+                width: prototype.width,
                 filters: me.filters
-            });
-            integradorContainer.add(panelDetail);
+            }));
         }
-
     },
     onDisplayFilterBtn: function () {
         const filters = Ext.getCmp(prototype.id + '-panelFilters');

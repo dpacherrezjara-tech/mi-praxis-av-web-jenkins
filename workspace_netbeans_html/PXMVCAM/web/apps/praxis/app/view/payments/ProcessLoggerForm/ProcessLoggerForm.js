@@ -11,7 +11,12 @@ Ext.define('Ext.Praxis.view.payments.ProcessLoggerForm.ProcessLoggerForm', {
         'Ext.Praxis.controller.payments.ProcessLogger.ProcessLoggerController',
         'Ext.Praxis.view.payments.ProcessLoggerForm.Options',
         'Ext.Praxis.view.payments.ProcessLoggerForm.Filters',
-        'Ext.Praxis.view.payments.ProcessLoggerForm.Grids.ProcessLoggerGrid'
+        'Ext.Praxis.view.payments.ProcessLoggerForm.Grids.ProcessLoggerGrid',
+        'Ext.Praxis.view.payments.ProcessLoggerForm.Drilldown.DrilldownWindow',
+        'Ext.Praxis.view.payments.ProcessLoggerForm.Drilldown.NivelDetalleProceso',
+        'Ext.Praxis.view.payments.ProcessLoggerForm.Drilldown.NivelLineasDetalle',
+        'Ext.Praxis.view.payments.ProcessLoggerForm.Drilldown.ActualizarCodigosWindow',
+        'Ext.Praxis.view.payments.ProcessLoggerForm.Drilldown.EditDescbpoWindow'
     ],
     controller: 'ProcessLoggerController',
     layout: {

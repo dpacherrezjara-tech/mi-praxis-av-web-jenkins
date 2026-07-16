@@ -12,10 +12,9 @@ Ext.define('Ext.Praxis.controller.payments.ReverseAccounting.ReverseAccountingDa
         const me = this;
         me.view.setLoading(true);
         try {
-            const res = await global.callStoreGet('PRAXISMP', 'SPRAC002', me.view.searchParams);
+            const res = await global.callStoreGet('PRAXISMP', 'MPS118', me.view.searchParams);
 
             me.obj = res.lstRs.at(0).at(0);
-            me.lstAcc = res.lstRs.at(1);
             global.cleanPXobj(me.obj);
             me.bindInformation();
         } catch (e) {
@@ -28,9 +27,7 @@ Ext.define('Ext.Praxis.controller.payments.ReverseAccounting.ReverseAccountingDa
         const me = this;
         const form = Ext.getCmp(prototype.idDE + '-mainForm').getForm();
         form.reset();
-        const grid = Ext.getCmp(prototype.idDE + '-accountingGrid');
         form.setValues(me.obj);
-        grid.setStore(new Ext.data.Store({data: me.lstAcc}));
         if (me.obj.STREVI === 'Y') {
             Ext.getCmp(prototype.idDE + '-txtBpoComment').setReadOnly(true);
             Ext.getCmp(prototype.idDE + '-btn-save').hide();
@@ -44,29 +41,24 @@ Ext.define('Ext.Praxis.controller.payments.ReverseAccounting.ReverseAccountingDa
         const me = this;
         let params = {
             ...me.view.searchParams,
-            IN_COMMENT: Ext.getCmp(prototype.idDE + '-txtBpoComment').getValue()
+            IN_BPOCOMM: Ext.getCmp(prototype.idDE + '-txtBpoComment').getValue()
         };
-        if (params.IN_COMMENT.trimEnd() === '') {
+        if (params.IN_BPOCOMM.trimEnd() === '') {
             me.notifier.alert('Invalid comment');
             return;
         }
-        console.log('Update params: ', params);
         let onOk = async () => {
             me.view.setLoading(true);
-            await global.callStorePost('PRAXISMP', 'SPRAC003', params);
+            await global.callStorePost('PRAXISMP', 'MPS119', params);
             me.view.setLoading(false);
             me.notifier.success('Updated Successfully');
             me.loadInfo();
         };
         me.notifier.confirm(
-                'Are you sure to Save?',
-                onOk,
-                null,
-                {
-                    labels: {
-                        confirm: '.:PRAXIS:.'
-                    }
-                }
+            'Are you sure to Save?',
+            onOk,
+            null,
+            { labels: { confirm: '.:PRAXIS:.' } }
         );
     },
     onCancelClick: function () {
