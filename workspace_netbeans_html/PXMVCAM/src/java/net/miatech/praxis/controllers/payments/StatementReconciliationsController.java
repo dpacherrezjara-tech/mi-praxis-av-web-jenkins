@@ -628,8 +628,6 @@ public class StatementReconciliationsController extends BaseController {
         return lst;
     }
 
-    
-
     /// detalle cash
     @RequestMapping(value = "searchCashDetail")
     public @ResponseBody
@@ -4541,8 +4539,6 @@ public class StatementReconciliationsController extends BaseController {
     }
 
     // CASH
-    
-
     @RequestMapping(value = "getCSV")
     public @ResponseBody
     void getCSV(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -5010,11 +5006,11 @@ public class StatementReconciliationsController extends BaseController {
                 c.setCellValue(row.NETOC); // Asumiendo que es double/BigDecimal
                 c.setCellStyle(numberStyle); // APLICAR ESTILO NUMÉRICO AQUÍ
 
-              // --- ÚLTIMA COLUMNA: Source ---
+                // --- ÚLTIMA COLUMNA: Source ---
                 c = excelRow.createCell(col++);
-                
+
                 String sourceVal = row.CCUSTPRO != null ? row.CCUSTPRO.trim() : "";
-                
+
                 if ("00".equals(sourceVal)) {
                     sourceVal = "BSP";
                 } else if ("01".equals(sourceVal)) {
@@ -5255,7 +5251,6 @@ public class StatementReconciliationsController extends BaseController {
     }
 
     //MY OF MY
-    
     @RequestMapping(value = "searchDashboardCash")
     public @ResponseBody
     String searchDashboardCash(ModelMap map, HttpServletRequest request) {
@@ -5303,7 +5298,7 @@ public class StatementReconciliationsController extends BaseController {
         }
         return lst;
     }
-    
+
     @RequestMapping(value = "searchDataDetailSecundary")
     public @ResponseBody
     String searchDataDetailSecundary(ModelMap map, HttpServletRequest request) {
@@ -5365,7 +5360,7 @@ public class StatementReconciliationsController extends BaseController {
         }
         return result;
     }
-    
+
     @RequestMapping(value = "searchCash")
     public @ResponseBody
     String searchCash(ModelMap map, HttpServletRequest request) {
@@ -5413,7 +5408,7 @@ public class StatementReconciliationsController extends BaseController {
         }
         return lst;
     }
-    
+
     @RequestMapping(value = "searchDetLiquidCash")
     public @ResponseBody
     String searchDetLiquidCash(ModelMap map, HttpServletRequest request) {
@@ -5475,7 +5470,7 @@ public class StatementReconciliationsController extends BaseController {
         }
         return result;
     }
-    
+
     @RequestMapping(value = "updateSummary")
     public @ResponseBody
     String updateSummary(ModelMap map, HttpServletRequest request) {
@@ -5504,7 +5499,7 @@ public class StatementReconciliationsController extends BaseController {
 
         return new Gson().toJson(map);
     }
-    
+
     @RequestMapping(value = "getXLSXDetCashMainExtractPending")
     public @ResponseBody
     void getXLSXDetCashMainExtractPending(HttpServletRequest request, HttpServletResponse response) {
@@ -5697,11 +5692,11 @@ public class StatementReconciliationsController extends BaseController {
                 c.setCellValue(row.NETOC); // Asumiendo que es double/BigDecimal
                 c.setCellStyle(numberStyle); // APLICAR ESTILO NUMÉRICO AQUÍ
 
-              // --- ÚLTIMA COLUMNA: Source ---
+                // --- ÚLTIMA COLUMNA: Source ---
                 c = excelRow.createCell(col++);
-                
+
                 String sourceVal = row.CCUSTPRO != null ? row.CCUSTPRO.trim() : "";
-                
+
                 if ("00".equals(sourceVal)) {
                     sourceVal = "BSP";
                 } else if ("01".equals(sourceVal)) {
@@ -5739,7 +5734,7 @@ public class StatementReconciliationsController extends BaseController {
             throw new SpringException(e);
         }
     }
-    
+
     @RequestMapping(value = "getXLSXDashboard")
     public @ResponseBody
     void getXLSXDashboard(HttpServletRequest request, HttpServletResponse response) {
@@ -5926,7 +5921,7 @@ public class StatementReconciliationsController extends BaseController {
             throw new SpringException(e);
         }
     }
-    
+
     @RequestMapping(value = "getXLSXDetailSecundary")
     public @ResponseBody
     void getXLSXDetailSecundary(HttpServletRequest request, HttpServletResponse response) {
@@ -6119,11 +6114,11 @@ public class StatementReconciliationsController extends BaseController {
                 c.setCellValue(row.NETOC); // Asumiendo que es double/BigDecimal
                 c.setCellStyle(numberStyle); // APLICAR ESTILO NUMÉRICO AQUÍ
 
-              // --- ÚLTIMA COLUMNA: Source ---
+                // --- ÚLTIMA COLUMNA: Source ---
                 c = excelRow.createCell(col++);
-                
+
                 String sourceVal = row.CCUSTPRO != null ? row.CCUSTPRO.trim() : "";
-                
+
                 if ("00".equals(sourceVal)) {
                     sourceVal = "BSP";
                 } else if ("01".equals(sourceVal)) {
@@ -6161,11 +6156,12 @@ public class StatementReconciliationsController extends BaseController {
             throw new SpringException(e);
         }
     }
-    
+
     @RequestMapping(value = "updateFields102", method = RequestMethod.POST)
-    public @ResponseBody String updateFields102(ModelMap map, HttpServletRequest request) {
+    public @ResponseBody
+    String updateFields102(ModelMap map, HttpServletRequest request) {
         System.out.println("-------------- MPF102 : updateFields102 -------------");
-        
+
         try {
             String beanString = request.getParameter("beanString");
             Gson gson = new Gson();
@@ -6189,8 +6185,68 @@ public class StatementReconciliationsController extends BaseController {
             map.put("Mensaje", "Error del servidor: " + e.getMessage());
             e.printStackTrace();
         }
-        
+
         return new Gson().toJson(map);
     }
-    
+
+    @RequestMapping(value = "downloadPdfVentaDirecta", method = RequestMethod.GET)
+    public void downloadPdfVentaDirecta(HttpServletRequest request, HttpServletResponse response) {
+        String sfile = request.getParameter("sfile");
+        String sagent = request.getParameter("sagent");
+        String year = request.getParameter("year");
+        String disposition = request.getParameter("disposition");
+
+        // Por defecto 'inline' para que se previsualice en el iframe y no se descargue directamente
+        if (disposition == null || disposition.trim().isEmpty()) {
+            disposition = "inline";
+        }
+
+        // Validar que vengan los datos obligatorios
+        if (sfile == null || sfile.trim().isEmpty()
+                || sagent == null || sagent.trim().isEmpty()
+                || year == null || year.trim().isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
+        // Lógica dinámica de entorno (Test, Dev, Prod)
+        String ruta = this.serverSession.propertySession.get("DB_SERVER_DEFAULT_TYPE").toString();
+        String rutaCarpeta;
+        if ("ATT".equals(ruta)) {
+            rutaCarpeta = "test";
+        } else if ("DEV".equals(ruta)) {
+            rutaCarpeta = "dev";
+        } else if ("PRO".equals(ruta)) {
+            rutaCarpeta = "prod";
+        } else {
+            rutaCarpeta = "";
+        }
+
+        // Construcción de la ruta dinámica para VENTA DIRECTA
+        // Ejemplo resultado: \\10.0.0.87\av\Efectivo\dev\process\VentaDirecta\76990163\2026\archivo\76990163_20260601_CASH 01JUN2026.pdf
+        String pdfPath = "\\\\10.0.0.87\\av\\Efectivo\\" + rutaCarpeta + "\\process\\VentaDirecta\\" + sagent + "\\" + year + "\\archivo\\" + sfile;
+
+        java.io.File pdfFile = new java.io.File(pdfPath);
+        if (!pdfFile.exists() || !pdfFile.isFile()) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            logError.warn("downloadPdfVentaDirecta: archivo no encontrado -> " + pdfPath);
+            return;
+        }
+
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", disposition + "; filename=\"" + sfile + "\"");
+        response.setContentLength((int) pdfFile.length());
+
+        // Escribir el flujo de bytes hacia el frontend
+        try (java.io.FileInputStream fis = new java.io.FileInputStream(pdfFile); java.io.OutputStream os = response.getOutputStream()) {
+            byte[] buf = new byte[8192];
+            int n;
+            while ((n = fis.read(buf)) != -1) {
+                os.write(buf, 0, n);
+            }
+        } catch (java.io.IOException e) {
+            logError.error("downloadPdfVentaDirecta -> " + e.getMessage(), e);
+        }
+    }
+
 }
