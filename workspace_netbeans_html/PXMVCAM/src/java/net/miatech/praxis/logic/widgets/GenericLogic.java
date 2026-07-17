@@ -23,5 +23,6 @@ public interface GenericLogic {
 
     void callStoreProcedureStream(CallStoreFilter filter,
                                   Consumer<Map<String, Object>> outValsConsumer,
+                                  Runnable newResultSetConsumer,
                                   Consumer<Map<String, Object>> rowConsumer) throws Exception;
 }

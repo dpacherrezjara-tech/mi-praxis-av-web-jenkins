@@ -112,13 +112,12 @@ public class GenericDAO implements GenericLogic {
     @Async
     @Override
     public Map<String, Object> callStoreProcedureAsync(CallStoreFilter filter) throws Exception {
-        List<Map<String, Object>> rows = new ArrayList<>();
+        List<List<Map<String, Object>>> listaDeResultados = new ArrayList<>();
         Map<String, Object>[] outValsRef = new Map[]{new HashMap<>()};
         callStoreProcedureStream(filter,
                 outVals -> outValsRef[0] = outVals,
-                rows::add);
-        List<List<Map<String, Object>>> listaDeResultados = new ArrayList<>();
-        listaDeResultados.add(rows);
+                () -> listaDeResultados.add(new ArrayList<>()),
+                row -> listaDeResultados.get(listaDeResultados.size() - 1).add(row));
         Map<String, Object> res = new HashMap<>();
         res.put("lstVals", outValsRef[0]);
         res.put("lstRs", listaDeResultados);
@@ -128,10 +127,11 @@ public class GenericDAO implements GenericLogic {
     @Override
     public void callStoreProcedureStream(CallStoreFilter filter,
                                           Consumer<Map<String, Object>> outValsConsumer,
+                                          Runnable newResultSetConsumer,
                                           Consumer<Map<String, Object>> rowConsumer) throws Exception {
         MapSqlParameterSource params = filter.getParams().isEmpty()
                 ? null
                 : new MapSqlParameterSource(filter.getParams());
-        jdbcUtils.executeSQPStream(filter.getLibrary(), filter.getProcedure(), params, outValsConsumer, rowConsumer);
+        jdbcUtils.executeSQPStream(filter.getLibrary(), filter.getProcedure(), params, outValsConsumer, newResultSetConsumer, rowConsumer);
     }
 }

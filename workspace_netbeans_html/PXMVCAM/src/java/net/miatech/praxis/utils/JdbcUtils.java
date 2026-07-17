@@ -137,6 +137,7 @@ public class JdbcUtils {
     public void executeSQPStream(String library, String pgm,
                                   MapSqlParameterSource params,
                                   Consumer<Map<String, Object>> outValsConsumer,
+                                  Runnable newResultSetConsumer,
                                   Consumer<Map<String, Object>> rowConsumer) throws Exception {
         CustomJdbcTemplate jdbcTemplate = this.getJdbcTemplate();
         final Map<String, Object> inParamValues = (params != null) ? params.getValues() : new HashMap<String, Object>();
@@ -221,11 +222,13 @@ public class JdbcUtils {
                 // Stream result sets row by row — O(1) heap
                 ResultSet rs = cs.getResultSet();
                 if (rs != null) {
+                    newResultSetConsumer.run();
                     streamResultSet(rs, rowConsumer);
                 }
                 while (cs.getMoreResults()) {
                     rs = cs.getResultSet();
                     if (rs != null) {
+                        newResultSetConsumer.run();
                         streamResultSet(rs, rowConsumer);
                     }
                 }

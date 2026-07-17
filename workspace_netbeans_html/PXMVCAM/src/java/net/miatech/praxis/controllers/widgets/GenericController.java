@@ -49,14 +49,29 @@ public class GenericController {
         response.setContentType("application/json;charset=UTF-8");
         final OutputStreamWriter writer = new OutputStreamWriter(response.getOutputStream(), StandardCharsets.UTF_8);
         final Gson gson = new Gson();
+        final AtomicBoolean firstResultSet = new AtomicBoolean(true);
         final AtomicBoolean firstRow = new AtomicBoolean(true);
+        final AtomicBoolean anyResultSet = new AtomicBoolean(false);
 
         logic.callStoreProcedureStream(params,
             outVals -> {
                 try {
                     writer.write("{\"lstVals\":");
                     writer.write(gson.toJson(outVals));
-                    writer.write(",\"lstRs\":[[");
+                    writer.write(",\"lstRs\":[");
+                    writer.flush();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            },
+            () -> {
+                try {
+                    if (!firstResultSet.getAndSet(false)) {
+                        writer.write("],");
+                    }
+                    writer.write("[");
+                    firstRow.set(true);
+                    anyResultSet.set(true);
                     writer.flush();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -74,7 +89,7 @@ public class GenericController {
                 }
             }
         );
-        writer.write("]]}");
+        writer.write(anyResultSet.get() ? "]]}" : "]}");
         writer.flush();
     }
 
