@@ -274,6 +274,8 @@ public class A2290 {
     public String TYPETRAN = "";
     public String FCONCEP = "";
     public String USERF = "";
+    public String SFILE = "";
+    public String NPAG = "";
     //Variables del Sistema
     public String USCR = "";
     public String FECR = "";

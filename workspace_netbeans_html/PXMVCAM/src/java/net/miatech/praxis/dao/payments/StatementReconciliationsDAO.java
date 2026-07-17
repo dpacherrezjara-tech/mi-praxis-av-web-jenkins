@@ -3674,6 +3674,8 @@ public class StatementReconciliationsDAO {
                 beanTkt.CBATCH = rst.getString("CBATCH");
                 beanTkt.FECR = rst.getString("FECR");
                 beanTkt.DPERIOD = rst.getString("DPERIOD");
+                beanTkt.SFILE = rst.getString("SFILE");
+                beanTkt.NPAG = rst.getString("NPAG");
 
                 lstTkts.add(beanTkt);
             }
