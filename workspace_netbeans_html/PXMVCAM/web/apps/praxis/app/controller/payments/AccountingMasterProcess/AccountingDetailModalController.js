@@ -28,7 +28,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
         const me = this;
         const view = me.getView();
         const idcont = view.idcont;
-        const admin = await me._isAdmin();
+        //const admin = await me._isAdmin();
         
         view.setTitle('Accounting Detail: ' + idcont);
         me._applyButtonVisibility(view.rowData || {});
@@ -43,13 +43,13 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
         // Cambios individuales pendientes de edit-status (en memoria, sin enviar)
         me._pendingErrChangesMap = {};
 
-        // Mostrar botones bulk solo a admins (empiezan deshabilitados)
+        // Botones bulk visibles para todos los usuarios
         const bulkBtn = view.down('#btn-bulk-reverse');
-        if (bulkBtn) bulkBtn.setVisible(admin);
+        if (bulkBtn) bulkBtn.setVisible(true);
         const bulkErrBtn = view.down('#btn-bulk-save-errors');
-        if (bulkErrBtn) bulkErrBtn.setVisible(admin);
+        if (bulkErrBtn) bulkErrBtn.setVisible(true);
         const bulkErrRevBtn = view.down('#btn-bulk-reverse-errors');
-        if (bulkErrRevBtn) bulkErrRevBtn.setVisible(admin);
+        if (bulkErrRevBtn) bulkErrRevBtn.setVisible(true);
 
         // Solo carga el primer tab; los demás cargan al hacer click
         me._loadedTabs = {};
@@ -158,7 +158,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
 
         set('btn-download', ['3', '5', '9'].includes(st));
         set('btn-sftp', st === '3' && admin);
-        set('btn-reverse', ['1', '2', '3', '7', '8'].includes(st) && admin);
+        set('btn-reverse', ['1', '2', '3', '7', '8'].includes(st));
     },
 
     // Carga un tab por su itemId. Marca como cargado para no repetir en revisitas.
@@ -566,11 +566,11 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
 
     _toggleQueueItem: async function (record, widgetView) {
         const me = this;
-        const admin = await me._isAdmin();
-        if (!admin) {
-            new AWN().warning('Solo usuarios administradores pueden usar esta acción masiva.');
-            return;
-        }
+        //const admin = await me._isAdmin();
+        //if (!admin) {
+        //    new AWN().warning('Solo usuarios administradores pueden usar esta acción masiva.');
+        //    return;
+        //}
 
         // Delegar según la grilla origen
         if (widgetView && widgetView.itemId === 'grid-interrors') {
