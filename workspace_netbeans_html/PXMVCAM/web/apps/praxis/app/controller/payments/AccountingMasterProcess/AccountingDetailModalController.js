@@ -1146,38 +1146,36 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
         try {
             const idcont = String(view.idcont || '');
 
-            // Agrupar _errQueue por TIPOERR y enviar a MPS194 con STREV='1'
-            const groups = {};
-            (me._errQueue || []).forEach(function (r) {
-                const t = String(r.TIPOERR || '');
-                if (!groups[t]) groups[t] = [];
-                groups[t].push(r);
+            // MPS475 (errores de interfaz) no retorna PROCESO; se toma de la tabla
+            // original de deposits (MPS474), cruzando por BANDOC/DATECI/TRANCI.
+            const depRes = await global.callStoreGet('PRAXISMP', 'MPS474', {
+                IN_IDCONT: idcont,
+                IN_REFER: '',
+                IN_BANDOC: ''
+            });
+            const depRows = (depRes && depRes.lstRs && depRes.lstRs[0]) || [];
+            const procesoMap = {};
+            depRows.forEach(function (r) {
+                procesoMap[[r.BANDOC, r.DATECI, r.TRANCI].join('-')] = r.PROCESO;
             });
 
-            for (const tipoerr of Object.keys(groups)) {
-                const payloadRows = groups[tipoerr].map(function (r) {
-                    return {
-                        BANDOC: String(r.BANDOC || ''),
-                        DATECI: String(r.DATECI || ''),
-                        TRANCI: String(r.TRANCI || ''),
-                        STREV: '1'
-                    };
-                });
-                await global.callStoreGet('PRAXISMP', 'MPS194', {
-                    IN_IDCONT: idcont,
-                    IN_TIPOERR: tipoerr,
-                    IN_PAYLOAD: JSON.stringify(payloadRows)
-                });
+            const rows = (me._errQueue || []).map(function (r) {
+                const merged = Ext.apply({}, r);
+                merged.PROCESO = procesoMap[[r.BANDOC, r.DATECI, r.TRANCI].join('-')] || '';
+                return merged;
+            });
+
+            const res = await me._monolithReq.post('/rollbackDepositBulk', { rows: rows });
+            const d = res.data;
+            if (!(d && d.success)) {
+                throw new Error((d && d.message) || 'No se pudieron reversar los errores');
             }
 
-            new AWN().success('Errores de interfaz reversados correctamente');
+            new AWN().success(d.message || 'Errores de interfaz reversados correctamente');
             me._errQueue = [];
             me._errQueueSet = {};
-            me._updateBulkReverseErrorsBtn();
 
-            me._loadTab('tab-interrors');
-            if (Ext.isFunction(view.onAfterAction)) view.onAfterAction();
-            await me._fetchLiveRow(view.idcont);
+            me._afterAction();
         } catch (e) {
             new AWN().alert('Error: ' + (e.message || 'No se pudieron reversar los errores'));
         } finally {
