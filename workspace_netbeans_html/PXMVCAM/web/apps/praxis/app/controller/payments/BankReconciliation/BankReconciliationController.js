@@ -4179,7 +4179,7 @@ Ext.util.CSS.createStyleSheet(`
                         },
                         success: function (response, options) {
 //                Ext.getBody().unmask('Loading...');
-                        var res = Ext.JSON.decode(response.responseText);
+                        /*var res = Ext.JSON.decode(response.responseText);
                                 var obj = res.objINF020;
                                 me.nivel_usr = obj.NIVEL;
                                 if (me.nivel_usr === 'SUP') {
@@ -4188,7 +4188,9 @@ Ext.util.CSS.createStyleSheet(`
                         } else {
                         Ext.getCmp(prototype.id + '-panelAsignar').setVisible(false);
                                 Ext.getCmp(prototype.id + '-panelUserIatas').setVisible(false);
-                        }
+                        }*/
+                            Ext.getCmp(prototype.id + '-panelAsignar').setVisible(true);
+                            Ext.getCmp(prototype.id + '-panelUserIatas').setVisible(true);
                         }
                 });
                         var store_auditores = Ext.create('Ext.data.Store', {
