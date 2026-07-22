@@ -110,7 +110,9 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.Filters', {
                                             ['REG', 'Regular'],
                                             ['DEB', 'Debits'],
                                             ['ADJ', 'Adjustment'],
-                                            ['ADM', "ADM's"]
+                                            ['REV', 'Reversa'],
+                                            ['ADM', "ADM's"],
+                                            ['SAL', 'Carga CeCo']
                                         ]
                                     }),
                                     labelWidth: 90,
