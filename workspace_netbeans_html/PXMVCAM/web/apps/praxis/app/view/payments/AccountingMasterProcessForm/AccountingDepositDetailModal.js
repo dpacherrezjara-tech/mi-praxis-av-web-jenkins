@@ -8,6 +8,8 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDepos
     rowData: null,
     /** @cfg {String} stcont  STCONT del contrato padre — limita la edición */
     stcont: null,
+    /** @cfg {Boolean} canEdit  Si el usuario actual es administrador contable (ver MPS670 / global.isAdminUserContable) */
+    canEdit: false,
 
     title: 'Deposit Detail',
     width: 1350,
@@ -15,8 +17,6 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDepos
     modal: true,
     border: false,
     layout: 'fit',
-
-    ADMIN_USERS: ['MPACHECO', 'PLOPEZ', 'MPACHECOT', 'PXAVAPIT', 'PXAVAPI', 'GLADYSAT', 'GLADYSA'],
 
     // ── State ─────────────────────────────────────────────────────────────────
     _masterData: null,        // array maestro en memoria — fuente única de verdad
@@ -37,8 +37,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDepos
         me._newRowKeysMap = {};
 
         const EDITABLE_STCONT = ['2', '3'];
-        const user = ((document.getElementById('menuUser') || {}).textContent || '').trim();
-        me._canEdit = me.ADMIN_USERS.includes(user) && EDITABLE_STCONT.includes(String(me.stcont || ''));
+        me._canEdit = !!me.canEdit && EDITABLE_STCONT.includes(String(me.stcont || ''));
 
         // ── Editor factories ─────────────────────────────────────────────────
         const EC = 'praxis-editable-cell';
