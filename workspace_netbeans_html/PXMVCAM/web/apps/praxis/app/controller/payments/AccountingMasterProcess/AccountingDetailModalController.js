@@ -416,13 +416,15 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
     // Deposit row detail
     // =========================================================================
 
-    _openDepositDetail: function (rowData) {
+    _openDepositDetail: async function (rowData) {
         const me = this;
         const view = me.getView();
         const stcont = String((me._liveRow || view.rowData || {}).STCONT || '');
+        const admin = await me._isAdmin();
         Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDepositDetailModal', {
             rowData: rowData,
-            stcont: stcont
+            stcont: stcont,
+            canEdit: admin
         }).show();
     },
 

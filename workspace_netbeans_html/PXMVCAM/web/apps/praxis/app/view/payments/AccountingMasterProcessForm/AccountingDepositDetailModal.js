@@ -8,6 +8,8 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDepos
     rowData: null,
     /** @cfg {String} stcont  STCONT del contrato padre — limita la edición */
     stcont: null,
+    /** @cfg {Boolean} canEdit  Si el usuario actual es administrador contable (ver MPS670 / global.isAdminUserContable) */
+    canEdit: false,
 
     title: 'Deposit Detail',
     width: 1350,
@@ -16,14 +18,19 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDepos
     border: false,
     layout: 'fit',
 
-    ADMIN_USERS: ['MPACHECO', 'PLOPEZ', 'MPACHECOT', 'PXAVAPIT', 'PXAVAPI', 'GLADYSAT', 'GLADYSA'],
-
     // ── State ─────────────────────────────────────────────────────────────────
-    _masterData: null,        // array maestro en memoria — fuente única de verdad
-    _pendingChangesMap: null, // { rowKey: rowData } — filas con cambios pendientes
-    _newRowKeysMap: null,     // { rowKey: true }    — filas recién añadidas
+    _masterData: null,          // array maestro en memoria — fuente única de verdad
+    _pendingChangesMap: null,   // { rowKey: rowData } — filas con cambios pendientes
+    _newRowKeysMap: null,       // { rowKey: true }    — filas recién añadidas
+    _markedDeleteKeysMap: null, // { rowKey: true }    — filas existentes (A4545HREGI='DF') marcadas para eliminar
+    _origModifMap: null,        // { rowKey: A4545MODIF original } — para restaurar si se desmarca una eliminación
+    _hregiColorIndexMap: null,  // { valorHREGI: índice de color } — asignado en orden de aparición, sin colisiones
+    _hregiColorSeq: 0,
     _canEdit: false,
     _PAGE_SIZE: 30,
+
+    // Filas con este código de registro pueden marcarse para eliminación (diferencias de recaudo)
+    _DELETABLE_HREGI: 'DF',
 
     // =========================================================================
     // initComponent
@@ -35,10 +42,66 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDepos
         me._masterData = [];
         me._pendingChangesMap = {};
         me._newRowKeysMap = {};
+        me._markedDeleteKeysMap = {};
+        me._origModifMap = {}; // { rowKey: valor original de A4545MODIF } — para restaurar si se desmarca
 
         const EDITABLE_STCONT = ['2', '3'];
-        const user = ((document.getElementById('menuUser') || {}).textContent || '').trim();
-        me._canEdit = me.ADMIN_USERS.includes(user) && EDITABLE_STCONT.includes(String(me.stcont || ''));
+        me._canEdit = !!me.canEdit && EDITABLE_STCONT.includes(String(me.stcont || ''));
+
+        const rowKey = function (record) {
+            return record.get('A4545SEQ') + '-' + record.get('A4545ITEM');
+        };
+        const isDfRow = function (record) {
+            return String(record.get('A4545HREGI') || '').trim().toUpperCase() === me._DELETABLE_HREGI;
+        };
+
+        // Color por categoría de A4545HREGI, compartido por el badge de Registro,
+        // el badge de Desc. Registro y el tinte de fila — así los tres coinciden
+        // siempre para una misma categoría.
+        // NOTA: un hash%N puro puede colisionar entre dos códigos distintos (p.ej.
+        // 'IN' y 'NT' caían en el mismo índice) — por eso se asigna en orden de
+        // aparición: cada valor nuevo toma el siguiente color libre de la paleta,
+        // garantizando colores distintos mientras haya categorías <= paleta.
+        const BADGE_PALETTE = [
+            '#1677ff', '#52c41a', '#722ed1', '#fa8c16', '#13c2c2', '#eb2f96', '#faad14',
+            '#2f54eb', '#08979c', '#7cb305', '#ad6800'
+        ];
+        me._hregiColorIndexMap = {}; // { valorHREGI: índice en BADGE_PALETTE }
+        me._hregiColorSeq = 0;
+        const colorIndexFor = function (v) {
+            if (me._hregiColorIndexMap[v] === undefined) {
+                me._hregiColorIndexMap[v] = me._hregiColorSeq % BADGE_PALETTE.length;
+                me._hregiColorSeq++;
+            }
+            return me._hregiColorIndexMap[v];
+        };
+
+        if (!window._praxisDepositDetailStyleInjected) {
+            window._praxisDepositDetailStyleInjected = true;
+            const styleEl = document.createElement('style');
+            let css = '.praxis-row-marked-delete { text-decoration: line-through; opacity: .55; }\n'
+                // Diferencias de recaudo ('DF') — énfasis fuerte en toda la fila
+                + '.praxis-row-hregi-df { background-color: #f5222d1a !important; box-shadow: inset 3px 0 0 0 #f5222d; font-weight: 600; }\n';
+            BADGE_PALETTE.forEach(function (color, idx) {
+                css += '.praxis-row-hregi-' + idx + ' { background-color: ' + color + '14 !important; }\n';
+            });
+            styleEl.textContent = css;
+            document.head.appendChild(styleEl);
+        }
+
+        // colorKeyField: si se indica, el color se deriva de ese campo del record
+        // (no del valor mostrado) — permite que A4545FREGI use el color de su
+        // A4545HREGI asociado en vez de calcular uno propio.
+        const mkBadge = function (colorMap, colorKeyField) {
+            return function (v, _meta, record) {
+                const val = String(v || '').trim();
+                if (!val) return '<span style="color:#bbb;">—</span>';
+                const keyVal = (colorKeyField && record ? String(record.get(colorKeyField) || val) : val).trim().toUpperCase();
+                const color = (colorMap && colorMap[keyVal]) || BADGE_PALETTE[colorIndexFor(keyVal)];
+                return '<span style="background:' + color + '22;color:' + color + ';border:1px solid ' + color + '55;'
+                    + 'border-radius:10px;padding:1px 8px;font-size:11px;font-weight:600;white-space:nowrap;">' + val + '</span>';
+            };
+        };
 
         // ── Editor factories ─────────────────────────────────────────────────
         const EC = 'praxis-editable-cell';
@@ -65,6 +128,13 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDepos
 
         const columns = [
             { xtype: 'rownumberer', width: 40 },
+            c('Registro', 'A4545HREGI', 90, {
+                align: 'center',
+                renderer: mkBadge({ DF: '#f5222d' })
+            }),
+            c('Desc. Registro', 'A4545FREGI', 150, {
+                renderer: mkBadge({ DF: '#f5222d' }, 'A4545HREGI')
+            }),
             c('Secuencia', 'A4545SEQ', 80, { align: 'center' }),
             c('Item', 'A4545ITEM', 55, { align: 'center' }),
             c('Referencia', 'A4545REFD', 130, { align: 'center' }),
@@ -97,15 +167,13 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDepos
             c('Agente', 'A4545AGENT', 80, {}),
             c('Merchant', 'A4545MERCH', 90, {}),
             c('Pais', 'A4545PAIS', 60, { align: 'center' }),
-            c('Registro', 'A4545HREGI', 90, { align: 'center' }),
-            c('Desc. Registro', 'A4545FREGI', 120, {}),
             c('Usuario Update', 'A4545USRUP', 110, { align: 'center' }),
             c('Fecha Update', 'A4545TSUP', 150, { align: 'center' }),
             c('Modificacion', 'A4545MODIF', 115, {
                 align: 'center',
                 renderer: function (v) {
                     if (!v || !String(v).trim()) return '<span style="color:#bbb;">—</span>';
-                    const map = { U: { c: '#1677ff', t: 'Modificacion' }, I: { c: '#52c41a', t: 'Insercion' } };
+                    const map = { U: { c: '#1677ff', t: 'Modificacion' }, I: { c: '#52c41a', t: 'Insercion' }, D: { c: '#f5222d', t: 'Eliminación' } };
                     const o = map[String(v)] || { c: '#888', t: String(v) };
                     return '<span style="background:' + o.c + '22;color:' + o.c + ';border:1px solid ' + o.c + '55;'
                         + 'border-radius:10px;padding:1px 8px;font-size:11px;font-weight:600;">' + o.t + '</span>';
@@ -113,7 +181,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDepos
             })
         ];
 
-        // ── Columna de acción: eliminar filas nuevas ──────────────────────────
+        // ── Columna de acción: eliminar filas nuevas / marcar filas 'DF' para eliminar ──
         if (me._canEdit) {
             columns.push({
                 xtype: 'actioncolumn',
@@ -123,27 +191,77 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDepos
                 menuDisabled: true,
                 sortable: false,
                 items: [{
-                    tooltip: 'Eliminar fila nueva',
                     getClass: function (_v, _meta, record) {
-                        const key = record.get('A4545SEQ') + '-' + record.get('A4545ITEM');
-                        return me._newRowKeysMap[key] ? 'prx-icon-image-trash' : 'x-hidden-display';
+                        const key = rowKey(record);
+                        if (me._newRowKeysMap[key]) return 'prx-icon-image-trash';
+                        if (isDfRow(record)) {
+                            return me._markedDeleteKeysMap[key] ? 'prx-icon-reload' : 'prx-icon-image-trash';
+                        }
+                        return 'x-hidden-display';
                     },
                     isDisabled: function (_v, _ri, _ci, _item, record) {
-                        return !me._newRowKeysMap[record.get('A4545SEQ') + '-' + record.get('A4545ITEM')];
+                        const key = rowKey(record);
+                        return !me._newRowKeysMap[key] && !isDfRow(record);
+                    },
+                    getTip: function (_v, _meta, record) {
+                        const key = rowKey(record);
+                        if (me._newRowKeysMap[key]) return 'Eliminar fila nueva';
+                        if (isDfRow(record)) {
+                            return me._markedDeleteKeysMap[key]
+                                ? 'Cancelar eliminación (diferencia de recaudo)'
+                                : 'Marcar para eliminar (diferencia de recaudo)';
+                        }
+                        return '';
                     },
                     handler: function (_grid, _ri, _ci, _item, _e, record) {
-                        const key = record.get('A4545SEQ') + '-' + record.get('A4545ITEM');
-                        if (!me._newRowKeysMap[key]) return;
-                        delete me._newRowKeysMap[key];
-                        delete me._pendingChangesMap[key];
-                        me._masterData = me._masterData.filter(function (d) {
-                            return String(d.A4545SEQ) + '-' + String(d.A4545ITEM) !== key;
-                        });
-                        const store = me.down('#grid-deposit-detail').getStore();
-                        const curPage = store.currentPage || 1;
-                        const maxPage = Math.ceil(me._masterData.length / me._PAGE_SIZE) || 1;
-                        me._reloadStore(Math.min(curPage, maxPage));
-                        me._updateSaveBtn();
+                        const key = rowKey(record);
+
+                        if (me._newRowKeysMap[key]) {
+                            delete me._newRowKeysMap[key];
+                            delete me._pendingChangesMap[key];
+                            me._masterData = me._masterData.filter(function (d) {
+                                return String(d.A4545SEQ) + '-' + String(d.A4545ITEM) !== key;
+                            });
+                            const store = me.down('#grid-deposit-detail').getStore();
+                            const curPage = store.currentPage || 1;
+                            const maxPage = Math.ceil(me._masterData.length / me._PAGE_SIZE) || 1;
+                            me._reloadStore(Math.min(curPage, maxPage));
+                            me._updateSaveBtn();
+                            return;
+                        }
+
+                        if (isDfRow(record)) {
+                            let newModif;
+                            if (me._markedDeleteKeysMap[key]) {
+                                delete me._markedDeleteKeysMap[key];
+                                delete me._pendingChangesMap[key];
+                                newModif = me._origModifMap[key] || '';
+                            } else {
+                                if (me._origModifMap[key] === undefined) {
+                                    me._origModifMap[key] = record.get('A4545MODIF') || '';
+                                }
+                                me._markedDeleteKeysMap[key] = true;
+                                newModif = 'D';
+                            }
+                            record.set('A4545MODIF', newModif);
+                            record.commit();
+
+                            // Sincronizar _masterData (fuente de la que _reloadStore relee al paginar)
+                            for (let i = 0; i < me._masterData.length; i++) {
+                                const mk = String(me._masterData[i].A4545SEQ) + '-' + String(me._masterData[i].A4545ITEM);
+                                if (mk === key) {
+                                    me._masterData[i].A4545MODIF = newModif;
+                                    break;
+                                }
+                            }
+
+                            if (me._markedDeleteKeysMap[key]) {
+                                const updated = record.getData();
+                                delete updated.id;
+                                me._pendingChangesMap[key] = updated;
+                            }
+                            me._updateSaveBtn();
+                        }
                     }
                 }]
             });
@@ -171,6 +289,24 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDepos
             }
         })] : [];
 
+        // ── Excel: exporta el _masterData completo (todas las páginas) ───────
+        const onExportExcel = async function () {
+            if (!me._masterData || !me._masterData.length) {
+                new AWN().warning('No hay datos para exportar.');
+                return;
+            }
+            const cols = columns
+                .filter(function (col) { return col.dataIndex; })
+                .map(function (col) { return { header: col.text, dataIndex: col.dataIndex }; });
+            const data = me._masterData.map(function (r) {
+                const out = {};
+                cols.forEach(function (col) { out[col.header] = r[col.dataIndex] != null ? r[col.dataIndex] : ''; });
+                return out;
+            });
+            const rd = me.rowData || {};
+            await global.writeExcelFromJson(data, 'Deposit_Detail_' + (rd.BANDOC || rd.IDCONT || 'export'));
+        };
+
         // ── Grid ─────────────────────────────────────────────────────────────
         me.items = [{
             xtype: 'gridpanel',
@@ -190,8 +326,32 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDepos
                 pageSize: 30,
                 proxy: { type: 'memory' }
             },
-            viewConfig: { stripeRows: true, enableTextSelection: true, markDirty: me._canEdit },
+            viewConfig: {
+                stripeRows: false,
+                enableTextSelection: true,
+                markDirty: me._canEdit,
+                getRowClass: function (record) {
+                    const classes = [];
+                    const hregi = String(record.get('A4545HREGI') || '').trim().toUpperCase();
+                    if (hregi === me._DELETABLE_HREGI) {
+                        classes.push('praxis-row-hregi-df');
+                    } else if (hregi) {
+                        classes.push('praxis-row-hregi-' + colorIndexFor(hregi));
+                    }
+                    if (me._markedDeleteKeysMap[rowKey(record)]) classes.push('praxis-row-marked-delete');
+                    return classes.join(' ');
+                }
+            },
             columns: columns,
+            tbar: {
+                xtype: 'toolbar',
+                items: ['->', {
+                    text: 'Excel',
+                    iconCls: 'prx-icon-excel',
+                    tooltip: 'Descargar información completa en Excel',
+                    handler: onExportExcel
+                }]
+            },
             bbar: {
                 xtype: 'pagingtoolbar',
                 displayInfo: true,
@@ -354,8 +514,11 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDepos
 
     _handleSaveAll: async function () {
         const me = this;
-        const pendingRows = Object.values(me._pendingChangesMap);
-        if (!pendingRows.length) return;
+        const pendingKeys = Object.keys(me._pendingChangesMap);
+        if (!pendingKeys.length) return;
+
+        const deleteKeys = pendingKeys.filter(function (k) { return me._markedDeleteKeysMap[k]; });
+        const upsertKeys = pendingKeys.filter(function (k) { return !me._markedDeleteKeysMap[k]; });
 
         me.mask('Guardando cambios...');
         const saveBtn = me.down('#btn-save-changes');
@@ -367,39 +530,58 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDepos
             const row = me.rowData || {};
             const user = ((document.getElementById('menuUser') || {}).textContent || '').trim();
 
-            const payloadRows = pendingRows.map(function (r) {
-                return {
-                    A4545SEQ: Number(r.A4545SEQ || 0),
-                    A4545ITEM: Number(r.A4545ITEM || 0),
-                    A4545COMPC: String(r.A4545COMPC || ''),
-                    A4545PROFI: String(r.A4545PROFI || ''),
-                    A4545CCOST: String(r.A4545CCOST || ''),
-                    A4545CUENT: String(r.A4545CUENT || ''),
-                    A4545ACTIV: Number(r.A4545ACTIV || 0),
-                    A4545PKEY: String(r.A4545PKEY || ''),
-                    A4545REFK: String(r.A4545REFK || ''),
-                    A4545REFK2: String(r.A4545REFK2 || ''),
-                    A4545REFB: String(r.A4545REFB || ''),
-                    A4545REPAG: String(r.A4545REPAG || ''),
-                    A4545ANUMB: String(r.A4545ANUMB || ''),
-                    A4545TEXTD: String(r.A4545TEXTD || ''),
-                    A4545CUSTO: String(r.A4545CUSTO || ''),
-                    A4545CUR: String(r.A4545CUR || '')
-                };
-            });
+            // Las eliminaciones (filas 'DF' marcadas) se ejecutan primero — MPS528
+            // borra de A4545 antes de que MPS535 procese inserts/updates.
+            if (deleteKeys.length) {
+                const deletePayload = deleteKeys.map(function (k) {
+                    const r = me._pendingChangesMap[k];
+                    return { A4545SEQ: Number(r.A4545SEQ || 0), A4545ITEM: Number(r.A4545ITEM || 0) };
+                });
+                await global.callStoreGet('PRAXISMP', 'MPS528', {
+                    IN_IDCONT: String(row.IDCONT || ''),
+                    IN_PAYLOAD: JSON.stringify(deletePayload),
+                    IN_USER: user || 'SYSTEM'
+                });
+            }
 
-            await global.callStoreGet('PRAXISMP', 'MPS535', {
-                IN_IDCONT: String(row.IDCONT || ''),
-                IN_BANDOC: String(row.BANDOC || ''),
-                IN_DATECI: String(row.DATECI || ''),
-                IN_TRANCI: String(row.TRANCI || ''),
-                IN_PAYLOAD: JSON.stringify(payloadRows),
-                IN_USER: user || 'SYSTEM'
-            });
+            if (upsertKeys.length) {
+                const payloadRows = upsertKeys.map(function (k) {
+                    const r = me._pendingChangesMap[k];
+                    return {
+                        A4545SEQ: Number(r.A4545SEQ || 0),
+                        A4545ITEM: Number(r.A4545ITEM || 0),
+                        A4545COMPC: String(r.A4545COMPC || ''),
+                        A4545PROFI: String(r.A4545PROFI || ''),
+                        A4545CCOST: String(r.A4545CCOST || ''),
+                        A4545CUENT: String(r.A4545CUENT || ''),
+                        A4545ACTIV: Number(r.A4545ACTIV || 0),
+                        A4545PKEY: String(r.A4545PKEY || ''),
+                        A4545REFK: String(r.A4545REFK || ''),
+                        A4545REFK2: String(r.A4545REFK2 || ''),
+                        A4545REFB: String(r.A4545REFB || ''),
+                        A4545REPAG: String(r.A4545REPAG || ''),
+                        A4545ANUMB: String(r.A4545ANUMB || ''),
+                        A4545TEXTD: String(r.A4545TEXTD || ''),
+                        A4545CUSTO: String(r.A4545CUSTO || ''),
+                        A4545CUR: String(r.A4545CUR || '')
+                    };
+                });
+
+                await global.callStoreGet('PRAXISMP', 'MPS535', {
+                    IN_IDCONT: String(row.IDCONT || ''),
+                    IN_BANDOC: String(row.BANDOC || ''),
+                    IN_DATECI: String(row.DATECI || ''),
+                    IN_TRANCI: String(row.TRANCI || ''),
+                    IN_PAYLOAD: JSON.stringify(payloadRows),
+                    IN_USER: user || 'SYSTEM'
+                });
+            }
 
             new AWN().success('Cambios guardados correctamente');
             me._pendingChangesMap = {};
             me._newRowKeysMap = {};
+            me._markedDeleteKeysMap = {};
+            me._origModifMap = {};
             me._updateSaveBtn();
             me._loadData();
 
