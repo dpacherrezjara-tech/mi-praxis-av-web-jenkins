@@ -24,6 +24,8 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDepos
     _newRowKeysMap: null,       // { rowKey: true }    — filas recién añadidas
     _markedDeleteKeysMap: null, // { rowKey: true }    — filas existentes (A4545HREGI='DF') marcadas para eliminar
     _origModifMap: null,        // { rowKey: A4545MODIF original } — para restaurar si se desmarca una eliminación
+    _hregiColorIndexMap: null,  // { valorHREGI: índice de color } — asignado en orden de aparición, sin colisiones
+    _hregiColorSeq: 0,
     _canEdit: false,
     _PAGE_SIZE: 30,
 
@@ -53,27 +55,49 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDepos
             return String(record.get('A4545HREGI') || '').trim().toUpperCase() === me._DELETABLE_HREGI;
         };
 
+        // Color por categoría de A4545HREGI, compartido por el badge de Registro,
+        // el badge de Desc. Registro y el tinte de fila — así los tres coinciden
+        // siempre para una misma categoría.
+        // NOTA: un hash%N puro puede colisionar entre dos códigos distintos (p.ej.
+        // 'IN' y 'NT' caían en el mismo índice) — por eso se asigna en orden de
+        // aparición: cada valor nuevo toma el siguiente color libre de la paleta,
+        // garantizando colores distintos mientras haya categorías <= paleta.
+        const BADGE_PALETTE = [
+            '#1677ff', '#52c41a', '#722ed1', '#fa8c16', '#13c2c2', '#eb2f96', '#faad14',
+            '#2f54eb', '#08979c', '#7cb305', '#ad6800'
+        ];
+        me._hregiColorIndexMap = {}; // { valorHREGI: índice en BADGE_PALETTE }
+        me._hregiColorSeq = 0;
+        const colorIndexFor = function (v) {
+            if (me._hregiColorIndexMap[v] === undefined) {
+                me._hregiColorIndexMap[v] = me._hregiColorSeq % BADGE_PALETTE.length;
+                me._hregiColorSeq++;
+            }
+            return me._hregiColorIndexMap[v];
+        };
+
         if (!window._praxisDepositDetailStyleInjected) {
             window._praxisDepositDetailStyleInjected = true;
             const styleEl = document.createElement('style');
-            styleEl.textContent = '.praxis-row-marked-delete { text-decoration: line-through; opacity: .55; }';
+            let css = '.praxis-row-marked-delete { text-decoration: line-through; opacity: .55; }\n'
+                // Diferencias de recaudo ('DF') — énfasis fuerte en toda la fila
+                + '.praxis-row-hregi-df { background-color: #f5222d1a !important; box-shadow: inset 3px 0 0 0 #f5222d; font-weight: 600; }\n';
+            BADGE_PALETTE.forEach(function (color, idx) {
+                css += '.praxis-row-hregi-' + idx + ' { background-color: ' + color + '14 !important; }\n';
+            });
+            styleEl.textContent = css;
             document.head.appendChild(styleEl);
         }
 
-        // Renderer tipo badge/pill reutilizado por A4545HREGI y A4545FREGI.
-        // colorMap permite forzar un color para valores conocidos (ej. 'DF' en rojo);
-        // el resto de valores reciben un color estable derivado del propio texto.
-        const BADGE_PALETTE = ['#1677ff', '#52c41a', '#722ed1', '#fa8c16', '#13c2c2', '#eb2f96', '#faad14'];
-        const hashColor = function (v) {
-            let hash = 0;
-            for (let i = 0; i < v.length; i++) hash = (hash * 31 + v.charCodeAt(i)) >>> 0;
-            return BADGE_PALETTE[hash % BADGE_PALETTE.length];
-        };
-        const mkBadge = function (colorMap) {
-            return function (v) {
+        // colorKeyField: si se indica, el color se deriva de ese campo del record
+        // (no del valor mostrado) — permite que A4545FREGI use el color de su
+        // A4545HREGI asociado en vez de calcular uno propio.
+        const mkBadge = function (colorMap, colorKeyField) {
+            return function (v, _meta, record) {
                 const val = String(v || '').trim();
                 if (!val) return '<span style="color:#bbb;">—</span>';
-                const color = (colorMap && colorMap[val]) || hashColor(val);
+                const keyVal = (colorKeyField && record ? String(record.get(colorKeyField) || val) : val).trim().toUpperCase();
+                const color = (colorMap && colorMap[keyVal]) || BADGE_PALETTE[colorIndexFor(keyVal)];
                 return '<span style="background:' + color + '22;color:' + color + ';border:1px solid ' + color + '55;'
                     + 'border-radius:10px;padding:1px 8px;font-size:11px;font-weight:600;white-space:nowrap;">' + val + '</span>';
             };
@@ -104,6 +128,13 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDepos
 
         const columns = [
             { xtype: 'rownumberer', width: 40 },
+            c('Registro', 'A4545HREGI', 90, {
+                align: 'center',
+                renderer: mkBadge({ DF: '#f5222d' })
+            }),
+            c('Desc. Registro', 'A4545FREGI', 150, {
+                renderer: mkBadge({ DF: '#f5222d' }, 'A4545HREGI')
+            }),
             c('Secuencia', 'A4545SEQ', 80, { align: 'center' }),
             c('Item', 'A4545ITEM', 55, { align: 'center' }),
             c('Referencia', 'A4545REFD', 130, { align: 'center' }),
@@ -136,13 +167,6 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDepos
             c('Agente', 'A4545AGENT', 80, {}),
             c('Merchant', 'A4545MERCH', 90, {}),
             c('Pais', 'A4545PAIS', 60, { align: 'center' }),
-            c('Registro', 'A4545HREGI', 90, {
-                align: 'center',
-                renderer: mkBadge({ DF: '#f5222d' })
-            }),
-            c('Desc. Registro', 'A4545FREGI', 150, {
-                renderer: mkBadge()
-            }),
             c('Usuario Update', 'A4545USRUP', 110, { align: 'center' }),
             c('Fecha Update', 'A4545TSUP', 150, { align: 'center' }),
             c('Modificacion', 'A4545MODIF', 115, {
@@ -303,11 +327,19 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDepos
                 proxy: { type: 'memory' }
             },
             viewConfig: {
-                stripeRows: true,
+                stripeRows: false,
                 enableTextSelection: true,
                 markDirty: me._canEdit,
                 getRowClass: function (record) {
-                    return me._markedDeleteKeysMap[rowKey(record)] ? 'praxis-row-marked-delete' : '';
+                    const classes = [];
+                    const hregi = String(record.get('A4545HREGI') || '').trim().toUpperCase();
+                    if (hregi === me._DELETABLE_HREGI) {
+                        classes.push('praxis-row-hregi-df');
+                    } else if (hregi) {
+                        classes.push('praxis-row-hregi-' + colorIndexFor(hregi));
+                    }
+                    if (me._markedDeleteKeysMap[rowKey(record)]) classes.push('praxis-row-marked-delete');
+                    return classes.join(' ');
                 }
             },
             columns: columns,
