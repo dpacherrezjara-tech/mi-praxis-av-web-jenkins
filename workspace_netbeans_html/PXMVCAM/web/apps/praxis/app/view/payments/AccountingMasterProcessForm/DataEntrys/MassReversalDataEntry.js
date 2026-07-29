@@ -16,6 +16,12 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.Mass
     BLOCKED_STSAP: ['L', 'S', 'C'],
     _PAGE_SIZE: 10,
 
+    // Proxy hacia el monolito (mismo patrón que AccountingDetailModalController._monolithReq)
+    monolithRequest: axios.create({
+        baseURL: CONTEXTPATH + '/Monolith',
+        timeout: 30000
+    }),
+
     // state
     _validRows: null,
     _masterData: null,
@@ -51,6 +57,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.Mass
                     text: 'Reversar seleccionados (0)',
                     itemId: 'btnReverse',
                     iconCls: 'prx-icon-image-process',
+                    style: 'color:#c82d2d;font-weight:bold;',
                     hidden: true,
                     disabled: true,
                     handler: function () { me._onReverse(); }
@@ -443,7 +450,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.Mass
             '<span style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:10px;padding:1px 10px;font-size:11px;font-weight:600;">' + total + ' registros encontrados</span>' +
             '<span style="background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;border-radius:10px;padding:1px 10px;font-size:11px;font-weight:600;">' + reversable + ' reversables</span>';
         if (blocked > 0) {
-            html += '<span style="background:#f9fafb;color:#374151;border:1px solid #d1d5db;border-radius:10px;padding:1px 10px;font-size:11px;font-weight:600;">' + blocked + ' bloqueados (L/S/C)</span>';
+            html += '<span style="background:#fef2f2;color:#c82d2d;border:1px solid #fecaca;border-radius:10px;padding:1px 10px;font-size:11px;font-weight:600;">' + blocked + ' bloqueados (L/S/C)</span>';
         }
         html += '</div>';
         badges.update(html);
@@ -458,51 +465,170 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.DataEntrys.Mass
     },
 
     // ── Reversión ─────────────────────────────────────────────────────────────
+    // Mismo endpoint/contrato y misma UX de confirmación que
+    // AccountingDetailModalController.onBulkReverse/_executeBulkReverse:
+    // POST /Monolith/rollbackDepositBulk { rows: [...] }
 
-    _onReverse: async function () {
+    _onReverse: function () {
         const me = this;
 
-        const rows = me._masterData
-            .filter(function (r) { return me._selectedKeys[r._globalIdx] !== undefined; })
-            .map(function (r) {
-                return {
-                    IDCONT: String(r.IDCONT || ''),
-                    BANDOC: String(r.BANDOC || ''),
-                    DATECI: String(r.DATECI || ''),
-                    TRANCI: String(r.TRANCI || ''),
-                    TIPOCON: String(r.TIPOCON || ''),
-                    PROCESO: String(r.PROCESO || '')
-                };
-            });
-
-        if (!rows.length) return;
-
-        // Agrupar por IDCONT (mismo patrón que executeReverseDepositBulk en React)
-        const groups = {};
-        rows.forEach(function (row) {
-            if (!groups[row.IDCONT]) groups[row.IDCONT] = [];
-            groups[row.IDCONT].push(row);
+        const selected = me._masterData.filter(function (r) {
+            return me._selectedKeys[r._globalIdx] !== undefined;
         });
-        const groupEntries = Object.keys(groups).map(function (k) { return { idcont: k, rows: groups[k] }; });
-        const total = groupEntries.length;
-        let sent = 0;
+        if (!selected.length) return;
 
-        me.mask('Enviando reversiones... (0 de ' + total + ')');
-        try {
-            for (let i = 0; i < groupEntries.length; i++) {
-                // TODO: reemplazar 'SPMDP00024_REV' con el SP de reversión correcto
-                await global.callStoreGet('PRAXISMP', 'SPMDP00024_REV', {
-                    IN_PAYLOAD: JSON.stringify(groupEntries[i].rows)
-                });
-                sent++;
-                me.mask('Enviando reversiones... (' + sent + ' de ' + total + ')');
+        const store = Ext.create('Ext.data.Store', {
+            fields: ['_globalIdx', 'IDCONT', 'BANDOC', 'DATECI', 'TRANCI', 'TIPOCON', 'PROCESO'],
+            data: selected
+        });
+
+        const bannerId = Ext.id() + '-mass-reverse-banner';
+
+        const updateBanner = function () {
+            const n = store.getCount();
+            const el = document.getElementById(bannerId);
+            if (el) {
+                el.innerHTML = n > 0
+                    ? '<b>Are you sure you want to reverse ' + n + ' record(s)?</b><br>'
+                    + '<span style="font-size:11px;color:#c82d2d;">This action cannot be undone. Review the items below before confirming.</span>'
+                    : '<b style="color:#c82d2d;">No records remaining. Close this window.</b>';
             }
-            new AWN().success('Reversiones enviadas para ' + total + ' IDCONT.');
-            if (typeof me.onAfterAction === 'function') me.onAfterAction();
-            me.destroy();
+            const confirmBtn = win && win.down('#btn-confirm-mass-reverse');
+            if (confirmBtn) confirmBtn.setDisabled(n === 0);
+        };
+
+        var win = Ext.create('Ext.window.Window', {
+            title: '.:PRAXIS:. — Confirm Mass Reversal',
+            width: 820,
+            height: 420,
+            modal: true,
+            resizable: true,
+            layout: 'fit',
+            border: false,
+            items: [{
+                xtype: 'panel',
+                layout: 'border',
+                border: false,
+                items: [
+                    {
+                        xtype: 'panel',
+                        region: 'north',
+                        height: 52,
+                        border: false,
+                        bodyStyle: 'background:#fff3cd;padding:10px 16px;',
+                        html: '<div id="' + bannerId + '" style="color:#856404;font-size:13px;">'
+                            + '<b>Are you sure you want to reverse ' + selected.length + ' record(s)?</b><br>'
+                            + '<span style="font-size:11px;color:#c82d2d;">This action cannot be undone. Review the items below before confirming.</span>'
+                            + '</div>'
+                    },
+                    {
+                        xtype: 'gridpanel',
+                        region: 'center',
+                        store: store,
+                        border: false,
+                        columnLines: true,
+                        scrollable: true,
+                        viewConfig: { stripeRows: true, markDirty: false },
+                        columns: [
+                            { xtype: 'rownumberer', width: 35 },
+                            { text: 'ID Contabilidad', dataIndex: 'IDCONT', width: 170, menuDisabled: true },
+                            { text: 'Bank Doc.', dataIndex: 'BANDOC', width: 100, align: 'center', menuDisabled: true },
+                            { text: 'Date CI', dataIndex: 'DATECI', width: 90, align: 'center', menuDisabled: true },
+                            { text: 'Transaction', dataIndex: 'TRANCI', width: 110, align: 'center', menuDisabled: true },
+                            { text: 'Type', dataIndex: 'TIPOCON', width: 70, align: 'center', menuDisabled: true },
+                            { text: 'Process', dataIndex: 'PROCESO', flex: 1, menuDisabled: true },
+                            {
+                                xtype: 'actioncolumn',
+                                width: 40,
+                                align: 'center',
+                                menuDisabled: true,
+                                sortable: false,
+                                items: [{
+                                    iconCls: 'prx-icon-image-trash',
+                                    tooltip: 'Quitar de selección',
+                                    handler: function (_grid, _ri, _ci, _item, _e, record) {
+                                        delete me._selectedKeys[record.get('_globalIdx')];
+                                        store.remove(record);
+                                        updateBanner();
+                                        me._updateReverseBtn();
+                                        const grid = me.down('#resultGrid');
+                                        if (grid && !grid.isDestroyed) me._reloadStore(grid.getStore().currentPage || 1);
+                                    }
+                                }]
+                            }
+                        ]
+                    }
+                ]
+            }],
+            dockedItems: [{
+                xtype: 'toolbar',
+                dock: 'bottom',
+                ui: 'footer',
+                layout: { pack: 'center' },
+                defaults: { scale: 'medium' },
+                items: [
+                    {
+                        text: 'Confirm Reversal',
+                        itemId: 'btn-confirm-mass-reverse',
+                        iconCls: 'prx-icon-reload',
+                        style: 'color:#c82d2d;font-weight:bold;',
+                        handler: function () {
+                            const rows = store.getRange().map(function (r) { return r.getData(); });
+                            win.destroy();
+                            me._executeReverse(rows);
+                        }
+                    },
+                    {
+                        text: 'Cancel',
+                        iconCls: 'prx-icon-cancel',
+                        handler: function () { win.destroy(); }
+                    }
+                ]
+            }]
+        });
+        win.show();
+        win.toFront();
+    },
+
+    _executeReverse: async function (selectedRows) {
+        const me = this;
+        if (!selectedRows || !selectedRows.length) return;
+
+        const rows = selectedRows.map(function (r) {
+            return {
+                IDCONT: String(r.IDCONT || ''),
+                BANDOC: String(r.BANDOC || ''),
+                DATECI: String(r.DATECI || ''),
+                TRANCI: String(r.TRANCI || ''),
+                TIPOCON: String(r.TIPOCON || ''),
+                PROCESO: String(r.PROCESO || '')
+            };
+        });
+
+        me.mask('Enviando reversión... (' + rows.length + ' registro(s))');
+        try {
+            const res = await me.monolithRequest.post('/rollbackDepositBulk', { rows: rows });
+            const data = res.data;
+            if (data && data.success) {
+                new AWN().success(data.message || 'Reversión enviada para ' + rows.length + ' registro(s).');
+                if (typeof me.onAfterAction === 'function') me.onAfterAction();
+                me.destroy();
+            } else {
+                new AWN().alert((data && data.message) || 'No se pudo procesar la reversión.');
+            }
         } catch (err) {
             new AWN().alert('Error al reversar: ' + (err.message || 'Error desconocido'));
-            me.unmask();
+        } finally {
+            if (!me.isDestroyed) me.unmask();
         }
     }
 });
+
+// Las filas bloqueadas (STSAP en L/S/C) marcan getRowClass = 'x-grid-row-disabled'
+// pero esa clase no existía en ningún stylesheet; sin esto no había atenuación visual real.
+Ext.util.CSS.createStyleSheet(`
+    .x-grid-row-disabled .x-grid-cell {
+        background-color: #f5f5f5 !important;
+        color: #9ca3af !important;
+    }
+`, 'mass-reversal-disabled-row-style');
