@@ -482,7 +482,7 @@ Ext.define('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDetai
                     itemId: 'btn-reverse',
                     hidden: true,
                     iconCls: 'prx-icon-reload',
-                    style: 'color:#c82d2d;',
+                    style: 'color:#c82d2d;font-weight:bold;',
                     handler: 'onReverse'
                 },
                 {
