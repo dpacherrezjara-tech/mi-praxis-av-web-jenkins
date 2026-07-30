@@ -131,7 +131,6 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.FiltersBT', {
                             xtype: 'panel',
                             bodyStyle: 'background: transparent',
                             id: prototype.id + '-panelAsignar',
-                            hidden: true,
                             align: 'center',
                             layout: 'hbox',
                             items: [
@@ -1723,7 +1722,6 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.FiltersBT', {
                             xtype: 'panel',
                             bodyStyle: 'background: transparent',
                             id: prototype.id + '-panelUserIatas',
-                            hidden: true,
                             align: 'center',
                             layout: 'hbox',
                             items: [

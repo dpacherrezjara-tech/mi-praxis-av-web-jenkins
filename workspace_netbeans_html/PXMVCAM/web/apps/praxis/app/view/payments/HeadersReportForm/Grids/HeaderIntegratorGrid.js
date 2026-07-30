@@ -1,144 +1,60 @@
 Ext.define('Ext.Praxis.view.payments.HeadersReportForm.Grids.HeaderIntegratorGrid', {
-    extend: 'Ext.grid.Panel',
+    extend: 'Ext.Praxis.view.widgets.StoreProcGrid',
     alias: 'widget.' + prototype.id + '-HeaderIntegratorGrid',
     requires: [
+        'Ext.Praxis.view.widgets.StoreProcGrid',
         'Ext.Praxis.controller.payments.HeadersReport.HeaderIntegratorGridController'
     ],
-    controller: 'HeaderIntegratorGridController',
-    maxHeight: prototype.height,
-    minHeight: 200,
-    height: 'auto',
-    width: 1300,
-    store: [],
-    viewConfig: {
-        stripeRows: true,
-        enableTextSelection: true,
-        markDirty: false
-    },
-    columnLines: true,
-    columns: {
-        defaults: {
-            align: 'center',
-            menuDisabled: true,
-            sortable: true
-        },
+    library: 'PRAXISMP',
+    storeProcedure: 'MPS294',
+    pageSize: 20,
+    excelTitle: 'Integrator',
+    showExcelButton: true,
+    customController: 'Ext.Praxis.controller.payments.HeadersReport.HeaderIntegratorGridController',
+    rowActions: [
+        { action: 'detail', icon: 'prx-icon-search', tooltip: 'Open Detail' }
+    ],
+    gridColumns: {
+        defaults: { align: 'center', menuDisabled: true, sortable: true },
         items: [
-            //<editor-fold defaultstate="collapsed" desc="Detail Cols">
+            { text: 'RN', locked: true, xtype: 'rownumberer', width: 50 },
+            { text: 'File ID', dataIndex: 'FILEID', width: 100 },
             {
-                text: 'RN',
-                locked: true,
-                xtype: 'rownumberer',
-                width: 50
-            },
-            {text: 'File ID', dataIndex: 'FILEID', width: 100},
-            {text: 'Status', dataIndex: 'STPRO', width: 150,
-                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                    //metaData.style = "background-color:#838187";
+                text: 'Status', dataIndex: 'STPRO', width: 120,
+                renderer: function (v, m) {
+                    const key = String(v || '').trim();
                     const opts = {
-                        '0': () => {
-                            metaData.style = "background-color:#C2EDC4;font-weight:bold";
-                            return 'Registered';
-                        },
-                        '1': () => {
-                            metaData.style = "background-color:#b0d7dc;font-weight:bold";
-                            return 'Delivery';
-                        }
+                        '1': ['#d3f9d8', '#1a5c1e', 'Found'],
+                        '0': ['#fff3bf', '#7d5a00', 'Not found']
                     };
-                    const key = (value || '').trim();
-                    return opts[key] ? opts[key]() : 'Error';
+                    const o = opts[key];
+                    if (o) {
+                        m.style = 'background-color:' + o[0] + ';color:' + o[1] + ';font-weight:bold;';
+                        return o[2];
+                    }
+                    return v || '—';
                 }
             },
-            {text: 'Process Status', dataIndex: 'STCAR', width: 130,
-                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+            {
+                text: 'File Type', dataIndex: 'FILETYPE', width: 110,
+                renderer: function (v) {
                     const opts = {
-                        '': () => {
-                            metaData.style = "background-color:#E6E3E3;color:#4C4E57;font-weight:bold";
-                            return 'Pending';
-                        },
-                        '1': () => {
-                            metaData.style = "background-color:#638be1;color:#ffffff;font-weight:bold";
-                            return 'Loaded';
-                        },
-                        '2': () => {
-                            metaData.style = "background-color:#FFF091;color:#ce3232;font-weight:bold"
-                            return 'Rejected';
-                        }
+                        'ReportSAP': ['#f3d9fa', '#6b21a8', 'ReportSAP'],
+                        'REJECT': ['#ffe3e3', '#9b1c1c', 'REJECT'],
+                        'SUCCESS': ['#ccfbf1', '#0f5a50', 'SUCCESS']
                     };
-                    const key = (value || '').trim();
-                    return opts[key] ? opts[key]() : 'Error';
-                }},
-            {text: 'Corrl', dataIndex: 'CORRL', width: 50},
-            {text: 'File Type', dataIndex: 'FILETYPE', width: 100},
-            {text: 'File Name', dataIndex: 'FILENAME', flex: 1},
-            {text: 'Qty Rows', dataIndex: 'QTYROWS', width: 100},
-            {
-                xtype: 'actioncolumn',
-                width: 80,
-                text: 'Formatted',
-                align: 'center',
-                items: [
-                    {
-                        iconCls: 'prx-icon-image-log',
-                        tooltip: 'Open Formatting',
-                        handler: 'onClickFormateo'
-                    }
-                ]
-            },
-            {
-                xtype: 'actioncolumn',
-                width: 80,
-                text: 'Delivery',
-                align: 'center',
-                items: [
-                    {
-                        iconCls: 'prx-icon-image-log',
-                        tooltip: 'Open Delivery',
-                        handler: 'onClickDelivery'
-                    }
-                ]
-            }
-
-            //</editor-fold>
-        ]
-    },
-    tbar: {
-        layout: {
-            pack: 'end'
-        },
-        defaults: {
-            scale: 'medium'
-        },
-        items: [
-            {
-                xtype: 'button',
-                iconCls: 'prx-icon-excel',
-                scale: 'small',
-                tooltip: 'Export to Excel',
-                listeners: {
-                    click: 'downloadExcel'
+                    const key = String(v || '').trim();
+                    const o = opts[key] || ['#e2e8f0', '#374151', key || '—'];
+                    return '<span style="display:inline-block;background:' + o[0] +
+                        ';color:' + o[1] + ';font-weight:700;font-size:11px;border-radius:9px;padding:1px 8px;">' +
+                        Ext.htmlEncode(o[2]) + '</span>';
                 }
             },
-            {
-                xtype: 'button',
-                scale: 'small',
-                iconCls: 'prx-icon-back',
-                width: 25,
-                tooltip: 'Back',
-                listeners: {
-                    click: function (btn) {
-                        const panel = btn.up().up().up();
-                        const views = panel.items.items;
-                        views.at(-1).destroy();
-                        views.at(-1).show();
-                    }
-                }
-            }
+            { text: 'File Name', dataIndex: 'FILENAME', flex: 1 },
+            { text: 'File Ref', dataIndex: 'FILEREF', flex: 1 },
+            { text: 'Corrl', dataIndex: 'CORRL', width: 50 },
+            { text: 'Header Text', dataIndex: 'HEADER', width: 180 },
+            { text: 'Qty Rows', dataIndex: 'QTYROWS', width: 100 }
         ]
-    },
-    bbar: {
-        xtype: 'pagingtoolbar',
-        displayInfo: true
     }
 });
-
-

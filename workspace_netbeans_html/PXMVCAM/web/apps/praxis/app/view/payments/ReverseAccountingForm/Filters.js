@@ -50,10 +50,10 @@ Ext.define('Ext.Praxis.view.payments.ReverseAccountingForm.Filters', {
                             items: [
                                 {
                                     xtype: 'datefield',
-                                    name: 'IN_PRDAF',
+                                    name: 'IN_FROM',
                                     fieldLabel: 'From',
                                     format: 'Ymd',
-                                    editable: true, // Deshabilita la edición del campo
+                                    editable: true,
                                     labelWidth: 50,
                                     width: 150,
                                     value: new Date(anioActual, mesActual, 1),
@@ -63,10 +63,10 @@ Ext.define('Ext.Praxis.view.payments.ReverseAccountingForm.Filters', {
                                 },
                                 {
                                     xtype: 'datefield',
-                                    name: 'IN_PRDAT',
+                                    name: 'IN_TO',
                                     fieldLabel: 'To',
                                     format: 'Ymd',
-                                    editable: true, // Deshabilita la edición del campo
+                                    editable: true,
                                     labelWidth: 30,
                                     width: 120,
                                     value: new Date(),
@@ -77,15 +77,14 @@ Ext.define('Ext.Praxis.view.payments.ReverseAccountingForm.Filters', {
                                 {
                                     xtype: 'combobox',
                                     labelStyle: 'font-weight:bold;',
-                                    fieldLabel: 'Type',
-                                    name: 'IN_TIPOCON',
+                                    fieldLabel: 'Process',
+                                    name: 'IN_PROCESO',
+                                    id: prototype.id + '-cmbPROCESO',
                                     store: Ext.create('Ext.data.SimpleStore', {
                                         fields: ['code', 'name'],
                                         data: [
-                                            ['', 'All'],
-                                            ['REG', 'Regular'],
-                                            ['DEB', 'Debits'],
-                                            ['ADJ', 'Adjustment']
+                                            ['TC', 'Credit Card'],
+                                            ['CASH', 'Cash']
                                         ]
                                     }),
                                     labelWidth: 60,
@@ -94,66 +93,52 @@ Ext.define('Ext.Praxis.view.payments.ReverseAccountingForm.Filters', {
                                     valueField: 'code',
                                     queryMode: 'local',
                                     editable: false,
-                                    value: ''
+                                    value: 'TC',
+                                    listeners: { select: 'onChangeProceso' }
+                                },
+                                {
+                                    xtype: 'combobox',
+                                    labelStyle: 'font-weight:bold;',
+                                    fieldLabel: 'Acc. Type',
+                                    name: 'IN_ACCTYPE',
+                                    id: prototype.id + '-cmbACCTYPE',
+                                    store: Ext.create('Ext.data.SimpleStore', {
+                                        fields: ['code', 'name'],
+                                        data: [
+                                            ['REG', 'Regular'],
+                                            ['DEB', 'Debit'],
+                                            ['ADJ', 'Adjustment'],
+                                            ['SAL', 'Sale W/O Settl.'],
+                                            ['ADM', 'ADM'],
+                                            ['REV', 'Reversal'],
+                                            ['CHK', 'Check'],
+                                            ['ARC', 'Neg. Balance']
+                                        ]
+                                    }),
+                                    labelWidth: 70,
+                                    width: 210,
+                                    displayField: 'name',
+                                    valueField: 'code',
+                                    queryMode: 'local',
+                                    editable: false,
+                                    value: 'REG',
+                                    listeners: { select: 'onChangeAccType' }
                                 },
                                 {
                                     xtype: 'combobox',
                                     labelStyle: 'font-weight:bold;',
                                     fieldLabel: 'Status',
-                                    name: 'IN_STREJ',
+                                    name: 'IN_STATUS',
                                     store: Ext.create('Ext.data.SimpleStore', {
                                         fields: ['code', 'name'],
                                         data: [
                                             ['', 'All'],
                                             ['R', 'Rejected'],
-                                            ['J', 'Justified'],
-                                            ['P', 'Re-Process']
+                                            ['S', 'Report SAP']
                                         ]
                                     }),
-                                    labelWidth: 80,
-                                    width: 190,
-                                    displayField: 'name',
-                                    valueField: 'code',
-                                    queryMode: 'local',
-                                    editable: false,
-                                    value: 'R'
-                                },
-                                {
-                                    xtype: 'combobox',
-                                    labelStyle: 'font-weight:bold;',
-                                    fieldLabel: 'BPO Status',
-                                    name: 'IN_STREVI',
-                                    store: Ext.create('Ext.data.SimpleStore', {
-                                        fields: ['code', 'name'],
-                                        data: [
-                                            ['', 'All'],
-                                            ['N', 'Pending'],
-                                            ['Y', 'Audited']
-                                        ]
-                                    }),
-                                    labelWidth: 80,
-                                    width: 200,
-                                    displayField: 'name',
-                                    valueField: 'code',
-                                    queryMode: 'local',
-                                    editable: false,
-                                    value: ''
-                                },
-                                {
-                                    xtype: 'combobox',
-                                    labelStyle: 'font-weight:bold;',
-                                    fieldLabel: 'SAP Status',
-                                    name: 'IN_STSAP',
-                                    store: Ext.create('Ext.data.SimpleStore', {
-                                        fields: ['code', 'name'],
-                                        data: [
-                                            ['', 'All'],
-                                            ['P', 'Pending'],
-                                            ['L', 'Loaded']
-                                        ]
-                                    }),
-                                    labelWidth: 80,
-                                    width: 200,
+                                    labelWidth: 50,
+                                    width: 170,
                                     displayField: 'name',
                                     valueField: 'code',
                                     queryMode: 'local',
@@ -175,15 +160,15 @@ Ext.define('Ext.Praxis.view.payments.ReverseAccountingForm.Filters', {
                                 labelAlign: 'right',
                                 hidden: false
                             },
-                            items:[
+                            items: [
                                 {
                                     xtype: 'combo',
                                     id: prototype.id + '-cmbCODPRO',
                                     name: 'IN_CODPRO',
                                     labelWidth: 80,
                                     width: 300,
-                                    valueField: 'CODE',
-                                    displayField: 'NAME',
+                                    valueField: 'PROCESADOR',
+                                    displayField: 'PROC_DESC',
                                     fieldLabel: 'Processor',
                                     queryMode: 'local',
                                     editable: true,
@@ -196,8 +181,8 @@ Ext.define('Ext.Praxis.view.payments.ReverseAccountingForm.Filters', {
                                     selectOnFocus: true,
                                     enableKeyEvents: true,
                                     triggerAction: 'all',
-                                    value: '', // Valor inicial (vacío)
-                                    emptyText: '(All)'  // Texto que se muestra cuando no hay selección
+                                    value: '',
+                                    emptyText: '(All)'
                                 },
                                 {
                                     xtype: 'textfield',
@@ -205,8 +190,8 @@ Ext.define('Ext.Praxis.view.payments.ReverseAccountingForm.Filters', {
                                     labelWidth: 80,
                                     width: 280,
                                     name: 'IN_IDCONT',
-                                    maxLength: 25, // Límite máximo de caracteres
-                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
+                                    maxLength: 25,
+                                    enforceMaxLength: true,
                                     listeners: {
                                         specialkey: 'onEnterKeyPress'
                                     }
@@ -217,39 +202,26 @@ Ext.define('Ext.Praxis.view.payments.ReverseAccountingForm.Filters', {
                                     labelWidth: 80,
                                     width: 280,
                                     name: 'IN_HEADER',
-                                    maxLength: 20, // Límite máximo de caracteres
-                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
+                                    maxLength: 20,
+                                    enforceMaxLength: true,
                                     listeners: {
                                         specialkey: 'onEnterKeyPress'
                                     }
                                 },
                                 {
                                     xtype: 'textfield',
-                                    fieldLabel: 'Bank Doc.',
+                                    fieldLabel: 'Error Code',
                                     labelWidth: 80,
-                                    width: 180,
-                                    name: 'IN_BANDOC',
-                                    maxLength: 10,  // Límite máximo de caracteres
-                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
-                                    listeners: {
-                                        specialkey: 'onEnterKeyPress'
-                                    }
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    fieldLabel: 'Reference',
-                                    labelWidth: 80,
-                                    width: 250,
-                                    name: 'IN_REFER',
-                                    maxLength: 20,  // Límite máximo de caracteres
-                                    enforceMaxLength: true, // Aplicar la longitud máxima de caracteres
+                                    width: 220,
+                                    name: 'IN_CODREC',
+                                    maxLength: 20,
+                                    enforceMaxLength: true,
                                     listeners: {
                                         specialkey: 'onEnterKeyPress'
                                     }
                                 }
                             ]
                         }
-                         
                     ]
                 }
                 //</editor-fold>
