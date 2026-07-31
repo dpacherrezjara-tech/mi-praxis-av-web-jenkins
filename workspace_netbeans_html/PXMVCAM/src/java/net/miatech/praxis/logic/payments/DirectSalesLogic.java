@@ -1,0 +1,72 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.miatech.praxis.logic.payments;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+import net.miatech.beans.spring.implement.IServerSession;
+import net.miatech.praxis.A003;
+import net.miatech.praxis.dao.payments.DirectSalesDAO;
+import net.miatech.praxis.payment.A4202;
+import net.miatech.praxis.payment.MPF101Cielo;
+import net.miatech.praxis.payment.MPF101CieloFilter;
+import net.miatech.praxis.payment.MPF190;
+import net.miatech.praxis.payment.MPF190Filter;
+import net.miatech.praxis.payment.MPF190ExchangePending;
+import net.miatech.praxis.payment.MPF190Update;
+import net.miatech.praxis.payment.MPF218;
+import net.miatech.praxis.payment.MPF218Filter;
+import net.miatech.praxis.payment.MPF221;
+import net.miatech.praxis.payment.MPF221Filter;
+import net.miatech.praxis.payment.filter.A2280Filter;
+import net.miatech.praxis.payment.filter.A2354Filter;
+
+/**
+ *
+ * @author lmendoza
+ */
+public class DirectSalesLogic {
+
+    private final DirectSalesDAO DirectSalesDAO = new DirectSalesDAO();
+
+    public void setSession(IServerSession ss) {
+        DirectSalesDAO.setSession(ss);
+    }
+
+    public List<MPF101Cielo> loadMPS580(MPF101CieloFilter filter) throws SQLException, Exception {
+        return DirectSalesDAO.loadMPS580(filter);
+    }
+    
+    public List<MPF101Cielo> loadMPS582(MPF101CieloFilter filter) throws SQLException, Exception {
+        return DirectSalesDAO.loadMPS582(filter);
+    }
+    
+    public List<MPF101Cielo> loadMPS581(MPF101CieloFilter filter) throws SQLException, Exception {
+        return DirectSalesDAO.loadMPS581(filter);
+    }
+
+    public List<MPF190> loadMPS774(MPF190Filter filter) throws SQLException, Exception {
+        return DirectSalesDAO.loadMPS774(filter);
+    }
+
+    public List<MPF190> loadMPS775(MPF190Filter filter) throws SQLException, Exception {
+        return DirectSalesDAO.loadMPS775(filter);
+    }
+
+    public List<MPF190ExchangePending> loadMPS776(MPF190Filter filter) throws SQLException, Exception {
+        return DirectSalesDAO.loadMPS776(filter);
+    }
+
+    public String updateMPS777(MPF190Update bean) throws SQLException, Exception {
+        return DirectSalesDAO.updateMPS777(bean);
+    }
+
+    public Map<String, Object> executeMPS320() throws SQLException, Exception {
+        return DirectSalesDAO.executeMPS320();
+    }
+
+}
