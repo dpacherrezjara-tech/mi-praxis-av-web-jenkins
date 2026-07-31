@@ -7,13 +7,10 @@ Ext.define('Ext.Praxis.controller.payments.DirectSales.DirectSalesController', {
     drillDown: [],
     lstCountry: [],
     panelActual: '',
-    fileName: '',
     me: '',
     searchParams: {},
-    beanDetCielo: {},
     paramsDetail: {},
     paramsObtainData: {},
-    paramsDetailCielo: {},
     init: function (view) {
         me = this;
         prototype.id = 'DirectSalesForm';
@@ -34,17 +31,11 @@ Ext.define('Ext.Praxis.controller.payments.DirectSales.DirectSalesController', {
             '#DirectSalesForm-btnSearch': {
                 click: this.btnSearch_click
             },
-            '#DirectSalesForm-btnClear': {
-                click: this.btnClear_click
-            },
             '#DirectSalesForm-btnExcel': {
                 click: this.btnExcel_click
             },
             '#DirectSalesForm-btnFilter': {
                 click: this.btnFilter_click
-            },
-            '#DirectSalesForm-btnAdd': {
-                click: this.btnAdd_click
             },
             '#DirectSalesForm-btnBack': {
                 click: this.btnBack_click
@@ -61,7 +52,7 @@ Ext.define('Ext.Praxis.controller.payments.DirectSales.DirectSalesController', {
             '#DirectSalesForm-btn-pag-last': {
                 click: this.pagLast
             },
-            //-----------------Eventos Especificos -------------------            
+            //-----------------Eventos Especificos -------------------
             '#DirectSalesForm-cmbDateFromYear': {
                 select: this.selectComboFromYear
             },
@@ -70,15 +61,6 @@ Ext.define('Ext.Praxis.controller.payments.DirectSales.DirectSalesController', {
             },
             '#DirectSalesForm-cmbDateFromDay': {
                 select: this.selectComboFromDay
-            },
-            '#DirectSalesForm-cmbDateFromYearARC': {
-                select: this.selectComboFromYearARC
-            },
-            '#DirectSalesForm-cmbDateFromMonthARC': {
-                select: this.selectComboFromMonthARC
-            },
-            '#DirectSalesForm-cmbDateFromDayARC': {
-                select: this.selectComboFromDayARC
             },
         });
         // </editor-fold>
@@ -92,9 +74,6 @@ Ext.define('Ext.Praxis.controller.payments.DirectSales.DirectSalesController', {
 
         // Año actual (ya está bien como número)
         var yearActual = fechaActual.getFullYear();
-
-        // Mes actual CONVERTIDO a string de 2 dígitos
-        var monthActual = (fechaActual.getMonth() + 1).toString().padStart(2, '0');
 
         // Bind stores
         Ext.getCmp(prototype.id + '-cmbDateFromYear').bindStore(win.getStoreYear(true));
@@ -112,21 +91,6 @@ Ext.define('Ext.Praxis.controller.payments.DirectSales.DirectSalesController', {
         Ext.getCmp(prototype.id + '-cmbDateToMonth').setValue("");
         Ext.getCmp(prototype.id + '-cmbDateFromDay').setValue("");
         Ext.getCmp(prototype.id + '-cmbDateToDay').setValue("");
-
-        // Lo mismo para combos ARC
-        Ext.getCmp(prototype.id + '-cmbDateFromYearARC').bindStore(win.getStoreYear(true));
-        Ext.getCmp(prototype.id + '-cmbDateToYearARC').bindStore(win.getStoreYear(true));
-        Ext.getCmp(prototype.id + '-cmbDateFromMonthARC').bindStore(win.getStoreMonth(true));
-        Ext.getCmp(prototype.id + '-cmbDateToMonthARC').bindStore(win.getStoreMonth(true));
-        Ext.getCmp(prototype.id + '-cmbDateFromDayARC').bindStore(win.getStoreDays(true));
-        Ext.getCmp(prototype.id + '-cmbDateToDayARC').bindStore(win.getStoreDays(true));
-
-        Ext.getCmp(prototype.id + '-cmbDateFromYearARC').setValue(yearActual);
-        Ext.getCmp(prototype.id + '-cmbDateToYearARC').setValue(yearActual);
-        Ext.getCmp(prototype.id + '-cmbDateFromMonthARC').setValue(monthActual);
-        Ext.getCmp(prototype.id + '-cmbDateToMonthARC').setValue(monthActual);
-        Ext.getCmp(prototype.id + '-cmbDateFromDayARC').setValue("");
-        Ext.getCmp(prototype.id + '-cmbDateToDayARC').setValue("");
 
         this.paramsObtainData.COUNTRY = 2;
         Ext.Ajax.request({
@@ -153,30 +117,9 @@ Ext.define('Ext.Praxis.controller.payments.DirectSales.DirectSalesController', {
 
     },
     btnSearch_click: function (obj, e) {
-        let fs = Ext.getCmp(prototype.id + '-titleFieldsetBSP');
-        let selectedBy = Ext.getCmp(prototype.id + '-cmbInputDate').getValue();
-
-//        if (selectedBy === 'S') {
-//            fs.setTitle('<span style="color:#1a4d8f;font-weight:bold;">SALES DATE</span>');
-//        } else if (selectedBy === 'U') {
-//            fs.setTitle('<span style="color:#1a4d8f;font-weight:bold;">PAYMENT DATE</span>');
-//        }
-
-        let seg = Ext.getCmp(prototype.id + '-segViewMode');
-        let selected = seg.getValue();
         this.drillDown = [];
-
-        if (selected === 0) {
-            Ext.getCmp(prototype.id + '-panelBSP').setVisible(true);
-            Ext.getCmp(prototype.id + '-panelARC').setVisible(false);
-            this.setFormatParameter();
-            this.setGridData();
-        } else if (selected === 1) {
-            Ext.getCmp(prototype.id + '-panelBSP').setVisible(false);
-            Ext.getCmp(prototype.id + '-panelARC').setVisible(true);
-            this.setFormatParameterARC();
-            this.setGridDataARC();
-        }
+        this.setFormatParameter();
+        this.setGridData();
     },
     setFormatParameter: function () {
         me.bean = {};
@@ -210,8 +153,6 @@ Ext.define('Ext.Praxis.controller.payments.DirectSales.DirectSalesController', {
             bean: me.bean,
             beanString: beanString
         };
-
-        console.log(searchParams, 'searchParams');
     },
     setGridData: function () {
         win.lblUser_toolTip("Estructura: MPS774");
@@ -432,297 +373,6 @@ Ext.define('Ext.Praxis.controller.payments.DirectSales.DirectSalesController', {
             }
         });
     },
-    onGridSaleCielo: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
-
-        if (me.panelActual !== '-panelDetailSaleCielo') {
-            me.drillDown.push(me.panelActual);
-            me.panelActual = '-panelDetailSaleCielo';
-            global.selectedChild(me.childs, prototype.id + me.panelActual);
-        }
-
-        let dataRow = rowData.data;
-        this.beanDetCielo = {};
-        this.beanDetCielo.IN_SCARDN = dataRow.SCARDN;
-        this.beanDetCielo.IN_SAUTHOC = dataRow.SAUTHOC;
-        me.paramsDetailCielo.beanString = JSON.stringify(this.beanDetCielo);
-        console.log(me.paramsDetailCielo.beanString);
-        this.setGridDataSaleCielo();
-    },
-
-    setGridDataSaleCielo: function () {
-        var me = this;
-
-        var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
-            proxy: {
-                url: prototype.url + '/searchDetailSaleCielo'
-            },
-            listeners: {
-                beforeload: function (obj) {
-                    obj.proxy.extraParams = me.paramsDetailCielo;
-                },
-                load: function (store) {
-                    var pag = Ext.getCmp(prototype.id + '-paggin1');
-                    var pagData = pag.getPageData();
-                    Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
-                    Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
-                    Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
-
-                    me.setWidthPie();
-
-                    var detailGrid = Ext.getCmp(prototype.id + '-gridDataDetailSaleCielo');
-
-                    if (store.getCount() === 0) {
-                        global.Msg({msg: 'Data not found.'});
-                        detailGrid.setTitle('No data available');
-                    } else {
-                        // --- ARMADO DEL TÍTULO COMPLETO CON TODOS LOS DATOS ---
-                        var data = store.getAt(0).data;
-
-                        var dynamicTitle =
-                                '<b>Sales Date:</b> ' + data.SDATE + ' &nbsp;&nbsp;|&nbsp;&nbsp; ' +
-                                '<b>Country:</b> ' + data.SCOUNTRY + ' &nbsp;&nbsp;|&nbsp;&nbsp; ' +
-                                '<b>PNR:</b> ' + data.SPNR + ' &nbsp;&nbsp;|&nbsp;&nbsp; ' +
-                                '<b>Code:</b> ' + data.SCARCOD + ' &nbsp;&nbsp;|&nbsp;&nbsp; ' +
-                                '<b>Card:</b> ' + data.SCARDN + ' &nbsp;&nbsp;|&nbsp;&nbsp; ' +
-                                '<b>Auth:</b> ' + data.SAUTHOC;
-
-                        // Asignamos el título a la grilla de detalle
-                        detailGrid.setTitle(dynamicTitle);
-                        // ------------------------------------------------------
-                    }
-
-
-                }
-            }
-        });
-
-        global.clear();
-        Ext.getCmp(prototype.id + '-gridDataDetailSaleCielo').bindStore(storeGridDatas);
-        Ext.getCmp(prototype.id + '-paggin1').bindStore(storeGridDatas);
-    },
-    
-    
-    onGridDetalleCielo: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
-        
-         if (me.panelActual !== '-panelDetailCielo') {
-            me.drillDown.push(me.panelActual);
-            me.panelActual = '-panelDetailCielo';
-            global.selectedChild(me.childs, prototype.id + me.panelActual);
-        }
-        
-         let dataRow = rowData.data;
-         this.beanDetCielo = {}
-         this.beanDetCielo.IN_CCUST = dataRow.CCUST;
-         this.beanDetCielo.IN_SDATE = dataRow.SDATE;
-         this.beanDetCielo.IN_SCOUNTRY = dataRow.SCOUNTRY;
-         this.beanDetCielo.IN_TDOC = dataRow.TDOC;
-         this.beanDetCielo.IN_SCARCOD = dataRow.SCARCOD;
-         this.beanDetCielo.IN_SCARDN = dataRow.SCARDN;
-         this.beanDetCielo.IN_SCARDNCOR = dataRow.SCARDNCOR;
-         me.paramsDetailCielo.beanString = JSON.stringify(this.beanDetCielo);
-        console.log(me.paramsDetailCielo.beanString)
-        this.setGridDataDetallCielo();
-},
-setGridDataDetallCielo: function () {
-    var me = this;
-    
-    var storeGridDatas = Ext.create('Ext.Praxis.store.interline.GridData', {
-        proxy: {
-            url: prototype.url + '/searchDetailCielo'
-        }, 
-        listeners: {
-            beforeload: function (obj) {
-                obj.proxy.extraParams = me.paramsDetailCielo;
-            },
-            load: function (store) { 
-                var pag = Ext.getCmp(prototype.id + '-paggin2');
-                var pagData = pag.getPageData();
-                Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
-                Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
-                Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
-                
-                var detailGrid = Ext.getCmp(prototype.id + '-gridDataDetailCielo');
-
-                if (store.getCount() === 0) { 
-                    global.Msg({ msg: 'Data not found.' });
-                    detailGrid.setTitle('No data available');
-                } else {
-                    // --- ARMADO DEL TÍTULO COMPLETO CON TODOS LOS DATOS ---
-                    var data = store.getAt(0).data; 
-                    
-                    var dynamicTitle = 
-                        '<b>Sales Date:</b> ' + data.SDATE + ' &nbsp;&nbsp;|&nbsp;&nbsp; ' +
-//                        '<b>Status:</b> ' + data.strDescStatus + ' &nbsp;&nbsp;|&nbsp;&nbsp; ' +
-                        '<b>Country:</b> ' + data.SCOUNTRY + ' &nbsp;&nbsp;|&nbsp;&nbsp; ' +
-                        '<b>Merchant:</b> ' + data.MERCHNC + ' &nbsp;&nbsp;|&nbsp;&nbsp; ' +
-                        '<b>Process:</b> ' + data.COREP + ' &nbsp;&nbsp;|&nbsp;&nbsp; ' +
-//                        '<b>Doc. Type:</b> ' + data.descTDOC + ' &nbsp;&nbsp;|&nbsp;&nbsp; ' +
-//                        '<b>Business:</b> ' + data.NEGOC + ' &nbsp;&nbsp;|&nbsp;&nbsp; ' +
-                        '<b>Code:</b> ' + data.SCARCOD + ' &nbsp;&nbsp;|&nbsp;&nbsp; ' +
-                        '<b>Card:</b> '  + data.SCARDN + ' &nbsp;&nbsp;|&nbsp;&nbsp; ' +
-                        '<b>Auth:</b> ' + data.SAUTHOC;
-                    
-                    // Asignamos el título a la grilla de detalle
-                    detailGrid.setTitle(dynamicTitle);
-                    // ------------------------------------------------------
-                }
-
-                me.setWidthPie();
-            }
-        }
-    });
-    
-    global.clear();
-    Ext.getCmp(prototype.id + '-gridDataDetailCielo').bindStore(storeGridDatas);
-    Ext.getCmp(prototype.id + '-paggin2').bindStore(storeGridDatas);
-},
-    
-    
-    
-
-    setFormatParameterARC: function () {
-        me.bean = {};
-
-        // Settlement From
-        me.bean.IN_FECHA_FROM = me.buildDate(
-                Ext.getCmp(prototype.id + '-cmbDateFromYearARC').getValue(),
-                Ext.getCmp(prototype.id + '-cmbDateFromMonthARC').getValue(),
-                Ext.getCmp(prototype.id + '-cmbDateFromDayARC').getValue()
-                );
-
-        // Settlement To
-        me.bean.IN_FECHA_TO = me.buildDate(
-                Ext.getCmp(prototype.id + '-cmbDateToYearARC').getValue(),
-                Ext.getCmp(prototype.id + '-cmbDateToMonthARC').getValue(),
-                Ext.getCmp(prototype.id + '-cmbDateToDayARC').getValue()
-                );
-
-        // Additional
-        me.bean.IN_SOCIETY = Ext.getCmp(prototype.id + '-typeSocietyARC').getValue() || '';
-        me.bean.IN_COMAND = Ext.getCmp(prototype.id + '-cmbComand').getValue() || '';
-        me.bean.IN_FILE_NAME = Ext.getCmp(prototype.id + '-txtINameFileARC').getValue() || '';
-        me.bean.IN_OPTION = Ext.getCmp(prototype.id + '-cmbInputDateARC').getValue() || '';
-
-        var beanString = JSON.stringify(me.bean);
-        searchParams = {
-            bean: me.bean,
-            beanString: beanString
-        };
-
-        console.log(searchParams, 'searchParamsARC');
-    },
-    setGridDataARC: function () {
-        win.lblUser_toolTip("Estructura: MPF218");
-        me.panelActual = '-panelGridDataARC';
-        global.selectedChild(me.childs, prototype.id + me.panelActual);
-        me.setWidthPie();
-
-        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
-            proxy: {
-                url: prototype.url + '/searchARC'
-            }, listeners: {
-                beforeload: function (obj) {
-                    obj.proxy.extraParams = searchParams;
-                },
-                load: function (obj) {
-                    var pag = Ext.getCmp(prototype.id + '-paggin');
-                    var pagData = pag.getPageData();
-                    Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
-                    Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
-                    Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
-                    if (obj.data.length === 0) {
-                        global.Msg({
-                            msg: 'Data not found.'
-                        });
-                    }
-                }
-            }
-        });
-        global.clear();
-        Ext.getCmp(prototype.id + '-gridDataDetailARC').bindStore(storeGridDatas);
-        Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
-
-    },
-    onViewCSVARC: function (column, e, row, colIndex, x, rowData) {
-        let data = rowData.data;
-        const filename = data.NAMEFILE;
-
-        if (!filename) {
-            Ext.Msg.alert('Error', 'No se encontró el nombre del archivo.');
-            return;
-        }
-
-        const imageUrl = prototype.url
-                + '/getARCImage'
-                + '?filename=' + encodeURIComponent(filename);
-
-        Ext.create('Ext.window.Window', {
-            title: 'ARC Image Viewer',
-            modal: true,
-            width: 1300,
-            height: 800,
-            layout: 'fit',
-            items: [{
-                    xtype: 'panel',
-                    autoScroll: true,
-                    bodyStyle: 'background:#000;',
-                    items: [{
-                            xtype: 'image',
-                            src: imageUrl,
-                            style: {
-                                display: 'block',
-                                transform: 'scale(1.4)', // 🔍 nivel de zoom
-                                transformOrigin: 'top left', // 🎯 foco arriba izquierda
-                                margin: '0'
-                            }
-                        }]
-                }],
-            buttons: [{
-                    text: 'Close',
-                    handler: function (btn) {
-                        btn.up('window').close();
-                    }
-                }]
-        }).show();
-
-    },
-    onDownloadCSVARC: function (column, e, row, colIndex, x, rowData) {
-        let data = rowData.data;
-
-        const datePed = data.PEDARC;     // "25/12/07"  (YY/MM/DD)
-        let filename = data.NAMEFILE;   // sin .txt
-
-        if (!datePed || !filename) {
-            Ext.Msg.alert(
-                    'Error',
-                    'Faltan parámetros para la descarga (Date PED, File Name).'
-                    );
-            return;
-        }
-
-        // PEDARC = YY/MM/DD
-        const parts = datePed.split('/');
-
-        if (parts.length !== 3) {
-            Ext.Msg.alert('Error', 'Formato de fecha PED inválido: ' + datePed);
-            return;
-        }
-
-        const year = '20' + parts[0];   // ✅ 25 → 2025
-
-        // asegurar extensión .txt
-        if (!filename.toLowerCase().endsWith('.txt')) {
-            filename += '.txt';
-        }
-
-        const url = prototype.url + '/getTXTARC'
-                + '?year=' + encodeURIComponent(year)
-                + '&filename=' + encodeURIComponent(filename);
-
-        console.log('Solicitando:', url);
-
-        global.getFile(url);
-    },
     onGridDetDirectSales: function (column, cell, rowIndex, colIndex, e, record) {
         var data = record.data;
 
@@ -839,9 +489,6 @@ setGridDataDetallCielo: function () {
             case  '-panelDetailDirectSales':
                 global.getFile(prototype.url + '/getXLSXDetail?beanString=' + encodeURI(me.paramsDetail.beanString));
                 break;
-            case  '-panelGridDataARC':
-                global.getFile(prototype.url + '/getXLSXARC?beanString=' + encodeURI(searchParams.beanString));
-                break;
             default:
                 global.Msg({msg: 'Under Construction'});
         }
@@ -866,31 +513,6 @@ setGridDataDetallCielo: function () {
 
         return y + m + d;
     },
-    onDownloadFile: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
-        me.paramsDetail.beanString = JSON.stringify(rowData.data);
-        me.fileName = rowData.data.A2536NAMEF;
-        Ext.Ajax.request({
-            url: prototype.url + '/download',
-            method: 'POST',
-            timeout: 60000000,
-            beforerequest: Ext.getCmp(prototype.id + '-gridData').mask('Loading...'),
-            params: me.paramsDetail,
-            success: function (response, options) {
-                Ext.getCmp(prototype.id + '-gridData').unmask('Loading...');
-                var res = Ext.JSON.decode(response.responseText);
-
-                var resultByte = res.bytes;
-                var bytes = new Uint8Array(resultByte); // pass your byte response to this constructor
-                var blob = new Blob([bytes], {type: "application/png"});// change resultByte to bytes
-
-                var link = document.createElement('a');
-                link.href = window.URL.createObjectURL(blob);
-                link.download = me.fileName;
-                link.click();
-            }
-        });
-
-    },
     btnFilter_click: function (obj) {
         var option = Ext.getCmp(prototype.id + '-contentFilter');
         if (option.isVisible()) {
@@ -901,17 +523,11 @@ setGridDataDetallCielo: function () {
     },
     getPaggin: function () {
         me.pagginActual = '';
-        console.log(me.panelActual, 'me.panelActual')
         switch (me.panelActual) {
             case  '-panelGridDataDetail':
                 // MPS774 no pagina (dataset agregado), no hay footer de paginación
                 Ext.getCmp(prototype.id + '-pie').setVisible(false);
                 me.pagginActual = '';
-                break;
-            case  '-panelGridDataARC':
-                me.pagginActual = '-paggin';
-                Ext.getCmp(prototype.id + '-pie').setVisible(true);
-                me.pagginActual = '-paggin';
                 break;
             case  '-panelDetailDirectSales':
                 me.pagginActual = '-paggin3';
@@ -940,30 +556,6 @@ setGridDataDetallCielo: function () {
         var pag = Ext.getCmp(prototype.id + me.pagginActual);
         pag.moveLast();
     },
-    getInt: function (value, metaData, record, rowIndex, colIndex, store, view) {
-        metaData.style = 'text-align:right';
-        return Ext.util.Format.number(value, '0,000');
-    },
-    getDouble: function (value, metaData, record, rowIndex, colIndex, store, view) {
-        metaData.style = 'text-align:right';
-        return Ext.util.Format.number(value, '0,000.00');
-    },
-    getText: function (value, metaData, record, rowIndex, colIndex, store, view) {
-        metaData.style = 'text-align:left';
-        return value;
-    },
-    getDoubleColor1: function (value, metaData, record, rowIndex, colIndex, store, view) {
-        metaData.style = 'text-align:right;background:#F2FAFC';
-        return Ext.util.Format.number(value, '0,000.00');
-    },
-    getDoubleColor2: function (value, metaData, record, rowIndex, colIndex, store, view) {
-        metaData.style = 'text-align:right;background:#DFF0ED';
-        return Ext.util.Format.number(value, '0,000.00');
-    },
-    getDoubleColor3: function (value, metaData, record, rowIndex, colIndex, store, view) {
-        metaData.style = 'text-align:right;background:#FCF5F2';
-        return Ext.util.Format.number(value, '0,000.00');
-    },
     selectComboFromYear: function (obj) {
         var comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYear');
         var storeComboDataYear = win.getStoreYear2(false, obj.getValue());
@@ -983,42 +575,6 @@ setGridDataDetallCielo: function () {
     selectComboFromDay: function (obj) {
         var comboToDay = Ext.getCmp(prototype.id + '-cmbDateToDay');
         comboToDay.setValue(obj.getValue());
-    },
-    selectComboFromYearARC: function (obj) {
-        var comboToYear = Ext.getCmp(prototype.id + '-cmbDateToYearARC');
-        var storeComboDataYear = win.getStoreYear2(false, obj.getValue());
-        let comboFromYear = Ext.getCmp(prototype.id + '-cmbDateFromYearARC');
-        let comboFromMonth = Ext.getCmp(prototype.id + '-cmbDateFromMonthARC');
-        let comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonthARC');
-        comboToYear.bindStore(storeComboDataYear);
-        comboToYear.setValue(obj.getValue());
-        if (comboToYear.getValue() <= comboFromYear.getValue() && comboToMonth.getValue() < comboFromMonth.getValue()) {
-            comboFromMonth.setValue(comboToMonth.getValue())
-        }
-    },
-    selectComboFromMonthARC: function (obj) {
-        var comboToMonth = Ext.getCmp(prototype.id + '-cmbDateToMonthARC');
-        comboToMonth.setValue(obj.getValue());
-    },
-    selectComboFromDayARC: function (obj) {
-        var comboToDay = Ext.getCmp(prototype.id + '-cmbDateToDayARC');
-        comboToDay.setValue(obj.getValue());
-    },
-    getPeriodoYYYYMM: function (strFormatDate) {
-        if (!strFormatDate)
-            return null;
-
-        let [anio, mesTxt] = strFormatDate.split('-');
-        const meses = {
-            Jan: '01', Feb: '02', Mar: '03', Apr: '04',
-            May: '05', Jun: '06', Jul: '07', Aug: '08',
-            Sep: '09', Oct: '10', Nov: '11', Dec: '12'
-        };
-        return anio + (meses[mesTxt] || '00');
-    },
-    onUpperValue: function (obj, e, eOpts) {
-        let value = obj.getValue().toUpperCase();
-        obj.setValue(value);
     },
     setWidthPie: function () {
         var ancho = Ext.getCmp(prototype.id + me.panelActual).getWidth();
@@ -1048,84 +604,6 @@ setGridDataDetallCielo: function () {
         if (eOpts.getKey() === 13) {
             this.btnSearch_click();
         }
-    },
-    onDownloadCSV: function (column, e, row, colIndex, x, rowData) {
-        let data = rowData.data;
-        const country = data.COUNTRY;
-        const dateSett = data.DATESETT;
-        const customer = data.CUSTOMER;
-        const filename = data.NAMEFILE;
-
-        if (!country || !dateSett || !customer) {
-            Ext.Msg.alert('Error', 'Faltan parámetros para la descarga (Country, Customer o Settlement Date).');
-            return;
-        }
-
-        const url = prototype.url + '/getCSV'
-                + '?country=' + encodeURIComponent(country)
-                + '&dateSett=' + encodeURIComponent(dateSett)
-                + '&customer=' + encodeURIComponent(customer)
-                + '&filename=' + encodeURIComponent(filename);
-
-        console.log('Solicitando:', url);
-
-        global.getFile(url);
-    },
-    onDownloadAllCSV: function () {
-        let me = this;
-        let url = null;
-
-        switch (me.panelActual) {
-
-            case '-panelGridDataDetail': // BSP
-                console.log('ZIP BSP permitido');
-                url = prototype.url + '/getBulkCSV';
-                break;
-
-            case '-panelGridDataARC': // ARC
-                console.log('ZIP ARC permitido');
-                url = prototype.url + '/getBulkTXTARC';
-                break;
-
-            default:
-                global.Msg({msg: 'Under Construction'});
-                return;
-        }
-
-        if (!searchParams || !searchParams.beanString) {
-            Ext.Msg.alert(
-                    "Error",
-                    "Debe realizar una búsqueda antes de descargar."
-                    );
-            return;
-        }
-
-        console.log("Solicitando ZIP con filtros:", searchParams);
-        console.log("Endpoint:", url);
-
-        me.getFileByPost(url, {
-            beanString: searchParams.beanString
-        });
-    },
-    getFileByPost: function (url, params) {
-        var form = document.createElement("form");
-        form.setAttribute("method", "POST");
-        form.setAttribute("action", url);
-        form.setAttribute("target", "_blank");
-
-        for (var key in params) {
-            if (params.hasOwnProperty(key)) {
-                var hiddenField = document.createElement("input");
-                hiddenField.setAttribute("type", "hidden");
-                hiddenField.setAttribute("name", key);
-                hiddenField.setAttribute("value", params[key]);
-                form.appendChild(hiddenField);
-            }
-        }
-
-        document.body.appendChild(form);
-        form.submit();
-        form.remove();
     }
 }
 );
