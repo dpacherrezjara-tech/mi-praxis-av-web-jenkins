@@ -8,34 +8,19 @@ package net.miatech.praxis.controllers.payments;
 import com.google.gson.Gson;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.miatech.praxis.controllers.BaseController;
-import net.miatech.praxis.dao.master.MasterDAO;
 import net.miatech.praxis.exceptions.SpringException;
 import net.miatech.praxis.logic.payments.DirectSalesLogic;
-import net.miatech.praxis.payment.MPF101Cielo;
-import net.miatech.praxis.payment.MPF101CieloFilter;
 import net.miatech.praxis.payment.MPF190;
 import net.miatech.praxis.payment.MPF190Filter;
 import net.miatech.praxis.payment.MPF190ExchangePending;
 import net.miatech.praxis.payment.MPF190Update;
-import net.miatech.praxis.payment.MPF218;
-import net.miatech.praxis.payment.MPF218Filter;
-import net.miatech.praxis.payment.MPF221;
-import net.miatech.praxis.payment.MPF221Filter;
 import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
@@ -64,158 +49,12 @@ public class DirectSalesController extends BaseController {
 
     private static final Logger logError = Logger.getLogger("errorLog");
     private DirectSalesLogic logic;
-    private MasterDAO masterDAO;
 
     @RequestMapping(method = RequestMethod.POST)
     public String index(ModelMap map) {
         map.put("vp_serverDate", Functions.getFechaActual());
         map.put("vp_serverTime", Functions.getHoraActual());
         return "sales/DirectSales/form_index";
-    }
-
-    @RequestMapping(value = "search")
-    public @ResponseBody
-    String search(ModelMap map, HttpServletRequest request) {
-        System.out.println("-------------- DirectSales : Search-------------");
-        map.put("success", true);
-        List<MPF101Cielo> lst = this.getList(request, false);
-        System.out.println("Total : " + lst.size());
-        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
-        map.put("data", lst);
-        return new Gson().toJson(map);
-    }
-
-    public List<MPF101Cielo> getList(HttpServletRequest request, Boolean bExcel) {
-
-        List<MPF101Cielo> lst = new ArrayList<>(0);
-        MPF101CieloFilter filter = new MPF101CieloFilter();
-        Gson gson = new Gson();
-        String beanString = "";
-
-        try {
-            logic = new DirectSalesLogic();
-            logic.setSession(this.serverSession.getServerSession());
-
-            beanString = request.getParameter("beanString");
-            filter = gson.fromJson(beanString, MPF101CieloFilter.class);
-            filter.page.TOTROW = -1;
-            filter.page.START = 0;
-            filter.page.LIMIT = 0;
-
-            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
-            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
-
-            if (!bExcel) {
-                filter.page.PAGROW = 20;
-                start = (start != 0 ? start : 0);
-                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
-            } else {
-                filter.page.PAGROW = -1;
-                filter.page.PAGNUM = 1;
-            }
-
-            lst = logic.loadMPS580(filter);
-        } catch (Exception e) {
-            throw new SpringException(e);
-        }
-        return lst;
-    }
-
-    @RequestMapping(value = "getXLSX")
-    public @ResponseBody
-    void getXLSX(HttpServletRequest request, HttpServletResponse response) {
-
-        String fileNameDownload = "Cielo Reconciliation - " + Functions.getFechaActual() + ".xlsx";
-
-        try {
-            List<MPF101Cielo> listaData = this.getList(request, true);
-
-            SXSSFWorkbook workbook = new SXSSFWorkbook(100);
-            Sheet sheet = workbook.createSheet("Dashboard");
-
-            CellStyle headerStyle = workbook.createCellStyle();
-            Font headerFont = workbook.createFont();
-            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
-            headerFont.setColor(IndexedColors.WHITE.getIndex());
-            headerStyle.setFont(headerFont);
-            headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
-            headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-            headerStyle.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.getIndex());
-            headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
-
-            CellStyle amountStyle = workbook.createCellStyle();
-            DataFormat format = workbook.createDataFormat();
-            amountStyle.setDataFormat(format.getFormat("#,##0.00"));
-
-            // Nombres claros basados en los grupos de tu grilla ExtJS
-            Row header = sheet.createRow(0);
-            String[] columns = {
-                "Nbr", "Customer", "Doctype", "Business", "PNR", "Bandoc", "Currency", // Detail
-                "Sale Date", // Sales
-                "Payment Date", // Payment
-                "Card Code", "Card Number", "Card Author", // Credit Card (Añadido según tu JS)
-                "Total Quotas", "Total Amount", // Total Agreement
-                "Paid Quotas", "Paid Amount", // Amount Paid
-                "Pending Amount" // Pending Amount
-            };
-
-            for (int i = 0; i < columns.length; i++) {
-                Cell cell = header.createCell(i);
-                cell.setCellValue(columns[i]);
-                cell.setCellStyle(headerStyle);
-                sheet.setColumnWidth(i, 4500); // Ancho estándar
-            }
-
-            // --- LLENADO DE FILAS ---
-            int rowIdx = 1;
-            for (MPF101Cielo item : listaData) {
-                Row row = sheet.createRow(rowIdx++);
-
-                row.createCell(0).setCellValue(item.RN);
-                String customerVal = item.CCUST != null ? item.CCUST.trim() : "";
-                if ("202".equals(customerVal)) {
-                    customerVal = "Taca";
-                } else if ("134".equals(customerVal)) {
-                    customerVal = "Avianca";
-                } else if ("133".equals(customerVal)) {
-                    customerVal = "Lacsa";
-                } else if ("547".equals(customerVal)) {
-                    customerVal = "Aerogal";
-                }
-                row.createCell(1).setCellValue(customerVal);
-
-                row.createCell(2).setCellValue(item.descTDOC);
-                row.createCell(3).setCellValue(item.NEGOC);
-                row.createCell(4).setCellValue(item.PNR_SALE);
-                row.createCell(5).setCellValue(item.BANDOC);
-                row.createCell(6).setCellValue(item.SCURRENCY);
-                row.createCell(7).setCellValue(item.SDATE);
-                row.createCell(8).setCellValue(item.PAYDATE_LAST);
-                row.createCell(9).setCellValue(item.SCARCOD);
-                row.createCell(10).setCellValue(item.SCARDN);
-                row.createCell(11).setCellValue(item.SAUTHOC);
-                row.createCell(12).setCellValue(item.TOTCUOTA);
-                Cell totAmountCell = row.createCell(13);
-                totAmountCell.setCellValue(item.TOTAMOU_LAST);
-                totAmountCell.setCellStyle(amountStyle);
-                row.createCell(14).setCellValue(item.NCUOTA_LAST);
-                Cell paidAmountCell = row.createCell(15);
-                paidAmountCell.setCellValue(item.SVFOP_LAST);
-                paidAmountCell.setCellStyle(amountStyle);
-                Cell pendingAmountCell = row.createCell(16);
-                pendingAmountCell.setCellValue(item.ABALANCE_LAST);
-                pendingAmountCell.setCellStyle(amountStyle);
-            }
-
-            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
-
-            workbook.write(response.getOutputStream());
-            workbook.dispose();
-
-        } catch (Exception e) {
-            throw new SpringException(e);
-        }
     }
 
     @RequestMapping(value = "getXLSXDashboard")
@@ -414,106 +253,6 @@ public class DirectSalesController extends BaseController {
         } catch (Exception e) {
             throw new SpringException(e);
         }
-    }
-
-    @RequestMapping(value = "searchDetailSaleCielo")
-    public @ResponseBody
-    String searchDetailSaleCielo(ModelMap map, HttpServletRequest request) {
-        System.out.println("-------------- DirectSales : searchDetailSaleNubei-------------");
-
-        map.put("success", true);
-
-        List<MPF101Cielo> lst = this.getListDetailSaleCielo(request, false);
-        System.out.println("Total : " + lst.size());
-        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
-        map.put("data", lst);
-        return new Gson().toJson(map);
-    }
-
-    public List<MPF101Cielo> getListDetailSaleCielo(HttpServletRequest request, Boolean bExcel) {
-
-        List<MPF101Cielo> lst = new ArrayList<>(0);
-        MPF101CieloFilter filter = new MPF101CieloFilter();
-        Gson gson = new Gson();
-        String beanString = "";
-
-        try {
-            logic = new DirectSalesLogic();
-            logic.setSession(this.serverSession.getServerSession());
-
-            beanString = request.getParameter("beanString");
-            filter = gson.fromJson(beanString, MPF101CieloFilter.class);
-            filter.page.TOTROW = -1;
-            filter.page.START = 0;
-            filter.page.LIMIT = 0;
-
-            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
-            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
-
-            if (!bExcel) {
-                filter.page.PAGROW = 20;
-                start = (start != 0 ? start : 0);
-                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
-            } else {
-                filter.page.PAGROW = -1;
-                filter.page.PAGNUM = 1;
-            }
-
-            lst = logic.loadMPS582(filter);
-        } catch (Exception e) {
-            throw new SpringException(e);
-        }
-        return lst;
-    }
-    
-    @RequestMapping(value = "searchDetailCielo")
-    public @ResponseBody
-    String searchDetailCielo(ModelMap map, HttpServletRequest request) {
-        System.out.println("-------------- DirectSales : searchDetailCielo-------------");
-
-        map.put("success", true);
-
-        List<MPF101Cielo> lst = this.getListDetailCielo(request, false);
-        System.out.println("Total : " + lst.size());
-        map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
-        map.put("data", lst);
-        return new Gson().toJson(map);
-    }
-
-    public List<MPF101Cielo> getListDetailCielo(HttpServletRequest request, Boolean bExcel) {
-
-        List<MPF101Cielo> lst = new ArrayList<>(0);
-        MPF101CieloFilter filter = new MPF101CieloFilter();
-        Gson gson = new Gson();
-        String beanString = "";
-
-        try {
-            logic = new DirectSalesLogic();
-            logic.setSession(this.serverSession.getServerSession());
-
-            beanString = request.getParameter("beanString");
-            filter = gson.fromJson(beanString, MPF101CieloFilter.class);
-            filter.page.TOTROW = -1;
-            filter.page.START = 0;
-            filter.page.LIMIT = 0;
-
-            int limit = request.getParameter("limit") == null ? -1 : Integer.parseInt(request.getParameter("limit").toString());
-            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
-
-            if (!bExcel) {
-                filter.page.PAGROW = 20;
-                start = (start != 0 ? start : 0);
-                filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
-            } else {
-                filter.page.PAGROW = -1;
-                filter.page.PAGNUM = 1;
-            }
-
-            lst = logic.loadMPS581(filter);
-        } catch (Exception e) {
-            throw new SpringException(e);
-        }
-        return lst;
     }
 
     @RequestMapping(value = "searchDashboard")
