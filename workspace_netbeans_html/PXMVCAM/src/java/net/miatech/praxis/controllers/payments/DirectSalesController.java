@@ -21,6 +21,7 @@ import net.miatech.praxis.payment.MPF190;
 import net.miatech.praxis.payment.MPF190Filter;
 import net.miatech.praxis.payment.MPF190ExchangePending;
 import net.miatech.praxis.payment.MPF190Update;
+import net.miatech.praxis.payment.MPF190Create;
 import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
@@ -315,6 +316,27 @@ public class DirectSalesController extends BaseController {
         return new Gson().toJson(map);
     }
 
+    @RequestMapping(value = "createDirectSales", method = RequestMethod.POST)
+    public @ResponseBody
+    String createDirectSales(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- DirectSales : createDirectSales (MPS781) -------------");
+        try {
+            logic = new DirectSalesLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String beanString = request.getParameter("beanString");
+            MPF190Create bean = new Gson().fromJson(beanString, MPF190Create.class);
+
+            String msj = logic.createMPS781(bean);
+            map.put("success", !msj.startsWith("Error"));
+            map.put("msg", msj);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("msg", e.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+
     @RequestMapping(value = "updateDirectSales", method = RequestMethod.POST)
     public @ResponseBody
     String updateDirectSales(ModelMap map, HttpServletRequest request) {
@@ -370,8 +392,14 @@ public class DirectSalesController extends BaseController {
         String sfile = request.getParameter("sfile");
         String sagent = request.getParameter("sagent");
         String year = request.getParameter("year");
-        String adate = request.getParameter("adate");
+        // Se usa SDATE (Sales Date), no ADATE (Abono Date): el nombre real del
+        // archivo en la carpeta se arma con la fecha de venta, y ADATE puede
+        // venir mal cargada en el registro (desfasada varios años del archivo real).
+        String sdate = request.getParameter("sdate");
         String disposition = request.getParameter("disposition");
+
+        System.out.println("-------------- DirectSales : downloadVoucher -------------");
+        System.out.println("downloadVoucher -> sfile=[" + sfile + "] sagent=[" + sagent + "] year=[" + year + "] sdate=[" + sdate + "] disposition=[" + disposition + "]");
 
         // Por defecto 'inline' para que se previsualice en el iframe y no se descargue directamente
         if (disposition == null || disposition.trim().isEmpty()) {
@@ -381,6 +409,7 @@ public class DirectSalesController extends BaseController {
         if (sfile == null || sfile.trim().isEmpty()
                 || sagent == null || sagent.trim().isEmpty()
                 || year == null || year.trim().isEmpty()) {
+            System.out.println("downloadVoucher -> 400 BAD_REQUEST: falta sfile, sagent o year.");
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
@@ -389,7 +418,8 @@ public class DirectSalesController extends BaseController {
         if (sfile.contains("..") || sfile.contains("/") || sfile.contains("\\")
                 || sagent.contains("..") || sagent.contains("/") || sagent.contains("\\")
                 || year.contains("..") || year.contains("/") || year.contains("\\")
-                || (adate != null && (adate.contains("..") || adate.contains("/") || adate.contains("\\")))) {
+                || (sdate != null && (sdate.contains("..") || sdate.contains("/") || sdate.contains("\\")))) {
+            System.out.println("downloadVoucher -> 400 BAD_REQUEST: parámetro con '..' o separador de ruta.");
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
@@ -408,13 +438,8 @@ public class DirectSalesController extends BaseController {
         }
 
         String carpetaBase = "\\\\10.0.0.87\\av\\Efectivo\\" + rutaCarpeta + "\\process\\VentaDirecta\\" + sagent + "\\" + year + "\\archivo\\";
+        System.out.println("downloadVoucher -> DB_SERVER_DEFAULT_TYPE=[" + ruta + "] carpetaBase=[" + carpetaBase + "]");
 
-        // SFILE puede venir con la extensión original (.pptx, .docx, etc.) porque el
-        // navegador no puede previsualizar esos formatos; en ese caso, junto al archivo
-        // original se guarda una versión visualizable (.pdf) con el mismo nombre base.
-        // Según relevamiento real de la carpeta: los duplicados siempre son .pdf junto
-        // a .pptx/.docx; los archivos que ya son imagen (.png/.jpg/.jpeg/.jfif) vienen
-        // solos, sin par. Por eso probamos: .pdf -> extensiones de imagen -> el original.
         String nombreBase = sfile;
         int idxPunto = sfile.lastIndexOf('.');
         if (idxPunto > 0) {
@@ -435,7 +460,9 @@ public class DirectSalesController extends BaseController {
 
         for (String candidato : candidatos) {
             File f = new File(carpetaBase + candidato);
-            if (f.exists() && f.isFile()) {
+            boolean existe = f.exists() && f.isFile();
+            System.out.println("downloadVoucher -> probando candidato [" + candidato + "] -> " + (existe ? "ENCONTRADO" : "no existe"));
+            if (existe) {
                 archivoEncontrado = f;
                 nombreDescarga = candidato;
                 break;
@@ -446,17 +473,20 @@ public class DirectSalesController extends BaseController {
         // problemas de codificación de caracteres (tildes/ñ) al guardarse SFILE en la
         // base de datos (el proceso externo que llena MPF190 guarda el valor corrupto,
         // pero el archivo físico sí tiene el nombre correcto). El nombre de archivo
-        // siempre inicia con "<sagent>_<adate>_...", así que si nada calzó por nombre
+        // siempre inicia con "<sagent>_<sdate>_...", así que si nada calzó por nombre
         // exacto, buscamos el primer archivo de la carpeta que empiece con ese prefijo.
-        if (archivoEncontrado == null && adate != null && !adate.trim().isEmpty()) {
-            String prefijo = sagent + "_" + adate;
+        if (archivoEncontrado == null && sdate != null && !sdate.trim().isEmpty()) {
+            String prefijo = sagent + "_" + sdate;
+            System.out.println("downloadVoucher -> ningún candidato exacto encontrado, probando fallback por prefijo [" + prefijo + "]");
             File carpeta = new File(carpetaBase);
             File[] archivosCarpeta = carpeta.listFiles();
+            System.out.println("downloadVoucher -> carpeta.exists()=" + carpeta.exists() + " listFiles()=" + (archivosCarpeta == null ? "null (no se pudo listar, ¿existe/permiso la carpeta?)" : archivosCarpeta.length + " archivos"));
             if (archivosCarpeta != null) {
                 File candidatoPdf = null;
                 File cualquiera = null;
                 for (File f : archivosCarpeta) {
                     if (f.isFile() && f.getName().startsWith(prefijo)) {
+                        System.out.println("downloadVoucher -> match por prefijo: " + f.getName());
                         if (cualquiera == null) {
                             cualquiera = f;
                         }
@@ -469,15 +499,20 @@ public class DirectSalesController extends BaseController {
                 if (archivoEncontrado != null) {
                     nombreDescarga = archivoEncontrado.getName();
                     logError.warn("downloadVoucher: SFILE no calzó por nombre exacto, se usó por prefijo '" + prefijo + "' -> " + archivoEncontrado.getName());
+                } else {
+                    System.out.println("downloadVoucher -> ningún archivo en la carpeta empieza con el prefijo [" + prefijo + "]");
                 }
             }
         }
 
         if (archivoEncontrado == null) {
+            System.out.println("downloadVoucher -> 404 NOT_FOUND: no se encontró el archivo en " + carpetaBase);
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             logError.warn("downloadVoucher: archivo no encontrado (ni por nombre ni por prefijo agente+fecha) -> " + carpetaBase + sfile);
             return;
         }
+
+        System.out.println("downloadVoucher -> archivo servido: " + archivoEncontrado.getAbsolutePath());
 
         // Content-Type según la extensión REAL del archivo que se encontró (no una
         // posición fija), para que las imágenes sueltas también se previsualicen inline.
@@ -506,6 +541,8 @@ public class DirectSalesController extends BaseController {
                 break;
         }
 
+        System.out.println("downloadVoucher -> nombreDescarga=[" + nombreDescarga + "] extension=[" + extEncontrada + "] contentType=[" + contentType + "] disposition=[" + disposition + "] tamaño=" + archivoEncontrado.length() + " bytes");
+
         response.setContentType(contentType);
         response.setHeader("Content-Disposition", disposition + "; filename=\"" + nombreDescarga + "\"");
         response.setContentLength((int) archivoEncontrado.length());
@@ -516,7 +553,9 @@ public class DirectSalesController extends BaseController {
             while ((n = fis.read(buf)) != -1) {
                 os.write(buf, 0, n);
             }
+            System.out.println("downloadVoucher -> envío completado OK.");
         } catch (IOException e) {
+            System.out.println("downloadVoucher -> ERROR al enviar el archivo: " + e.getMessage());
             logError.error("downloadVoucher -> " + e.getMessage(), e);
         }
     }

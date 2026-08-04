@@ -6,6 +6,9 @@
 package net.miatech.praxis.controllers.payments;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -13,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.lang.reflect.Type;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -41,6 +45,8 @@ import net.miatech.praxis.logic.payments.LoadConciliationLogic;
 import net.miatech.praxis.logic.payments.StatementReconciliationsLogic;
 import net.miatech.praxis.payment.MPF101;
 import net.miatech.praxis.payment.MPF102Filter;
+import net.miatech.praxis.payment.MPF190;
+import net.miatech.praxis.payment.MPF190Filter;
 import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.MPF100Filter;
 import net.miatech.utils.Functions;
@@ -6187,6 +6193,175 @@ public class StatementReconciliationsController extends BaseController {
         }
 
         return new Gson().toJson(map);
+    }
+
+    // Scan MPF190 del Data Entry de Cash: busca directo en MPF190 vía MPS778 (sin
+    // paginado, siempre Pending del lado del SP) y devuelve los totales de Neto/Payamou.
+    @RequestMapping(value = "searchMPF190Scan")
+    public @ResponseBody
+    String searchMPF190Scan(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- StatementReconciliations : searchMPF190Scan (MPS778) -------------");
+        try {
+            StatementReconciliationsLogic logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String beanString = request.getParameter("beanString");
+            MPF190Filter filter = new Gson().fromJson(beanString, MPF190Filter.class);
+
+            Map<String, Object> result = logic.loadMPS778(filter);
+
+            map.put("success", true);
+            map.put("data", result.get("data"));
+            map.put("totalNeto", result.get("totalNeto"));
+            map.put("totalPayamou", result.get("totalPayamou"));
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("Mensaje", e.getMessage());
+            e.printStackTrace();
+        }
+        return new Gson().toJson(map);
+    }
+
+    // Concilia MANUALMENTE (STVAL='5') el MPF102 abierto en el Data Entry contra
+    // el MPF190 elegido en el scan, vía MPS779. El bean trae los campos de AMBOS
+    // registros (ver DataEntryCashStatementReconciliationsController.js ->
+    // conciliarScan para el armado exacto).
+    @RequestMapping(value = "conciliarManualScan", method = RequestMethod.POST)
+    public @ResponseBody
+    String conciliarManualScan(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- StatementReconciliations : conciliarManualScan (MPS779) -------------");
+        try {
+            StatementReconciliationsLogic logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            UserView user = this.serverSession.getServerSession().getUserView();
+
+            String beanString = request.getParameter("beanString");
+            JsonObject bean = new JsonParser().parse(beanString).getAsJsonObject();
+
+            Map<String, Object> result = logic.conciliarManualScan(bean, user);
+
+            map.put("success", result.get("success"));
+            map.put("Mensaje", result.get("message"));
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("Mensaje", e.getMessage());
+            e.printStackTrace();
+        }
+        return new Gson().toJson(map);
+    }
+
+    // Reversa una conciliación manual hecha por MPS779, vía MPS780. Identifica el
+    // par MPF102/MPF190 por CCUST/BANDOC/DATECI/TRANCI (el "link" que dejó
+    // MPS779 al conciliar) -- no hace falta ningún otro dato.
+    @RequestMapping(value = "reversarManualScan", method = RequestMethod.POST)
+    public @ResponseBody
+    String reversarManualScan(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- StatementReconciliations : reversarManualScan (MPS780) -------------");
+        try {
+            StatementReconciliationsLogic logic = new StatementReconciliationsLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            UserView user = this.serverSession.getServerSession().getUserView();
+
+            String ccust = request.getParameter("CCUST");
+            String bandoc = request.getParameter("BANDOC");
+            String dateci = request.getParameter("DATECI");
+            String tranci = request.getParameter("TRANCI");
+
+            Map<String, Object> result = logic.reversarManualScan(ccust, bandoc, dateci, tranci, user);
+
+            map.put("success", result.get("success"));
+            map.put("Mensaje", result.get("message"));
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("Mensaje", e.getMessage());
+            e.printStackTrace();
+        }
+        return new Gson().toJson(map);
+    }
+
+    // Excel del CARRITO del scan MPF190 (lo que el usuario acumuló en pantalla en
+    // gridDataInfoScanArc tras 1 o varias búsquedas), no de una búsqueda puntual:
+    // el cliente manda el JSON de las filas ya deduplicadas por POST (via
+    // global.openWindowWithPost, mismo patrón que GSACommisionsReportController)
+    // y acá se arma el Excel directo de esa lista, sin volver a consultar MPF190.
+    @RequestMapping(value = "getXLSXScanCart", method = RequestMethod.POST)
+    public @ResponseBody
+    void getXLSXScanCart(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("-------------- StatementReconciliations : getXLSXScanCart (carrito MPF190) -------------");
+
+        String fileNameDownload = "Scan MPF190 - " + Functions.getFechaActual() + ".xlsx";
+
+        try {
+            String beanString = request.getParameter("beanString");
+            Type listType = new TypeToken<List<MPF190>>() {
+            }.getType();
+            List<MPF190> listaData = new Gson().fromJson(beanString, listType);
+            if (listaData == null) {
+                listaData = new ArrayList<>();
+            }
+
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Scan");
+
+            CellStyle headerStyle = workbook.createCellStyle();
+            Font headerFont = workbook.createFont();
+            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            headerFont.setColor(IndexedColors.WHITE.getIndex());
+            headerStyle.setFont(headerFont);
+            headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            headerStyle.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.getIndex());
+            headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            CellStyle amountStyle = workbook.createCellStyle();
+            DataFormat format = workbook.createDataFormat();
+            amountStyle.setDataFormat(format.getFormat("#,##0.00"));
+
+            Row header = sheet.createRow(0);
+            String[] columns = {
+                "Nbr", "Country", "Agent", "Abono Date", "Sales Date",
+                "Currency", "Neto", "Payamou", "Reference", "SFile", "Npag"
+            };
+            for (int i = 0; i < columns.length; i++) {
+                Cell cell = header.createCell(i);
+                cell.setCellValue(columns[i]);
+                cell.setCellStyle(headerStyle);
+                sheet.setColumnWidth(i, 4500);
+            }
+
+            int rowIdx = 1;
+            int nbr = 1;
+            for (MPF190 item : listaData) {
+                Row row = sheet.createRow(rowIdx++);
+                // item.NBR es el ROW_NUMBER() OVER() de MPS778 (orden físico de lectura,
+                // no el orden de fecha con el que se muestra) -- se numera por posición
+                // real en el carrito, igual que ya se hace en la grilla.
+                row.createCell(0).setCellValue(nbr++);
+                row.createCell(1).setCellValue(item.SCOUNTRY);
+                row.createCell(2).setCellValue(item.SAGENT);
+                row.createCell(3).setCellValue(item.ADATE);
+                row.createCell(4).setCellValue(item.SDATE);
+                row.createCell(5).setCellValue(item.SCURRENCY);
+                Cell netoCell = row.createCell(6);
+                netoCell.setCellValue(item.NETO);
+                netoCell.setCellStyle(amountStyle);
+                Cell payCell = row.createCell(7);
+                payCell.setCellValue(item.PAYAMOU);
+                payCell.setCellStyle(amountStyle);
+                row.createCell(8).setCellValue(item.REFERENCE);
+                row.createCell(9).setCellValue(item.SFILE);
+                row.createCell(10).setCellValue(item.NPAG);
+            }
+
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+
+            workbook.write(response.getOutputStream());
+            workbook.close();
+
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
     }
 
     @RequestMapping(value = "downloadPdfVentaDirecta", method = RequestMethod.GET)

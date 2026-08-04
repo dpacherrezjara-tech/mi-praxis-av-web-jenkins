@@ -6,6 +6,7 @@ Ext.define('Ext.Praxis.controller.payments.DirectSales.DirectSalesController', {
     paginActual: '',
     drillDown: [],
     lstCountry: [],
+    lstCurrencies: [],
     panelActual: '',
     me: '',
     searchParams: {},
@@ -36,6 +37,9 @@ Ext.define('Ext.Praxis.controller.payments.DirectSales.DirectSalesController', {
             },
             '#DirectSalesForm-btnFilter': {
                 click: this.btnFilter_click
+            },
+            '#DirectSalesForm-btnAdd': {
+                click: this.btnAdd_click
             },
             '#DirectSalesForm-btnBack': {
                 click: this.btnBack_click
@@ -93,6 +97,7 @@ Ext.define('Ext.Praxis.controller.payments.DirectSales.DirectSalesController', {
         Ext.getCmp(prototype.id + '-cmbDateToDay').setValue("");
 
         this.paramsObtainData.COUNTRY = 2;
+        this.paramsObtainData.CURRENCY = 2;
         Ext.Ajax.request({
             url: prototype.urlMaster + '/obtainData',
             method: 'POST',
@@ -104,6 +109,7 @@ Ext.define('Ext.Praxis.controller.payments.DirectSales.DirectSalesController', {
 
                 var res = Ext.JSON.decode(response.responseText);
                 me.lstCountry = res.lstCountry;
+                me.lstCurrencies = res.lstCurrencies;
 
                 var storeData3 = Ext.create('Ext.data.Store', {
                     data: me.lstCountry,
@@ -463,6 +469,15 @@ Ext.define('Ext.Praxis.controller.payments.DirectSales.DirectSalesController', {
             params: {
                 action: 'U',
                 rec: rec
+            }
+        }).show();
+    },
+    btnAdd_click: function () {
+        Ext.create('Ext.Praxis.view.payments.DirectSalesForm.DataEntry', {
+            id: prototype.id + '-dataEntry',
+            params: {
+                action: 'C',
+                rec: null
             }
         }).show();
     },

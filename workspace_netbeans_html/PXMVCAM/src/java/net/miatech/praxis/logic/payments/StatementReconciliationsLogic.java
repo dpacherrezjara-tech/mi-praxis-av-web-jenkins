@@ -5,6 +5,7 @@
  */
 package net.miatech.praxis.logic.payments;
 
+import com.google.gson.JsonObject;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import net.miatech.beans.spring.implement.IServerSession;
 import net.miatech.praxis.dao.payments.StatementReconciliationsDAO;
 import net.miatech.praxis.payment.MPF101;
 import net.miatech.praxis.payment.MPF102Filter;
+import net.miatech.praxis.payment.MPF190Filter;
 import net.miatech.praxis.payment.filter.A2280Filter;
 import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.MPF100Filter;
@@ -222,5 +224,17 @@ public class StatementReconciliationsLogic {
      
      public String updateFields102(MPF102Filter bean) throws Exception {
         return StatementReconciliationsDAO.updateFields102(bean);
+    }
+
+    public Map<String, Object> loadMPS778(MPF190Filter filter) throws SQLException, Exception {
+        return StatementReconciliationsDAO.loadMPS778(filter);
+    }
+
+    public Map<String, Object> conciliarManualScan(JsonObject bean, UserView user) throws SQLException, Exception {
+        return StatementReconciliationsDAO.conciliarManualScan(bean, user);
+    }
+
+    public Map<String, Object> reversarManualScan(String ccust, String bandoc, String dateci, String tranci, UserView user) throws SQLException, Exception {
+        return StatementReconciliationsDAO.reversarManualScan(ccust, bandoc, dateci, tranci, user);
     }
 }
